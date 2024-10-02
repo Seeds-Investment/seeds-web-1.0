@@ -6,6 +6,8 @@ import SettingCommonInput from '@/components/setting/accountInformation/SettingC
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { type IWithdrawalAccount } from '@/pages/withdrawal';
 import { getWithdrawalList } from '@/repository/payment.repository';
+import { getUserInfo } from '@/repository/profile.repository';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
@@ -27,17 +29,19 @@ export interface IAccountList {
   is_priority: boolean;
 }
 interface IIndexWithdrawal {
-  setSelect: Dispatch<SetStateAction<number>>;
-  className: string;
+  // setSelect: Dispatch<SetStateAction<number>>;
+  // className: string;
   setSelectedAccount: Dispatch<SetStateAction<IWithdrawalAccount | undefined>>;
   account: IWithdrawalAccount | undefined;
+  setIsSubmit: Dispatch<SetStateAction<boolean>>;
 }
 
 const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
-  setSelect,
-  className,
+  // setSelect,
+  // className,
   setSelectedAccount,
-  account
+  account,
+  setIsSubmit
 }: IIndexWithdrawal) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -45,6 +49,7 @@ const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
   const [loading, setLoading] = useState(true);
   const [bankList, setBankList] = useState([]);
   const [eWalletList, setEWalletList] = useState([]);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const handleOpen = (): void => {
     setOpen(!open);
   };
@@ -63,7 +68,7 @@ const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
     return (
       account?.method?.trim() !== '' &&
       account?.account_name?.trim() !== '' &&
-      (account?.beneficiary_name?.trim() ?? '').length >= 5 &&
+      (account?.beneficiary_name?.trim() ?? '').length >= 3 &&
       (account?.account_number?.trim() ?? '').length >= 5
     );
   };
@@ -81,12 +86,27 @@ const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
     }
   };
 
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  useEffect(() => {
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
   useEffect(() => {
     void fetchWithdrawalMethodList();
   }, []);
 
   const renderContent = (): JSX.Element => (
-    <Card shadow={false} className={`${className} p-5 gap-4 items-center`}>
+    <Card shadow={false} className={`p-5 gap-4 items-center`}>
       <div className="flex flex-col items-center gap-6">
         <Typography className="font-poppins font-semibold md:text-3xl text-2xl text-[#262626]">
           {t('quiz.congratulation')}
@@ -128,7 +148,13 @@ const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
               className="absolute right-0 p-0 pb-[7px] pt-[14px]"
             />
           }
-          label={t('quiz.account')}
+          label={
+            account?.method === 'BANK'
+              ? t('quiz.bankAccount')
+              : account?.method === 'E-WALLET'
+              ? t('quiz.eWalletAccount')
+              : t('quiz.account')
+          }
           name=""
           placeholder={`${t('quiz.placeholderAccount')}`}
           value={account?.account_name ?? ''}
@@ -144,7 +170,10 @@ const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
           placeholder={`${t('quiz.placeholderAccountName')}`}
           value={account?.beneficiary_name ?? ''}
           onChange={data => {
-            handleSelectAccount('beneficiary_name', data.target.value);
+            handleSelectAccount(
+              'beneficiary_name',
+              data.target.value.replace(/[^a-zA-Z\s]/g, '')
+            );
           }}
           className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
         />
@@ -155,14 +184,18 @@ const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
           placeholder={`${t('quiz.placeholderAccountNumber')}`}
           value={account?.account_number ?? ''}
           onChange={data => {
-            handleSelectAccount('account_number', data.target.value);
+            handleSelectAccount(
+              'account_number',
+              data.target.value.replace(/\D/g, '')
+            );
           }}
           className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
         />
       </div>
       <Button
         onClick={() => {
-          setSelect(1);
+          // setSelect(1);
+          setIsSubmit(true);
         }}
         disabled={!isFormComplete()}
         className="capitalize disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-[#FFFFFF] rounded-full font-poppins font-semibold text-sm md:w-[343px] w-full"
@@ -188,6 +221,7 @@ const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
         methodList={account?.method ?? 'BANK'}
         bankList={bankList}
         eWalletList={eWalletList}
+        userInfo={userInfo as UserInfo}
       />
     </PageGradient>
   );

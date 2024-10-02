@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import ValidatePin from '@/components/forms/ValidatePin';
 import Loading from '@/components/popup/Loading';
 import IndexWithdrawal from '@/components/quiz/Withdrawal';
 import withRedirect from '@/helpers/withRedirect';
@@ -19,18 +18,21 @@ export interface IWithdrawalAccount {
 const Withdrawal: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [select, setSelect] = useState(0);
-  const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
-  const [error, setError] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<IWithdrawalAccount>();
-  const emptyPinIndex = pin.findIndex(number => number === '');
-  const joinPin = pin.join('');
   const quizId = router.query.quizId;
   const { submitLoading, submitQuizCashout } = useQuizCashout();
   const currentUnixTime = Math.floor(Date.now() / 1000);
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
   );
+  const [isSubmit, setIsSubmit] = useState(false);
+
+  // Hide Input Pin On Withdrawal Quiz (Temporary)
+  // const [select, setSelect] = useState(0);
+  // const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
+  // const [error, setError] = useState(false);
+  // const emptyPinIndex = pin.findIndex(number => number === '');
+  // const joinPin = pin.join('');
 
   const redirect = async (): Promise<void> => {
     if (
@@ -74,8 +76,14 @@ const Withdrawal: React.FC = () => {
     }
   };
 
-  if (joinPin !== '' && emptyPinIndex === -1) {
-    setPin(['', '', '', '', '', '']);
+  // Hide Input Pin On Withdrawal Quiz (Temporary)
+  // if (joinPin !== '' && emptyPinIndex === -1) {
+  //   setPin(['', '', '', '', '', '']);
+  //   void handleSubmit();
+  // }
+
+  if (isSubmit) {
+    setIsSubmit(false);
     void handleSubmit();
   }
 
@@ -83,12 +91,16 @@ const Withdrawal: React.FC = () => {
   const renderContent = (): JSX.Element => (
     <>
       <IndexWithdrawal
-        setSelect={setSelect}
-        className={select === 0 ? 'flex' : 'hidden'}
         setSelectedAccount={setSelectedAccount}
         account={selectedAccount}
+        setIsSubmit={setIsSubmit}
+        // Hide Input Pin On Withdrawal Quiz (Temporary)
+        // setSelect={setSelect}
+        // className={select === 0 ? 'flex' : 'hidden'}
       />
-      <ValidatePin
+
+      {/* Hide Input Pin On Withdrawal Quiz (Temporary)
+       <ValidatePin
         pin={pin}
         setPin={setPin}
         emptyPinIndex={emptyPinIndex}
@@ -97,7 +109,7 @@ const Withdrawal: React.FC = () => {
         className={select === 1 ? 'flex' : 'hidden'}
         title="Enter Your PIN"
         setSelect={setSelect}
-      />
+      /> */}
     </>
   );
   return <>{submitLoading ? renderLoading() : renderContent()}</>;

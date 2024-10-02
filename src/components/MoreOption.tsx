@@ -9,6 +9,7 @@ import post_report_photo from '@/assets/more-option/post_report_photo.png';
 import report_user from '@/assets/more-option/report_user.svg';
 import user_report_photo from '@/assets/more-option/user_report_photo.png';
 import ModalMention from '@/containers/circle/[id]/ModalMention';
+import { follow } from '@/repository/user.repository';
 import {
   Button,
   Dialog,
@@ -24,6 +25,8 @@ import {
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AiOutlineUserDelete } from 'react-icons/ai';
+import { toast } from 'react-toastify';
 import Loading from './popup/Loading';
 
 interface props {
@@ -83,6 +86,15 @@ const listReportUser = async (): Promise<any> => {
     return data;
   } catch (error) {
     console.error('Error fetching data:', error);
+  }
+};
+
+const handleFollow = async (userId: string): Promise<void> => {
+  try {
+    const response = await follow(userId);
+    return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
   }
 };
 
@@ -151,6 +163,7 @@ const MoreOption = ({
 
   const [selectedPost, setSelectedPost] = React.useState(null);
   const [selectedUser, setSelectedUser] = React.useState(null);
+  const [mobileView, setMobileView] = useState(false);
 
   const handleOpen = (): void => {
     if (isOpen) {
@@ -291,6 +304,7 @@ const MoreOption = ({
       console.error('Error:', error);
     }
   };
+
   return (
     <>
       {isLoading ? (
@@ -309,92 +323,268 @@ const MoreOption = ({
                 setGolId={() => {}}
               />
             )}
-            <Menu placement="left-start">
-              <MenuHandler>
-                <Image
-                  src={more_vertical}
-                  alt="threeDots"
-                  className="cursor-pointer"
-                />
-              </MenuHandler>
-              <MenuList className="flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
-                <MenuItem
-                  className={`${
-                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
-                      ? 'hidden'
-                      : 'flex'
-                  } py-2 gap-2 cursor-pointer`}
-                  style={{ color: '#FF3838' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
+            <div
+              onClick={() => {
+                setMobileView(true);
+              }}
+              className="block md:hidden"
+            >
+              <Image
+                src={more_vertical}
+                alt="threeDots"
+                className="cursor-pointer"
+              />
+            </div>
+            <div className="hidden md:block">
+              <Menu placement="left-start">
+                <MenuHandler>
+                  <Image
+                    src={more_vertical}
+                    alt="threeDots"
+                    className="cursor-pointer"
+                  />
+                </MenuHandler>
+                <MenuList className="hidden md:flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
+                  <MenuItem
+                    className={`${
+                      dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                        ? 'hidden'
+                        : 'flex'
+                    } py-2 gap-2 cursor-pointer`}
+                    style={{ color: '#FF3838' }}
+                    onMouseEnter={e =>
+                      (e.currentTarget.style.color = '#FF3838')
+                    }
+                    onClick={() => {
+                      void handleFollow(dataPost.user_id);
+                    }}
+                  >
+                    <AiOutlineUserDelete size={20} />
+                    Unfollow
+                  </MenuItem>
+                  <MenuItem
+                    className={`${
+                      dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                        ? 'hidden'
+                        : 'flex'
+                    } py-2 gap-2 cursor-pointer`}
+                    style={{ color: '#FF3838' }}
+                    onMouseEnter={e =>
+                      (e.currentTarget.style.color = '#FF3838')
+                    }
+                    onClick={() => {
+                      handleOpenReportPost('sm');
+                    }}
+                  >
+                    <Image src={flag} alt="reportPost" />
+                    {`${t('social.reportPost.text1')}`}
+                  </MenuItem>
+                  <MenuItem
+                    className={`${
+                      dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                        ? 'hidden'
+                        : 'flex'
+                    }  py-2 gap-2 cursor-pointer`}
+                    style={{ color: '#FF3838' }}
+                    onMouseEnter={e =>
+                      (e.currentTarget.style.color = '#FF3838')
+                    }
+                    onClick={() => {
+                      handleOpenReportUser('sm');
+                    }}
+                  >
+                    <Image src={report_user} alt="reportUser" />
+                    {`${t('social.reportUser.text1')}`}
+                  </MenuItem>
+                  <MenuItem
+                    className={`${
+                      dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                        ? 'hidden'
+                        : 'flex'
+                    }  py-2 gap-2 cursor-pointer`}
+                    style={{ color: '#FF3838' }}
+                    onMouseEnter={e =>
+                      (e.currentTarget.style.color = '#FF3838')
+                    }
+                    onClick={() => {
+                      handleOpenBlock('xs');
+                    }}
+                  >
+                    <Image src={block} alt="blockUser" />
+                    {`${t('social.blockUser.block')}`} User
+                  </MenuItem>
+                  <MenuItem
+                    className={`${
+                      dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                        ? 'flex'
+                        : 'hidden'
+                    }  py-2 gap-2 cursor-pointer`}
+                    style={{ color: '#000000' }}
+                    onMouseEnter={e =>
+                      (e.currentTarget.style.color = '#000000')
+                    }
+                    onClick={() => {
+                      handleOpen();
+                    }}
+                  >
+                    <Image src={edit} alt="editPost" />
+                    Edit Post
+                  </MenuItem>
+                  <MenuItem
+                    className={`${
+                      dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                        ? 'flex'
+                        : 'hidden'
+                    }  py-2 gap-2 cursor-pointer`}
+                    style={{ color: '#FF3838' }}
+                    onMouseEnter={e =>
+                      (e.currentTarget.style.color = '#FF3838')
+                    }
+                    onClick={() => {
+                      handleOpenDelete('xs');
+                    }}
+                  >
+                    <Image src={delet} alt="deletePost" />
+                    Delete Post
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </div>
+            {mobileView && (
+              <div className="md:hidden">
+                <div className="fixed inset-0 bg-black opacity-50 z-40" />
+                <div
+                  className="fixed inset-0 flex items-end justify-center md:items-center z-50"
                   onClick={() => {
-                    handleOpenReportPost('sm');
+                    setMobileView(false);
                   }}
                 >
-                  <Image src={flag} alt="reportPost" />
-                  {`${t('social.reportPost.text1')}`}
-                </MenuItem>
-                <MenuItem
-                  className={`${
-                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
-                      ? 'hidden'
-                      : 'flex'
-                  }  py-2 gap-2 cursor-pointer`}
-                  style={{ color: '#FF3838' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
-                  onClick={() => {
-                    handleOpenReportUser('sm');
-                  }}
-                >
-                  <Image src={report_user} alt="reportUser" />
-                  {`${t('social.reportUser.text1')}`}
-                </MenuItem>
-                <MenuItem
-                  className={`${
-                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
-                      ? 'hidden'
-                      : 'flex'
-                  }  py-2 gap-2 cursor-pointer`}
-                  style={{ color: '#FF3838' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
-                  onClick={() => {
-                    handleOpenBlock('xs');
-                  }}
-                >
-                  <Image src={block} alt="blockUser" />
-                  {`${t('social.blockUser.block')}`} User
-                </MenuItem>
-                <MenuItem
-                  className={`${
-                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
-                      ? 'flex'
-                      : 'hidden'
-                  }  py-2 gap-2 cursor-pointer`}
-                  style={{ color: '#000000' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = '#000000')}
-                  onClick={() => {
-                    handleOpen();
-                  }}
-                >
-                  <Image src={edit} alt="editPost" />
-                  Edit Post
-                </MenuItem>
-                <MenuItem
-                  className={`${
-                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
-                      ? 'flex'
-                      : 'hidden'
-                  }  py-2 gap-2 cursor-pointer`}
-                  style={{ color: '#FF3838' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
-                  onClick={() => {
-                    handleOpenDelete('xs');
-                  }}
-                >
-                  <Image src={delet} alt="deletePost" />
-                  Delete Post
-                </MenuItem>
-              </MenuList>
-            </Menu>
+                  <div className="bg-white rounded-t-2xl md:rounded-2xl overflow-hidden w-full md:w-3/4 lg:w-1/2 border-2">
+                    <div className="px-4 pt-4 flex justify-between items-center">
+                      <div className="flex justify-center items-center w-full">
+                        <div
+                          className="text-lg font-bold rounded-full bg-[#ececec] p-1 w-1/2 cursor-pointer"
+                          onClick={() => {
+                            setMobileView(false);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="md:flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
+                        <MenuItem
+                          className={`${
+                            dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                              ? 'hidden'
+                              : 'flex'
+                          } py-2 gap-2 cursor-pointer`}
+                          style={{ color: '#FF3838' }}
+                          onMouseEnter={e =>
+                            (e.currentTarget.style.color = '#FF3838')
+                          }
+                          onClick={() => {
+                            void handleFollow(dataPost.user_id);
+                          }}
+                        >
+                          <AiOutlineUserDelete size={20} />
+                          Unfollow
+                        </MenuItem>
+                        <MenuItem
+                          className={`${
+                            dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                              ? 'hidden'
+                              : 'flex'
+                          } py-2 gap-2 cursor-pointer`}
+                          style={{ color: '#FF3838' }}
+                          onMouseEnter={e =>
+                            (e.currentTarget.style.color = '#FF3838')
+                          }
+                          onClick={() => {
+                            handleOpenReportPost('sm');
+                            setMobileView(false);
+                          }}
+                        >
+                          <Image src={flag} alt="reportPost" />
+                          {`${t('social.reportPost.text1')}`}
+                        </MenuItem>
+                        <MenuItem
+                          className={`${
+                            dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                              ? 'hidden'
+                              : 'flex'
+                          }  py-2 gap-2 cursor-pointer`}
+                          style={{ color: '#FF3838' }}
+                          onMouseEnter={e =>
+                            (e.currentTarget.style.color = '#FF3838')
+                          }
+                          onClick={() => {
+                            handleOpenReportUser('sm');
+                            setMobileView(false);
+                          }}
+                        >
+                          <Image src={report_user} alt="reportUser" />
+                          {`${t('social.reportUser.text1')}`}
+                        </MenuItem>
+                        <MenuItem
+                          className={`${
+                            dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                              ? 'hidden'
+                              : 'flex'
+                          }  py-2 gap-2 cursor-pointer`}
+                          style={{ color: '#FF3838' }}
+                          onMouseEnter={e =>
+                            (e.currentTarget.style.color = '#FF3838')
+                          }
+                          onClick={() => {
+                            handleOpenBlock('xs');
+                            setMobileView(false);
+                          }}
+                        >
+                          <Image src={block} alt="blockUser" />
+                          {`${t('social.blockUser.block')}`} User
+                        </MenuItem>
+                        <MenuItem
+                          className={`${
+                            dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                              ? 'flex'
+                              : 'hidden'
+                          }  py-2 gap-2 cursor-pointer`}
+                          style={{ color: '#000000' }}
+                          onMouseEnter={e =>
+                            (e.currentTarget.style.color = '#000000')
+                          }
+                          onClick={() => {
+                            handleOpen();
+                            setMobileView(false);
+                          }}
+                        >
+                          <Image src={edit} alt="editPost" />
+                          Edit Post
+                        </MenuItem>
+                        <MenuItem
+                          className={`${
+                            dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                              ? 'flex'
+                              : 'hidden'
+                          }  py-2 gap-2 cursor-pointer`}
+                          style={{ color: '#FF3838' }}
+                          onMouseEnter={e =>
+                            (e.currentTarget.style.color = '#FF3838')
+                          }
+                          onClick={() => {
+                            handleOpenDelete('xs');
+                            setMobileView(false);
+                          }}
+                        >
+                          <Image src={delet} alt="deletePost" />
+                          Delete Post
+                        </MenuItem>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           {/* TODO: MODAL REPORT POST */}
           <Dialog

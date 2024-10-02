@@ -922,12 +922,14 @@ export default {
     emptyVoucher2: 'Yuk, nantikan voucher dan promo berikutnya!',
     applied: 'Kode promo berhasil diterapkan!',
     unApplied: 'Kode promo berhasil dihapus!',
-    apply: "Terapkan",
-    noExpired: "Tidak ada tanggal kadaluarsa",
-    havePromo: "Punya kode promo? Masukan disini!",
-    notFound: 'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
-    limitPurchaseMessage: 'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
-    limitDailyMessage: 'Kuota kode promo sudah mencapai limit',
+    apply: 'Terapkan',
+    noExpired: 'Tidak ada tanggal kadaluarsa',
+    havePromo: 'Punya kode promo? Masukan disini!',
+    notFound:
+      'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
+    limitPurchaseMessage:
+      'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
+    limitDailyMessage: 'Kuota kode promo sudah mencapai limit'
   },
   temporary: {
     welcome: {
@@ -1832,8 +1834,10 @@ export default {
     cashOut: 'Cairkan hadiahmu!',
     claimMethod: 'Metode Klaim',
     account: 'Akun',
-    accountName: 'Nama Akun',
-    accountNumber: 'Nomor Akun',
+    bankAccount: 'Rekening Bank',
+    eWalletAccount: 'Rekening E-Wallet',
+    accountName: 'Nama Rekening',
+    accountNumber: 'Nomor Rekening',
     placeholderMethod: 'Pilih metodemu',
     placeholderAccount: 'Pilih akunmu',
     placeholderAccountName: 'Nama akunmu',
@@ -1892,9 +1896,11 @@ export default {
     winnerAlertMessage2: 'Kamu menjadi',
     winnerAlertMessage3: 'juara',
     winnerAlertMessage4: 'kuis',
-    winnerAlertMessage5: 'Klik tombol klaim atau tutup pop-up ini dan klik gambar di posisi kemenangan Anda untuk menuju ke hadiah.',
+    winnerAlertMessage5:
+      'Klik tombol klaim atau tutup pop-up ini dan klik gambar di posisi kemenangan Anda untuk menuju ke hadiah.',
     winnerAlertMessage6: 'Klaim Hadiah',
-    winnerAlertMessage7: 'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
+    winnerAlertMessage7:
+      'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
     winnerAlertMessage8: 'Klaim Hadiah Disini'
   },
   micrositeQuiz: {

@@ -9,12 +9,12 @@ import {
 } from '@/repository/circleDetail.repository';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import ChooseSubs from './ChooseSubs';
 
 const CirclePayment: React.FC = () => {
   const router = useRouter();
   const circleId: string | any = router.query.circleId;
-  const [monthVal, setMonthVal] = useState<string>('');
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [pages, setPages] = useState<string>('chooseSubs');
@@ -28,8 +28,8 @@ const CirclePayment: React.FC = () => {
       const { data } = await getDetailCircle({ circleId });
 
       setDataPost(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Post:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching Circle Post: ${error as string}`);
     } finally {
       setIsLoading(false);
     }
@@ -42,11 +42,11 @@ const CirclePayment: React.FC = () => {
       const { status }: any = data;
       if (status === 'accepted') {
         router.push(`/connect`).catch(error => {
-          console.log(error);
+          toast.error(`${error as string}`);
         });
       }
-    } catch (error: any) {
-      console.error('Error fetching Circle Post:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching Circle Post: ${error as string}`);
     } finally {
       setIsLoading(false);
     }
@@ -62,8 +62,6 @@ const CirclePayment: React.FC = () => {
         <ChooseSubs
           setPages={setPages}
           dataPost={dataPost}
-          monthVal={monthVal}
-          setMonthVal={setMonthVal}
         />
       );
     } else if (pages === 'terms') {
@@ -93,7 +91,7 @@ const CirclePayment: React.FC = () => {
     <>
       {isLoading ? <Loading /> : <></>}
       {pages === 'choosePayment' ? (
-        <PaymentList dataPost={dataPost} monthVal={monthVal} />
+        <PaymentList dataPost={dataPost} />
       ) : (
         <CirclePaymentLayout>
           <div className=" w-screen sm:w-full h-fit mb-10 rounded-xl">

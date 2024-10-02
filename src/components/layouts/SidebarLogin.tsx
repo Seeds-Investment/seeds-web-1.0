@@ -30,8 +30,8 @@ const SidebarLogin: React.FC = () => {
         { title: 'Connect', url: '/connect', image: connect },
         { title: 'Play', url: '/play', image: play },
         { title: 'Setting', url: '/user-setting', image: setting }
-        // { title: 'Notification', url : '/setting', image: notification},
-        // { title: 'Chat', url : '/setting', image: chat},
+        // { title: 'Notification', url: '/setting', image: notification },
+        // { title: 'Chat', url: '/setting', image: chat }
         // { title: 'Profile', url : '/setting', image: setting},
       ];
 

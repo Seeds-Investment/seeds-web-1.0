@@ -1,6 +1,6 @@
 export enum TournamentStatus {
   MYPLAY = 'JOINED',
-  OPEN = 'CREATED',
+  OPEN = 'OPEN',
   ACTIVE = 'ACTIVE',
   PAST = 'PAST',
   CANCELED = 'CANCELED'
@@ -60,6 +60,7 @@ export interface IDetailTournament {
   id: string;
   banner: string;
   type: string;
+  all_category: string[];
   play_id: string;
   fixed_prize: number;
   category: string;
@@ -236,4 +237,33 @@ export interface Pie {
   };
   real_ticker: string;
   seeds_ticker: string;
+}
+
+export type MarketAssetI = AssetListI[]
+
+export interface AssetListI {
+  id: string
+  seedsTicker: string
+  realTicker: string
+  logo: string
+  name: string
+  exchange: string
+  exchangeCurrency: string
+  listedCountry: string
+  createdAt: string
+  updatedAt: string
+  assetType: string
+  exchangeRate: number
+  assetSubType?: string[]
+  priceBar: PriceBar
+}
+
+export interface PriceBar {
+  timestamp: string
+  open: number
+  high: number
+  low: number
+  close: number
+  vwap: number
+  volume: number
 }

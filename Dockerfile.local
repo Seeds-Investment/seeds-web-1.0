@@ -14,7 +14,7 @@
 ### fill Image with copy docker image name without domain in line 5 ex.(seeds-dion:v0.1)
 ### click (+ publish a new network port)
 ### fill host with your assigned port
-### fill conainer with 3000
+### fill container with 3000
 ### then click Deploy the container
 ## if you already create container
 ### click at the container name
@@ -26,7 +26,9 @@ LABEL author="asb"
 
 WORKDIR /app
 
+# if you use npm, comment `COPY yarn.lock ./`, uncomment `COPY package-lock.json ./`
 COPY yarn.lock ./
+# COPY package-lock.json ./
 COPY node_modules ./node_modules
 COPY public ./public
 COPY next.config.js ./

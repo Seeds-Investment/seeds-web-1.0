@@ -14,6 +14,7 @@ import {
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 // import { useAppSelector } from '@/store/redux/store';
+import { promoValidate } from '@/repository/promo.repository';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -41,6 +42,7 @@ export interface UserData {
 export interface DetailTournament {
   id: string;
   admission_fee: number;
+  payment_method?: string[];
 }
 export interface Tournament {
   fee: number;
@@ -87,6 +89,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [qRisList, setQRisList] = useState([]);
+  const [ccList, setCcList] = useState([]);
   const [virtualList, setVirtualList] = useState([]);
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
@@ -97,6 +100,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const invitationCode = router.query.invitationCode;
   const useCoinsParam = router.query.useCoins;
   const useCoins = useCoinsParam === 'true';
+  const [newPromoCodeDiscount, setNewPromoCodeDiscount] = useState<number>(0);
 
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
@@ -138,15 +142,33 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       const data = await getPaymentList(
         userInfo?.preferredCurrency?.toUpperCase()
       );
-      setVirtualList(data.type_va);
-      setQRisList(data.type_qris);
-      setEWalletList(data.type_ewallet);
+      setVirtualList(
+        data?.type_va?.filter((item: { payment_method: string }) =>
+          detailTournament?.payment_method?.includes(item?.payment_method)
+        )
+      );
+      setQRisList(
+        data?.type_qris?.filter((item: { payment_method: string }) =>
+          detailTournament?.payment_method?.includes(item?.payment_method)
+        )
+      );
+      setCcList(
+        data?.type_cc?.filter((item: { payment_method: string }) =>
+          detailTournament?.payment_method?.includes(item?.payment_method)
+        )
+      );
+      setEWalletList(
+        data?.type_ewallet?.filter((item: { payment_method: string }) =>
+          detailTournament?.payment_method?.includes(item?.payment_method)
+        )
+      );
     } catch (error) {
       toast(`Error fetching Payment List: ${error as string}`);
     } finally {
       setLoading(false);
     }
   };
+
   const fetchData = async (): Promise<void> => {
     try {
       const response = await getUserInfo();
@@ -170,7 +192,29 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
 
   useEffect(() => {
     void fetchPaymentList();
-  }, [userInfo?.preferredCurrency]);
+  }, [detailTournament]);
+
+  useEffect(() => {
+    const validatePromo = async (): Promise<void> => {
+      if (promoCodeValidationResult) {
+        if (detailTournament) {
+          const admissionFee = Number(detailTournament?.admission_fee ?? 0);
+
+          const response = await promoValidate({
+            promo_code: promoCodeValidationResult?.response?.promo_code,
+            spot_type: 'Paid Tournament',
+            item_price: admissionFee,
+            item_id: detailTournament?.id,
+            currency: userInfo?.preferredCurrency ?? 'IDR'
+          });
+
+          setNewPromoCodeDiscount(response?.total_discount);
+        }
+      }
+    };
+
+    void validatePromo();
+  }, [detailTournament]);
 
   const getDetail = useCallback(async () => {
     try {
@@ -181,6 +225,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       toast(`ERROR fetch tournament ${error as string}`);
     }
   }, [id]);
+
   useEffect(() => {
     void getDetail();
   }, [id]);
@@ -202,16 +247,36 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       }
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if (detailTournament) {
-        const response = await joinTournament(
-          detailTournament.id,
-          userInfo?.preferredCurrency ?? '',
-          paymentGateway,
-          paymentMethod,
-          `+62${phoneNumber as string}`,
-          promoCodeValidationResult?.promo_code ?? '',
-          (invitationCode as string) || '',
-          useCoins
-        );
+        let response;
+        if (option?.payment_type === 'cc') {
+          response = await joinTournament(
+            detailTournament.id,
+            userInfo?.preferredCurrency ?? '',
+            paymentGateway,
+            paymentMethod,
+            `+62${phoneNumber as string}`,
+            promoCodeValidationResult?.promo_code ?? '',
+            (invitationCode as string) || '',
+            useCoins,
+            `${process.env.NEXT_PUBLIC_DOMAIN as string}/play/tournament/${
+              detailTournament.id
+            }/`,
+            `${process.env.NEXT_PUBLIC_DOMAIN as string}/play/tournament/${
+              detailTournament.id
+            }/`
+          );
+        } else {
+          response = await joinTournament(
+            detailTournament.id,
+            userInfo?.preferredCurrency ?? '',
+            paymentGateway,
+            paymentMethod,
+            `+62${phoneNumber as string}`,
+            promoCodeValidationResult?.promo_code ?? '',
+            (invitationCode as string) || '',
+            useCoins
+          );
+        }
 
         const resp = await getPaymentById(response.order_id);
         setPaymentStatus(resp);
@@ -250,6 +315,8 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
 
     if (option?.payment_type === 'qris') {
       void handlePay(option?.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
+    } else if (option?.payment_type === 'cc') {
+      void handlePay(option?.payment_type, 'STRIPE', 'CC', _totalFee);
     } else {
       setOpenDialog(true);
     }
@@ -263,24 +330,38 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
         {t('PlayPayment.title')}
       </Typography>
       <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
-        <PaymentOptions
-          label="Virtual Account"
-          options={virtualList}
-          onChange={setOption}
-          currentValue={option}
-        />
-        <PaymentOptions
-          label="QRIS"
-          options={qRisList}
-          onChange={setOption}
-          currentValue={option}
-        />
-        <PaymentOptions
-          label={t('PlayPayment.eWalletLabel')}
-          options={eWalletList}
-          onChange={setOption}
-          currentValue={option}
-        />
+        {virtualList?.length > 0 && (
+          <PaymentOptions
+            label="Virtual Account"
+            options={virtualList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
+        {qRisList?.length > 0 && (
+          <PaymentOptions
+            label="QRIS"
+            options={qRisList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
+        {eWalletList?.length > 0 && (
+          <PaymentOptions
+            label={t('PlayPayment.eWalletLabel')}
+            options={eWalletList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
+        {ccList?.length > 0 && (
+          <PaymentOptions
+            label={t('PlayPayment.creditCardLabel')}
+            options={ccList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
         <SubmitButton
           disabled={option?.id == null}
           fullWidth
@@ -318,6 +399,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={detailTournament ?? defaultTournament}
             userInfo={userInfo ?? userDefault}
+            newPromoCodeDiscount={newPromoCodeDiscount}
           />
         ) : (
           <VirtualAccountGuide
@@ -327,6 +409,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             dataPost={detailTournament ?? defaultTournament}
             paymentStatus={paymentStatus}
             user_name={userInfo?.name}
+            newPromoCodeDiscount={newPromoCodeDiscount}
           />
         )}
       </Dialog>

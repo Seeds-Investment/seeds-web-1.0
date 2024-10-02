@@ -9,6 +9,7 @@ import ModalCancelOrder from '@/components/popup/ModalCancelOrder';
 import VirtualBalanceChart from '@/containers/tournament/portfolio-chart/VirtualBalanceChart';
 import { standartCurrency } from '@/helpers/currency';
 import { getShortDate } from '@/helpers/dateFormat';
+import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import {
   getHistoryTransaction,
@@ -53,6 +54,7 @@ interface HistoryTransaction {
   lot: number;
   pnl: number;
   stop_loss: number;
+  status: string;
   type: string;
   updated_at: string;
 }
@@ -73,6 +75,7 @@ interface UserInfo {
 const VirtualBalance = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
+  useGetDetailTournament(id as string);
   const { t } = useTranslation();
   const [loadingBallance, setLoadingBallance] = useState<boolean>(false);
   const [loadingOpenOrder, setLoadingOpenOrder] = useState<boolean>(false);
@@ -285,8 +288,8 @@ const VirtualBalance = (): React.ReactElement => {
                                   </div>
                                 </div>
                                 <div className="flex justify-between items-center w-full">
-                                  <div className="text-[#4DA81C] text-[11px] md:text-sm">
-                                    {t('tournament.assets.pending')}
+                                  <div className={`${data?.order === 'BUY' ? 'text-[#4DA81C]' : 'text-[#DD2525]'} text-[11px] md:text-sm`}>
+                                    {t('tournament.assets.pending')} - {data?.order}
                                   </div>
                                   <div className="text-[#7C7C7C] text-[10px] md:text-sm">
                                     {getShortDate(data?.created_at)}
@@ -396,8 +399,8 @@ const VirtualBalance = (): React.ReactElement => {
                                   </div>
                                 </div>
                                 <div className="flex justify-between items-center w-full">
-                                  <div className="text-[#4DA81C] text-[11px] md:text-sm">
-                                    {t('tournament.assets.pending')}
+                                  <div className={`${data?.type === 'BUY' ? 'text-[#4DA81C]' : 'text-[#DD2525]'} text-[11px] md:text-sm`}>
+                                    {`${data?.status} - ${data?.type}`}
                                   </div>
                                   <div className="text-[#7C7C7C] text-[10px] md:text-sm">
                                     {getShortDate(data?.created_at)}

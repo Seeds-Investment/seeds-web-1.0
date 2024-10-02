@@ -854,6 +854,8 @@ export default {
     title: 'Payment Method',
     virtualAccountLabel: 'Virtual Account',
     eWalletLabel: 'E-Wallet',
+    creditCardLabel: 'Kartu Kredit / Debit',
+    ccLabel: 'Credit Card',
     button: 'Pay',
     WalletForm: {
       title: 'Masukkan nomor {{wallet}}',
@@ -864,6 +866,7 @@ export default {
       adminFeeLabel: 'Biaya Admin',
       serviceFeeLabel: 'Biaya Layanan',
       adminFeeDiscountLabel: 'Diskon Biaya Admin ',
+      promoCodeDiscountLabel: 'Diskon Kode Promo',
       button: 'Pay',
       seedsCoin: 'Seeds Coin Digunakan'
     },
@@ -874,6 +877,7 @@ export default {
       copy: 'Copy',
       accountNameLabel: 'Virtual Account Name',
       admissionFeeLabel: 'Play Membership',
+      promoCodeDiscountLabel: 'Diskon Kode Promo',
       adminFeeLabel: 'Admin',
       note: 'Please complete your payment in 24 hours. Your order will be cancelled automatically if you do not make any payments in 24 hours',
       instructionLabel: 'mBanking Transfer Instructions',
@@ -899,6 +903,31 @@ export default {
         2: 'OK'
       }
     }
+  },
+  promo: {
+    minimumPurchase: 'Min. Pembelian:',
+    noMinimumPurchase: 'Tidak ada limit pembelian',
+    limitReached: 'Telah mencapai batas penggunaan kuota',
+    endsIn: 'Berakhir dalam',
+    daysRemain: 'hari',
+    dayRemain: 'hari',
+    hoursRemain: 'jam',
+    hourRemain: 'jam',
+    minutesRemain: 'menit',
+    minuteRemain: 'menit',
+    lessThanMinute: 'satu menit',
+    promoOver: 'Promo sudah berakhir',
+    totalDiscount: 'Diskon Promo:',
+    emptyVoucher1: 'Ups, Belum Ada Voucher',
+    emptyVoucher2: 'Yuk, nantikan voucher dan promo berikutnya!',
+    applied: 'Kode promo berhasil diterapkan!',
+    unApplied: 'Kode promo berhasil dihapus!',
+    apply: "Terapkan",
+    noExpired: "Tidak ada tanggal kadaluarsa",
+    havePromo: "Punya kode promo? Masukan disini!",
+    notFound: 'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
+    limitPurchaseMessage: 'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
+    limitDailyMessage: 'Kuota kode promo sudah mencapai limit',
   },
   temporary: {
     welcome: {
@@ -1657,7 +1686,7 @@ export default {
   },
   quiz: {
     explanation: 'Penjelasan',
-    invitationCodePlaceholder: 'Input your invitation code',
+    invitationCodePlaceholder: 'Masukan kode undangan anda',
     enter: 'Enter',
     topQuiz: 'Top Quiz',
     topQuizDesc: 'Lihat peringkat terbaru untuk kuis teratas!',
@@ -1682,8 +1711,8 @@ export default {
     second: '2nd',
     third: '3rd',
     sponsors: 'Sponsor(s)',
-    community: 'Community',
-    join: 'Join',
+    community: 'Komunitas',
+    join: 'Gabung',
     loading: 'Memuat...',
     reviewQuiz: 'Review Quiz',
     continue: 'Lanjutkan',
@@ -1697,7 +1726,7 @@ export default {
     select: 'Pilih',
     quizCompanion: 'Pilih power-up kamu!',
     chooseOptions:
-      'Kesulitan? Power-up ini akan memandu kamu untuk menemukan jawaban yang tepat',
+      'Pilih Power-up bantuan Anda, Anda bahkan dapat memilih lebih dari satu!',
     freeOptions:
       '1 Power-Up Gratis! Pilihlah dengan tepat, menggukan lebih banyak akan ada biaya tambahan',
     fiftyfifty: 'Pilihan ini akan eliminasi dua jawaban yang salah.',
@@ -1738,6 +1767,7 @@ export default {
     playAgain: 'Main Lagi',
     admissionFee: 'Rp {{amount}}',
     dayDuration: '{{duration}} hari',
+    seedsCoin: 'Tukarkan {{data}} seeds coin',
     quizCategory: {
       all: 'Semua',
       allDesc:
@@ -1829,9 +1859,10 @@ export default {
     id: 'Id Transaksi',
     nominal: 'Nominal',
     total: 'Total',
-    winnerModalTitle: 'Selamat Kamu berhasil memenangkan Kuis!',
+    winnerModalTitle: 'Selamat!',
     score: 'Skor Kamu : ',
-    earn: ' Kamu Mendapatkan IDR ',
+    earn: ' Kamu Mendapatkan ',
+    claimPrize: 'Klaim Hadiah',
     tax: 'Selamat atas kemenanganmu! Hadiah akan dipotong pajak 10% dari Seeds',
     text1: 'Tantang pengetahuan finansialmu dengan daftar kuis dibawah.',
     text2: 'Yuk, cek peringkat terbaru untuk Kuis terbaik!',
@@ -1840,6 +1871,7 @@ export default {
       virtualNumber: 'Nomor Virtual Akun Anda',
       pendingPaidQuiz: 'Menunggu Kuis Dibayar',
       quizFee: 'Biaya Kuis',
+      quizFeeTotal: 'Biaya Kuis + Bantuan Tambahan',
       lifelinesFee: 'Biaya Bantuan Tambahan',
       adminFee: 'Biaya Admin',
       serviceFee: 'Biaya Layanan',
@@ -1853,7 +1885,17 @@ export default {
     },
     shareQuiz: 'Bagikan Kuis Ini',
     playId: 'ID Kuis',
-    shareLinks: 'Bagikan Link'
+    shareLinks: 'Bagikan Link',
+    addMore: 'Tambah power up lagi',
+    noMore: 'No more power up',
+    winnerAlertMessage1: 'Selamat!',
+    winnerAlertMessage2: 'Kamu menjadi',
+    winnerAlertMessage3: 'juara',
+    winnerAlertMessage4: 'kuis',
+    winnerAlertMessage5: 'Klik tombol klaim atau tutup pop-up ini dan klik gambar di posisi kemenangan Anda untuk menuju ke hadiah.',
+    winnerAlertMessage6: 'Klaim Hadiah',
+    winnerAlertMessage7: 'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
+    winnerAlertMessage8: 'Klaim Hadiah Disini'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Tolong masukin emailmu yang benar',
@@ -1880,6 +1922,7 @@ export default {
     blank1: 'Ups,  Belum Ada Turnamen',
     blank2: 'Yuk, ikuti turnamennya dan menangkan hadiahnya!',
     detailRemaining: 'Sisa Waktu',
+    detailStarting: 'Waktu Menunggu',
     detailPeriod: 'Periode Turnamen',
     detailPrize: 'Hadiah Turnamen',
     detailTerms: 'Syarat dan Ketentuan',
@@ -1894,6 +1937,7 @@ export default {
     free: 'Gratis',
     join: 'Join',
     start: 'Mulai',
+    waiting: 'Menunggu',
     participants: 'Peserta',
     categoryAsset: 'Kategori Aset',
     circleRecommendation: 'Rekomendasi Circle',
@@ -1938,6 +1982,7 @@ export default {
       leaderboard: 'Leaderboard',
       ended: 'Berakhir',
       canceled: 'Dibatalkan',
+      joinedWaiting: 'Menunggu',
       share: 'Share',
       day: 'Hari',
       days: 'Hari'
@@ -1959,7 +2004,7 @@ export default {
       transaction: 'Transaksi',
       openOrder: 'Pesanan',
       historyTransaction: 'Riwayat Transaksi',
-      pending: 'Menunggu - Limit Pembelian',
+      pending: 'Menunggu Pesanan',
       sorry: 'Maaf!',
       noData: 'Data yang Kamu cari tidak ada.',
       amount: 'Nilai',
@@ -1970,7 +2015,10 @@ export default {
       yesCancel: 'Batalkan pesanan',
       noCancel: 'Kembali',
       cancel: 'Batalkan',
-      totalCash: 'Dana Total'
+      totalCash: 'Dana Total',
+      assetTypeWarning: 'Tipe aset ini tidak diperbolehkan dalam turnamen ini!',
+      noAsset: 'Aset tidak ditemukan',
+      noAssetMessage: 'Coba sub kategori lain untuk menemukan aset'
     },
     portfolio: {
       investmentValue: 'Nilai Investasi',
@@ -2164,6 +2212,7 @@ export default {
     seeEvent: 'Lihat Event',
     booking: {
       bookNow: 'Pesan Tiket',
+      booked: 'Lihat Tiket',
       seeTicket: 'Lihat Tiket',
       bookingDetails: 'Detail Pemesanan',
       name: 'Nama',
@@ -2264,8 +2313,77 @@ export default {
       checkIn: 'Check In',
       checkOut: 'Check Out',
       notificationMethod: 'Pilih Notifikasi',
-      notificationModalMessage: 'Ayo up-to-date! Pilih preferensi notifikasimu.'
+      notificationModalMessage:
+        'Ayo up-to-date! Pilih preferensi notifikasimu.',
+      checkInMessage1: 'Apa kamu yakin untuk check-in?',
+      checkInMessage2:
+        'Apakah kamu ingin check-in sekarang? Datamu akan langsung tercatat.',
+      checkOutMessage1: 'Apa kamu yakin untuk check-out?',
+      checkOutMessage2:
+        'Apakah kamu ingin check-out sekarang? Datamu akan langsung tercatat.',
+      yes: 'Ya',
+      no: 'Tidak'
+    },
+    checkInOut: {
+      ticketDetails: 'Detail Tiket',
+      checkInSuccessful: 'Check In Sukses',
+      checkOutSuccessful: 'Check Out Sukses',
+      name: 'Nama',
+      event: 'Event',
+      checkIn: 'Check In',
+      checkOut: 'Check Out'
     }
+  },
+  earning: {
+    noData: 'Belum ada data',
+    noDataDescription: 'Yuk menangkan permainan dan dapatkan hadiahnya!',
+    earnings: 'Penghasilan',
+    withdrawal: 'Pendapatan',
+    withdraw: 'Penarikan',
+    completed: 'Selesai',
+    onProgress: 'Disetujui',
+    rejected: 'Ditolak',
+    myEarnings: 'Penghasilan Saya',
+    earningHistory: 'Riwayat Penghasilan',
+    bankTransfer: 'Transfer Bank',
+    accountName: 'Nama Rekening',
+    walletAccount: 'Rekening E-Wallet',
+    bankAccount: 'Rekening Bank',
+    accountNumber: 'Nomor Rekening',
+    continue: 'Lanjutkan',
+    back: 'Kembali',
+    bankAccountList: 'Daftar Rekening Bank',
+    eWalletList: 'Daftar Rekening E-Wallet',
+    searchBankAccount: 'Cari Rekening Bank',
+    searchWallet: 'Cari Rekening E-Wallet',
+    adminFee: 'Biaya Admin',
+    notFound: 'tidak ditemukan',
+    otherKeyword: 'Cari metode pembayaran dengan keyword lain!',
+    withdrawAmount: 'Jumlah Penarikan',
+    nominalTransfer: 'Transfer Nominal',
+    minimumWithdrawal: 'Minimum Penarikan',
+    addOnsFee: 'Biaya Tambahan',
+    accountProvider: 'Rekening',
+    serviceFee: 'Biaya Layanan',
+    discount: 'Diskon',
+    totalAmount: 'Total Penarikan Diterima',
+    balanceWithdrawn: 'Saldo Tertarik',
+    confirm: 'Konfirmasi',
+    thankYou: 'Terima Kasih',
+    withdrawalProcessed:
+      'Permintaan penarikan dana kamu sedang diproses. Mohon tunggu maksimal 1x24 jam.',
+    transactionDetails: 'Detail Transaksi',
+    date: 'Tanggal',
+    referenceNumber: 'Nomor Referensi',
+    withdrawalWarning:
+      'Permintaan penarikan dana akan diproses dalam satu hari kerja.',
+    checkStatus: 'Cek Status Penarikan Dana',
+    withdrawOnProgress: 'Penarikan Dalam Proses',
+    withdrawOnProgressDescription:
+      'Permintaan penarikanmu sedang diproses. Mohon tunggu.',
+    enterAccountName: 'Masukan nama rekening anda...',
+    enterBankAccount: 'Masukan rekening anda...',
+    enterAccountNumber: 'Masukan nomor rekening anda...'
   },
   buyAsset: {
     text1: 'Aset yang akan di beli',

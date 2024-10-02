@@ -6,6 +6,7 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import CardPrice from '@/containers/tournament/order/CardPrice';
 import SuccessOrderModal from '@/containers/tournament/order/SuccesPopup';
 import { standartCurrency } from '@/helpers/currency';
+import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import { getDetailAsset } from '@/repository/asset.repository';
@@ -60,6 +61,7 @@ interface DetailAsset {
   logo: string;
   name: string;
   lastPrice: LastPrice;
+  assetType: string;
 }
 
 interface LastPrice {
@@ -80,6 +82,7 @@ const BuyPage: React.FC = () => {
   const router = useRouter();
   const { assetId } = router.query;
   const { id } = router.query;
+  const { detailTournament } = useGetDetailTournament(id as string);
   const { t } = useTranslation();
   const height = useWindowInnerHeight();
 
@@ -456,6 +459,19 @@ const BuyPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const handleRouteChange = async (): Promise<void> => {
+      if (data !== undefined && detailTournament !== null && id !== undefined) {
+        if (!detailTournament?.all_category?.includes(data?.assetType)) {
+          toast.error(t('tournament.assets.assetTypeWarning'))
+          await router.push(`/play/tournament/${id as string}/home`);
+        }
+      }
+    };
+
+    void handleRouteChange();
+  }, [data, detailTournament, id, router]);
 
   return (
     <PageGradient defaultGradient className="w-full">

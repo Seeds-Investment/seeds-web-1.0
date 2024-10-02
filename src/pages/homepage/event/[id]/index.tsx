@@ -131,7 +131,24 @@ const SeedsEventDetail: React.FC = () => {
     const currentDateObject = new Date();
     const currentDateTimestamp = currentDateObject.getTime();
 
-    return endDateTimestamp < currentDateTimestamp;
+    const twoHoursAfterEnd = endDateTimestamp + 2 * 60 * 60 * 1000;
+
+    return twoHoursAfterEnd < currentDateTimestamp;
+  };
+
+  const isCheckAble = (): boolean => {
+    const startDateObject = new Date(eventData?.event_date ?? '');
+    const startDateTimestamp = startDateObject.getTime();
+    const endDateObject = new Date(eventData?.ended_at ?? '');
+    const endDateTimestamp = endDateObject.getTime();
+
+    const currentDateObject = new Date();
+    const currentDateTimestamp = currentDateObject.getTime();
+
+    const oneHourBeforeStart = startDateTimestamp - 60 * 60 * 1000;
+    const twoHoursAfterEnd = endDateTimestamp + 2 * 60 * 60 * 1000;
+
+    return currentDateTimestamp >= oneHourBeforeStart && currentDateTimestamp <= twoHoursAfterEnd;
   };
 
   return (
@@ -144,6 +161,7 @@ const SeedsEventDetail: React.FC = () => {
           }}
           ticketData={ticketData ?? initialTicketData}
           eventData={eventData ?? initialEventData}
+          isCheckAble={isCheckAble()}
         />
       )}
       <div className="bg-white flex flex-col justify-center items-center rounded-xl font-poppins p-5">
@@ -359,13 +377,12 @@ const SeedsEventDetail: React.FC = () => {
           : ticketData?.check_out_time === '0001-01-01T00:00:00Z' &&
             <div className="mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
               <button
-                disabled={isPastEvent()}
                 onClick={async() => {
                   ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_IN'))
                   ? await router.push(`/homepage/event/${id as string}/check-in-out`)
                   : setIsShowTicket(true);
                 }}
-                className={`${isPastEvent() ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0] cursor-pointer'} flex justify-center gap-2 items-center w-full text-white py-2 rounded-full`}
+                className={`bg-[#3AC4A0] cursor-pointer' flex justify-center gap-2 items-center w-full text-white py-2 rounded-full`}
               >
                 <div className='flex justify-center items-center'>
                   <Image

@@ -7,10 +7,12 @@ import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import chat from 'public/assets/social/chat.svg';
 import connect from 'public/assets/social/connect.svg';
 import homepage from 'public/assets/social/discover.svg';
 import ID from 'public/assets/social/flag/ID.png';
 import US from 'public/assets/social/flag/US.png';
+import notification from 'public/assets/social/notification.svg';
 import profile from 'public/assets/social/people.svg';
 import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
@@ -38,8 +40,12 @@ const menu = isGuest()
       { title: 'Connect', url: '/connect', image: connect },
       { title: 'Play', url: '/play', image: play },
       { title: 'Setting', url: '/user-setting', image: setting },
-      // { title: 'Notification', url: '/setting', image: notification },
-      // { title: 'Chat', url: '/setting', image: chat },
+      {
+        title: 'Notification',
+        url: '/social/notification',
+        image: notification
+      },
+      { title: 'Chat', url: '/chat', image: chat },
       { title: 'Profile', url: '/my-profile', image: profile }
     ];
 

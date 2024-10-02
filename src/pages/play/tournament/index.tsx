@@ -16,6 +16,7 @@ import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import { getPlayAll } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import LanguageContext from '@/store/language/language-context';
 import {
   TournamentStatus,
   type IDetailTournament,
@@ -25,7 +26,7 @@ import { Button, Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -56,6 +57,7 @@ const PlayTournament = (): React.ReactElement => {
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const [sharedIndex, setSharedIndex] = useState<number>(0);
+  const languageCtx = useContext(LanguageContext);
 
   const [tournamentParams, setTournamentParams] = useState({
     search: '',
@@ -168,8 +170,14 @@ const PlayTournament = (): React.ReactElement => {
           .catch(error => {
             toast.error(error);
           });
+      } else if (status === 'OPEN') {
+        await router
+          .push(`/play/tournament/${id}`)
+          .catch(error => {
+            toast.error(error);
+          });
       }
-    } else if (status === 'ACTIVE' || status === 'CREATED') {
+    } else if (status === 'ACTIVE' || status === 'OPEN') {
       await router.push(`/play/tournament/${id}`).catch(error => {
         toast.error(error);
       });
@@ -179,22 +187,24 @@ const PlayTournament = (): React.ReactElement => {
   const isDisabled = (isJoined: boolean, status: string): boolean => {
     if (isJoined) {
       if (status === 'ACTIVE') {
-        return false
+        return false;
       } else if (status === 'PAST') {
-        return false
+        return false;
+      } else if (status === 'OPEN') {
+        return false;
       } else {
-        return true
+        return true;
       }
     } else {
-      if ((status === 'ACTIVE') || (status === 'CREATED')) {
-        return false
+      if (status === 'ACTIVE' || status === 'OPEN') {
+        return false;
       } else if (status === 'PAST') {
-        return true
+        return true;
       } else {
-        return true
+        return true;
       }
     }
-  }
+  };
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -340,11 +350,10 @@ const PlayTournament = (): React.ReactElement => {
                             </div>
                           </div>
                           <div className="text-[#BDBDBD] px-2 text-[10px] 2xl:text-[12px]">
-                            {`${getTournamentTime(
-                              item?.play_time ?? '2024-01-01T00:00:00Z'
-                            )} - ${getTournamentTime(
-                              item?.end_time ?? '2024-12-31T23:59:59Z'
-                            )}`}
+                            {languageCtx?.language === 'ID'
+                              ? getTournamentTime(new Date(item?.play_time ?? '2024-01-01T00:00:00Z'), new Date(item?.end_time ?? '2024-01-01T00:00:00Z'), 'id-ID')
+                              : getTournamentTime(new Date(item?.play_time ?? '2024-01-01T00:00:00Z'), new Date(item?.end_time ?? '2024-12-31T23:59:59Z'), 'en-US')
+                            }
                           </div>
                         </div>
 
@@ -474,14 +483,16 @@ const PlayTournament = (): React.ReactElement => {
                               ? item?.status === 'ACTIVE'
                                 ? t('tournament.tournamentCard.openButton')
                                 : item?.status === 'PAST'
-                                ? t('tournament.tournamentCard.leaderboard')
-                                : t('tournament.tournamentCard.canceled')
+                                  ? t('tournament.tournamentCard.leaderboard')
+                                  : item?.status === 'OPEN'
+                                    ? t('tournament.tournamentCard.joinedWaiting')
+                                    : t('tournament.tournamentCard.canceled')
                               : item?.status === 'ACTIVE' ||
-                                item?.status === 'CREATED'
-                              ? t('tournament.tournamentCard.joinButton')
-                              : item?.status === 'CANCELED'
-                              ? t('tournament.tournamentCard.canceled')
-                              : t('tournament.tournamentCard.ended')}
+                                item?.status === 'OPEN'
+                                  ? t('tournament.tournamentCard.joinButton')
+                                  : item?.status === 'CANCELED'
+                                    ? t('tournament.tournamentCard.canceled')
+                                    : t('tournament.tournamentCard.ended')}
                           </Button>
                         </div>
                       </div>

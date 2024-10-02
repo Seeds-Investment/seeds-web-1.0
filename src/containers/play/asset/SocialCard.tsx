@@ -183,7 +183,7 @@ const SocialCard: React.FC<props> = ({ item }) => {
 
   function checkPostOrderPlay(inputString: string): boolean {
     const patternRegex =
-      /^%\[[^\]]+\]\([^)]+\) &\[[^\]]+\]\([^)]+\) \*\[asset_icon\]\([^)]+\)$/;
+      /%\[[^\]]+\]\([^)]+\) &\[[^\]]+\]\([^)]+\) \*\[asset_icon\]\([^)]+\)$/;
 
     const isMatching = patternRegex.test(inputString);
     return isMatching;
@@ -410,7 +410,6 @@ const SocialCard: React.FC<props> = ({ item }) => {
           return undefined;
         })
         .filter(Boolean);
-
       return (
         <div
           className="flex justify-start flex-col"
@@ -434,7 +433,6 @@ const SocialCard: React.FC<props> = ({ item }) => {
       </div>
     );
   };
-
   return (
     <div className="border border-[#E9E9E9] rounded-md flex flex-col justify-start gap-2 p-2 min-w-[280px] max-w-[350px] mr-4">
       <div className="flex p-2 justify-between items-center">

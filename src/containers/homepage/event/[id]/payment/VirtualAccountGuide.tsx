@@ -1,12 +1,10 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
-import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type EventList } from '@/utils/interfaces/event.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { type Payment } from './PaymentList';
 import Divider from './components/Divider';
 import InlineText from './components/InlineText';
@@ -53,13 +51,6 @@ const VirtualAccountGuide = ({
   user_name
 }: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
-  const promoCodeValidationResult = useSelector(
-    selectPromoCodeValidationResult
-  );
-  const discount =
-    promoCodeValidationResult !== 0
-      ? promoCodeValidationResult?.total_discount
-      : 0;
   const admissionFee = dataPost?.event_price * numberMonth;
   const adminFee = payment?.admin_fee;
   const serviceFee = payment?.service_fee;
@@ -79,7 +70,6 @@ const VirtualAccountGuide = ({
           (adminFee ?? 0)
           + (serviceFee ?? 0)
           - (payment?.is_promo_available ? (promoPrice ?? 0) : 0)
-          - (discount ?? 0)
         )
       }`
     );
@@ -120,16 +110,6 @@ const VirtualAccountGuide = ({
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
           value={`- IDR ${promoPrice}`}
-          className="mb-2"
-        />
-      ) : null}
-      {promoCodeValidationResult !== undefined ? (
-        <InlineText
-          label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`- IDR ${
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            promoCodeValidationResult?.total_discount ?? 0
-          }`}
           className="mb-2"
         />
       ) : null}

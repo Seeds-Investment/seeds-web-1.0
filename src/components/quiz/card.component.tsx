@@ -98,20 +98,24 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
             <div>
               <button
                 onClick={() => {
-                  if (!item.is_played && item.status === 'ENDED') {
-                    router
-                      .push(`/play/quiz/${item.id}/leaderboard`)
-                      .catch(error => {
+                  if (item.status !== 'PUBLISHED') {
+                    if (!item.is_played && item.status === 'ENDED') {
+                      router
+                        .push(`/play/quiz/${item.id}/leaderboard`)
+                        .catch(error => {
+                          toast.error(`${error as string}`);
+                        });
+                    } else if (item.is_played || item.status === 'ENDED') {
+                      router.push(`/play/quiz/${item.id}/done`).catch(error => {
                         toast.error(`${error as string}`);
                       });
-                  } else if (item.is_played || item.status === 'ENDED') {
-                    router.push(`/play/quiz/${item.id}/done`).catch(error => {
-                      toast.error(`${error as string}`);
-                    });
+                    } else {
+                      router.push(`/play/quiz/${item.id}`).catch(error => {
+                        toast.error(`${error as string}`);
+                      });
+                    }
                   } else {
-                    router.push(`/play/quiz/${item.id}`).catch(error => {
-                      toast.error(`${error as string}`);
-                    });
+                    toast.info("Open Quiz Can't be played");
                   }
                 }}
                 className="bg-white text-sm md:text-[10.71px] lg:w-[76.77px] lg:h-[25px] text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold w-32"

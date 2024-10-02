@@ -1,4 +1,6 @@
 import CloseButtonWithdrawal from '@/assets/play/quiz/CloseButtonWithdrawal.svg';
+import { standartCurrency } from '@/helpers/currency';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Dialog, DialogBody, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +13,7 @@ interface IModalAccountList {
   methodList: string;
   bankList: IAccountList[];
   eWalletList: IAccountList[];
+  userInfo: UserInfo;
 }
 
 const ModalAccountList: React.FC<IModalAccountList> = ({
@@ -19,7 +22,8 @@ const ModalAccountList: React.FC<IModalAccountList> = ({
   setAccount,
   methodList,
   bankList,
-  eWalletList
+  eWalletList,
+  userInfo
 }: IModalAccountList) => {
   const { t } = useTranslation();
   return (
@@ -58,9 +62,22 @@ const ModalAccountList: React.FC<IModalAccountList> = ({
                   key={index}
                   className="w-full bg-transparent border-[#E9E9E9] border-b rounded-none px-4 pt-4 pb-1.5 md:py-3 cursor-pointer"
                 >
-                  <Typography className="font-poppins font-semibold text-base md:text-lg text-[#262626] text-start">
-                    {data}
-                  </Typography>
+                  <div className="w-fit h-[30px] flex justify-center items-center">
+                    <Image
+                      src={value?.logo_url}
+                      alt="payment_logo"
+                      width={100}
+                      height={100}
+                      className="w-fit h-full"
+                    />
+                  </div>
+                  <div className="font-normal text-xs md:text-sm mt-1 text-[#27A590]">
+                    {t('earning.adminFee')}:{' '}
+                    {userInfo?.preferredCurrency !== undefined
+                      ? userInfo?.preferredCurrency
+                      : 'IDR'}
+                    {standartCurrency(value?.admin_fee ?? 0).replace('Rp', '')}
+                  </div>
                 </div>
               );
             }

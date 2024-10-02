@@ -36,7 +36,7 @@ const Card1: React.FC<props> = ({
     : [
         { label: t('social.navbar.following'), value: 'following' },
         { label: t('social.navbar.foryou'), value: 'for_you' },
-        { label: t('social.navbar.space'), value: 'space' }
+        { label: t('social.navbar.circle'), value: 'circle' }
       ];
 
   const optionsFilter = [

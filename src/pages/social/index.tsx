@@ -149,6 +149,10 @@ const Social: React.FC = () => {
     if (value === 'space') {
       void fetchPostMySpace();
     }
+
+    if (value === 'circle') {
+      void fetchPostCircle();
+    }
   };
 
   const handleChangeFilter = (name: string, value: string | number): void => {
@@ -208,6 +212,43 @@ const Social: React.FC = () => {
       getSocialPostForYou(filter)
         .then(res => {
           const data: any[] = res.data;
+          const total = res.metadata.total;
+
+          if (res.data !== null) {
+            setDataPost(prevState => [...prevState, ...data]);
+            if (dataPost.length + data.length < total) {
+              setHasMore(true);
+            } else {
+              setHasMore(false);
+            }
+          } else {
+            if (dataPost.length + data.length < total) {
+              setHasMore(true);
+            } else {
+              setHasMore(false);
+            }
+          }
+          setIsIncrease(false);
+          setIsLoadingPost(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setIsIncrease(false);
+          setIsLoadingPost(false);
+        });
+    } catch (error) {
+      setIsIncrease(false);
+      setIsLoadingPost(false);
+      console.log(error);
+    }
+  };
+
+  const fetchPostCircle = async (): Promise<void> => {
+    try {
+      setIsLoadingPost(true);
+      getSocialPostForYou({ page: 1, limit: 10, type: 'circle' })
+        .then(res => {
+          const data: [] = res.data;
           const total = res.metadata.total;
 
           if (res.data !== null) {
@@ -327,6 +368,10 @@ const Social: React.FC = () => {
 
       if (activeTab === 'space') {
         void fetchPostMySpace();
+      }
+
+      if (activeTab === 'circle') {
+        void fetchPostCircle();
       }
     }
   }, [activeTab, filter.page, filter.sort_by, golId, filter.type]);

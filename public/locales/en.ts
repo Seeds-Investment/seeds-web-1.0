@@ -1003,12 +1003,13 @@ export default {
     emptyVoucher2: "Stay tuned and don't miss upcoming vouchers!",
     applied: 'Promo code successfully applied!',
     unApplied: 'Promo code has been removed successfully!',
-    apply: "Apply",
-    noExpired: "No expired date",
-    havePromo: "Have a promo code? Enter it here!",
+    apply: 'Apply',
+    noExpired: 'No expired date',
+    havePromo: 'Have a promo code? Enter it here!',
     notFound: 'Promo code not found. Make sure you entered a valid promo code.',
-    limitPurchaseMessage: 'You need to reach the minimum transaction before using the promo!',
-    limitDailyMessage: 'The promo code quota is already exceeding today’s limit',
+    limitPurchaseMessage:
+      'You need to reach the minimum transaction before using the promo!',
+    limitDailyMessage: 'The promo code quota is already exceeding today’s limit'
   },
   temporary: {
     welcome: {
@@ -1560,7 +1561,8 @@ export default {
     navbar: {
       following: 'Following',
       foryou: 'For You',
-      space: 'Space'
+      space: 'Space',
+      circle: 'Circle'
     },
     filterType: {
       all: 'All',
@@ -1965,9 +1967,11 @@ export default {
     winnerAlertMessage2: 'You won the',
     winnerAlertMessage3: '',
     winnerAlertMessage4: 'position of',
-    winnerAlertMessage5: 'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
+    winnerAlertMessage5:
+      'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
     winnerAlertMessage6: 'Claim Prize',
-    winnerAlertMessage7: 'Click the image or Claim Button to be redirected to the prize.',
+    winnerAlertMessage7:
+      'Click the image or Claim Button to be redirected to the prize.',
     winnerAlertMessage8: 'Claim Prize Here'
   },
   micrositeQuiz: {

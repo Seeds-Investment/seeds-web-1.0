@@ -2091,7 +2091,10 @@ export default {
       yesCancel: 'Yes, cancel this order.',
       noCancel: 'Back',
       cancel: 'Cancel',
-      totalCash: 'Total Cash'
+      totalCash: 'Total Cash',
+      assetTypeWarning: 'This asset type is not allowed in this tournament!',
+      noAsset: 'Asset not found',
+      noAssetMessage: 'Try another sub category find some asset'
     },
     portfolio: {
       investmentValue: 'Investment Value',
@@ -2649,8 +2652,10 @@ export default {
       back: 'Back to Play Center',
       begin: 'The competition will begin in:'
     },
-    history:{
-      myBattle: 'My Battle'
+    history: {
+      myBattle: 'My Battle',
+      activeBattle: 'Active Battle',
+      pastBattle: 'Past Battle'
     }
   }
 };

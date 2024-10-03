@@ -119,15 +119,19 @@ const WaitingBattle: React.FC = () => {
           </div>
           <button
             onClick={async () => {
-              if (isPastEliminationStart) {
-                await router.push(`/play/team-battle/${id as string}`);
+              if (
+                (data?.status !== 'OPEN' && data?.status !== 'ELIMINATION') ||
+                isPastEliminationStart
+              ) {
+                await router.push(`/play/team-battle`);
               } else {
                 await router.push(`/play/team-battle/${id as string}/stage`);
               }
             }}
             className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 lg:w-1/3 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white"
           >
-            {isPastEliminationStart
+            {(data?.status !== 'OPEN' && data?.status !== 'ELIMINATION') ||
+            isPastEliminationStart
               ? t('teamBattle.waitingPage.back')
               : t('teamBattle.waitingPage.enter')}
           </button>

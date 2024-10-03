@@ -103,7 +103,9 @@ const PaymentList: React.FC<props> = ({
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isFreeQuiz, setIsFreeQuiz] = useState<boolean>(false);
   const [newPromoCodeDiscount, setNewPromoCodeDiscount] = useState<number>(0);
-  const { premiumCircleFee, premiumCircleMonth } = useSelector((state: RootState) => state?.premiumCircle ?? {});
+  const { premiumCircleFee, premiumCircleMonth } = useSelector(
+    (state: RootState) => state?.premiumCircle ?? {}
+  );
 
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
@@ -155,7 +157,7 @@ const PaymentList: React.FC<props> = ({
       const promoDiscount = Number(newPromoCodeDiscount);
       const fee = Number(dataPost?.quiz?.fee);
 
-      if ((admissionFee - promoDiscount + fee) > 0) {
+      if (admissionFee - promoDiscount + fee > 0) {
         setIsFreeQuiz(false);
       } else {
         setIsFreeQuiz(true);
@@ -165,25 +167,27 @@ const PaymentList: React.FC<props> = ({
 
   useEffect(() => {
     if (promoCodeValidationResult) {
-      setNewPromoCodeDiscount(promoCodeValidationResult?.response?.total_discount ?? 0)
+      setNewPromoCodeDiscount(
+        promoCodeValidationResult?.response?.total_discount ?? 0
+      );
     }
   }, [promoCodeValidationResult]);
 
   const getMonthValue = (premiumCircleMonth: string): number => {
     switch (premiumCircleMonth) {
-      case "1 month":
-          return 1;
-      case "3 month":
-          return 2;
-      case "6 month":
-          return 3;
-      case "12 month":
-          return 4;
+      case '1 month':
+        return 1;
+      case '3 month':
+        return 2;
+      case '6 month':
+        return 3;
+      case '12 month':
+        return 4;
       default:
-          return 1;
+        return 1;
     }
-  }
-  
+  };
+
   const handlePay = async (
     type: string,
     paymentGateway: string,
@@ -320,15 +324,14 @@ const PaymentList: React.FC<props> = ({
         {t('PlayPayment.title')}
       </Typography>
       <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
-        {
-          !isFreeQuiz &&
-            <PaymentOptions
-              label="QRIS"
-              options={qRisList}
-              onChange={setOption}
-              currentValue={option}
-            />
-        }
+        {!isFreeQuiz && (
+          <PaymentOptions
+            label="QRIS"
+            options={qRisList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
         <PaymentOptions
           label={t('PlayPayment.eWalletLabel')}
           options={eWalletList}

@@ -14,7 +14,10 @@ interface Props {
   eventId: string;
 }
 
-const ModalChooseEventNotification: React.FC<Props> = ({ onClose, eventId }) => {
+const ModalChooseEventNotification: React.FC<Props> = ({
+  onClose,
+  eventId
+}) => {
   const { t } = useTranslation();
   const [isEmailChecked, setIsEmailChecked] = useState<boolean>(false);
   const [isWhatsAppChecked, setIsWhatsAppChecked] = useState<boolean>(false);
@@ -44,10 +47,10 @@ const ModalChooseEventNotification: React.FC<Props> = ({ onClose, eventId }) => 
     } catch (error) {
       toast.error(`Error selecting notification: ${error as string}`);
     } finally {
-      onClose()
+      onClose();
     }
   };
-  
+
   return (
     <Modal
       onClose={onClose}
@@ -66,34 +69,32 @@ const ModalChooseEventNotification: React.FC<Props> = ({ onClose, eventId }) => 
           className="hover:scale-110 transition ease-out cursor-pointer"
         />
       </div>
-      <div className='flex justify-start w-full text-[#7C7C7C] text-start text-sm mt-4'>
-          {t('seedsEvent.ticket.notificationModalMessage')}
+      <div className="flex justify-start w-full text-[#7C7C7C] text-start text-sm mt-4">
+        {t('seedsEvent.ticket.notificationModalMessage')}
       </div>
-      <div className='py-2 px-4 w-full flex justify-between items-center border border-[#E0E0E0] rounded-lg my-4'>
-        <div>
-          Email
-        </div>
+      <div className="py-2 px-4 w-full flex justify-between items-center border border-[#E0E0E0] rounded-lg my-4">
+        <div>Email</div>
         <input
           type="checkbox"
           checked={isEmailChecked}
           onChange={handleCheckEmail}
-          className='w-[18px] h-[18px]'
+          className="w-[18px] h-[18px]"
         />
       </div>
-      <div className='py-2 px-4 w-full flex justify-between items-center border border-[#E0E0E0] rounded-lg'>
-        <div>
-          WhatsApp
-        </div>
+      <div className="py-2 px-4 w-full flex justify-between items-center border border-[#E0E0E0] rounded-lg">
+        <div>WhatsApp</div>
         <input
           type="checkbox"
           checked={isWhatsAppChecked}
           onChange={handleCheckWhatsApp}
-          className='w-[18px] h-[18px]'
+          className="w-[18px] h-[18px]"
         />
       </div>
       <Button
-        onClick={async () => { await patchEventNotification(); }}
-        className='w-full text-sm md:text-base bg-seeds-button-green rounded-full mt-4'
+        onClick={async () => {
+          await patchEventNotification();
+        }}
+        className="w-full text-sm md:text-base bg-seeds-button-green rounded-full mt-4"
       >
         OK
       </Button>

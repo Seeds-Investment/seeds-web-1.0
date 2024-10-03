@@ -16,30 +16,23 @@ import IconNoData from '@/assets/play/tournament/noData.svg';
 import IconSeeds from '@/assets/play/tournament/seedsBannerLeaderboard.svg';
 import CountdownTimer from '@/components/play/CountdownTimer';
 import Loading from '@/components/popup/Loading';
-// import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
 import FloatingButtonBattle from '@/components/team-battle/FloatingButtonBattle';
 import ModalDetailBattle from '@/components/team-battle/ModalDetailBattle';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import { getMarketList } from '@/repository/market.repository';
-// import {
-//   getPlayBallance,
-//   getPlayPortfolio,
-//   getPlayById
-// } from '@/repository/play.repository';
-
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   getBattleArena,
   getBattleBalance,
   getBattlePortfolio
 } from '@/repository/team-battle.repository';
+import i18n from '@/utils/common/i18n';
 import { type ArenaBattleI } from '@/utils/interfaces/team-battle.interface';
 import {
   SortingFilter,
   type BallanceTournament,
-  // type IDetailTournament,
   type UserInfo
 } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
@@ -214,7 +207,8 @@ const BattleHome: React.FC = () => {
       const response = await getMarketList({
         ...filter,
         search: searchQuery,
-        sort_by: assetActiveSort
+        sort_by: assetActiveSort,
+        type: detailTournament ? detailTournament?.category : ''
       });
       if (response.result === null) {
         setAssets([]);
@@ -238,7 +232,7 @@ const BattleHome: React.FC = () => {
   }, [userInfo]);
 
   useEffect(() => {
-    if (userInfo !== undefined && filter.currency !== '') {
+    if (detailTournament !== undefined && filter.currency !== '') {
       const fetchData = async (): Promise<void> => {
         await fetchDataAssets();
       };
@@ -247,7 +241,7 @@ const BattleHome: React.FC = () => {
         toast.error('Error fetching data:', error);
       });
     }
-  }, [filter, userInfo, assetActiveSort, searchQuery]);
+  }, [filter, assetActiveSort, searchQuery, detailTournament]);
 
   return (
     <>
@@ -258,14 +252,16 @@ const BattleHome: React.FC = () => {
           }}
           playTime={detailTournament?.play_time ?? ''}
           endTime={detailTournament?.end_time ?? ''}
-          category={detailTournament?.category ?? []}
+          category={detailTournament?.category ?? ''}
           length={detailTournament?.total_participants ?? 0}
           userInfoCurrency={userInfo?.preferredCurrency ?? ''}
           fixedPrize={detailTournament?.fixed_prize ?? 0}
-          fixedPrizePercentages={
-            detailTournament?.fixed_prize_percentages ?? []
+          fixedPrizePercentages={detailTournament?.prize ?? []}
+          tnc={
+            (detailTournament?.tnc?.[
+              i18n.language === 'id' ? 'id' : 'en'
+            ] as string) ?? ''
           }
-          tnc={detailTournament?.tnc ?? ''}
         />
       )}
       {detailTournament === undefined &&
@@ -341,7 +337,7 @@ const BattleHome: React.FC = () => {
             src={BannerCircle}
             className="absolute top-0 right-0 z-0"
           />
-          <div className="w-full xl:w-3/4 flex justify-center items-center gap-8 bg-white absolute p-4 bottom-[-45px] m-auto left-0 right-0 z-10 rounded-xl shadow-lg">
+          <div className="w-full xl:w-3/4 flex justify-center items-center gap-8 bg-white absolute p-4 bottom-[-45px] m-auto left-0 right-0 rounded-xl shadow-lg">
             <div
               onClick={async () =>
                 await router.push(`/play/team-battle/${id as string}/portfolio`)
@@ -427,10 +423,12 @@ const BattleHome: React.FC = () => {
             className="w-[60px] md:w-[80px] xl:ml-8"
           />
           <div
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             onClick={async () =>
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              await router.push(`/play/team-battle/${id}/leaderboard`)
+              await router.push(
+                `/play/team-battle/${id as string}/leaderboard?stage=${
+                  detailTournament?.status as string
+                }`
+              )
             }
             className="w-full lg:flex lg:justify-between ml-2"
           >

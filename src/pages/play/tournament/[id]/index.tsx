@@ -23,7 +23,10 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import LanguageContext from '@/store/language/language-context';
-import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import {
+  selectPromoCodeValidationResult,
+  setPromoCodeValidationResult
+} from '@/store/redux/features/promo-code';
 import {
   type IDetailTournament,
   type UserInfo
@@ -76,7 +79,7 @@ const TournamentDetail: React.FC = () => {
     fetchData()
       .then()
       .catch(() => {});
-    
+
     if (promoCodeValidationResult?.id !== id) {
       dispatch(setPromoCodeValidationResult(0));
     }
@@ -152,7 +155,7 @@ const TournamentDetail: React.FC = () => {
     } catch (error) {
       toast.error('Error joining tournament');
     }
-  }; 
+  };
 
   const handleJoinFreeTournament = async (): Promise<void> => {
     try {
@@ -203,7 +206,7 @@ const TournamentDetail: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    if ((id !== null) && (id !== undefined)) {
+    if (id !== null && id !== undefined) {
       if (accessToken === null) {
         getDetail();
       } else {
@@ -254,7 +257,10 @@ const TournamentDetail: React.FC = () => {
           } else {
             if (!validInvit) {
               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              await router.push(`/play/tournament/${id as string}/payment?useCoins=${useCoins}`);
+              await router.push(
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                `/play/tournament/${id as string}/payment?useCoins=${useCoins}`
+              );
             }
           }
         }
@@ -369,7 +375,8 @@ const TournamentDetail: React.FC = () => {
           playId={detailTournament?.play_id ?? ''}
         />
       )}
-      {detailTournament === undefined && (accessToken !== null ? loadingDetailAuth : loading) && <Loading />}
+      {detailTournament === undefined &&
+        (accessToken !== null ? loadingDetailAuth : loading) && <Loading />}
       <div className="bg-gradient-to-bl from-[#50D4B2] to-[#E2E2E2] flex flex-col justify-center items-center relative overflow-hidden h-[420px] rounded-xl font-poppins">
         <div className="absolute bottom-[-25px] text-center">
           <Typography className="text-[26px] font-semibold font-poppins">
@@ -404,37 +411,38 @@ const TournamentDetail: React.FC = () => {
       </div>
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-4 font-poppins">
         <div className="col-span-2 w-full bg-white rounded-xl px-8 py-4">
-            {
-              detailTournament !== undefined &&
-                <div className="mt-4 flex justify-between">
-                  <div className="flex flex-col">
-                    <Typography className="text-lg font-semibold font-poppins">
-                      {isStarted ? t('tournament.detailRemaining') : t('tournament.detailStarting')}
-                    </Typography>
-                    <CountdownTimer
-                      deadline={
-                        isStarted
-                          ? detailTournament?.end_time
-                            ? detailTournament.end_time.toString()
-                            : ''
-                          : detailTournament?.play_time
-                            ? detailTournament.play_time.toString()
-                            : ''
-                      }
-                    />
-                  </div>
-                  <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
-                    <ShareIcon
-                      onClick={() => {
-                        setIsShareModal(true);
-                      }}
-                      width={24}
-                      height={24}
-                      className="text-[#3AC4A0]"
-                    />
-                  </button>
-                </div>
-            }
+          {detailTournament !== undefined && (
+            <div className="mt-4 flex justify-between">
+              <div className="flex flex-col">
+                <Typography className="text-lg font-semibold font-poppins">
+                  {isStarted
+                    ? t('tournament.detailRemaining')
+                    : t('tournament.detailStarting')}
+                </Typography>
+                <CountdownTimer
+                  deadline={
+                    isStarted
+                      ? detailTournament?.end_time
+                        ? detailTournament.end_time.toString()
+                        : ''
+                      : detailTournament?.play_time
+                      ? detailTournament.play_time.toString()
+                      : ''
+                  }
+                />
+              </div>
+              <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
+                <ShareIcon
+                  onClick={() => {
+                    setIsShareModal(true);
+                  }}
+                  width={24}
+                  height={24}
+                  className="text-[#3AC4A0]"
+                />
+              </button>
+            </div>
+          )}
           <div className="mt-4">
             <Typography className="text-lg font-semibold font-poppins">
               {t('tournament.detailPeriod')}
@@ -477,22 +485,6 @@ const TournamentDetail: React.FC = () => {
             ) : null}
           </div>
           <div className="mt-4">
-            <div className="mt-4 flex flex-row gap-8">
-              {detailTournament?.community?.image_url ? (
-                <div className="flex flex-col justify-center items-center gap-4">
-                  <Typography className="text-lg font-semibold font-poppins">
-                    {'Community'}
-                  </Typography>
-                  <Image
-                    src={detailTournament?.community?.image_url}
-                    alt=""
-                    width={200}
-                    height={200}
-                    className="object-contain max-h-16 max-w-16"
-                  />
-                </div>
-              ) : null}
-            </div>
             <div className="mt-4">
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.detailPrize')}
@@ -611,11 +603,16 @@ const TournamentDetail: React.FC = () => {
           </div>
         </div>
         <div className="w-full h-[300px] bg-white rounded-xl p-4 mb-32 md:mb-0">
-          {
-            ((userInfo !== undefined) && ((detailTournament?.admission_fee ?? 0) > 0)) &&
-              <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Tournament'} useCoins={useCoins}/>
-          }
-          <div className='my-4'>
+          {userInfo !== undefined &&
+            (detailTournament?.admission_fee ?? 0) > 0 && (
+              <PromoCode
+                userInfo={userInfo}
+                id={id as string}
+                spotType={'Paid Tournament'}
+                useCoins={useCoins}
+              />
+            )}
+          <div className="my-4">
             {detailTournament?.is_need_invitation_code && (
               <div>
                 <input
@@ -633,7 +630,14 @@ const TournamentDetail: React.FC = () => {
           <Typography className="text-sm text-[#7C7C7C] mt-2.5 font-poppins">
             {t('tournament.entranceFee')}
           </Typography>
-          <Typography className={`${((promoCodeValidationResult) && (localStorage.getItem('accessToken') !== null)) ? 'text-[#7C7C7C] line-through decoration-2 text-md' : 'text-black text-xl font-semibold'} font-poppins`}>
+          <Typography
+            className={`${
+              promoCodeValidationResult &&
+              localStorage.getItem('accessToken') !== null
+                ? 'text-[#7C7C7C] line-through decoration-2 text-md'
+                : 'text-black text-xl font-semibold'
+            } font-poppins`}
+          >
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
               : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -641,17 +645,19 @@ const TournamentDetail: React.FC = () => {
                   detailTournament?.admission_fee ?? 0
                 ).replace('Rp', '')}`}
           </Typography>
-          {
-            ((promoCodeValidationResult !== 0) && (localStorage.getItem('accessToken') !== null)) &&
+          {promoCodeValidationResult !== 0 &&
+            localStorage.getItem('accessToken') !== null && (
               <Typography className="font-semibold text-xl font-poppins">
                 {detailTournament?.admission_fee === 0
                   ? t('tournament.free')
-                  : (promoCodeValidationResult?.response?.final_price ?? 0).toLocaleString('id-ID', {
+                  : (
+                      promoCodeValidationResult?.response?.final_price ?? 0
+                    ).toLocaleString('id-ID', {
                       currency: userInfo?.preferredCurrency ?? 'IDR',
                       style: 'currency'
                     })}
               </Typography>
-          }
+            )}
           <div className="flex flex-row items-center justify-between mt-2.5">
             <div className="flex flex-row items-center">
               <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />
@@ -673,7 +679,9 @@ const TournamentDetail: React.FC = () => {
             </div>
           </div>
           <button
-            onClick={async () => { await handleRedirectPage(); }}
+            onClick={async () => {
+              await handleRedirectPage();
+            }}
             disabled={isDisabled()}
             className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${buttonColor()}`}
           >

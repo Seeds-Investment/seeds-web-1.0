@@ -55,7 +55,7 @@ const VirtualAccountGuide = ({
 }: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
   const accountNumber = paymentStatus != null ? paymentStatus.vaNumber : '';
-  const [showOtherFees, setShowOtherFees] = useState<boolean>(false)
+  const [showOtherFees, setShowOtherFees] = useState<boolean>(false);
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
@@ -72,12 +72,10 @@ const VirtualAccountGuide = ({
   const totalFee = parseInt(
     `${
       admissionFee +
-      (
-        + (showOtherFees ? adminFee : 0)
-        + (showOtherFees ? serviceFee : 0)
-        - (payment?.is_promo_available ? promoPrice : 0)
-        - discount
-      )
+      (+(showOtherFees ? adminFee : 0) +
+        (showOtherFees ? serviceFee : 0) -
+        (payment?.is_promo_available ? promoPrice : 0) -
+        discount)
     }`
   );
 
@@ -86,10 +84,10 @@ const VirtualAccountGuide = ({
   const bankName = payment?.payment_method?.split('_')[0];
 
   useEffect(() => {
-    if (((dataPost?.admission_fee ?? 0) - newPromoCodeDiscount) === 0) {
-      setShowOtherFees(false)
+    if ((dataPost?.admission_fee ?? 0) - newPromoCodeDiscount === 0) {
+      setShowOtherFees(false);
     } else {
-      setShowOtherFees(true)
+      setShowOtherFees(true);
     }
   }, [dataPost, newPromoCodeDiscount]);
 
@@ -139,28 +137,27 @@ const VirtualAccountGuide = ({
         value={`IDR ${admissionFee}`}
         className="mb-2"
       />
-      {
-        showOtherFees &&
-          <>
+      {showOtherFees && (
+        <>
+          <InlineText
+            label={t(`${translationId}.serviceFeeLabel`)}
+            value={`IDR ${serviceFee}`}
+            className="mb-2"
+          />
+          <InlineText
+            label={t(`${translationsId}.adminFeeLabel`)}
+            value={`IDR ${adminFee}`}
+            className="mb-2"
+          />
+          {payment.is_promo_available ? (
             <InlineText
-              label={t(`${translationId}.serviceFeeLabel`)}
-              value={`IDR ${serviceFee}`}
+              label={t(`${translationId}.adminFeeDiscountLabel`)}
+              value={`- IDR ${promoPrice}`}
               className="mb-2"
             />
-            <InlineText
-              label={t(`${translationsId}.adminFeeLabel`)}
-              value={`IDR ${adminFee}`}
-              className="mb-2"
-            />
-            {payment.is_promo_available ? (
-              <InlineText
-                label={t(`${translationId}.adminFeeDiscountLabel`)}
-                value={`- IDR ${promoPrice}`}
-                className="mb-2"
-              />
-            ) : null}
-          </>
-      }
+          ) : null}
+        </>
+      )}
       {promoCodeValidationResult !== undefined ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}

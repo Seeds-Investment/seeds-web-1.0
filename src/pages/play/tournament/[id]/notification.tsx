@@ -379,9 +379,24 @@ const NotificationWinner: React.FC = () => {
                       </div>
                       <div className="text-[#BDBDBD] px-2 text-[10px] 2xl:text-[12px]">
                         {languageCtx?.language === 'ID'
-                          ? getTournamentTime(new Date(item?.play_time ?? '2024-01-01T00:00:00Z'), new Date(item?.end_time ?? '2024-01-01T00:00:00Z'), 'id-ID')
-                          : getTournamentTime(new Date(item?.play_time ?? '2024-01-01T00:00:00Z'), new Date(item?.end_time ?? '2024-12-31T23:59:59Z'), 'en-US')
-                        }
+                          ? getTournamentTime(
+                              new Date(
+                                item?.play_time ?? '2024-01-01T00:00:00Z'
+                              ),
+                              new Date(
+                                item?.end_time ?? '2024-01-01T00:00:00Z'
+                              ),
+                              'id-ID'
+                            )
+                          : getTournamentTime(
+                              new Date(
+                                item?.play_time ?? '2024-01-01T00:00:00Z'
+                              ),
+                              new Date(
+                                item?.end_time ?? '2024-12-31T23:59:59Z'
+                              ),
+                              'en-US'
+                            )}
                       </div>
                     </div>
 

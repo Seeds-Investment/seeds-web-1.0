@@ -27,9 +27,9 @@ interface PlayAsset {
   battle_id: string;
   asset_id: string;
   asset_type: string;
-  asset_amount: number;
+  total_lot: number;
   average_price: number;
-  market_price: number;
+  current_price: number;
   total_invested: number;
   total_value: number;
   return_value: number;
@@ -156,7 +156,10 @@ const DetailPortfolio = (): React.ReactElement => {
               {userInfo?.preferredCurrency !== undefined
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
-              {standartCurrency(playAsset?.market_price ?? 0).replace('Rp', '')}
+              {standartCurrency(playAsset?.current_price ?? 0).replace(
+                'Rp',
+                ''
+              )}
             </Typography>
             <div className="flex justify-center gap-2">
               {priceBarHistory !== undefined &&
@@ -267,7 +270,7 @@ const DetailPortfolio = (): React.ReactElement => {
               {t('tournament.portfolio.ownedLot')}
             </Typography>
             <Typography className="text-sm md:text-lg text-black font-poppins">
-              {playAsset?.asset_amount ?? '0'}
+              {playAsset?.total_lot ?? '0'}
             </Typography>
           </div>
           <div className="w-full flex justify-between">
@@ -300,7 +303,10 @@ const DetailPortfolio = (): React.ReactElement => {
               {userInfo?.preferredCurrency !== undefined
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
-              {standartCurrency(playAsset?.market_price ?? 0).replace('Rp', '')}
+              {standartCurrency(playAsset?.current_price ?? 0).replace(
+                'Rp',
+                ''
+              )}
             </Typography>
           </div>
         </div>
@@ -308,8 +314,8 @@ const DetailPortfolio = (): React.ReactElement => {
       <div className="w-full flex justify-center items-center rounded-xl p-5 bg-white gap-4 mt-4">
         <Button
           disabled={
-            playAsset?.asset_amount !== undefined
-              ? playAsset?.asset_amount <= 0
+            playAsset?.total_lot !== undefined
+              ? playAsset?.total_lot <= 0
               : true
           }
           className="w-full rounded-full bg-[#DD2525] font-poppins"

@@ -5,17 +5,30 @@ import { standartCurrency } from '@/helpers/currency';
 import { getDetailCircle } from '@/repository/circleDetail.repository';
 import { getPlayById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { getPromocodeActive, promoValidate } from '@/repository/promo.repository';
+import {
+  getPromocodeActive,
+  promoValidate
+} from '@/repository/promo.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import { getDetailPostSocial } from '@/repository/social.respository';
 import { type RootState } from '@/store/premium-circle';
-import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import {
+  selectPromoCodeValidationResult,
+  setPromoCodeValidationResult
+} from '@/store/redux/features/promo-code';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
-import { type IDetailTournament, type UserInfo } from '@/utils/interfaces/tournament.interface';
+import {
+  type IDetailTournament,
+  type UserInfo
+} from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { ArrowBackwardIcon, ErrorPromo, PromoCodeWarning } from 'public/assets/vector';
+import {
+  ArrowBackwardIcon,
+  ErrorPromo,
+  PromoCodeWarning
+} from 'public/assets/vector';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -55,13 +68,13 @@ interface IDetailPost {
   is_pinned: boolean;
   media_urls: {
     id: string;
-  }
+  };
   owner: {
     avatar: string;
     name: string;
     username: string;
     verified: boolean;
-  }
+  };
   parent_id: string;
   pie_amount: number;
   pie_title: string;
@@ -112,9 +125,7 @@ interface PromoProps {
   spotType: string;
 }
 
-const PromoCode: React.FC<PromoProps> = ({
-  spotType
-}) => {
+const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
   const router = useRouter();
   const id = router.query.id;
   const circleId = router.query.circleId;
@@ -157,7 +168,10 @@ const PromoCode: React.FC<PromoProps> = ({
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
     if (metadata !== undefined) {
       if (scrollTop + clientHeight >= scrollHeight - 20 && !loading) {
-        if (((metadata?.currentPage ?? 0) !== (metadata?.totalPage ?? 0)) && ((metadata?.currentPage ?? 0) < (metadata?.totalPage ?? 0))) {
+        if (
+          (metadata?.currentPage ?? 0) !== (metadata?.totalPage ?? 0) &&
+          (metadata?.currentPage ?? 0) < (metadata?.totalPage ?? 0)
+        ) {
           scrollPositionRef.current = window.scrollY;
 
           if (!isIncrease) {
@@ -173,17 +187,21 @@ const PromoCode: React.FC<PromoProps> = ({
       }
     }
   };
-  
+
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (containerRef.current !== null) {
       const { clientHeight } = containerRef.current;
       const clientHeightDocument = document.documentElement.clientHeight;
-      
+
       if (metadata !== undefined) {
         if (activePromoCodes?.length < metadata.total) {
-          if ((((clientHeightDocument) > clientHeight) && metadata.total > metadata.limit) && (metadata?.currentPage <= metadata?.totalPage)) {
+          if (
+            clientHeightDocument > clientHeight &&
+            metadata.total > metadata.limit &&
+            metadata?.currentPage <= metadata?.totalPage
+          ) {
             if (!isIncrease) {
               setIsIncrease(true);
               setPromoParams(prevParams => ({
@@ -204,12 +222,12 @@ const PromoCode: React.FC<PromoProps> = ({
       window.removeEventListener('scroll', handleScroll);
     };
   }, [handleScroll]);
-  
+
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
 
-    useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, scrollPositionRef.current);
   }, [activePromoCodes]);
 
@@ -218,14 +236,14 @@ const PromoCode: React.FC<PromoProps> = ({
       .then()
       .catch(() => {});
 
-    setPromoCode(promoCodeValidationResult?.response?.promo_code)
+    setPromoCode(promoCodeValidationResult?.response?.promo_code);
   }, []);
 
   useEffect(() => {
     if (addPromo !== '') {
-      setIsManual(true)
+      setIsManual(true);
     } else {
-      setIsManual(false)
+      setIsManual(false);
     }
   }, [addPromo]);
 
@@ -237,7 +255,10 @@ const PromoCode: React.FC<PromoProps> = ({
       } else if (spotType === 'Paid Quiz' && typeof id === 'string') {
         await getDetailQuiz(userInfo?.preferredCurrency ?? 'IDR');
         setQuizFee(detailQuiz?.admission_fee);
-      } else if (spotType === 'Premium Circle' && typeof circleId === 'string') {
+      } else if (
+        spotType === 'Premium Circle' &&
+        typeof circleId === 'string'
+      ) {
         await fetchDetailCircle(circleId);
         setCircleFee(dataCircle?.premium_fee);
       } else if (spotType === 'Premium Content' && typeof id === 'string') {
@@ -247,10 +268,11 @@ const PromoCode: React.FC<PromoProps> = ({
     };
 
     void fetchDetails();
-
   }, [id, circleId, spotType]);
-  
-  const { premiumCircleFee } = useSelector((state: RootState) => state?.premiumCircle ?? {});
+
+  const { premiumCircleFee } = useSelector(
+    (state: RootState) => state?.premiumCircle ?? {}
+  );
 
   useEffect(() => {
     if (detailTournament?.admission_fee !== undefined) {
@@ -296,12 +318,15 @@ const PromoCode: React.FC<PromoProps> = ({
     }
   };
 
-  const fetchPromoData = async (fetchId: string, totalTransaction: number): Promise<void> => {
+  const fetchPromoData = async (
+    fetchId: string,
+    totalTransaction: number
+  ): Promise<void> => {
     try {
       setLoading(true);
       const activePromoCodesResponse = await getPromocodeActive(
-        promoParams.page, 
-        promoParams.limit, 
+        promoParams.page,
+        promoParams.limit,
         spotType,
         fetchId,
         totalTransaction
@@ -309,7 +334,7 @@ const PromoCode: React.FC<PromoProps> = ({
       if (Array.isArray(activePromoCodesResponse?.data)) {
         if (activePromoCodesResponse?.data !== null) {
           setActivePromoCodes(prevPromoCodes => [
-            ...prevPromoCodes, 
+            ...prevPromoCodes,
             ...activePromoCodesResponse?.data
           ]);
         }
@@ -336,17 +361,20 @@ const PromoCode: React.FC<PromoProps> = ({
     }
   }, [id]);
 
-  const getDetailQuiz = useCallback(async (currency: string) => {
-    try {
-      const resp: IDetailQuiz = await getQuizById({
-        id: id as string,
-        currency
-      });
-      setDetailQuiz(resp);
-    } catch (error) {
-      toast(`Error fetch quiz: ${error as string}`);
-    }
-  }, [id]);
+  const getDetailQuiz = useCallback(
+    async (currency: string) => {
+      try {
+        const resp: IDetailQuiz = await getQuizById({
+          id: id as string,
+          currency
+        });
+        setDetailQuiz(resp);
+      } catch (error) {
+        toast(`Error fetch quiz: ${error as string}`);
+      }
+    },
+    [id]
+  );
 
   const fetchDetailCircle = async (circleId: string): Promise<void> => {
     try {
@@ -368,10 +396,13 @@ const PromoCode: React.FC<PromoProps> = ({
     }
   };
 
-  const handlePromoCodeSelection = async (promoCode: string, index?: number): Promise<void> => {
-    setChoosenIndex(index ?? 0)
+  const handlePromoCodeSelection = async (
+    promoCode: string,
+    index?: number
+  ): Promise<void> => {
+    setChoosenIndex(index ?? 0);
     setPromoCode(promoCode);
-    setIsExceedingLimit(false)
+    setIsExceedingLimit(false);
     try {
       let response;
       if (spotType === 'Paid Tournament') {
@@ -410,7 +441,7 @@ const PromoCode: React.FC<PromoProps> = ({
 
       if (promoCodeValidationResult?.response?.promo_code === promoCode) {
         setPromoCode('');
-        toast.success(t(`promo.unApplied`))
+        toast.success(t(`promo.unApplied`));
         dispatch(setPromoCodeValidationResult(0));
       } else if (response.total_discount !== undefined) {
         setPromoCode(promoCode);
@@ -419,7 +450,7 @@ const PromoCode: React.FC<PromoProps> = ({
         } else {
           dispatch(setPromoCodeValidationResult({ id, response }));
         }
-        toast.success(t('promo.applied'))
+        toast.success(t('promo.applied'));
       } else {
         toast.error('Error Promo Code:', response.message);
       }
@@ -428,20 +459,20 @@ const PromoCode: React.FC<PromoProps> = ({
         setShowError(true);
         setTimeout(() => {
           setShowError(false);
-          setAddPromo('')
+          setAddPromo('');
         }, 5000);
-        setResponseError(error?.response?.data?.message as string)
+        setResponseError(error?.response?.data?.message as string);
       } else {
         const errorMessage = error?.response?.data?.message;
         if (typeof errorMessage === 'string') {
           if (errorMessage.includes('minimum transaction')) {
             toast.error(t('promo.limitPurchaseMessage'));
           } else if (errorMessage.includes('already exceeding today’s limit')) {
-            setIsExceedingLimit(true)
+            setIsExceedingLimit(true);
             toast.error(t('promo.limitDailyMessage'));
           }
         } else {
-          toast.error(`${(error?.response?.data?.message as string)}`);
+          toast.error(`${error?.response?.data?.message as string}`);
         }
       }
       setPromoCode('');
@@ -458,46 +489,63 @@ const PromoCode: React.FC<PromoProps> = ({
     const diffInDays = diffInHours / 24;
 
     if (diffInDays >= 2) {
-      return `${t('promo.endsIn')} ${Math.floor(diffInDays)} ${t('promo.daysRemain')}`;
-    } else if ((diffInDays >= 1) && (diffInDays < 2)) {
-      return `${t('promo.endsIn')} ${Math.floor(diffInDays)} ${t('promo.dayRemain')}`;
-    } else if ((diffInHours < 24) && (diffInHours >= 2)) {
-      return `${t('promo.endsIn')} ${Math.floor(diffInHours)} ${t('promo.hoursRemain')}`;
-    } else if ((diffInHours >= 1) && (diffInHours < 2)) {
-      return `${t('promo.endsIn')} ${Math.floor(diffInHours)} ${t('promo.hourRemain')}`;
-    } else if ((diffInMinutes < 60) && (diffInMinutes >= 2)) {
-      return `${t('promo.endsIn')} ${Math.floor(diffInMinutes)} ${t('promo.minutesRemain')}`;
-    } else if ((diffInMinutes >= 1) && (diffInMinutes < 2)) {
-      return `${t('promo.endsIn')} ${Math.floor(diffInMinutes)} ${t('promo.minuteRemain')}`;
-    } else if ((diffInMinutes < 1) && (diffInMinutes > 0)) {
-      return `${t('promo.endsIn')} ${t('promo.lessThanMinute')}`
+      return `${t('promo.endsIn')} ${Math.floor(diffInDays)} ${t(
+        'promo.daysRemain'
+      )}`;
+    } else if (diffInDays >= 1 && diffInDays < 2) {
+      return `${t('promo.endsIn')} ${Math.floor(diffInDays)} ${t(
+        'promo.dayRemain'
+      )}`;
+    } else if (diffInHours < 24 && diffInHours >= 2) {
+      return `${t('promo.endsIn')} ${Math.floor(diffInHours)} ${t(
+        'promo.hoursRemain'
+      )}`;
+    } else if (diffInHours >= 1 && diffInHours < 2) {
+      return `${t('promo.endsIn')} ${Math.floor(diffInHours)} ${t(
+        'promo.hourRemain'
+      )}`;
+    } else if (diffInMinutes < 60 && diffInMinutes >= 2) {
+      return `${t('promo.endsIn')} ${Math.floor(diffInMinutes)} ${t(
+        'promo.minutesRemain'
+      )}`;
+    } else if (diffInMinutes >= 1 && diffInMinutes < 2) {
+      return `${t('promo.endsIn')} ${Math.floor(diffInMinutes)} ${t(
+        'promo.minuteRemain'
+      )}`;
+    } else if (diffInMinutes < 1 && diffInMinutes > 0) {
+      return `${t('promo.endsIn')} ${t('promo.lessThanMinute')}`;
     } else {
-      return `${t('promo.promoOver')}`
+      return `${t('promo.promoOver')}`;
     }
-  }
+  };
 
   const routeOptions = (spotType: string, id: string): string => {
     if (spotType === 'Paid Tournament') {
       return `/play/tournament/${id}`;
     } else if (spotType === 'Paid Quiz') {
-      return `/play/quiz/${id}`
+      return `/play/quiz/${id}`;
     } else if (spotType === 'Premium Circle') {
-      return `/connect/payment/${circleId as string}`
+      return `/connect/payment/${circleId as string}`;
     } else if (spotType === 'Premium Content') {
-      return `/social/payment/${id}`
+      return `/social/payment/${id}`;
     }
     return '';
   };
 
   return (
-    <div ref={containerRef} className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
-      <div className='w-full relative'>
-        <Typography className='mt-8 md:mt-0 font-poppins text-2xl lg:text-3xl text-center font-semibold'>
+    <div
+      ref={containerRef}
+      className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white"
+    >
+      <div className="w-full relative">
+        <Typography className="mt-8 md:mt-0 font-poppins text-2xl lg:text-3xl text-center font-semibold">
           Choose Voucher & Promo
         </Typography>
         <div
-          onClick={async() => await router.push(routeOptions(spotType, id as string))}
-          className='absolute left-0 top-0 w-[35px] h-[35px] flex justify-center items-center cursor-pointer'
+          onClick={async () =>
+            await router.push(routeOptions(spotType, id as string))
+          }
+          className="absolute left-0 top-0 w-[35px] h-[35px] flex justify-center items-center cursor-pointer"
         >
           <Image
             src={ArrowBackwardIcon}
@@ -507,7 +555,7 @@ const PromoCode: React.FC<PromoProps> = ({
           />
         </div>
       </div>
-      <div className='flex flex-col md:flex-row gap-4 w-full justify-center items-center mt-4'>
+      <div className="flex flex-col md:flex-row gap-4 w-full justify-center items-center mt-4">
         <input
           id="addPromo"
           type="text"
@@ -521,35 +569,33 @@ const PromoCode: React.FC<PromoProps> = ({
         />
         <button
           disabled={addPromo === ''}
-          onClick={() => { void handlePromoCodeSelection(addPromo); }}
-          className={`${addPromo === '' ? 'bg-[#BDBDBD]' : 'bg-seeds-button-green cursor-pointer'} w-full md:w-[100px] py-2 rounded-full text-white px-8 flex justify-center items-center`}
+          onClick={() => {
+            void handlePromoCodeSelection(addPromo);
+          }}
+          className={`${
+            addPromo === ''
+              ? 'bg-[#BDBDBD]'
+              : 'bg-seeds-button-green cursor-pointer'
+          } w-full md:w-[100px] py-2 rounded-full text-white px-8 flex justify-center items-center`}
         >
           {t('promo.apply')}
         </button>
       </div>
-      {
-        showError &&
-          <div className='flex flex-row md:flex-row gap-2 md:gap-4 w-full md:w-[400px] justify-center items-start mt-4'>
-            <div className='w-[25px] h-[25px] flex justify-center items-center'>
-              <Image
-                src={ErrorPromo}
-                alt={'ErrorPromo'}
-                width={20}
-                height={20}
-              />
-            </div>
-            <div className='text-sm text-[#DD2525]'>
-              {
-                responseError === 'promo code invalid'
-                 ? t('promo.notFound')
-                 : responseError
-              }
-            </div>
+      {showError && (
+        <div className="flex flex-row md:flex-row gap-2 md:gap-4 w-full md:w-[400px] justify-center items-start mt-4">
+          <div className="w-[25px] h-[25px] flex justify-center items-center">
+            <Image src={ErrorPromo} alt={'ErrorPromo'} width={20} height={20} />
           </div>
-      }
+          <div className="text-sm text-[#DD2525]">
+            {responseError === 'promo code invalid'
+              ? t('promo.notFound')
+              : responseError}
+          </div>
+        </div>
+      )}
 
       {!loading ? (
-        ((activePromoCodes?.length) !== 0) ? (
+        activePromoCodes?.length !== 0 ? (
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4 xl:mt-8 font-poppins">
             {activePromoCodes?.map((item, index) => {
               const isPromoSelected = item?.promo_code === promoCode;
@@ -559,79 +605,132 @@ const PromoCode: React.FC<PromoProps> = ({
               const isPremiumContent = spotType === 'Premium Content';
 
               const minTransaction = item?.min_transaction ?? 0;
-              const admissionFee = 
-                isPaidTournament ? detailTournament?.admission_fee ?? 0 :
-                isPaidQuiz ? detailQuiz?.admission_fee ?? 0 :
-                isPremiumCircle ? dataCircle?.premium_fee ?? 0 :
-                isPremiumContent ? detailPost?.premium_fee ?? 0 : 0;
+              const admissionFee = isPaidTournament
+                ? detailTournament?.admission_fee ?? 0
+                : isPaidQuiz
+                ? detailQuiz?.admission_fee ?? 0
+                : isPremiumCircle
+                ? dataCircle?.premium_fee ?? 0
+                : isPremiumContent
+                ? detailPost?.premium_fee ?? 0
+                : 0;
 
-              const itemUnavailable = (admissionFee < minTransaction) || !(item?.is_eligible ?? false);
-              const bgColor = 
-                isPromoSelected 
-                  ? 'bg-gradient-to-r from-[#BDFFE5] to-white border-[#27A590]'
-                  : itemUnavailable
-                    ? 'bg-white border-[#BDBDBD]'
-                    : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]'
+              const itemUnavailable =
+                admissionFee < minTransaction || !(item?.is_eligible ?? false);
+              const bgColor = isPromoSelected
+                ? 'bg-gradient-to-r from-[#BDFFE5] to-white border-[#27A590]'
+                : itemUnavailable
+                ? 'bg-white border-[#BDBDBD]'
+                : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]';
 
               const imgSrc = itemUnavailable ? SeedyBNW : Seedy;
-              const sideBarBgColor = isPromoSelected ? 'bg-[#27A590]' : (itemUnavailable ? 'bg-[#BDBDBD]' : 'bg-[#D89918]');
-              const borderColor = isPromoSelected ? 'border-[#27A590]' : (itemUnavailable ? 'border-[#BDBDBD]' : 'border-[#D89918]');
+              const sideBarBgColor = isPromoSelected
+                ? 'bg-[#27A590]'
+                : itemUnavailable
+                ? 'bg-[#BDBDBD]'
+                : 'bg-[#D89918]';
+              const borderColor = isPromoSelected
+                ? 'border-[#27A590]'
+                : itemUnavailable
+                ? 'border-[#BDBDBD]'
+                : 'border-[#D89918]';
 
-              const showQuantityDiv = 
-                item?.QuantityRunsOutDate === "0001-01-01T00:00:00Z"
-                ? !!item?.is_eligible
-                : (!((((new Date().getTime()) - (new Date(item?.QuantityRunsOutDate).getTime())) > 259200000)))
+              const showQuantityDiv =
+                item?.QuantityRunsOutDate === '0001-01-01T00:00:00Z'
+                  ? !!item?.is_eligible
+                  : !(
+                      new Date().getTime() -
+                        new Date(item?.QuantityRunsOutDate).getTime() >
+                      259200000
+                    );
 
               return (
                 <>
-                  {
-                    showQuantityDiv &&
-                      <div className='flex flex-col justify-start items-start w-full'>
-                        <div
-                          key={index}
-                          onClick={async () => { await handlePromoCodeSelection(item?.promo_code, index); }}
-                          className={
-                            `${(index === choosenIndex) && isExceedingLimit ? 'rounded-t-xl' : 'rounded-xl'} 
-                            flex w-full h-full justify-start items-center relative border overflow-hidden cursor-pointer hover:shadow-lg duration-300 ${bgColor}`
-                          }
-                        >
-                          <div className='flex justify-center items-center'>
-                            <div className='w-[80px] h-[80px] md:w-[100px] md:h-[100px] ml-[20px] flex justify-center items-center p-2'>
-                              <Image alt="Seedy" src={imgSrc} className="w-full h-full" />
-                            </div>
-                          </div>
-                          <div className={`w-[20px] h-full absolute left-0 ${sideBarBgColor}`} />
-                          <div className={`flex flex-col justify-center p-4 w-full h-full border-l border-dashed ${borderColor}`}>
-                            <div className='font-semibold text-base md:text-xl'>{item?.name_promo_code}</div>
-                            <div className='text-sm text-black'>
-                              {item?.min_transaction > 0 ? `${t('promo.minimumPurchase')} ${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(minTransaction).replace('Rp', '')}` : t('promo.noMinimumPurchase')}
-                            </div>
-                            <div className='text-[#7C7C7C] text-sm'>
-                              {item?.end_date !== '0001-01-01T00:00:00Z' ? getRemainingTime(item?.end_date) : t('promo.noExpired')}
-                            </div>
-                          </div>
-                          <div className={`${isPromoSelected ? 'bg-[#27A590]' : 'bg-[#FDBA22]'} absolute right-[-10px] bottom-[10px] text-white text-sm md:text-base lg:text-sm px-4 rounded-full`}>
-                            {item?.max_redeem === 0 ? <div className='text-[35px] flex justify-center items-center'>&#8734;</div> : `${(item?.max_redeem ?? 0) - (item?.promo_redeemed ?? 0)}x`}
+                  {showQuantityDiv && (
+                    <div className="flex flex-col justify-start items-start w-full">
+                      <div
+                        key={index}
+                        onClick={async () => {
+                          await handlePromoCodeSelection(
+                            item?.promo_code,
+                            index
+                          );
+                        }}
+                        className={`${
+                          index === choosenIndex && isExceedingLimit
+                            ? 'rounded-t-xl'
+                            : 'rounded-xl'
+                        } 
+                            flex w-full h-full justify-start items-center relative border overflow-hidden cursor-pointer hover:shadow-lg duration-300 ${bgColor}`}
+                      >
+                        <div className="flex justify-center items-center">
+                          <div className="w-[80px] h-[80px] md:w-[100px] md:h-[100px] ml-[20px] flex justify-center items-center p-2">
+                            <Image
+                              alt="Seedy"
+                              src={imgSrc}
+                              className="w-full h-full"
+                            />
                           </div>
                         </div>
-                        {
-                          ((index === choosenIndex) && isExceedingLimit) &&
-                            <div className='bg-[#FFEBEB] w-full p-1 flex gap-2 justify-start items-center'>
-                              <div className='flex justify-center items-center'>
-                                <Image
-                                  src={PromoCodeWarning}
-                                  alt={'PromoCodeWarning'}
-                                  width={26}
-                                  height={26}
-                                />
-                              </div>
-                              <div className='text-sm text-[#BB1616]'>
-                                {t('promo.limitReached')}
-                              </div>
+                        <div
+                          className={`w-[20px] h-full absolute left-0 ${sideBarBgColor}`}
+                        />
+                        <div
+                          className={`flex flex-col justify-center p-4 w-full h-full border-l border-dashed ${borderColor}`}
+                        >
+                          <div className="font-semibold text-base md:text-xl">
+                            {item?.name_promo_code}
+                          </div>
+                          <div className="text-sm text-black">
+                            {item?.min_transaction > 0
+                              ? `${t('promo.minimumPurchase')} ${
+                                  userInfo?.preferredCurrency ?? 'IDR'
+                                }${standartCurrency(minTransaction).replace(
+                                  'Rp',
+                                  ''
+                                )}`
+                              : t('promo.noMinimumPurchase')}
+                          </div>
+                          <div className="text-[#7C7C7C] text-sm">
+                            {item?.end_date !== '0001-01-01T00:00:00Z'
+                              ? getRemainingTime(item?.end_date)
+                              : t('promo.noExpired')}
+                          </div>
+                        </div>
+                        <div
+                          className={`${
+                            isPromoSelected ? 'bg-[#27A590]' : 'bg-[#FDBA22]'
+                          } absolute right-[-10px] bottom-[10px] text-white text-sm md:text-base lg:text-sm px-4 rounded-full`}
+                        >
+                          {item?.max_redeem === 0 ? (
+                            <div className="text-[35px] flex justify-center items-center">
+                              &#8734;
                             </div>
-                        }
+                          ) : (
+                            `${
+                              (item?.max_redeem ?? 0) -
+                              (item?.promo_redeemed ?? 0)
+                            }x`
+                          )}
+                        </div>
                       </div>
-                  }
+                      {index === choosenIndex && isExceedingLimit && (
+                        <div className="bg-[#FFEBEB] w-full p-1 flex gap-2 justify-start items-center">
+                          <div className="flex justify-center items-center">
+                            <Image
+                              src={PromoCodeWarning}
+                              alt={'PromoCodeWarning'}
+                              width={26}
+                              height={26}
+                            />
+                          </div>
+                          <div className="text-sm text-[#BB1616]">
+                            {t('promo.limitReached')}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </>
               );
             })}
@@ -639,7 +738,9 @@ const PromoCode: React.FC<PromoProps> = ({
         ) : (
           <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
             <Image alt="" src={IconNoData} className="w-[250px]" />
-            <p className="font-semibold text-black">{t('promo.emptyVoucher1')}</p>
+            <p className="font-semibold text-black">
+              {t('promo.emptyVoucher1')}
+            </p>
             <p className="text-[#7C7C7C]">{t('promo.emptyVoucher2')}</p>
           </div>
         )
@@ -652,9 +753,15 @@ const PromoCode: React.FC<PromoProps> = ({
       )}
 
       <button
-        disabled={(promoCode === '') || (promoCode === undefined)}
-        onClick={async() => await router.push(routeOptions(spotType, id as string))}
-        className={`${((promoCode === '') || (promoCode === undefined)) ? 'bg-[#BDBDBD]' : 'bg-seeds-button-green cursor-pointer'} flex w-full rounded-full justify-center items-center text-white text-lg py-4 mt-8`}
+        disabled={promoCode === '' || promoCode === undefined}
+        onClick={async () =>
+          await router.push(routeOptions(spotType, id as string))
+        }
+        className={`${
+          promoCode === '' || promoCode === undefined
+            ? 'bg-[#BDBDBD]'
+            : 'bg-seeds-button-green cursor-pointer'
+        } flex w-full rounded-full justify-center items-center text-white text-lg py-4 mt-8`}
       >
         Use Promo
       </button>

@@ -10,7 +10,10 @@ import {
 } from '@/repository/circleDetail.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { setMonth, setPrice } from '@/store/premium-circle/premiumCircleSlice';
-import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import {
+  selectPromoCodeValidationResult,
+  setPromoCodeValidationResult
+} from '@/store/redux/features/promo-code';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -69,9 +72,8 @@ const CirclePost = (): JSX.Element => {
   };
 
   useEffect(() => {
-
     void fetchData();
-    
+
     if (promoCodeValidationResult?.circleId !== circleId) {
       dispatch(setPromoCodeValidationResult(0));
     }
@@ -80,7 +82,7 @@ const CirclePost = (): JSX.Element => {
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
-  
+
   const fetchData = async (): Promise<void> => {
     try {
       const response = await getUserInfo();

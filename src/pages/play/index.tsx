@@ -413,10 +413,7 @@ const Player = (): React.ReactElement => {
           <div className="w-full my-5 h-auto cursor-pointer">
             <Slider {...sliderSettings}>
               {bannerAsset?.map(asset => (
-                <div
-                  key={asset.id}
-                  className="w-full relative"
-                >
+                <div key={asset.id} className="w-full relative">
                   <Image
                     className="object-cover w-full"
                     src={asset.banner}
@@ -424,9 +421,9 @@ const Player = (): React.ReactElement => {
                     width={1000}
                     height={150}
                     onClick={async () => {
-                      (asset?.play_center_type === 'quiz'
+                      asset?.play_center_type === 'quiz'
                         ? await router.push(`/play/quiz/${asset.id}`)
-                        : await router.push(`/play/tournament/${asset.id}`));
+                        : await router.push(`/play/tournament/${asset.id}`);
                     }}
                   />
                 </div>

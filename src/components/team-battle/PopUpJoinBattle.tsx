@@ -84,8 +84,20 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
           setInvitationCode('');
         }
       }
-    } catch (error) {
-      toast.error(`Error fetching group battle: ${error as string}`);
+    } catch (error: any) {
+      if (
+        error?.status === 404 &&
+        error?.response?.data?.message === 'invitation code not found on this battle'
+      ) {
+        toast.error(t('teamBattle.mainPage.wrongInvitationCode'));
+      } else if (
+        error?.status === 404 &&
+        error?.response?.data?.message !== 'invitation code not found on this battle'
+      ) {
+        toast.error(error?.response?.data?.message);
+      } else {
+        toast.error(error?.message);
+      }
     } finally {
       setIsLoading(false);
     }

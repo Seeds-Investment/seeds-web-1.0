@@ -97,7 +97,7 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
       const keyword = searchRef?.current?.value?.trim();
       if (keyword !== undefined) {
         setFilteredGroupList(
-          groupList.filter(group => group.name.toLowerCase().includes(keyword))
+          groupList?.filter(group => group.name.toLowerCase().includes(keyword))
         );
       }
       setSelectedGroup(null);
@@ -164,7 +164,7 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
               </div>
             </div>
           )}
-          {joinMode === 'invitation' && groupList.length === 0 && (
+          {joinMode === 'invitation' && groupList?.length === 0 && (
             <div className="rounded-3xl bg-white max-w-[460px] h-[240px] p-6 flex flex-col justify-center items-center gap-6">
               <Typography className="font-poppins lg:text-2xl text-base font-semibold">
                 {t('teamBattle.joinAsInvitation')}
@@ -191,7 +191,7 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
               </Button>
             </div>
           )}
-          {filteredGroupList.length > 0 && (
+          {filteredGroupList?.length > 0 && (
             <div className="rounded-3xl bg-white lg:w-[460px] w-[350px] h-full p-6 flex flex-col justify-center items-center gap-4">
               <Typography className="font-poppins lg:text-lg font-semibold">
                 {t(
@@ -221,7 +221,7 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
                 </div>
               </div>
               <div className="flex flex-col gap-2 lg:w-[430px] w-full max-h-[290px] shadow-md overflow-y-scroll team-battle-scroll p-4 rounded-xl">
-                {filteredGroupList.map((group, index) => (
+                {filteredGroupList?.map((group, index) => (
                   <div
                     key={index}
                     onClick={() => {

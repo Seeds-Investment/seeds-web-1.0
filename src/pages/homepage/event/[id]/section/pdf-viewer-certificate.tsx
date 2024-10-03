@@ -1,4 +1,3 @@
-import Modal from '@/components/ui/modal/Modal';
 import { useEffect, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { toast } from 'react-toastify';
@@ -10,7 +9,6 @@ interface props {
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 const PDFViewer: React.FC<props> = ({ file }) => {
-  const [docModal, setDocModal] = useState<boolean>(false);
   const [showPDF, setShowPDF] = useState<boolean>(false);
   
   useEffect(() => {
@@ -21,80 +19,6 @@ const PDFViewer: React.FC<props> = ({ file }) => {
   
   return (
     <div className="flex flex-col w-full h-full justify-start items-start md:justify-center md:items-center pt-4 md:pt-0 bg-[#DCFCE4] relative">
-      {docModal && (
-        <>
-          <Modal
-            onClose={() => {
-              setDocModal(false);
-            }}
-            modalClasses="flex md:hidden z-50 animate-slide-down absolute left-0 right-0 m-auto w-full h-auto text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)]"
-          >
-            <embed
-              src={
-                typeof file === 'string' ? file : URL.createObjectURL(file)
-              }
-              type="application/pdf"
-              className="w-full h-screen relative"
-            />
-            <button
-              className="z-50 absolute text-white top-[80px] left-[13px] m-auto shadow-lg hover:scale-110 transition ease-out bg-[#262626] rounded-full"
-              onClick={() => {
-                setDocModal(false);
-              }}
-            >
-              <svg
-                className="h-8 w-8 text-white bg-black/20 rounded-full"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                {' '}
-                <circle cx="12" cy="12" r="10" />{' '}
-                <line x1="15" y1="9" x2="9" y2="15" />{' '}
-                <line x1="9" y1="9" x2="15" y2="15" />
-              </svg>
-            </button>
-          </Modal>
-          <Modal
-            onClose={() => {
-              setDocModal(false);
-            }}
-            modalClasses="hidden md:flex z-50 animate-slide-down absolute left-0 right-0 m-auto w-full md:w-[80%] h-auto text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)]"
-          >
-            <embed
-              src={
-                typeof file === 'string' ? file : URL.createObjectURL(file)
-              }
-              type="application/pdf"
-              className="widthPDF h-screen relative"
-            />
-            <button
-              className="z-50 absolute text-white top-[80px] right-[40px] bg-[#262626] rounded-full hover:scale-110 transition ease-out"
-              onClick={() => {
-                setDocModal(false);
-              }}
-            >
-              <svg
-                className="h-8 w-8 text-white bg-black/20 rounded-full"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                {' '}
-                <circle cx="12" cy="12" r="10" />{' '}
-                <line x1="15" y1="9" x2="9" y2="15" />{' '}
-                <line x1="9" y1="9" x2="15" y2="15" />
-              </svg>
-            </button>
-          </Modal>
-        </>
-      )}
       {
         showPDF ?
           <Document

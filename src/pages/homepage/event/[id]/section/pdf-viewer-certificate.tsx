@@ -1,28 +1,17 @@
 import Modal from '@/components/ui/modal/Modal';
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { toast } from 'react-toastify';
 
 interface props {
   file: File | string;
-  preview: boolean
-  setPreview: Dispatch<SetStateAction<boolean>>;
 }
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
-const PDFViewer: React.FC<props> = ({ file, preview, setPreview }) => {
+const PDFViewer: React.FC<props> = ({ file }) => {
   const [docModal, setDocModal] = useState<boolean>(false);
   const [showPDF, setShowPDF] = useState<boolean>(false);
-  
-  useEffect(() => {
-    if (preview) {
-      setDocModal(true);
-    }
-    if (!docModal) {
-      setPreview(false)
-    }
-  }, [preview, docModal]);
   
   useEffect(() => {
     setTimeout(() => {

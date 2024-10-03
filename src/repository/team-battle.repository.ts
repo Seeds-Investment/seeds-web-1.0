@@ -95,10 +95,8 @@ export const getGroupBattle = async (
       }
     });
     return response;
-  } catch (error: any) {
-    toast.error(error.response.data.message, {
-      type: 'error'
-    });
+  } catch (error) {
+    await Promise.reject(error);
   }
 };
 

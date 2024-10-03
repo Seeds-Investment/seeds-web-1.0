@@ -55,7 +55,9 @@ const Profile = ({
   const getSubscriptionPlanStatus = async (): Promise<void> => {
     try {
       const response = await getSubscriptionStatus();
-      setDataSubscription(response);
+      if (response !== undefined) {
+        setDataSubscription(response);
+      }
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     }
@@ -213,14 +215,12 @@ const Profile = ({
           >
             <div className="flex items-center justify-between gap-4">
               <div className="ml-6">
-                {dataSubscription?.active_subscription === null && (
+                {dataSubscription === null && (
                   <div className="absolute bg-gradient-to-b from-[#5ab176] from-20%  w-[50px] h-[50px] rounded-full"></div>
                 )}
                 <div
                   className={`${
-                    dataSubscription?.active_subscription === null
-                      ? 'relative left-1'
-                      : ''
+                    dataSubscription === null ? 'relative left-1' : ''
                   }`}
                 >
                   <Image
@@ -243,13 +243,13 @@ const Profile = ({
               <Typography className="text-black font-semibold font-poppins text-lg capitalize">
                 {t(
                   `${
-                    dataSubscription?.active_subscription === null
+                    dataSubscription === null
                       ? 'ProfilePage.subscriptionButton'
                       : 'ProfilePage.yourPackage'
                   }`
                 )}
                 {`${
-                  dataSubscription?.active_subscription !== null
+                  dataSubscription !== null
                     ? ' : ' +
                       String(
                         dataSubscription?.active_subscription
@@ -258,7 +258,7 @@ const Profile = ({
                     : ''
                 }`}
               </Typography>
-              {dataSubscription?.active_subscription !== null && (
+              {dataSubscription !== null && (
                 <div className="bg-[#BAFBD0] border border-[#27A590] px-2 py-1 rounded-3xl">
                   <Typography className="text-[#27A590] text-xs font-normal font-poppins">
                     {dataSubscription?.incoming_subscription === null
@@ -407,15 +407,11 @@ const Profile = ({
         className="xl:hidden w-full mt-2 bg-[#65D8B9] flex justify-between items-center px-4 py-1 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300 border border-[#27A590]"
       >
         <div className="flex items-center justify-between gap-4">
-          {dataSubscription?.active_subscription === null && (
+          {dataSubscription === null && (
             <div className="absolute bg-gradient-to-b from-[#5ab176] from-20% w-[60px] h-[60px] rounded-full"></div>
           )}
           <div
-            className={`${
-              dataSubscription?.active_subscription === null
-                ? 'relative left-1'
-                : ''
-            }`}
+            className={`${dataSubscription === null ? 'relative left-1' : ''}`}
           >
             <Image
               src={
@@ -431,7 +427,7 @@ const Profile = ({
               width={120}
               height={120}
               className={`${
-                dataSubscription?.active_subscription === null
+                dataSubscription === null
                   ? 'w-[60px] h-60px]'
                   : 'w-[50px] h-50px]'
               }`}
@@ -447,13 +443,13 @@ const Profile = ({
             <Typography className="text-black font-semibold font-poppins text-sm capitalize">
               {t(
                 `${
-                  dataSubscription?.active_subscription === null
+                  dataSubscription === null
                     ? 'ProfilePage.subscriptionButton'
                     : 'ProfilePage.yourPackage'
                 }`
               )}
               {`${
-                dataSubscription?.active_subscription !== null
+                dataSubscription !== null
                   ? ' : ' +
                     String(
                       dataSubscription?.active_subscription
@@ -462,9 +458,9 @@ const Profile = ({
                   : ''
               }`}
             </Typography>
-            {dataSubscription?.active_subscription !== null && (
+            {dataSubscription !== null && (
               <div className="bg-[#BAFBD0] border border-[#27A590] px-1 py-1 rounded-3xl">
-                <Typography className="text-[#27A590] text-[9px] font-normal font-poppins">
+                <Typography className="text-[#27A590] text-[9px] font-normal font-poppins text-center">
                   {dataSubscription?.incoming_subscription === null
                     ? t('ProfilePage.active')
                     : `${t('seedsPlan.text15')} ${

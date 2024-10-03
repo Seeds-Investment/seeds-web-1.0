@@ -46,7 +46,7 @@ const SeedsPlanDetail: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [dataPlan, setDataPlan] = useState<DataPlanI | undefined>(undefined);
   const [subscriptionStatus, setSubscriptionStatus] =
-    useState<StatusSubscription>();
+    useState<StatusSubscription | null>(null);
   const categorySeedsPlan = [
     { label: 'All', category: 'All' },
     { label: 'Play Arena', category: 'Paid Tournament' },
@@ -80,7 +80,9 @@ const SeedsPlanDetail: React.FC = () => {
   const getStatus = async (): Promise<void> => {
     try {
       const response = await getSubscriptionStatus();
-      setSubscriptionStatus(response);
+      if (response !== undefined) {
+        setSubscriptionStatus(response);
+      }
     } catch (error) {
       toast(error as string, { type: 'error' });
     }
@@ -249,22 +251,41 @@ const SeedsPlanDetail: React.FC = () => {
                     subscriptionStatus?.active_subscription
                       ?.subscription_type_id === packagePlan && (
                       <div className="text-[11px] px-[13px] py-1 rounded-full text-[#378D12] border border-[#487209] lg:w-fit text-center text-nowrap mt-1">
-                        {t('seedsPlan.text11')}
-                        {languageCtx.language === 'ID'
-                          ? getEventDate(
-                              new Date(
-                                subscriptionStatus?.active_subscription
-                                  ?.ended_at ?? '2024-12-31T23:59:00Z'
-                              ),
-                              'id-ID'
-                            )
-                          : getEventDate(
-                              new Date(
-                                subscriptionStatus?.active_subscription
-                                  ?.ended_at ?? '2024-12-31T23:59:00Z'
-                              ),
-                              'en-US'
-                            )}
+                        {subscriptionStatus?.incoming_subscription === null
+                          ? `${t('seedsPlan.text10')} ${
+                              languageCtx.language === 'ID'
+                                ? getEventDate(
+                                    new Date(
+                                      subscriptionStatus?.active_subscription
+                                        ?.ended_at ?? '2024-12-31T23:59:00Z'
+                                    ),
+                                    'id-ID'
+                                  )
+                                : getEventDate(
+                                    new Date(
+                                      subscriptionStatus?.active_subscription
+                                        ?.ended_at ?? '2024-12-31T23:59:00Z'
+                                    ),
+                                    'en-US'
+                                  )
+                            }`
+                          : `${t('seedsPlan.text15')} ${
+                              languageCtx.language === 'ID'
+                                ? getEventDate(
+                                    new Date(
+                                      subscriptionStatus?.incoming_subscription
+                                        ?.started_at ?? '2024-12-31T23:59:00Z'
+                                    ),
+                                    'id-ID'
+                                  )
+                                : getEventDate(
+                                    new Date(
+                                      subscriptionStatus?.incoming_subscription
+                                        ?.started_at ?? '2024-12-31T23:59:00Z'
+                                    ),
+                                    'en-US'
+                                  )
+                            }`}
                       </div>
                     )}
                 </div>

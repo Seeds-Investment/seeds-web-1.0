@@ -44,7 +44,7 @@ const SeedsPlan: React.FC = () => {
   const languageCtx = useContext(LanguageContext);
   const [dataPlan, setDataPlan] = useState<DataPlanI | undefined>(undefined);
   const [subscriptionStatus, setSubscriptionStatus] =
-    useState<StatusSubscription>();
+    useState<StatusSubscription | null>(null);
   const [dataVoucher, setDataVoucher] = useState<DataVoucherI | undefined>(
     undefined
   );
@@ -81,9 +81,11 @@ const SeedsPlan: React.FC = () => {
     try {
       setLoading(true);
       const response = await getSubscriptionStatus();
-      setSubscriptionStatus(response);
+      if (response !== undefined) {
+        setSubscriptionStatus(response);
+      }
     } catch (error) {
-      toast(error as string, { type: 'error' });
+      toast.error(`Error fetching data: ${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -95,7 +97,7 @@ const SeedsPlan: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (subscriptionStatus?.active_subscription !== null) {
+    if (subscriptionStatus !== null) {
       setSubscription('active');
     } else {
       setSubscription('non-active');
@@ -202,8 +204,8 @@ const SeedsPlan: React.FC = () => {
                           ? t('seedsPlan.text8')
                           : `${t('seedsPlan.text16')} ${getShortEventDate(
                               new Date(
-                                subscriptionStatus?.incoming_subscription
-                                  ?.started_at ?? '2024-12-31T23:59:00Z'
+                                subscriptionStatus?.active_subscription
+                                  ?.ended_at ?? '2024-12-31T23:59:00Z'
                               )
                             )}`}
                       </div>
@@ -214,22 +216,41 @@ const SeedsPlan: React.FC = () => {
                       </div>
                     </div>
                     <div className="lg:w-fit w-full mt-1 text-[11px] font-normal px-[13px] py-1 rounded-full text-[#378D12] border border-[#378D12] text-center text-wrap">
-                      {t('seedsPlan.text11')}
-                      {languageCtx.language === 'ID'
-                        ? getEventDate(
-                            new Date(
-                              subscriptionStatus?.active_subscription
-                                ?.ended_at ?? '2024-12-31T23:59:00Z'
-                            ),
-                            'id-ID'
-                          )
-                        : getEventDate(
-                            new Date(
-                              subscriptionStatus?.active_subscription
-                                ?.ended_at ?? '2024-12-31T23:59:00Z'
-                            ),
-                            'en-US'
-                          )}
+                      {subscriptionStatus?.incoming_subscription === null
+                        ? `${t('seedsPlan.text10')} ${
+                            languageCtx.language === 'ID'
+                              ? getEventDate(
+                                  new Date(
+                                    subscriptionStatus?.active_subscription
+                                      ?.ended_at ?? '2024-12-31T23:59:00Z'
+                                  ),
+                                  'id-ID'
+                                )
+                              : getEventDate(
+                                  new Date(
+                                    subscriptionStatus?.active_subscription
+                                      ?.ended_at ?? '2024-12-31T23:59:00Z'
+                                  ),
+                                  'en-US'
+                                )
+                          }`
+                        : `${t('seedsPlan.text15')} ${
+                            languageCtx.language === 'ID'
+                              ? getEventDate(
+                                  new Date(
+                                    subscriptionStatus?.incoming_subscription
+                                      ?.started_at ?? '2024-12-31T23:59:00Z'
+                                  ),
+                                  'id-ID'
+                                )
+                              : getEventDate(
+                                  new Date(
+                                    subscriptionStatus?.incoming_subscription
+                                      ?.started_at ?? '2024-12-31T23:59:00Z'
+                                  ),
+                                  'en-US'
+                                )
+                          }`}
                     </div>
                   </div>
                 </div>

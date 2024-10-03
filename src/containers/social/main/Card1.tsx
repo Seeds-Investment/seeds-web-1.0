@@ -82,33 +82,35 @@ const Card1: React.FC<props> = ({
               </div>
             </div>
           </div>
-          <Menu>
-            <MenuHandler>
-              <Button className="flex flex-row gap-2 border-[#E9E9E9] bg-[#FFF] rounded-md text-[#7C7C7C]">
-                <FilterIcon />
-                Filter
-              </Button>
-            </MenuHandler>
-            <MenuList className="w-1/6">
-              {optionsFilter.map((data, idx) => (
-                <MenuItem
-                  key={idx}
-                  className={`mb-2 ${
-                    filter.type === data.value ? 'bg-[#DCFCE4]' : ''
-                  }`}
-                  onClick={() => {
-                    if (filter.type !== data.value) {
-                      changeFilter('type', data.value);
-                      changeFilter('page', 1);
-                    }
-                  }}
-                >
-                  <h1 className="font-semibold">{data.title}</h1>
-                  <p className="font-normal">{data.subtitle}</p>
-                </MenuItem>
-              ))}
-            </MenuList>
-          </Menu>
+          {activeTab !== 'circle' && (
+            <Menu>
+              <MenuHandler>
+                <Button className="flex flex-row gap-2 border-[#E9E9E9] bg-[#FFF] rounded-md text-[#7C7C7C]">
+                  <FilterIcon />
+                  Filter
+                </Button>
+              </MenuHandler>
+              <MenuList className="w-1/6">
+                {optionsFilter.map((data, idx) => (
+                  <MenuItem
+                    key={idx}
+                    className={`mb-2 ${
+                      filter.type === data.value ? 'bg-[#DCFCE4]' : ''
+                    }`}
+                    onClick={() => {
+                      if (filter.type !== data.value) {
+                        changeFilter('type', data.value);
+                        changeFilter('page', 1);
+                      }
+                    }}
+                  >
+                    <h1 className="font-semibold">{data.title}</h1>
+                    <p className="font-normal">{data.subtitle}</p>
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </Menu>
+          )}
         </div>
       )}
 

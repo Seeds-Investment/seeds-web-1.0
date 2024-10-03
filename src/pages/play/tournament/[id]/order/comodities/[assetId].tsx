@@ -60,6 +60,7 @@ interface DetailAsset {
   logo: string;
   name: string;
   lastPrice: LastPrice;
+  assetType: string;
 }
 
 interface LastPrice {
@@ -79,7 +80,7 @@ const BuyPage: React.FC = () => {
   const router = useRouter();
   const { assetId } = router.query;
   const { id } = router.query;
-  useGetDetailTournament(id as string);
+  const { detailTournament } = useGetDetailTournament(id as string);
   const { t } = useTranslation();
   const height = useWindowInnerHeight();
 
@@ -369,6 +370,19 @@ const BuyPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const handleRouteChange = async (): Promise<void> => {
+      if (data !== undefined && detailTournament !== null && id !== undefined) {
+        if (!detailTournament?.all_category?.includes(data?.assetType)) {
+          toast.error(t('tournament.assets.assetTypeWarning'))
+          await router.push(`/play/tournament/${id as string}/home`);
+        }
+      }
+    };
+
+    void handleRouteChange();
+  }, [data, detailTournament, id, router]);
 
   return (
     <PageGradient defaultGradient className="w-full">

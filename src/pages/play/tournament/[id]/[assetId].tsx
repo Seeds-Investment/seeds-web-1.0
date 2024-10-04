@@ -208,7 +208,12 @@ const AssetDetailPage: React.FC = () => {
       </CCard>
       <div className="flex flex-col md:flex-row gap-5">
         {data !== undefined ? (
-          <Card1 data={data} currency={userInfo?.preferredCurrency as string} />
+          <Card1
+            data={data}
+            currency={userInfo?.preferredCurrency as string}
+            playId={id as string}
+            assetId={assetId as string}
+          />
         ) : (
           <Card2Skeleton />
         )}
@@ -226,7 +231,6 @@ const AssetDetailPage: React.FC = () => {
         <div className="h-[35rem] mb-5">
           <LineChart data={chartItem} />
         </div>
-
         <Tabs value={'daily'}>
           <TabsHeader
             className="bg-transparent rounded-xl"
@@ -337,7 +341,10 @@ const AssetDetailPage: React.FC = () => {
           <div className="flex justify-between gap-2">
             <Button
               variant="filled"
-              disabled={portfolio?.total_value === undefined || portfolio?.total_value === 0}
+              disabled={
+                portfolio?.total_value === undefined ||
+                portfolio?.total_value === 0
+              }
               className="normal-case rounded-full w-full py-2 bg-[#DD2525] text-white font-poppins"
               onClick={() => {
                 if (assetType === 'CRYPTO') {
@@ -365,7 +372,9 @@ const AssetDetailPage: React.FC = () => {
             </Button>
             <Button
               variant="filled"
-              disabled={(ballance?.balance ?? 0) < (data?.lastPrice?.close ?? 0)}
+              disabled={
+                (ballance?.balance ?? 0) < (data?.lastPrice?.close ?? 0)
+              }
               className="normal-case rounded-full w-full py-2 bg-[#3AC4A0] text-white font-poppins"
               onClick={() => {
                 if (assetType === 'CRYPTO') {

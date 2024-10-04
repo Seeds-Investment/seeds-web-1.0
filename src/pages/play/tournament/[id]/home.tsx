@@ -322,40 +322,37 @@ const TournamentHome: React.FC = () => {
         portfolio === null && <Loading />}
       <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
         <div className="flex justify-start w-full gap-2">
-            {
-              detailTournament !== undefined ?
-                <>
-                  <Typography className="text-xl font-semibold">
-                    {detailTournament?.name ?? 'Tournament'}
-                  </Typography>
-                  <Image
-                    onClick={() => {
-                      setIsDetailModal(true);
-                    }}
-                    alt=""
-                    src={IconWarning}
-                    className="w-[20px] cursor-pointer"
-                  />
-                </>
-                :
-                <div className='bg-gray-300 animate-pulse h-[20px] w-[200px] rounded-full'/>
-
-            }
+          {detailTournament !== undefined ? (
+            <>
+              <Typography className="text-xl font-semibold">
+                {detailTournament?.name ?? 'Tournament'}
+              </Typography>
+              <Image
+                onClick={() => {
+                  setIsDetailModal(true);
+                }}
+                alt=""
+                src={IconWarning}
+                className="w-[20px] cursor-pointer"
+              />
+            </>
+          ) : (
+            <div className="bg-gray-300 animate-pulse h-[20px] w-[200px] rounded-full" />
+          )}
         </div>
         <div className="text-[14px] flex justify-start items-center gap-2 py-2 w-full">
-            {
-              detailTournament !== undefined ?
-                <>
-                  <Typography className="font-poppins">
-                    Play ID : {detailTournament?.play_id ?? '...'}
-                  </Typography>
-                  <button onClick={handleCopyClick}>
-                    <Image alt="" src={IconCopy} className="w-[20px]" />
-                  </button>
-                </>
-                :
-                <div className='bg-gray-300 animate-pulse h-[20px] w-[160px] rounded-full'/>
-            }
+          {detailTournament !== undefined ? (
+            <>
+              <Typography className="font-poppins">
+                Play ID : {detailTournament?.play_id ?? '...'}
+              </Typography>
+              <button onClick={handleCopyClick}>
+                <Image alt="" src={IconCopy} className="w-[20px]" />
+              </button>
+            </>
+          ) : (
+            <div className="bg-gray-300 animate-pulse h-[20px] w-[160px] rounded-full" />
+          )}
         </div>
         <div className="w-full p-5 bg-gradient-to-br from-[#50D4B2] from-50% to-[#E2E2E2] rounded-xl h-[250px] relative">
           <div className="flex flex-col justify-start gap-2 md:gap-0">

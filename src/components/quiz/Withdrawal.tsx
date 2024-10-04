@@ -69,7 +69,7 @@ const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
       account?.method?.trim() !== '' &&
       account?.account_name?.trim() !== '' &&
       (account?.beneficiary_name?.trim() ?? '').length >= 3 &&
-      (account?.account_number?.trim() ?? '').length >= 5
+      (account?.account_number?.trim() ?? '').length >= 10
     );
   };
 

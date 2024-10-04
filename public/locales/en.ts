@@ -1003,12 +1003,13 @@ export default {
     emptyVoucher2: "Stay tuned and don't miss upcoming vouchers!",
     applied: 'Promo code successfully applied!',
     unApplied: 'Promo code has been removed successfully!',
-    apply: "Apply",
-    noExpired: "No expired date",
-    havePromo: "Have a promo code? Enter it here!",
+    apply: 'Apply',
+    noExpired: 'No expired date',
+    havePromo: 'Have a promo code? Enter it here!',
     notFound: 'Promo code not found. Make sure you entered a valid promo code.',
-    limitPurchaseMessage: 'You need to reach the minimum transaction before using the promo!',
-    limitDailyMessage: 'The promo code quota is already exceeding today’s limit',
+    limitPurchaseMessage:
+      'You need to reach the minimum transaction before using the promo!',
+    limitDailyMessage: 'The promo code quota is already exceeding today’s limit'
   },
   temporary: {
     welcome: {
@@ -1965,9 +1966,11 @@ export default {
     winnerAlertMessage2: 'You won the',
     winnerAlertMessage3: '',
     winnerAlertMessage4: 'position of',
-    winnerAlertMessage5: 'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
+    winnerAlertMessage5:
+      'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
     winnerAlertMessage6: 'Claim Prize',
-    winnerAlertMessage7: 'Click the image or Claim Button to be redirected to the prize.',
+    winnerAlertMessage7:
+      'Click the image or Claim Button to be redirected to the prize.',
     winnerAlertMessage8: 'Claim Prize Here'
   },
   micrositeQuiz: {
@@ -2157,7 +2160,10 @@ export default {
         "Don't forget to read Play Arena's terms and conditions before you start playing."
     },
     watchlist: {
-      watchlist: 'Watchlist',
+      myWatchlist: 'My Watchlist',
+      myWatchlistDescription: 'Check your watchlist',
+      assets: 'Assets',
+      btnEditAsset: 'Edit Asset',
       noData: 'No Watchlist yet',
       create: 'Create your Watchlist now!',
       createWatchlist: 'Create Watchlist',

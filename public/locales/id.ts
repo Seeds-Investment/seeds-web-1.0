@@ -922,12 +922,14 @@ export default {
     emptyVoucher2: 'Yuk, nantikan voucher dan promo berikutnya!',
     applied: 'Kode promo berhasil diterapkan!',
     unApplied: 'Kode promo berhasil dihapus!',
-    apply: "Terapkan",
-    noExpired: "Tidak ada tanggal kadaluarsa",
-    havePromo: "Punya kode promo? Masukan disini!",
-    notFound: 'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
-    limitPurchaseMessage: 'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
-    limitDailyMessage: 'Kuota kode promo sudah mencapai limit',
+    apply: 'Terapkan',
+    noExpired: 'Tidak ada tanggal kadaluarsa',
+    havePromo: 'Punya kode promo? Masukan disini!',
+    notFound:
+      'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
+    limitPurchaseMessage:
+      'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
+    limitDailyMessage: 'Kuota kode promo sudah mencapai limit'
   },
   temporary: {
     welcome: {
@@ -1892,9 +1894,11 @@ export default {
     winnerAlertMessage2: 'Kamu menjadi',
     winnerAlertMessage3: 'juara',
     winnerAlertMessage4: 'kuis',
-    winnerAlertMessage5: 'Klik tombol klaim atau tutup pop-up ini dan klik gambar di posisi kemenangan Anda untuk menuju ke hadiah.',
+    winnerAlertMessage5:
+      'Klik tombol klaim atau tutup pop-up ini dan klik gambar di posisi kemenangan Anda untuk menuju ke hadiah.',
     winnerAlertMessage6: 'Klaim Hadiah',
-    winnerAlertMessage7: 'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
+    winnerAlertMessage7:
+      'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
     winnerAlertMessage8: 'Klaim Hadiah Disini'
   },
   micrositeQuiz: {
@@ -2084,7 +2088,10 @@ export default {
         'Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya'
     },
     watchlist: {
-      watchlist: 'Daftar Pantau',
+      myWatchlist: 'Daftar Pantau Saya',
+      myWatchlistDescription: 'Periksa daftar pantauan Anda',
+      assets: 'Aset',
+      btnEditAsset: 'Edit Aset',
       noData: 'Belum Ada Daftar Pantau',
       create: 'Yuk buat Daftar Pantau sekarang!',
       createWatchlist: 'Buat Daftar Pantau',

@@ -300,11 +300,13 @@ const QuizDetail = (): React.ReactElement => {
           </div>
 
           {/* Winner Section */}
-          {
-            detailQuiz !== null && detailQuiz !== undefined &&
-              <QuizWinnerSection detailQuiz={detailQuiz} preferredCurrency={userInfo?.preferredCurrency ?? 'IDR'}/>
-          }
-          
+          {detailQuiz !== null && detailQuiz !== undefined && (
+            <QuizWinnerSection
+              detailQuiz={detailQuiz}
+              preferredCurrency={userInfo?.preferredCurrency ?? 'IDR'}
+            />
+          )}
+
           <div className="mt-4 flex flex-row gap-8">
             {detailQuiz?.sponsors?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
@@ -337,7 +339,11 @@ const QuizDetail = (): React.ReactElement => {
           </div>
         </div>
         <div className="w-full h-[300px] bg-white rounded-xl p-4 mb-32 md:mb-0">
-          <div className={`flex flex-row justify-between items-start gap-2 ${((detailQuiz?.admission_fee ?? 0) > 0) ? 'mt-4' : ''}`}>
+          <div
+            className={`flex flex-row justify-between items-start gap-2 ${
+              (detailQuiz?.admission_fee ?? 0) > 0 ? 'mt-4' : ''
+            }`}
+          >
             <div className="text-2xl lg:text-xl xl:text-2xl font-semibold">
               {detailQuiz?.name}
             </div>
@@ -349,13 +355,17 @@ const QuizDetail = (): React.ReactElement => {
               <ShareIcon width={24} height={24} />
             </button>
           </div>
-          <div className='my-4'>
-            {
-              ((userInfo !== undefined) && ((detailQuiz?.admission_fee ?? 0) > 0)) &&
-                <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Quiz'} useCoins={useCoins}/>
-            }
+          <div className="my-4">
+            {userInfo !== undefined && (detailQuiz?.admission_fee ?? 0) > 0 && (
+              <PromoCode
+                userInfo={userInfo}
+                id={id as string}
+                spotType={'Paid Quiz'}
+                useCoins={useCoins}
+              />
+            )}
           </div>
-          <div className='my-4'>
+          <div className="my-4">
             {detailQuiz?.is_need_invitation_code && (
               <div>
                 <input
@@ -386,7 +396,14 @@ const QuizDetail = (): React.ReactElement => {
           <div className="text-sm text-[#7C7C7C] mt-2.5">
             {t('quiz.entranceFee')}
           </div>
-          <div className={`${((promoCodeValidationResult) && (localStorage.getItem('accessToken') !== null)) ? 'text-[#7C7C7C] line-through decoration-2 text-md' : 'text-black text-xl font-semibold'}`}>
+          <div
+            className={`${
+              promoCodeValidationResult &&
+              localStorage.getItem('accessToken') !== null
+                ? 'text-[#7C7C7C] line-through decoration-2 text-md'
+                : 'text-black text-xl font-semibold'
+            }`}
+          >
             {detailQuiz?.admission_fee === 0
               ? t('quiz.free')
               : detailQuiz?.admission_fee?.toLocaleString('id-ID', {
@@ -394,17 +411,19 @@ const QuizDetail = (): React.ReactElement => {
                   style: 'currency'
                 })}
           </div>
-          {
-            ((promoCodeValidationResult !== 0) && (localStorage.getItem('accessToken') !== null)) &&
+          {promoCodeValidationResult !== 0 &&
+            localStorage.getItem('accessToken') !== null && (
               <div className="font-semibold text-xl">
                 {detailQuiz?.admission_fee === 0
                   ? t('quiz.free')
-                  : (promoCodeValidationResult?.response?.final_price ?? 0).toLocaleString('id-ID', {
+                  : (
+                      promoCodeValidationResult?.response?.final_price ?? 0
+                    ).toLocaleString('id-ID', {
                       currency: userInfo?.preferredCurrency ?? 'IDR',
                       style: 'currency'
                     })}
               </div>
-          }
+            )}
           <div className="flex flex-row items-center justify-between mt-2.5">
             <div className="flex flex-row items-center">
               <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />
@@ -426,7 +445,7 @@ const QuizDetail = (): React.ReactElement => {
             </div>
           </div>
           <button
-            disabled={loading}
+            disabled={loading || detailQuiz?.status === 'PUBLISHED'}
             onClick={() => {
               if (localStorage.getItem('accessToken') !== null) {
                 if (detailQuiz?.participant_status === 'JOINED') {
@@ -451,8 +470,9 @@ const QuizDetail = (): React.ReactElement => {
               }
             }}
             className={`text-white px-10 py-2 rounded-full font-semibold mt-4 w-full ${
-              invitationCode === '' &&
-              detailQuiz?.is_need_invitation_code === true
+              (invitationCode === '' &&
+                detailQuiz?.is_need_invitation_code === true) ||
+              detailQuiz?.status === 'PUBLISHED'
                 ? 'bg-[#7d7d7d]'
                 : 'bg-seeds-button-green text-white'
             }`}

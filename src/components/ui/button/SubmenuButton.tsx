@@ -23,13 +23,13 @@ const SubmenuButton: React.FC<SubmenuButtonProps> = ({
   altStartAdornment = '',
   altEndAdornment = '',
   label = 'Submenu',
-  extraClasses = 'lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6',
+  extraClasses = 'w-full sm:w-[80%] md:w-2/3 lg:w-1/2',
   className,
   style,
   onClick,
   currencyLabel
 }) => {
-  const defaultButtonClasses = `z-10 group flex items-center text-sm text-neutral-medium hover:bg-gray-200 active:bg-gray-300 rounded-md ${extraClasses}`;
+  const defaultButtonClasses = `z-10 group flex justify-start items-center text-sm text-neutral-medium hover:bg-gray-200 active:bg-gray-300 rounded-md ${extraClasses} h-auto px-2 py-2`;
 
   return (
     <button
@@ -37,13 +37,19 @@ const SubmenuButton: React.FC<SubmenuButtonProps> = ({
       style={style}
       onClick={onClick}
     >
-      <Image src={startAdornment} alt={altStartAdornment} className="mr-4" />
-      <span className="font-poppins min-w-fit">{label}</span>
-      {currencyLabel !== undefined && (
-        <div className="flex justify-end w-full items-center pr-2">
-          <span className="font-poppins text-[#BDBDBD]">{currencyLabel}</span>
-        </div>
-      )}
+      <div className="flex justify-start items-center text-start">
+        <Image
+          src={startAdornment}
+          alt={altStartAdornment}
+          className="mr-4 max-w-[24px] max-h-[24px]"
+        />
+        <span className="font-poppins flex-grow">{label}</span>
+        {currencyLabel != null && (
+          <div className="flex justify-end items-center pr-2">
+            <span className="font-poppins text-[#BDBDBD]">{currencyLabel}</span>
+          </div>
+        )}
+      </div>
       <Image
         src={endAdornment}
         alt={altEndAdornment}
@@ -54,3 +60,4 @@ const SubmenuButton: React.FC<SubmenuButtonProps> = ({
 };
 
 export default SubmenuButton;
+

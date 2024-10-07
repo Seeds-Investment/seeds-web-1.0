@@ -1,5 +1,6 @@
 import CCard from '@/components/CCard';
 import Loading from '@/components/popup/Loading';
+import DailyQuestion from '@/components/social/DailyQuestion';
 import ModalAddPost from '@/components/social/ModalAddPost';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import ModalMention from '@/containers/circle/[id]/ModalMention';
@@ -29,7 +30,6 @@ import { useTranslation } from 'react-i18next';
 import { BiLike, BiSolidLike } from 'react-icons/bi';
 import { GrDocumentText } from 'react-icons/gr';
 import { LuUsers } from 'react-icons/lu';
-// import { toast } from 'react-toastify';
 import { PiCrownSimpleFill } from 'react-icons/pi';
 
 interface UserData {
@@ -527,6 +527,7 @@ const Social: React.FC = () => {
             </div>
           </div>
           <div className="flex justify-start w-full border border-neutral-ultrasoft" />
+          <DailyQuestion />
           {dataPost.length > 0 &&
             dataPost.map((el: any, idx: number) => {
               return (

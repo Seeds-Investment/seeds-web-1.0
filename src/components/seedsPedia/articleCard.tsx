@@ -201,19 +201,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
               .join('-') as string
           }`}
         >
-          {isImageValid ? (
-            <img
-              src={imageUrl}
-              alt={articleDetail?.title}
-              className="w-full h-[238px] rounded-t-[18px]"
-            />
-          ) : (
-            <img
-              src={defaultNews}
-              alt={articleDetail?.title}
-              className="w-full h-[238px] rounded-t-[18px]"
-            />
-          )}
+          <img
+            src={isImageValid ? imageUrl : defaultNews}
+            alt={articleDetail?.title}
+            className="w-full h-[238px] object-cover rounded-t-[18px]"
+          />
         </Link>
         <div className="p-4">
           <Link
@@ -224,7 +216,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
                 .join('-') as string
             }`}
           >
-            <h1 className="text-xl text-justify font-semibold text-[#000]">
+            <h1 className="text-xl text-justify font-semibold text-[#000] break-all">
               {articleDetail?.title !== undefined &&
               articleDetail?.title.length > 60
                 ? `${articleDetail?.title.substring(0, 60)}...`

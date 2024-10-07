@@ -5,7 +5,9 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getArticle } from '@/repository/article.repository';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Slider from 'react-slick';
+import 'swiper/css/bundle';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 export interface ArticleListRoot {
   promoCodeList: Article[];
   metadata: Metadata;
@@ -183,42 +185,44 @@ export default function ArticleList(): React.ReactElement {
             </div>
           </div>
         </div>
-        <div className="lg:hidden mt-4 ">
-          <Slider
-            slidesToShow={4}
-            speed={500}
-            initialSlide={0}
-            variableWidth={true}
-            responsive={[
-              {
-                breakpoint: 768,
-                settings: {
-                  dots: false,
-                  slidesToShow: 4,
-                  slidesToScroll: 1
-                }
+        <div className="mt-4 2xl:hidden">
+          <Swiper
+            spaceBetween={4}
+            slidesPerView={4}
+            breakpoints={{
+              640: {
+                slidesPerView: 4
+              },
+              768: {
+                slidesPerView: 6
+              },
+              1024: {
+                slidesPerView: 8
+              },
+              1280: {
+                slidesPerView: 10
               }
-            ]}
+            }}
           >
             {categories.map((category, key) => (
-              <div
-                key={key}
-                className={`${categoryItemClass} ${
-                  activeCategory === category
-                    ? 'bg-[#3AC4A0] text-white'
-                    : 'text-[#3AC4A0] bg-[#DCFCE4]'
-                }`}
-                onClick={() => {
-                  updateCategory(category);
-                }}
-              >
-                {category}
-              </div>
+              <SwiperSlide key={key}>
+                <div
+                  className={`${categoryItemClass} ${
+                    activeCategory === category
+                      ? 'bg-[#3AC4A0] text-white'
+                      : 'text-[#3AC4A0] bg-[#DCFCE4]'
+                  } truncate`}
+                  onClick={() => {
+                    updateCategory(category);
+                  }}
+                >
+                  {category}
+                </div>
+              </SwiperSlide>
             ))}
-          </Slider>
+          </Swiper>
         </div>
-
-        <div className="hidden lg:flex  justify-center mt-4 gap-4 ">
+        <div className="hidden 2xl:flex justify-center mt-4 gap-4 ">
           <button
             className={`py-1 rounded-full text-base font-semibold mx-2 px-4 ${
               activeCategory === 'All'

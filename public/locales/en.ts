@@ -2267,6 +2267,12 @@ export default {
   },
   seedsEvent: {
     myEvent: 'My Event',
+    myCertificate: 'My Certificate',
+    myCertificates: 'My Certificates',
+    sendEmailConfirm: 'Are you sure to send this certificate to your registered email?',
+    emailMessage: 'The certificate was sent successfully to your email.',
+    yes: 'Yes',
+    no: 'No',
     search: 'Search',
     enter: 'Enter',
     past: 'Past Event',

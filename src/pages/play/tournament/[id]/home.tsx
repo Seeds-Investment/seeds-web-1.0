@@ -144,7 +144,6 @@ const TournamentHome: React.FC = () => {
     search: searchQuery,
     limit: 5,
     page: 1,
-    type: 'ALL',
     currency: '',
     sort_by: ''
   });
@@ -260,24 +259,38 @@ const TournamentHome: React.FC = () => {
 
   const fetchDataAssets = async (): Promise<void> => {
     try {
-      setIsLoading(true);
-
-      const response = await getMarketList({
-        ...filter,
-        search: searchQuery,
-        sort_by: assetActiveSort
-      });
-      if (response.result === null) {
-        setAssets([]);
-      } else {
-        setAssets(response.marketAssetList);
+      if (detailTournament?.all_category !== undefined) {
+        setIsLoading(true);
+        const response = await getMarketList({
+          ...filter,
+          search: searchQuery,
+          sort_by: assetActiveSort,
+          type: handleType(detailTournament?.all_category)
+        });
+        if (response.result === null) {
+          setAssets([]);
+        } else {
+          setAssets(response.marketAssetList);
+        }
+        setIsLoading(false);
       }
-      setIsLoading(false);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
       setIsLoading(false);
     }
   };
+
+  const handleType = (categories: string[]): string => {
+    if (categories.includes('ID_STOCK')) {
+      return 'ID_STOCK';
+    } else if (categories.includes('US_STOCK')) {
+      return 'US_STOCK';
+    } else if (categories.includes('CRYPTO')) {
+      return 'CRYPTO';
+    } else {
+      return 'COMMODITIES';
+    }
+  }
 
   useEffect(() => {
     if (userInfo !== undefined && detailTournament !== undefined) {
@@ -298,7 +311,7 @@ const TournamentHome: React.FC = () => {
         toast.error('Error fetching data:', error);
       });
     }
-  }, [filter, userInfo, assetActiveSort, searchQuery]);
+  }, [filter, userInfo, assetActiveSort, searchQuery, detailTournament]);
 
   return (
     <>

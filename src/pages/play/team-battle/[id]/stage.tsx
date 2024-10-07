@@ -102,10 +102,7 @@ const StageBattle: React.FC = () => {
 
     const endDates = {
       final: moment(data.final_end).startOf('day'),
-      semifinal:
-        data?.type !== 'PROVINCE'
-          ? moment(data.semifinal_end).startOf('day')
-          : moment(data.elimination_end).startOf('day'),
+      semifinal: moment(data.semifinal_end).startOf('day'),
       elimination: moment(data.elimination_end).startOf('day'),
       registration: moment(data.registration_end).startOf('day')
     };
@@ -115,22 +112,38 @@ const StageBattle: React.FC = () => {
       setCategoryPopUp(popUpType);
     };
 
-    if (today.isAfter(endDates.final)) {
-      setSelectedCategory('final');
-      if (data.is_joined && myRank !== undefined)
-        handlePopUp(myRank?.rank <= data.prize.length ? 'win' : 'fail');
-    } else if (today.isAfter(endDates.semifinal)) {
-      setSelectedCategory('final');
-      if (data.is_joined)
-        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
-    } else if (today.isAfter(endDates.elimination)) {
-      setSelectedCategory('semifinal');
-      if (data.is_joined)
-        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
-    } else if (today.isAfter(endDates.registration)) {
-      setSelectedCategory('elimination');
-      if (data.is_joined)
-        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+    if (data?.type !== 'PROVINCE') {
+      if (today.isAfter(endDates.final)) {
+        setSelectedCategory('final');
+        if (data.is_joined && myRank !== undefined)
+          handlePopUp(myRank?.rank <= data.prize.length ? 'win' : 'fail');
+      } else if (today.isAfter(endDates.semifinal)) {
+        setSelectedCategory('final');
+        if (data.is_joined)
+          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+      } else if (today.isAfter(endDates.elimination)) {
+        setSelectedCategory('semifinal');
+        if (data.is_joined)
+          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+      } else if (today.isAfter(endDates.registration)) {
+        setSelectedCategory('elimination');
+        if (data.is_joined)
+          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+      }
+    } else {
+      if (today.isAfter(endDates.final)) {
+        setSelectedCategory('final');
+        if (data.is_joined && myRank !== undefined)
+          handlePopUp(myRank?.rank <= data.prize.length ? 'win' : 'fail');
+      } else if (today.isAfter(endDates.elimination)) {
+        setSelectedCategory('final');
+        if (data.is_joined)
+          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+      } else if (today.isAfter(endDates.registration)) {
+        setSelectedCategory('elimination');
+        if (data.is_joined)
+          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+      }
     }
   };
 

@@ -102,7 +102,10 @@ const StageBattle: React.FC = () => {
 
     const endDates = {
       final: moment(data.final_end).startOf('day'),
-      semifinal: moment(data.semifinal_end).startOf('day'),
+      semifinal:
+        data?.type !== 'PROVINCE'
+          ? moment(data.semifinal_end).startOf('day')
+          : moment(data.elimination_end).startOf('day'),
       elimination: moment(data.elimination_end).startOf('day'),
       registration: moment(data.registration_end).startOf('day')
     };
@@ -203,26 +206,31 @@ const StageBattle: React.FC = () => {
             </div>
             <div className="w-full flex justify-center items-center">
               <div className="flex flex-row">
-                {categoryBattle?.map((item, i) => {
-                  return (
-                    <button
-                      key={i}
-                      onClick={() => {
-                        setSelectedCategory(item.key);
-                        handleDateChanging();
-                      }}
-                      className={`${
-                        item.key === selectedCategory
-                          ? 'border-b-4 border-[#65d8c3] text-[#2934B2] font-bold'
-                          : 'font-semibold text-[#3D3D3D]'
-                      } py-3 px-3 text-xl mt-10 font-poppins`}
-                    >
-                      <p className="transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer">
-                        {item.label}
-                      </p>
-                    </button>
-                  );
-                })}
+                {categoryBattle
+                  ?.filter(
+                    item =>
+                      !(data?.type === 'PROVINCE' && item.key === 'semifinal')
+                  )
+                  .map((item, i) => {
+                    return (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          setSelectedCategory(item.key);
+                          handleDateChanging();
+                        }}
+                        className={`${
+                          item.key === selectedCategory
+                            ? 'border-b-4 border-[#65d8c3] text-[#2934B2] font-bold'
+                            : 'font-semibold text-[#3D3D3D]'
+                        } py-3 px-3 text-xl mt-10 font-poppins`}
+                      >
+                        <p className="transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer">
+                          {item.label}
+                        </p>
+                      </button>
+                    );
+                  })}
               </div>
             </div>
             <div>
@@ -298,17 +306,27 @@ const StageBattle: React.FC = () => {
                           className="text-white bg-[#407f74] p-1 rounded absolute -right-8 bottom-2 cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                         />
                       </div>
-                      <button
-                        onClick={async () => {
-                          await router.push(
-                            `/play/team-battle/${id as string}/arena`
-                          );
-                        }}
-                        className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white hidden lg:block"
-                        disabled={data?.status === 'ENDED'}
+                      <div
+                        className={`justify-center items-center w-full ${
+                          today.isBefore(dateScheduleStart) ? 'hidden' : 'flex'
+                        }`}
                       >
-                        {t('teamBattle.stagePage.enter')}
-                      </button>
+                        <button
+                          onClick={async () => {
+                            await router.push(
+                              `/play/team-battle/${id as string}/arena`
+                            );
+                          }}
+                          className={`transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl ${
+                            data?.status === 'ENDED'
+                              ? 'bg-gray-500'
+                              : 'bg-[#2934b2]'
+                          } text-base lg:text-lg text-white border-2 border-white hidden lg:block`}
+                          disabled={data?.status === 'ENDED'}
+                        >
+                          {t('teamBattle.stagePage.enter')}
+                        </button>
+                      </div>
                       <div className="grid grid-cols-7 items-center lg:hidden">
                         <div className="col-span-2">
                           <div className="flex flex-row items-center gap-2 border-r-2 border-[#407F74]">
@@ -361,8 +379,8 @@ const StageBattle: React.FC = () => {
             </div>
           </div>
           <div
-            className={`flex justify-center items-center ${
-              today.isSameOrBefore(dateScheduleStart) ? 'hidden' : 'lg:hidden'
+            className={`justify-center items-center ${
+              today.isBefore(dateScheduleStart) ? 'hidden' : 'flex lg:hidden'
             }`}
           >
             <button

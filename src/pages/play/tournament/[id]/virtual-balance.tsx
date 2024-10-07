@@ -71,6 +71,13 @@ interface UserInfo {
   preferredCurrency: string;
 }
 
+interface HistoryTransactionMetadata {
+  currentPage: number
+  limit: number
+  totalPage: number
+  totalRow: number
+}
+
 const VirtualBalance = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
@@ -97,6 +104,7 @@ const VirtualBalance = (): React.ReactElement => {
   const [historyTransaction, setHistoryTransaction] = useState<
     HistoryTransaction[]
   >([]);
+  const [historyTransactionMetadata, setHistoryTransactionMetadata] = useState<HistoryTransactionMetadata>();
   const [historyParams, setHistoryParams] = useState({
     limit: 5,
     page: 1
@@ -108,6 +116,7 @@ const VirtualBalance = (): React.ReactElement => {
   });
 
   useEffect(() => {
+    setOrderParams({ ...orderParams, page: 1 });
     setHistoryParams({ ...historyParams, page: 1 });
   }, [activeNavbar]);
 
@@ -176,6 +185,7 @@ const VirtualBalance = (): React.ReactElement => {
         currency
       });
       setHistoryTransaction(response?.playOrders);
+      setHistoryTransactionMetadata(response?.metadata)
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -261,12 +271,9 @@ const VirtualBalance = (): React.ReactElement => {
               </TabsHeader>
               <TabsBody className="w-full">
                 <TabPanel value="openOrder">
-                  {openOrder?.slice(
-                    orderParams.startIndex,
-                    orderParams.endIndex
-                  ).length !== 0 ? (
+                  {openOrder !== null ? (
                     <>
-                      {openOrder?.map(data => (
+                      {openOrder?.slice(orderParams.startIndex, orderParams.endIndex)?.map(data => (
                         <div
                           key={data?.id}
                           className="bg-[#4DA81C] pl-1 rounded-lg shadow-lg text-xs md:text-sm"
@@ -362,7 +369,7 @@ const VirtualBalance = (): React.ReactElement => {
                   <div className="flex justify-center mx-auto my-8">
                     <AssetPagination
                       currentPage={orderParams.page}
-                      totalPages={10}
+                      totalPages={Math.ceil((openOrder?.length ?? 0) / 5)}
                       onPageChange={page => {
                         setOrderParams({
                           page,
@@ -471,7 +478,7 @@ const VirtualBalance = (): React.ReactElement => {
                   <div className="flex justify-center mx-auto my-8">
                     <AssetPagination
                       currentPage={historyParams.page}
-                      totalPages={10}
+                      totalPages={Math.ceil(historyTransactionMetadata?.totalPage ?? 0)}
                       onPageChange={page => {
                         setHistoryParams({ ...historyParams, page });
                       }}

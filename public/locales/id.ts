@@ -2534,6 +2534,7 @@ export default {
     rank: 'Peringkat',
     nameTeam: 'Nama & Tim',
     currentRank: 'Peringkat Sekarang',
+    next: 'Selanjutnya',
     mainPage: {
       period: 'Periode',
       registration: 'Registrasi',

@@ -2604,6 +2604,7 @@ export default {
     rank: 'Rank',
     nameTeam: 'Name & Team',
     currentRank: 'Current Rank',
+    next: 'Next',
     mainPage: {
       period: 'Period',
       registration: 'Registration',

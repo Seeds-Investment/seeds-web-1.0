@@ -148,7 +148,7 @@ const TeamBattle = (): React.ReactElement => {
                 setFetchTrigger(true);
               }}
             >
-              Next
+              {t('teamBattle.next')}
             </Button>
           </div>
         </div>

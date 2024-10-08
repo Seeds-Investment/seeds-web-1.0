@@ -61,9 +61,19 @@ const StageBattle: React.FC = () => {
       setIsLoading(true);
       const response = await getBattleDetail(id as string);
       setData(response);
-      if (response !== undefined) {
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGetRank = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      if (data !== undefined) {
         const responseMyRank = await getMyRankBattle(id as string, {
-          stage: response?.my_last_stage
+          stage: selectedCategory.toLocaleUpperCase()
         });
         setMyRank(responseMyRank);
       }
@@ -155,6 +165,7 @@ const StageBattle: React.FC = () => {
 
   useEffect(() => {
     handleDateChanging();
+    void handleGetRank();
   }, [data, selectedCategory]);
 
   useEffect(() => {
@@ -175,7 +186,7 @@ const StageBattle: React.FC = () => {
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="text-center text-xl sm:text-2xl col-span-1 font-poppins">
+          <div className="text-center text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins">
             {t('teamBattle.battleCompetition')}
           </div>
           <div className="flex justify-end items-center">
@@ -236,7 +247,7 @@ const StageBattle: React.FC = () => {
                           item.key === selectedCategory
                             ? 'border-b-4 border-[#49c0ab] text-[#2934B2] font-bold'
                             : 'font-semibold text-[#3D3D3D] border-b-2 border-[#7555da] border-dashed'
-                        } p-3 text-xl mt-5 font-poppins`}
+                        } p-3 text-base sm:text-lg xl:text-xl mt-5 font-poppins`}
                       >
                         <p className="transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer">
                           {item.label}
@@ -263,7 +274,7 @@ const StageBattle: React.FC = () => {
                     />
                   ) : (
                     <div className="flex flex-col items-center justify-center gap-5">
-                      <div className="font-semibold text-base lg:text-lg text-[#3D3D3D] my-10 text-center">
+                      <div className="font-semibold text-sm sm:text-base lg:text-lg text-[#3D3D3D] my-10 text-center">
                         {t('teamBattle.stagePage.gamePeriod')} :{' '}
                         {dateScheduleStart} - {dateScheduleEnd}
                       </div>
@@ -288,7 +299,7 @@ const StageBattle: React.FC = () => {
                                     : 'border-2'
                                 } border-[#76a5d0]`}
                               />
-                              <div className="absolute left-1/2 transform -translate-x-1/2">
+                              <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
                                 <div
                                   className={`relative flex-col justify-center items-center mt-1 ${
                                     selectedSponsor === item.name
@@ -310,8 +321,8 @@ const StageBattle: React.FC = () => {
                         {t('teamBattle.mainPage.participants')}
                       </div>
                       <div className="flex flex-row text-[#407F74] relative">
-                        <FaUserGroup size={50} />
-                        <span className="text-2xl">{data?.participants}</span>
+                        <FaUserGroup size={40} />
+                        <span className="text-xl">{data?.participants}</span>
                         <FaChevronRight
                           size={25}
                           onClick={async () =>
@@ -345,15 +356,15 @@ const StageBattle: React.FC = () => {
                           {t('teamBattle.stagePage.enter')}
                         </button>
                       </div>
-                      <div className="grid grid-cols-7 items-center lg:hidden">
-                        <div className="col-span-2">
+                      <div className="grid grid-cols-9 items-center lg:hidden">
+                        <div className="col-span-3">
                           <div className="flex flex-row items-center gap-2 border-r-2 border-[#407F74]">
                             <Image
                               src={Crown}
                               width={300}
                               height={300}
                               alt="crown-icon"
-                              className="w-12 md:w-14"
+                              className="w-4/12"
                             />
                             <div className="flex flex-col">
                               <div className="text-xs">Rank</div>
@@ -363,18 +374,21 @@ const StageBattle: React.FC = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="col-span-4 flex flex-row items-center">
-                          <FaStar size={40} className="text-[#ffc107]" />
+                        <div className="col-span-5 flex flex-row items-center">
+                          <FaStar
+                            size="calc(100% / 6)"
+                            className="text-[#ffc107]"
+                          />
                           <div>
                             <div className="font-medium text-xs md:text-sm">
                               {t('teamBattle.stagePage.letsCheck')}
                             </div>
-                            <div className="font-semibold text-base md:text-xl">
+                            <div className="font-semibold text-sm sm:text-base md:text-lg 2xl:text-xl">
                               {t('teamBattle.fullLeaderboard')}
                             </div>
                           </div>
                         </div>
-                        <div
+                        <button
                           className="col-span-1 flex items-center justify-end cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                           onClick={async () =>
                             await router.push(
@@ -383,12 +397,13 @@ const StageBattle: React.FC = () => {
                               }/leaderboard?stage=${selectedCategory}`
                             )
                           }
+                          disabled={today.isBefore(dateScheduleStart)}
                         >
                           <FaChevronRight
                             size={25}
                             className="text-white bg-[#407f74] p-1 rounded"
                           />
-                        </div>
+                        </button>
                       </div>
                     </div>
                   )}
@@ -405,58 +420,69 @@ const StageBattle: React.FC = () => {
               onClick={async () => {
                 await router.push(`/play/team-battle/${id as string}/arena`);
               }}
-              className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white"
+              className={`transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl ${
+                data?.status === 'ENDED' ? 'bg-gray-500' : 'bg-[#2934b2]'
+              } text-base lg:text-lg text-white border-2 border-white block lg:hidden`}
               disabled={data?.status === 'ENDED'}
             >
-              Enter
+              {t('teamBattle.stagePage.enter')}
             </button>
           </div>
-          <div className="col-span-1 bg-white/50 border-2 border-white rounded-2xl h-fit p-3 hidden lg:block">
-            <div className="font-semibold text-[#3D3D3D] text-xl font-poppins text-center">
-              {t('teamBattle.leaderBoard')}
-            </div>
-            <div className="flex flex-col justify-center items-center gap-2">
-              <Image
-                src={Crown}
-                width={300}
-                height={300}
-                alt="crown-icon"
-                className="w-16"
-              />
-              <p className="text-sm">{t('teamBattle.stagePage.yourRank')}</p>
-              <div className="text-xl px-12 py-1 border-2 border-dashed rounded-xl border-[#3D3D3D] font-bold w-fit">
-                {myRank?.rank ?? 0}
-              </div>
-              <div className="grid grid-cols-5 items-center gap-3 mt-10">
-                <div className="col-span-1">
-                  <FaStar size={60} className="text-[#ffc107]" />
-                </div>
-                <div className="col-span-3 flex flex-col justify-center">
-                  <p className="font-medium text-sm">
-                    {t('teamBattle.stagePage.letsCheck')}
-                  </p>
-                  <p className="font-semibold text-lg">
-                    {t('teamBattle.fullLeaderboard')}
-                  </p>
-                </div>
-                <div
-                  className="col-span-1 flex items-center justify-center cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
-                  onClick={async () =>
-                    await router.push(
-                      `/play/team-battle/${
-                        id as string
-                      }/leaderboard?stage=${selectedCategory}`
-                    )
-                  }
-                >
-                  <FaChevronRight
-                    size={25}
-                    className="text-white bg-[#407f74] p-1 rounded"
-                  />
-                </div>
+          {isLoading ? (
+            <div className="w-full flex justify-center h-fit my-8">
+              <div className="h-[60px]">
+                <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="col-span-1 bg-white/50 border-2 border-white rounded-2xl h-fit p-3 hidden lg:block">
+              <div className="font-semibold text-[#3D3D3D] text-xl font-poppins text-center">
+                {t('teamBattle.leaderBoard')}
+              </div>
+              <div className="flex flex-col justify-center items-center gap-2">
+                <Image
+                  src={Crown}
+                  width={300}
+                  height={300}
+                  alt="crown-icon"
+                  className="w-4/12"
+                />
+                <p className="text-sm">{t('teamBattle.stagePage.yourRank')}</p>
+                <div className="text-xl px-12 py-1 border-2 border-dashed rounded-xl border-[#3D3D3D] font-bold w-fit">
+                  {myRank?.rank ?? 0}
+                </div>
+                <div className="grid grid-cols-9 items-center gap-3 mt-10">
+                  <div className="col-span-2">
+                    <FaStar size="4vw" className="text-[#ffc107]" />
+                  </div>
+                  <div className="col-span-5 flex flex-col justify-center">
+                    <p className="font-medium text-xs 2xl:text-sm">
+                      {t('teamBattle.stagePage.letsCheck')}
+                    </p>
+                    <p className="font-semibold text-sm 2xl:text-lg">
+                      {t('teamBattle.fullLeaderboard')}
+                    </p>
+                  </div>
+                  <button
+                    className="col-span-2 flex items-center justify-center cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
+                    onClick={async () =>
+                      await router.push(
+                        `/play/team-battle/${
+                          id as string
+                        }/leaderboard?stage=${selectedCategory}`
+                      )
+                    }
+                    disabled={today.isBefore(dateScheduleStart)}
+                  >
+                    <FaChevronRight
+                      size={25}
+                      className="text-white bg-[#407f74] p-1 rounded"
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <PopUpQualifiedStage

@@ -17,7 +17,7 @@ const OnGoingStage: React.FC<OnGoingStageProps> = ({
   const { t } = useTranslation();
   return (
     <>
-      <div className="flex flex-col gap-3 items-center justify-center font-semibold text-lg">
+      <div className="flex flex-col gap-3 items-center justify-center font-semibold text-sm sm:text-base 2xl:text-lg">
         <Image
           src={OnGoingIcon}
           alt="on-going"

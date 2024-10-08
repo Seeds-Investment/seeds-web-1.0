@@ -107,7 +107,7 @@ const HistoryBattle: React.FC = () => {
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="text-center text-xl sm:text-2xl col-span-2 lg:col-span-1 font-poppins">
+          <div className="text-center text-lg sm:text-xl lg:text-2xl col-span-2 lg:col-span-1 font-poppins">
             {t('teamBattle.history.myBattle')}
           </div>
         </div>
@@ -123,9 +123,9 @@ const HistoryBattle: React.FC = () => {
                   }}
                   className={`${
                     item.key === selectedCategory
-                      ? 'border-b-8 border-[#65d8c3] text-[#2934B2] font-bold'
+                      ? 'border-b-4 border-[#65d8c3] text-[#2934B2] font-bold'
                       : 'font-semibold text-white'
-                  } py-3 px-5 text-2xl mt-10 font-poppins`}
+                  } py-3 px-5 text-base sm:text-lg lg:text-xl xl:text-2xl mt-10 font-poppins`}
                 >
                   <p className="transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer">
                     {item.label}
@@ -173,7 +173,7 @@ const HistoryBattle: React.FC = () => {
                           : 'min-h-24 max-h-28'
                       }`}
                     >
-                      <div className="font-bold text-white text-xl w-11/12 truncate text-center">
+                      <div className="font-bold text-white text-base lg:text-lg xl:text-xl w-11/12 truncate text-center">
                         {teamBattle.title}
                       </div>
                       <div
@@ -207,7 +207,7 @@ const HistoryBattle: React.FC = () => {
                               )}
                             </div>
                             <div
-                              className="text-sm text-white font-normal py-2 px-4"
+                              className="text-xs sm:text-sm text-white font-normal py-2 px-4"
                               dangerouslySetInnerHTML={{
                                 __html:
                                   teamBattle.tnc?.[

@@ -2544,6 +2544,7 @@ export default {
     next: 'Selanjutnya',
     timeTo: `Waktunya`,
     battle: 'Bertanding!',
+    prize: 'Hadiah',
     mainPage: {
       period: 'Periode',
       registration: 'Registrasi',

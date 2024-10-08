@@ -128,7 +128,7 @@ const MainTeamBattle = (): React.ReactElement => {
           >
             <IoArrowBack size={30} />
           </div>
-          <Typography className="text-white font-poppins text-xl sm:text-2xl">
+          <Typography className="text-white font-poppins text-lg sm:text-xl lg:text-2xl">
             {t('teamBattle.battleCompetition')}
           </Typography>
         </div>
@@ -537,7 +537,7 @@ const MainTeamBattle = (): React.ReactElement => {
                                 : 'border-2'
                             } border-[#76a5d0]`}
                           />
-                          <div className="absolute left-1/2 transform -translate-x-1/2">
+                          <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
                             <div
                               className={`relative flex-col justify-center items-center mt-1 ${
                                 selectedSponsor === item.name

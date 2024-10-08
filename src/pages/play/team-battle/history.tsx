@@ -183,7 +183,9 @@ const HistoryBattle: React.FC = () => {
                           handleMoreInfoClick(teamBattle.id);
                         }}
                       >
-                        <span className="text-xs">More Information</span>
+                        <span className="text-xs">
+                          {t('teamBattle.history.moreInfo')}
+                        </span>
                         {windowWidth <= 539 &&
                         activeBattleId === teamBattle.id ? (
                           <CiSquareChevUp size={15} />
@@ -195,7 +197,7 @@ const HistoryBattle: React.FC = () => {
                         activeBattleId === teamBattle.id && (
                           <div className="py-2 px-5 text-white text-xs mt-2">
                             <div className="py-2 px-5 border-white border-2 rounded-3xl text-white text-xs">
-                              Periode :{' '}
+                              {t('teamBattle.mainPage.period')} :{' '}
                               {moment(teamBattle?.registration_start).format(
                                 'DD MMM YYYY'
                               )}{' '}
@@ -221,7 +223,13 @@ const HistoryBattle: React.FC = () => {
               })
             ) : (
               <div className="col-span-3">
-                <HistoryNotFound />
+                <HistoryNotFound
+                  text={
+                    categoryBattle
+                      .find(item => item.key === selectedCategory)
+                      ?.label.toLowerCase() ?? ''
+                  }
+                />
               </div>
             )}
           </div>

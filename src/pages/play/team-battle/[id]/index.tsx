@@ -27,7 +27,8 @@ import {
 } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IoArrowBack } from 'react-icons/io5';
+import { IoArrowBack, IoTriangleSharp } from 'react-icons/io5';
+import { LuDot } from 'react-icons/lu';
 import { toast } from 'react-toastify';
 
 const MainTeamBattle = (): React.ReactElement => {
@@ -37,12 +38,14 @@ const MainTeamBattle = (): React.ReactElement => {
   // const languageCtx = useContext(LanguageContext);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [showTnc, setShowTnc] = useState<boolean>(false);
+  const [showPeriod, setShowPeriod] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPopUpJoinBattle, setShowPopUpJoinBattle] =
     useState<boolean>(false);
   const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] =
     useState<boolean>(false);
   const [data, setData] = useState<TeamBattleDetail>();
+  const [selectedSponsor, setSelectedSponsor] = useState('');
 
   const handleShowPopUpJoinBattle = (): void => {
     setShowPopUpJoinBattle(!showPopUpJoinBattle);
@@ -93,6 +96,14 @@ const MainTeamBattle = (): React.ReactElement => {
     return timeStart < timeNow;
   };
 
+  const handleSelectedSponsor = (sponsor: string): void => {
+    if (selectedSponsor === sponsor) {
+      setSelectedSponsor('');
+    } else {
+      setSelectedSponsor(sponsor);
+    }
+  };
+
   useEffect(() => {
     fetchData()
       .then()
@@ -117,8 +128,8 @@ const MainTeamBattle = (): React.ReactElement => {
           >
             <IoArrowBack size={30} />
           </div>
-          <Typography className="text-white font-poppins text-2xl">
-            Battle Competition
+          <Typography className="text-white font-poppins text-lg sm:text-xl lg:text-2xl">
+            {t('teamBattle.battleCompetition')}
           </Typography>
         </div>
 
@@ -231,126 +242,177 @@ const MainTeamBattle = (): React.ReactElement => {
               </div>
             ) : (
               <>
-                <div className="flex flex-col justify-center items-center">
-                  <Typography className="text-[#3D3D3D] font-poppins text-xl font-semibold">
-                    It`s time to
+                <div className="flex flex-col justify-center items-center gap-4">
+                  <Typography className="text-[#3D3D3D] font-poppins text-xl sm:text-2xl font-semibold">
+                    {t('teamBattle.timeTo')}
                   </Typography>
-                  <Typography className="text-[#407F74] font-poppins text-5xl font-bold">
-                    Battle!
+                  <Typography className="text-[#407F74] font-poppins text-3xl sm:text-5xl font-bold">
+                    {t('teamBattle.battle')}
                   </Typography>
                 </div>
-                <div className="text-xs lg:text-lg text-[#3D3D3D] font-semibold">
-                  <div className="w-full">
-                    <div className="flex gap-2 justify-between">
-                      <div className="w-[70px] lg:w-[110px]">
-                        {t('teamBattle.mainPage.period')}
-                      </div>
-                      <div>
-                        :{' '}
-                        {`
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.registration_start ??
+                <div className="text-xs sm:text-sm xl:text-lg text-[#3D3D3D] font-semibold font-poppins">
+                  <div className="w-full my-10">
+                    <table className="w-full border-none my-4 text-[#3D3D3D] border-separate border-spacing-y-4">
+                      <tbody className="font-semibold">
+                        <tr>
+                          <td className="flex items-center space-x-1">
+                            <LuDot size={30} className="hidden lg:flex" />
+                            <span>{t('teamBattle.mainPage.period')}</span>
+                          </td>
+                          <td>
+                            :{' '}
+                            {data?.elimination_start !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.elimination_start) ??
                                     '2024-12-31T23:59:00Z'
                                 )
-                              )} -
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.final_end ?? '2024-12-31T23:59:00Z'
-                                )
-                              )}`}
-                      </div>
-                    </div>
-                    <div className="flex gap-2 justify-between">
-                      <div className="w-[70px] lg:w-[110px]">
-                        {t('teamBattle.mainPage.registration')}
-                      </div>
-                      <div>
-                        :{' '}
-                        {`
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.registration_start ??
+                              : ''}{' '}
+                            -{' '}
+                            {data?.final_end !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.final_end) ??
                                     '2024-12-31T23:59:00Z'
                                 )
-                              )} -
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.registration_end ??
+                              : ''}
+                          </td>
+                          <td className="relative">
+                            <div
+                              className="bg-[#407F74] w-[25px] h-[25px] flex justify-center items-center rounded-md cursor-pointer hover:bg-opacity-70 duration-300 lg:hidden absolute inset-y-1/2 transform -translate-y-1/2"
+                              onClick={() => {
+                                setShowPeriod(!showPeriod);
+                              }}
+                            >
+                              <Image
+                                className="w-[15px] h-[15px]"
+                                src={
+                                  showPeriod ? ArrowTailessUp : ArrowTailessDown
+                                }
+                                width={100}
+                                height={100}
+                                alt={
+                                  showPeriod
+                                    ? 'ArrowTailessUp'
+                                    : 'ArrowTailessDown'
+                                }
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                        <tr
+                          className={`${
+                            showPeriod ? '' : 'hidden lg:table-row'
+                          }`}
+                        >
+                          <td className="flex items-center space-x-1">
+                            <LuDot size={30} className="hidden lg:flex" />
+                            <span>{t('teamBattle.mainPage.registration')}</span>
+                          </td>
+                          <td>
+                            :{' '}
+                            {data?.registration_start !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.registration_start) ??
                                     '2024-12-31T23:59:00Z'
                                 )
-                              )}`}
-                      </div>
-                    </div>
-                    <div className="flex gap-2 justify-between">
-                      <div className="w-[70px] lg:w-[110px]">
-                        {t('teamBattle.mainPage.elimination')}
-                      </div>
-                      <div>
-                        :{' '}
-                        {`
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.elimination_start ??
+                              : ''}{' '}
+                            -{' '}
+                            {data?.registration_end !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.registration_end) ??
                                     '2024-12-31T23:59:00Z'
                                 )
-                              )} -
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.elimination_end ??
+                              : ''}
+                          </td>
+                        </tr>
+                        <tr
+                          className={`${
+                            showPeriod ? '' : 'hidden lg:table-row'
+                          }`}
+                        >
+                          <td className="flex items-center space-x-1">
+                            <LuDot size={30} className="hidden lg:flex" />
+                            <span>{t('teamBattle.mainPage.elimination')}</span>
+                          </td>
+                          <td>
+                            :{' '}
+                            {data?.elimination_start !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.elimination_start) ??
                                     '2024-12-31T23:59:00Z'
                                 )
-                              )}`}
-                      </div>
-                    </div>
-                    <div
-                      className={`${
-                        data?.type === 'PROVINCE' ? 'hidden' : 'flex'
-                      } gap-2 justify-between`}
-                    >
-                      <div className="w-[70px] lg:w-[110px]">
-                        {t('teamBattle.mainPage.semifinal')}
-                      </div>
-                      <div>
-                        :{' '}
-                        {`
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.semifinal_start ??
+                              : ''}{' '}
+                            -{' '}
+                            {data?.elimination_end !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.elimination_end) ??
                                     '2024-12-31T23:59:00Z'
                                 )
-                              )} -
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.semifinal_end ?? '2024-12-31T23:59:00Z'
+                              : ''}
+                          </td>
+                        </tr>
+                        <tr
+                          className={`${
+                            data?.type !== 'PROVINCE' && showPeriod
+                              ? 'lg:table-row'
+                              : 'hidden'
+                          }`}
+                        >
+                          <td className="flex items-center space-x-1">
+                            <LuDot size={30} className="hidden lg:flex" />
+                            <span>{t('teamBattle.mainPage.semifinal')}</span>
+                          </td>
+                          <td>
+                            :{' '}
+                            {data?.semifinal_start !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.semifinal_start) ??
+                                    '2024-12-31T23:59:00Z'
                                 )
-                              )}`}
-                      </div>
-                    </div>
-                    <div className="flex gap-2 justify-between">
-                      <div className="w-[70px] lg:w-[110px]">
-                        {t('teamBattle.mainPage.final')}
-                      </div>
-                      <div>
-                        :{' '}
-                        {`
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.final_start ?? '2024-12-31T23:59:00Z'
+                              : ''}{' '}
+                            -{' '}
+                            {data?.semifinal_end !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.semifinal_end) ??
+                                    '2024-12-31T23:59:00Z'
                                 )
-                              )} -
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.final_end ?? '2024-12-31T23:59:00Z'
+                              : ''}
+                          </td>
+                        </tr>
+                        <tr
+                          className={`${
+                            showPeriod ? '' : 'hidden lg:table-row'
+                          }`}
+                        >
+                          <td className="flex items-center space-x-1">
+                            <LuDot size={30} className="hidden lg:flex" />
+                            <span>{t('teamBattle.mainPage.final')}</span>
+                          </td>
+                          <td>
+                            :{' '}
+                            {data?.final_start !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.final_start) ??
+                                    '2024-12-31T23:59:00Z'
                                 )
-                              )}`}
-                      </div>
-                    </div>
+                              : ''}{' '}
+                            -{' '}
+                            {data?.final_end !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.final_end) ??
+                                    '2024-12-31T23:59:00Z'
+                                )
+                              : ''}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                   <div className="flex flex-col justify-center items-center text-sm mt-4">
-                    <div>{t('teamBattle.mainPage.participants')}</div>
-                    <div className="flex justify-center items-start gap-1 mt-2">
-                      <div className="w-[30px] h-[30px]">
+                    <div className="text-xl font-semibold font-poppins">
+                      {t('teamBattle.mainPage.participants')}
+                    </div>
+                    <div className="flex justify-center items-start gap-1 mt-2 text-[#407f74]">
+                      <div className="w-[40px] h-[40px]">
                         <Image
                           className="w-full h-full"
                           src={GroupIcon}
@@ -359,7 +421,7 @@ const MainTeamBattle = (): React.ReactElement => {
                           alt={'GroupIcon'}
                         />
                       </div>
-                      <div>{data?.participants ?? 0}</div>
+                      <div className="text-lg">{data?.participants ?? 0}</div>
                     </div>
                   </div>
                   <div className="mt-4 hidden lg:flex">
@@ -377,7 +439,7 @@ const MainTeamBattle = (): React.ReactElement => {
             )}
           </div>
 
-          <div className="hidden lg:flex flex-col w-[400px] justify-center items-center gap-2 border-2 border-x-white border-b-white rounded-lg py-8 px-2 bg-white/50 relative mt-4">
+          <div className="hidden lg:flex flex-col w-[400px] justify-center items-center gap-2 border-2 border-x-white border-b-white rounded-lg py-8 px-2 bg-white/50 relative mt-12">
             {isLoading ? (
               <div className="w-full flex justify-center h-fit my-8">
                 <div className="h-[60px]">
@@ -386,11 +448,11 @@ const MainTeamBattle = (): React.ReactElement => {
               </div>
             ) : (
               <>
-                <div className="w-full flex flex-col justify-center items-center px-2">
+                <div className="w-full flex flex-col justify-center items-center px-2 font-poppins">
                   <div className="flex gap-2 justify-center items-end">
                     <div className="flex justify-center items-center">
                       <Image
-                        className="w-[35px] h-[35px]"
+                        className="w-[50px] h-[50px]"
                         src={GoldCrown}
                         width={100}
                         height={100}
@@ -407,11 +469,11 @@ const MainTeamBattle = (): React.ReactElement => {
                   </div>
                 </div>
                 <div className="w-full flex justify-between px-2">
-                  <div className="flex flex-col justify-center items-center">
+                  <div className="flex flex-col justify-center items-center font-poppins">
                     <div className="flex gap-2">
                       <div className="flex justify-center items-center">
                         <Image
-                          className="w-[20px] h-[20px]"
+                          className="w-[30px] h-[30px]"
                           src={SilverMedal}
                           width={100}
                           height={100}
@@ -427,11 +489,11 @@ const MainTeamBattle = (): React.ReactElement => {
                       )}`}
                     </div>
                   </div>
-                  <div className="flex flex-col justify-center items-center">
+                  <div className="flex flex-col justify-center items-center font-poppins">
                     <div className="flex gap-2">
                       <div className="flex justify-center items-center">
                         <Image
-                          className="w-[20px] h-[20px]"
+                          className="w-[30px] h-[30px]"
                           src={BronzeMedal}
                           width={100}
                           height={100}
@@ -449,30 +511,49 @@ const MainTeamBattle = (): React.ReactElement => {
                   </div>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-2">
-                  <div className="text-lg text-[#3D3D3D] font-semibold">
+                  <div className="text-lg text-[#3D3D3D] font-semibold font-poppins">
                     {(data?.sponsors?.length ?? 0) > 1
                       ? t('teamBattle.mainPage.sponsors')
                       : t('teamBattle.mainPage.sponsor')}
                   </div>
                   <div className="flex flex-wrap justify-center items-center gap-2">
-                    {data?.sponsors?.map((item, index) => (
-                      <div
-                        key={index}
-                        className="flex justify-center items-center border-2 hover:border-4 duration-200 border-[#76A5D0] w-[65px] h-[65px] rounded-lg cursor-pointer"
-                      >
-                        {item?.logo === '' ? (
-                          <div className="w-[65px] h-[65px] bg-white animate-pulse rounded-lg" />
-                        ) : (
+                    {data?.sponsors?.map((item, i) => {
+                      return (
+                        <div
+                          key={i}
+                          onClick={() => {
+                            handleSelectedSponsor(item.name);
+                          }}
+                          className="relative"
+                        >
                           <Image
-                            className="w-[65px] h-auto rounded-lg"
-                            src={item?.logo}
-                            width={100}
-                            height={100}
-                            alt={'item?.logo'}
+                            src={item.logo}
+                            alt="sponsor-logo"
+                            width={300}
+                            height={300}
+                            className={`w-12 xl:w-14 2xl:w-16 h-12 xl:h-14 2xl:h-16 object-contain rounded-xl bg-white cursor-pointer ${
+                              selectedSponsor === item.name
+                                ? 'border-4'
+                                : 'border-2'
+                            } border-[#76a5d0]`}
                           />
-                        )}
-                      </div>
-                    ))}
+                          <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
+                            <div
+                              className={`relative flex-col justify-center items-center mt-1 ${
+                                selectedSponsor === item.name
+                                  ? 'flex'
+                                  : 'hidden'
+                              }`}
+                            >
+                              <IoTriangleSharp className="text-white absolute -top-2" />
+                              <div className="w-auto rounded p-2 bg-white border-none text-xs">
+                                {item.name}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -480,13 +561,13 @@ const MainTeamBattle = (): React.ReactElement => {
                   onClick={() => {
                     setShowTnc(!showTnc);
                   }}
-                  className="flex flex-col gap-2 justify-center items-center mt-4 border-2 rounded-lg p-2 border-dashed border-[#2934B2]"
+                  className="flex flex-col gap-2 justify-start items-center mt-4 border-2 rounded-lg p-2 border-dashed border-[#2934B2] w-full h-full max-h-80 font-poppins"
                 >
                   <div className="font-semibold">
                     {t('teamBattle.mainPage.tnc')}
                   </div>
                   <div
-                    className="flex flex-col justify-start items-start gap-2 text-xs overflow-y-scroll h-fit max-h-[100px]"
+                    className="flex flex-col justify-start items-start gap-2 text-xs overflow-y-auto h-full w-full team-battle-scroll"
                     dangerouslySetInnerHTML={{
                       __html: data?.tnc?.[
                         i18n.language === 'id' ? 'id' : 'en'
@@ -520,24 +601,39 @@ const MainTeamBattle = (): React.ReactElement => {
                 : t('teamBattle.mainPage.sponsor')}
             </div>
             <div className="flex flex-wrap justify-center items-center gap-2 max-w-[400px]">
-              {data?.sponsors?.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex justify-center items-center border-2 hover:border-4 duration-200 border-[#76A5D0] w-[65px] h-[65px] rounded-lg cursor-pointer"
-                >
-                  {item?.logo === '' ? (
-                    <div className="w-[65px] h-[65px] bg-white animate-pulse rounded-lg" />
-                  ) : (
+              {data?.sponsors?.map((item, i) => {
+                return (
+                  <div
+                    key={i}
+                    onClick={() => {
+                      handleSelectedSponsor(item.name);
+                    }}
+                    className="relative"
+                  >
                     <Image
-                      className="w-[65px] h-auto rounded-lg"
-                      src={item?.logo}
-                      width={100}
-                      height={100}
-                      alt={'item?.logo'}
+                      src={item.logo}
+                      alt="sponsor-logo"
+                      width={300}
+                      height={300}
+                      className={`w-16 h-16 object-contain rounded-xl bg-white cursor-pointer ${
+                        selectedSponsor === item.name ? 'border-4' : 'border-2'
+                      } border-[#76a5d0]`}
                     />
-                  )}
-                </div>
-              ))}
+                    <div className="absolute left-1/2 transform -translate-x-1/2">
+                      <div
+                        className={`relative flex-col justify-center items-center mt-1 ${
+                          selectedSponsor === item.name ? 'flex' : 'hidden'
+                        }`}
+                      >
+                        <IoTriangleSharp className="text-white absolute -top-2" />
+                        <div className="w-auto rounded p-2 bg-white border-none text-xs">
+                          {item.name}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -545,7 +641,7 @@ const MainTeamBattle = (): React.ReactElement => {
             onClick={() => {
               setShowTnc(!showTnc);
             }}
-            className="flex gap-2 justify-center items-center mt-4"
+            className="flex gap-2 justify-center items-center mt-4 font-poppins"
           >
             <div>{t('teamBattle.mainPage.tnc')}</div>
             <div className="bg-[#407F74] w-[25px] h-[25px] flex justify-center items-center rounded-md cursor-pointer hover:bg-opacity-70 duration-300">
@@ -561,7 +657,7 @@ const MainTeamBattle = (): React.ReactElement => {
 
           {showTnc && (
             <div
-              className="flex flex-col justify-start items-start gap-2 border-2 mt-4 text-sm border-white rounded-2xl py-2 pt-4 px-8 bg-white/50 h-fit max-h-[200px] overflow-y-scroll"
+              className="flex flex-col justify-start items-start gap-2 border-2 mt-4 text-sm border-white rounded-2xl py-2 pt-4 px-8 bg-white/50 h-fit max-h-[200px] overflow-y-scroll w-full font-poppins"
               dangerouslySetInnerHTML={{
                 __html: data?.tnc?.[
                   i18n.language === 'id' ? 'id' : 'en'

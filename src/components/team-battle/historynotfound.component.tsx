@@ -11,7 +11,7 @@ const HistoryNotFound: React.FC<HistoryNotFoundProps> = ({ text }) => {
   const { t } = useTranslation();
   return (
     <>
-      <div className="flex flex-col items-center justify-center font-semibold text-xl my-14">
+      <div className="flex flex-col items-center justify-center font-semibold text-sm sm:text-base 2xl:text-lg my-14">
         <Image
           src={NotFoundImage}
           alt="not-found"

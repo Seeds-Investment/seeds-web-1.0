@@ -204,3 +204,71 @@ export const checkInOutEvent = async (params: {
     await Promise.reject(error);
   }
 };
+
+export const getCertificateById = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await discoverService.get(`/event/${id}/certificate`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const getMyCertificate = async (
+  params: {
+    page: number,
+    limit: number
+  }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await discoverService.get(`/my-certificates/event`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const sendCertificateToEmail = async (ticketId: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null) {
+      return 'Access token not found';
+    }
+
+    return await discoverService.post(
+      `/event/${ticketId}/certificate/send`,
+      {},
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};

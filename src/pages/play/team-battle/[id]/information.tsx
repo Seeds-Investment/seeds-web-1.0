@@ -1,4 +1,5 @@
 import PopUpPrizeBattle from '@/components/team-battle/popUpPrizeBattle';
+import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getBattleDetail } from '@/repository/team-battle.repository';
 import i18n from '@/utils/common/i18n';
@@ -97,7 +98,7 @@ const BattleInformation: React.FC = () => {
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="text-center text-xl sm:text-2xl col-span-2 lg:col-span-1 font-poppins">
+          <div className="text-center text-lg sm:text-xl lg:text-2xl col-span-2 lg:col-span-1 font-poppins">
             {t('teamBattle.battleCompetition')}
           </div>
         </div>
@@ -109,7 +110,7 @@ const BattleInformation: React.FC = () => {
               className="text-[#27a590] p-2 bg-white/50 rounded-xl absolute right-2 top-2 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
             />
             <div className="lg:hidden font-semibold text-xl text-center mt-3">
-              Prize
+              {t('teamBattle.prize')}
             </div>
             <div className="grid grid-cols-3">
               <div></div>
@@ -126,8 +127,8 @@ const BattleInformation: React.FC = () => {
               <div className="flex flex-col items-center justify-end">
                 <div className="flex flex-col gap-2 items-center justify-end lg:border-none border-e-2 h-fit w-full">
                   <div className="flex flex-row items-end justify-end">
-                    <Image src={Second} alt="2nd" />{' '}
-                    <span className="text-xl font-medium">2nd</span>
+                    <Image src={Second} alt="2nd" className="w-6/12" />{' '}
+                    <span className="text-lg sm:text-xl font-medium">2nd</span>
                   </div>
                   <div className="font-bold text-base sm:text-lg md:text-xl lg:text-2xl">
                     {data?.prize[1]?.amount}
@@ -136,8 +137,8 @@ const BattleInformation: React.FC = () => {
               </div>
               <div className="flex flex-col gap-2 items-center justify-center">
                 <div className="flex flex-row items-end justify-end lg:hidden">
-                  <Image src={Crown} alt="1st" />{' '}
-                  <span className="text-xl font-medium">1st</span>
+                  <Image src={Crown} alt="1st" className="w-8/12" />{' '}
+                  <span className="text-lg sm:text-xl font-medium">1st</span>
                 </div>
                 <div className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl lg:hidden">
                   {data?.prize[0].amount}
@@ -146,8 +147,8 @@ const BattleInformation: React.FC = () => {
               <div className="flex flex-col items-center justify-end">
                 <div className="flex flex-col gap-2 items-center justify-end w-full lg:border-none border-s-2">
                   <div className="flex flex-row items-end justify-end">
-                    <Image src={Third} alt="3rd" />{' '}
-                    <span className="text-xl font-medium">3rd</span>
+                    <Image src={Third} alt="3rd" className="w-6/12" />{' '}
+                    <span className="text-lg sm:text-xl font-medium">3rd</span>
                   </div>
                   <div className="font-bold text-base sm:text-lg md:text-xl lg:text-2xl">
                     {data?.prize[2]?.amount}
@@ -160,7 +161,7 @@ const BattleInformation: React.FC = () => {
                 {t('teamBattle.stagePage.gamePeriod')}
               </div>
               <table className="w-fit border-collapse border-none my-4 text-[#3D3D3D]">
-                <tbody className="text-sm sm:text-lg font-semibold">
+                <tbody className="text-xs sm:text-sm xl:text-lg font-semibold">
                   <tr>
                     <td className="flex items-center space-x-1">
                       <LuDot size={30} />
@@ -248,9 +249,11 @@ const BattleInformation: React.FC = () => {
               <div className="font-semibold text-lg sm:text-xl mb-4 text-[#3D3D3D]">
                 {t('teamBattle.mainPage.participants')}
               </div>
-              <div className="flex flex-row text-[#407F74]">
-                <FaUserGroup size={50} />
-                <span className="text-2xl">{data?.participants}</span>
+              <div className="flex flex-row text-[#407F74] justify-center">
+                <FaUserGroup size="calc(100% / 6)" />
+                <span className="text-lg sm:text-xl lg:text-2xl">
+                  {data?.participants}
+                </span>
               </div>
             </div>
           </div>
@@ -284,7 +287,7 @@ const BattleInformation: React.FC = () => {
               {t('teamBattle.mainPage.tnc')}
             </div>
             <div
-              className="h-[500px] overflow-y-auto tnc-battle-custom-scroll"
+              className="h-auto lg:h-[500px] overflow-y-auto tnc-battle-custom-scroll"
               dangerouslySetInnerHTML={{
                 __html: data?.tnc?.[
                   i18n.language === 'id' ? 'id' : 'en'
@@ -298,4 +301,4 @@ const BattleInformation: React.FC = () => {
   );
 };
 
-export default BattleInformation;
+export default withAuth(BattleInformation);

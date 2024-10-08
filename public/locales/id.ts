@@ -2008,7 +2008,7 @@ export default {
       transaction: 'Transaksi',
       openOrder: 'Pesanan',
       historyTransaction: 'Riwayat Transaksi',
-      pending: 'Menunggu - Limit Pembelian',
+      pending: 'Menunggu Pesanan',
       sorry: 'Maaf!',
       noData: 'Data yang Kamu cari tidak ada.',
       amount: 'Nilai',
@@ -2197,6 +2197,13 @@ export default {
   },
   seedsEvent: {
     myEvent: 'Event Saya',
+    myCertificate: 'Sertifikat Saya',
+    myCertificates: 'Sertifikat Saya',
+    sendEmailConfirm:
+      'Apa kamu yakin untuk mengirimkan sertifikat ke emailmu yang digunakan untuk mendaftar event ini?',
+    emailMessage: 'Sertifikat berhasil dikirim ke email anda.',
+    yes: 'Ya',
+    no: 'Tidak',
     search: 'Cari event',
     enter: 'Cari',
     past: 'Event Berakhir',
@@ -2535,6 +2542,9 @@ export default {
     nameTeam: 'Nama & Tim',
     currentRank: 'Peringkat Sekarang',
     next: 'Selanjutnya',
+    timeTo: `Waktunya`,
+    battle: 'Bertanding!',
+    prize: 'Hadiah',
     mainPage: {
       period: 'Periode',
       registration: 'Registrasi',

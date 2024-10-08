@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use client';
-import { calculatePercentageChange } from '@/helpers/assetPercentageChange';
-import { standartCurrency } from '@/helpers/currency';
+import { calculatePercentageDifference } from '@/helpers/currency';
 import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import {
   getWatchlistById,
   updateWatchlist
 } from '@/repository/market.repository';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
-import { Typography } from '@material-tailwind/react';
+import {
+  ArrowTrendingDownIcon,
+  ArrowTrendingUpIcon
+} from '@heroicons/react/24/outline';
+import { Avatar, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
@@ -65,7 +68,7 @@ const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
 
   useEffect(() => {
     void fetchPlayWatchlist();
-  }, []);
+  }, [data?.id]);
 
   const fetchPlayWatchlist = async (): Promise<void> => {
     try {
@@ -87,6 +90,14 @@ const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
       onClose();
+    }
+  };
+
+  const handleArrow = (value: number): boolean => {
+    if (value > 0) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -133,53 +144,71 @@ const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
           </div>
         </div>
         <div className="w-full gap-4 mt-4">
-          {assets?.map(item => (
+          {assets?.map(asset => (
             <div
-              key={item.id}
+              key={asset.id}
               className="w-full h-fit py-2 mb-2 bg-[#F7FBFA] flex justify-between pl-2 pr-4 md:pl-4"
             >
-              <div className="flex justify-start items-center gap-2 md:gap-4">
-                <div className="h-[30px] w-[30px]">
-                  <img src={item?.logo} className="w-full h-full" />
-                </div>
-                <div>
-                  <div>
-                    {item?.seedsTicker} / {item?.exchangeCurrency}
-                  </div>
-                  <div className="hidden md:flex">{item?.name}</div>
-                  <div className="md:hidden">
-                    {item?.name?.length < 12
-                      ? item?.name
-                      : `${item?.name?.slice(0, 11)}...`}
-                  </div>
+              <div className="flex items-center gap-3">
+                <Avatar src={asset?.logo} alt="logo" width={40} height={40} />
+                <div className="flex flex-col gap-[6px]">
+                  <Typography className="font-poppins lg:text-sm text-xs font-semibold">
+                    {asset?.realTicker} /{' '}
+                    <span className="font-normal text-xs">
+                      {userInfo?.preferredCurrency ?? 'IDR'}
+                    </span>
+                  </Typography>
+                  <Typography className="text-[#7C7C7C] font-normal text-xs font-poppins">
+                    {asset?.name}
+                  </Typography>
                 </div>
               </div>
-              <div className="flex">
-                <div className="flex flex-col justify-end items-end">
-                  <div>
-                    {userInfo?.preferredCurrency !== undefined
-                      ? userInfo?.preferredCurrency
-                      : 'IDR'}
-                    {standartCurrency(item?.priceBar?.close ?? 0).replace(
-                      'Rp',
-                      ''
-                    )}
-                  </div>
-                  {item?.priceBar !== undefined && (
-                    <div
-                      className={`${
-                        item?.priceBar?.close >= item?.priceBar?.open
-                          ? 'text-[#3AC4A0]'
-                          : 'text-[#DD2525]'
-                      } text-base`}
-                    >
-                      {`(${calculatePercentageChange(
-                        item?.priceBar?.open ?? 0,
-                        item?.priceBar?.close ?? 0
-                      )}%)`}
-                    </div>
+              <div className="flex flex-col gap-[6px] items-end">
+                <Typography className="font-poppins text-sm font-semibold">
+                  {userInfo?.preferredCurrency}{' '}
+                  {asset?.priceBar?.close > 0.01
+                    ? new Intl.NumberFormat().format(asset?.priceBar?.close)
+                    : asset?.priceBar?.close}
+                </Typography>
+                <Typography
+                  className={`flex font-normal text-xs ${
+                    handleArrow(
+                      calculatePercentageDifference(
+                        asset?.priceBar?.open,
+                        asset?.priceBar?.close
+                      ).value
+                    )
+                      ? 'text-[#3AC4A0]'
+                      : 'text-red-500'
+                  }`}
+                >
+                  {handleArrow(
+                    calculatePercentageDifference(
+                      asset?.priceBar?.open,
+                      asset?.priceBar?.close
+                    ).value
+                  ) ? (
+                    <ArrowTrendingUpIcon
+                      height={15}
+                      width={15}
+                      className="mr-2"
+                    />
+                  ) : (
+                    <ArrowTrendingDownIcon
+                      height={15}
+                      width={15}
+                      className="mr-2"
+                    />
                   )}
-                </div>
+                  (
+                  {
+                    calculatePercentageDifference(
+                      asset?.priceBar?.open,
+                      asset?.priceBar?.close
+                    )?.value
+                  }{' '}
+                  %)
+                </Typography>
               </div>
             </div>
           ))}

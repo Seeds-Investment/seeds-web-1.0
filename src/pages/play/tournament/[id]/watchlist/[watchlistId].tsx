@@ -1,16 +1,22 @@
 import Loading from '@/components/popup/Loading';
+import ModalEditWatchlist from '@/components/popup/ModalEditWatchlist';
 import { calculatePercentageDifference } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import { getWatchlistById } from '@/repository/market.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
-import { type AssetWatchlist } from '@/utils/interfaces/watchlist.interface';
+import {
+  type AssetWatchlist,
+  type Watchlist
+} from '@/utils/interfaces/watchlist.interface';
 import {
   ArrowTrendingDownIcon,
   ArrowTrendingUpIcon
 } from '@heroicons/react/24/solid';
 import { Avatar, Button, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { ArrowBackwardIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -22,6 +28,13 @@ const AssetWatchList: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [detailWatchList, setDetailWatchList] = useState<AssetWatchlist>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [isEditModal, setIsEditModal] = useState<boolean>(false);
+  const [editedWatchlist, setEditedWatchlist] = useState<Watchlist>({
+    id: '',
+    play_id: '',
+    name: '',
+    imgUrl: ''
+  });
 
   const fetchDetailWatchlist = async (): Promise<void> => {
     try {
@@ -64,20 +77,42 @@ const AssetWatchList: React.FC = () => {
     }
   };
 
+  const handleOpenEdit = (data: Watchlist): void => {
+    setIsEditModal(true);
+    setEditedWatchlist(data);
+  };
+
   return (
     <div className="w-full bg-white p-5 rounded-2xl">
       {isLoading ? (
         <Loading />
       ) : (
         <div className="flex flex-col">
-          <Typography className="lg:text-xl text-lg font-poppins font-semibold mb-4">
-            {detailWatchList?.watchlist?.name}
-          </Typography>
+          <div className="flex justify-between items-center mb-4">
+            <Image
+              onClick={() => {
+                router.back();
+              }}
+              src={ArrowBackwardIcon}
+              alt="ArrowBackwardIcon"
+              width={30}
+              height={30}
+              className="cursor-pointer"
+            />
+            <Typography className="flex-1 text-center lg:text-xl text-lg font-poppins font-semibold">
+              {detailWatchList?.watchlist?.name}
+            </Typography>
+          </div>
           <div className="flex justify-between">
             <Typography className="lg:text-xl text-base font-poppins font-semibold">
               {t('tournament.watchlist.assets')}
             </Typography>
-            <Button className="bg-seeds-button-green rounded-full font-poppins capitalize">
+            <Button
+              onClick={() => {
+                handleOpenEdit(detailWatchList?.watchlist as Watchlist);
+              }}
+              className="bg-seeds-button-green rounded-full font-poppins capitalize"
+            >
               {t('tournament.watchlist.btnEditAsset')}
             </Button>
           </div>
@@ -151,6 +186,15 @@ const AssetWatchList: React.FC = () => {
               </div>
             ))}
           </div>
+          {isEditModal && userInfo != null && (
+            <ModalEditWatchlist
+              onClose={() => {
+                setIsEditModal(prev => !prev);
+              }}
+              data={editedWatchlist}
+              userInfo={userInfo}
+            />
+          )}
         </div>
       )}
     </div>

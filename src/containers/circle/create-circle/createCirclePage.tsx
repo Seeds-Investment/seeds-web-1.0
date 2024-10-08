@@ -16,6 +16,7 @@ import {
 import Image from 'next/image';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { MultiValue } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { toast } from 'react-toastify';
 import ModalMembershipType from './modalMembershipType';
@@ -80,6 +81,10 @@ const CreateCirclePage = ({
 }: any): JSX.Element => {
   const [hashtags, setHashtag] = useState<HashtagInterface[]>();
   const [categories, setCategories] = useState<any[]>();
+  const [selectedCategories, setSelectedCategories] = useState<
+    MultiValue<string>
+  >([]);
+  const [limitReached, setLimitReached] = useState(false);
   const [openModalMembership, setOpenModalMembership] = useState(false);
   const [isAgree, setIsAgree] = useState();
   const { t } = useTranslation();
@@ -121,6 +126,7 @@ const CreateCirclePage = ({
   };
 
   const fetchHashtags = async (): Promise<void> => {
+    //  Get API for Hashtags
     try {
       getHashtag(initialFilterHashtags)
         .then(res => {
@@ -140,6 +146,7 @@ const CreateCirclePage = ({
   };
 
   const fetchCircleCategory = async (): Promise<void> => {
+    // Get API for Categories option
     try {
       getCircleCategories(initialFilterHashtags)
         .then(res => {
@@ -168,6 +175,16 @@ const CreateCirclePage = ({
       toast.error(`Error fetching circle data: ${error as string}`);
     } finally {
       setIsLoadingCircle(false);
+    }
+  };
+  const handleCategoryChange = (newCategories: MultiValue<string>): void => {
+    // Handle Category option, set limit to just 5 options
+    if (newCategories.length <= 5) {
+      setSelectedCategories(newCategories);
+      setLimitReached(false);
+    } else {
+      setSelectedCategories(newCategories.slice(0, 5));
+      setLimitReached(true);
     }
   };
 
@@ -296,8 +313,9 @@ const CreateCirclePage = ({
                   </label>
                   <CreatableSelect
                     isMulti
-                    onChange={changeCategory}
+                    onChange={handleCategoryChange}
                     options={categories}
+                    value={selectedCategories}
                     placeholder="Choose Categories"
                   />
                   {error.hashtags !== null ? (
@@ -305,6 +323,11 @@ const CreateCirclePage = ({
                       {error.category}
                     </Typography>
                   ) : null}
+                  {limitReached && (
+                    <Typography color="red" className="text-xs mt-2">
+                      Maximum choose 5 categories!
+                    </Typography>
+                  )}
                 </div>
 
                 <div className="mb-8">

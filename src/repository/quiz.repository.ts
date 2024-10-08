@@ -26,14 +26,14 @@ export const getQuizLeaderboard = async (params: any): Promise<any> => {
 export const getQuizTrending = async (currency: string): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
-  if (accessToken === null || accessToken === '') {
-    return await Promise.resolve('Access token not found');
-  }
+  // if (accessToken === null || accessToken === '') {
+  //   return await Promise.resolve('Access token not found');
+  // }
   try {
     return await quizService.get(`/top?currency=${currency}`, {
       headers: {
         Accept: 'application/json',
-        Authorization: `Bearer ${accessToken ?? ''}`
+        Authorization: accessToken === null ? '' : `Bearer ${accessToken ?? ''}`
       }
     });
   } catch (error) {

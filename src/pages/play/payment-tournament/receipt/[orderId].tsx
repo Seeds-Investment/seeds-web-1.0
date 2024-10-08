@@ -569,10 +569,14 @@ const SuccessPaymentPage: React.FC = () => {
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
                     {t('tournament.payment.idTransaction')}
                   </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
-                    {(orderDetail?.transactionId ?? '') === ''
+                  <Typography className="text-sm font-semibold text-[#262626] truncate">
+                    {orderDetail?.transactionId === ''
                       ? '-'
-                      : orderDetail?.transactionId}
+                      : `${(orderDetail?.transactionId ?? '').slice(0, 20)}${
+                          (orderDetail?.transactionId ?? '').length > 20
+                            ? '...'
+                            : ''
+                        }`}
                   </Typography>
                 </div>
               </Card>

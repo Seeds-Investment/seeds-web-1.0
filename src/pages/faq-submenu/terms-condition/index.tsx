@@ -20,7 +20,7 @@ const TersmCondition: React.FC = () => {
     <FaqSubmenu>
       <div className="w-full bg-white rounded-2xl flex justify-center  ">
         <div
-          className={`z-3 lg:px-[10px] min-h-[calc(100vh-100px)] overflow-hidden p-4 relative justify-center text-justify bg-opacity-100 border-white py-4 border-4 ${
+          className={`z-3 lg:px-[10px] min-h-[calc(100vh-100px)] overflow-y-auto p-4 relative justify-center text-justify bg-opacity-100 border-white py-4 border-4 ${
             width !== undefined && width < 600
               ? 'w-full overflow-x-auto'
               : width !== undefined && width < 500
@@ -30,15 +30,7 @@ const TersmCondition: React.FC = () => {
               : width !== undefined && width > 600
               ? 'w-[600px] overflow-x-visible'
               : ''
-          }   ${
-            width !== undefined && width < 370
-              ? 'h-full'
-              : width !== undefined && width < 400
-              ? 'h-[50rem]'
-              : width !== undefined && width < 415
-              ? 'h-[48rem]'
-              : 'h-full'
-          } bg-white`}
+          } h-auto bg-white`}
         >
           <div className="w-full bg-white rounded-2xl flex flex-col justify-center items-center">
             <button
@@ -55,25 +47,7 @@ const TersmCondition: React.FC = () => {
           </div>
           <br />
 
-          <div
-            className={`z-3 lg:px-[10px] min-h-[calc(100vh-100px)] p-4 relative justify-center text-justify bg-opacity-100 border-white py-4 border-4 ${
-              width !== undefined && width < 600
-                ? 'w-[99%] overflow-x-auto'
-                : width !== undefined && width < 500
-                ? 'w-[99%] overflow-x-visible'
-                : width !== undefined && width < 400
-                ? 'w-[99%] overflow-x-visible'
-                : ''
-            }  ${
-              width !== undefined && width < 370
-                ? 'h-[50rem]'
-                : width !== undefined && width < 400
-                ? 'h-[50rem]'
-                : width !== undefined && width < 415
-                ? 'h-[48rem]'
-                : ''
-            } bg-white`}
-          >
+          <div>
             <p
               className={`mb-5 font-semibold font-poppins font-14 font-600 leading-5 ${
                 width !== undefined && width < 600 ? 'h-[20px]' : ''

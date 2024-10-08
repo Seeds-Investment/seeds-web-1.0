@@ -17,7 +17,7 @@ import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { EventIcon } from 'public/assets/vector';
+import { EventIcon, MyCertificateIcon } from 'public/assets/vector';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -173,14 +173,25 @@ const MyEvent: React.FC = () => {
     <>
       <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
         <div className="flex justify-between w-full relative">
-          <Typography className="w-full text-xl lg:text-2xl font-semibold text-center flex justify-center items-center">
-            {t('seedsEvent.myEvent')}
-          </Typography>
           <div
             onClick={async () => await router.push('/homepage/event')}
             className="bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer absolute left-0 top-[-6px] lg:top-[-4px]"
           >
             <Image src={EventIcon} alt={'EventIcon'} width={20} height={20} />
+          </div>
+          <Typography className="w-full text-xl lg:text-2xl font-semibold text-center flex justify-center items-center">
+            {t('seedsEvent.myEvent')}
+          </Typography>
+          <div
+            onClick={ async() => await router.push('/homepage/event/my-certificate')}
+            className='bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer absolute right-0 top-[-6px] lg:top-[-4px]'
+          >
+            <Image
+              src={MyCertificateIcon}
+              alt={'MyCertificateIcon'}
+              width={20}
+              height={20}
+            />
           </div>
         </div>
         <div className="w-full flex flex-col md:flex-row items-center justify-start mt-4 gap-4">

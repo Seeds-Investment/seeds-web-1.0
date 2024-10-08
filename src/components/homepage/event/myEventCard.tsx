@@ -17,7 +17,13 @@ interface MyEventCardProps {
   item: EventList;
 }
 
+<<<<<<< HEAD
 const MyEventCard: React.FC<MyEventCardProps> = ({ item }) => {
+=======
+const MyEventCard: React.FC<MyEventCardProps> = ({
+  item
+}) => {
+>>>>>>> 9d75a2e5e60e0541148555668579b69afe608294
   const router = useRouter();
   const languageCtx = useContext(LanguageContext);
   const [ticketData, setTicketData] = useState<TicketData>();
@@ -38,13 +44,21 @@ const MyEventCard: React.FC<MyEventCardProps> = ({ item }) => {
 
   useEffect(() => {
     if (redirectTrigger) {
+<<<<<<< HEAD
       if (
         ticketData?.status === 'ISSUED' ||
         ticketData?.status === 'CHECKED_OUT'
       ) {
+=======
+      if (isEventEnded()) {
+>>>>>>> 9d75a2e5e60e0541148555668579b69afe608294
         void router.push(`/homepage/event/${id}`);
       } else {
-        void router.push(`/homepage/event/${id}/check-in-out`);
+        if (ticketData?.status === 'ISSUED' || ticketData?.status === 'CHECKED_OUT') {
+          void router.push(`/homepage/event/${id}`);
+        } else {
+          void router.push(`/homepage/event/${id}/check-in-out`);
+        }
       }
     }
   }, [redirectTrigger]);
@@ -57,7 +71,21 @@ const MyEventCard: React.FC<MyEventCardProps> = ({ item }) => {
       toast.error(`Error fetching data: ${error as string}`);
     }
   };
+<<<<<<< HEAD
 
+=======
+  
+  const isEventEnded = (): boolean => {
+    const endDateObject = new Date(item?.ended_at ?? '');
+    const endDateTimestamp = endDateObject.getTime();
+
+    const currentDateObject = new Date();
+    const currentDateTimestamp = currentDateObject.getTime();
+
+    return endDateTimestamp < currentDateTimestamp;
+  };
+  
+>>>>>>> 9d75a2e5e60e0541148555668579b69afe608294
   return (
     <div
       key={item?.id}

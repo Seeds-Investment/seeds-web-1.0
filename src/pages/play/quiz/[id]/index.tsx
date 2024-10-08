@@ -377,25 +377,12 @@ const QuizDetail = (): React.ReactElement => {
                   onChange={e => {
                     setInvitationCode(e.target.value);
                   }}
-                  placeholder="Invitation Code"
-                  className="w-full border p-2 rounded-md"
+                  placeholder={`${t('quiz.invitationCodePlaceholder')}`}
+                  className="w-full border p-2 rounded-md mt-2"
                 />
               </div>
             )}
           </div>
-          {detailQuiz?.is_need_invitation_code && (
-            <div>
-              <input
-                type="text"
-                value={invitationCode}
-                onChange={e => {
-                  setInvitationCode(e.target.value);
-                }}
-                placeholder={`${t('quiz.invitationCodePlaceholder')}`}
-                className="w-full border p-2 rounded-md mt-2"
-              />
-            </div>
-          )}
           <div className="text-sm text-[#7C7C7C] mt-2.5">
             {t('quiz.entranceFee')}
           </div>

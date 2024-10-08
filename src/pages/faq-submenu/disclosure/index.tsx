@@ -28,15 +28,7 @@ const Disclosure: React.FC = () => {
               : width !== undefined && width < 400
               ? 'w-[99%] overflow-x-visible'
               : ''
-          }   ${
-            width !== undefined && width < 370
-              ? 'h-full'
-              : width !== undefined && width < 400
-              ? 'h-[50rem]'
-              : width !== undefined && width < 415
-              ? 'h-[48rem]'
-              : 'h-full'
-          } bg-white`}
+          } h-auto bg-white`}
         >
           <div className="w-full bg-white rounded-2xl flex flex-col justify-center items-center">
             <button

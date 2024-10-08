@@ -72,9 +72,10 @@ export interface IDetailQuiz {
   created_at: Date;
   is_need_invitation_code: boolean;
   quiz_unique_id: string;
-  prize_type: string
-  winner_link_url: string[]
-  winner_image_url: string[]
+  prize_type: string;
+  winner_link_url: string[];
+  winner_image_url: string[];
+  payment_method: string;
 }
 
 export const initialDetailQuiz = {
@@ -259,7 +260,6 @@ export interface QuizCashoutRespI {
   created_at: string;
   updated_at: string;
 }
-
 export interface QuizCategoryI {
   category_id: string;
   name: string;
@@ -267,4 +267,26 @@ export interface QuizCategoryI {
     id: string;
     en: string;
   };
+}
+
+export interface ImageBanner {
+  image_link: string;
+  image_url: string;
+}
+export interface TopQuiz {
+  id: string;
+  quiz_unique_id: string;
+  name: string;
+  banner: ImageBanner;
+  questions: number;
+  participants: number;
+  category: string;
+  status: string;
+  admission_fee: number;
+  is_played: boolean;
+  is_recommended: boolean;
+  is_free_voucher_claimed: boolean;
+  started_at: string;
+  ended_at: string;
+  created_at: string;
 }

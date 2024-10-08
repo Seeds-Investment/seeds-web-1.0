@@ -15,7 +15,7 @@ interface MyEventCardProps {
 }
 
 const MyEventCard: React.FC<MyEventCardProps> = ({
-  item,
+  item
 }) => {
   const router = useRouter();
   const languageCtx = useContext(LanguageContext);
@@ -37,10 +37,14 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
 
   useEffect(() => {
     if (redirectTrigger) {
-      if (ticketData?.status === 'ISSUED' || ticketData?.status === 'CHECKED_OUT') {
+      if (isEventEnded()) {
         void router.push(`/homepage/event/${id}`);
       } else {
-        void router.push(`/homepage/event/${id}/check-in-out`);
+        if (ticketData?.status === 'ISSUED' || ticketData?.status === 'CHECKED_OUT') {
+          void router.push(`/homepage/event/${id}`);
+        } else {
+          void router.push(`/homepage/event/${id}/check-in-out`);
+        }
       }
     }
   }, [redirectTrigger]);
@@ -52,6 +56,16 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     }
+  };
+  
+  const isEventEnded = (): boolean => {
+    const endDateObject = new Date(item?.ended_at ?? '');
+    const endDateTimestamp = endDateObject.getTime();
+
+    const currentDateObject = new Date();
+    const currentDateTimestamp = currentDateObject.getTime();
+
+    return endDateTimestamp < currentDateTimestamp;
   };
   
   return (

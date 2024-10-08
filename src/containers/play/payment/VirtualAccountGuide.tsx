@@ -19,32 +19,45 @@ interface VirtualAccountGuideProps {
     phoneNumber?: string | undefined
   ) => Promise<void>;
   newPromoCodeDiscount: number;
+  username?: string;
 }
 
 const VirtualAccountGuide = ({
   payment,
   dataPost,
   handlePay,
-  newPromoCodeDiscount
+  newPromoCodeDiscount,
+  username
 }: VirtualAccountGuideProps): JSX.Element => {
-  const { premiumCircleFee } = useSelector((state: RootState) => state?.premiumCircle ?? {});
+  const { premiumCircleFee } = useSelector(
+    (state: RootState) => state?.premiumCircle ?? {}
+  );
   const { t } = useTranslation();
-  const accountNumber = '123 0865 9878 9000';
-  const accountName = 'Margaretha Intan Pratiwi';
-  const userName = 'Jeri';
+  const accountNumber = '';
+  const accountName = '';
+  const userName = username;
   const admissionFee = premiumCircleFee;
-  const adminFee = dataPost?.admin_fee as number;
+  const quizFee = (dataPost?.quiz?.admission_fee as number) ?? 0;
+  const adminFee = (dataPost?.admin_fee as number) ?? 0;
   const translationsId = 'PlayPayment.VirtualAccountGuide';
   const bankName = payment?.payment_method?.split('_')[0];
+  const quizAdminFee = (payment?.admin_fee as number) ?? 0;
+  const quizServiceFee = (payment?.service_fee as number) ?? 0;
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
-  const discount =
-    promoCodeValidationResult !== 0
-      ? newPromoCodeDiscount
-      : 0;
-  const totalFee = parseInt(`${admissionFee + adminFee - discount}`);
-  
+  const discount = promoCodeValidationResult !== 0 ? newPromoCodeDiscount : 0;
+  const totalFee = parseInt(
+    `${
+      quizFee +
+      admissionFee +
+      adminFee +
+      quizAdminFee +
+      quizServiceFee -
+      discount
+    }`
+  );
+
   return (
     <div className="max-h-[70vh]">
       <div className="flex items-center">
@@ -82,19 +95,34 @@ const VirtualAccountGuide = ({
         {accountName}
       </Typography>
       <Divider />
-      <InlineText
-        label={
-          dataPost !== undefined
-            ? 'Circle Membership'
-            : t(`${translationsId}.admissionFeeLabel`)
-        }
-        value={`IDR ${admissionFee}`}
-        className="mb-2"
-      />
-      <InlineText
-        label={t(`${translationsId}.adminFeeLabel`)}
-        value={`IDR ${adminFee}`}
-      />
+      {quizFee > 0 && (
+        <InlineText
+          label={
+            dataPost !== undefined
+              ? 'Quiz Fee'
+              : t(`${translationsId}.admissionFeeLabel`)
+          }
+          value={`IDR ${quizFee}`}
+          className="mb-2"
+        />
+      )}
+      {admissionFee > 0 && (
+        <InlineText
+          label={
+            dataPost !== undefined
+              ? 'Circle Membership'
+              : t(`${translationsId}.admissionFeeLabel`)
+          }
+          value={`IDR ${admissionFee}`}
+          className="mb-2"
+        />
+      )}
+      {adminFee > 0 && (
+        <InlineText
+          label={t(`${translationsId}.adminFeeLabel`)}
+          value={`IDR ${adminFee}`}
+        />
+      )}
       {promoCodeValidationResult !== undefined ? (
         <InlineText
           label={t(`${translationsId}.promoCodeDiscountLabel`)}
@@ -105,7 +133,20 @@ const VirtualAccountGuide = ({
           className="mb-2"
         />
       ) : null}
-      <Divider />
+      {quizAdminFee > 0 && (
+        <InlineText
+          label={'Admin Fee'}
+          value={`IDR ${quizAdminFee ?? 0}`}
+          className="mb-2"
+        />
+      )}
+      {quizServiceFee > 0 && (
+        <InlineText
+          label={'Service Fee'}
+          value={`IDR ${quizServiceFee ?? 0}`}
+          className="mb-2"
+        />
+      )}
       <Divider />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right">
         {`IDR ${totalFee}`}
@@ -121,7 +162,9 @@ const VirtualAccountGuide = ({
       <Typography className="text-[#262626] font-normal mb-4">
         1.
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step1.1`)} </a>
-        {t(`${translationsId}.step1.2`, { provider: 'BCA' })}
+        {t(`${translationsId}.step1.2`, {
+          provider: payment?.payment_method.split('_')[0]
+        })}
       </Typography>
       <Typography className="text-[#262626] font-normal mb-4">
         2.

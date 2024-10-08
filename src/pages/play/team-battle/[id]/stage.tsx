@@ -95,16 +95,16 @@ const StageBattle: React.FC = () => {
     }
   };
 
-  const today = moment().startOf('day');
+  const today = moment();
 
   const determineCurrentCategory = (): void => {
     if (data == null) return;
 
     const endDates = {
-      final: moment(data.final_end).startOf('day'),
-      semifinal: moment(data.semifinal_end).startOf('day'),
-      elimination: moment(data.elimination_end).startOf('day'),
-      registration: moment(data.registration_end).startOf('day')
+      final: moment(data.final_end),
+      semifinal: moment(data.semifinal_end),
+      elimination: moment(data.elimination_end),
+      registration: moment(data.registration_end)
     };
 
     const handlePopUp = (popUpType: string): void => {
@@ -313,7 +313,9 @@ const StageBattle: React.FC = () => {
                           size={25}
                           onClick={async () =>
                             await router.push(
-                              `/play/team-battle/${id as string}/participants`
+                              `/play/team-battle/${
+                                id as string
+                              }/participants?stage=${selectedCategory}`
                             )
                           }
                           className="text-white bg-[#407f74] p-1 rounded absolute -right-8 bottom-2 cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"

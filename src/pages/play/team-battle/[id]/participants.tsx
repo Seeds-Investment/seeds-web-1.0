@@ -1,14 +1,12 @@
 import AssetPagination from '@/components/AssetPagination';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
-  getBattleDetail,
   getBattleParticipants,
   type BattleParticipantsI
 } from '@/repository/team-battle.repository';
 import {
   type ParticipantsDataI,
-  type ParticipantsMetadata,
-  type TeamBattleDetail
+  type ParticipantsMetadata
 } from '@/utils/interfaces/team-battle.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import Image from 'next/image';
@@ -20,10 +18,9 @@ import { toast } from 'react-toastify';
 
 const BattleParticipants: React.FC = () => {
   const router = useRouter();
-  const id = router.query.id;
+  const { id, stage } = router.query;
   const { t } = useTranslation();
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const [data, setData] = useState<TeamBattleDetail | undefined>(undefined);
   const [participantsData, setParticipantsData] = useState<ParticipantsDataI[]>(
     []
   );
@@ -32,7 +29,8 @@ const BattleParticipants: React.FC = () => {
 
   const [participantsParams, setParticipantsParams] = useState({
     limit: 20,
-    page: 1
+    page: 1,
+    stage
   });
   const startIndex = (participantsParams.page - 1) * participantsParams.limit;
 
@@ -60,15 +58,6 @@ const BattleParticipants: React.FC = () => {
     }
   };
 
-  const handleGetDetailBattle = async (): Promise<void> => {
-    try {
-      const response = await getBattleDetail(id as string);
-      setData(response);
-    } catch (error: any) {
-      toast(error.message, { type: 'error' });
-    }
-  };
-
   const capitalizeFirstLetter = (text: string): string => {
     if (text.length === 0) return '';
     return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
@@ -79,12 +68,6 @@ const BattleParticipants: React.FC = () => {
       .then()
       .catch(() => {});
   }, []);
-
-  useEffect(() => {
-    if (id !== undefined) {
-      void handleGetDetailBattle();
-    }
-  }, [id]);
 
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
@@ -107,13 +90,11 @@ const BattleParticipants: React.FC = () => {
         </div>
         <div className="bg-white/50 border-white rounded-xl w-full h-[85vh] relative px-2 md:px-8 lg:px-16 flex flex-col justify-center items-center mt-4">
           <div className="h-fit flex justify-center items-center absolute top-[-26px] m-auto right-0 left-0 px-8 py-4 rounded-full text-white font-semibold bg-[#2934B2] w-fit text-center lg:text-xl">
-            {data?.status !== undefined &&
-              t('teamBattle.participant.frontTitle')}
+            {stage !== undefined && t('teamBattle.participant.frontTitle')}
             {capitalizeFirstLetter(
-              data?.status ?? t('teamBattle.participant.emptyTitle')
+              (stage as string) ?? t('teamBattle.participant.emptyTitle')
             )}
-            {data?.status !== undefined &&
-              t('teamBattle.participant.backTitle')}
+            {stage !== undefined && t('teamBattle.participant.backTitle')}
           </div>
           {participantsMetadata !== undefined ? (
             participantsData?.length !== 0 ? (

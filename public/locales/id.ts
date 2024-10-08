@@ -2106,7 +2106,10 @@ export default {
       deleteConfirm: 'Apa Kamu yakin ingin menghapus Daftar Pantau ini?',
       changeAsset: 'Ubah Aset',
       enter: 'Masukan nama Daftar Pantau...',
-      search: 'Cari'
+      search: 'Cari',
+      modalHeader: 'Tambahkan Aset ke Daftar Pantauan',
+      addToWatchlist: 'Tambahkan ke Daftar Pantauan',
+      newWatchlist: 'Buat Daftar Pantauan baru'
     },
     social: {
       sorry: 'Maaf, data postingan tidak ada!',

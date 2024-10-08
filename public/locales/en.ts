@@ -2178,7 +2178,10 @@ export default {
       deleteConfirm: 'Are you sure want to delete this watchlist?',
       changeAsset: 'Change Asset',
       enter: 'Enter Watchlist name...',
-      search: 'Search'
+      search: 'Search',
+      modalHeader: 'Add Assets to Watchlist',
+      addToWatchlist: 'Add to Watchlist',
+      newWatchlist: 'Create a new Watchlist'
     },
     social: {
       sorry: 'Sorry, there is no post here!',

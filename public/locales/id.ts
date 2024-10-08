@@ -2199,7 +2199,8 @@ export default {
     myEvent: 'Event Saya',
     myCertificate: 'Sertifikat Saya',
     myCertificates: 'Sertifikat Saya',
-    sendEmailConfirm: 'Apa kamu yakin untuk mengirimkan sertifikat ke emailmu yang digunakan untuk mendaftar event ini?',
+    sendEmailConfirm:
+      'Apa kamu yakin untuk mengirimkan sertifikat ke emailmu yang digunakan untuk mendaftar event ini?',
     emailMessage: 'Sertifikat berhasil dikirim ke email anda.',
     yes: 'Ya',
     no: 'Tidak',
@@ -2541,6 +2542,8 @@ export default {
     nameTeam: 'Nama & Tim',
     currentRank: 'Peringkat Sekarang',
     next: 'Selanjutnya',
+    timeTo: `Waktunya`,
+    battle: 'Bertanding!',
     mainPage: {
       period: 'Periode',
       registration: 'Registrasi',

@@ -2271,7 +2271,8 @@ export default {
     myEvent: 'My Event',
     myCertificate: 'My Certificate',
     myCertificates: 'My Certificates',
-    sendEmailConfirm: 'Are you sure to send this certificate to your registered email?',
+    sendEmailConfirm:
+      'Are you sure to send this certificate to your registered email?',
     emailMessage: 'The certificate was sent successfully to your email.',
     yes: 'Yes',
     no: 'No',
@@ -2611,6 +2612,8 @@ export default {
     nameTeam: 'Name & Team',
     currentRank: 'Current Rank',
     next: 'Next',
+    timeTo: `It's time to`,
+    battle: 'Battle!',
     mainPage: {
       period: 'Period',
       registration: 'Registration',

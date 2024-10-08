@@ -275,6 +275,7 @@ const StageBattle: React.FC = () => {
                               onClick={() => {
                                 handleSelectedSponsor(item.name);
                               }}
+                              className="relative"
                             >
                               <Image
                                 src={item.logo}
@@ -283,20 +284,22 @@ const StageBattle: React.FC = () => {
                                 height={300}
                                 className={`w-20 xl:w-24 2xl:w-28 h-20 xl:h-24 2xl:h-28 object-contain rounded-xl bg-white cursor-pointer ${
                                   selectedSponsor === item.name
-                                    ? 'border-8'
-                                    : 'border-4'
+                                    ? 'border-4'
+                                    : 'border-2'
                                 } border-[#76a5d0]`}
                               />
-                              <div
-                                className={`relative flex-col justify-center items-center mt-1 ${
-                                  selectedSponsor === item.name
-                                    ? 'flex'
-                                    : 'hidden'
-                                }`}
-                              >
-                                <IoTriangleSharp className="text-white absolute -top-2" />
-                                <div className="w-auto rounded p-2 bg-white border-none text-xs">
-                                  {item.name}
+                              <div className="absolute left-1/2 transform -translate-x-1/2">
+                                <div
+                                  className={`relative flex-col justify-center items-center mt-1 ${
+                                    selectedSponsor === item.name
+                                      ? 'flex'
+                                      : 'hidden'
+                                  }`}
+                                >
+                                  <IoTriangleSharp className="text-white absolute -top-2" />
+                                  <div className="w-auto rounded p-2 bg-white border-none text-xs">
+                                    {item.name}
+                                  </div>
                                 </div>
                               </div>
                             </div>

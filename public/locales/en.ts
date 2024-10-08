@@ -1003,12 +1003,13 @@ export default {
     emptyVoucher2: "Stay tuned and don't miss upcoming vouchers!",
     applied: 'Promo code successfully applied!',
     unApplied: 'Promo code has been removed successfully!',
-    apply: "Apply",
-    noExpired: "No expired date",
-    havePromo: "Have a promo code? Enter it here!",
+    apply: 'Apply',
+    noExpired: 'No expired date',
+    havePromo: 'Have a promo code? Enter it here!',
     notFound: 'Promo code not found. Make sure you entered a valid promo code.',
-    limitPurchaseMessage: 'You need to reach the minimum transaction before using the promo!',
-    limitDailyMessage: 'The promo code quota is already exceeding today’s limit',
+    limitPurchaseMessage:
+      'You need to reach the minimum transaction before using the promo!',
+    limitDailyMessage: 'The promo code quota is already exceeding today’s limit'
   },
   temporary: {
     welcome: {
@@ -2266,6 +2267,12 @@ export default {
   },
   seedsEvent: {
     myEvent: 'My Event',
+    myCertificate: 'My Certificate',
+    myCertificates: 'My Certificates',
+    sendEmailConfirm: 'Are you sure to send this certificate to your registered email?',
+    emailMessage: 'The certificate was sent successfully to your email.',
+    yes: 'Yes',
+    no: 'No',
     search: 'Search',
     enter: 'Enter',
     past: 'Past Event',

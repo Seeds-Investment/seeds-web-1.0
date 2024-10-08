@@ -17,9 +17,16 @@ interface Props {
   ticketData: TicketData;
   eventData: EventList;
   isCheckAble: boolean;
+  isEventEnded: boolean;
 }
 
-const ModalShowEventTicket: React.FC<Props> = ({ onClose, ticketData, eventData, isCheckAble }) => {
+const ModalShowEventTicket: React.FC<Props> = ({
+  onClose,
+  ticketData,
+  eventData,
+  isCheckAble,
+  isEventEnded
+}) => {
   const router = useRouter();
   const { t } = useTranslation();
   const handleCopyClick = async (): Promise<void> => {
@@ -72,7 +79,11 @@ const ModalShowEventTicket: React.FC<Props> = ({ onClose, ticketData, eventData,
               <div
                 onClick={async() => 
                   { 
-                    await router.replace(ticketData?.status === 'CHECKED_IN' ? `/homepage/event/${eventData?.id}/check-in-out` : `/homepage/event/${eventData?.id}`)
+                    await router.replace(
+                      !isEventEnded && ticketData?.status === 'CHECKED_IN'
+                        ? `/homepage/event/${eventData?.id}/check-in-out` 
+                        : `/homepage/event/${eventData?.id}`
+                    )
                     .then(() => {
                       router.reload();
                     }); 

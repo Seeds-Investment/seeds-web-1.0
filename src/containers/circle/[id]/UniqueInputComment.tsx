@@ -74,7 +74,7 @@ const UniqueInputComment: React.FC<props> = ({
   };
 
   const isEmpty = (): boolean => {
-    if ((form?.content_text === '') && (form?.media_type === '')) {
+    if (form?.content_text === '' && form?.media_type === '') {
       return true;
     } else {
       return false;

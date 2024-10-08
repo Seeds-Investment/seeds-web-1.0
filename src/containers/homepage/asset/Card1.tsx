@@ -1,5 +1,6 @@
 import Favorite from '@/assets/play/tournament/favorite-asset.svg';
 import CCard from '@/components/CCard';
+import ModalWatchlist from '@/components/popup/ModalWatchlist';
 import {
   calculatePercentageDifference,
   standartCurrency
@@ -23,6 +24,8 @@ interface props {
 const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
   const { t } = useTranslation();
   const [watchList, setWatchlist] = useState<Watchlist[]>([]);
+  const [isOpenModalWatchlist, setIsOpenModalWatchlist] =
+    useState<boolean>(false);
 
   const fetchPlayWatchlist = async (): Promise<void> => {
     try {
@@ -64,7 +67,12 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
             </div>
           </div>
         </div>
-        <div className="cursor-pointer">
+        <div
+          onClick={() => {
+            setIsOpenModalWatchlist(prev => !prev);
+          }}
+          className="cursor-pointer"
+        >
           <Image src={Favorite} alt="favorite" className="w-5 h-5" />
         </div>
       </div>
@@ -85,6 +93,15 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
           %) - {t('playSimulation.today')}
         </p>
       </div>
+      {isOpenModalWatchlist && (
+        <ModalWatchlist
+          assetId={assetId}
+          onClose={() => {
+            setIsOpenModalWatchlist(prev => !prev);
+          }}
+          watchlists={watchList}
+        />
+      )}
     </CCard>
   );
 };

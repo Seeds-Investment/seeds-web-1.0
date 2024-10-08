@@ -234,9 +234,9 @@ const StageBattle: React.FC = () => {
                         }}
                         className={`${
                           item.key === selectedCategory
-                            ? 'border-b-4 border-[#65d8c3] text-[#2934B2] font-bold'
-                            : 'font-semibold text-[#3D3D3D]'
-                        } py-3 px-3 text-xl mt-10 font-poppins`}
+                            ? 'border-b-4 border-[#49c0ab] text-[#2934B2] font-bold'
+                            : 'font-semibold text-[#3D3D3D] border-b-2 border-[#7555da] border-dashed'
+                        } p-3 text-xl mt-5 font-poppins`}
                       >
                         <p className="transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer">
                           {item.label}

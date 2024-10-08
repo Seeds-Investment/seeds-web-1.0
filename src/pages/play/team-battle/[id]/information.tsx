@@ -160,7 +160,7 @@ const BattleInformation: React.FC = () => {
                 {t('teamBattle.stagePage.gamePeriod')}
               </div>
               <table className="w-fit border-collapse border-none my-4 text-[#3D3D3D]">
-                <tbody className="text-sm sm:text-lg font-semibold">
+                <tbody className="text-xs sm:text-sm xl:text-lg font-semibold">
                   <tr>
                     <td className="flex items-center space-x-1">
                       <LuDot size={30} />

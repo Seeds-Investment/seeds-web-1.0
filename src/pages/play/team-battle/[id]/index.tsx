@@ -303,7 +303,11 @@ const MainTeamBattle = (): React.ReactElement => {
                               )}`}
                       </div>
                     </div>
-                    <div className="flex gap-2 justify-between">
+                    <div
+                      className={`${
+                        data?.type === 'PROVINCE' ? 'hidden' : 'flex'
+                      } gap-2 justify-between`}
+                    >
                       <div className="w-[70px] lg:w-[110px]">
                         {t('teamBattle.mainPage.semifinal')}
                       </div>

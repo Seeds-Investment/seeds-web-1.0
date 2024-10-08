@@ -2534,6 +2534,7 @@ export default {
     rank: 'Peringkat',
     nameTeam: 'Nama & Tim',
     currentRank: 'Peringkat Sekarang',
+    next: 'Selanjutnya',
     mainPage: {
       period: 'Periode',
       registration: 'Registrasi',
@@ -2587,7 +2588,9 @@ export default {
     history: {
       myBattle: 'Battle Saya',
       activeBattle: 'Battle Aktif',
-      pastBattle: 'Battle Sebelumnya'
+      pastBattle: 'Battle Sebelumnya',
+      notFound: `Kamu tidak memiliki {{data}}`,
+      moreInfo: 'Informasi Lainnya'
     }
   }
 };

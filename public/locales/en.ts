@@ -2604,6 +2604,7 @@ export default {
     rank: 'Rank',
     nameTeam: 'Name & Team',
     currentRank: 'Current Rank',
+    next: 'Next',
     mainPage: {
       period: 'Period',
       registration: 'Registration',
@@ -2655,7 +2656,9 @@ export default {
     history: {
       myBattle: 'My Battle',
       activeBattle: 'Active Battle',
-      pastBattle: 'Past Battle'
+      pastBattle: 'Past Battle',
+      notFound: `You don't have any {{data}} yet`,
+      moreInfo: 'More Information'
     }
   }
 };

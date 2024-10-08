@@ -1,8 +1,14 @@
 import Image from 'next/image';
 import NotFoundImage from 'public/assets/team-battle/notfound.svg';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-const HistoryNotFound: React.FC = () => {
+interface HistoryNotFoundProps {
+  text: string;
+}
+
+const HistoryNotFound: React.FC<HistoryNotFoundProps> = ({ text }) => {
+  const { t } = useTranslation();
   return (
     <>
       <div className="flex flex-col items-center justify-center font-semibold text-xl my-14">
@@ -13,7 +19,7 @@ const HistoryNotFound: React.FC = () => {
           height={500}
           className="w-60"
         />
-        <div>You don&#39;t have any active battle yet</div>
+        <div>{t('teamBattle.history.notFound', { data: text })}</div>
       </div>
     </>
   );

@@ -209,7 +209,9 @@ const BattleInformation: React.FC = () => {
                         : ''}
                     </td>
                   </tr>
-                  <tr>
+                  <tr
+                    className={`${data?.type !== 'PROVINCE' ? '' : 'hidden'}`}
+                  >
                     <td className="flex items-center space-x-1">
                       <LuDot size={30} />
                       <span>{t('teamBattle.mainPage.semifinal')}</span>

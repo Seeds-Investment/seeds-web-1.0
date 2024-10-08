@@ -135,7 +135,6 @@ const HistoryBattle: React.FC = () => {
             })}
           </div>
         </div>
-        ;
         {isLoading ? (
           <Loading />
         ) : (

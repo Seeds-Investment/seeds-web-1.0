@@ -7,6 +7,7 @@ import {
 } from '@/utils/interfaces/team-battle.interface';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import { Button, Typography } from '@material-tailwind/react';
+import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ArrowBackWhite from 'public/assets/team-battle/arrow-back.svg';
@@ -78,6 +79,11 @@ const BattleList: React.FC<BattleListI> = ({
         setToggleInformation(prev => ({
           ...prev,
           dropdown: ''
+        }));
+      } else if (window.innerWidth < 1024) {
+        setToggleInformation(prev => ({
+          ...prev,
+          popup: ''
         }));
       }
     };
@@ -233,15 +239,24 @@ const BattleList: React.FC<BattleListI> = ({
                     )}
                   </div>
                   {toggleInformation?.dropdown === teamBattle.id && (
-                    <div
-                      className="text-sm text-white font-normal py-2 px-4"
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          teamBattle.tnc?.[
-                            i18n.language === 'id' ? 'id' : 'en'
-                          ]?.replace(/\n/g, '<br />') ?? '-'
-                      }}
-                    />
+                    <>
+                      <div className="py-2 px-5 border-white border-2 rounded-full text-white text-[10px] font-normal font-poppins">
+                        {t('teamBattle.mainPage.period')} :{' '}
+                        {moment(teamBattle?.registration_start).format(
+                          'DD MMM YYYY'
+                        )}{' '}
+                        - {moment(teamBattle?.final_end).format('DD MMM YYYY')}
+                      </div>
+                      <div
+                        className="text-sm text-white font-normal py-2 px-4"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            teamBattle.tnc?.[
+                              i18n.language === 'id' ? 'id' : 'en'
+                            ]?.replace(/\n/g, '<br />') ?? '-'
+                        }}
+                      />
+                    </>
                   )}
                 </div>
                 <PopupInformation

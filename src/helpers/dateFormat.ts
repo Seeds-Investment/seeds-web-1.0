@@ -190,5 +190,5 @@ export const getBattlePeriod = (date: Date): string => {
 };
 
 export const getBattleStageDate = (date: string): string => {
-  return moment(date).format('D MMMM YYYY');
+  return moment(date).format('D MMM YYYY, h:mm A');
 };

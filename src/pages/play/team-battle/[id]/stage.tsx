@@ -95,16 +95,16 @@ const StageBattle: React.FC = () => {
     }
   };
 
-  const today = moment().startOf('day');
+  const today = moment();
 
   const determineCurrentCategory = (): void => {
     if (data == null) return;
 
     const endDates = {
-      final: moment(data.final_end).startOf('day'),
-      semifinal: moment(data.semifinal_end).startOf('day'),
-      elimination: moment(data.elimination_end).startOf('day'),
-      registration: moment(data.registration_end).startOf('day')
+      final: moment(data.final_end),
+      semifinal: moment(data.semifinal_end),
+      elimination: moment(data.elimination_end),
+      registration: moment(data.registration_end)
     };
 
     const handlePopUp = (popUpType: string): void => {
@@ -112,22 +112,38 @@ const StageBattle: React.FC = () => {
       setCategoryPopUp(popUpType);
     };
 
-    if (today.isAfter(endDates.final)) {
-      setSelectedCategory('final');
-      if (data.is_joined && myRank !== undefined)
-        handlePopUp(myRank?.rank <= data.prize.length ? 'win' : 'fail');
-    } else if (today.isAfter(endDates.semifinal)) {
-      setSelectedCategory('final');
-      if (data.is_joined)
-        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
-    } else if (today.isAfter(endDates.elimination)) {
-      setSelectedCategory('semifinal');
-      if (data.is_joined)
-        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
-    } else if (today.isAfter(endDates.registration)) {
-      setSelectedCategory('elimination');
-      if (data.is_joined)
-        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+    if (data?.type !== 'PROVINCE') {
+      if (today.isAfter(endDates.final)) {
+        setSelectedCategory('final');
+        if (data.is_joined && myRank !== undefined)
+          handlePopUp(myRank?.rank <= data.prize.length ? 'win' : 'fail');
+      } else if (today.isAfter(endDates.semifinal)) {
+        setSelectedCategory('final');
+        if (data.is_joined)
+          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+      } else if (today.isAfter(endDates.elimination)) {
+        setSelectedCategory('semifinal');
+        if (data.is_joined)
+          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+      } else if (today.isAfter(endDates.registration)) {
+        setSelectedCategory('elimination');
+        if (data.is_joined)
+          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+      }
+    } else {
+      if (today.isAfter(endDates.final)) {
+        setSelectedCategory('final');
+        if (data.is_joined && myRank !== undefined)
+          handlePopUp(myRank?.rank <= data.prize.length ? 'win' : 'fail');
+      } else if (today.isAfter(endDates.elimination)) {
+        setSelectedCategory('final');
+        if (data.is_joined)
+          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+      } else if (today.isAfter(endDates.registration)) {
+        setSelectedCategory('elimination');
+        if (data.is_joined)
+          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+      }
     }
   };
 
@@ -203,26 +219,31 @@ const StageBattle: React.FC = () => {
             </div>
             <div className="w-full flex justify-center items-center">
               <div className="flex flex-row">
-                {categoryBattle?.map((item, i) => {
-                  return (
-                    <button
-                      key={i}
-                      onClick={() => {
-                        setSelectedCategory(item.key);
-                        handleDateChanging();
-                      }}
-                      className={`${
-                        item.key === selectedCategory
-                          ? 'border-b-4 border-[#65d8c3] text-[#2934B2] font-bold'
-                          : 'font-semibold text-[#3D3D3D]'
-                      } py-3 px-3 text-xl mt-10 font-poppins`}
-                    >
-                      <p className="transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer">
-                        {item.label}
-                      </p>
-                    </button>
-                  );
-                })}
+                {categoryBattle
+                  ?.filter(
+                    item =>
+                      !(data?.type === 'PROVINCE' && item.key === 'semifinal')
+                  )
+                  .map((item, i) => {
+                    return (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          setSelectedCategory(item.key);
+                          handleDateChanging();
+                        }}
+                        className={`${
+                          item.key === selectedCategory
+                            ? 'border-b-4 border-[#65d8c3] text-[#2934B2] font-bold'
+                            : 'font-semibold text-[#3D3D3D]'
+                        } py-3 px-3 text-xl mt-10 font-poppins`}
+                      >
+                        <p className="transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer">
+                          {item.label}
+                        </p>
+                      </button>
+                    );
+                  })}
               </div>
             </div>
             <div>
@@ -254,6 +275,7 @@ const StageBattle: React.FC = () => {
                               onClick={() => {
                                 handleSelectedSponsor(item.name);
                               }}
+                              className="relative"
                             >
                               <Image
                                 src={item.logo}
@@ -262,20 +284,22 @@ const StageBattle: React.FC = () => {
                                 height={300}
                                 className={`w-20 xl:w-24 2xl:w-28 h-20 xl:h-24 2xl:h-28 object-contain rounded-xl bg-white cursor-pointer ${
                                   selectedSponsor === item.name
-                                    ? 'border-8'
-                                    : 'border-4'
+                                    ? 'border-4'
+                                    : 'border-2'
                                 } border-[#76a5d0]`}
                               />
-                              <div
-                                className={`relative flex-col justify-center items-center mt-1 ${
-                                  selectedSponsor === item.name
-                                    ? 'flex'
-                                    : 'hidden'
-                                }`}
-                              >
-                                <IoTriangleSharp className="text-white absolute -top-2" />
-                                <div className="w-auto rounded p-2 bg-white border-none text-xs">
-                                  {item.name}
+                              <div className="absolute left-1/2 transform -translate-x-1/2">
+                                <div
+                                  className={`relative flex-col justify-center items-center mt-1 ${
+                                    selectedSponsor === item.name
+                                      ? 'flex'
+                                      : 'hidden'
+                                  }`}
+                                >
+                                  <IoTriangleSharp className="text-white absolute -top-2" />
+                                  <div className="w-auto rounded p-2 bg-white border-none text-xs">
+                                    {item.name}
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -292,23 +316,35 @@ const StageBattle: React.FC = () => {
                           size={25}
                           onClick={async () =>
                             await router.push(
-                              `/play/team-battle/${id as string}/participants`
+                              `/play/team-battle/${
+                                id as string
+                              }/participants?stage=${selectedCategory}`
                             )
                           }
                           className="text-white bg-[#407f74] p-1 rounded absolute -right-8 bottom-2 cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                         />
                       </div>
-                      <button
-                        onClick={async () => {
-                          await router.push(
-                            `/play/team-battle/${id as string}/arena`
-                          );
-                        }}
-                        className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white hidden lg:block"
-                        disabled={data?.status === 'ENDED'}
+                      <div
+                        className={`justify-center items-center w-full ${
+                          today.isBefore(dateScheduleStart) ? 'hidden' : 'flex'
+                        }`}
                       >
-                        {t('teamBattle.stagePage.enter')}
-                      </button>
+                        <button
+                          onClick={async () => {
+                            await router.push(
+                              `/play/team-battle/${id as string}/arena`
+                            );
+                          }}
+                          className={`transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl ${
+                            data?.status === 'ENDED'
+                              ? 'bg-gray-500'
+                              : 'bg-[#2934b2]'
+                          } text-base lg:text-lg text-white border-2 border-white hidden lg:block`}
+                          disabled={data?.status === 'ENDED'}
+                        >
+                          {t('teamBattle.stagePage.enter')}
+                        </button>
+                      </div>
                       <div className="grid grid-cols-7 items-center lg:hidden">
                         <div className="col-span-2">
                           <div className="flex flex-row items-center gap-2 border-r-2 border-[#407F74]">
@@ -361,8 +397,8 @@ const StageBattle: React.FC = () => {
             </div>
           </div>
           <div
-            className={`flex justify-center items-center ${
-              today.isSameOrBefore(dateScheduleStart) ? 'hidden' : 'lg:hidden'
+            className={`justify-center items-center ${
+              today.isBefore(dateScheduleStart) ? 'hidden' : 'flex lg:hidden'
             }`}
           >
             <button

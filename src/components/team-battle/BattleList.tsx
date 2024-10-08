@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import ArrowBackWhite from 'public/assets/team-battle/arrow-back.svg';
 import CategoryAll from 'public/assets/team-battle/category-all.svg';
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CiSquareChevDown, CiSquareChevUp } from 'react-icons/ci';
 import { toast } from 'react-toastify';
 import ArtPagination from '../ArtPagination';
@@ -38,6 +39,7 @@ const BattleList: React.FC<BattleListI> = ({
   fetchTrigger,
   setFetchTrigger
 }: BattleListI) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [listParams, setListParams] = useState<TeamBattleListParams>({
@@ -203,7 +205,7 @@ const BattleList: React.FC<BattleListI> = ({
                   </Typography>
                   <div className="text-white font-semibold flex flex-row items-center gap-1">
                     <Typography className="text-[10px] font-poppins font-semibold">
-                      More Information
+                      {t('teamBattle.history.moreInfo')}
                     </Typography>
                     <CiSquareChevDown
                       size={20}

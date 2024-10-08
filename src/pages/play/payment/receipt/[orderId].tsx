@@ -55,6 +55,8 @@ interface ReceiptDetail {
   service_fee: number;
   promoPrice: number;
   seeds_coin: number;
+  promo_price?: number;
+  is_promo_available?: boolean;
 }
 
 interface QrisDetail {
@@ -292,52 +294,22 @@ const SuccessPaymentPage: React.FC = () => {
 
                 {/* Quiz Fee */}
                 {orderDetail?.currency !== undefined &&
-                  orderDetail?.grossAmount !== undefined &&
-                  orderDetail?.paymentMethod !== 'OTHER_QRIS' && (
+                  orderDetail?.grossAmount !== undefined && (
                     <div className="flex flex-row justify-between my-5">
                       <Typography className="text-sm font-semibold text-[#BDBDBD]">
                         {t('quiz.payment.quizFeeTotal')}
                       </Typography>
                       <Typography className="text-sm font-semibold text-[#262626]">
                         {orderDetail?.currency !== undefined &&
-                        paymentSelectedEWallet !== undefined &&
-                        orderDetail.grossAmount !== undefined
+                        orderDetail?.grossAmount !== undefined
                           ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                               (orderDetail?.grossAmount ?? 0) === 0
                                 ? 0
                                 : (orderDetail?.grossAmount ?? 0) -
-                                    paymentSelectedEWallet[0]?.admin_fee -
-                                    paymentSelectedEWallet[0]?.service_fee +
-                                    (paymentSelectedEWallet[0]
-                                      ?.is_promo_available
-                                      ? orderDetail?.promoPrice ?? 0
-                                      : 0)
-                            )}`
-                          : ''}
-                      </Typography>
-                    </div>
-                  )}
-
-                {/* Quiz Fee QRIS */}
-                {orderDetail?.currency !== undefined &&
-                  orderDetail?.grossAmount !== undefined &&
-                  orderDetail?.paymentMethod === 'OTHER_QRIS' && (
-                    <div className="flex flex-row justify-between my-5">
-                      <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                        {t('quiz.payment.quizFeeTotal')}
-                      </Typography>
-                      <Typography className="text-sm font-semibold text-[#262626]">
-                        {orderDetail?.currency !== undefined &&
-                        paymentSelectedEWallet !== undefined &&
-                        orderDetail.grossAmount !== undefined
-                          ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
-                              (orderDetail?.grossAmount ?? 0) === 0
-                                ? 0
-                                : (orderDetail?.grossAmount ?? 0) -
-                                    qRisList[0]?.admin_fee -
-                                    qRisList[0]?.service_fee +
-                                    (qRisList[0]?.is_promo_available
-                                      ? orderDetail?.promoPrice ?? 0
+                                    orderDetail?.admin_fee -
+                                    orderDetail?.service_fee +
+                                    (orderDetail?.is_promo_available ?? false
+                                      ? orderDetail?.promo_price ?? 0
                                       : 0)
                             )}`
                           : ''}
@@ -346,29 +318,9 @@ const SuccessPaymentPage: React.FC = () => {
                   )}
 
                 {/* Admin Fee */}
-                {orderDetail !== undefined &&
-                orderDetail?.admin_fee > 0 &&
-                orderDetail?.paymentMethod !== 'OTHER_QRIS' ? (
-                  <div className="flex flex-row justify-between mb-5">
-                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                      {t('quiz.payment.adminFee')}
-                    </Typography>
-                    <Typography className="text-sm font-semibold text-[#262626]">
-                      {orderDetail?.currency !== undefined &&
-                        `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
-                          orderDetail.admin_fee ?? 0
-                        )}`}
-                    </Typography>
-                  </div>
-                ) : (
-                  ''
-                )}
-
-                {/* Admin Fee QRIS */}
                 {(orderDetail?.grossAmount ?? 0) > 0 &&
                 qRisList !== undefined &&
-                qRisList[0]?.admin_fee > 0 &&
-                orderDetail?.paymentMethod === 'OTHER_QRIS' ? (
+                (orderDetail?.admin_fee ?? 0) > 0 ? (
                   <div className="flex flex-row justify-between mb-5">
                     <Typography className="text-sm font-semibold text-[#BDBDBD]">
                       {t('quiz.payment.adminFee')}
@@ -376,7 +328,7 @@ const SuccessPaymentPage: React.FC = () => {
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
                         `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
-                          qRisList[0]?.admin_fee ?? 0
+                          orderDetail?.admin_fee ?? 0
                         )}`}
                     </Typography>
                   </div>
@@ -386,7 +338,7 @@ const SuccessPaymentPage: React.FC = () => {
 
                 {/* Service Fee */}
                 {(orderDetail?.grossAmount ?? 0) > 0 &&
-                paymentSelectedEWallet[0]?.service_fee > 0 ? (
+                (orderDetail?.service_fee ?? 0) > 0 ? (
                   <div className="flex flex-row justify-between mb-5">
                     <Typography className="text-sm font-semibold text-[#BDBDBD]">
                       {t('quiz.payment.serviceFee')}
@@ -395,29 +347,7 @@ const SuccessPaymentPage: React.FC = () => {
                       {orderDetail?.currency !== undefined &&
                       orderDetail.grossAmount !== undefined
                         ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
-                            paymentSelectedEWallet[0]?.service_fee ?? 0
-                          )}`
-                        : ''}
-                    </Typography>
-                  </div>
-                ) : (
-                  ''
-                )}
-
-                {/* Service Fee QRIS */}
-                {(orderDetail?.grossAmount ?? 0) > 0 &&
-                qRisList !== undefined &&
-                qRisList[0]?.service_fee > 0 &&
-                orderDetail?.paymentMethod === 'OTHER_QRIS' ? (
-                  <div className="flex flex-row justify-between mb-5">
-                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                      {t('quiz.payment.serviceFee')}
-                    </Typography>
-                    <Typography className="text-sm font-semibold text-[#262626]">
-                      {orderDetail?.currency !== undefined &&
-                      orderDetail.grossAmount !== undefined
-                        ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
-                            qRisList[0]?.service_fee ?? 0
+                            orderDetail?.service_fee ?? 0
                           )}`
                         : ''}
                     </Typography>
@@ -430,7 +360,7 @@ const SuccessPaymentPage: React.FC = () => {
                 {(orderDetail?.grossAmount ?? 0) > 0 &&
                   paymentSelectedEWallet.length > 0 && (
                     <div>
-                      {paymentSelectedEWallet[0]?.is_promo_available && (
+                      {(orderDetail?.is_promo_available ?? false) && (
                         <div className="flex flex-row justify-between mb-5">
                           <Typography className="text-sm font-semibold text-[#BDBDBD]">
                             {t('quiz.payment.discountFee')}
@@ -440,36 +370,7 @@ const SuccessPaymentPage: React.FC = () => {
                               ? `- ${
                                   orderDetail?.currency ?? 'IDR'
                                 } ${formatCurrency(
-                                  paymentSelectedEWallet.length > 0
-                                    ? paymentSelectedEWallet[0]?.promo_price ??
-                                        0
-                                    : 0
-                                )}`
-                              : ''}
-                          </Typography>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                {/* Discount Fee QRIS */}
-                {qRisList !== undefined &&
-                  (orderDetail?.grossAmount ?? 0) > 0 &&
-                  orderDetail?.paymentMethod === 'OTHER_QRIS' && (
-                    <div>
-                      {qRisList[0]?.is_promo_available && (
-                        <div className="flex flex-row justify-between mb-5">
-                          <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                            {t('quiz.payment.discountFee')}
-                          </Typography>
-                          <Typography className="text-sm font-semibold text-[#262626]">
-                            {orderDetail?.currency !== undefined
-                              ? `- ${
-                                  orderDetail?.currency ?? 'IDR'
-                                } ${formatCurrency(
-                                  qRisList !== undefined
-                                    ? qRisList[0]?.promo_price ?? 0
-                                    : 0
+                                  orderDetail?.promo_price ?? 0
                                 )}`
                               : ''}
                           </Typography>
@@ -484,29 +385,7 @@ const SuccessPaymentPage: React.FC = () => {
                     orderDetail?.seeds_coin !== undefined &&
                     (orderDetail?.grossAmount ?? 0) > 0 &&
                     detailQuiz !== undefined &&
-                    orderDetail?.seeds_coin !== 0 &&
-                    orderDetail?.paymentMethod !== 'OTHER_QRIS' && (
-                      <div className="flex flex-row justify-between mb-5">
-                        <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                          {t('quiz.payment.discountCoins')}
-                        </Typography>
-                        <Typography className="text-sm font-semibold text-[#262626]">
-                          {`- ${
-                            orderDetail?.currency ?? 'IDR'
-                          } ${formatCurrency(orderDetail?.seeds_coin ?? 0)}`}
-                        </Typography>
-                      </div>
-                    )}
-                </div>
-
-                {/* Discount Coins QRIS */}
-                <div>
-                  {orderDetail?.currency !== undefined &&
-                    orderDetail?.seeds_coin !== undefined &&
-                    detailQuiz !== undefined &&
-                    orderDetail?.seeds_coin !== 0 &&
-                    (orderDetail?.grossAmount ?? 0) > 0 &&
-                    orderDetail?.paymentMethod === 'OTHER_QRIS' && (
+                    orderDetail?.seeds_coin !== 0 && (
                       <div className="flex flex-row justify-between mb-5">
                         <Typography className="text-sm font-semibold text-[#BDBDBD]">
                           {t('quiz.payment.discountCoins')}
@@ -537,10 +416,14 @@ const SuccessPaymentPage: React.FC = () => {
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
                     {t('quiz.payment.idTransaction')}
                   </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626] text-right">
-                    {(orderDetail?.transactionId ?? '') === ''
+                  <Typography className="text-sm font-semibold text-[#262626] text-right truncate">
+                    {orderDetail?.transactionId === ''
                       ? '-'
-                      : orderDetail?.transactionId}
+                      : `${(orderDetail?.transactionId ?? '').slice(0, 20)}${
+                          (orderDetail?.transactionId ?? '').length > 20
+                            ? '...'
+                            : ''
+                        }`}
                   </Typography>
                 </div>
               </Card>

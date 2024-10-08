@@ -7,6 +7,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import TeamRegion from 'public/assets/team-battle/team-region.svg';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineClose } from 'react-icons/ai';
@@ -113,6 +114,16 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
         );
       }
       setSelectedGroup(null);
+    }
+  };
+
+  const isValidURL = (input: string): boolean => {
+    try {
+      // eslint-disable-next-line no-new
+      new URL(input?.replace(/^[A-D]\.\s/, ''));
+      return true;
+    } catch (err) {
+      return false;
     }
   };
 
@@ -251,10 +262,10 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
                     <div className="border-[2px] border-[#76A5D0] rounded-lg">
                       <Image
                         alt={group.name}
-                        src={group.logo}
+                        src={isValidURL(group.logo) ? group.logo : TeamRegion}
                         width={40}
                         height={40}
-                        className="overflow-hidden rounded-lg"
+                        className="overflow-hidden rounded-lg aspect-square"
                       />
                     </div>
                   </div>

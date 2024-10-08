@@ -2080,7 +2080,7 @@ export default {
       transaction: 'Transaction',
       openOrder: 'Open Order',
       historyTransaction: 'History Transaction',
-      pending: 'Pending Order - Buy Limit',
+      pending: 'Pending Order',
       sorry: 'Sorry!',
       noData: 'The data you were looking for does not exist.',
       amount: 'Amount',
@@ -2269,6 +2269,13 @@ export default {
   },
   seedsEvent: {
     myEvent: 'My Event',
+    myCertificate: 'My Certificate',
+    myCertificates: 'My Certificates',
+    sendEmailConfirm:
+      'Are you sure to send this certificate to your registered email?',
+    emailMessage: 'The certificate was sent successfully to your email.',
+    yes: 'Yes',
+    no: 'No',
     search: 'Search',
     enter: 'Enter',
     past: 'Past Event',
@@ -2604,6 +2611,9 @@ export default {
     rank: 'Rank',
     nameTeam: 'Name & Team',
     currentRank: 'Current Rank',
+    next: 'Next',
+    timeTo: `It's time to`,
+    battle: 'Battle!',
     mainPage: {
       period: 'Period',
       registration: 'Registration',
@@ -2656,7 +2666,9 @@ export default {
     history: {
       myBattle: 'My Battle',
       activeBattle: 'Active Battle',
-      pastBattle: 'Past Battle'
+      pastBattle: 'Past Battle',
+      notFound: `You don't have any {{data}} yet`,
+      moreInfo: 'More Information'
     }
   }
 };

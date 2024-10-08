@@ -3,6 +3,7 @@ import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface'
 import moment from 'moment';
 import Image from 'next/image';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { AiOutlineClose } from 'react-icons/ai';
 import { CiSquareChevUp } from 'react-icons/ci';
 
@@ -17,6 +18,7 @@ const PopupInformation: React.FC<PopupInformationProps> = ({
   isOpen,
   infoBattle
 }) => {
+  const { t } = useTranslation();
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 bg-black/75 flex justify-center items-center z-50">
@@ -44,12 +46,12 @@ const PopupInformation: React.FC<PopupInformationProps> = ({
               </div>
               <div className="text-white font-semibold flex flex-row items-center gap-1">
                 <span className="text-base font-semibold">
-                  More Information
+                  {t('teamBattle.history.moreInfo')}
                 </span>
                 <CiSquareChevUp size={20} />
               </div>
               <div className="py-2 px-5 border-white border-2 rounded-3xl text-white text-base font-normal">
-                Periode :{' '}
+                {t('teamBattle.mainPage.period')} :{' '}
                 {moment(infoBattle?.registration_start).format('DD MMM YYYY')} -{' '}
                 {moment(infoBattle?.final_end).format('DD MMM YYYY')}
               </div>

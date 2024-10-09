@@ -41,29 +41,31 @@ const PopupInformation: React.FC<PopupInformationProps> = ({
               />
             </div>
             <div className="flex flex-col justify-center items-center gap-2 py-2">
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-white text-center">
                 {infoBattle?.title}
               </div>
-              <div className="text-white font-semibold flex flex-row items-center gap-1">
-                <span className="text-base font-semibold">
-                  {t('teamBattle.history.moreInfo')}
-                </span>
-                <CiSquareChevUp size={20} />
+              <div className="flex flex-col overflow-y-auto max-h-[240px] w-full team-battle-scroll">
+                <div className="text-white font-semibold flex flex-row justify-center items-center gap-1">
+                  <span className="text-base font-semibold">
+                    {t('teamBattle.history.moreInfo')}
+                  </span>
+                  <CiSquareChevUp size={20} />
+                </div>
+                <div className="py-2 px-5 border-white border-2 rounded-3xl text-white text-base font-normal flex justify-center mx-auto">
+                  {t('teamBattle.mainPage.period')} :{' '}
+                  {moment(infoBattle?.registration_start).format('DD MMM YYYY')}{' '}
+                  - {moment(infoBattle?.final_end).format('DD MMM YYYY')}
+                </div>
+                <div
+                  className="text-sm text-white font-normal mt-2 py-2 pb-5 px-4"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      infoBattle?.tnc?.[
+                        i18n.language === 'id' ? 'id' : 'en'
+                      ]?.replace(/\n/g, '<br />') ?? '-'
+                  }}
+                />
               </div>
-              <div className="py-2 px-5 border-white border-2 rounded-3xl text-white text-base font-normal">
-                {t('teamBattle.mainPage.period')} :{' '}
-                {moment(infoBattle?.registration_start).format('DD MMM YYYY')} -{' '}
-                {moment(infoBattle?.final_end).format('DD MMM YYYY')}
-              </div>
-              <div
-                className="text-sm text-white font-normal mt-2 py-2 pb-5 px-4 max-h-[180px] overflow-auto team-battle-scroll"
-                dangerouslySetInnerHTML={{
-                  __html:
-                    infoBattle?.tnc?.[
-                      i18n.language === 'id' ? 'id' : 'en'
-                    ]?.replace(/\n/g, '<br />') ?? '-'
-                }}
-              />
             </div>
           </div>
         </div>

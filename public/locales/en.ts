@@ -2617,6 +2617,10 @@ export default {
     prize: 'Prize',
     leaderboardPopup: 'More participants will be joining soon',
     willBegin: 'The competition will begin in:',
+    battleClosed1: "Opps! Sorry, you can't join the game.",
+    battleClosed2: "It's already in the",
+    battleClosed3: 'The battle has already ended.',
+    battleClosed4: 'The battle is canceled.',
     mainPage: {
       period: 'Period',
       registration: 'Registration',

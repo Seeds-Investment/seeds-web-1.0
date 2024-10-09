@@ -1,12 +1,12 @@
 import PopUpJoinBattle from '@/components/team-battle/PopUpJoinBattle';
 import PopUpPrizeBattle from '@/components/team-battle/popUpPrizeBattle';
+import PopUpRegistrationClosed from '@/components/team-battle/popUpRegistrationClosed';
 import Triangle from '@/components/team-battle/triangle.component';
 import { standartCurrency } from '@/helpers/currency';
 import { getBattlePeriod } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getBattleDetail } from '@/repository/team-battle.repository';
-// import LanguageContext from '@/store/language/language-context';
 import i18n from '@/utils/common/i18n';
 import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -40,10 +40,9 @@ const MainTeamBattle = (): React.ReactElement => {
   const [showTnc, setShowTnc] = useState<boolean>(false);
   const [showPeriod, setShowPeriod] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [showPopUpJoinBattle, setShowPopUpJoinBattle] =
-    useState<boolean>(false);
-  const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] =
-    useState<boolean>(false);
+  const [showPopUpJoinBattle, setShowPopUpJoinBattle] = useState<boolean>(false);
+  const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] = useState<boolean>(false);
+  const [showPopUpRegistrationClosed, setShowPopUpRegistrationClosed] = useState<boolean>(false);
   const [data, setData] = useState<TeamBattleDetail>();
   const [selectedSponsor, setSelectedSponsor] = useState('');
 
@@ -53,6 +52,10 @@ const MainTeamBattle = (): React.ReactElement => {
 
   const handleShowPopUpPrizeBattle = (): void => {
     setShowPopUpPrizeBattle(!showPopUpPrizeBattle);
+  };
+  
+  const handleShowPopUpRegistrationClosed = (): void => {
+    setShowPopUpRegistrationClosed(!showPopUpRegistrationClosed);
   };
 
   const handleGetDetailBattle = async (): Promise<void> => {
@@ -84,16 +87,28 @@ const MainTeamBattle = (): React.ReactElement => {
         await router.push(`/play/team-battle/${id as string}/waiting`);
       }
     } else {
-      handleShowPopUpJoinBattle();
+      if (isRegistrationClosed()) {
+        handleShowPopUpRegistrationClosed()
+      } else {
+        handleShowPopUpJoinBattle();
+      }
     }
   };
 
   const isStarted = (): boolean => {
-    const playTime = data?.registration_end ?? '2024-12-31T17:00:00Z';
+    const playTime = data?.elimination_start ?? '2024-12-31T17:00:00Z';
     const timeStart = new Date(playTime).getTime();
     const timeNow = Date.now();
 
     return timeStart < timeNow;
+  };
+
+  const isRegistrationClosed = (): boolean => {
+    const eliminationTime = data?.elimination_end ?? '2024-12-31T17:00:00Z';
+    const timeRegistrationOpen = new Date(eliminationTime).getTime();
+    const timeNow = Date.now();
+
+    return timeRegistrationOpen < timeNow;
   };
 
   const handleSelectedSponsor = (sponsor: string): void => {
@@ -430,7 +445,7 @@ const MainTeamBattle = (): React.ReactElement => {
                   <div className="mt-4 hidden lg:flex">
                     <Button
                       onClick={handleRedirectJoin}
-                      className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
+                      className={`${isRegistrationClosed() ? 'bg-[#D9D9D9]' : 'bg-[#2934B2]'} w-full rounded-full border-[2px] border-white text-sm font-semibold font-poppins`}
                     >
                       {data?.is_joined ?? false
                         ? t('teamBattle.mainPage.play')
@@ -672,7 +687,7 @@ const MainTeamBattle = (): React.ReactElement => {
           <div className="mt-6">
             <Button
               onClick={handleRedirectJoin}
-              className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
+              className={`${isRegistrationClosed() ? 'bg-[#D9D9D9]' : 'bg-[#2934B2]'} w-full rounded-full border-[2px] border-white text-sm font-semibold font-poppins`}
             >
               {data?.is_joined ?? false
                 ? t('teamBattle.mainPage.play')
@@ -694,6 +709,11 @@ const MainTeamBattle = (): React.ReactElement => {
           data={data}
         />
       )}
+      <PopUpRegistrationClosed
+        isOpen={showPopUpRegistrationClosed}
+        onClose={handleShowPopUpRegistrationClosed}
+        currentStage={data?.status ?? ''}
+      />
     </>
   );
 };

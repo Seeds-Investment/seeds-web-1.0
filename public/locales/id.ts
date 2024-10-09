@@ -2547,6 +2547,10 @@ export default {
     prize: 'Hadiah',
     leaderboardPopup: 'Lebih banyak peserta akan segera bergabung',
     willBegin: 'Kompetisi akan dimulai pada:',
+    battleClosed1: 'Ups! Maaf, kamu tidak bisa bergabung ke dalam game.',
+    battleClosed2: 'Team Battle sudah berada di tahap',
+    battleClosed3: 'Team Battle sudah berakhir.',
+    battleClosed4: 'Team Battle telah dibatalkan.',
     mainPage: {
       period: 'Periode',
       registration: 'Registrasi',

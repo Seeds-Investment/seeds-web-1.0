@@ -107,6 +107,14 @@ const StageBattle: React.FC = () => {
 
   const today = moment();
 
+  const getLocalStorageStatus = (key: string): boolean => {
+    return localStorage.getItem(key) === 'true';
+  };
+
+  const setLocalStorageStatus = (key: string, value: boolean): void => {
+    localStorage.setItem(key, value.toString());
+  };
+
   const determineCurrentCategory = (): void => {
     if (data == null) return;
 
@@ -122,6 +130,11 @@ const StageBattle: React.FC = () => {
       setCategoryPopUp(popUpType);
     };
 
+    const eliminationQualifiedKey = `eliminationQualified_${id as string}`;
+    const isEliminationQualifiedShown = getLocalStorageStatus(
+      eliminationQualifiedKey
+    );
+
     if (data?.type !== 'PROVINCE') {
       if (today.isAfter(endDates.final)) {
         setSelectedCategory('final');
@@ -133,12 +146,16 @@ const StageBattle: React.FC = () => {
           handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
       } else if (today.isAfter(endDates.elimination)) {
         setSelectedCategory('semifinal');
-        if (data.is_joined)
+        if (data.is_joined && !isEliminationQualifiedShown) {
           handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+          setLocalStorageStatus(eliminationQualifiedKey, true);
+        }
       } else if (today.isAfter(endDates.registration)) {
         setSelectedCategory('elimination');
-        if (data.is_joined)
+        if (data.is_joined && !isEliminationQualifiedShown) {
           handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+          setLocalStorageStatus(eliminationQualifiedKey, true);
+        }
       }
     } else {
       if (today.isAfter(endDates.final)) {
@@ -147,12 +164,16 @@ const StageBattle: React.FC = () => {
           handlePopUp(myRank?.rank <= data.prize.length ? 'win' : 'fail');
       } else if (today.isAfter(endDates.elimination)) {
         setSelectedCategory('final');
-        if (data.is_joined)
+        if (data.is_joined && !isEliminationQualifiedShown) {
           handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+          setLocalStorageStatus(eliminationQualifiedKey, true);
+        }
       } else if (today.isAfter(endDates.registration)) {
         setSelectedCategory('elimination');
-        if (data.is_joined)
+        if (data.is_joined && !isEliminationQualifiedShown) {
           handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+          setLocalStorageStatus(eliminationQualifiedKey, true);
+        }
       }
     }
   };

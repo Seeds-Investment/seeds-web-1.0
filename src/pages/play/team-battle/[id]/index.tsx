@@ -28,6 +28,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IoArrowBack, IoTriangleSharp } from 'react-icons/io5';
+import { LuDot } from 'react-icons/lu';
 import { toast } from 'react-toastify';
 
 const MainTeamBattle = (): React.ReactElement => {
@@ -37,6 +38,7 @@ const MainTeamBattle = (): React.ReactElement => {
   // const languageCtx = useContext(LanguageContext);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [showTnc, setShowTnc] = useState<boolean>(false);
+  const [showPeriod, setShowPeriod] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPopUpJoinBattle, setShowPopUpJoinBattle] =
     useState<boolean>(false);
@@ -126,7 +128,7 @@ const MainTeamBattle = (): React.ReactElement => {
           >
             <IoArrowBack size={30} />
           </div>
-          <Typography className="text-white font-poppins text-xl sm:text-2xl">
+          <Typography className="text-white font-poppins text-lg sm:text-xl lg:text-2xl">
             {t('teamBattle.battleCompetition')}
           </Typography>
         </div>
@@ -250,111 +252,160 @@ const MainTeamBattle = (): React.ReactElement => {
                 </div>
                 <div className="text-xs sm:text-sm xl:text-lg text-[#3D3D3D] font-semibold font-poppins">
                   <div className="w-full my-10">
-                    <div className="flex gap-5 justify-between">
-                      <div className="w-[70px] lg:w-[110px]">
-                        {t('teamBattle.mainPage.period')}
-                      </div>
-                      <div>
-                        :{' '}
-                        {`
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.registration_start ??
+                    <table className="w-full border-none my-4 text-[#3D3D3D] border-separate border-spacing-y-4">
+                      <tbody className="font-semibold">
+                        <tr>
+                          <td className="flex items-center space-x-1">
+                            <LuDot size={30} className="hidden lg:flex" />
+                            <span>{t('teamBattle.mainPage.period')}</span>
+                          </td>
+                          <td>
+                            :{' '}
+                            {data?.elimination_start !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.elimination_start) ??
                                     '2024-12-31T23:59:00Z'
                                 )
-                              )} -
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.final_end ?? '2024-12-31T23:59:00Z'
-                                )
-                              )}`}
-                      </div>
-                    </div>
-                    <div className="flex gap-5 justify-between">
-                      <div className="w-[70px] lg:w-[110px]">
-                        {t('teamBattle.mainPage.registration')}
-                      </div>
-                      <div>
-                        :{' '}
-                        {`
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.registration_start ??
+                              : ''}{' '}
+                            -{' '}
+                            {data?.final_end !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.final_end) ??
                                     '2024-12-31T23:59:00Z'
                                 )
-                              )} -
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.registration_end ??
+                              : ''}
+                          </td>
+                          <td className="relative">
+                            <div
+                              className="bg-[#407F74] w-[25px] h-[25px] flex justify-center items-center rounded-md cursor-pointer hover:bg-opacity-70 duration-300 lg:hidden absolute inset-y-1/2 transform -translate-y-1/2"
+                              onClick={() => {
+                                setShowPeriod(!showPeriod);
+                              }}
+                            >
+                              <Image
+                                className="w-[15px] h-[15px]"
+                                src={
+                                  showPeriod ? ArrowTailessUp : ArrowTailessDown
+                                }
+                                width={100}
+                                height={100}
+                                alt={
+                                  showPeriod
+                                    ? 'ArrowTailessUp'
+                                    : 'ArrowTailessDown'
+                                }
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                        <tr
+                          className={`${
+                            showPeriod ? '' : 'hidden lg:table-row'
+                          }`}
+                        >
+                          <td className="flex items-center space-x-1">
+                            <LuDot size={30} className="hidden lg:flex" />
+                            <span>{t('teamBattle.mainPage.registration')}</span>
+                          </td>
+                          <td>
+                            :{' '}
+                            {data?.registration_start !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.registration_start) ??
                                     '2024-12-31T23:59:00Z'
                                 )
-                              )}`}
-                      </div>
-                    </div>
-                    <div className="flex gap-5 justify-between">
-                      <div className="w-[70px] lg:w-[110px]">
-                        {t('teamBattle.mainPage.elimination')}
-                      </div>
-                      <div>
-                        :{' '}
-                        {`
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.elimination_start ??
+                              : ''}{' '}
+                            -{' '}
+                            {data?.registration_end !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.registration_end) ??
                                     '2024-12-31T23:59:00Z'
                                 )
-                              )} -
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.elimination_end ??
+                              : ''}
+                          </td>
+                        </tr>
+                        <tr
+                          className={`${
+                            showPeriod ? '' : 'hidden lg:table-row'
+                          }`}
+                        >
+                          <td className="flex items-center space-x-1">
+                            <LuDot size={30} className="hidden lg:flex" />
+                            <span>{t('teamBattle.mainPage.elimination')}</span>
+                          </td>
+                          <td>
+                            :{' '}
+                            {data?.elimination_start !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.elimination_start) ??
                                     '2024-12-31T23:59:00Z'
                                 )
-                              )}`}
-                      </div>
-                    </div>
-                    <div
-                      className={`${
-                        data?.type === 'PROVINCE' ? 'hidden' : 'flex'
-                      } gap-5 justify-between`}
-                    >
-                      <div className="w-[70px] lg:w-[110px]">
-                        {t('teamBattle.mainPage.semifinal')}
-                      </div>
-                      <div>
-                        :{' '}
-                        {`
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.semifinal_start ??
+                              : ''}{' '}
+                            -{' '}
+                            {data?.elimination_end !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.elimination_end) ??
                                     '2024-12-31T23:59:00Z'
                                 )
-                              )} -
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.semifinal_end ?? '2024-12-31T23:59:00Z'
+                              : ''}
+                          </td>
+                        </tr>
+                        <tr
+                          className={`${
+                            data?.type !== 'PROVINCE' && showPeriod
+                              ? 'lg:table-row'
+                              : 'hidden'
+                          }`}
+                        >
+                          <td className="flex items-center space-x-1">
+                            <LuDot size={30} className="hidden lg:flex" />
+                            <span>{t('teamBattle.mainPage.semifinal')}</span>
+                          </td>
+                          <td>
+                            :{' '}
+                            {data?.semifinal_start !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.semifinal_start) ??
+                                    '2024-12-31T23:59:00Z'
                                 )
-                              )}`}
-                      </div>
-                    </div>
-                    <div className="flex gap-5 justify-between">
-                      <div className="w-[70px] lg:w-[110px]">
-                        {t('teamBattle.mainPage.final')}
-                      </div>
-                      <div>
-                        :{' '}
-                        {`
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.final_start ?? '2024-12-31T23:59:00Z'
+                              : ''}{' '}
+                            -{' '}
+                            {data?.semifinal_end !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.semifinal_end) ??
+                                    '2024-12-31T23:59:00Z'
                                 )
-                              )} -
-                              ${getBattlePeriod(
-                                new Date(
-                                  data?.final_end ?? '2024-12-31T23:59:00Z'
+                              : ''}
+                          </td>
+                        </tr>
+                        <tr
+                          className={`${
+                            showPeriod ? '' : 'hidden lg:table-row'
+                          }`}
+                        >
+                          <td className="flex items-center space-x-1">
+                            <LuDot size={30} className="hidden lg:flex" />
+                            <span>{t('teamBattle.mainPage.final')}</span>
+                          </td>
+                          <td>
+                            :{' '}
+                            {data?.final_start !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.final_start) ??
+                                    '2024-12-31T23:59:00Z'
                                 )
-                              )}`}
-                      </div>
-                    </div>
+                              : ''}{' '}
+                            -{' '}
+                            {data?.final_end !== undefined
+                              ? getBattlePeriod(
+                                  new Date(data.final_end) ??
+                                    '2024-12-31T23:59:00Z'
+                                )
+                              : ''}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                   <div className="flex flex-col justify-center items-center text-sm mt-4">
                     <div className="text-xl font-semibold font-poppins">
@@ -486,7 +537,7 @@ const MainTeamBattle = (): React.ReactElement => {
                                 : 'border-2'
                             } border-[#76a5d0]`}
                           />
-                          <div className="absolute left-1/2 transform -translate-x-1/2">
+                          <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
                             <div
                               className={`relative flex-col justify-center items-center mt-1 ${
                                 selectedSponsor === item.name
@@ -510,13 +561,13 @@ const MainTeamBattle = (): React.ReactElement => {
                   onClick={() => {
                     setShowTnc(!showTnc);
                   }}
-                  className="flex flex-col gap-2 justify-center items-center mt-4 border-2 rounded-lg p-2 border-dashed border-[#2934B2] w-full h-full font-poppins"
+                  className="flex flex-col gap-2 justify-start items-center mt-4 border-2 rounded-lg p-2 border-dashed border-[#2934B2] w-full h-full max-h-80 font-poppins"
                 >
                   <div className="font-semibold">
                     {t('teamBattle.mainPage.tnc')}
                   </div>
                   <div
-                    className="flex flex-col justify-start items-start gap-2 text-xs overflow-y-auto max-h-40 w-full"
+                    className="flex flex-col justify-start items-start gap-2 text-xs overflow-y-auto h-full w-full team-battle-scroll"
                     dangerouslySetInnerHTML={{
                       __html: data?.tnc?.[
                         i18n.language === 'id' ? 'id' : 'en'

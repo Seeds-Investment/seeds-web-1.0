@@ -2614,6 +2614,7 @@ export default {
     next: 'Next',
     timeTo: `It's time to`,
     battle: 'Battle!',
+    prize: 'Prize',
     mainPage: {
       period: 'Period',
       registration: 'Registration',

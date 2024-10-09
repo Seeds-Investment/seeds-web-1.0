@@ -1,4 +1,5 @@
 import AssetPagination from '@/components/AssetPagination';
+import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   getBattleParticipants,
@@ -181,4 +182,4 @@ const BattleParticipants: React.FC = () => {
   );
 };
 
-export default BattleParticipants;
+export default withAuth(BattleParticipants);

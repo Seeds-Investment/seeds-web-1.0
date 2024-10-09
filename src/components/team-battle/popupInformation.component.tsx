@@ -22,15 +22,15 @@ const PopupInformation: React.FC<PopupInformationProps> = ({
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 bg-black/75 flex justify-center items-center z-50">
-      <div className="relative bg-white/50 rounded-3xl shadow-lg">
+      <div className="relative bg-white/50 rounded-3xl shadow-lg w-[590px] h-[580px]">
         <button
           onClick={onClose}
           className="absolute top-2 right-2 bg-[#ff4672] border-white border-4 text-white rounded-full p-2 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
         >
           <AiOutlineClose size={15} />
         </button>
-        <div className="pt-14 px-4 pb-4 overflow-auto">
-          <div className="rounded-3xl bg-gradient-to-r from-[#227e7f]/85 to-[#4760a8]/85 overflow-hidden h-[450px] w-[450px]">
+        <div className="pt-14 px-4 pb-4 overflow-y-auto">
+          <div className="rounded-3xl bg-gradient-to-r from-[#227e7f]/85 to-[#4760a8]/85 overflow-hidden h-[500px] w-[558px]">
             <div className="relative w-full h-40 overflow-hidden">
               <Image
                 src={infoBattle?.banner ?? ''}
@@ -56,7 +56,7 @@ const PopupInformation: React.FC<PopupInformationProps> = ({
                 {moment(infoBattle?.final_end).format('DD MMM YYYY')}
               </div>
               <div
-                className="text-sm text-white font-normal py-2 pb-5 px-4 max-h-[180px] overflow-auto"
+                className="text-sm text-white font-normal mt-2 py-2 pb-5 px-4 max-h-[180px] overflow-auto team-battle-scroll"
                 dangerouslySetInnerHTML={{
                   __html:
                     infoBattle?.tnc?.[

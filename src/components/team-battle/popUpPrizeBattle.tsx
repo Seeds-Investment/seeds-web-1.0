@@ -26,7 +26,7 @@ const PopUpPrizeBattle: React.FC<PopUpJoinBattleProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/75 flex justify-center items-center z-50 w-full">
-      <div className="relative bg-white/50 border border-white rounded-3xl shadow-lg W-full md:w-[450px] h-fit p-2 text-center">
+      <div className="relative bg-white/50 border border-white rounded-3xl shadow-lg w-11/12 md:w-[450px] h-fit p-2 text-center">
         <div className="w-full flex justify-end items-end mt-2 mb-4">
           <div
             onClick={() => {

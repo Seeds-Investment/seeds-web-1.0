@@ -7,6 +7,7 @@ import {
 } from '@/utils/interfaces/team-battle.interface';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import { Button, Typography } from '@material-tailwind/react';
+import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ArrowBackWhite from 'public/assets/team-battle/arrow-back.svg';
@@ -79,6 +80,11 @@ const BattleList: React.FC<BattleListI> = ({
           ...prev,
           dropdown: ''
         }));
+      } else if (window.innerWidth < 1024) {
+        setToggleInformation(prev => ({
+          ...prev,
+          popup: ''
+        }));
       }
     };
 
@@ -148,11 +154,13 @@ const BattleList: React.FC<BattleListI> = ({
               <ChevronLeftIcon width={16} height={24} className="text-white" />
             </div>
           )}
-          <Image
-            src={activeCategory?.image ?? CategoryAll}
-            alt={activeCategory?.title ?? 'Selected Category'}
-            className="lg:w-[240px] lg:h-[240px] w-[280px] h-[280px]"
-          />
+          <div className="lg:bg-transparent bg-white/10 rounded-2xl">
+            <Image
+              src={activeCategory?.image ?? CategoryAll}
+              alt={activeCategory?.title ?? 'Selected Category'}
+              className="lg:w-[240px] lg:h-[240px] w-[100px] h-[100px]"
+            />
+          </div>
           {activeCategory != null && (
             <div
               className="cursor-pointer p-1 bg-white/50 backdrop-blur-sm rounded-lg hover:bg-white/70 duration-300"
@@ -233,15 +241,24 @@ const BattleList: React.FC<BattleListI> = ({
                     )}
                   </div>
                   {toggleInformation?.dropdown === teamBattle.id && (
-                    <div
-                      className="text-sm text-white font-normal py-2 px-4"
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          teamBattle.tnc?.[
-                            i18n.language === 'id' ? 'id' : 'en'
-                          ]?.replace(/\n/g, '<br />') ?? '-'
-                      }}
-                    />
+                    <>
+                      <div className="py-2 px-5 border-white border-2 rounded-full text-white text-[10px] font-normal font-poppins">
+                        {t('teamBattle.mainPage.period')} :{' '}
+                        {moment(teamBattle?.registration_start).format(
+                          'DD MMM YYYY'
+                        )}{' '}
+                        - {moment(teamBattle?.final_end).format('DD MMM YYYY')}
+                      </div>
+                      <div
+                        className="text-sm text-white font-normal py-2 px-4"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            teamBattle.tnc?.[
+                              i18n.language === 'id' ? 'id' : 'en'
+                            ]?.replace(/\n/g, '<br />') ?? '-'
+                        }}
+                      />
+                    </>
                   )}
                 </div>
                 <PopupInformation
@@ -260,14 +277,14 @@ const BattleList: React.FC<BattleListI> = ({
           )}
         </div>
       )}
-      <div className="flex justify-center items-center lg:mt-10 my-10">
+      <div className="flex justify-center items-center lg:mt-10 my-10 lg:relative sticky bottom-0 bg-transparent py-2 lg:py-0">
         <Button
-          className={`w-[345px] h-[60px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
+          className={`lg:w-[345px] w-full h-[60px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
             selectedBattle !== null
               ? 'text-white bg-[#2934B2]'
               : 'text-[#7C7C7C] bg-[#E9E9E9]'
           }`}
-          disabled={selectedBattle === null}
+          disabled={selectedBattle.id === ''}
           onClick={async () => {
             await router.push(
               `/play/team-battle/${selectedBattle?.id}/${

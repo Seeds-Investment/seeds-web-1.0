@@ -1,4 +1,5 @@
 import BattleCountdown from '@/components/team-battle/CountdownTimerBattle';
+import withAuth from '@/helpers/withAuth';
 import { getBattleDetail } from '@/repository/team-battle.repository';
 import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
 import Image from 'next/image';
@@ -54,7 +55,7 @@ const WaitingBattle: React.FC = () => {
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="text-center text-xl sm:text-2xl col-span-2 lg:col-span-1 font-poppins">
+          <div className="text-center text-lg sm:text-xl lg:text-2xl col-span-2 lg:col-span-1 font-poppins">
             {t('teamBattle.battleCompetition')}
           </div>
         </div>
@@ -93,6 +94,7 @@ const WaitingBattle: React.FC = () => {
                   onClick={() => {
                     handleSelectedSponsor(item.name);
                   }}
+                  className="relative"
                 >
                   <Image
                     src={item.logo}
@@ -103,14 +105,16 @@ const WaitingBattle: React.FC = () => {
                       selectedSponsor === item.name ? 'border-8' : 'border-4'
                     } border-[#76a5d0]`}
                   />
-                  <div
-                    className={`relative flex-col justify-center items-center mt-1 ${
-                      selectedSponsor === item.name ? 'flex' : 'hidden'
-                    }`}
-                  >
-                    <IoTriangleSharp className="text-white absolute -top-2" />
-                    <div className="w-auto rounded p-2 bg-white border-none text-xs">
-                      {item.name}
+                  <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
+                    <div
+                      className={`relative flex-col justify-center items-center mt-1 ${
+                        selectedSponsor === item.name ? 'flex' : 'hidden'
+                      }`}
+                    >
+                      <IoTriangleSharp className="text-white absolute -top-2" />
+                      <div className="w-auto rounded p-2 bg-white border-none text-xs">
+                        {item.name}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -141,4 +145,4 @@ const WaitingBattle: React.FC = () => {
   );
 };
 
-export default WaitingBattle;
+export default withAuth(WaitingBattle);

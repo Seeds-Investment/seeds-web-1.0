@@ -102,7 +102,7 @@ const WaitingBattle: React.FC = () => {
                     width={300}
                     height={300}
                     className={`w-20 xl:w-24 2xl:w-28 h-20 xl:h-24 2xl:h-28 object-contain rounded-xl bg-white cursor-pointer ${
-                      selectedSponsor === item.name ? 'border-8' : 'border-4'
+                      selectedSponsor === item.name ? 'border-4' : 'border-2'
                     } border-[#76a5d0]`}
                   />
                   <div className="absolute left-1/2 transform -translate-x-1/2 z-10">

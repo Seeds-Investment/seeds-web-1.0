@@ -347,11 +347,15 @@ const StageBattle: React.FC = () => {
                             );
                           }}
                           className={`transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl ${
-                            data?.status === 'ENDED'
+                            data?.status === 'ENDED' ||
+                            !today.isBetween(dateScheduleStart, dateScheduleEnd)
                               ? 'bg-gray-500'
                               : 'bg-[#2934b2]'
                           } text-base lg:text-lg text-white border-2 border-white hidden lg:block`}
-                          disabled={data?.status === 'ENDED'}
+                          disabled={
+                            data?.status === 'ENDED' ||
+                            !today.isBetween(dateScheduleStart, dateScheduleEnd)
+                          }
                         >
                           {t('teamBattle.stagePage.enter')}
                         </button>
@@ -421,9 +425,15 @@ const StageBattle: React.FC = () => {
                 await router.push(`/play/team-battle/${id as string}/arena`);
               }}
               className={`transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl ${
-                data?.status === 'ENDED' ? 'bg-gray-500' : 'bg-[#2934b2]'
+                data?.status === 'ENDED' ||
+                !today.isBetween(dateScheduleStart, dateScheduleEnd)
+                  ? 'bg-gray-500'
+                  : 'bg-[#2934b2]'
               } text-base lg:text-lg text-white border-2 border-white block lg:hidden`}
-              disabled={data?.status === 'ENDED'}
+              disabled={
+                data?.status === 'ENDED' ||
+                !today.isBetween(dateScheduleStart, dateScheduleEnd)
+              }
             >
               {t('teamBattle.stagePage.enter')}
             </button>

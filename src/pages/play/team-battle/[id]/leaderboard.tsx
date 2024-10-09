@@ -1,4 +1,5 @@
 import Loading from '@/components/popup/Loading';
+import LeaderboardNotFound from '@/components/team-battle/leaderboard-not-found';
 import withAuth from '@/helpers/withAuth';
 import {
   getBattleLeaderboard,
@@ -14,6 +15,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FaMinus } from 'react-icons/fa';
 import { IoArrowBack } from 'react-icons/io5';
 import { MdOutlineTrendingDown, MdOutlineTrendingUp } from 'react-icons/md';
 import { toast } from 'react-toastify';
@@ -27,12 +29,17 @@ const GainIcon: React.FC<GainIconI> = ({ gain, className }) => {
     <>
       {gain > 0 ? (
         <div className="flex items-center gap-1">
-          <MdOutlineTrendingUp size={20} className="text-[#106B6E]" />
+          <MdOutlineTrendingUp size={15} className="text-[#5fa9ac]" />
+          <span className={className}>{`(${gain?.toFixed(2)}%)`}</span>
+        </div>
+      ) : gain < 0 ? (
+        <div className="flex items-center gap-1">
+          <MdOutlineTrendingDown size={15} className="text-[#FF4A2B]" />
           <span className={className}>{`(${gain?.toFixed(2)}%)`}</span>
         </div>
       ) : (
         <div className="flex items-center gap-1">
-          <MdOutlineTrendingDown size={20} className="text-[#FF4A2B]" />
+          <FaMinus size={15} className="text-[#FFA500]" />
           <span className={className}>{`(${gain?.toFixed(2)}%)`}</span>
         </div>
       )}
@@ -146,7 +153,7 @@ const LeaderboardBattlePage: React.FC = () => {
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="lg:text-center text-lg sm:text-xl lg:text-2xl col-span-2 lg:col-span-1 font-poppins">
+          <div className="lg:text-center text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins text-center">
             {t('teamBattle.battleCompetition')}
           </div>
         </div>
@@ -258,7 +265,7 @@ const LeaderboardBattlePage: React.FC = () => {
             </div>
             <div className="hidden lg:grid grid-cols-9 gap-3 bg-[#2934B2] p-2 rounded-2xl text-white w-full min-h-20 mt-2">
               <div className="col-span-1 flex justify-start items-center">
-                {myRank !== null ? myRank.rank : myRankFromList?.rank}
+                {myRank !== null ? myRank?.rank : myRankFromList?.rank}
               </div>
               <div className="col-span-6 grid grid-cols-4 items-center gap-3">
                 <div className="col-span-1">
@@ -317,46 +324,50 @@ const LeaderboardBattlePage: React.FC = () => {
               ref={leaderboardRef}
               className="max-h-[50vh] sm:max-h-[60vh] lg:max-h-[65vh] overflow-auto"
             >
-              {remainingRanks?.map((el: LeaderboardBattle, i) => {
-                return (
-                  <div className="flex items-center" key={i}>
-                    <p className="text-center p-3 text-xs sm:text-sm xl:text-base">
-                      {el.rank}
-                    </p>
-                    <div className="p-3">
-                      <div className="grid grid-cols-6 justify-start items-center gap-2">
-                        <div className="col-span-1 flex justify-center items-center">
-                          <Image
-                            src={el.avatar}
-                            alt="rank-user"
-                            width={200}
-                            height={200}
-                            className="min-w-8 min-h-8 object-cover p-1 rounded bg-[#A1A0DA]"
-                          />
+              {(leaderboardList?.length as number) < 3 ? (
+                <LeaderboardNotFound />
+              ) : (
+                remainingRanks?.map((el: LeaderboardBattle, i) => {
+                  return (
+                    <div className="flex items-center" key={i}>
+                      <p className="text-center p-3 text-xs sm:text-sm xl:text-base">
+                        {el.rank}
+                      </p>
+                      <div className="p-3">
+                        <div className="grid grid-cols-6 justify-start items-center gap-2">
+                          <div className="col-span-1 flex justify-center items-center">
+                            <Image
+                              src={el.avatar}
+                              alt="rank-user"
+                              width={200}
+                              height={200}
+                              className="min-w-8 min-h-8 object-cover p-1 rounded bg-[#A1A0DA]"
+                            />
+                          </div>
+                          <div className="col-span-5">
+                            <p className="p-0 m-0 font-medium text-xs sm:text-sm xl:text-base truncate">
+                              {el.name}
+                            </p>
+                            <p className="p-0 m-0 text-[#0F1577] font-medium text-xs xl:text-sm truncate">
+                              {el.group_name}
+                            </p>
+                          </div>
                         </div>
-                        <div className="col-span-5">
-                          <p className="p-0 m-0 font-medium text-xs sm:text-sm xl:text-base truncate">
-                            {el.name}
-                          </p>
-                          <p className="p-0 m-0 text-[#0F1577] font-medium text-xs xl:text-sm truncate">
-                            {el.group_name}
-                          </p>
+                      </div>
+                      <div className="p-3">
+                        <div className="flex justify-center items-center">
+                          <div className="h-full flex flex-row items-center justify-center gap-1 p-1 rounded-lg border-2 border-[#2934B2] w-fit text-xs xl:text-sm">
+                            <GainIcon
+                              gain={el.gain}
+                              className="font-light text-black text-sm"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div className="p-3">
-                      <div className="flex justify-center items-center">
-                        <div className="h-full flex flex-row items-center justify-center gap-1 p-1 rounded-lg border-2 border-[#2934B2] w-fit text-xs xl:text-sm">
-                          <GainIcon
-                            gain={el.gain}
-                            className="font-light text-black text-sm"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              )}
             </div>
             {isLoading && <Loading />}
             <div className="w-full mt-10 font-semibold text-sm sm:text-base lg:text-lg text-[#2934B2] flex lg:hidden">
@@ -364,7 +375,7 @@ const LeaderboardBattlePage: React.FC = () => {
             </div>
             <div className="lg:hidden grid grid-cols-9 gap-3 bg-[#2934B2] p-2 rounded-2xl text-white w-full min-h-20 mt-2">
               <div className="col-span-1 flex justify-start items-center text-xs sm:text-sm lg:text-base">
-                {myRank !== null ? myRank.rank : myRankFromList?.rank}
+                {myRank !== null ? myRank?.rank : myRankFromList?.rank}
               </div>
               <div className="col-span-6 grid grid-cols-4 items-center gap-3">
                 <div className="col-span-1">

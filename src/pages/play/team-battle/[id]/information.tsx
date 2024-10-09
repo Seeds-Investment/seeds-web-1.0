@@ -99,12 +99,12 @@ const BattleInformation: React.FC = () => {
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="text-center text-lg sm:text-xl lg:text-2xl col-span-2 lg:col-span-1 font-poppins">
+          <div className="text-center text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins">
             {t('teamBattle.battleCompetition')}
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-5 my-10">
-          <div className="col-span-2 border-2 border-white rounded-2xl p-1 lg:p-3 bg-white/50 relative">
+          <div className="col-span-2 border-2 border-white rounded-2xl px-1 py-5 lg:px-10 bg-white/50 relative">
             <RiGiftFill
               size={50}
               onClick={handleShowPopUpPrizeBattle}
@@ -248,7 +248,7 @@ const BattleInformation: React.FC = () => {
                 </tbody>
               </table>
               <div className="font-semibold text-lg sm:text-xl mb-4 text-[#3D3D3D]">
-                {t('teamBattle.mainPage.participants')}
+                {t('teamBattle.mainPage.totalParticipants')}
               </div>
               <div className="flex flex-row text-[#407F74] justify-center">
                 <FaUserGroup size="calc(100% / 6)" />

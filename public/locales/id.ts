@@ -2545,6 +2545,8 @@ export default {
     timeTo: `Waktunya`,
     battle: 'Bertanding!',
     prize: 'Hadiah',
+    leaderboardPopup: 'Lebih banyak peserta akan segera bergabung',
+    willBegin: 'Kompetisi akan dimulai pada:',
     mainPage: {
       period: 'Periode',
       registration: 'Registrasi',
@@ -2552,6 +2554,7 @@ export default {
       semifinal: 'Semifinal',
       final: 'Final',
       participants: 'Peserta',
+      totalParticipants: 'Total Peserta',
       join: 'Gabung',
       play: 'Mulai Permainan',
       sponsor: 'Sponsor',

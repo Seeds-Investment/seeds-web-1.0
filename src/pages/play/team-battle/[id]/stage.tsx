@@ -1,4 +1,4 @@
-import OnGoingStage from '@/components/team-battle/OnGoing.component';
+import BattleCountdown from '@/components/team-battle/CountdownTimerBattle';
 import PopUpQualifiedStage from '@/components/team-battle/PopUpQualifiedStage';
 import Triangle from '@/components/team-battle/triangle.component';
 import { getBattleStageDate } from '@/helpers/dateFormat';
@@ -266,160 +266,207 @@ const StageBattle: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  {today.isBefore(dateScheduleStart) ? (
-                    <OnGoingStage
-                      startDate={dateScheduleStart}
-                      endDate={dateScheduleEnd}
-                      stageName={selectedCategory}
-                    />
-                  ) : (
-                    <div className="flex flex-col items-center justify-center gap-5">
-                      <div className="font-semibold text-sm sm:text-base lg:text-lg text-[#3D3D3D] my-10 text-center">
-                        {t('teamBattle.stagePage.gamePeriod')} :{' '}
-                        {dateScheduleStart} - {dateScheduleEnd}
-                      </div>
-                      <div className="flex flex-row flex-wrap gap-3 w-full sm:w-8/12 lg:w-1/2 2xl:w-3/5 justify-center">
-                        {data?.sponsors?.map((item, i) => {
-                          return (
-                            <div
-                              key={i}
-                              onClick={() => {
-                                handleSelectedSponsor(item.name);
-                              }}
-                              className="relative"
-                            >
-                              <Image
-                                src={item.logo}
-                                alt="sponsor-logo"
-                                width={300}
-                                height={300}
-                                className={`w-20 xl:w-24 2xl:w-28 h-20 xl:h-24 2xl:h-28 object-contain rounded-xl bg-white cursor-pointer ${
-                                  selectedSponsor === item.name
-                                    ? 'border-4'
-                                    : 'border-2'
-                                } border-[#76a5d0]`}
-                              />
-                              <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
-                                <div
-                                  className={`relative flex-col justify-center items-center mt-1 ${
+                  <div className="flex flex-col items-center justify-center gap-5">
+                    {today.isBefore(dateScheduleStart) ? (
+                      <div className="my-10 font-poppins flex flex-col justify-center items-center gap-2">
+                        <div className="text-sm sm:text-base xl:text-xl text-center font-semibold">
+                          {t('teamBattle.willBegin', {
+                            data: selectedCategory
+                          })}
+                        </div>
+                        <BattleCountdown
+                          deadline={
+                            data !== undefined ? dateScheduleEnd.toString() : ''
+                          }
+                          className="text-center text-base sm:text-xl lg:text-2xl font-semibold text-[#407F74] font-poppins"
+                        />
+                        <div className="flex flex-row flex-wrap gap-3 w-full justify-center mt-5">
+                          {data?.sponsors?.map((item, i) => {
+                            return (
+                              <div
+                                key={i}
+                                onClick={() => {
+                                  handleSelectedSponsor(item.name);
+                                }}
+                                className="relative"
+                              >
+                                <Image
+                                  src={item.logo}
+                                  alt="sponsor-logo"
+                                  width={300}
+                                  height={300}
+                                  className={`w-16 xl:w-20 2xl:w-24 h-16 xl:h-20 2xl:h-24 object-contain rounded-xl bg-white cursor-pointer ${
                                     selectedSponsor === item.name
-                                      ? 'flex'
-                                      : 'hidden'
-                                  }`}
-                                >
-                                  <IoTriangleSharp className="text-white absolute -top-2" />
-                                  <div className="w-auto rounded p-2 bg-white border-none text-xs">
-                                    {item.name}
+                                      ? 'border-4'
+                                      : 'border-2'
+                                  } border-[#76a5d0]`}
+                                />
+                                <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
+                                  <div
+                                    className={`relative flex-col justify-center items-center mt-1 ${
+                                      selectedSponsor === item.name
+                                        ? 'flex'
+                                        : 'hidden'
+                                    }`}
+                                  >
+                                    <IoTriangleSharp className="text-white absolute -top-2" />
+                                    <div className="w-auto rounded p-2 bg-white border-none text-xs">
+                                      {item.name}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <div className="font-semibold text-base sm:text-lg text-[#3D3D3D]">
-                        {t('teamBattle.mainPage.participants')}
-                      </div>
-                      <div className="flex flex-row text-[#407F74] relative">
-                        <FaUserGroup size={40} />
-                        <span className="text-xl">{data?.participants}</span>
-                        <FaChevronRight
-                          size={25}
-                          onClick={async () =>
-                            await router.push(
-                              `/play/team-battle/${
-                                id as string
-                              }/participants?stage=${selectedCategory}`
-                            )
-                          }
-                          className="text-white bg-[#407f74] p-1 rounded absolute -right-8 bottom-2 cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
-                        />
-                      </div>
-                      <div
-                        className={`justify-center items-center w-full ${
-                          today.isBefore(dateScheduleStart) ? 'hidden' : 'flex'
-                        }`}
-                      >
-                        <button
-                          onClick={async () => {
-                            await router.push(
-                              `/play/team-battle/${id as string}/arena`
                             );
-                          }}
-                          className={`transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl ${
-                            data?.status === 'ENDED' ||
-                            !today.isBetween(dateScheduleStart, dateScheduleEnd)
-                              ? 'bg-gray-500'
-                              : 'bg-[#2934b2]'
-                          } text-base lg:text-lg text-white border-2 border-white hidden lg:block`}
-                          disabled={
-                            data?.status === 'ENDED' ||
-                            !today.isBetween(dateScheduleStart, dateScheduleEnd)
-                          }
-                        >
-                          {t('teamBattle.stagePage.enter')}
-                        </button>
+                          })}
+                        </div>
                       </div>
-                      <div className="grid grid-cols-9 items-center lg:hidden">
-                        <div className="col-span-3">
-                          <div className="flex flex-row items-center gap-2 border-r-2 border-[#407F74]">
-                            <Image
-                              src={Crown}
-                              width={300}
-                              height={300}
-                              alt="crown-icon"
-                              className="w-4/12"
-                            />
-                            <div className="flex flex-col">
-                              <div className="text-xs">Rank</div>
-                              <div className="font-bold text-sm">
-                                {myRank?.rank ?? 0}
+                    ) : (
+                      <>
+                        <div className="font-semibold text-sm sm:text-base lg:text-lg text-[#3D3D3D] my-10 text-center">
+                          {t('teamBattle.stagePage.gamePeriod')} :{' '}
+                          {dateScheduleStart} - {dateScheduleEnd}
+                        </div>
+                        <div className="flex flex-row flex-wrap gap-3 w-full sm:w-8/12 lg:w-1/2 2xl:w-3/5 justify-center">
+                          {data?.sponsors?.map((item, i) => {
+                            return (
+                              <div
+                                key={i}
+                                onClick={() => {
+                                  handleSelectedSponsor(item.name);
+                                }}
+                                className="relative"
+                              >
+                                <Image
+                                  src={item.logo}
+                                  alt="sponsor-logo"
+                                  width={300}
+                                  height={300}
+                                  className={`w-16 xl:w-20 2xl:w-24 h-16 xl:h-20 2xl:h-24 object-contain rounded-xl bg-white cursor-pointer ${
+                                    selectedSponsor === item.name
+                                      ? 'border-4'
+                                      : 'border-2'
+                                  } border-[#76a5d0]`}
+                                />
+                                <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
+                                  <div
+                                    className={`relative flex-col justify-center items-center mt-1 ${
+                                      selectedSponsor === item.name
+                                        ? 'flex'
+                                        : 'hidden'
+                                    }`}
+                                  >
+                                    <IoTriangleSharp className="text-white absolute -top-2" />
+                                    <div className="w-auto rounded p-2 bg-white border-none text-xs">
+                                      {item.name}
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
+                            );
+                          })}
                         </div>
-                        <div className="col-span-5 flex flex-row items-center">
-                          <FaStar
-                            size="calc(100% / 6)"
-                            className="text-[#ffc107]"
-                          />
-                          <div>
-                            <div className="font-medium text-xs md:text-sm">
-                              {t('teamBattle.stagePage.letsCheck')}
-                            </div>
-                            <div className="font-semibold text-sm sm:text-base md:text-lg 2xl:text-xl">
-                              {t('teamBattle.fullLeaderboard')}
-                            </div>
-                          </div>
+                        <div className="font-semibold text-base sm:text-lg text-[#3D3D3D]">
+                          {t('teamBattle.mainPage.participants')}
                         </div>
-                        <button
-                          className="col-span-1 flex items-center justify-end cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
-                          onClick={async () =>
-                            await router.push(
-                              `/play/team-battle/${
-                                id as string
-                              }/leaderboard?stage=${selectedCategory}`
-                            )
-                          }
-                          disabled={today.isBefore(dateScheduleStart)}
-                        >
+                        <div className="flex flex-row text-[#407F74] relative">
+                          <FaUserGroup size={40} />
+                          <span className="text-xl">{data?.participants}</span>
                           <FaChevronRight
                             size={25}
-                            className="text-white bg-[#407f74] p-1 rounded"
+                            onClick={async () =>
+                              await router.push(
+                                `/play/team-battle/${
+                                  id as string
+                                }/participants?stage=${selectedCategory}`
+                              )
+                            }
+                            className="text-white bg-[#407f74] p-1 rounded absolute -right-8 bottom-2 cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                           />
-                        </button>
-                      </div>
+                        </div>
+                      </>
+                    )}
+                    <div className={`justify-center items-center w-full flex`}>
+                      <button
+                        onClick={async () => {
+                          await router.push(
+                            `/play/team-battle/${id as string}/arena`
+                          );
+                        }}
+                        className={`transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl ${
+                          data?.status === 'ENDED' ||
+                          !today.isBetween(dateScheduleStart, dateScheduleEnd)
+                            ? 'bg-[#d9d9d9]'
+                            : 'bg-[#2934b2]'
+                        } text-base lg:text-lg text-white border-2 border-white hidden lg:block`}
+                        disabled={
+                          data?.status === 'ENDED' ||
+                          !today.isBetween(dateScheduleStart, dateScheduleEnd)
+                        }
+                      >
+                        {t('teamBattle.stagePage.enter')}
+                      </button>
                     </div>
-                  )}
+                    <div
+                      className={`grid grid-cols-9 items-center ${
+                        today.isBefore(dateScheduleStart)
+                          ? 'hidden'
+                          : 'lg:hidden'
+                      }`}
+                    >
+                      <div className="col-span-3">
+                        <div className="flex flex-row items-center gap-2 border-r-2 border-[#407F74]">
+                          <Image
+                            src={Crown}
+                            width={300}
+                            height={300}
+                            alt="crown-icon"
+                            className="w-4/12"
+                          />
+                          <div className="flex flex-col">
+                            <div className="text-xs">Rank</div>
+                            <div className="font-bold text-sm">
+                              {myRank?.rank ?? 0}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-span-5 flex flex-row items-center">
+                        <FaStar
+                          size="calc(100% / 6)"
+                          className="text-[#ffc107]"
+                        />
+                        <div>
+                          <div className="font-medium text-xs md:text-sm">
+                            {t('teamBattle.stagePage.letsCheck')}
+                          </div>
+                          <div className="font-semibold text-sm sm:text-base md:text-lg 2xl:text-xl">
+                            {t('teamBattle.fullLeaderboard')}
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        className="col-span-1 flex items-center justify-end cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
+                        onClick={async () =>
+                          await router.push(
+                            `/play/team-battle/${
+                              id as string
+                            }/leaderboard?stage=${selectedCategory}`
+                          )
+                        }
+                        disabled={today.isBefore(dateScheduleStart)}
+                      >
+                        <FaChevronRight
+                          size={25}
+                          className="text-white bg-[#407f74] p-1 rounded"
+                        />
+                      </button>
+                    </div>
+                  </div>
                 </>
               )}
             </div>
           </div>
-          <div
-            className={`justify-center items-center ${
-              today.isBefore(dateScheduleStart) ? 'hidden' : 'flex lg:hidden'
-            }`}
-          >
+          <div className={`justify-center items-center flex lg:hidden`}>
             <button
               onClick={async () => {
                 await router.push(`/play/team-battle/${id as string}/arena`);
@@ -427,7 +474,7 @@ const StageBattle: React.FC = () => {
               className={`transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl ${
                 data?.status === 'ENDED' ||
                 !today.isBetween(dateScheduleStart, dateScheduleEnd)
-                  ? 'bg-gray-500'
+                  ? 'bg-[#e9e9e9]'
                   : 'bg-[#2934b2]'
               } text-base lg:text-lg text-white border-2 border-white block lg:hidden`}
               disabled={

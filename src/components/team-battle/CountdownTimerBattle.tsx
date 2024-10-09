@@ -68,7 +68,7 @@ const BattleCountdown: React.FC<CountDownProps> = ({ deadline, className }) => {
   ) {
     return (
       <div>
-        <Typography className="text-3xl font-semibold text-[#407F74] font-poppins text-center">
+        <Typography className="text-2xl lg:text-3xl font-semibold text-[#407F74] font-poppins text-center">
           {t('teamBattle.waitingPage.battleDesc')}
         </Typography>
       </div>

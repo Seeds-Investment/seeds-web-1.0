@@ -2615,6 +2615,8 @@ export default {
     timeTo: `It's time to`,
     battle: 'Battle!',
     prize: 'Prize',
+    leaderboardPopup: 'More participants will be joining soon',
+    willBegin: 'The competition will begin in:',
     mainPage: {
       period: 'Period',
       registration: 'Registration',
@@ -2622,6 +2624,7 @@ export default {
       semifinal: 'Semifinal',
       final: 'Final',
       participants: 'Participants',
+      totalParticipants: 'Total Participants',
       join: 'Join',
       play: 'Play',
       sponsor: 'Sponsor',

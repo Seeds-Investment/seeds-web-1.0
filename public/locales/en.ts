@@ -2626,7 +2626,8 @@ export default {
       play: 'Play',
       sponsor: 'Sponsor',
       sponsors: 'Sponsors',
-      tnc: 'Terms and Conditions'
+      tnc: 'Terms and Conditions',
+      wrongInvitationCode: 'Invalid invitation code!'
     },
     participant: {
       participant: 'Participant',

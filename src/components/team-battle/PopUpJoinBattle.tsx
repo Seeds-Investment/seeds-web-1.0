@@ -36,6 +36,7 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
   const [searchGroup, setSearchGroup] = useState<string>('');
   const [groupList, setGroupList] = useState<GroupBattle[]>([]);
   const [filteredGroupList, setFilteredGroupList] = useState<GroupBattle[]>([]);
+  const [isInvalidCode, setIsInvalidCode] = useState<boolean>(false);
 
   const handleToggleJoin = (mode: 'public' | 'invitation' | null): void => {
     setJoinMode(mode);
@@ -90,7 +91,10 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
         error?.status === 404 &&
         error?.response?.data?.message === 'invitation code not found on this battle'
       ) {
-        toast.error(t('teamBattle.mainPage.wrongInvitationCode'));
+        setIsInvalidCode(true)
+        setTimeout(() => {
+          setIsInvalidCode(false)
+        }, 5000)
       } else if (
         error?.status === 404 &&
         error?.response?.data?.message !== 'invitation code not found on this battle'
@@ -188,11 +192,11 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
             </div>
           )}
           {joinMode === 'invitation' && groupList?.length === 0 && (
-            <div className="rounded-3xl bg-white max-w-[460px] h-[240px] p-6 flex flex-col justify-center items-center gap-6">
+            <div className="rounded-3xl bg-white max-w-[460px] h-fit p-6 flex flex-col justify-center items-center">
               <Typography className="font-poppins lg:text-2xl text-base font-semibold">
                 {t('teamBattle.joinAsInvitation')}
               </Typography>
-              <div className="w-full p-[3px] rounded-2xl bg-gradient-to-r from-[#97A4E7] to-[#47C0AA]">
+              <div className={`w-full p-[3px] rounded-2xl bg-gradient-to-r from-[#97A4E7] to-[#47C0AA] mt-6 ${isInvalidCode ? 'mb-4' : 'mb-6'}`}>
                 <input
                   type="text"
                   placeholder={
@@ -205,6 +209,12 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
                   }}
                 />
               </div>
+              {
+                isInvalidCode &&
+                  <Typography className='text-lg text-[#DD2525] w-full text-center mb-4'>
+                    {t('teamBattle.mainPage.wrongInvitationCode')}
+                  </Typography>
+              }
               <Button
                 disabled={isLoading || invitationCode.trim().length < 3}
                 onClick={handleFetchGroup}

@@ -2557,7 +2557,7 @@ export default {
       sponsor: 'Sponsor',
       sponsors: 'Sponsor',
       tnc: 'Syarat dan Ketentuan',
-      wrongInvitationCode: 'Kode undangan tidak ditemukan. Pastikan kode yang anda masukan sudah benar!'
+      wrongInvitationCode: 'Kode undangan tidak valid!'
     },
     participant: {
       participant: 'Peserta',

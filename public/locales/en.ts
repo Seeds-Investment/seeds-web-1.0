@@ -2627,7 +2627,7 @@ export default {
       sponsor: 'Sponsor',
       sponsors: 'Sponsors',
       tnc: 'Terms and Conditions',
-      wrongInvitationCode: 'Invitation code not found. Make sure your code is valid!'
+      wrongInvitationCode: 'Invalid invitation code!'
     },
     participant: {
       participant: 'Participant',

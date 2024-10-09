@@ -33,7 +33,10 @@ const HistoryBattle: React.FC = () => {
     { label: t('teamBattle.history.pastBattle'), key: 'MY_PAST' }
   ];
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedBattle, setSelectedBattle] = useState<string | null>(null);
+  const [selectedBattle, setSelectedBattle] = useState<{
+    id: string;
+    is_joined: boolean;
+  }>({ id: '', is_joined: false });
 
   const [listParams, setListParams] = useState({
     page: 1,
@@ -98,7 +101,7 @@ const HistoryBattle: React.FC = () => {
   return (
     <>
       <div className="px-2 my-5">
-        <div className="text-xl text-white grid grid-cols-3">
+        <div className="text-xl text-white flex justify-between items-center">
           <div
             className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
             onClick={() => {
@@ -107,7 +110,7 @@ const HistoryBattle: React.FC = () => {
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="text-center text-lg sm:text-xl lg:text-2xl col-span-2 lg:col-span-1 font-poppins">
+          <div className="flex-1 text-center text-lg sm:text-xl lg:text-2xl col-span-2 lg:col-span-1 font-poppins font-semibold">
             {t('teamBattle.history.myBattle')}
           </div>
         </div>
@@ -118,7 +121,7 @@ const HistoryBattle: React.FC = () => {
                 <button
                   key={i}
                   onClick={() => {
-                    setSelectedBattle(null);
+                    setSelectedBattle({ id: '', is_joined: false });
                     setSelectedCategory(item.key);
                   }}
                   className={`${
@@ -138,22 +141,25 @@ const HistoryBattle: React.FC = () => {
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-10">
             {teamBattleList?.data.length != null ? (
               teamBattleList?.data.map((teamBattle, i) => {
                 return (
                   <div
                     key={i}
-                    className={`rounded-t-3xl bg-red-50 overflow-hidden w-full flex flex-col justify-center items-center h-fit ${
-                      selectedBattle === teamBattle?.id
+                    className={`rounded-t-3xl cursor-pointer bg-red-50 overflow-hidden w-full flex flex-col justify-center items-center h-fit ${
+                      selectedBattle.id === teamBattle?.id
                         ? 'border-[3px] border-white'
                         : ''
                     }`}
                     onClick={() => {
-                      if (selectedBattle === teamBattle.id) {
-                        setSelectedBattle(null);
+                      if (selectedBattle.id === teamBattle.id) {
+                        setSelectedBattle({ id: '', is_joined: false });
                       } else {
-                        setSelectedBattle(teamBattle?.id);
+                        setSelectedBattle({
+                          id: teamBattle.id,
+                          is_joined: teamBattle.is_joined
+                        });
                       }
                     }}
                   >
@@ -237,19 +243,23 @@ const HistoryBattle: React.FC = () => {
         <div
           className={`${
             teamBattleList != null
-              ? 'flex justify-center items-center mt-10'
+              ? 'flex justify-center items-center mt-10 lg:mt-10 my-10 lg:relative sticky bottom-0 bg-transparent py-2 lg:py-0'
               : 'hidden'
           }`}
         >
           <Button
-            className={`w-[345px] h-[60px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
-              selectedBattle !== null
+            className={`lg:w-[345px] w-full h-[60px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
+              selectedBattle.id !== ''
                 ? 'text-white bg-[#2934B2]'
                 : 'text-[#7C7C7C] bg-[#E9E9E9]'
             }`}
-            disabled={selectedBattle === null}
+            disabled={selectedBattle.id === ''}
             onClick={async () => {
-              await router.push(`/play/team-battle/${selectedBattle ?? ''}`);
+              await router.push(
+                `/play/team-battle/${selectedBattle?.id}/${
+                  selectedBattle?.is_joined ? 'stage' : ''
+                }`
+              );
             }}
           >
             OK

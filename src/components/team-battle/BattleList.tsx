@@ -283,7 +283,7 @@ const BattleList: React.FC<BattleListI> = ({
       <div className="flex justify-center items-center lg:mt-10 my-10 lg:relative sticky bottom-0 bg-transparent py-2 lg:py-0">
         <Button
           className={`lg:w-[345px] w-full h-[60px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
-            selectedBattle !== null
+            selectedBattle.id !== ''
               ? 'text-white bg-[#2934B2]'
               : 'text-[#7C7C7C] bg-[#E9E9E9]'
           }`}

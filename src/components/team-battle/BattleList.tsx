@@ -141,6 +141,9 @@ const BattleList: React.FC<BattleListI> = ({
             setFetchTrigger(!fetchTrigger);
           }}
         />
+        <Typography className="lg:hidden block flex-1 text-center text-white font-poppins font-semibold text-lg">
+          Team Battle
+        </Typography>
       </div>
       <div className="flex flex-col justify-center items-center gap-4">
         <div className="flex justify-center items-center gap-4 mt-4">
@@ -181,7 +184,7 @@ const BattleList: React.FC<BattleListI> = ({
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="grid lg:grid-cols-3 grid-cols-1 gap-5 mt-10">
+        <div className="grid lg:grid-cols-3 grid-cols-1 gap-5 mt-5 lg:mx-0 mx-4">
           {teamBattleList?.data != null ? (
             teamBattleList?.data.map(teamBattle => (
               <div

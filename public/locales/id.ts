@@ -2564,7 +2564,7 @@ export default {
       play: 'Mulai Permainan',
       sponsor: 'Sponsor',
       sponsors: 'Sponsor',
-      tnc: 'Syarat dan Ketentuan',
+      tnc: 'Syarat & Ketentuan',
       wrongInvitationCode: 'Kode undangan tidak valid!'
     },
     participant: {

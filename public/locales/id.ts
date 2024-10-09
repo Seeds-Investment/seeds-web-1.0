@@ -2551,6 +2551,7 @@ export default {
     battleClosed2: 'Team Battle sudah berada di tahap',
     battleClosed3: 'Team Battle sudah berakhir.',
     battleClosed4: 'Team Battle telah dibatalkan.',
+    stageNotStarted: 'Stage belum dimulai',
     mainPage: {
       period: 'Periode',
       registration: 'Registrasi',

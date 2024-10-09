@@ -22,6 +22,7 @@ import { IoArrowBack, IoTriangleSharp } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 import Crown from '../../../../../public/assets/team-battle/battle-crown.svg';
 import BlueSeedy from '../../../../../public/assets/team-battle/blueseedy.svg';
+import OnGoingIcon from '../../../../../public/assets/team-battle/stage-ongoing.svg';
 import Versus from '../../../../../public/assets/team-battle/vsicon.svg';
 import YellowSeedy from '../../../../../public/assets/team-battle/yellowseedy.svg';
 
@@ -517,48 +518,62 @@ const StageBattle: React.FC = () => {
               <div className="font-semibold text-[#3D3D3D] text-xl font-poppins text-center">
                 {t('teamBattle.leaderBoard')}
               </div>
-              <div className="flex flex-col justify-center items-center gap-2">
-                <Image
-                  src={Crown}
-                  width={300}
-                  height={300}
-                  alt="crown-icon"
-                  className="w-4/12"
-                />
-                <p className="text-sm">{t('teamBattle.stagePage.yourRank')}</p>
-                <div className="text-xl px-12 py-1 border-2 border-dashed rounded-xl border-[#3D3D3D] font-bold w-fit">
-                  {myRank?.rank ?? 0}
+              {today.isBefore(dateScheduleStart) ? (
+                <div className="flex flex-col justify-center items-center font-semibold">
+                  <Image
+                    src={OnGoingIcon}
+                    width={150}
+                    height={150}
+                    alt="leaderboard-ongoing"
+                  />
+                  <div>{t('teamBattle.stageNotStarted')}</div>
                 </div>
-                <div className="grid grid-cols-9 items-center gap-3 mt-10">
-                  <div className="col-span-2">
-                    <FaStar size="4vw" className="text-[#ffc107]" />
+              ) : (
+                <div className="flex flex-col justify-center items-center gap-2">
+                  <Image
+                    src={Crown}
+                    width={300}
+                    height={300}
+                    alt="crown-icon"
+                    className="w-4/12"
+                  />
+                  <p className="text-sm">
+                    {t('teamBattle.stagePage.yourRank')}
+                  </p>
+                  <div className="text-xl px-12 py-1 border-2 border-dashed rounded-xl border-[#3D3D3D] font-bold w-fit">
+                    {myRank?.rank ?? 0}
                   </div>
-                  <div className="col-span-5 flex flex-col justify-center">
-                    <p className="font-medium text-xs 2xl:text-sm">
-                      {t('teamBattle.stagePage.letsCheck')}
-                    </p>
-                    <p className="font-semibold text-sm 2xl:text-lg">
-                      {t('teamBattle.fullLeaderboard')}
-                    </p>
+                  <div className="grid grid-cols-9 items-center gap-3 mt-10">
+                    <div className="col-span-2">
+                      <FaStar size="4vw" className="text-[#ffc107]" />
+                    </div>
+                    <div className="col-span-5 flex flex-col justify-center">
+                      <p className="font-medium text-xs 2xl:text-sm">
+                        {t('teamBattle.stagePage.letsCheck')}
+                      </p>
+                      <p className="font-semibold text-sm 2xl:text-lg">
+                        {t('teamBattle.fullLeaderboard')}
+                      </p>
+                    </div>
+                    <button
+                      className="col-span-2 flex items-center justify-center cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
+                      onClick={async () =>
+                        await router.push(
+                          `/play/team-battle/${
+                            id as string
+                          }/leaderboard?stage=${selectedCategory}`
+                        )
+                      }
+                      disabled={today.isBefore(dateScheduleStart)}
+                    >
+                      <FaChevronRight
+                        size={25}
+                        className="text-white bg-[#407f74] p-1 rounded"
+                      />
+                    </button>
                   </div>
-                  <button
-                    className="col-span-2 flex items-center justify-center cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
-                    onClick={async () =>
-                      await router.push(
-                        `/play/team-battle/${
-                          id as string
-                        }/leaderboard?stage=${selectedCategory}`
-                      )
-                    }
-                    disabled={today.isBefore(dateScheduleStart)}
-                  >
-                    <FaChevronRight
-                      size={25}
-                      className="text-white bg-[#407f74] p-1 rounded"
-                    />
-                  </button>
                 </div>
-              </div>
+              )}
             </div>
           )}
         </div>

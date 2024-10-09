@@ -2621,6 +2621,7 @@ export default {
     battleClosed2: "It's already in the",
     battleClosed3: 'The battle has already ended.',
     battleClosed4: 'The battle is canceled.',
+    stageNotStarted: 'Stage not yet started',
     mainPage: {
       period: 'Period',
       registration: 'Registration',

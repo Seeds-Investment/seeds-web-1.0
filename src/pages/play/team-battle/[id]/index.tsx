@@ -352,10 +352,13 @@ const MainTeamBattle = (): React.ReactElement => {
                         </tr>
                         <tr
                           className={`${
-                            data?.type !== 'PROVINCE' && showPeriod
-                              ? 'lg:table-row'
+                            data?.type !== 'PROVINCE'
+                              ? showPeriod
+                                ? 'table-row'
+                                : 'hidden lg:table-row'
                               : 'hidden'
-                          }`}
+                          }
+                          `}
                         >
                           <td className="flex items-center space-x-1">
                             <LuDot size={30} className="hidden lg:flex" />

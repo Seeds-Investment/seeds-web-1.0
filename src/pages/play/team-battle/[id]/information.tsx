@@ -1,4 +1,5 @@
 import PopUpPrizeBattle from '@/components/team-battle/popUpPrizeBattle';
+import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getBattleDetail } from '@/repository/team-battle.repository';
@@ -120,7 +121,7 @@ const BattleInformation: React.FC = () => {
                   <span className="text-xl font-medium">1st</span>
                 </div>
                 <div className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl lg:block hidden">
-                  {data?.prize[0]?.amount}
+                  {standartCurrency(data?.prize[0]?.amount).replace('Rp', '')}
                 </div>
               </div>
               <div></div>
@@ -131,7 +132,7 @@ const BattleInformation: React.FC = () => {
                     <span className="text-lg sm:text-xl font-medium">2nd</span>
                   </div>
                   <div className="font-bold text-base sm:text-lg md:text-xl lg:text-2xl">
-                    {data?.prize[1]?.amount}
+                    {standartCurrency(data?.prize[1]?.amount).replace('Rp', '')}
                   </div>
                 </div>
               </div>
@@ -151,7 +152,7 @@ const BattleInformation: React.FC = () => {
                     <span className="text-lg sm:text-xl font-medium">3rd</span>
                   </div>
                   <div className="font-bold text-base sm:text-lg md:text-xl lg:text-2xl">
-                    {data?.prize[2]?.amount}
+                    {standartCurrency(data?.prize[2]?.amount).replace('Rp', '')}
                   </div>
                 </div>
               </div>

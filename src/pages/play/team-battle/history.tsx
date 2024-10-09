@@ -37,6 +37,10 @@ const HistoryBattle: React.FC = () => {
     id: string;
     is_joined: boolean;
   }>({ id: '', is_joined: false });
+  const [selectedBattleStartTime, setSelectedBattleStartTime] =
+    useState<string>('2024-12-31T17:00:00Z');
+  const [isSelectedBattleStarted, setIsSelectedBattleStarted] =
+    useState<boolean>(false);
 
   const [listParams, setListParams] = useState({
     page: 1,
@@ -69,6 +73,14 @@ const HistoryBattle: React.FC = () => {
   useEffect(() => {
     void FetchBattleList();
   }, [listParams]);
+
+  useEffect(() => {
+    const playTime = selectedBattleStartTime ?? '2024-12-31T17:00:00Z';
+    const timeStart = new Date(playTime).getTime();
+    const timeNow = Date.now();
+
+    setIsSelectedBattleStarted(timeStart < timeNow);
+  }, [selectedBattleStartTime]);
 
   useEffect(() => {
     setListParams(prev => ({ ...prev, play_status: selectedCategory }));
@@ -160,6 +172,9 @@ const HistoryBattle: React.FC = () => {
                           id: teamBattle.id,
                           is_joined: teamBattle.is_joined
                         });
+                        setSelectedBattleStartTime(
+                          teamBattle?.registration_end
+                        );
                       }
                     }}
                   >
@@ -256,9 +271,11 @@ const HistoryBattle: React.FC = () => {
             disabled={selectedBattle.id === ''}
             onClick={async () => {
               await router.push(
-                `/play/team-battle/${selectedBattle?.id}/${
-                  selectedBattle?.is_joined ? 'stage' : ''
-                }`
+                selectedBattle.is_joined
+                  ? isSelectedBattleStarted
+                    ? `/play/team-battle/${selectedBattle.id ?? ''}/stage`
+                    : `/play/team-battle/${selectedBattle.id ?? ''}/waiting`
+                  : `/play/team-battle/${selectedBattle.id ?? ''}`
               );
             }}
           >

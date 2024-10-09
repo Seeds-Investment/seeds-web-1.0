@@ -2615,6 +2615,10 @@ export default {
     timeTo: `It's time to`,
     battle: 'Battle!',
     prize: 'Prize',
+    battleClosed1: "Opps! Sorry, you can't join the game.",
+    battleClosed2: "It's already in the",
+    battleClosed3: "The battle has already ended.",
+    battleClosed4: "The battle is canceled.",
     mainPage: {
       period: 'Period',
       registration: 'Registration',

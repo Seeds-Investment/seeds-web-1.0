@@ -2545,6 +2545,10 @@ export default {
     timeTo: `Waktunya`,
     battle: 'Bertanding!',
     prize: 'Hadiah',
+    battleClosed1: "Ups! Maaf, kamu tidak bisa bergabung ke dalam game.",
+    battleClosed2: "Team Battle sudah berada di tahap",
+    battleClosed3: "Team Battle sudah berakhir.",
+    battleClosed4: "Team Battle telah dibatalkan.",
     mainPage: {
       period: 'Periode',
       registration: 'Registrasi',

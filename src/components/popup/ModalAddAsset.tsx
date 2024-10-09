@@ -94,8 +94,8 @@ const ModalAddAsset: React.FC<Props> = ({
       } else {
         setAssets(response.marketAssetList);
       }
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
     }
   };
 
@@ -173,7 +173,7 @@ const ModalAddAsset: React.FC<Props> = ({
             </div>
             <div className="flex gap-[6px] items-center">
               <div className="flex flex-col items-end">
-                <Typography className="font-poppins text-sm font-semibold">
+                <Typography className="font-poppins text-xs font-semibold">
                   {userInfo?.preferredCurrency}{' '}
                   {asset?.priceBar?.close > 0.01
                     ? new Intl.NumberFormat().format(asset?.priceBar?.close)

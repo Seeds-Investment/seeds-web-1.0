@@ -95,6 +95,7 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
       </div>
       {isOpenModalWatchlist && (
         <ModalWatchlist
+          assetName={data?.name}
           assetId={assetId}
           onClose={() => {
             setIsOpenModalWatchlist(prev => !prev);

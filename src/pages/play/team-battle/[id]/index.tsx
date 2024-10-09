@@ -150,8 +150,8 @@ const MainTeamBattle = (): React.ReactElement => {
           </Typography>
         </div>
 
-        <div className="flex lg:hidden justify-center items-end gap-2 border-2 border-white rounded-3xl py-4 px-2 bg-white/20 relative mt-4">
-          <div className="flex flex-col justify-center items-center">
+        <div className="flex lg:hidden justify-center items-end border-2 border-white rounded-3xl py-4 px-2 bg-white/20 relative mt-4">
+          <div className="flex flex-col justify-center items-center w-[30%]">
             <div className="flex gap-1">
               <div className="flex justify-center items-center">
                 <Image
@@ -171,7 +171,7 @@ const MainTeamBattle = (): React.ReactElement => {
               )}`}
             </div>
           </div>
-          <div className="flex flex-col justify-center items-center border-x-[1px] border-white px-3">
+          <div className="flex flex-col justify-center items-center border-x-[1px] border-white w-[40%]">
             <div className="flex gap-1 justify-center items-end">
               <div className="flex justify-center items-center">
                 <Image
@@ -191,7 +191,7 @@ const MainTeamBattle = (): React.ReactElement => {
               )}`}
             </div>
           </div>
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center w-[30%]">
             <div className="flex gap-1">
               <div className="flex justify-center items-center">
                 <Image

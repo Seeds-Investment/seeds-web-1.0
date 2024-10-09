@@ -8,9 +8,9 @@ import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import TeamRegion from 'public/assets/team-battle/team-region.svg';
+import { CloseModalCross } from 'public/assets/vector';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AiOutlineClose } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
 interface PopUpJoinBattleProps {
@@ -135,33 +135,39 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/75 flex justify-center items-center z-50">
-      <div className="relative bg-white/50 rounded-3xl shadow-lg">
+      <div className="relative bg-white/50 rounded-3xl shadow-lg border border-white">
         <button
           disabled={isLoading}
           onClick={handleClose}
-          className="absolute top-2 right-2 bg-[#ff4672] border-white border-4 text-white rounded-full p-2 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
+          className="absolute w-[40px] h-auto top-5 right-4 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
         >
-          <AiOutlineClose size={15} />
+          <Image
+            alt={'CloseModalCross'}
+            src={CloseModalCross}
+            width={100}
+            height={100}
+            className="w-full h-full"
+          />
         </button>
-        <div className="pt-14 px-4 pb-4">
+        <div className="pt-20 px-4 pb-4">
           {joinMode === null && (
             <div className="rounded-3xl flex flex-col justify-center items-center gap-4 bg-white min-w-[320px] h-[190px] p-6">
-              <Button
+              <div
                 onClick={() => {
                   handleToggleJoin('public');
                 }}
-                className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
+                className="w-full rounded-full border-[2px] bg-[#2934B2] border-white font-semibold font-poppins text-white text-center py-3 hover:shadow-xl cursor-pointer duration-200"
               >
                 Join as Public
-              </Button>
-              <Button
+              </div>
+              <div
                 onClick={() => {
                   handleToggleJoin('invitation');
                 }}
-                className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
+                className="w-full rounded-full border-[2px] bg-[#2934B2] border-white font-semibold font-poppins text-white text-center py-3 hover:shadow-xl cursor-pointer duration-200"
               >
                 Join as Invitation
-              </Button>
+              </div>
             </div>
           )}
           {joinMode === 'public' && (

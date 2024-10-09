@@ -19,6 +19,8 @@ import YellowSeedy from 'public/assets/team-battle/yellowseedy.svg';
 import {
   ArrowTailessDown,
   ArrowTailessUp,
+  BattleSecondMedal,
+  BattleThirdMedal,
   BronzeMedal,
   GoldCrown,
   GreenGift,
@@ -143,24 +145,24 @@ const MainTeamBattle = (): React.ReactElement => {
           >
             <IoArrowBack size={30} />
           </div>
-          <Typography className="text-white font-poppins text-lg sm:text-xl lg:text-2xl">
+          <Typography className="text-white font-poppins font-semibold text-lg sm:text-xl lg:text-2xl">
             {t('teamBattle.battleCompetition')}
           </Typography>
         </div>
 
-        <div className="flex lg:hidden justify-center items-end gap-2 border-2 border-white rounded-lg py-8 px-2 bg-white/50 relative mt-4">
+        <div className="flex lg:hidden justify-center items-end gap-2 border-2 border-white rounded-3xl py-4 px-2 bg-white/20 relative mt-4">
           <div className="flex flex-col justify-center items-center">
-            <div className="flex gap-2">
+            <div className="flex gap-1">
               <div className="flex justify-center items-center">
                 <Image
                   className="w-[20px] h-[20px]"
-                  src={SilverMedal}
+                  src={BattleSecondMedal}
                   width={100}
                   height={100}
-                  alt={'SilverMedal'}
+                  alt={'BattleSecondMedal'}
                 />
               </div>
-              <div>2nd</div>
+              <div className='font-poppins'>2nd</div>
             </div>
             <div className="font-semibold">
               {`${standartCurrency(data?.prize[1]?.amount ?? 0).replace(
@@ -169,20 +171,20 @@ const MainTeamBattle = (): React.ReactElement => {
               )}`}
             </div>
           </div>
-          <div className="flex flex-col justify-center items-center border-x-2 border-white px-2">
-            <div className="flex gap-2 justify-center items-end">
+          <div className="flex flex-col justify-center items-center border-x-[1px] border-white px-3">
+            <div className="flex gap-1 justify-center items-end">
               <div className="flex justify-center items-center">
                 <Image
-                  className="w-[35px] h-[35px]"
+                  className="w-[40px] h-[40px]"
                   src={GoldCrown}
                   width={100}
                   height={100}
                   alt={'GoldCrown'}
                 />
               </div>
-              <div>1st</div>
+              <div className='font-poppins'>1st</div>
             </div>
-            <div className="font-semibold">
+            <div className="font-semibold text-lg">
               {`${standartCurrency(data?.prize[0]?.amount ?? 0).replace(
                 'Rp',
                 ''
@@ -190,17 +192,17 @@ const MainTeamBattle = (): React.ReactElement => {
             </div>
           </div>
           <div className="flex flex-col justify-center items-center">
-            <div className="flex gap-2">
+            <div className="flex gap-1">
               <div className="flex justify-center items-center">
                 <Image
                   className="w-[20px] h-[20px]"
-                  src={BronzeMedal}
+                  src={BattleThirdMedal}
                   width={100}
                   height={100}
-                  alt={'BronzeMedal'}
+                  alt={'BattleThirdMedal'}
                 />
               </div>
-              <div>3rd</div>
+              <div className='font-poppins'>3rd</div>
             </div>
             <div className="font-semibold">
               {`${standartCurrency(data?.prize[2]?.amount ?? 0).replace(
@@ -211,7 +213,7 @@ const MainTeamBattle = (): React.ReactElement => {
           </div>
           <div
             onClick={handleShowPopUpPrizeBattle}
-            className="absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-md cursor-pointer hover:bg-opacity-70 duration-300"
+            className="absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-lg cursor-pointer hover:bg-opacity-70 duration-300"
           >
             <Image
               className="w-[20px] h-[20px]"
@@ -224,7 +226,7 @@ const MainTeamBattle = (): React.ReactElement => {
         </div>
 
         <div className="lg:flex lg:gap-8 lg:mt-4">
-          <div className="flex flex-col lg:w-full justify-center items-center gap-2 mt-28 lg:mt-24 border-b-2 border-x-2 border-white rounded-b-2xl py-8 px-2 bg-white/50 relative">
+          <div className="flex flex-col lg:w-full justify-center items-center gap-2 mt-28 lg:mt-24 border-b-2 border-x-2 border-white rounded-b-2xl py-8 px-2 bg-white/30 relative">
             <div className="absolute w-full left-0 -top-20 flex justify-center items-center">
               <Triangle />
               <Image
@@ -237,15 +239,15 @@ const MainTeamBattle = (): React.ReactElement => {
               <Image
                 src={BlueSeedy}
                 alt="blue-seedy"
-                width={300}
-                height={300}
+                width={1000}
+                height={1000}
                 className="absolute w-28 h-32 -left-9 -bottom-14"
               />
               <Image
                 src={YellowSeedy}
                 alt="yellow-seedy"
-                width={300}
-                height={300}
+                width={1000}
+                height={1000}
                 className="absolute w-28 h-32 -right-6 -bottom-14"
               />
             </div>
@@ -457,7 +459,7 @@ const MainTeamBattle = (): React.ReactElement => {
             )}
           </div>
 
-          <div className="hidden lg:flex flex-col w-[400px] justify-center items-center gap-2 border-2 border-x-white border-b-white rounded-lg py-8 px-2 bg-white/50 relative mt-12">
+          <div className="hidden lg:flex flex-col w-[400px] justify-center items-center gap-2 border-2 border-x-white border-b-white rounded-lg py-8 px-2 bg-white/30 relative mt-12">
             {isLoading ? (
               <div className="w-full flex justify-center h-fit my-8">
                 <div className="h-[60px]">
@@ -675,7 +677,7 @@ const MainTeamBattle = (): React.ReactElement => {
 
           {showTnc && (
             <div
-              className="flex flex-col justify-start items-start gap-2 border-2 mt-4 text-sm border-white rounded-2xl py-2 pt-4 px-8 bg-white/50 h-fit max-h-[200px] overflow-y-scroll w-full font-poppins"
+              className="flex flex-col justify-start items-start gap-2 border-2 mt-4 text-sm border-white rounded-2xl py-2 pt-4 px-8 bg-white/30 h-fit max-h-[200px] overflow-y-scroll w-full font-poppins"
               dangerouslySetInnerHTML={{
                 __html: data?.tnc?.[
                   i18n.language === 'id' ? 'id' : 'en'

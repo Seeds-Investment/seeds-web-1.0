@@ -2571,8 +2571,9 @@ export default {
       participant: 'Peserta',
       noData: 'Belum ada data',
       emptyTitle: 'Peserta',
-      frontTitle: 'Babak ',
-      backTitle: ''
+      elimination: 'Babak Penyisihan',
+      semifinal: 'Babak Semifinal',
+      final: 'Babak Final'
     },
     popUpStage: {
       winTitle: 'Kamu Menang!',

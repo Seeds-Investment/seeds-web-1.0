@@ -2641,8 +2641,9 @@ export default {
       participant: 'Participant',
       noData: 'There is no data yet',
       emptyTitle: 'Participant',
-      frontTitle: '',
-      backTitle: ' Stage'
+      elimination: 'Elimination Stage',
+      semifinal: 'Semifinal Stage',
+      final: 'Final Stage'
     },
     popUpStage: {
       winTitle: 'You Win!',

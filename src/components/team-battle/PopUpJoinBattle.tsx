@@ -151,23 +151,23 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
         </button>
         <div className="pt-20 px-4 pb-4">
           {joinMode === null && (
-            <div className="rounded-3xl flex flex-col justify-center items-center gap-4 bg-white min-w-[320px] h-[190px] p-6">
-              <div
+            <div className="rounded-3xl flex flex-col justify-around items-center gap-6 bg-white min-w-[320px] h-[190px] p-6">
+              <Button
                 onClick={() => {
                   handleToggleJoin('public');
                 }}
-                className="w-full rounded-full border-[2px] bg-[#2934B2] border-white font-semibold font-poppins text-white text-center py-3 hover:shadow-xl cursor-pointer duration-200"
+                className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins normal-case"
               >
                 Join as Public
-              </div>
-              <div
+              </Button>
+              <Button
                 onClick={() => {
                   handleToggleJoin('invitation');
                 }}
-                className="w-full rounded-full border-[2px] bg-[#2934B2] border-white font-semibold font-poppins text-white text-center py-3 hover:shadow-xl cursor-pointer duration-200"
+                className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins normal-case"
               >
                 Join as Invitation
-              </div>
+              </Button>
             </div>
           )}
           {joinMode === 'public' && (
@@ -202,7 +202,11 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
               <Typography className="font-poppins lg:text-2xl text-base font-semibold">
                 {t('teamBattle.joinAsInvitation')}
               </Typography>
-              <div className={`w-full p-[3px] rounded-2xl bg-gradient-to-r from-[#97A4E7] to-[#47C0AA] mt-6 ${isInvalidCode ? 'mb-4' : 'mb-6'}`}>
+              <div
+                className={`w-full p-[3px] rounded-2xl bg-gradient-to-r from-[#97A4E7] to-[#47C0AA] mt-6 ${
+                  isInvalidCode ? 'mb-4' : 'mb-6'
+                }`}
+              >
                 <input
                   type="text"
                   placeholder={
@@ -215,12 +219,11 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
                   }}
                 />
               </div>
-              {
-                isInvalidCode &&
-                  <Typography className='text-lg text-[#DD2525] w-full text-center mb-4'>
-                    {t('teamBattle.mainPage.wrongInvitationCode')}
-                  </Typography>
-              }
+              {isInvalidCode && (
+                <Typography className="text-lg text-[#DD2525] w-full text-center mb-4">
+                  {t('teamBattle.mainPage.wrongInvitationCode')}
+                </Typography>
+              )}
               <Button
                 disabled={isLoading || invitationCode.trim().length < 3}
                 onClick={handleFetchGroup}

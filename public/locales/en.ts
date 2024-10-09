@@ -2657,7 +2657,7 @@ export default {
         'So close! You almost made it to the top! Keep pushing for winning!',
       eliminatedDescription:
         "You didn't make it through to the next stage this time.",
-      yourRank: 'Your Rank'
+      yourRank: 'Your rank'
     },
     stagePage: {
       gamePeriod: 'Game Period',

@@ -184,7 +184,7 @@ const BattleList: React.FC<BattleListI> = ({
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="grid lg:grid-cols-3 grid-cols-1 gap-5 mt-5 mx-4">
+        <div className="grid lg:grid-cols-3 grid-cols-1 gap-5 mt-5 lg:mx-0 mx-4">
           {teamBattleList?.data != null ? (
             teamBattleList?.data.map(teamBattle => (
               <div

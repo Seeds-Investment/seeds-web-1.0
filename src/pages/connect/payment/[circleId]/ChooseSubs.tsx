@@ -21,15 +21,14 @@ interface props {
   setPages: any;
 }
 
-const ChooseSubs: React.FC<props> = ({
-  dataPost,
-  setPages
-}) => {
+const ChooseSubs: React.FC<props> = ({ dataPost, setPages }) => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const monthSubscription = ['1 month', '3 month', '6 month', '12 month'];
   const height = useWindowInnerHeight();
-  const { premiumCircleMonth } = useSelector((state: RootState) => state?.premiumCircle ?? {});
+  const { premiumCircleMonth } = useSelector(
+    (state: RootState) => state?.premiumCircle ?? {}
+  );
 
   useEffect(() => {
     fetchData()
@@ -64,7 +63,11 @@ const ChooseSubs: React.FC<props> = ({
 
   const numberMonth = (): number => {
     if (premiumCircleMonth !== undefined && premiumCircleMonth.length > 0) {
-      dispatch(setPrice((dataPost?.premium_fee) * (parseInt(premiumCircleMonth.substring(0, 2)))));
+      dispatch(
+        setPrice(
+          dataPost?.premium_fee * parseInt(premiumCircleMonth.substring(0, 2))
+        )
+      );
       return parseInt(premiumCircleMonth.substring(0, 2));
     } else {
       dispatch(setPrice(dataPost?.premium_fee));
@@ -153,33 +156,35 @@ const ChooseSubs: React.FC<props> = ({
         </div>
 
         {/* Promo Code */}
-        <div className='w-full flex justify-center items-center mt-6'>
-          {
-            ((dataPost?.type === 'subscription') && (premiumCircleMonth === '')) ?
-              <div className='w-full max-w-[350px] px-4'>
-                <div className='border-[#BDBDBD] bg-white flex justify-start items-center border rounded-lg py-2 px-4 gap-2'>
-                  <div className='w-[30px] h-[30px] flex justify-center items-center'>
-                    <Image
-                      src={VoucherInvalid}
-                      alt="Voucher"
-                      width={100}
-                      height={100}
-                      className="object-contain h-full w-full"
-                    />
-                  </div>
-                  <Typography className='text-[#BDBDBD] font-poppins flex justify-center items-center font-semibold'>
-                    Voucher & Promo
-                  </Typography>
+        <div className="w-full flex justify-center items-center mt-6">
+          {dataPost?.type === 'subscription' && premiumCircleMonth === '' ? (
+            <div className="w-full max-w-[350px] px-4">
+              <div className="border-[#BDBDBD] bg-white flex justify-start items-center border rounded-lg py-2 px-4 gap-2">
+                <div className="w-[30px] h-[30px] flex justify-center items-center">
+                  <Image
+                    src={VoucherInvalid}
+                    alt="Voucher"
+                    width={100}
+                    height={100}
+                    className="object-contain h-full w-full"
+                  />
                 </div>
+                <Typography className="text-[#BDBDBD] font-poppins flex justify-center items-center font-semibold">
+                  Voucher & Promo
+                </Typography>
               </div>
-              :
-              <div className='w-full max-w-[350px] px-4'>
-                {
-                  ((userInfo !== undefined) && ((dataPost?.premium_fee ?? 0) > 0)) &&
-                    <PromoCode userInfo={userInfo} id={dataPost?.id as string} spotType={'Premium Circle'}/>
-                }
-              </div>
-          }
+            </div>
+          ) : (
+            <div className="w-full max-w-[350px] px-4">
+              {userInfo !== undefined && (dataPost?.premium_fee ?? 0) > 0 && (
+                <PromoCode
+                  userInfo={userInfo}
+                  id={dataPost?.id as string}
+                  spotType={'Premium Circle'}
+                />
+              )}
+            </div>
+          )}
         </div>
 
         <div className="flex justify-center mt-6">

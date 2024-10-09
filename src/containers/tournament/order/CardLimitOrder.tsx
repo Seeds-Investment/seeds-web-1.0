@@ -155,7 +155,7 @@ const CardLimitOrder: React.FC<props> = ({ setLimitOrder }) => {
               className="form-checkbox h-5 w-5 text-[#3AC4A0]"
             />
             <Typography className="font-poppins text-sm ml-2 text-black">
-                          {t('buyAsset.text21')}
+              {t('buyAsset.text21')}
             </Typography>
           </div>
           <div className="flex gap-12 w-full border-1 mt-2 mx-full justify-center rounded-[6px] border py-4">
@@ -225,7 +225,7 @@ const CardLimitOrder: React.FC<props> = ({ setLimitOrder }) => {
               className="form-checkbox h-5 w-5 text-[#3AC4A0]"
             />
             <Typography className="font-poppins text-sm ml-2 text-black">
-                          {t('buyAsset.text22')}
+              {t('buyAsset.text22')}
             </Typography>
           </div>
           <div className="flex gap-12 w-full border-1 mt-2 mx-full justify-center rounded-[6px] border py-4">

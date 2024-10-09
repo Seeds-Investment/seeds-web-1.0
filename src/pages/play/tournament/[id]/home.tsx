@@ -163,7 +163,6 @@ const TournamentHome: React.FC = () => {
   const [assetActiveSort, setAssetActiveSort] = useState(
     SortingFilter.ASCENDING
   );
-  
 
   const handleShowFilters = (): void => {
     setShowFilter(!showFilter);

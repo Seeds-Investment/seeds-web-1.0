@@ -15,7 +15,7 @@ import { useMemo } from 'react';
 
 export const useIsStarted = (startTime: string | undefined): boolean => {
   const isStarted = useMemo((): boolean => {
-    if ((startTime === null) || (startTime === undefined)) {
+    if (startTime === null || startTime === undefined) {
       return false;
     }
 

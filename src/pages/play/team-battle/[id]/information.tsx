@@ -99,7 +99,7 @@ const BattleInformation: React.FC = () => {
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="text-center text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins">
+          <div className="text-center font-semibold text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins">
             {t('teamBattle.battleCompetition')}
           </div>
         </div>

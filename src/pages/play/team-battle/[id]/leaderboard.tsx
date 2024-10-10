@@ -153,7 +153,7 @@ const LeaderboardBattlePage: React.FC = () => {
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="lg:text-center text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins text-center">
+          <div className="lg:text-center font-semibold text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins text-center">
             {t('teamBattle.battleCompetition')}
           </div>
         </div>

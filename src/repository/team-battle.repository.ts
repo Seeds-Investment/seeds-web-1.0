@@ -317,3 +317,21 @@ export const getActiveAssetBattle = async (
     await Promise.reject(error);
   }
 };
+
+export const getBattleDataPerStage = async (
+  id: string,
+  params: MyRankParamsI
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    return await teamBattleService(`/${id}`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
+  }
+};

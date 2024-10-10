@@ -93,8 +93,8 @@ const BattleInformation: React.FC = () => {
         <div className="text-xl text-white grid grid-cols-3">
           <div
             className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            onClick={() => {
-              router.back();
+            onClick={async() => {
+              await router.push(`/play/team-battle/${id as string}/stage`);
             }}
           >
             <IoArrowBack size={30} />

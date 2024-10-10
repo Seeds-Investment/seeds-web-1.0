@@ -4,6 +4,7 @@ import Triangle from '@/components/team-battle/triangle.component';
 import { getBattleStageDate } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import {
+  getBattleDataPerStage,
   getBattleDetail,
   getMyRankBattle
 } from '@/repository/team-battle.repository';
@@ -35,6 +36,7 @@ const StageBattle: React.FC = () => {
   const [myRank, setMyRank] = useState<MyRankBattleI | undefined>(undefined);
   const [dateScheduleStart, setDateScheduleStart] = useState('');
   const [dateScheduleEnd, setDateScheduleEnd] = useState('');
+  const [dataParticipants, setDataParticipants] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const categoryBattle = [
     { label: t('teamBattle.mainPage.elimination'), key: 'elimination' },
@@ -77,6 +79,22 @@ const StageBattle: React.FC = () => {
           stage: selectedCategory.toLocaleUpperCase()
         });
         setMyRank(responseMyRank);
+      }
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchDataPerStage = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      if (data !== undefined) {
+        const response = await getBattleDataPerStage(id as string, {
+          stage: selectedCategory.toLocaleUpperCase()
+        });
+        setDataParticipants(response?.participants)
       }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
@@ -186,6 +204,7 @@ const StageBattle: React.FC = () => {
   useEffect(() => {
     handleDateChanging();
     void handleGetRank();
+    void fetchDataPerStage();
   }, [data, selectedCategory]);
 
   useEffect(() => {
@@ -197,19 +216,19 @@ const StageBattle: React.FC = () => {
   return (
     <>
       <div className="px-2 my-5 font-poppins">
-        <div className="text-xl text-white grid grid-cols-3">
+        <div className="text-xl text-white flex justify-center items-center w-full relative">
           <div
-            className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            onClick={() => {
-              router.back();
+            className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer absolute left-0"
+            onClick={async() => {
+              await router.push('/play/team-battle');
             }}
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="text-center font-semibold text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins">
+          <div className="text-center font-semibold text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins mx-4">
             {t('teamBattle.battleCompetition')}
           </div>
-          <div className="flex justify-end items-center">
+          <div className="flex justify-end items-center absolute right-0">
             <div
               className="rounded-full p-1 bg-[#407F74] w-8 h-8 flex items-center justify-center text-sm transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer font-medium"
               onClick={async () =>
@@ -397,7 +416,7 @@ const StageBattle: React.FC = () => {
                         </div>
                         <div className="flex flex-row text-[#407F74] relative">
                           <FaUserGroup size={40} />
-                          <span className="text-xl">{data?.participants}</span>
+                          <span className="text-xl">{dataParticipants}</span>
                           <FaChevronRight
                             size={25}
                             onClick={() => {

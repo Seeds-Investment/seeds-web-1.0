@@ -176,8 +176,8 @@ const AssetDetailPage: React.FC = () => {
           width={30}
           height={30}
           className="cursor-pointer"
-          onClick={() => {
-            router.back();
+          onClick={async() => {
+            await router.push(`/play/team-battle/${id as string}/arena`);
           }}
         />
         <p className="font-bold text-black text-lg">

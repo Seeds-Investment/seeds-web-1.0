@@ -139,8 +139,8 @@ const MainTeamBattle = (): React.ReactElement => {
         <div className="flex justify-center items-center relative">
           <div
             className="absolute text-white left-0 lg:w-[50px] lg:h-[50px] w-[24px] h-[24px] hover:opacity-80 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            onClick={() => {
-              router.back();
+            onClick={async() => {
+              await router.push('/play/team-battle');
             }}
           >
             <IoArrowBack size={30} />

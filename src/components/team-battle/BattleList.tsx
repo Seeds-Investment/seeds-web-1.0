@@ -145,7 +145,7 @@ const BattleList: React.FC<BattleListI> = ({
           Team Battle
         </Typography>
       </div>
-      <div className="flex flex-col justify-center items-center gap-4">
+      <div className="flex flex-col justify-center items-center gap-4 mx-auto">
         <div className="flex justify-center items-center gap-4 mt-4">
           {activeCategory !== null && (
             <div
@@ -280,7 +280,7 @@ const BattleList: React.FC<BattleListI> = ({
           )}
         </div>
       )}
-      <div className="flex justify-center items-center lg:mt-10 my-10 lg:relative sticky bottom-0 bg-transparent py-2 lg:py-0">
+      <div className="flex justify-center items-center lg:mt-10 my-10 lg:relative sticky bottom-0 bg-transparent py-2 lg:py-0 mx-2">
         <Button
           className={`lg:w-[345px] w-full h-[60px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
             selectedBattle.id !== ''

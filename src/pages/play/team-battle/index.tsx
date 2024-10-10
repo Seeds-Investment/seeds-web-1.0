@@ -97,7 +97,7 @@ const TeamBattle = (): React.ReactElement => {
               </div>
             ))}
           </div>
-          <div className="flex flex-col justify-center items-center gap-4">
+          <div className="flex flex-col justify-center items-center gap-4 mx-auto">
             <div className="flex justify-center items-center gap-4 mt-4">
               {activeCategory !== null && (
                 <div
@@ -116,7 +116,7 @@ const TeamBattle = (): React.ReactElement => {
               <Image
                 src={activeCategory?.image ?? CategoryAll}
                 alt={activeCategory?.title ?? 'Selected Category'}
-                className="lg:w-[240px] lg:h-[240px] w-[280px] h-[280px]"
+                className="lg:w-[240px] lg:h-[240px] w-[220px] h-[220px] "
               />
               {activeCategory !== null && (
                 <div

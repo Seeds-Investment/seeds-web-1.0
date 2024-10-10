@@ -225,7 +225,7 @@ const StageBattle: React.FC = () => {
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-32 mb-10 items-center">
-          <div className="bg-white/50 border-l-2 border-r-2 border-b-2 border-white rounded-b-2xl col-span-1 lg:col-span-2 px-3 pt-10 pb-10 relative">
+          <div className="bg-white/30 border-l-2 border-r-2 border-b-2 border-white rounded-b-2xl col-span-1 lg:col-span-2 px-3 pt-10 pb-3 relative">
             <div className="absolute w-full left-0 -top-20 flex justify-center items-center">
               <Triangle />
               <Image
@@ -302,7 +302,10 @@ const StageBattle: React.FC = () => {
                           }
                           className="text-center text-base sm:text-xl lg:text-2xl font-semibold text-[#407F74] font-poppins"
                         />
-                        <div className="flex flex-row flex-wrap gap-3 w-full justify-center mt-5">
+                        <div className="font-semibold text-base lg:text-lg mt-10 lg:hidden">
+                          {t('teamBattle.mainPage.sponsor')}
+                        </div>
+                        <div className="flex flex-row flex-wrap gap-3 w-full justify-center lg:mt-10">
                           {data?.sponsors?.map((item, i) => {
                             return (
                               <div
@@ -346,7 +349,8 @@ const StageBattle: React.FC = () => {
                       <>
                         <div className="font-semibold text-sm lg:text-[22px] text-[#3D3D3D] mt-[30px] lg:mb-10 text-center">
                           {t('teamBattle.stagePage.gamePeriod')} :{' '}
-                          {dateScheduleStart} - {dateScheduleEnd}
+                          {dateScheduleStart.replace(/ \d{2}:\d{2}/, '')} -{' '}
+                          {dateScheduleEnd.replace(/ \d{2}:\d{2}/, '')}
                         </div>
                         <div className="font-semibold text-base font-poppins text-[#3D3D3D] lg:hidden block">
                           Sponsor
@@ -398,13 +402,20 @@ const StageBattle: React.FC = () => {
                           <span className="text-xl">{data?.participants}</span>
                           <FaChevronRight
                             size={25}
-                            onClick={async () =>
-                              await router.push(
-                                `/play/team-battle/${
-                                  id as string
-                                }/participants?stage=${selectedCategory}`
-                              )
-                            }
+                            onClick={() => {
+                              if (data?.is_joined ?? false) {
+                                void router.push(
+                                  `/play/team-battle/${
+                                    id as string
+                                  }/participants?stage=${selectedCategory}`
+                                );
+                              } else {
+                                toast(
+                                  'Anda tidak terdaftar di pertandingan ini!',
+                                  { type: 'warning' }
+                                );
+                              }
+                            }}
                             className="text-white bg-[#407f74] p-1 rounded absolute -right-8 bottom-2 cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                           />
                         </div>
@@ -422,7 +433,7 @@ const StageBattle: React.FC = () => {
                           !today.isBetween(dateScheduleStart, dateScheduleEnd)
                             ? 'bg-[#d9d9d9]'
                             : 'bg-[#2934b2]'
-                        } text-base lg:text-lg text-white border-2 border-white hidden lg:block`}
+                        } text-base lg:text-lg text-white border-2 border-white hidden lg:block mb-5`}
                         disabled={
                           data?.status === 'ENDED' ||
                           !today.isBetween(dateScheduleStart, dateScheduleEnd)
@@ -431,7 +442,13 @@ const StageBattle: React.FC = () => {
                         {t('teamBattle.stagePage.enter')}
                       </button>
                     </div>
-                    <div className="font-poppins font-semibold text-base lg:hidden block text-[#3D3D3D]">
+                    <div
+                      className={`font-poppins font-semibold text-base  ${
+                        today.isBefore(dateScheduleStart)
+                          ? 'hidden'
+                          : 'lg:hidden'
+                      } text-[#3D3D3D]`}
+                    >
                       {t('teamBattle.leaderBoard')}
                     </div>
                     <div
@@ -474,13 +491,19 @@ const StageBattle: React.FC = () => {
                       </div>
                       <button
                         className="col-span-1 flex items-center justify-end cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
-                        onClick={async () =>
-                          await router.push(
-                            `/play/team-battle/${
-                              id as string
-                            }/leaderboard?stage=${selectedCategory}`
-                          )
-                        }
+                        onClick={async () => {
+                          if (data?.is_joined ?? false) {
+                            await router.push(
+                              `/play/team-battle/${
+                                id as string
+                              }/leaderboard?stage=${selectedCategory}`
+                            );
+                          } else {
+                            toast('Anda tidak terdaftar di pertandingan ini!', {
+                              type: 'warning'
+                            });
+                          }
+                        }}
                         disabled={today.isBefore(dateScheduleStart)}
                       >
                         <FaChevronRight
@@ -520,7 +543,7 @@ const StageBattle: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="col-span-1 bg-white/50 border-2 border-white rounded-2xl h-fit p-3 hidden lg:block">
+            <div className="col-span-1 bg-white/30 border-2 border-white rounded-2xl h-fit p-3 hidden lg:block">
               <div className="font-semibold text-[#3D3D3D] text-xl font-poppins text-center">
                 {t('teamBattle.leaderBoard')}
               </div>
@@ -563,13 +586,19 @@ const StageBattle: React.FC = () => {
                     </div>
                     <button
                       className="col-span-2 flex items-center justify-center cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
-                      onClick={async () =>
-                        await router.push(
-                          `/play/team-battle/${
-                            id as string
-                          }/leaderboard?stage=${selectedCategory}`
-                        )
-                      }
+                      onClick={async () => {
+                        if (data?.is_joined ?? false) {
+                          await router.push(
+                            `/play/team-battle/${
+                              id as string
+                            }/leaderboard?stage=${selectedCategory}`
+                          );
+                        } else {
+                          toast('Anda tidak terdaftar di pertandingan ini!', {
+                            type: 'warning'
+                          });
+                        }
+                      }}
                       disabled={today.isBefore(dateScheduleStart)}
                     >
                       <FaChevronRight

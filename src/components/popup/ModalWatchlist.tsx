@@ -1,7 +1,7 @@
 import {
-  addAssetToWatchlist,
   checkAssetInWatchlist,
-  getWatchlistById
+  getWatchlistById,
+  updateWatchlist
 } from '@/repository/market.repository';
 import {
   type AssetWatchlist,
@@ -38,42 +38,40 @@ const ModalWatchlist: React.FC<Props> = ({
   const [isOpenModalSuccessAddAsset, setIsOpenModalSuccessAddAsset] =
     useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchWatchlists = async (): Promise<void> => {
-      setIsLoading(true);
-      try {
-        const watchlistData: AssetWatchlist[] = await Promise.all(
-          watchlists.map(
-            async watchlist => await getWatchlistById(watchlist.id)
-          )
-        );
-        setFetchedWatchlists(watchlistData);
-        const initialCheckboxState = await Promise.all(
-          watchlistData.map(async watchlist => {
-            try {
-              const response = await checkAssetInWatchlist(
-                watchlist.watchlist.id,
-                assetId
-              );
-              return response.is_watch === true ? watchlist.watchlist.id : null;
-            } catch (error) {
-              toast.error(
-                `Error checking asset in watchlist ${watchlist.watchlist.id}: ${
-                  error as string
-                }`
-              );
-              return null;
-            }
-          })
-        );
-        setCheckboxState(initialCheckboxState.filter(Boolean) as string[]);
-      } catch (error) {
-        toast.error(`Error fetching watchlists ${error as string}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchWatchlists = async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      const watchlistData: AssetWatchlist[] = await Promise.all(
+        watchlists.map(async watchlist => await getWatchlistById(watchlist.id))
+      );
+      setFetchedWatchlists(watchlistData);
+      const initialCheckboxState = await Promise.all(
+        watchlistData.map(async watchlist => {
+          try {
+            const response = await checkAssetInWatchlist(
+              watchlist.watchlist.id,
+              assetId
+            );
+            return response.is_watch === true ? watchlist.watchlist.id : null;
+          } catch (error) {
+            toast.error(
+              `Error checking asset in watchlist ${watchlist.watchlist.id}: ${
+                error as string
+              }`
+            );
+            return null;
+          }
+        })
+      );
+      setCheckboxState(initialCheckboxState.filter(Boolean) as string[]);
+    } catch (error) {
+      toast.error(`Error fetching watchlists ${error as string}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     void fetchWatchlists();
   }, [watchlists, assetId]);
 
@@ -89,17 +87,44 @@ const ModalWatchlist: React.FC<Props> = ({
   };
 
   const handleAddToWatchlist = async (): Promise<void> => {
-    for (const watchlistId of checkboxState) {
-      try {
-        await addAssetToWatchlist(watchlistId, assetId);
-        toast.success(`Asset added to watchlist ${watchlistId}`);
-      } catch (error) {
-        toast.error(
-          `Error adding asset to watchlist ${watchlistId}: ${error as string}`
-        );
-      }
+    setIsLoading(true);
+    try {
+      await Promise.all(
+        fetchedWatchlists.map(async watchlist => {
+          const watchlistId = watchlist.watchlist.id;
+          const currentAssetList =
+            watchlist.watchlist.assetList?.map(item => item.id) ?? [];
+          const isChecked = checkboxState.includes(watchlistId);
+          const isAssetInWatchlist = currentAssetList.includes(assetId);
+
+          if (isChecked) {
+            if (!isAssetInWatchlist) {
+              const updatedAssets = [...currentAssetList, assetId];
+              await updateWatchlist({
+                watchlistId,
+                asset_list: updatedAssets
+              });
+            }
+          } else {
+            if (isAssetInWatchlist) {
+              const updatedAssets = currentAssetList.filter(
+                id => id !== assetId
+              );
+              await updateWatchlist({
+                watchlistId,
+                asset_list: updatedAssets.length > 0 ? updatedAssets : []
+              });
+            }
+          }
+        })
+      );
+      setIsOpenModalSuccessAddAsset(true);
+    } catch (error) {
+      toast.error(`Error adding ${assetName} to watchlist: ${error as string}`);
+    } finally {
+      setIsLoading(false);
+      onClose();
     }
-    onClose();
   };
 
   return (
@@ -148,9 +173,7 @@ const ModalWatchlist: React.FC<Props> = ({
           </div>
           <div className="flex flex-col items-center justify-center gap-4 px-6">
             <Button
-              onClick={() => {
-                setIsOpenModalSuccessAddAsset(true);
-              }}
+              onClick={handleAddToWatchlist}
               className="w-full rounded-full font-poppins font-semibold text-sm bg-seeds-button-green"
             >
               {t('tournament.watchlist.addToWatchlist')}
@@ -161,8 +184,9 @@ const ModalWatchlist: React.FC<Props> = ({
           </div>
           {isOpenModalSuccessAddAsset && (
             <ModalSuccessAddAsset
-              onClose={() => {
+              onModalClose={() => {
                 setIsOpenModalSuccessAddAsset(prev => !prev);
+                onClose();
               }}
               assetName={assetName}
             />

@@ -21,11 +21,9 @@ import {
   ArrowTailessUp,
   BattleSecondMedal,
   BattleThirdMedal,
-  BronzeMedal,
   GoldCrown,
   GreenGift,
-  GroupIcon,
-  SilverMedal
+  GroupIcon
 } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -494,10 +492,10 @@ const MainTeamBattle = (): React.ReactElement => {
                       <div className="flex justify-center items-center">
                         <Image
                           className="w-[30px] h-[30px]"
-                          src={SilverMedal}
+                          src={BattleSecondMedal}
                           width={100}
                           height={100}
-                          alt={'SilverMedal'}
+                          alt={'BattleSecondMedal'}
                         />
                       </div>
                       <div>2nd</div>
@@ -514,10 +512,10 @@ const MainTeamBattle = (): React.ReactElement => {
                       <div className="flex justify-center items-center">
                         <Image
                           className="w-[30px] h-[30px]"
-                          src={BronzeMedal}
+                          src={BattleThirdMedal}
                           width={100}
                           height={100}
-                          alt={'BronzeMedal'}
+                          alt={'BattleThirdMedal'}
                         />
                       </div>
                       <div>3rd</div>

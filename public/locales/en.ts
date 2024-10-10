@@ -2181,7 +2181,10 @@ export default {
       search: 'Search',
       modalHeader: 'Add Assets to Watchlist',
       addToWatchlist: 'Add to Watchlist',
-      newWatchlist: 'Create a new Watchlist'
+      newWatchlist: 'Create a new Watchlist',
+      horay: 'Hoorayyy!!',
+      successAddAsset: 'successfully added to watchlist',
+      continue: 'Continue'
     },
     social: {
       sorry: 'Sorry, there is no post here!',

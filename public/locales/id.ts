@@ -2109,7 +2109,10 @@ export default {
       search: 'Cari',
       modalHeader: 'Tambahkan Aset ke Daftar Pantauan',
       addToWatchlist: 'Tambahkan ke Daftar Pantauan',
-      newWatchlist: 'Buat Daftar Pantauan baru'
+      newWatchlist: 'Buat Daftar Pantauan baru',
+      horay: 'Horey!!',
+      successAddAsset: 'berhasil ditambahkan ke watchlist',
+      continue: 'Lanjutkan'
     },
     social: {
       sorry: 'Maaf, data postingan tidak ada!',

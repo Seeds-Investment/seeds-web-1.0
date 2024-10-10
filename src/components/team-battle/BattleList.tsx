@@ -145,7 +145,7 @@ const BattleList: React.FC<BattleListI> = ({
           Team Battle
         </Typography>
       </div>
-      <div className="flex flex-col justify-center items-center gap-4 mx-auto">
+      <div className="flex flex-col justify-center items-center gap-4">
         <div className="flex justify-center items-center gap-4 mt-4">
           {activeCategory !== null && (
             <div

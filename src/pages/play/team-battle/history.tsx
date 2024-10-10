@@ -116,8 +116,8 @@ const HistoryBattle: React.FC = () => {
         <div className="text-xl text-white flex justify-between items-center">
           <div
             className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            onClick={() => {
-              router.back();
+            onClick={async () => {
+              await router.push(`/play/team-battle`);
             }}
           >
             <IoArrowBack size={30} />

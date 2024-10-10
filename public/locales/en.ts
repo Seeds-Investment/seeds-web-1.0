@@ -2660,7 +2660,7 @@ export default {
       yourRank: 'Your rank'
     },
     stagePage: {
-      gamePeriod: 'Game Period',
+      gamePeriod: 'Period Game',
       letsCheck: `Let's Check`,
       yourRank: 'Your Rank',
       enter: 'Enter',

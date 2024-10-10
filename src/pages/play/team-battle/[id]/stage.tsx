@@ -225,7 +225,7 @@ const StageBattle: React.FC = () => {
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-32 mb-10 items-center">
-          <div className="bg-white/50 border-l-2 border-r-2 border-b-2 border-white rounded-b-2xl col-span-1 lg:col-span-2 px-3 pt-10 pb-3 relative">
+          <div className="bg-white/50 border-l-2 border-r-2 border-b-2 border-white rounded-b-2xl col-span-1 lg:col-span-2 px-3 pt-10 pb-10 relative">
             <div className="absolute w-full left-0 -top-20 flex justify-center items-center">
               <Triangle />
               <Image
@@ -344,9 +344,12 @@ const StageBattle: React.FC = () => {
                       </div>
                     ) : (
                       <>
-                        <div className="font-semibold text-sm sm:text-base lg:text-lg text-[#3D3D3D] my-10 text-center">
+                        <div className="font-semibold text-sm lg:text-[22px] text-[#3D3D3D] mt-[30px] lg:mb-10 text-center">
                           {t('teamBattle.stagePage.gamePeriod')} :{' '}
                           {dateScheduleStart} - {dateScheduleEnd}
+                        </div>
+                        <div className="font-semibold text-base font-poppins text-[#3D3D3D] lg:hidden block">
+                          Sponsor
                         </div>
                         <div className="flex flex-row flex-wrap gap-3 w-full sm:w-8/12 lg:w-1/2 2xl:w-3/5 justify-center">
                           {data?.sponsors?.map((item, i) => {
@@ -427,6 +430,9 @@ const StageBattle: React.FC = () => {
                       >
                         {t('teamBattle.stagePage.enter')}
                       </button>
+                    </div>
+                    <div className="font-poppins font-semibold text-base lg:hidden block text-[#3D3D3D]">
+                      {t('teamBattle.leaderBoard')}
                     </div>
                     <div
                       className={`grid grid-cols-9 items-center ${

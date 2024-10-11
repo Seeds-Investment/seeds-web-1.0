@@ -2184,7 +2184,14 @@ export default {
       newWatchlist: 'Create a new Watchlist',
       horay: 'Hoorayyy!!',
       successAddAsset: 'successfully added to watchlist',
-      continue: 'Continue'
+      continue: 'Continue',
+      ops: 'Oops!!',
+      cancelAddAsset: 'Cancel adding assets to watchlist?',
+      yes: 'Yes',
+      no: 'No',
+      alreadyExist:
+        'The asset you added is already in the watchlist that has been created.',
+      ok: 'Ok'
     },
     social: {
       sorry: 'Sorry, there is no post here!',

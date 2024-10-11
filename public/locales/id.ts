@@ -2112,7 +2112,14 @@ export default {
       newWatchlist: 'Buat Daftar Pantauan baru',
       horay: 'Horey!!',
       successAddAsset: 'berhasil ditambahkan ke watchlist',
-      continue: 'Lanjutkan'
+      continue: 'Lanjutkan',
+      ops: 'Ups!!',
+      cancelAddAsset: 'Batalkan penambahan aset ke daftar pantauan?',
+      yes: 'Ya',
+      no: 'Tidak',
+      alreadyExist:
+        'Aset yang Anda tambahkan sudah ada dalam daftar pantauan yang telah dibuat.',
+      ok: 'Oke'
     },
     social: {
       sorry: 'Maaf, data postingan tidak ada!',

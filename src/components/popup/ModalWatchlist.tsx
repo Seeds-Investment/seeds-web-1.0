@@ -1,3 +1,5 @@
+import CancelAddAsset from '@/assets/play/tournament/cancel-add-asset.svg';
+import SuccesAddAsset from '@/assets/play/tournament/success-asset.svg';
 import {
   checkAssetInWatchlist,
   getWatchlistById,
@@ -14,7 +16,6 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import Modal from '../ui/modal/Modal';
-import ModalSuccessAddAsset from './ModalSuccessAddAsset';
 
 interface Props {
   onClose: () => void;
@@ -35,7 +36,11 @@ const ModalWatchlist: React.FC<Props> = ({
   const [fetchedWatchlists, setFetchedWatchlists] = useState<AssetWatchlist[]>(
     []
   );
-  const [isOpenModalSuccessAddAsset, setIsOpenModalSuccessAddAsset] =
+  const [isOpenSuccessAddAsset, setIsOpenSuccessAddAsset] =
+    useState<boolean>(false);
+  const [isOpenCancelAddAsset, setIsOpenCancelAddAsset] =
+    useState<boolean>(false);
+  const [isOpenAlreadyExists, setIsOpenAlreadyExists] =
     useState<boolean>(false);
 
   const fetchWatchlists = async (): Promise<void> => {
@@ -88,6 +93,7 @@ const ModalWatchlist: React.FC<Props> = ({
 
   const handleAddToWatchlist = async (): Promise<void> => {
     setIsLoading(true);
+    let requestCount = 0;
     try {
       await Promise.all(
         fetchedWatchlists.map(async watchlist => {
@@ -97,46 +103,52 @@ const ModalWatchlist: React.FC<Props> = ({
           const isChecked = checkboxState.includes(watchlistId);
           const isAssetInWatchlist = currentAssetList.includes(assetId);
 
-          if (isChecked) {
-            if (!isAssetInWatchlist) {
-              const updatedAssets = [...currentAssetList, assetId];
-              await updateWatchlist({
-                watchlistId,
-                asset_list: updatedAssets
-              });
-            }
-          } else {
-            if (isAssetInWatchlist) {
-              const updatedAssets = currentAssetList.filter(
-                id => id !== assetId
-              );
-              await updateWatchlist({
-                watchlistId,
-                asset_list: updatedAssets.length > 0 ? updatedAssets : []
-              });
-            }
+          if (isChecked && !isAssetInWatchlist) {
+            const updatedAssets = [...currentAssetList, assetId];
+            await updateWatchlist({
+              watchlistId,
+              asset_list: updatedAssets
+            });
+            requestCount++;
+          } else if (!isChecked && isAssetInWatchlist) {
+            const updatedAssets = currentAssetList.filter(id => id !== assetId);
+            await updateWatchlist({
+              watchlistId,
+              asset_list: updatedAssets.length > 0 ? updatedAssets : []
+            });
+            requestCount++;
           }
         })
       );
-      setIsOpenModalSuccessAddAsset(true);
+      if (requestCount > 0) {
+        setIsOpenSuccessAddAsset(true);
+      } else {
+        setIsOpenAlreadyExists(true);
+      }
     } catch (error) {
       toast.error(`Error adding ${assetName} to watchlist: ${error as string}`);
     } finally {
       setIsLoading(false);
-      onClose();
     }
+  };
+
+  const handleCancelAddAsset = (): void => {
+    setIsOpenCancelAddAsset(true);
   };
 
   return (
     <Modal
+      onClose={handleCancelAddAsset}
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/75 flex justify-start items-start"
-      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[50%] md:left-[20%] md:right-[-20%] xl:left-[30%] xl:right-[-30%] mt-[-12.35rem] w-full md:w-[60%] xl:w-[40%] h-[380px] p-4 lg:rounded-2xl rounded-t-2xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
+      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[50%] md:left-[20%] md:right-[-20%] xl:left-[30%] xl:right-[-30%] mt-[-12.35rem] w-full md:w-[60%] xl:w-[40%] h-[390px] p-4 lg:rounded-2xl rounded-t-2xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
     >
       {isLoading ? (
         <div className="flex items-center justify-center my-4">
           <div className="animate-spinner w-14 h-14 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
         </div>
-      ) : (
+      ) : !isOpenSuccessAddAsset &&
+        !isOpenCancelAddAsset &&
+        !isOpenAlreadyExists ? (
         <>
           <div className="flex justify-between items-center round mb-6">
             <Typography className="flex-1 text-center font-poppins font-semibold text-base">
@@ -147,7 +159,7 @@ const ModalWatchlist: React.FC<Props> = ({
               alt="X"
               width={30}
               height={30}
-              onClick={onClose}
+              onClick={handleCancelAddAsset}
               className="hover:scale-110 transition ease-out cursor-pointer"
             />
           </div>
@@ -182,16 +194,89 @@ const ModalWatchlist: React.FC<Props> = ({
               {t('tournament.watchlist.newWatchlist')}
             </Button>
           </div>
-          {isOpenModalSuccessAddAsset && (
-            <ModalSuccessAddAsset
-              onModalClose={() => {
-                setIsOpenModalSuccessAddAsset(prev => !prev);
-                onClose();
-              }}
-              assetName={assetName}
-            />
-          )}
         </>
+      ) : isOpenCancelAddAsset && !isOpenSuccessAddAsset ? (
+        <div className="flex flex-col justify-center items-center gap-4 p-4">
+          <div className="flex flex-col justify-center items-center gap-4">
+            <Image
+              src={CancelAddAsset}
+              alt="success-seedy"
+              width={160}
+              height={160}
+              className="mb-4"
+            />
+            <Typography className="font-poppins font-semibold text-base text-center">
+              {t('tournament.watchlist.ops')}
+            </Typography>
+            <Typography className="font-poppins font-normal text-sm text-[#7C7C7C] text-center">
+              {t('tournament.watchlist.cancelAddAsset')}
+            </Typography>
+          </div>
+          <div className="flex flex-row gap-4 w-full">
+            <Button
+              onClick={() => {
+                setIsOpenCancelAddAsset(prev => !prev);
+              }}
+              className="bg-red-500 w-full capitalize rounded-full font-poppins font-semibold text-sm"
+            >
+              {t('tournament.watchlist.no')}
+            </Button>
+            <Button
+              onClick={onClose}
+              className="bg-seeds-button-green w-full capitalize rounded-full font-poppins font-semibold text-sm"
+            >
+              {t('tournament.watchlist.yes')}
+            </Button>
+          </div>
+        </div>
+      ) : isOpenAlreadyExists && !isOpenSuccessAddAsset ? (
+        <div className="flex flex-col justify-center items-center gap-4 p-4">
+          <div className="flex flex-col justify-center items-center gap-4">
+            <Image
+              src={CancelAddAsset}
+              alt="success-seedy"
+              width={160}
+              height={160}
+              className="mb-4"
+            />
+            <Typography className="font-poppins font-semibold text-base text-center">
+              {t('tournament.watchlist.ops')}
+            </Typography>
+            <Typography className="font-poppins font-normal text-sm text-[#7C7C7C] text-center">
+              {t('tournament.watchlist.alreadyExist')}
+            </Typography>
+          </div>
+          <Button
+            onClick={onClose}
+            className="bg-seeds-button-green w-full capitalize rounded-full font-poppins font-semibold text-sm"
+          >
+            {t('tournament.watchlist.ok')}
+          </Button>
+        </div>
+      ) : (
+        <div className="flex flex-col justify-center items-center gap-4 p-4">
+          <div className="flex flex-col justify-center items-center gap-4">
+            <Image
+              src={SuccesAddAsset}
+              alt="success-seedy"
+              width={180}
+              height={180}
+              className="mb-4"
+            />
+            <Typography className="font-poppins font-semibold text-base text-center">
+              {t('tournament.watchlist.horay')}
+            </Typography>
+            <Typography className="font-poppins font-normal text-sm text-[#7C7C7C] text-center">
+              {`${assetName} ${t('tournament.watchlist.successAddAsset')}`}
+            </Typography>
+          </div>
+          <Button
+            onClick={onClose}
+            className="bg-seeds-button-green w-full capitalize rounded-full font-poppins font-semibold text-sm"
+          >
+            {t('tournament.watchlist.continue')}
+          </Button>
+        </div>
       )}
     </Modal>
   );

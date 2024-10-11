@@ -114,7 +114,7 @@ const LeaderboardBattlePage: React.FC = () => {
         setLeaderboardList(response?.data !== null ? response?.data : null);
         if (response?.data !== null) {
           const responseMyRank = await getMyRankBattle(id as string, {
-            stage: (stage as string).toUpperCase()
+            stage: (stage as string)?.toUpperCase()
           });
           setMyRank(responseMyRank);
         }

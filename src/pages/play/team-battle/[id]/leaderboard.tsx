@@ -28,18 +28,18 @@ const GainIcon: React.FC<GainIconI> = ({ gain, className }) => {
   return (
     <>
       {gain > 0 ? (
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 justify-center">
           <MdOutlineTrendingUp size={15} className="text-[#5fa9ac]" />
           <span className={className}>{`(${gain?.toFixed(2)}%)`}</span>
         </div>
       ) : gain < 0 ? (
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 justify-center">
           <MdOutlineTrendingDown size={15} className="text-[#FF4A2B]" />
           <span className={className}>{`(${gain?.toFixed(2)}%)`}</span>
         </div>
       ) : (
-        <div className="flex items-center gap-1">
-          <FaMinus size={15} className="text-[#FFA500]" />
+        <div className="flex items-center gap-1 justify-center">
+          <FaMinus size={10} className="text-[#FFA500]" />
           <span className={className}>{`(${gain?.toFixed(2)}%)`}</span>
         </div>
       )}
@@ -54,7 +54,7 @@ const LeaderboardBattlePage: React.FC = () => {
   const [myRank, setMyRank] = useState<MyRankBattleI | null>(null);
   const [params, setParams] = useState({
     page: 1,
-    limit: 10
+    limit: 9999
   });
   const { dataUser } = useAppSelector(state => state.user);
   const [isLoading, setIsLoading] = useState(false);
@@ -278,7 +278,7 @@ const LeaderboardBattlePage: React.FC = () => {
                     alt="rank-user"
                     width={200}
                     height={200}
-                    className="min-w-10 min-h-10 object-cover p-1 rounded bg-[#A1A0DA]"
+                    className="w-10 h-10 object-cover p-1 rounded bg-[#A1A0DA]"
                   />
                 </div>
                 <div className="col-span-3 flex flex-col justify-center h-full w-full truncate">
@@ -388,7 +388,7 @@ const LeaderboardBattlePage: React.FC = () => {
                     alt="rank-user"
                     width={200}
                     height={200}
-                    className="min-w-10 min-h-10 object-cover p-1 rounded bg-[#A1A0DA]"
+                    className="w-10 h-10 object-cover p-1 rounded bg-[#A1A0DA]"
                   />
                 </div>
                 <div className="col-span-3 flex flex-col justify-center h-full w-full ">
@@ -412,7 +412,7 @@ const LeaderboardBattlePage: React.FC = () => {
                         ? myRank.gain
                         : (myRankFromList?.gain as number)
                     }
-                    className="font-light text-white text-sm"
+                    className="font-light text-white text-xs"
                   />
                 </div>
               </div>

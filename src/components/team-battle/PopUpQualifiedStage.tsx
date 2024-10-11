@@ -88,7 +88,12 @@ const PopUpQualifiedStage: React.FC<PopUpQualifiedStageProps> = ({
               </Typography>
             </div>
             <Typography className="font-poppins font-semibold lg:text-xl text-base">
-              {t('teamBattle.popUpStage.yourRank')} # {rank}
+              {t('teamBattle.popUpStage.yourRank')} {''}
+              {rank !== undefined
+                ? rank !== 0
+                  ? `#${rank}`
+                  : ': unranked'
+                : ': unranked'}
             </Typography>
             <Button
               onClick={onClose}

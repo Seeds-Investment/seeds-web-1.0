@@ -139,10 +139,10 @@ const StageBattle: React.FC = () => {
     if (data == null) return;
 
     const endDates = {
-      final: moment(data.final_end),
-      semifinal: moment(data.semifinal_end),
-      elimination: moment(data.elimination_end),
-      registration: moment(data.registration_end)
+      final: moment(data?.final_end),
+      semifinal: moment(data?.semifinal_end),
+      elimination: moment(data?.elimination_end),
+      registration: moment(data?.registration_end)
     };
 
     const handlePopUp = (popUpType: string): void => {
@@ -162,19 +162,30 @@ const StageBattle: React.FC = () => {
     if (data?.type !== 'PROVINCE') {
       if (today.isAfter(endDates.final)) {
         setSelectedCategory('final');
-        if (data.is_joined && myRank !== undefined)
-          handlePopUp(myRank?.rank <= data.prize.length ? 'win' : 'fail');
+        if (data?.is_joined && data.status === 'ENDED') {
+          handlePopUp(
+            (myRank?.rank ?? 0) >= data?.prize.length ? 'fail' : 'win'
+          );
+        }
       } else if (today.isAfter(endDates.semifinal)) {
         setSelectedCategory('final');
-        if (data.is_joined && !isSemifinalQualifiedShown) {
-          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
-          setLocalStorageStatus(semifinalQualifiedKey, true);
+        if (data?.is_joined && !isSemifinalQualifiedShown) {
+          if (data?.is_eliminated) {
+            handlePopUp('eliminated');
+          } else {
+            handlePopUp('qualified');
+            setLocalStorageStatus(semifinalQualifiedKey, true);
+          }
         }
       } else if (today.isAfter(endDates.elimination)) {
         setSelectedCategory('semifinal');
-        if (data.is_joined && !isEliminationQualifiedShown) {
-          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
-          setLocalStorageStatus(eliminationQualifiedKey, true);
+        if (data?.is_joined && !isEliminationQualifiedShown) {
+          if (data?.is_eliminated) {
+            handlePopUp('eliminated');
+          } else {
+            handlePopUp('qualified');
+            setLocalStorageStatus(eliminationQualifiedKey, true);
+          }
         }
       } else if (today.isAfter(endDates.registration)) {
         setSelectedCategory('elimination');
@@ -182,13 +193,20 @@ const StageBattle: React.FC = () => {
     } else {
       if (today.isAfter(endDates.final)) {
         setSelectedCategory('final');
-        if (data.is_joined && myRank !== undefined)
-          handlePopUp(myRank?.rank <= data.prize.length ? 'win' : 'fail');
+        if (data?.is_joined && data.status === 'ENDED') {
+          handlePopUp(
+            (myRank?.rank ?? 0) >= data?.prize.length ? 'fail' : 'win'
+          );
+        }
       } else if (today.isAfter(endDates.elimination)) {
-        setSelectedCategory('final');
-        if (data.is_joined && !isEliminationQualifiedShown) {
-          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
-          setLocalStorageStatus(eliminationQualifiedKey, true);
+        setSelectedCategory('semifinal');
+        if (data?.is_joined && !isEliminationQualifiedShown) {
+          if (data?.is_eliminated) {
+            handlePopUp('eliminated');
+          } else {
+            handlePopUp('qualified');
+            setLocalStorageStatus(eliminationQualifiedKey, true);
+          }
         }
       } else if (today.isAfter(endDates.registration)) {
         setSelectedCategory('elimination');

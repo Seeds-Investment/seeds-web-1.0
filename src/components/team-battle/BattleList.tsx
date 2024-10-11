@@ -57,7 +57,8 @@ const BattleList: React.FC<BattleListI> = ({
   const [selectedBattle, setSelectedBattle] = useState<{
     id: string;
     is_joined: boolean;
-  }>({ id: '', is_joined: false });
+    registration_end: string;
+  }>({ id: '', is_joined: false, registration_end: '' });
   const [toggleInformation, setToggleInformation] = useState<{
     popup: string;
     dropdown: string;
@@ -104,7 +105,7 @@ const BattleList: React.FC<BattleListI> = ({
         ? (index + 1) % categoryBattle.length
         : (index - 1 + categoryBattle.length) % categoryBattle.length;
     setActiveCategory(categoryBattle[newIndex] ?? categoryBattle[0]);
-    setSelectedBattle({ id: '', is_joined: false });
+    setSelectedBattle({ id: '', is_joined: false, registration_end: '' });
     setListParams(prev => ({ ...prev, page: 1 }));
   };
 
@@ -122,6 +123,8 @@ const BattleList: React.FC<BattleListI> = ({
       setIsLoading(false);
     }
   };
+
+  const today = moment();
 
   useEffect(() => {
     if (fetchTrigger) {
@@ -197,7 +200,8 @@ const BattleList: React.FC<BattleListI> = ({
                 onClick={() => {
                   setSelectedBattle({
                     id: teamBattle?.id,
-                    is_joined: teamBattle?.is_joined
+                    is_joined: teamBattle?.is_joined,
+                    registration_end: teamBattle?.registration_end
                   });
                 }}
               >
@@ -301,7 +305,12 @@ const BattleList: React.FC<BattleListI> = ({
             onClick={async () => {
               await router.push(
                 `/play/team-battle/${selectedBattle?.id}/${
-                  selectedBattle?.is_joined ? 'stage' : ''
+                  selectedBattle?.is_joined &&
+                  today.isAfter(selectedBattle?.registration_end)
+                    ? 'stage'
+                    : today.isBefore(selectedBattle?.registration_end)
+                    ? 'waiting'
+                    : ''
                 }`
               );
             }}

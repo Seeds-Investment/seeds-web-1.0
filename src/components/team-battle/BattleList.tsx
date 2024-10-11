@@ -189,7 +189,7 @@ const BattleList: React.FC<BattleListI> = ({
             teamBattleList?.data.map(teamBattle => (
               <div
                 key={teamBattle?.id}
-                className={`rounded-t-3xl hover:cursor-pointer ${
+                className={`rounded-t-3xl hover:cursor-pointer z-0 ${
                   selectedBattle.id === teamBattle?.id
                     ? 'border-[3px] border-white'
                     : ''
@@ -280,32 +280,36 @@ const BattleList: React.FC<BattleListI> = ({
           )}
         </div>
       )}
-      <div className="flex justify-center items-center lg:mt-10 my-10 lg:relative sticky bottom-0 bg-transparent py-2 lg:py-0 mx-2">
-        <Button
-          className={`lg:w-[345px] w-full h-[60px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
-            selectedBattle.id !== ''
-              ? 'text-white bg-[#2934B2]'
-              : 'text-[#7C7C7C] bg-[#E9E9E9]'
-          }`}
-          disabled={selectedBattle.id === ''}
-          onClick={async () => {
-            await router.push(
-              `/play/team-battle/${selectedBattle?.id}/${
-                selectedBattle?.is_joined ? 'stage' : ''
-              }`
-            );
-          }}
-        >
-          OK
-        </Button>
+      <div className="flex flex-col">
+        <div className="order-1 md:order-2 relative z-0 md:mb-0 mb-20">
+          <ArtPagination
+            currentPage={listParams?.page ?? 1}
+            totalPages={teamBattleList?.metadata?.total_page ?? 1}
+            onPageChange={page => {
+              setListParams({ ...listParams, page });
+            }}
+          />
+        </div>
+        <div className="order-2 md:order-1 flex justify-center items-center lg:mt-8 lg:relative fixed z-10 left-0 right-0 bottom-0 bg-transparent py-2 lg:py-0 mx-2">
+          <Button
+            className={`lg:w-[345px] w-full h-[60px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
+              selectedBattle.id !== ''
+                ? 'text-white bg-[#2934B2]'
+                : 'text-[#7C7C7C] bg-[#E9E9E9]'
+            }`}
+            disabled={selectedBattle.id === ''}
+            onClick={async () => {
+              await router.push(
+                `/play/team-battle/${selectedBattle?.id}/${
+                  selectedBattle?.is_joined ? 'stage' : ''
+                }`
+              );
+            }}
+          >
+            OK
+          </Button>
+        </div>
       </div>
-      <ArtPagination
-        currentPage={listParams?.page ?? 1}
-        totalPages={teamBattleList?.metadata?.total_page ?? 1}
-        onPageChange={page => {
-          setListParams({ ...listParams, page });
-        }}
-      />
     </div>
   );
 };

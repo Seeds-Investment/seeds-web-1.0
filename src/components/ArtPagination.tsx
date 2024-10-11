@@ -80,7 +80,7 @@ const ArtPagination: React.FC<PaginationProps> = ({
 
   return (
     <>
-      <div className="hidden lg:grid grid-cols-10 gap-4 mt-16">
+      <div className="hidden lg:grid grid-cols-10 gap-4 mt-10">
         <div className="col-span-2" />
         <div className="col-span-6 pt-[1px]">
           <div className="flex justify-center items-center">
@@ -130,7 +130,7 @@ const ArtPagination: React.FC<PaginationProps> = ({
           </div>
         </div>
       </div>
-      <div className="lg:hidden grid grid-cols-1">
+      <div className="lg:hidden grid grid-cols-1 mt-6">
         <div className="col-span-1 pt-[1px]">
           <div className="flex justify-center items-center">
             {currentPage > 1 && (

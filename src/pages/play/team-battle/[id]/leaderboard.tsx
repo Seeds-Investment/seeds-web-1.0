@@ -147,7 +147,7 @@ const LeaderboardBattlePage: React.FC = () => {
         <div className="text-xl text-white grid grid-cols-3">
           <div
             className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            onClick={async() => {
+            onClick={async () => {
               await router.push(`/play/team-battle/${id as string}/stage`);
             }}
           >
@@ -324,7 +324,7 @@ const LeaderboardBattlePage: React.FC = () => {
               ref={leaderboardRef}
               className="max-h-[50vh] sm:max-h-[60vh] lg:max-h-[65vh] overflow-auto"
             >
-              {(leaderboardList?.length as number) < 3 ? (
+              {(leaderboardList?.length as number) <= 3 ? (
                 <LeaderboardNotFound />
               ) : (
                 remainingRanks?.map((el: LeaderboardBattle, i) => {

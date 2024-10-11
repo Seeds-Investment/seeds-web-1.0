@@ -1,4 +1,5 @@
 import BattleCountdown from '@/components/team-battle/CountdownTimerBattle';
+import OnGoingStage from '@/components/team-battle/OnGoing.component';
 import PopUpQualifiedStage from '@/components/team-battle/PopUpQualifiedStage';
 import Triangle from '@/components/team-battle/triangle.component';
 import { getBattleStageDate } from '@/helpers/dateFormat';
@@ -94,7 +95,7 @@ const StageBattle: React.FC = () => {
         const response = await getBattleDataPerStage(id as string, {
           stage: selectedCategory.toLocaleUpperCase()
         });
-        setDataParticipants(response?.participants)
+        setDataParticipants(response?.participants);
       }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
@@ -219,7 +220,7 @@ const StageBattle: React.FC = () => {
         <div className="text-xl text-white flex justify-center items-center w-full relative">
           <div
             className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer absolute left-0"
-            onClick={async() => {
+            onClick={async () => {
               await router.push('/play/team-battle');
             }}
           >
@@ -306,7 +307,8 @@ const StageBattle: React.FC = () => {
               ) : (
                 <>
                   <div className="flex flex-col items-center justify-center gap-5">
-                    {today.isBefore(dateScheduleStart) ? (
+                    {today.isBefore(dateScheduleStart) &&
+                    data?.status === selectedCategory?.toUpperCase() ? (
                       <div className="my-10 font-poppins flex flex-col justify-center items-center gap-2">
                         <div className="text-sm sm:text-base xl:text-xl text-center font-semibold">
                           {t('teamBattle.willBegin', {
@@ -362,6 +364,15 @@ const StageBattle: React.FC = () => {
                           })}
                         </div>
                       </div>
+                    ) : today.isBefore(dateScheduleStart) ? (
+                      <OnGoingStage
+                        stageName={selectedCategory}
+                        startDate={dateScheduleStart.replace(
+                          / \d{2}:\d{2}/,
+                          ''
+                        )}
+                        endDate={dateScheduleEnd.replace(/ \d{2}:\d{2}/, '')}
+                      />
                     ) : (
                       <>
                         <div className="font-semibold text-sm lg:text-[22px] text-[#3D3D3D] mt-[30px] lg:mb-10 text-center">

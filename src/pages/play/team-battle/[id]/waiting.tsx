@@ -48,16 +48,17 @@ const WaitingBattle: React.FC = () => {
       <div className="px-2 my-5 font-poppins">
         <div className="text-xl text-white grid grid-cols-3">
           <div
-            className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            onClick={() => {
-              router.back();
+            className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer col-span-1"
+            onClick={async() => {
+              await router.push('/play/team-battle');
             }}
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="text-center text-lg sm:text-xl lg:text-2xl col-span-2 lg:col-span-1 font-poppins">
+          <div className="text-center font-semibold text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins">
             {t('teamBattle.battleCompetition')}
           </div>
+          <div className="col-span-1" />
         </div>
         <div className="flex flex-col items-center justify-center gap-5">
           <Image
@@ -65,7 +66,7 @@ const WaitingBattle: React.FC = () => {
             alt="waiting-logo"
             width={500}
             height={500}
-            className="w-2/3 lg:w-1/4"
+            className="w-3/5 sm:w-2/5 lg:w-1/4"
           />
           <div
             className={`font-light text-lg lg:text-xl text-center ${
@@ -82,7 +83,7 @@ const WaitingBattle: React.FC = () => {
               deadline={
                 data !== undefined ? data?.registration_end.toString() : ''
               }
-              className="text-3xl font-semibold text-[#407F74] font-poppins"
+              className="text-3xl font-semibold text-[#407F74] font-poppins text-center"
             />
           </div>
           <div className="text-base lg:text-lg font-semibold">Sponsor</div>
@@ -101,7 +102,7 @@ const WaitingBattle: React.FC = () => {
                     alt="sponsor-logo"
                     width={300}
                     height={300}
-                    className={`w-20 xl:w-24 2xl:w-28 h-20 xl:h-24 2xl:h-28 object-contain rounded-xl bg-white cursor-pointer ${
+                    className={`w-16 xl:w-20 2xl:w-24 h-16 xl:h-20 2xl:h-24 object-contain rounded-xl bg-white cursor-pointer ${
                       selectedSponsor === item.name ? 'border-4' : 'border-2'
                     } border-[#76a5d0]`}
                   />
@@ -132,7 +133,7 @@ const WaitingBattle: React.FC = () => {
                 await router.push(`/play/team-battle/${id as string}/stage`);
               }
             }}
-            className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 lg:w-1/3 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white"
+            className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 lg:w-1/3 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white mt-10"
           >
             {(data?.status !== 'OPEN' && data?.status !== 'ELIMINATION') ||
             isPastEliminationStart

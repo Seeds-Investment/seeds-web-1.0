@@ -93,22 +93,22 @@ const BattleInformation: React.FC = () => {
         <div className="text-xl text-white grid grid-cols-3">
           <div
             className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            onClick={() => {
-              router.back();
+            onClick={async() => {
+              await router.push(`/play/team-battle/${id as string}/stage`);
             }}
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="text-center text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins">
+          <div className="text-center font-semibold text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins">
             {t('teamBattle.battleCompetition')}
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-5 my-10">
-          <div className="col-span-2 border-2 border-white rounded-2xl px-1 py-5 lg:px-10 bg-white/50 relative">
+          <div className="col-span-2 border-2 border-white rounded-2xl px-1 py-5 lg:px-10 bg-white/30 relative">
             <RiGiftFill
               size={50}
               onClick={handleShowPopUpPrizeBattle}
-              className="text-[#27a590] p-2 bg-white/50 rounded-xl absolute right-2 top-2 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
+              className="text-[#27a590] p-2 bg-white/30 rounded-xl absolute right-2 top-2 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
             />
             <div className="lg:hidden font-semibold text-xl text-center mt-3">
               {t('teamBattle.prize')}
@@ -142,7 +142,7 @@ const BattleInformation: React.FC = () => {
                   <span className="text-lg sm:text-xl font-medium">1st</span>
                 </div>
                 <div className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl lg:hidden">
-                  {data?.prize[0].amount}
+                  {standartCurrency(data?.prize[0].amount).replace('Rp', '')}
                 </div>
               </div>
               <div className="flex flex-col items-center justify-end">
@@ -282,13 +282,13 @@ const BattleInformation: React.FC = () => {
               (showTnc && windowWidth <= 959) || windowWidth >= 960
                 ? 'flex'
                 : 'hidden'
-            } col-span-1 border-2 border-white rounded-2xl p-3 bg-white/50 flex-col`}
+            } col-span-1 border-2 border-white rounded-2xl p-3 bg-white/30 flex-col`}
           >
             <div className="hidden lg:block font-semibold text-lg sm:text-xl mb-4 text-[#3D3D3D] text-center">
               {t('teamBattle.mainPage.tnc')}
             </div>
             <div
-              className="h-auto lg:h-[500px] overflow-y-auto tnc-battle-custom-scroll"
+              className="h-auto max-h-[250px] lg:max-h-[500px] overflow-y-auto tnc-battle-custom-scroll"
               dangerouslySetInnerHTML={{
                 __html: data?.tnc?.[
                   i18n.language === 'id' ? 'id' : 'en'

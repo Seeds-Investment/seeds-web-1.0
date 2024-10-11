@@ -11,7 +11,7 @@ const Triangle: React.FC = () => {
       >
         <polygon
           points="50,0 100,100 0,100"
-          fill="rgba(255, 255, 255, 0.5)"
+          fill="rgba(255, 255, 255, 0.3)"
           stroke="white"
           strokeWidth="1"
         />

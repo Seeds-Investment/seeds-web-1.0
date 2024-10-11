@@ -116,8 +116,8 @@ const HistoryBattle: React.FC = () => {
         <div className="text-xl text-white flex justify-between items-center">
           <div
             className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            onClick={() => {
-              router.back();
+            onClick={async () => {
+              await router.push(`/play/team-battle`);
             }}
           >
             <IoArrowBack size={30} />
@@ -255,40 +255,44 @@ const HistoryBattle: React.FC = () => {
             )}
           </div>
         )}
-        <div
-          className={`${
-            teamBattleList != null
-              ? 'flex justify-center items-center mt-10 lg:mt-10 my-10 lg:relative sticky bottom-0 bg-transparent py-2 lg:py-0'
-              : 'hidden'
-          }`}
-        >
-          <Button
-            className={`lg:w-[345px] w-full h-[60px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
-              selectedBattle.id !== ''
-                ? 'text-white bg-[#2934B2]'
-                : 'text-[#7C7C7C] bg-[#E9E9E9]'
+        <div className="flex flex-col">
+          <div className="order-1 md:order-2 relative z-0 md:mb-0 mb-20">
+            <ArtPagination
+              currentPage={listParams?.page ?? 1}
+              totalPages={teamBattleList?.metadata?.total_page ?? 1}
+              onPageChange={page => {
+                setListParams({ ...listParams, page });
+              }}
+            />
+          </div>
+          <div
+            className={`${
+              teamBattleList != null
+                ? 'order-2 md:order-1 flex justify-center items-center lg:mt-8 lg:relative fixed z-10 left-0 right-0 bottom-0 bg-transparent py-2 lg:py-0 mx-2'
+                : 'hidden'
             }`}
-            disabled={selectedBattle.id === ''}
-            onClick={async () => {
-              await router.push(
-                selectedBattle.is_joined
-                  ? isSelectedBattleStarted
-                    ? `/play/team-battle/${selectedBattle.id ?? ''}/stage`
-                    : `/play/team-battle/${selectedBattle.id ?? ''}/waiting`
-                  : `/play/team-battle/${selectedBattle.id ?? ''}`
-              );
-            }}
           >
-            OK
-          </Button>
+            <Button
+              className={`lg:w-[345px] w-full h-[60px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
+                selectedBattle.id !== ''
+                  ? 'text-white bg-[#2934B2]'
+                  : 'text-[#7C7C7C] bg-[#E9E9E9]'
+              }`}
+              disabled={selectedBattle.id === ''}
+              onClick={async () => {
+                await router.push(
+                  selectedBattle.is_joined
+                    ? isSelectedBattleStarted
+                      ? `/play/team-battle/${selectedBattle.id ?? ''}/stage`
+                      : `/play/team-battle/${selectedBattle.id ?? ''}/waiting`
+                    : `/play/team-battle/${selectedBattle.id ?? ''}`
+                );
+              }}
+            >
+              OK
+            </Button>
+          </div>
         </div>
-        <ArtPagination
-          currentPage={listParams?.page ?? 1}
-          totalPages={teamBattleList?.metadata?.total_page ?? 1}
-          onPageChange={page => {
-            setListParams({ ...listParams, page });
-          }}
-        />
       </div>
       <PopupInformation
         onClose={togglePopup}

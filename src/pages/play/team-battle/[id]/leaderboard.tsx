@@ -114,7 +114,7 @@ const LeaderboardBattlePage: React.FC = () => {
         setLeaderboardList(response?.data !== null ? response?.data : null);
         if (response?.data !== null) {
           const responseMyRank = await getMyRankBattle(id as string, {
-            stage: (stage as string).toUpperCase()
+            stage: (stage as string)?.toUpperCase()
           });
           setMyRank(responseMyRank);
         }
@@ -147,18 +147,18 @@ const LeaderboardBattlePage: React.FC = () => {
         <div className="text-xl text-white grid grid-cols-3">
           <div
             className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            onClick={() => {
-              router.back();
+            onClick={async () => {
+              await router.push(`/play/team-battle/${id as string}/stage`);
             }}
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="lg:text-center text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins text-center">
+          <div className="lg:text-center font-semibold text-lg sm:text-xl lg:text-2xl col-span-1 font-poppins text-center">
             {t('teamBattle.battleCompetition')}
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-9 gap-4 my-10">
-          <div className="col-span-1 lg:col-span-4 lg:border-2 border-white rounded-2xl p-3 lg:bg-white/50 flex flex-col justiy-center items-center">
+          <div className="col-span-1 lg:col-span-4 lg:border-2 border-white rounded-2xl p-3 lg:bg-white/30 flex flex-col justiy-center items-center">
             <div className="font-semibold text-xl text-[#0F1577] text-center">
               {t('teamBattle.theWinner')}
             </div>
@@ -184,9 +184,9 @@ const LeaderboardBattlePage: React.FC = () => {
                   <div className="text-xs text-center text-[#2934B2]">
                     {firstRank.group_name}
                   </div>
-                  <div className="flex flex-row gap-2">
-                    <span className="text-sm font-semibold text-[#2934B2]">
-                      Return
+                  <div className="flex flex-row flex-wrap justify-center w-full gap-2">
+                    <span className="text-sm font-semibold text-[#2934B2] truncate">
+                      {t('teamBattle.return')}
                     </span>
                     <GainIcon
                       gain={firstRank.gain}
@@ -216,9 +216,9 @@ const LeaderboardBattlePage: React.FC = () => {
                   <div className="text-xs text-center text-[#2934B2]">
                     {secondRank.group_name}
                   </div>
-                  <div className="flex flex-row gap-2">
-                    <span className="text-sm font-semibold text-[#2934B2]">
-                      Return
+                  <div className="flex flex-row flex-wrap justify-center w-full gap-2">
+                    <span className="text-sm font-semibold text-[#2934B2] truncate">
+                      {t('teamBattle.return')}
                     </span>
                     <GainIcon
                       gain={secondRank.gain}
@@ -248,9 +248,9 @@ const LeaderboardBattlePage: React.FC = () => {
                   <div className="text-xs text-center text-[#2934B2]">
                     {thirdRank.group_name}
                   </div>
-                  <div className="flex flex-row gap-2">
-                    <span className="text-sm font-semibold text-[#2934B2]">
-                      Return
+                  <div className="flex flex-row flex-wrap justify-center w-full gap-2">
+                    <span className="text-sm font-semibold text-[#2934B2] truncate">
+                      {t('teamBattle.return')}
                     </span>
                     <GainIcon
                       gain={thirdRank.gain}
@@ -308,23 +308,23 @@ const LeaderboardBattlePage: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="col-span-1 lg:col-span-5 border-2 border-white rounded-2xl p-3 bg-white/50">
+          <div className="col-span-1 lg:col-span-5 border-2 border-white rounded-2xl p-3 bg-white/30">
             <div className="flex justify-between items-center bg-[#2934B2] text-white font-semibold h-14 rounded-xl">
               <p className="text-center w-fit rounded-s-2xl p-3 text-xs sm:text=sm xl:text-base">
-                Rank
+                {t('teamBattle.rank')}
               </p>
               <p className="text-center w-fit p-3 text-xs sm:text=sm xl:text-base">
-                Name & Team
+                {t('teamBattle.nameTeam')}
               </p>
               <p className="text-center w-fit rounded-e-2xl p-3 text-xs sm:text=sm xl:text-base">
-                Return
+                {t('teamBattle.return')}
               </p>
             </div>
             <div
               ref={leaderboardRef}
               className="max-h-[50vh] sm:max-h-[60vh] lg:max-h-[65vh] overflow-auto"
             >
-              {(leaderboardList?.length as number) < 3 ? (
+              {(leaderboardList?.length as number) <= 3 ? (
                 <LeaderboardNotFound />
               ) : (
                 remainingRanks?.map((el: LeaderboardBattle, i) => {

@@ -2610,13 +2610,14 @@ export default {
     theWinner: 'The Winner',
     rank: 'Rank',
     nameTeam: 'Name & Team',
+    return: 'Return',
     currentRank: 'Current Rank',
     next: 'Next',
     timeTo: `It's time to`,
     battle: 'Battle!',
     prize: 'Prize',
     leaderboardPopup: 'More participants will be joining soon',
-    willBegin: 'The competition will begin in:',
+    willBegin: 'The stage will begin in:',
     battleClosed1: "Opps! Sorry, you can't join the game.",
     battleClosed2: "It's already in the",
     battleClosed3: 'The battle has already ended.',
@@ -2634,15 +2635,16 @@ export default {
       play: 'Play',
       sponsor: 'Sponsor',
       sponsors: 'Sponsors',
-      tnc: 'Terms and Conditions',
+      tnc: 'Term & Condition',
       wrongInvitationCode: 'Invalid invitation code!'
     },
     participant: {
       participant: 'Participant',
       noData: 'There is no data yet',
       emptyTitle: 'Participant',
-      frontTitle: '',
-      backTitle: ' Stage'
+      elimination: 'Elimination Stage',
+      semifinal: 'Semifinal Stage',
+      final: 'Final Stage'
     },
     popUpStage: {
       winTitle: 'You Win!',
@@ -2656,10 +2658,10 @@ export default {
         'So close! You almost made it to the top! Keep pushing for winning!',
       eliminatedDescription:
         "You didn't make it through to the next stage this time.",
-      yourRank: 'Your Rank'
+      yourRank: 'Your rank'
     },
     stagePage: {
-      gamePeriod: 'Game Period',
+      gamePeriod: 'Period Game',
       letsCheck: `Let's Check`,
       yourRank: 'Your Rank',
       enter: 'Enter',

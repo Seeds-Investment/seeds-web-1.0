@@ -1,7 +1,6 @@
 import CancelAddAsset from '@/assets/play/tournament/cancel-add-asset.svg';
 import SuccesAddAsset from '@/assets/play/tournament/success-asset.svg';
 import {
-  checkAssetInWatchlist,
   getWatchlistById,
   updateWatchlist
 } from '@/repository/market.repository';
@@ -50,25 +49,13 @@ const ModalWatchlist: React.FC<Props> = ({
         watchlists.map(async watchlist => await getWatchlistById(watchlist.id))
       );
       setFetchedWatchlists(watchlistData);
-      const initialCheckboxState = await Promise.all(
-        watchlistData.map(async watchlist => {
-          try {
-            const response = await checkAssetInWatchlist(
-              watchlist.watchlist.id,
-              assetId
-            );
-            return response.is_watch === true ? watchlist.watchlist.id : null;
-          } catch (error) {
-            toast.error(
-              `Error checking asset in watchlist ${watchlist.watchlist.id}: ${
-                error as string
-              }`
-            );
-            return null;
-          }
-        })
-      );
-      setCheckboxState(initialCheckboxState.filter(Boolean) as string[]);
+      const initialCheckboxState = watchlistData
+        .filter(watchlist =>
+          watchlist.watchlist.assetList?.some(asset => asset.id === assetId)
+        )
+        .map(watchlist => watchlist.watchlist.id);
+
+      setCheckboxState(initialCheckboxState);
     } catch (error) {
       toast.error(`Error fetching watchlists ${error as string}`);
     } finally {

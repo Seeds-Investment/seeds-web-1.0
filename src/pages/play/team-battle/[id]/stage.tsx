@@ -163,13 +163,12 @@ const StageBattle: React.FC = () => {
       if (moment().isAfter(endDates.final)) {
         setSelectedCategory('final');
         if (data.is_joined && data.status === 'ENDED') {
-          if (myRank !== undefined) {
-            handlePopUp(
-              myRank.rank === 0 || myRank.rank > data?.prize.length
-                ? 'fail'
-                : 'win'
-            );
-          }
+          handlePopUp(
+            (myRank?.rank ?? 0) === 0 ||
+              (myRank?.rank ?? 0) > data?.prize.length
+              ? 'fail'
+              : 'win'
+          );
         }
       } else if (moment().isAfter(endDates.semifinal)) {
         setSelectedCategory('final');
@@ -198,13 +197,12 @@ const StageBattle: React.FC = () => {
       if (moment().isAfter(endDates.final)) {
         setSelectedCategory('final');
         if (data.is_joined && data.status === 'ENDED') {
-          if (myRank !== undefined) {
-            handlePopUp(
-              myRank.rank === 0 || myRank.rank > data?.prize.length
-                ? 'fail'
-                : 'win'
-            );
-          }
+           handlePopUp(
+             (myRank?.rank ?? 0) === 0 ||
+               (myRank?.rank ?? 0) > data?.prize.length
+               ? 'fail'
+               : 'win'
+           );
         }
       } else if (moment().isAfter(endDates.elimination)) {
         setSelectedCategory('semifinal');
@@ -238,7 +236,7 @@ const StageBattle: React.FC = () => {
     if (data !== undefined) {
       determineCurrentCategory();
     }
-  }, [data, myRank]);
+  }, [data]);
 
   return (
     <>

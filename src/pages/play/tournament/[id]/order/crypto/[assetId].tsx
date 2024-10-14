@@ -56,6 +56,7 @@ interface UserData {
 }
 
 interface DetailAsset {
+  id: string;
   providerName: string;
   realTicker: string;
   logo: string;
@@ -779,14 +780,6 @@ const BuyPage: React.FC = () => {
                         : ''
                     }`}
                   >
-                    <div className="flex flex-col mb-4">
-                      <Typography className="text-[#262626] font-semibold">
-                        {t('playSimulation.orderReview')}
-                      </Typography>
-                      <Typography className="text-[#3C49D6] font-normal">
-                        #41683983
-                      </Typography>
-                    </div>
                     <div className="flex justify-between mb-5 md:mb-0">
                       <div className="flex flex-col">
                         <Typography className="text-[#262626] font-semibold">
@@ -855,8 +848,8 @@ const BuyPage: React.FC = () => {
                         <Typography className="text-[#7C7C7C] font-normal text-xs">
                           Order ID
                         </Typography>
-                        <Typography className="text-[#262626] font-semibold text-xs">
-                          #123456
+                        <Typography className="text-[#262626] font-semibold text-xs text-right">
+                          #{data?.id}
                         </Typography>
                       </div>
                       {orderType === 'pending' && (
@@ -991,7 +984,7 @@ const BuyPage: React.FC = () => {
                     {t('playSimulation.footerOrderDetail2')}
                   </Typography>
                   <Button
-                    className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4"
+                    className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4 mb-20 md:mb-0"
                     onClick={() => {
                       if (router.query.transaction === 'buy') {
                         submitOrder().catch(err => {

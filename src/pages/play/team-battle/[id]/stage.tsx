@@ -33,8 +33,8 @@ const StageBattle: React.FC = () => {
   const [selectedCategory, setSelectedCategory] =
     useState<string>('elimination');
   const [selectedSponsor, setSelectedSponsor] = useState('');
-  const [data, setData] = useState<TeamBattleDetail | undefined>(undefined);
-  const [myRank, setMyRank] = useState<MyRankBattleI | undefined>(undefined);
+  const [data, setData] = useState<TeamBattleDetail>();
+  const [myRank, setMyRank] = useState<MyRankBattleI>();
   const [dateScheduleStart, setDateScheduleStart] = useState('');
   const [dateScheduleEnd, setDateScheduleEnd] = useState('');
   const [dataParticipants, setDataParticipants] = useState<number>(0);
@@ -159,56 +159,62 @@ const StageBattle: React.FC = () => {
       semifinalQualifiedKey
     );
 
-    if (data?.type !== 'PROVINCE') {
-      if (today.isAfter(endDates.final)) {
+    if (data.type !== 'PROVINCE') {
+      if (moment().isAfter(endDates.final)) {
         setSelectedCategory('final');
-        if (data?.is_joined && data.status === 'ENDED') {
+        if (data.is_joined && data.status === 'ENDED') {
           handlePopUp(
-            (myRank?.rank ?? 0) >= data?.prize.length ? 'fail' : 'win'
+            (myRank?.rank ?? 0) === 0 ||
+              (myRank?.rank ?? 0) > data?.prize.length
+              ? 'fail'
+              : 'win'
           );
         }
-      } else if (today.isAfter(endDates.semifinal)) {
+      } else if (moment().isAfter(endDates.semifinal)) {
         setSelectedCategory('final');
-        if (data?.is_joined && !isSemifinalQualifiedShown) {
-          if (data?.is_eliminated) {
+        if (data.is_joined && !isSemifinalQualifiedShown) {
+          if (data.is_eliminated) {
             handlePopUp('eliminated');
           } else {
             handlePopUp('qualified');
             setLocalStorageStatus(semifinalQualifiedKey, true);
           }
         }
-      } else if (today.isAfter(endDates.elimination)) {
+      } else if (moment().isAfter(endDates.elimination)) {
         setSelectedCategory('semifinal');
-        if (data?.is_joined && !isEliminationQualifiedShown) {
-          if (data?.is_eliminated) {
+        if (data.is_joined && !isEliminationQualifiedShown) {
+          if (data.is_eliminated) {
             handlePopUp('eliminated');
           } else {
             handlePopUp('qualified');
             setLocalStorageStatus(eliminationQualifiedKey, true);
           }
         }
-      } else if (today.isAfter(endDates.registration)) {
+      } else if (moment().isAfter(endDates.registration)) {
         setSelectedCategory('elimination');
       }
     } else {
-      if (today.isAfter(endDates.final)) {
+      if (moment().isAfter(endDates.final)) {
         setSelectedCategory('final');
-        if (data?.is_joined && data.status === 'ENDED') {
-          handlePopUp(
-            (myRank?.rank ?? 0) >= data?.prize.length ? 'fail' : 'win'
-          );
+        if (data.is_joined && data.status === 'ENDED') {
+           handlePopUp(
+             (myRank?.rank ?? 0) === 0 ||
+               (myRank?.rank ?? 0) > data?.prize.length
+               ? 'fail'
+               : 'win'
+           );
         }
-      } else if (today.isAfter(endDates.elimination)) {
+      } else if (moment().isAfter(endDates.elimination)) {
         setSelectedCategory('semifinal');
-        if (data?.is_joined && !isEliminationQualifiedShown) {
-          if (data?.is_eliminated) {
+        if (data.is_joined && !isEliminationQualifiedShown) {
+          if (data.is_eliminated) {
             handlePopUp('eliminated');
           } else {
             handlePopUp('qualified');
             setLocalStorageStatus(eliminationQualifiedKey, true);
           }
         }
-      } else if (today.isAfter(endDates.registration)) {
+      } else if (moment().isAfter(endDates.registration)) {
         setSelectedCategory('elimination');
       }
     }

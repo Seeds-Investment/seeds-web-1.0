@@ -41,7 +41,7 @@ const FloatingButtonBattle: React.FC<FloatingProps> = ({ id }) => {
   }, []);
 
   return (
-    <div className="fixed right-0 md:right-[55px] bottom-[30vh] z-5">
+    <div className="fixed right-0 md:right-[55px] bottom-[30vh] z-10">
       <div
         onClick={() => {
           setIsExpanded(!isExpanded);

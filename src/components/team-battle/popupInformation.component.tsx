@@ -21,7 +21,7 @@ const PopupInformation: React.FC<PopupInformationProps> = ({
   const { t } = useTranslation();
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 bg-black/75 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black/75 justify-center items-center z-50 hidden lg:flex">
       <div className="relative bg-white/50 rounded-3xl shadow-lg w-[590px] h-[580px]">
         <button
           onClick={onClose}

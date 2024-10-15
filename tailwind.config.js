@@ -28,7 +28,9 @@ module.exports = withMT({
         'neutral-medium': '#262626',
         'neutral-soft': '#7C7C7C',
         'neutral-ultrasoft': '#CCCCCC',
-        'warning-hard': '#DD2525'
+        'warning-hard': '#DD2525',
+        'seeds-battle-1': '#66e1b7',
+        'seeds-battle-2': '#5987ca'
       },
       backgroundImage: {
         hello: "url('../src/assets/hello.png')",
@@ -153,7 +155,7 @@ module.exports = withMT({
         },
         'shadow-move': {
           '0%, 100%': { boxShadow: '0 0 15px 5px rgba(255, 255, 255, 1)' },
-          '50%': { boxShadow: '0 0 30px 10px rgba(58, 196,160, 0.9)' },
+          '50%': { boxShadow: '0 0 30px 10px rgba(58, 196,160, 0.9)' }
         }
       }
     }

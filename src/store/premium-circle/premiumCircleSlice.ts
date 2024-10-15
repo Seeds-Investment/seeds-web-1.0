@@ -20,7 +20,7 @@ const premiumCircleSlice = createSlice({
     setMonth(state, action) {
       state.premiumCircleMonth = action.payload;
     }
-  },
+  }
 });
 
 export const { setPrice, setMonth } = premiumCircleSlice.actions;

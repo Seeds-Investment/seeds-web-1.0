@@ -171,11 +171,9 @@ const PlayTournament = (): React.ReactElement => {
             toast.error(error);
           });
       } else if (status === 'OPEN') {
-        await router
-          .push(`/play/tournament/${id}`)
-          .catch(error => {
-            toast.error(error);
-          });
+        await router.push(`/play/tournament/${id}`).catch(error => {
+          toast.error(error);
+        });
       }
     } else if (status === 'ACTIVE' || status === 'OPEN') {
       await router.push(`/play/tournament/${id}`).catch(error => {
@@ -351,9 +349,24 @@ const PlayTournament = (): React.ReactElement => {
                           </div>
                           <div className="text-[#BDBDBD] px-2 text-[10px] 2xl:text-[12px]">
                             {languageCtx?.language === 'ID'
-                              ? getTournamentTime(new Date(item?.play_time ?? '2024-01-01T00:00:00Z'), new Date(item?.end_time ?? '2024-01-01T00:00:00Z'), 'id-ID')
-                              : getTournamentTime(new Date(item?.play_time ?? '2024-01-01T00:00:00Z'), new Date(item?.end_time ?? '2024-12-31T23:59:59Z'), 'en-US')
-                            }
+                              ? getTournamentTime(
+                                  new Date(
+                                    item?.play_time ?? '2024-01-01T00:00:00Z'
+                                  ),
+                                  new Date(
+                                    item?.end_time ?? '2024-01-01T00:00:00Z'
+                                  ),
+                                  'id-ID'
+                                )
+                              : getTournamentTime(
+                                  new Date(
+                                    item?.play_time ?? '2024-01-01T00:00:00Z'
+                                  ),
+                                  new Date(
+                                    item?.end_time ?? '2024-12-31T23:59:59Z'
+                                  ),
+                                  'en-US'
+                                )}
                           </div>
                         </div>
 
@@ -483,16 +496,16 @@ const PlayTournament = (): React.ReactElement => {
                               ? item?.status === 'ACTIVE'
                                 ? t('tournament.tournamentCard.openButton')
                                 : item?.status === 'PAST'
-                                  ? t('tournament.tournamentCard.leaderboard')
-                                  : item?.status === 'OPEN'
-                                    ? t('tournament.tournamentCard.joinedWaiting')
-                                    : t('tournament.tournamentCard.canceled')
+                                ? t('tournament.tournamentCard.leaderboard')
+                                : item?.status === 'OPEN'
+                                ? t('tournament.tournamentCard.joinedWaiting')
+                                : t('tournament.tournamentCard.canceled')
                               : item?.status === 'ACTIVE' ||
                                 item?.status === 'OPEN'
-                                  ? t('tournament.tournamentCard.joinButton')
-                                  : item?.status === 'CANCELED'
-                                    ? t('tournament.tournamentCard.canceled')
-                                    : t('tournament.tournamentCard.ended')}
+                              ? t('tournament.tournamentCard.joinButton')
+                              : item?.status === 'CANCELED'
+                              ? t('tournament.tournamentCard.canceled')
+                              : t('tournament.tournamentCard.ended')}
                           </Button>
                         </div>
                       </div>

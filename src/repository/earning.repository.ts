@@ -28,7 +28,7 @@ export const getEarningBalance = async (currency: string): Promise<any> => {
     if (accessToken === null || accessToken === '') {
       return await Promise.resolve('Access token not found');
     }
-    
+
     return await earningService.get(`/balance`, {
       params: {
         currency
@@ -43,9 +43,11 @@ export const getEarningBalance = async (currency: string): Promise<any> => {
   }
 };
 
-export const getEarningHistory = async (
-  params: { limit: number; page: number; currency: string }
-): Promise<any> => {
+export const getEarningHistory = async (params: {
+  limit: number;
+  page: number;
+  currency: string;
+}): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -64,9 +66,7 @@ export const getEarningHistory = async (
   }
 };
 
-export const requestWithdraw = async (
-  body: IRequestWithdraw
-): Promise<any> => {
+export const requestWithdraw = async (body: IRequestWithdraw): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -103,7 +103,7 @@ export const getWithdrawalStatus = async (id: string): Promise<any> => {
     if (accessToken === null || accessToken === '') {
       return await Promise.resolve('Access token not found');
     }
-    
+
     return await withdrawService.get(`/${id}/status`, {
       headers: {
         Accept: 'application/json',

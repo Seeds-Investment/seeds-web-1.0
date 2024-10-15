@@ -8,10 +8,7 @@ import { Input, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  type Payment,
-  type UserData
-} from './PaymentList';
+import { type Payment, type UserData } from './PaymentList';
 import InlineText from './components/InlineText';
 
 interface WalletFormProps {
@@ -91,12 +88,7 @@ const WalletForm = ({
     setAdmissionFee(_admissionFee);
     setAdminFee(_adminFee);
     setTotalFee(_totalFee);
-  }, [
-    dataPost,
-    numberMonth,
-    payment,
-    coinsDiscount,
-  ]);
+  }, [dataPost, numberMonth, payment, coinsDiscount]);
 
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">

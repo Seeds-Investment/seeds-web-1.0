@@ -47,7 +47,7 @@ const WalletForm = ({
   const [totalFee, setTotalFee] = useState(0);
   const [coinsDiscount, setCoinsDiscount] = useState(0);
   const router = useRouter();
-  const [showOtherFees, setShowOtherFees] = useState<boolean>(false)
+  const [showOtherFees, setShowOtherFees] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
@@ -67,10 +67,10 @@ const WalletForm = ({
 
   useEffect(() => {
     if (dataPost) {
-      if ((dataPost.admission_fee - newPromoCodeDiscount) === 0) {
-        setShowOtherFees(false)
+      if (dataPost.admission_fee - newPromoCodeDiscount === 0) {
+        setShowOtherFees(false);
       } else {
-        setShowOtherFees(true)
+        setShowOtherFees(true);
       }
     }
   }, [dataPost, newPromoCodeDiscount]);
@@ -82,7 +82,8 @@ const WalletForm = ({
     let _discount = 0;
 
     _discount = payment.is_promo_available
-      ? (showOtherFees ? payment.promo_price : 0) + (coinsDiscount > 0 ? coinsDiscount : 0)
+      ? (showOtherFees ? payment.promo_price : 0) +
+        (coinsDiscount > 0 ? coinsDiscount : 0)
       : coinsDiscount > 0
       ? coinsDiscount
       : 0;
@@ -95,10 +96,10 @@ const WalletForm = ({
       _adminFee = payment?.admin_fee;
       _totalFee = parseFloat(
         `${(
-          Number(_admissionFee)
-          - Number(_discount)
-          + (showOtherFees ? Number(_adminFee) : 0)
-          + (showOtherFees ? Number(payment.service_fee) : 0)
+          Number(_admissionFee) -
+          Number(_discount) +
+          (showOtherFees ? Number(_adminFee) : 0) +
+          (showOtherFees ? Number(payment.service_fee) : 0)
         ).toFixed(2)}`
       );
     }
@@ -168,8 +169,7 @@ const WalletForm = ({
         value={`${userInfo?.preferredCurrency} ${admissionFee}`}
         className="mb-2"
       />
-      {
-        showOtherFees &&
+      {showOtherFees && (
         <>
           <InlineText
             label={t(`${translationId}.serviceFeeLabel`)}
@@ -189,7 +189,7 @@ const WalletForm = ({
             />
           ) : null}
         </>
-      }
+      )}
       {promoCodeValidationResult ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}

@@ -33,33 +33,34 @@ const StageBattle: React.FC = () => {
   const [selectedCategory, setSelectedCategory] =
     useState<string>('elimination');
   const [selectedSponsor, setSelectedSponsor] = useState('');
-  const [data, setData] = useState<TeamBattleDetail>();
-  const [myRank, setMyRank] = useState<MyRankBattleI>();
+  const [data, setData] = useState<TeamBattleDetail | null>(null);
+  const [myRank, setMyRank] = useState<MyRankBattleI | null>(null);
   const [dateScheduleStart, setDateScheduleStart] = useState('');
   const [dateScheduleEnd, setDateScheduleEnd] = useState('');
   const [dataParticipants, setDataParticipants] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isOpenPopUp, setIsOpenPopUp] = useState(false);
+  const [categoryPopUp, setCategoryPopUp] = useState<string>('');
+  const [isDataReady, setIsDataReady] = useState(false);
+
   const categoryBattle = [
     { label: t('teamBattle.mainPage.elimination'), key: 'elimination' },
     { label: t('teamBattle.mainPage.semifinal'), key: 'semifinal' },
     { label: t('teamBattle.mainPage.final'), key: 'final' }
   ];
-  const [isOpenPopUp, setIsOpenPopUp] = useState(false);
-  const [categoryPopUp, setCategoryPopUp] = useState<string>('');
+
+  const router = useRouter();
+  const { id } = router.query;
+  const today = moment();
 
   const handleShowPopUpQualified = (): void => {
-    setIsOpenPopUp(!isOpenPopUp);
+    setIsOpenPopUp(prevState => !prevState);
   };
 
   const handleSelectedSponsor = (sponsor: string): void => {
-    if (selectedSponsor === sponsor) {
-      setSelectedSponsor('');
-    } else {
-      setSelectedSponsor(sponsor);
-    }
+    setSelectedSponsor(prevSponsor => (prevSponsor === sponsor ? '' : sponsor));
   };
-  const router = useRouter();
-  const { id } = router.query;
+
   const handleGetDetailBattle = async (): Promise<void> => {
     try {
       setIsLoading(true);
@@ -75,12 +76,10 @@ const StageBattle: React.FC = () => {
   const handleGetRank = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      if (data !== undefined) {
-        const responseMyRank = await getMyRankBattle(id as string, {
-          stage: selectedCategory.toLocaleUpperCase()
-        });
-        setMyRank(responseMyRank);
-      }
+      const responseMyRank = await getMyRankBattle(id as string, {
+        stage: selectedCategory.toUpperCase()
+      });
+      setMyRank(responseMyRank);
     } catch (error: any) {
       toast(error.message, { type: 'error' });
     } finally {
@@ -91,12 +90,10 @@ const StageBattle: React.FC = () => {
   const fetchDataPerStage = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      if (data !== undefined) {
-        const response = await getBattleDataPerStage(id as string, {
-          stage: selectedCategory.toLocaleUpperCase()
-        });
-        setDataParticipants(response?.participants);
-      }
+      const response = await getBattleDataPerStage(id as string, {
+        stage: selectedCategory.toUpperCase()
+      });
+      setDataParticipants(response?.participants);
     } catch (error: any) {
       toast(error.message, { type: 'error' });
     } finally {
@@ -105,44 +102,45 @@ const StageBattle: React.FC = () => {
   };
 
   const handleDateChanging = (): void => {
-    if (data != null) {
-      switch (selectedCategory) {
-        case 'elimination':
-          setDateScheduleStart(getBattleStageDate(data.elimination_start));
-          setDateScheduleEnd(getBattleStageDate(data.elimination_end));
-          break;
-        case 'semifinal':
-          setDateScheduleStart(getBattleStageDate(data.semifinal_start));
-          setDateScheduleEnd(getBattleStageDate(data.semifinal_end));
-          break;
-        case 'final':
-          setDateScheduleStart(getBattleStageDate(data.final_start));
-          setDateScheduleEnd(getBattleStageDate(data.final_end));
-          break;
-        default:
-          break;
+    if (data == null) return;
+
+    const stageDates: Record<string, { start: string; end: string }> = {
+      elimination: {
+        start: data.elimination_start,
+        end: data.elimination_end
+      },
+      semifinal: {
+        start: data.semifinal_start,
+        end: data.semifinal_end
+      },
+      final: {
+        start: data.final_start,
+        end: data.final_end
       }
+    };
+
+    const selectedStage = stageDates[selectedCategory];
+    if (selectedStage !== null && selectedStage !== undefined) {
+      setDateScheduleStart(getBattleStageDate(selectedStage.start));
+      setDateScheduleEnd(getBattleStageDate(selectedStage.end));
     }
   };
 
-  const today = moment();
-
-  const getLocalStorageStatus = (key: string): boolean => {
-    return localStorage.getItem(key) === 'true';
-  };
+  const getLocalStorageStatus = (key: string): boolean =>
+    localStorage.getItem(key) === 'true';
 
   const setLocalStorageStatus = (key: string, value: boolean): void => {
     localStorage.setItem(key, value.toString());
   };
 
   const determineCurrentCategory = (): void => {
-    if (data == null) return;
+    if (data == null || myRank == null) return;
 
     const endDates = {
-      final: moment(data?.final_end),
-      semifinal: moment(data?.semifinal_end),
-      elimination: moment(data?.elimination_end),
-      registration: moment(data?.registration_end)
+      final: moment(data.final_end),
+      semifinal: moment(data.semifinal_end),
+      elimination: moment(data.elimination_end),
+      registration: moment(data.registration_end)
     };
 
     const handlePopUp = (popUpType: string): void => {
@@ -159,64 +157,35 @@ const StageBattle: React.FC = () => {
       semifinalQualifiedKey
     );
 
-    if (data.type !== 'PROVINCE') {
-      if (moment().isAfter(endDates.final)) {
-        setSelectedCategory('final');
-        if (data.is_joined && data.status === 'ENDED') {
-          handlePopUp(
-            (myRank?.rank ?? 0) === 0 ||
-              (myRank?.rank ?? 0) > data?.prize.length
-              ? 'fail'
-              : 'win'
-          );
-        }
-      } else if (moment().isAfter(endDates.semifinal)) {
-        setSelectedCategory('final');
-        if (data.is_joined && !isSemifinalQualifiedShown) {
-          if (data.is_eliminated) {
-            handlePopUp('eliminated');
-          } else {
-            handlePopUp('qualified');
-            setLocalStorageStatus(semifinalQualifiedKey, true);
-          }
-        }
-      } else if (moment().isAfter(endDates.elimination)) {
-        setSelectedCategory('semifinal');
-        if (data.is_joined && !isEliminationQualifiedShown) {
-          if (data.is_eliminated) {
-            handlePopUp('eliminated');
-          } else {
-            handlePopUp('qualified');
-            setLocalStorageStatus(eliminationQualifiedKey, true);
-          }
-        }
-      } else if (moment().isAfter(endDates.registration)) {
-        setSelectedCategory('elimination');
+    const currentMoment = moment();
+
+    if (currentMoment.isAfter(endDates.final)) {
+      setSelectedCategory('final');
+      if (data.is_joined && data.status === 'ENDED') {
+        const popUpType =
+          myRank?.rank === 0 || myRank?.rank > data?.prize.length
+            ? 'fail'
+            : 'win';
+        handlePopUp(popUpType);
       }
-    } else {
-      if (moment().isAfter(endDates.final)) {
-        setSelectedCategory('final');
-        if (data.is_joined && data.status === 'ENDED') {
-           handlePopUp(
-             (myRank?.rank ?? 0) === 0 ||
-               (myRank?.rank ?? 0) > data?.prize.length
-               ? 'fail'
-               : 'win'
-           );
+    } else if (currentMoment.isAfter(endDates.semifinal)) {
+      setSelectedCategory('final');
+      if (data.is_joined && !isSemifinalQualifiedShown) {
+        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+        if (!data.is_eliminated) {
+          setLocalStorageStatus(semifinalQualifiedKey, true);
         }
-      } else if (moment().isAfter(endDates.elimination)) {
-        setSelectedCategory('semifinal');
-        if (data.is_joined && !isEliminationQualifiedShown) {
-          if (data.is_eliminated) {
-            handlePopUp('eliminated');
-          } else {
-            handlePopUp('qualified');
-            setLocalStorageStatus(eliminationQualifiedKey, true);
-          }
-        }
-      } else if (moment().isAfter(endDates.registration)) {
-        setSelectedCategory('elimination');
       }
+    } else if (currentMoment.isAfter(endDates.elimination)) {
+      setSelectedCategory('semifinal');
+      if (data.is_joined && !isEliminationQualifiedShown) {
+        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+        if (!data.is_eliminated) {
+          setLocalStorageStatus(eliminationQualifiedKey, true);
+        }
+      }
+    } else if (currentMoment.isAfter(endDates.registration)) {
+      setSelectedCategory('elimination');
     }
   };
 
@@ -227,16 +196,29 @@ const StageBattle: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    handleDateChanging();
-    void handleGetRank();
-    void fetchDataPerStage();
+    if (data != null) {
+      handleDateChanging();
+      const fetchAdditionalData = async (): Promise<void> => {
+        await handleGetRank();
+        await fetchDataPerStage();
+      };
+
+      fetchAdditionalData()
+        .then(() => {
+          setIsDataReady(true);
+        })
+        .catch(error => {
+          toast.error(error.message);
+        });
+    }
   }, [data, selectedCategory]);
 
   useEffect(() => {
-    if (data !== undefined) {
+    if (isDataReady && data != null) {
       determineCurrentCategory();
     }
-  }, [data]);
+  }, [data, isDataReady]);
+
 
   return (
     <>

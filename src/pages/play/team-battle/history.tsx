@@ -23,6 +23,9 @@ const HistoryBattle: React.FC = () => {
   const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string>('MY_ACTIVE');
   const [activeBattleId, setActiveBattleId] = useState<string | null>(null);
+  const [windowWidth, setWindowWidth] = useState<number>(
+    typeof window !== 'undefined' ? window.innerWidth : 0
+  );
   const [infoBattle, setInfoBattle] = useState<TeamBattleDetail>();
   const router = useRouter();
   const categoryBattle = [
@@ -89,13 +92,23 @@ const HistoryBattle: React.FC = () => {
   };
 
   const handleMoreInfoClick = (id: string): void => {
-    if (activeBattleId === id) {
-      setActiveBattleId(null);
+    if (windowWidth <= 539) {
+      setActiveBattleId(activeBattleId === id ? null : id);
     } else {
-      setActiveBattleId(id);
+      togglePopup();
     }
-    togglePopup();
   };
+
+  const handleResize = (): void => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <>
@@ -175,7 +188,11 @@ const HistoryBattle: React.FC = () => {
                       />
                     </div>
                     <div
-                      className={`w-full flex justify-center items-center flex-col bg-gradient-to-r from-[#227e7f] to-[#4760a8] py-5 px-2`}
+                      className={`w-full flex justify-center items-center flex-col bg-gradient-to-r from-[#227e7f] to-[#4760a8] py-5 px-2 ${
+                        windowWidth <= 539 && activeBattleId === teamBattle.id
+                          ? 'h-auto'
+                          : 'min-h-24 max-h-28'
+                      }`}
                     >
                       <div className="font-bold text-white text-base lg:text-lg xl:text-xl w-11/12 truncate text-center">
                         {teamBattle.title}
@@ -190,35 +207,37 @@ const HistoryBattle: React.FC = () => {
                         <span className="text-xs">
                           {t('teamBattle.history.moreInfo')}
                         </span>
-                        {activeBattleId === teamBattle.id ? (
+                        {windowWidth <= 539 &&
+                        activeBattleId === teamBattle.id ? (
                           <CiSquareChevUp size={15} />
                         ) : (
                           <CiSquareChevDown size={15} />
                         )}
                       </div>
-                      {activeBattleId === teamBattle.id && (
-                        <div className="py-2 px-5 text-white text-xs mt-2 block lg:hidden">
-                          <div className="py-2 px-5 border-white border-2 rounded-3xl text-white text-xs">
-                            {t('teamBattle.mainPage.period')} :{' '}
-                            {moment(teamBattle?.registration_start).format(
-                              'DD MMM YYYY'
-                            )}{' '}
-                            -{' '}
-                            {moment(teamBattle?.final_end).format(
-                              'DD MMM YYYY'
-                            )}
+                      {windowWidth <= 539 &&
+                        activeBattleId === teamBattle.id && (
+                          <div className="py-2 px-5 text-white text-xs mt-2">
+                            <div className="py-2 px-5 border-white border-2 rounded-3xl text-white text-xs">
+                              {t('teamBattle.mainPage.period')} :{' '}
+                              {moment(teamBattle?.registration_start).format(
+                                'DD MMM YYYY'
+                              )}{' '}
+                              -{' '}
+                              {moment(teamBattle?.final_end).format(
+                                'DD MMM YYYY'
+                              )}
+                            </div>
+                            <div
+                              className="text-xs sm:text-sm text-white font-normal py-2 px-4"
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  teamBattle.tnc?.[
+                                    i18n.language === 'id' ? 'id' : 'en'
+                                  ]?.replace(/\n/g, '<br />') ?? '-'
+                              }}
+                            />
                           </div>
-                          <div
-                            className="text-xs sm:text-sm text-white font-normal py-2 px-4"
-                            dangerouslySetInnerHTML={{
-                              __html:
-                                teamBattle.tnc?.[
-                                  i18n.language === 'id' ? 'id' : 'en'
-                                ]?.replace(/\n/g, '<br />') ?? '-'
-                            }}
-                          />
-                        </div>
-                      )}
+                        )}
                     </div>
                   </div>
                 );

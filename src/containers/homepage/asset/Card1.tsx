@@ -1,3 +1,4 @@
+import FavoriteAdded from '@/assets/play/tournament/favorite-asset-checked.svg';
 import Favorite from '@/assets/play/tournament/favorite-asset.svg';
 import CCard from '@/components/CCard';
 import ModalWatchlist from '@/components/popup/ModalWatchlist';
@@ -5,9 +6,12 @@ import {
   calculatePercentageDifference,
   standartCurrency
 } from '@/helpers/currency';
-import { getWatchlist } from '@/repository/market.repository';
+import { getWatchlist, getWatchlistById } from '@/repository/market.repository';
 import { type AssetI } from '@/utils/interfaces/play.interface';
-import { type Watchlist } from '@/utils/interfaces/watchlist.interface';
+import {
+  type AssetWatchlist,
+  type Watchlist
+} from '@/utils/interfaces/watchlist.interface';
 import { Avatar } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -26,6 +30,10 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
   const [watchList, setWatchlist] = useState<Watchlist[]>([]);
   const [isOpenModalWatchlist, setIsOpenModalWatchlist] =
     useState<boolean>(false);
+  const [checkboxState, setCheckboxState] = useState<string[]>([]);
+  const [fetchedWatchlists, setFetchedWatchlists] = useState<AssetWatchlist[]>(
+    []
+  );
 
   const fetchPlayWatchlist = async (): Promise<void> => {
     try {
@@ -36,11 +44,37 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
     }
   };
 
+  const fetchWatchlists = async (): Promise<void> => {
+    try {
+      const watchlistData: AssetWatchlist[] = await Promise.all(
+        watchList.map(async watchlist => await getWatchlistById(watchlist.id))
+      );
+      setFetchedWatchlists(watchlistData);
+      const initialCheckboxState = watchlistData
+        .filter(watchlist =>
+          watchlist.watchlist.assetList?.some(asset => asset.id === assetId)
+        )
+        .map(watchlist => watchlist.watchlist.id);
+
+      setCheckboxState(initialCheckboxState);
+    } catch (error) {
+      toast.error(`Error fetching watchlists ${error as string}`);
+    }
+  };
+
   useEffect(() => {
     if (playId !== undefined) {
       void fetchPlayWatchlist();
     }
   }, [playId]);
+
+  useEffect(() => {
+    if (watchList.length > 0 && assetId !== undefined) {
+      void fetchWatchlists();
+    }
+  }, [watchList]);
+
+  const isAssetInWatchlist = checkboxState.length > 0;
 
   return (
     <CCard className="flex w-full md:w-1/2 p-4 md:mt-5 md:rounded-lg border-none rounded-none">
@@ -73,7 +107,11 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
           }}
           className="cursor-pointer"
         >
-          <Image src={Favorite} alt="favorite" className="w-5 h-5" />
+          <Image
+            src={isAssetInWatchlist ? FavoriteAdded : Favorite}
+            alt="favorite"
+            className="w-5 h-5"
+          />
         </div>
       </div>
       <p className="text-xl font-semibold text-black my-2">
@@ -97,10 +135,13 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
         <ModalWatchlist
           assetName={data?.name}
           assetId={assetId}
+          playId={playId}
           onClose={() => {
             setIsOpenModalWatchlist(prev => !prev);
           }}
-          watchlists={watchList}
+          fetchedWatchlists={fetchedWatchlists}
+          checkboxState={checkboxState}
+          setCheckboxState={setCheckboxState}
         />
       )}
     </CCard>

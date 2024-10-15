@@ -1,17 +1,12 @@
 import CancelAddAsset from '@/assets/play/tournament/cancel-add-asset.svg';
 import SuccesAddAsset from '@/assets/play/tournament/success-asset.svg';
-import {
-  getWatchlistById,
-  updateWatchlist
-} from '@/repository/market.repository';
-import {
-  type AssetWatchlist,
-  type Watchlist
-} from '@/utils/interfaces/watchlist.interface';
+import { updateWatchlist } from '@/repository/market.repository';
+import { type AssetWatchlist } from '@/utils/interfaces/watchlist.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { XIcon } from 'public/assets/vector';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import Modal from '../ui/modal/Modal';
@@ -19,53 +14,31 @@ import Modal from '../ui/modal/Modal';
 interface Props {
   onClose: () => void;
   assetId: string;
+  playId: string;
   assetName: string;
-  watchlists: Watchlist[];
+  fetchedWatchlists: AssetWatchlist[];
+  checkboxState: string[];
+  setCheckboxState: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const ModalWatchlist: React.FC<Props> = ({
   onClose,
   assetId,
+  playId,
   assetName,
-  watchlists
+  fetchedWatchlists,
+  checkboxState,
+  setCheckboxState
 }) => {
   const { t } = useTranslation();
-  const [checkboxState, setCheckboxState] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [fetchedWatchlists, setFetchedWatchlists] = useState<AssetWatchlist[]>(
-    []
-  );
+  const router = useRouter();
   const [isOpenSuccessAddAsset, setIsOpenSuccessAddAsset] =
     useState<boolean>(false);
   const [isOpenCancelAddAsset, setIsOpenCancelAddAsset] =
     useState<boolean>(false);
   const [isOpenAlreadyExists, setIsOpenAlreadyExists] =
     useState<boolean>(false);
-
-  const fetchWatchlists = async (): Promise<void> => {
-    setIsLoading(true);
-    try {
-      const watchlistData: AssetWatchlist[] = await Promise.all(
-        watchlists.map(async watchlist => await getWatchlistById(watchlist.id))
-      );
-      setFetchedWatchlists(watchlistData);
-      const initialCheckboxState = watchlistData
-        .filter(watchlist =>
-          watchlist.watchlist.assetList?.some(asset => asset.id === assetId)
-        )
-        .map(watchlist => watchlist.watchlist.id);
-
-      setCheckboxState(initialCheckboxState);
-    } catch (error) {
-      toast.error(`Error fetching watchlists ${error as string}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    void fetchWatchlists();
-  }, [watchlists, assetId]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleCheckboxChange = (
     watchlistId: string,
@@ -177,7 +150,14 @@ const ModalWatchlist: React.FC<Props> = ({
             >
               {t('tournament.watchlist.addToWatchlist')}
             </Button>
-            <Button className="w-full rounded-full font-poppins font-semibold text-sm bg-white border-2 border-[#3ac4a0] text-seeds-button-green">
+            <Button
+              onClick={async () => {
+                await router.push(
+                  `/play/tournament/${playId}/watchlist/create?${assetId}`
+                );
+              }}
+              className="w-full rounded-full font-poppins font-semibold text-sm bg-white border-2 border-[#3ac4a0] text-seeds-button-green"
+            >
               {t('tournament.watchlist.newWatchlist')}
             </Button>
           </div>

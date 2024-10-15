@@ -20,7 +20,7 @@ interface Props {
   ticketData: TicketData;
   eventData: EventList;
   isCheckAble: boolean;
-  isEventEnded: boolean;
+  isEventEnded?: boolean;
 }
 
 const ModalShowEventTicket: React.FC<Props> = ({
@@ -82,7 +82,7 @@ const ModalShowEventTicket: React.FC<Props> = ({
               onClick={async () => {
                 await router
                   .replace(
-                    !isEventEnded && ticketData?.status === 'CHECKED_IN'
+                    !(isEventEnded ?? false) && ticketData?.status === 'CHECKED_IN'
                       ? `/homepage/event/${eventData?.id}/check-in-out`
                       : `/homepage/event/${eventData?.id}`
                   )

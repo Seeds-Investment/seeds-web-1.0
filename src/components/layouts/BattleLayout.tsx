@@ -1,12 +1,12 @@
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import React from 'react';
+import React, { type ReactNode } from 'react';
 // import AppAds from '../AppAds';
 import BattleGradient from '../ui/battle-gradient/BattleGradient';
 import HeaderBattle from './HeaderBattle';
 import SidebarLogin from './SidebarLogin';
 
 interface props {
-  children: any;
+  children: ReactNode;
 }
 
 const BattleLayout: React.FC<props> = ({ children }) => {

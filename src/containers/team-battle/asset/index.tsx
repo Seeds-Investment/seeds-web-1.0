@@ -66,9 +66,7 @@ const PlayAssetsList: React.FC<Props> = ({
     }
   };
   useEffect(() => {
-    fetchData()
-      .then()
-      .catch(() => {});
+    void fetchData();
   }, []);
 
   const handleArrow = (value: number): boolean => {

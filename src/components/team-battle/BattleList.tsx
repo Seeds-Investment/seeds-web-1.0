@@ -192,7 +192,7 @@ const BattleList: React.FC<BattleListI> = ({
             teamBattleList?.data.map(teamBattle => (
               <div
                 key={teamBattle?.id}
-                className={`rounded-t-3xl hover:cursor-pointer z-0 ${
+                className={`rounded-t-3xl hover:cursor-pointer ${
                   selectedBattle.id === teamBattle?.id
                     ? 'border-[3px] border-white'
                     : ''
@@ -285,7 +285,7 @@ const BattleList: React.FC<BattleListI> = ({
         </div>
       )}
       <div className="flex flex-col">
-        <div className="order-1 md:order-2 relative z-0 md:mb-0 mb-20">
+        <div className="order-1 md:order-2 relative md:mb-0 mb-20 z-0">
           <ArtPagination
             currentPage={listParams?.page ?? 1}
             totalPages={teamBattleList?.metadata?.total_page ?? 1}

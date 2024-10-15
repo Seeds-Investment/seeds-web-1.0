@@ -57,7 +57,8 @@ const initialEventData: EventList = {
   likes: 0,
   location_name: '',
   name: '',
-  updated_at: ''
+  updated_at: '',
+  reward: ''
 };
 
 const SeedsEventCheckInOut: React.FC = () => {

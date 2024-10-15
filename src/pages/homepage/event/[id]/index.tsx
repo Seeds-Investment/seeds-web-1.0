@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
-import { EventDescription } from '@/components/homepage/event/eventDescription';
 import DetailEventSkeleton from '@/components/homepage/event/skeleton/detailEventSkeleton';
 import Loading from '@/components/popup/Loading';
 import ModalShowCertificate from '@/components/popup/ModalShowCertificate';
@@ -347,7 +346,14 @@ const SeedsEventDetail: React.FC = () => {
                 </Typography>
               )}
             </div>
-            <EventDescription description={eventData?.description} />
+            <div
+              className="text-xs sm:text-sm text-[#7C7C7C] font-normal py-2 px-4 font-poppins mt-6"
+              dangerouslySetInnerHTML={{
+                __html: eventData?.description
+                  ?.replace(/\n/g, '<br />')
+                  .replace(/\*(.*?)\*/g, '<b>$1</b>') ?? '-'
+              }}
+            />
           </div>
         ) : (
           <DetailEventSkeleton />

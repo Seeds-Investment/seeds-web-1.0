@@ -28,9 +28,9 @@ const ModalCheckOption: React.FC<Props> = ({
 
   useEffect(() => {
     if (ticketStatus === 'ISSUED' || ticketStatus === 'CHECKED_OUT') {
-      setAction('CHECKED_IN');
+      setAction(ticketStatus);
     } else {
-      setAction('CHECKED_OUT');
+      setAction(ticketStatus);
     }
   }, []);
 

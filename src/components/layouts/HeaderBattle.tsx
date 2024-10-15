@@ -75,7 +75,6 @@ const HeaderBattle: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    void handleGetUserInfo();
     void getLastTranslation();
     if (!isGuest()) {
       void handleGetUserInfo();

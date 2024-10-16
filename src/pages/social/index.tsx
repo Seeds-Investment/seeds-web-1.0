@@ -16,6 +16,7 @@ import {
   getSocialPostForYou,
   getSocialPostMySpace
 } from '@/repository/social.respository';
+import { type DataPost } from '@/utils/interfaces/social.interfaces';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import {
   Menu,
@@ -33,7 +34,7 @@ import { LuUsers } from 'react-icons/lu';
 import { PiCrownSimpleFill } from 'react-icons/pi';
 
 interface UserData {
-  id: any;
+  id: string;
   name: string;
   seedsTag: string;
   email: string;
@@ -89,7 +90,7 @@ const Social: React.FC = () => {
     isGuest() ? 'for_you' : 'for_you'
   );
   const [userInfo, setUserInfo] = useState<UserData>(initialUserInfo);
-  const [dataPost, setDataPost] = useState<any[]>([]);
+  const [dataPost, setDataPost] = useState<DataPost[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [golId, setGolId] = useState<number>(1);
   const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);
@@ -625,7 +626,7 @@ const Social: React.FC = () => {
                   <div
                     className="absolute inset-0 bg-black opacity-70 rounded-2xl z-0"
                     onClick={async () =>
-                      await router.push(`/connect/post/${item?.id as string}`)
+                      await router.push(`/connect/post/${item?.id}`)
                     }
                   />
 
@@ -635,7 +636,7 @@ const Social: React.FC = () => {
                       alt="avatar"
                       className="rounded-full object-cover h-24 w-24"
                       onClick={async () =>
-                        await router.push(`/connect/post/${item?.id as string}`)
+                        await router.push(`/connect/post/${item?.id}`)
                       }
                     />
                   </div>
@@ -643,7 +644,7 @@ const Social: React.FC = () => {
                   <div
                     className="text-center font-poppins text-white text-lg relative z-10"
                     onClick={async () =>
-                      await router.push(`/connect/post/${item?.id as string}`)
+                      await router.push(`/connect/post/${item?.id}`)
                     }
                   >
                     {item?.name}

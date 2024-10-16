@@ -3,37 +3,67 @@
 import socketService from '@/repository/socket.repository';
 import { useEffect, useState } from 'react';
 
-const useChat = () => {
+const useGetLastPrice = (ticker?: string) => {
   const [connect, setConnect] = useState(false);
-  console.log(connect, 'cek connect');
+  const [price, setPrice] = useState({
+    eur: 0,
+    gbp: 0,
+    idr: 0,
+    jpy: 0,
+    myr: 0,
+    php: 0,
+    sgd: 0,
+    thb: 0,
+    usd: 0,
+    vnd: 0
+  });
 
   useEffect(() => {
-    socketService.connectAsset();
+    if (ticker) {
+      socketService.connectAsset();
 
-    socketService.addListener('connect', () => {
-      setConnect(true);
-    });
-    console.log('masuk');
+      socketService.addListener('connect', () => {
+        setConnect(true);
+      });
 
-    socketService.addListener('joined_room', (message: any) => {
-      console.log('joinned room:', message, 'cek');
-    });
-    console.log('masuk 2');
+      socketService.addListener('joined_asset', (message: any) => {
+        console.log('joinned room:', message, 'cek');
+      });
 
-    socketService.addListener('last_price', (message: any) => {
-      console.log(message, 'cek');
-    });
+      socketService.addListener(
+        'last_price',
+        (message: {
+          ticker: string;
+          price: {
+            eur: number;
+            gbp: number;
+            idr: number;
+            jpy: number;
+            myr: number;
+            php: number;
+            sgd: number;
+            thb: number;
+            usd: number;
+            vnd: number;
+          };
+        }) => {
+          setPrice(message.price);
+        }
+      );
 
-    return () => {
-      socketService.disconnectAsset();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (connect) {
-      socketService.emit('join_room', { body: { ticker: 'AAPL' } });
+      return () => {
+        socketService.disconnectAsset();
+      };
     }
-  }, [connect]);
+  }, [ticker]);
+
+  useEffect(() => {
+    if (connect && ticker) {
+      socketService.emit('join_asset', { ticker: ticker });
+    }
+  }, [connect, ticker]);
+
+  return price;
 };
 
-export default useChat;
+export default useGetLastPrice;

@@ -9,8 +9,11 @@ import { Avatar } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
+interface AssetSocketI extends AssetI {
+  socketPrice: number;
+}
 interface props {
-  data: AssetI;
+  data: AssetSocketI;
   currency: string;
 }
 
@@ -42,7 +45,7 @@ const Card1: React.FC<props> = ({ data, currency }) => {
       </div>
       <p className="text-xl font-semibold text-black my-2">
         {currency ?? 'IDR'}{' '}
-        {standartCurrency(data?.lastPrice?.close ?? 0).replace('Rp', '')}
+        {standartCurrency(data?.socketPrice ?? 0).replace('Rp', '')}
       </p>
       <div className="w-full flex flex-row justify-between">
         <p className="text-sm font-normal text-[#5E44FF]">

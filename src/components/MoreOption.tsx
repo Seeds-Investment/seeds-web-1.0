@@ -9,6 +9,7 @@ import post_report_photo from '@/assets/more-option/post_report_photo.png';
 import report_user from '@/assets/more-option/report_user.svg';
 import user_report_photo from '@/assets/more-option/user_report_photo.png';
 import ModalMention from '@/containers/circle/[id]/ModalMention';
+import { blockOtherUser } from '@/repository/profile.repository';
 import { follow } from '@/repository/user.repository';
 import {
   Button,
@@ -89,15 +90,6 @@ const listReportUser = async (): Promise<any> => {
   }
 };
 
-const handleFollow = async (userId: string): Promise<void> => {
-  try {
-    const response = await follow(userId);
-    return response;
-  } catch (error: any) {
-    toast(error.message, { type: 'error' });
-  }
-};
-
 const Icon = (): any => {
   return (
     <svg
@@ -121,8 +113,7 @@ const MoreOption = ({
   myInfo,
   dataPost,
   userInfo,
-  setDataPost,
-  handleSubmitBlockUser
+  setDataPost
 }: props): any => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -164,6 +155,19 @@ const MoreOption = ({
   const [selectedPost, setSelectedPost] = React.useState(null);
   const [selectedUser, setSelectedUser] = React.useState(null);
   const [mobileView, setMobileView] = useState(false);
+  const [isFollowing, setIsFollowing] = useState<boolean>(
+    dataPost?.is_followed ?? false
+  );
+
+  const handleFollow = async (userId: string): Promise<void> => {
+    try {
+      const response = await follow(userId);
+      const isFollowed = response?.status;
+      setIsFollowing(isFollowed);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
 
   const handleOpen = (): void => {
     if (isOpen) {
@@ -305,6 +309,15 @@ const MoreOption = ({
     }
   };
 
+  const handleSubmitBlockUser = async (): Promise<void> => {
+    try {
+      const response = await blockOtherUser({ user_id: dataPost.user_id });
+      return response;
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
   return (
     <>
       {isLoading ? (
@@ -360,7 +373,7 @@ const MoreOption = ({
                     }}
                   >
                     <AiOutlineUserDelete size={20} />
-                    Unfollow
+                    {isFollowing ? t('social.unfollow') : t('social.follow')}
                   </MenuItem>
                   <MenuItem
                     className={`${
@@ -487,7 +500,9 @@ const MoreOption = ({
                           }}
                         >
                           <AiOutlineUserDelete size={20} />
-                          Unfollow
+                          {isFollowing
+                            ? t('social.unfollow')
+                            : t('social.follow')}
                         </MenuItem>
                         <MenuItem
                           className={`${

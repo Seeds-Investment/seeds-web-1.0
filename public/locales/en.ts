@@ -1488,6 +1488,8 @@ export default {
     }
   },
   social: {
+    follow: 'Follow',
+    unfollow: 'Unfollow',
     postSetting: {
       publicTitle: 'Public',
       publicDesc: 'Everyone can see your post',

@@ -1413,6 +1413,8 @@ export default {
     }
   },
   social: {
+    follow: 'Mengikuti',
+    unfollow: 'Berhenti Mengikuti',
     postSetting: {
       publicTitle: 'Publik',
       publicDesc: 'Semua orang bisa melihat postinganmu',

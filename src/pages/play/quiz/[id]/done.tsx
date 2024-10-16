@@ -185,28 +185,28 @@ const DoneQuiz: React.FC = () => {
   }
 
   useEffect(() => {
-    if ((
-      detailQuiz !== undefined)
-      && (userInfo !== undefined)
-      && (detailQuiz?.status === 'ENDED')
-      && (detailQuiz?.prize_type === 'LINK')
+    if (
+      detailQuiz !== undefined &&
+      userInfo !== undefined &&
+      detailQuiz?.status === 'ENDED' &&
+      detailQuiz?.prize_type === 'LINK'
     ) {
       const index = detailQuiz?.winners.indexOf(userInfo.id);
       if ((detailQuiz?.winners).includes(userInfo?.id)) {
-        setIsShowWinnerAlert(true)
+        setIsShowWinnerAlert(true);
       }
       if (index !== -1) {
-        setWinningPosition(index+1);
-        setWinningLink(detailQuiz?.winner_link_url[index] ?? '')
+        setWinningPosition(index + 1);
+        setWinningLink(detailQuiz?.winner_link_url[index] ?? '');
       }
       if (winningPosition === 1) {
-        setOrdinalName('st')
+        setOrdinalName('st');
       } else if (winningPosition === 2) {
-        setOrdinalName('nd')
+        setOrdinalName('nd');
       } else if (winningPosition === 3) {
-        setOrdinalName('rd')
+        setOrdinalName('rd');
       } else {
-        setOrdinalName('th')
+        setOrdinalName('th');
       }
     }
   }, [detailQuiz, userInfo, ordinalName, winningLink]);
@@ -370,7 +370,11 @@ const DoneQuiz: React.FC = () => {
           isShowWinnerAlert={isShowWinnerAlert}
           winningPosition={winningPosition}
           winningLink={winningLink}
-          winningImageSrc={winningPosition !== 0 ? detailQuiz?.winner_image_url[winningPosition-1] ?? '' : ''}
+          winningImageSrc={
+            winningPosition !== 0
+              ? detailQuiz?.winner_image_url[winningPosition - 1] ?? ''
+              : ''
+          }
           ordinalName={ordinalName}
           language={languageCtx?.language ?? 'EN'}
           prizeType={detailQuiz?.prize_type ?? 'CASH'}

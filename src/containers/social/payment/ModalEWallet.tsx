@@ -58,7 +58,9 @@ const ModalEWallet = ({
     let _discount = 0;
 
     _discount = payment.is_promo_available
-      ? (dataPost?.premium_fee - (promoCodeValidationResult?.response?.total_discount ?? 0)) === 0
+      ? dataPost?.premium_fee -
+          (promoCodeValidationResult?.response?.total_discount ?? 0) ===
+        0
         ? 0
         : payment.promo_price
       : 0;
@@ -72,10 +74,10 @@ const ModalEWallet = ({
       _adminFee = payment?.admin_fee;
       _totalFee = parseFloat(
         `${(
-          Number(_admissionFee)
-          - Number(_discount)
-          + (showOtherFees ? Number(_adminFee) : 0)
-          + (showOtherFees ? Number(payment.service_fee) : 0)
+          Number(_admissionFee) -
+          Number(_discount) +
+          (showOtherFees ? Number(_adminFee) : 0) +
+          (showOtherFees ? Number(payment.service_fee) : 0)
         ).toFixed(2)}`
       );
     }
@@ -124,33 +126,34 @@ const ModalEWallet = ({
         value={standartCurrency(dataPost?.premium_fee ?? 0)}
         className="mb-2"
       />
-      {
-        showOtherFees &&
-          <>
+      {showOtherFees && (
+        <>
+          <InlineText
+            label={t(`${translationId}.serviceFeeLabel`)}
+            value={`${standartCurrency(payment.service_fee ?? 0)}`}
+            className="mb-2"
+          />
+          <InlineText
+            label={t(`${translationId}.adminFeeLabel`)}
+            value={`${standartCurrency(payment?.admin_fee ?? 0)}`}
+            className="mb-2"
+          />
+          {payment.is_promo_available ? (
             <InlineText
-              label={t(`${translationId}.serviceFeeLabel`)}
-              value={`${standartCurrency(payment.service_fee ?? 0)}`}
+              label={t(`${translationId}.adminFeeDiscountLabel`)}
+              value={`- ${standartCurrency(payment.promo_price ?? 0)}`}
               className="mb-2"
             />
-            <InlineText
-              label={t(`${translationId}.adminFeeLabel`)}
-              value={`${standartCurrency(payment?.admin_fee ?? 0)}`}
-              className="mb-2"
-            />
-            {payment.is_promo_available ? (
-              <InlineText
-                label={t(`${translationId}.adminFeeDiscountLabel`)}
-                value={`- ${standartCurrency(payment.promo_price ?? 0)}`}
-                className="mb-2"
-              />
-            ) : null}
-          </>
-      }
-      {promoCodeValidationResult? (
+          ) : null}
+        </>
+      )}
+      {promoCodeValidationResult ? (
         <>
           <InlineText
             label="Promo Code"
-            value={`- ${standartCurrency(promoCodeValidationResult?.response?.total_discount)}`}
+            value={`- ${standartCurrency(
+              promoCodeValidationResult?.response?.total_discount
+            )}`}
             className="mb-4"
           />
         </>
@@ -184,7 +187,8 @@ const ModalEWallet = ({
             payment?.payment_gateway ?? '',
             payment?.payment_method,
             promoCodeValidationResult?.response?.total_discount !== undefined
-              ? dataPost?.premium_fee - promoCodeValidationResult?.response?.total_discount
+              ? dataPost?.premium_fee -
+                  promoCodeValidationResult?.response?.total_discount
               : dataPost?.premium_fee,
             phone
           );

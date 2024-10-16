@@ -1,4 +1,5 @@
 'use client';
+import BattleLayout from '@/components/layouts/BattleLayout';
 import Header from '@/components/layouts/Header';
 import LoginLayout from '@/components/layouts/LoginLayout';
 import ErrorBEProvider from '@/store/error-be/ErrorBEProvider';
@@ -90,6 +91,11 @@ function App({
                       {getLayout(<Component {...pageProps} />)}
                       <ToastContainer />
                     </>
+                  ) : router.pathname.startsWith('/play/team-battle') ? (
+                    <BattleLayout>
+                      {getLayout(<Component {...pageProps} />)}
+                      <ToastContainer />
+                    </BattleLayout>
                   ) : (
                     <LoginLayout>
                       {getLayout(<Component {...pageProps} />)}

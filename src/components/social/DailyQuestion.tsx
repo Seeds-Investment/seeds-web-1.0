@@ -1,4 +1,6 @@
-import SeedyQuestion from '@/assets/social/SeedyQuestion.svg';
+import FalseAnswer from '@/assets/social/false-answer.svg';
+import SeedyQuestion from '@/assets/social/seedy-question.svg';
+import TrueAnswer from '@/assets/social/true-answer.svg';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
@@ -6,6 +8,8 @@ const DailyQuestion: React.FC = () => {
   const [evaluation, setEvaluation] = useState<string>('flex');
   const [answer, setAnswer] = useState<boolean>(false);
   const [answerRecap, setAnswerRecap] = useState<string>('');
+  const [showPopUp, setShowPopUp] = useState<boolean>(false);
+  const [showSuccessShared, setShowSuccessShared] = useState<boolean>(false);
   const dataDummy = {
     daily_question:
       'Iure ratione accusantium repellendus dicta illo rem ducimus fugiat ea debitis similique repudiandae?',
@@ -77,7 +81,7 @@ const DailyQuestion: React.FC = () => {
           <div className="flex items-center gap-2">
             <div className="p-2 rounded-full border-2 border-[#345294]">
               <Image
-                src={SeedyQuestion}
+                src={answer ? TrueAnswer : FalseAnswer}
                 width={100}
                 height={100}
                 alt="question-icon"
@@ -107,12 +111,110 @@ const DailyQuestion: React.FC = () => {
             possimus.
           </div>
           <div className="flex gap-3 flex-row justify-center items-center">
-            <button className="w-32 px-3 py-2 border-2 border-[#392594] text-[#392594] rounded-3xl">
+            <button
+              className="w-32 px-3 py-2 border-2 border-[#392594] text-[#392594] rounded-3xl"
+              onClick={() => {
+                setShowPopUp(!showPopUp);
+              }}
+            >
               Share
             </button>
             <button className="w-32 px-3 py-2 text-white bg-[#3AC4A0] rounded-3xl">
               OK
             </button>
+          </div>
+        </div>
+      )}
+      {showPopUp && (
+        <div>
+          <div className="fixed inset-0 bg-black opacity-50 z-40" />
+          <div className="fixed inset-0 flex items-end justify-center sm:items-center z-50">
+            <div className="bg-white rounded-t-2xl sm:rounded-2xl overflow-hidden w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xl:w-1/3 border-2">
+              <div className="px-4 pt-4 flex justify-between items-center">
+                <div className="flex justify-center items-center w-full">
+                  <div
+                    className="text-lg font-bold rounded-full bg-[#ececec] p-1 w-1/2 cursor-pointer flex sm:hidden"
+                    onClick={() => {}}
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="flex list-none flex-col font-poppins gap-2 p-2 text-sm leading-5 justify-center items-center font-semibold px-5 sm:px-10 lg:px-14 xl:px-20">
+                  <Image
+                    src={answer ? TrueAnswer : FalseAnswer}
+                    alt="popup-logo"
+                    width={200}
+                    height={200}
+                    className="w-1/2"
+                  />
+                  <div className="text-sm sm:text-base md:text-lg text-black text-center">
+                    You will share this to your profile. Accept ?
+                  </div>
+                  <div className="text-white w-full flex gap-5 text-base sm:text-lg">
+                    <button
+                      className="w-1/2 bg-[#ED0F29] rounded-2xl py-3"
+                      onClick={() => {
+                        setShowPopUp(!showPopUp);
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="w-1/2 bg-[#27A590] rounded-2xl py-3"
+                      onClick={() => {
+                        setShowPopUp(!showPopUp);
+                        setShowSuccessShared(!showSuccessShared);
+                      }}
+                    >
+                      Accept
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {showSuccessShared && (
+        <div>
+          <div className="fixed inset-0 bg-black opacity-50 z-40" />
+          <div className="fixed inset-0 flex items-end justify-center sm:items-center z-50">
+            <div className="bg-white rounded-t-2xl sm:rounded-2xl overflow-hidden w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xl:w-1/3 border-2">
+              <div className="px-4 pt-4 flex justify-between items-center">
+                <div className="flex justify-center items-center w-full">
+                  <div
+                    className="text-lg font-bold rounded-full bg-[#ececec] p-1 w-1/2 cursor-pointer flex sm:hidden"
+                    onClick={() => {}}
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="flex list-none flex-col font-poppins gap-2 p-2 text-sm leading-5 justify-center items-center font-semibold px-5 sm:px-10 lg:px-14 xl:px-20">
+                  <Image
+                    src={answer ? TrueAnswer : FalseAnswer}
+                    alt="popup-logo"
+                    width={200}
+                    height={200}
+                    className="w-1/2"
+                  />
+                  <div className="text-sm sm:text-base md:text-lg text-black text-center">
+                    {answer
+                      ? `You success has been shared! Keep inspiring others with your financial knowledge!`
+                      : ` Your attempt has been shared! Keep learning and growing every day!`}
+                  </div>
+                  <div className="text-white w-full flex gap-5 text-base sm:text-lg justify-center items-center">
+                    <button
+                      className="w-1/2 bg-[#27A590] rounded-2xl py-3"
+                      onClick={() => {
+                        setShowSuccessShared(!showSuccessShared);
+                      }}
+                    >
+                      OK
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}

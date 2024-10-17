@@ -18,6 +18,7 @@ import {
   getBattleBalance
 } from '@/repository/team-battle.repository';
 import { useAppSelector } from '@/store/redux/store';
+import { AssetI } from '@/utils/interfaces/play.interface';
 import { type SuccessOrderDataBattle } from '@/utils/interfaces/team-battle.interface';
 import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import {
@@ -94,7 +95,7 @@ const BuyPage: React.FC = () => {
   const { t } = useTranslation();
   const height = useWindowInnerHeight();
 
-  const [data, setData] = useState<DetailAsset>();
+  const [data, setData] = useState<AssetI>();
   const [ballance, setBallance] = useState<Ballance>({
     balance: 0,
     portfolio: 0,
@@ -151,7 +152,7 @@ const BuyPage: React.FC = () => {
   const [lotSell, setLotSell] = useState<string>('0');
   const { dataUser } = useAppSelector(state => state.user);
   const prefCurrency = dataUser?.preferredCurrency.toLowerCase() ?? 'usd';
-  const lastPrice = useGetLastPrice(data?.realTicker);
+  const lastPrice = useGetLastPrice(data?.seedsTicker);
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleLotSellChange = (event: React.ChangeEvent<HTMLInputElement>) => {

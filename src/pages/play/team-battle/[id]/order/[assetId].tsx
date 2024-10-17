@@ -20,6 +20,7 @@ import {
   getBattleBalance
 } from '@/repository/team-battle.repository';
 import { useAppSelector } from '@/store/redux/store';
+import { AssetI } from '@/utils/interfaces/play.interface';
 import { type SuccessOrderDataBattle } from '@/utils/interfaces/team-battle.interface';
 import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import {
@@ -62,15 +63,6 @@ interface UserData {
   preferredCurrency: string;
 }
 
-interface DetailAsset {
-  id: string;
-  providerName: string;
-  realTicker: string;
-  logo: string;
-  name: string;
-  lastPrice: LastPrice;
-}
-
 interface LastPrice {
   open: number;
 }
@@ -98,7 +90,7 @@ const BuyPage: React.FC = () => {
   const { t } = useTranslation();
   const height = useWindowInnerHeight();
 
-  const [data, setData] = useState<DetailAsset>();
+  const [data, setData] = useState<AssetI>();
   const [ballance, setBallance] = useState<Ballance>({
     balance: 0,
     portfolio: 0,
@@ -108,7 +100,7 @@ const BuyPage: React.FC = () => {
   });
   const { dataUser } = useAppSelector(state => state.user);
   const prefCurrency = dataUser?.preferredCurrency.toLowerCase() ?? 'usd';
-  const lastPrice = useGetLastPrice(data?.realTicker);
+  const lastPrice = useGetLastPrice(data?.seedsTicker);
   const [portfolio, setPortfolio] = useState<AssetPortfolio>({
     asset_id: '',
     battle_id: '',

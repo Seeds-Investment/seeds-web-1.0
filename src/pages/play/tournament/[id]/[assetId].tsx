@@ -84,7 +84,7 @@ const AssetDetailPage: React.FC = () => {
   const [assetType, setAssetType] = useState<string>('');
   const prefCurrency = userInfo?.preferredCurrency.toLowerCase();
   const { detailTournament } = useGetDetailTournament(id as string);
-  const lastPrice = useGetLastPrice(data?.realTicker);
+  const lastPrice = useGetLastPrice(data?.seedsTicker);
 
   const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {

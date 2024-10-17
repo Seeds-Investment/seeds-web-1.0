@@ -20,7 +20,10 @@ import {
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { useAppSelector } from '@/store/redux/store';
-import { type SuccessOrderData } from '@/utils/interfaces/play.interface';
+import {
+  AssetI,
+  type SuccessOrderData
+} from '@/utils/interfaces/play.interface';
 import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import {
   Avatar,
@@ -95,7 +98,7 @@ const BuyPage: React.FC = () => {
   const height = useWindowInnerHeight();
   const { dataUser } = useAppSelector(state => state.user);
   const prefCurrency = dataUser?.preferredCurrency.toLowerCase() ?? 'usd';
-  const [data, setData] = useState<DetailAsset>();
+  const [data, setData] = useState<AssetI>();
   const [ballance, setBallance] = useState<Ballance>({
     balance: 0,
     portfolio: 0,
@@ -103,7 +106,7 @@ const BuyPage: React.FC = () => {
     total_buy: 0,
     currency: 'IDR'
   });
-  const lastPrice = useGetLastPrice(data?.realTicker);
+  const lastPrice = useGetLastPrice(data?.seedsTicker);
 
   const [portfolio, setPortfolio] = useState<AssetPortfolio>({
     asset_id: '',

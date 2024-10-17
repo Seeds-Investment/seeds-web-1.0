@@ -116,7 +116,7 @@ const OrderPage: React.FC = () => {
   });
   const { dataUser } = useAppSelector(state => state.user);
   const prefCurrency = dataUser?.preferredCurrency.toLowerCase() ?? 'usd';
-  const lastPrice = useGetLastPrice(data?.realTicker);
+  const lastPrice = useGetLastPrice(data?.seedsTicker);
   useEffect(() => {
     if (sellPercent !== 0) {
       setAmount(

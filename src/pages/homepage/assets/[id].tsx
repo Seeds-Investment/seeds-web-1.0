@@ -60,7 +60,7 @@ const AssetDetailPage: React.FC = () => {
       .catch(() => {});
   }, []);
   const prefCurrency = userInfo?.preferredCurrency.toLowerCase();
-  const lastPrice = useGetLastPrice(data?.realTicker);
+  const lastPrice = useGetLastPrice(data?.seedsTicker);
   const handleChangeParams = (value: string): void => {
     setParams(prevState => ({
       ...prevState,

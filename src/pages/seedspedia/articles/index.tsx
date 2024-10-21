@@ -3,42 +3,18 @@ import Footer from '@/components/layouts/Footer';
 import ArticleCard from '@/components/seedsPedia/articleCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getArticle } from '@/repository/article.repository';
+import { type SeedspediaArticle } from '@/utils/interfaces/seedspedia.interface';
+import Image from 'next/image';
+import { chatEmpty } from 'public/assets/chat';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import 'swiper/css/bundle';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-export interface ArticleListRoot {
-  promoCodeList: Article[];
-  metadata: Metadata;
-}
-interface Article {
-  id: string;
-  title: string;
-  author: string;
-  link: string;
-  videoUrl: string;
-  imageUrl: string;
-  content: string;
-  sourceId: string;
-  language: string;
-  category: string;
-  is_liked: boolean;
-  publicationDate: string;
-  total_likes: number;
-  total_comments: number;
-  total_shares: number;
-}
-
-export interface Metadata {
-  currentPage: number;
-  limit: number;
-  totalPage: number;
-  totalRow: number;
-}
-
 export default function ArticleList(): React.ReactElement {
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [articles, setArticles] = useState<SeedspediaArticle | undefined>(
+    undefined
+  );
   const [searchInput, setSearchInput] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [params, setParams] = useState({
@@ -59,7 +35,7 @@ export default function ArticleList(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setArticles(response.data);
+        setArticles(response);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -188,7 +164,7 @@ export default function ArticleList(): React.ReactElement {
         <div className="mt-4 2xl:hidden">
           <Swiper
             spaceBetween={4}
-            slidesPerView={4}
+            slidesPerView={3}
             breakpoints={{
               640: {
                 slidesPerView: 4
@@ -211,7 +187,7 @@ export default function ArticleList(): React.ReactElement {
                     activeCategory === category
                       ? 'bg-[#3AC4A0] text-white'
                       : 'text-[#3AC4A0] bg-[#DCFCE4]'
-                  } truncate`}
+                  } text-sm truncate`}
                   onClick={() => {
                     updateCategory(category);
                   }}
@@ -334,21 +310,37 @@ export default function ArticleList(): React.ReactElement {
           </button>
         </div>
         <div className="grid z-10 lg:grid-cols-6 gap-4 mt-8">
-          {articles.map(article => {
-            return (
+          {articles?.data !== undefined && articles?.data?.length > 0 ? (
+            articles?.data?.map(article => (
               <ArticleCard
                 key={article.id}
                 articleId={article.id}
                 articleName={article.title}
               />
-            );
-          })}
+            ))
+          ) : (
+            <div className="lg:col-span-6 flex flex-col justify-center items-center">
+              <Image
+                src={chatEmpty}
+                width={300}
+                height={300}
+                alt="article-not-found"
+              />
+              <p className="font-semibold text-lg">{t('seedspedia.sorry')}</p>
+              <p>{t('seedspedia.dataNotFound')}</p>
+            </div>
+          )}
         </div>
-
-        <div className="hidden lg:flex  justify-center mx-auto my-8">
+        <div
+          className={`justify-center mx-auto my-8 ${
+            articles?.data !== undefined && articles?.data?.length > 0
+              ? ''
+              : 'hidden'
+          }`}
+        >
           <ArtPagination
-            currentPage={params.page}
-            totalPages={params.totalPage}
+            currentPage={articles?.metadata?.current_page as number}
+            totalPages={articles?.metadata?.total_page as number}
             onPageChange={page => {
               setParams({ ...params, page });
             }}

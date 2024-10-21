@@ -2518,5 +2518,9 @@ export default {
     text15: 'Peserta 50 poin',
     text16: 'Musim',
     text17: 'Kapan saja'
+  },
+  seedspedia: {
+    sorry: 'Maaf',
+    dataNotFound: 'Data yang kamu cari tidak ada'
   }
 };

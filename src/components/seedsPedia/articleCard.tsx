@@ -81,7 +81,6 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             if (response.status === 200) {
               setArticleDetail(response.news);
             }
-            console.log(response);
           })
           .catch(error => {
             console.error('Error fetching article detail:', error);
@@ -192,7 +191,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           </p>
         </div>
       )}
-      <div className="bg-[#FFF] lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
+      <div className="bg-[#FFF] lg:col-span-2 xl:rounded-[18px] pb-2 w-full relative shadow-md">
         <Link
           href={`/seedspedia/articles/${articleDetail?.id ?? 0}/${
             articleName
@@ -204,7 +203,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           <img
             src={isImageValid ? imageUrl : defaultNews}
             alt={articleDetail?.title}
-            className="w-full h-[238px] object-cover rounded-t-[18px]"
+            className="w-full h-[238px] object-contain rounded-t-[18px]"
           />
         </Link>
         <div className="p-4">

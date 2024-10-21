@@ -123,12 +123,12 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
           </p>
         </div>
       )}
-      <div className="bg-[#FFF] lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
+      <div className="bg-[#FFF] lg:col-span-2 xl:rounded-[18px] pb-2 w-full relative shadow-md">
         <Link href={`/seedspedia/news/${articleDetail?.id ?? 0}`}>
           <img
             src={isImageValid ? imageUrl : defaultNews}
             alt={articleDetail?.title}
-            className="w-full h-[238px] rounded-t-[18px]"
+            className="w-full h-[238px] rounded-t-[18px] object-contain"
           />
         </Link>
         <div className="p-4">

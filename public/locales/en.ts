@@ -2588,5 +2588,9 @@ export default {
     text15: 'Participant 50 points',
     text16: 'Season',
     text17: 'All Time'
+  },
+  seedspedia: {
+    sorry: 'Sorry',
+    dataNotFound: 'The data you are looking for does not exist'
   }
 };

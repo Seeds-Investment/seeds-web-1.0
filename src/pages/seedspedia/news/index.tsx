@@ -190,7 +190,7 @@ export default function ArticleList(): React.ReactElement {
         <div className="mt-4 2xl:hidden">
           <Swiper
             spaceBetween={4}
-            slidesPerView={4}
+            slidesPerView={3}
             breakpoints={{
               640: {
                 slidesPerView: 4
@@ -213,7 +213,7 @@ export default function ArticleList(): React.ReactElement {
                     activeCategory === category
                       ? 'bg-[#3AC4A0] text-white'
                       : 'text-[#3AC4A0] bg-[#DCFCE4]'
-                  } truncate`}
+                  } text-sm truncate`}
                   onClick={() => {
                     updateCategory(category);
                   }}

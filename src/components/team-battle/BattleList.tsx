@@ -7,11 +7,13 @@ import {
 } from '@/utils/interfaces/team-battle.interface';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import { Button, Typography } from '@material-tailwind/react';
+import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ArrowBackWhite from 'public/assets/team-battle/arrow-back.svg';
 import CategoryAll from 'public/assets/team-battle/category-all.svg';
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CiSquareChevDown, CiSquareChevUp } from 'react-icons/ci';
 import { toast } from 'react-toastify';
 import ArtPagination from '../ArtPagination';
@@ -38,6 +40,7 @@ const BattleList: React.FC<BattleListI> = ({
   fetchTrigger,
   setFetchTrigger
 }: BattleListI) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [listParams, setListParams] = useState<TeamBattleListParams>({
@@ -54,7 +57,8 @@ const BattleList: React.FC<BattleListI> = ({
   const [selectedBattle, setSelectedBattle] = useState<{
     id: string;
     is_joined: boolean;
-  }>({ id: '', is_joined: false });
+    registration_end: string;
+  }>({ id: '', is_joined: false, registration_end: '' });
   const [toggleInformation, setToggleInformation] = useState<{
     popup: string;
     dropdown: string;
@@ -77,6 +81,11 @@ const BattleList: React.FC<BattleListI> = ({
           ...prev,
           dropdown: ''
         }));
+      } else if (window.innerWidth < 1024) {
+        setToggleInformation(prev => ({
+          ...prev,
+          popup: ''
+        }));
       }
     };
 
@@ -96,7 +105,7 @@ const BattleList: React.FC<BattleListI> = ({
         ? (index + 1) % categoryBattle.length
         : (index - 1 + categoryBattle.length) % categoryBattle.length;
     setActiveCategory(categoryBattle[newIndex] ?? categoryBattle[0]);
-    setSelectedBattle({ id: '', is_joined: false });
+    setSelectedBattle({ id: '', is_joined: false, registration_end: '' });
     setListParams(prev => ({ ...prev, page: 1 }));
   };
 
@@ -114,6 +123,8 @@ const BattleList: React.FC<BattleListI> = ({
       setIsLoading(false);
     }
   };
+
+  const today = moment();
 
   useEffect(() => {
     if (fetchTrigger) {
@@ -133,6 +144,9 @@ const BattleList: React.FC<BattleListI> = ({
             setFetchTrigger(!fetchTrigger);
           }}
         />
+        <Typography className="lg:hidden block flex-1 text-center text-white font-poppins font-semibold text-lg">
+          Team Battle
+        </Typography>
       </div>
       <div className="flex flex-col justify-center items-center gap-4">
         <div className="flex justify-center items-center gap-4 mt-4">
@@ -146,11 +160,13 @@ const BattleList: React.FC<BattleListI> = ({
               <ChevronLeftIcon width={16} height={24} className="text-white" />
             </div>
           )}
-          <Image
-            src={activeCategory?.image ?? CategoryAll}
-            alt={activeCategory?.title ?? 'Selected Category'}
-            className="lg:w-[240px] lg:h-[240px] w-[280px] h-[280px]"
-          />
+          <div className="lg:bg-transparent bg-white/10 rounded-2xl">
+            <Image
+              src={activeCategory?.image ?? CategoryAll}
+              alt={activeCategory?.title ?? 'Selected Category'}
+              className="lg:w-[240px] lg:h-[240px] w-[100px] h-[100px]"
+            />
+          </div>
           {activeCategory != null && (
             <div
               className="cursor-pointer p-1 bg-white/50 backdrop-blur-sm rounded-lg hover:bg-white/70 duration-300"
@@ -171,7 +187,7 @@ const BattleList: React.FC<BattleListI> = ({
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="grid lg:grid-cols-3 grid-cols-1 gap-5 mt-10">
+        <div className="grid lg:grid-cols-3 grid-cols-1 gap-5 mt-5 lg:mx-0 mx-4">
           {teamBattleList?.data != null ? (
             teamBattleList?.data.map(teamBattle => (
               <div
@@ -184,7 +200,8 @@ const BattleList: React.FC<BattleListI> = ({
                 onClick={() => {
                   setSelectedBattle({
                     id: teamBattle?.id,
-                    is_joined: teamBattle?.is_joined
+                    is_joined: teamBattle?.is_joined,
+                    registration_end: teamBattle?.registration_end
                   });
                 }}
               >
@@ -203,7 +220,7 @@ const BattleList: React.FC<BattleListI> = ({
                   </Typography>
                   <div className="text-white font-semibold flex flex-row items-center gap-1">
                     <Typography className="text-[10px] font-poppins font-semibold">
-                      More Information
+                      {t('teamBattle.history.moreInfo')}
                     </Typography>
                     <CiSquareChevDown
                       size={20}
@@ -231,15 +248,24 @@ const BattleList: React.FC<BattleListI> = ({
                     )}
                   </div>
                   {toggleInformation?.dropdown === teamBattle.id && (
-                    <div
-                      className="text-sm text-white font-normal py-2 px-4"
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          teamBattle.tnc?.[
-                            i18n.language === 'id' ? 'id' : 'en'
-                          ]?.replace(/\n/g, '<br />') ?? '-'
-                      }}
-                    />
+                    <>
+                      <div className="py-2 px-5 border-white border-2 rounded-full text-white text-[10px] font-normal font-poppins">
+                        {t('teamBattle.mainPage.period')} :{' '}
+                        {moment(teamBattle?.registration_start).format(
+                          'DD MMM YYYY'
+                        )}{' '}
+                        - {moment(teamBattle?.final_end).format('DD MMM YYYY')}
+                      </div>
+                      <div
+                        className="text-sm text-white font-normal py-2 px-4"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            teamBattle.tnc?.[
+                              i18n.language === 'id' ? 'id' : 'en'
+                            ]?.replace(/\n/g, '<br />') ?? '-'
+                        }}
+                      />
+                    </>
                   )}
                 </div>
                 <PopupInformation
@@ -258,32 +284,41 @@ const BattleList: React.FC<BattleListI> = ({
           )}
         </div>
       )}
-      <div className="flex justify-center items-center lg:mt-10 my-10">
-        <Button
-          className={`w-[345px] h-[60px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
-            selectedBattle !== null
-              ? 'text-white bg-[#2934B2]'
-              : 'text-[#7C7C7C] bg-[#E9E9E9]'
-          }`}
-          disabled={selectedBattle === null}
-          onClick={async () => {
-            await router.push(
-              `/play/team-battle/${selectedBattle?.id}/${
-                selectedBattle?.is_joined ? 'stage' : ''
-              }`
-            );
-          }}
-        >
-          OK
-        </Button>
+      <div className="flex flex-col">
+        <div className="order-1 md:order-2 relative md:mb-0 mb-20 z-0">
+          <ArtPagination
+            currentPage={listParams?.page ?? 1}
+            totalPages={teamBattleList?.metadata?.total_page ?? 1}
+            onPageChange={page => {
+              setListParams({ ...listParams, page });
+            }}
+          />
+        </div>
+        <div className="order-2 md:order-1 flex justify-center items-center lg:mt-8 lg:relative fixed z-10 left-0 right-0 bottom-0 bg-transparent py-2 lg:py-0 mx-2">
+          <Button
+            className={`lg:w-[345px] w-full h-[60px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
+              selectedBattle.id !== ''
+                ? 'text-white bg-[#2934B2]'
+                : 'text-[#7C7C7C] bg-[#E9E9E9]'
+            }`}
+            disabled={selectedBattle.id === ''}
+            onClick={async () => {
+              await router.push(
+                `/play/team-battle/${selectedBattle?.id}/${
+                  selectedBattle?.is_joined &&
+                  today.isAfter(selectedBattle?.registration_end)
+                    ? 'stage'
+                    : today.isBefore(selectedBattle?.registration_end)
+                    ? 'waiting'
+                    : ''
+                }`
+              );
+            }}
+          >
+            OK
+          </Button>
+        </div>
       </div>
-      <ArtPagination
-        currentPage={listParams?.page ?? 1}
-        totalPages={teamBattleList?.metadata?.total_page ?? 1}
-        onPageChange={page => {
-          setListParams({ ...listParams, page });
-        }}
-      />
     </div>
   );
 };

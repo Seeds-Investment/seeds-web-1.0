@@ -95,10 +95,8 @@ export const getGroupBattle = async (
       }
     });
     return response;
-  } catch (error: any) {
-    toast.error(error.response.data.message, {
-      type: 'error'
-    });
+  } catch (error) {
+    await Promise.reject(error);
   }
 };
 
@@ -260,6 +258,29 @@ export const getMyRankBattle = async (
   }
 };
 
+export const getBattleLeaderboard = async (
+  battleId: string,
+  stage: string,
+  params?: { page: number; limit: number }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await teamBattleService.get(
+      `/${battleId}/leaderboard/${stage.toUpperCase()}`,
+      {
+        params,
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return response;
+  } catch (error: any) {
+    toast.error(error.message, { type: 'error' });
+  }
+};
+
 export const getActiveAssetBattle = async (
   id: string,
   params: AssetActiveBattleParams
@@ -294,5 +315,23 @@ export const getActiveAssetBattle = async (
     return response;
   } catch (error) {
     await Promise.reject(error);
+  }
+};
+
+export const getBattleDataPerStage = async (
+  id: string,
+  params: MyRankParamsI
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    return await teamBattleService(`/${id}`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
   }
 };

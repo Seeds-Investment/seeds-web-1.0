@@ -54,7 +54,19 @@ export interface TeamBattleDetail {
   participants: number;
   type: string;
 }
+export interface LeaderboardBattle {
+  user_id: string;
+  avatar: string;
+  name: string;
+  group_name: string;
+  rank: number;
+  gain: number;
+}
 
+export interface LeaderboardBattleRes {
+  data: LeaderboardBattle[];
+  metadata: Metadata;
+}
 export interface Sponsor {
   name: string;
   logo: string;
@@ -88,19 +100,19 @@ export interface ArenaBattleI {
   id: string;
   play_id: string;
   name: string;
-  category: string[];
+  category: string;
   open_registration_time: string;
   play_time: string;
   end_time: string;
   opening_balance: number;
   fixed_prize: number;
-  fixed_prize_percentages: number[];
+  prize: number[];
   currency: string;
   status: string;
   created_at: string;
   updated_at: string;
   total_participants: number;
-  tnc: string;
+  tnc: Tnc;
   assets_sub_type: AssetsSubType[];
 }
 
@@ -121,29 +133,29 @@ export interface ICreateOrderBattle {
 }
 
 export interface ParticipantsDataI {
-  id: string
-  user_id: string
-  name: string
-  seeds_tag: string
-  avatar: string
-  label: string
-  verified: boolean
-  battle_id: string
-  group_id: string
-  group_name: string
-  current_balance: number
-  assets_amount: number
-  rank: number
-  stage: string
-  created_at: string
-  updated_at: string
+  id: string;
+  user_id: string;
+  name: string;
+  seeds_tag: string;
+  avatar: string;
+  label: string;
+  verified: boolean;
+  battle_id: string;
+  group_id: string;
+  group_name: string;
+  current_balance: number;
+  assets_amount: number;
+  rank: number;
+  stage: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ParticipantsMetadata {
-  total: number
-  current_page: number
-  limit: number
-  total_page: number
+  total: number;
+  current_page: number;
+  limit: number;
+  total_page: number;
 }
 
 export interface MyRankBattleI {
@@ -200,9 +212,9 @@ export interface AssetActiveBattle {
   play_id: string;
   asset_id: string;
   asset_type: string;
-  asset_amount: number;
+  total_lot: number;
   average_price: number;
-  market_price: number;
+  current_price: number;
   created_at: string;
   updated_at: string;
   total_invested: number;

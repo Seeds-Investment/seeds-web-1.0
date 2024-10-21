@@ -9,6 +9,8 @@ export { default as ArrowTailessUp } from 'public/assets/vector/arrow-tailess-up
 export { default as ArrowTaillessRight } from 'public/assets/vector/arrow-tailless-right.svg';
 export { default as ArrowUp } from 'public/assets/vector/arrow-up.svg';
 export { default as Arrow } from 'public/assets/vector/arrow.svg';
+export { default as BattleSecondMedal } from 'public/assets/vector/battle-second-medal.svg';
+export { default as BattleThirdMedal } from 'public/assets/vector/battle-third-medal.svg';
 export { default as BattleVersus } from 'public/assets/vector/battle-versus.svg';
 export { default as BookmarkFill } from 'public/assets/vector/bookmark-fill.svg';
 export { default as Bookmark } from 'public/assets/vector/bookmark.svg';
@@ -21,6 +23,7 @@ export { default as ChatBubble } from 'public/assets/vector/chat-bubble.svg';
 export { default as CircleMembership } from 'public/assets/vector/circle-membership.png';
 export { default as CloseBattlePrize } from 'public/assets/vector/close-battle-prize.svg';
 export { default as CloseCircleIcon } from 'public/assets/vector/close-circle.svg';
+export { default as CloseModalCross } from 'public/assets/vector/close-modal-cross.svg';
 export { default as Copy } from 'public/assets/vector/copy.svg';
 export { default as CreatePinIcon } from 'public/assets/vector/create-pin.svg';
 export { default as DeleteIcon } from 'public/assets/vector/delete.svg';

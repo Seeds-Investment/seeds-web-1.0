@@ -42,9 +42,9 @@ interface DetailAssetI {
   battle_id: string;
   asset_id: string;
   asset_type: string;
-  asset_amount: number;
+  total_lot: number;
   average_price: number;
-  market_price: number;
+  current_price: number;
   total_invested: number;
   total_value: number;
   return_value: number;
@@ -57,9 +57,9 @@ const initialPortfolioSummary: DetailAssetI = {
   battle_id: '',
   asset_id: '',
   asset_type: '',
-  asset_amount: 0,
+  total_lot: 0,
   average_price: 0,
-  market_price: 0,
+  current_price: 0,
   total_invested: 0,
   total_value: 0,
   return_value: 0,
@@ -176,8 +176,8 @@ const AssetDetailPage: React.FC = () => {
           width={30}
           height={30}
           className="cursor-pointer"
-          onClick={() => {
-            router.back();
+          onClick={async() => {
+            await router.push(`/play/team-battle/${id as string}/arena`);
           }}
         />
         <p className="font-bold text-black text-lg">
@@ -283,7 +283,7 @@ const AssetDetailPage: React.FC = () => {
                 <p className="text-[#7C7C7C]">Lot</p>
                 <p className="font-bold text-black text-lg">
                   {portfolio?.total_value !== undefined
-                    ? portfolio?.asset_amount
+                    ? portfolio?.total_lot
                     : '0'}{' '}
                 </p>
               </div>

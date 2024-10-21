@@ -74,13 +74,7 @@ const SeedsEvent: React.FC = () => {
     if (id !== null && userInfo !== undefined) {
       void fetchEventList(eventParams);
     }
-  }, [
-    id,
-    userInfo,
-    eventStatus,
-    eventParams.page,
-    eventParams.year
-  ]);
+  }, [id, userInfo, eventStatus, eventParams.page, eventParams.year]);
 
   useEffect(() => {
     if (userInfo !== undefined) {
@@ -210,15 +204,10 @@ const SeedsEvent: React.FC = () => {
             Seeds Event
           </Typography>
           <div
-            onClick={ async() => await router.push('/homepage/event/my-event')}
-            className='bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer absolute right-0 top-[-6px] lg:top-[-4px]'
+            onClick={async () => await router.push('/homepage/event/my-event')}
+            className="bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer absolute right-0 top-[-6px] lg:top-[-4px]"
           >
-            <Image
-              src={MyEvent}
-              alt={'MyEvent'}
-              width={20}
-              height={20}
-            />
+            <Image src={MyEvent} alt={'MyEvent'} width={20} height={20} />
           </div>
         </div>
         <div className="w-full flex flex-col md:flex-row items-center justify-start mt-4 gap-4">
@@ -233,7 +222,11 @@ const SeedsEvent: React.FC = () => {
                 key={item.id}
                 onClick={() => {
                   setEventStatus(item.status);
-                  setEventParams({ ...eventParams, section: item.status, page: 1 });
+                  setEventParams({
+                    ...eventParams,
+                    section: item.status,
+                    page: 1
+                  });
                 }}
               >
                 {item.title}
@@ -250,20 +243,18 @@ const SeedsEvent: React.FC = () => {
             <div className="w-full">
               {Object.entries(eventsByMonth).map(([monthYear, events]) => (
                 <div key={monthYear}>
-                  {
-                    ((eventStatus === 'past') || eventStatus === 'upcoming') &&
-                      <EventFilter
-                        monthYear={monthYear}
-                        statusEvent={statusEvent}
-                        showDropdown={showDropdown}
-                        eventParams={eventParams}
-                        setEventStatus={setEventStatus}
-                        setEventParams={setEventParams}
-                        handleOpenCloseDrowndown={handleOpenCloseDrowndown}
-                      />
-                  }
-                  {
-                    userInfo !== undefined &&
+                  {(eventStatus === 'past' || eventStatus === 'upcoming') && (
+                    <EventFilter
+                      monthYear={monthYear}
+                      statusEvent={statusEvent}
+                      showDropdown={showDropdown}
+                      eventParams={eventParams}
+                      setEventStatus={setEventStatus}
+                      setEventParams={setEventParams}
+                      handleOpenCloseDrowndown={handleOpenCloseDrowndown}
+                    />
+                  )}
+                  {userInfo !== undefined && (
                     <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 mb-4">
                       {events?.map(item => (
                         <EventListCard
@@ -274,23 +265,22 @@ const SeedsEvent: React.FC = () => {
                         />
                       ))}
                     </div>
-                  }
+                  )}
                 </div>
               ))}
             </div>
           ) : (
             <>
-              {
-                ((eventStatus === 'past') || eventStatus === 'upcoming') &&
-                  <EventFilter
-                    statusEvent={statusEvent}
-                    showDropdown={showDropdown}
-                    eventParams={eventParams}
-                    setEventStatus={setEventStatus}
-                    setEventParams={setEventParams}
-                    handleOpenCloseDrowndown={handleOpenCloseDrowndown}
-                  />
-              }
+              {(eventStatus === 'past' || eventStatus === 'upcoming') && (
+                <EventFilter
+                  statusEvent={statusEvent}
+                  showDropdown={showDropdown}
+                  eventParams={eventParams}
+                  setEventStatus={setEventStatus}
+                  setEventParams={setEventParams}
+                  handleOpenCloseDrowndown={handleOpenCloseDrowndown}
+                />
+              )}
               <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0 mb-8">
                 <Image alt="" src={IconNoData} className="w-[250px]" />
                 <p className="font-semibold text-black">

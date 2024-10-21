@@ -327,7 +327,13 @@ const Player = (): React.ReactElement => {
                                     ? item?.is_joined
                                       ? `/play/tournament/${item.id}/home`
                                       : `/play/tournament/${item.id}`
-                                    : `/play/quiz/${item?.id}`
+                                    : item?.play_center_type === 'battle'
+                                    ? item?.is_joined
+                                      ? `/play/team-battle/${item.id}/stage`
+                                      : `/play/team-battle/${item.id}`
+                                    : item?.is_joined
+                                    ? `/play/quiz/${item.id}/done`
+                                    : `/play/quiz/${item.id}`
                                 }`
                               )
                               .catch(error => {
@@ -413,10 +419,7 @@ const Player = (): React.ReactElement => {
           <div className="w-full my-5 h-auto cursor-pointer">
             <Slider {...sliderSettings}>
               {bannerAsset?.map(asset => (
-                <div
-                  key={asset.id}
-                  className="w-full relative"
-                >
+                <div key={asset.id} className="w-full relative">
                   <Image
                     className="object-cover w-full"
                     src={asset.banner}
@@ -424,9 +427,9 @@ const Player = (): React.ReactElement => {
                     width={1000}
                     height={150}
                     onClick={async () => {
-                      (asset?.play_center_type === 'quiz'
+                      asset?.play_center_type === 'quiz'
                         ? await router.push(`/play/quiz/${asset.id}`)
-                        : await router.push(`/play/tournament/${asset.id}`));
+                        : await router.push(`/play/tournament/${asset.id}`);
                     }}
                   />
                 </div>
@@ -559,9 +562,13 @@ const Player = (): React.ReactElement => {
                               ? item?.is_joined
                                 ? `/play/tournament/${item.id}/home`
                                 : `/play/tournament/${item.id}`
+                              : item?.play_center_type === 'battle'
+                              ? item?.is_joined
+                                ? `/play/team-battle/${item.id}/stage`
+                                : `/play/team-battle/${item.id}`
                               : item?.is_joined
-                              ? `/play/quiz/${item?.id}/done`
-                              : `/play/quiz/${item?.id}`
+                              ? `/play/quiz/${item.id}/done`
+                              : `/play/quiz/${item.id}`
                           }`
                         )
                         .catch(error => {
@@ -632,6 +639,19 @@ const Player = (): React.ReactElement => {
                                 </button>
                               )}
                               {item?.play_center_type === 'play' && (
+                                <div>
+                                  <div className="w-full flex justify-center items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
+                                    {item?.is_joined
+                                      ? t(
+                                          'tournament.tournamentCard.openButton'
+                                        )
+                                      : t(
+                                          'tournament.tournamentCard.joinButton'
+                                        )}
+                                  </div>
+                                </div>
+                              )}
+                              {item?.play_center_type === 'battle' && (
                                 <div>
                                   <div className="w-full flex justify-center items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
                                     {item?.is_joined

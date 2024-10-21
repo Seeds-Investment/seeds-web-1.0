@@ -13,6 +13,7 @@ import ID from 'public/assets/social/flag/ID.png';
 import US from 'public/assets/social/flag/US.png';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import ModalLogout from '../popup/ModalLogout';
 import ChatIconWhite from '../svgs/chatIconWhite';
 import NotificationIconWhite from '../svgs/notificationIconWhite';
 import Logo from '../ui/vector/Logo';
@@ -40,6 +41,7 @@ const HeaderBattle: React.FC = () => {
   const [openSidebarResponsive, setOpenSidebarResponsive] =
     useState<boolean>(false);
   const languageCtx = useContext(LanguageContext);
+  const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
 
   const handleOpenModal = (): void => {
     setOpenSidebarResponsive(!openSidebarResponsive);
@@ -56,6 +58,11 @@ const HeaderBattle: React.FC = () => {
     }
   };
 
+  const handleOpenLogout = (): void => {
+    handleOpenModal();
+    setIsLogoutModal(true);
+  };
+
   const getLastTranslation = useCallback(async (): Promise<void> => {
     try {
       if (typeof window !== 'undefined') {
@@ -68,7 +75,6 @@ const HeaderBattle: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    void handleGetUserInfo();
     void getLastTranslation();
     if (!isGuest()) {
       void handleGetUserInfo();
@@ -81,8 +87,18 @@ const HeaderBattle: React.FC = () => {
         <SidebarLoginResponsive
           handleOpen={handleOpenModal}
           open={openSidebarResponsive}
+          handleLogout={handleOpenLogout}
         />
       ) : null}
+
+      {isLogoutModal && (
+        <ModalLogout
+          onClose={() => {
+            setIsLogoutModal(prev => !prev);
+          }}
+          userInfo={userInfo}
+        />
+      )}
 
       {width !== undefined ? (
         width < 768 ? (

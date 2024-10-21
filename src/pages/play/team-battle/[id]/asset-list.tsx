@@ -14,11 +14,15 @@ import {
 import Image from 'next/image';
 // import { useTranslation } from 'react-i18next';
 import PlayAssetsList from '@/containers/team-battle/asset';
+import { getBattleArena } from '@/repository/team-battle.repository';
+import { type ArenaBattleI } from '@/utils/interfaces/team-battle.interface';
 import {
   AssetFilter,
   SortingFilter
 } from '@/utils/interfaces/tournament.interface';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface FilterAsset {
   id: number;
@@ -34,8 +38,11 @@ interface FilterSorting {
 
 const AssetListBattle = (): React.ReactElement => {
   // const { t } = useTranslation();
+  const router = useRouter();
+  const { id } = router.query;
   const [activeNavbar, setActiveNavbar] = useState('All');
-  const [assetActiveTab, setAssetActiveTab] = useState(AssetFilter.ID_STOCK);
+  const [assetActiveTab, setAssetActiveTab] = useState('');
+  const [detailTournament, setDetailTournament] = useState<ArenaBattleI>();
   const [searchTerm, setSearchTerm] = useState('');
   const [assetActiveSort, setAssetActiveSort] = useState(
     SortingFilter.ASCENDING
@@ -109,6 +116,23 @@ const AssetListBattle = (): React.ReactElement => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value); // Update the search term state
   };
+
+  const handleGetDetailArena = async (): Promise<void> => {
+    try {
+      const resp: ArenaBattleI = await getBattleArena(id as string);
+      setDetailTournament(resp);
+      setAssetActiveTab(resp?.category);
+    } catch (error: any) {
+      toast(error.messasge, { type: 'error' });
+    }
+  };
+
+  useEffect(() => {
+    if (id !== undefined) {
+      void handleGetDetailArena();
+    }
+  }, [id]);
+
   return (
     <>
       <div className="w-full flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
@@ -165,19 +189,24 @@ const AssetListBattle = (): React.ReactElement => {
           <div className="w-full flex items-start justify-start mt-4">
             <div className="flex flex-row items-center gap-3 max-w-full overflow-x-auto no-scroll">
               {filterAsset.map(item => (
-                <button
-                  className={`w-full flex gap-2 border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap ${
-                    item.status === assetActiveTab
-                      ? 'border-seeds-button-green bg-seeds-button-green text-white'
-                      : 'border-seeds-button-green bg-white text-seeds-button-green'
-                  }`}
-                  key={item.id}
-                  onClick={() => {
-                    setAssetActiveTab(item.status);
-                  }}
-                >
-                  <div>{item.title}</div>
-                </button>
+                <>
+                  {detailTournament?.category?.includes(item?.status) && (
+                    <button
+                      className={`w-full flex gap-2 border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap ${
+                        item.status === assetActiveTab
+                          ? 'border-seeds-button-green bg-seeds-button-green text-white'
+                          : 'border-seeds-button-green bg-white text-seeds-button-green'
+                      }`}
+                      key={item?.id}
+                      onClick={() => {
+                        setAssetActiveTab(item?.status);
+                        setActiveNavbar('All');
+                      }}
+                    >
+                      <div>{item?.title}</div>
+                    </button>
+                  )}
+                </>
               ))}
             </div>
           </div>
@@ -202,46 +231,107 @@ const AssetListBattle = (): React.ReactElement => {
               >
                 All
               </Tab>
-              <Tab
-                value="LQ45"
-                onClick={() => {
-                  handleTabChange('LQ45');
-                }}
-                className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
-                  activeNavbar === 'LQ45'
-                    ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                    : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
-                }`}
-              >
-                LQ45
-              </Tab>
-              <Tab
-                value="ISSI"
-                onClick={() => {
-                  handleTabChange('ISSI');
-                }}
-                className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
-                  activeNavbar === 'ISSI'
-                    ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                    : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
-                }`}
-              >
-                ISSI
-              </Tab>
-              <Tab
-                value="IDX30"
-                onClick={() => {
-                  handleTabChange('IDX30');
-                }}
-                className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
-                  activeNavbar === 'IDX30'
-                    ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                    : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
-                }`}
-              >
-                IDX30
-              </Tab>
+              {assetActiveTab === 'ID_STOCK' && (
+                <>
+                  <Tab
+                    value="LQ45"
+                    onClick={() => {
+                      handleTabChange('LQ45');
+                    }}
+                    className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
+                      activeNavbar === 'LQ45'
+                        ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                        : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
+                    }`}
+                  >
+                    LQ45
+                  </Tab>
+                  <Tab
+                    value="ISSI"
+                    onClick={() => {
+                      handleTabChange('ISSI');
+                    }}
+                    className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
+                      activeNavbar === 'ISSI'
+                        ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                        : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
+                    }`}
+                  >
+                    ISSI
+                  </Tab>
+                  <Tab
+                    value="IDX30"
+                    onClick={() => {
+                      handleTabChange('IDX30');
+                    }}
+                    className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
+                      activeNavbar === 'IDX30'
+                        ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                        : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
+                    }`}
+                  >
+                    IDX30
+                  </Tab>
+                </>
+              )}
+              {assetActiveTab === 'US_STOCK' && (
+                <>
+                  <Tab
+                    value="SP500"
+                    onClick={() => {
+                      handleTabChange('SP500');
+                    }}
+                    className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
+                      activeNavbar === 'SP500'
+                        ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                        : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
+                    }`}
+                  >
+                    SP500
+                  </Tab>
+                  <Tab
+                    value="NASDAQ100"
+                    onClick={() => {
+                      handleTabChange('NASDAQ100');
+                    }}
+                    className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
+                      activeNavbar === 'NASDAQ100'
+                        ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                        : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
+                    }`}
+                  >
+                    NASDAQ100
+                  </Tab>
+                  <Tab
+                    value="DJ30"
+                    onClick={() => {
+                      handleTabChange('DJ30');
+                    }}
+                    className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
+                      activeNavbar === 'DJ30'
+                        ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                        : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
+                    }`}
+                  >
+                    DJ30
+                  </Tab>
+                  <Tab
+                    value="RUSSELL2000"
+                    onClick={() => {
+                      handleTabChange('RUSSELL2000');
+                    }}
+                    className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
+                      activeNavbar === 'RUSSELL2000'
+                        ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                        : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
+                    }`}
+                  >
+                    RUSSELL2000
+                  </Tab>
+                </>
+              )}
             </TabsHeader>
+
             <TabsBody className="w-full">
               <TabPanel value="All">
                 <PlayAssetsList
@@ -251,30 +341,70 @@ const AssetListBattle = (): React.ReactElement => {
                   sortBy={assetActiveSort}
                 />
               </TabPanel>
-              <TabPanel value="LQ45">
-                <PlayAssetsList
-                  assetType={assetActiveTab}
-                  searchValue={searchTerm}
-                  subType={'LQ45'}
-                  sortBy={assetActiveSort}
-                />
-              </TabPanel>
-              <TabPanel value="ISSI">
-                <PlayAssetsList
-                  assetType={assetActiveTab}
-                  searchValue={searchTerm}
-                  subType={'ISSI'}
-                  sortBy={assetActiveSort}
-                />
-              </TabPanel>
-              <TabPanel value="IDX30">
-                <PlayAssetsList
-                  assetType={assetActiveTab}
-                  searchValue={searchTerm}
-                  subType={'IDX30'}
-                  sortBy={assetActiveSort}
-                />
-              </TabPanel>
+              {assetActiveTab === 'ID_STOCK' && (
+                <>
+                  <TabPanel value="LQ45">
+                    <PlayAssetsList
+                      assetType={assetActiveTab}
+                      searchValue={searchTerm}
+                      subType={'LQ45'}
+                      sortBy={assetActiveSort}
+                    />
+                  </TabPanel>
+                  <TabPanel value="ISSI">
+                    <PlayAssetsList
+                      assetType={assetActiveTab}
+                      searchValue={searchTerm}
+                      subType={'ISSI'}
+                      sortBy={assetActiveSort}
+                    />
+                  </TabPanel>
+                  <TabPanel value="IDX30">
+                    <PlayAssetsList
+                      assetType={assetActiveTab}
+                      searchValue={searchTerm}
+                      subType={'IDX30'}
+                      sortBy={assetActiveSort}
+                    />
+                  </TabPanel>
+                </>
+              )}
+              {assetActiveTab === 'US_STOCK' && (
+                <>
+                  <TabPanel value="SP500">
+                    <PlayAssetsList
+                      assetType={assetActiveTab}
+                      searchValue={searchTerm}
+                      subType={'SP500'}
+                      sortBy={assetActiveSort}
+                    />
+                  </TabPanel>
+                  <TabPanel value="NASDAQ100">
+                    <PlayAssetsList
+                      assetType={assetActiveTab}
+                      searchValue={searchTerm}
+                      subType={'NASDAQ100'}
+                      sortBy={assetActiveSort}
+                    />
+                  </TabPanel>
+                  <TabPanel value="DJ30">
+                    <PlayAssetsList
+                      assetType={assetActiveTab}
+                      searchValue={searchTerm}
+                      subType={'DJ30'}
+                      sortBy={assetActiveSort}
+                    />
+                  </TabPanel>
+                  <TabPanel value="RUSSELL2000">
+                    <PlayAssetsList
+                      assetType={assetActiveTab}
+                      searchValue={searchTerm}
+                      subType={'RUSSELL2000'}
+                      sortBy={assetActiveSort}
+                    />
+                  </TabPanel>
+                </>
+              )}
             </TabsBody>
           </Tabs>
         </div>

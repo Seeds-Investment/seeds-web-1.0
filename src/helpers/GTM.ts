@@ -6,8 +6,6 @@ interface Tracker {
   [key: string]: any;
 }
 
-
-
 const TrackerEvent = ({ event, ...additionalData }: Tracker): void => {
   const dataList = [
     'userData',

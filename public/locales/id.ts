@@ -2199,7 +2199,8 @@ export default {
     myEvent: 'Event Saya',
     myCertificate: 'Sertifikat Saya',
     myCertificates: 'Sertifikat Saya',
-    sendEmailConfirm: 'Apa kamu yakin untuk mengirimkan sertifikat ke emailmu yang digunakan untuk mendaftar event ini?',
+    sendEmailConfirm:
+      'Apa kamu yakin untuk mengirimkan sertifikat ke emailmu yang digunakan untuk mendaftar event ini?',
     emailMessage: 'Sertifikat berhasil dikirim ke email anda.',
     yes: 'Ya',
     no: 'Tidak',
@@ -2539,7 +2540,19 @@ export default {
     theWinner: 'Pemenang',
     rank: 'Peringkat',
     nameTeam: 'Nama & Tim',
+    return: 'Keuntungan',
     currentRank: 'Peringkat Sekarang',
+    next: 'Selanjutnya',
+    timeTo: `Waktunya`,
+    battle: 'Bertanding!',
+    prize: 'Hadiah',
+    leaderboardPopup: 'Lebih banyak peserta akan segera bergabung',
+    willBegin: 'Babak akan dimulai pada:',
+    battleClosed1: 'Ups! Maaf, kamu tidak bisa bergabung ke dalam game.',
+    battleClosed2: 'Team Battle sudah berada di tahap',
+    battleClosed3: 'Team Battle sudah berakhir.',
+    battleClosed4: 'Team Battle telah dibatalkan.',
+    stageNotStarted: 'Babak belum dimulai',
     mainPage: {
       period: 'Periode',
       registration: 'Registrasi',
@@ -2547,18 +2560,21 @@ export default {
       semifinal: 'Semifinal',
       final: 'Final',
       participants: 'Peserta',
+      totalParticipants: 'Total Peserta',
       join: 'Gabung',
       play: 'Mulai Permainan',
       sponsor: 'Sponsor',
       sponsors: 'Sponsor',
-      tnc: 'Syarat dan Ketentuan'
+      tnc: 'Syarat & Ketentuan',
+      wrongInvitationCode: 'Kode undangan tidak valid!'
     },
     participant: {
       participant: 'Peserta',
       noData: 'Belum ada data',
       emptyTitle: 'Peserta',
-      frontTitle: 'Babak ',
-      backTitle: ''
+      elimination: 'Babak Penyisihan',
+      semifinal: 'Babak Semifinal',
+      final: 'Babak Final'
     },
     popUpStage: {
       winTitle: 'Kamu Menang!',
@@ -2593,7 +2609,9 @@ export default {
     history: {
       myBattle: 'Battle Saya',
       activeBattle: 'Battle Aktif',
-      pastBattle: 'Battle Sebelumnya'
+      pastBattle: 'Battle Sebelumnya',
+      notFound: `Kamu tidak memiliki {{data}}`,
+      moreInfo: 'Informasi Lainnya'
     }
   }
 };

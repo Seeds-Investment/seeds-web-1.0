@@ -2271,7 +2271,8 @@ export default {
     myEvent: 'My Event',
     myCertificate: 'My Certificate',
     myCertificates: 'My Certificates',
-    sendEmailConfirm: 'Are you sure to send this certificate to your registered email?',
+    sendEmailConfirm:
+      'Are you sure to send this certificate to your registered email?',
     emailMessage: 'The certificate was sent successfully to your email.',
     yes: 'Yes',
     no: 'No',
@@ -2609,7 +2610,19 @@ export default {
     theWinner: 'The Winner',
     rank: 'Rank',
     nameTeam: 'Name & Team',
+    return: 'Return',
     currentRank: 'Current Rank',
+    next: 'Next',
+    timeTo: `It's time to`,
+    battle: 'Battle!',
+    prize: 'Prize',
+    leaderboardPopup: 'More participants will be joining soon',
+    willBegin: 'The stage will begin in:',
+    battleClosed1: "Opps! Sorry, you can't join the game.",
+    battleClosed2: "It's already in the",
+    battleClosed3: 'The battle has already ended.',
+    battleClosed4: 'The battle is canceled.',
+    stageNotStarted: 'Stage not yet started',
     mainPage: {
       period: 'Period',
       registration: 'Registration',
@@ -2617,18 +2630,21 @@ export default {
       semifinal: 'Semifinal',
       final: 'Final',
       participants: 'Participants',
+      totalParticipants: 'Total Participants',
       join: 'Join',
       play: 'Play',
       sponsor: 'Sponsor',
       sponsors: 'Sponsors',
-      tnc: 'Terms and Conditions'
+      tnc: 'Term & Condition',
+      wrongInvitationCode: 'Invalid invitation code!'
     },
     participant: {
       participant: 'Participant',
       noData: 'There is no data yet',
       emptyTitle: 'Participant',
-      frontTitle: '',
-      backTitle: ' Stage'
+      elimination: 'Elimination Stage',
+      semifinal: 'Semifinal Stage',
+      final: 'Final Stage'
     },
     popUpStage: {
       winTitle: 'You Win!',
@@ -2642,10 +2658,10 @@ export default {
         'So close! You almost made it to the top! Keep pushing for winning!',
       eliminatedDescription:
         "You didn't make it through to the next stage this time.",
-      yourRank: 'Your Rank'
+      yourRank: 'Your rank'
     },
     stagePage: {
-      gamePeriod: 'Game Period',
+      gamePeriod: 'Period Game',
       letsCheck: `Let's Check`,
       yourRank: 'Your Rank',
       enter: 'Enter',
@@ -2661,7 +2677,9 @@ export default {
     history: {
       myBattle: 'My Battle',
       activeBattle: 'Active Battle',
-      pastBattle: 'Past Battle'
+      pastBattle: 'Past Battle',
+      notFound: `You don't have any {{data}} yet`,
+      moreInfo: 'More Information'
     }
   }
 };

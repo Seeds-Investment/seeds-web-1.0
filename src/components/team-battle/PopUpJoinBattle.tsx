@@ -7,9 +7,10 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import TeamRegion from 'public/assets/team-battle/team-region.svg';
+import { CloseModalCross } from 'public/assets/vector';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AiOutlineClose } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
 interface PopUpJoinBattleProps {
@@ -35,6 +36,7 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
   const [searchGroup, setSearchGroup] = useState<string>('');
   const [groupList, setGroupList] = useState<GroupBattle[]>([]);
   const [filteredGroupList, setFilteredGroupList] = useState<GroupBattle[]>([]);
+  const [isInvalidCode, setIsInvalidCode] = useState<boolean>(false);
 
   const handleToggleJoin = (mode: 'public' | 'invitation' | null): void => {
     setJoinMode(mode);
@@ -84,8 +86,23 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
           setInvitationCode('');
         }
       }
-    } catch (error) {
-      toast.error(`Error fetching group battle: ${error as string}`);
+    } catch (error: any) {
+      if (
+        error?.status === 404 &&
+        error?.response?.data?.message === 'invitation code not found on this battle'
+      ) {
+        setIsInvalidCode(true)
+        setTimeout(() => {
+          setIsInvalidCode(false)
+        }, 5000)
+      } else if (
+        error?.status === 404 &&
+        error?.response?.data?.message !== 'invitation code not found on this battle'
+      ) {
+        toast.error(error?.response?.data?.message);
+      } else {
+        toast.error(error?.message);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -97,10 +114,20 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
       const keyword = searchRef?.current?.value?.trim();
       if (keyword !== undefined) {
         setFilteredGroupList(
-          groupList.filter(group => group.name.toLowerCase().includes(keyword))
+          groupList?.filter(group => group.name.toLowerCase().includes(keyword))
         );
       }
       setSelectedGroup(null);
+    }
+  };
+
+  const isValidURL = (input: string): boolean => {
+    try {
+      // eslint-disable-next-line no-new
+      new URL(input?.replace(/^[A-D]\.\s/, ''));
+      return true;
+    } catch (err) {
+      return false;
     }
   };
 
@@ -108,22 +135,28 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/75 flex justify-center items-center z-50">
-      <div className="relative bg-white/50 rounded-3xl shadow-lg">
+      <div className="relative bg-white/50 rounded-3xl shadow-lg border border-white">
         <button
           disabled={isLoading}
           onClick={handleClose}
-          className="absolute top-2 right-2 bg-[#ff4672] border-white border-4 text-white rounded-full p-2 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
+          className="absolute w-[40px] h-auto top-5 right-4 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
         >
-          <AiOutlineClose size={15} />
+          <Image
+            alt={'CloseModalCross'}
+            src={CloseModalCross}
+            width={100}
+            height={100}
+            className="w-full h-full"
+          />
         </button>
-        <div className="pt-14 px-4 pb-4">
+        <div className="pt-20 px-4 pb-4">
           {joinMode === null && (
-            <div className="rounded-3xl flex flex-col justify-center items-center gap-4 bg-white min-w-[320px] h-[190px] p-6">
+            <div className="rounded-3xl flex flex-col justify-around items-center gap-6 bg-white min-w-[320px] h-[190px] p-6">
               <Button
                 onClick={() => {
                   handleToggleJoin('public');
                 }}
-                className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
+                className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins normal-case"
               >
                 Join as Public
               </Button>
@@ -131,7 +164,7 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
                 onClick={() => {
                   handleToggleJoin('invitation');
                 }}
-                className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
+                className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins normal-case"
               >
                 Join as Invitation
               </Button>
@@ -164,12 +197,16 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
               </div>
             </div>
           )}
-          {joinMode === 'invitation' && groupList.length === 0 && (
-            <div className="rounded-3xl bg-white max-w-[460px] h-[240px] p-6 flex flex-col justify-center items-center gap-6">
+          {joinMode === 'invitation' && groupList?.length === 0 && (
+            <div className="rounded-3xl bg-white max-w-[460px] h-fit p-6 flex flex-col justify-center items-center">
               <Typography className="font-poppins lg:text-2xl text-base font-semibold">
                 {t('teamBattle.joinAsInvitation')}
               </Typography>
-              <div className="w-full p-[3px] rounded-2xl bg-gradient-to-r from-[#97A4E7] to-[#47C0AA]">
+              <div
+                className={`w-full p-[3px] rounded-2xl bg-gradient-to-r from-[#97A4E7] to-[#47C0AA] mt-6 ${
+                  isInvalidCode ? 'mb-4' : 'mb-6'
+                }`}
+              >
                 <input
                   type="text"
                   placeholder={
@@ -182,6 +219,11 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
                   }}
                 />
               </div>
+              {isInvalidCode && (
+                <Typography className="text-lg text-[#DD2525] w-full text-center mb-4">
+                  {t('teamBattle.mainPage.wrongInvitationCode')}
+                </Typography>
+              )}
               <Button
                 disabled={isLoading || invitationCode.trim().length < 3}
                 onClick={handleFetchGroup}
@@ -191,7 +233,7 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
               </Button>
             </div>
           )}
-          {filteredGroupList.length > 0 && (
+          {filteredGroupList?.length > 0 && (
             <div className="rounded-3xl bg-white lg:w-[460px] w-[350px] h-full p-6 flex flex-col justify-center items-center gap-4">
               <Typography className="font-poppins lg:text-lg font-semibold">
                 {t(
@@ -221,7 +263,7 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
                 </div>
               </div>
               <div className="flex flex-col gap-2 lg:w-[430px] w-full max-h-[290px] shadow-md overflow-y-scroll team-battle-scroll p-4 rounded-xl">
-                {filteredGroupList.map((group, index) => (
+                {filteredGroupList?.map((group, index) => (
                   <div
                     key={index}
                     onClick={() => {
@@ -239,10 +281,10 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
                     <div className="border-[2px] border-[#76A5D0] rounded-lg">
                       <Image
                         alt={group.name}
-                        src={group.logo}
+                        src={isValidURL(group.logo) ? group.logo : TeamRegion}
                         width={40}
                         height={40}
-                        className="overflow-hidden rounded-lg"
+                        className="overflow-hidden rounded-lg aspect-square"
                       />
                     </div>
                   </div>

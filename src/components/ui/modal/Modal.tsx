@@ -69,7 +69,9 @@ const Modal: React.FC<ModalProps> = ({
     top = 'top-[40%]';
   }
 
-  const modalDefaultClasses = `z-50 animate-slide-down fixed sm:left-[50%] ${(topPlacement !== undefined) ? topPlacement : top} left-[5%] sm:ml-[-13.125rem] mt-[-12.35rem] sm:w-[26.25rem] w-[90%] h-fit p-4 text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white`;
+  const modalDefaultClasses = `z-50 animate-slide-down fixed sm:left-[50%] ${
+    topPlacement !== undefined ? topPlacement : top
+  } left-[5%] sm:ml-[-13.125rem] mt-[-12.35rem] sm:w-[26.25rem] w-[90%] h-fit p-4 text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white`;
 
   return portalElement !== null ? (
     <>

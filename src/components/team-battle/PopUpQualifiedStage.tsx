@@ -20,7 +20,7 @@ const PopUpQualifiedStage: React.FC<PopUpQualifiedStageProps> = ({
   rank
 }) => {
   const { t } = useTranslation();
-
+  
   if (!isOpen) return null;
 
   const popUpContent: Array<{
@@ -88,7 +88,8 @@ const PopUpQualifiedStage: React.FC<PopUpQualifiedStageProps> = ({
               </Typography>
             </div>
             <Typography className="font-poppins font-semibold lg:text-xl text-base">
-              {t('teamBattle.popUpStage.yourRank')} # {rank}
+              {t('teamBattle.popUpStage.yourRank')} {''}
+              {rank !== 0 ? `#${rank as number}` : ': unranked'}
             </Typography>
             <Button
               onClick={onClose}

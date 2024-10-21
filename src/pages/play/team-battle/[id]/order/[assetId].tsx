@@ -60,6 +60,7 @@ interface UserData {
 }
 
 interface DetailAsset {
+  id: string;
   providerName: string;
   realTicker: string;
   logo: string;
@@ -76,9 +77,9 @@ interface AssetPortfolio {
   battle_id: string;
   asset_id: string;
   asset_type?: string;
-  asset_amount: number;
+  total_lot: number;
   average_price: number;
-  market_price?: number;
+  current_price?: number;
   total_invested?: number;
   total_value?: number;
   return_value?: number;
@@ -107,7 +108,7 @@ const BuyPage: React.FC = () => {
     asset_id: '',
     battle_id: '',
     participant_id: '',
-    asset_amount: 0,
+    total_lot: 0,
     average_price: 0,
     return_percentage: 0
   });
@@ -161,13 +162,13 @@ const BuyPage: React.FC = () => {
       if (sellPercent !== 0) {
         setAmount(
           `${
-            (portfolio?.asset_amount *
+            (portfolio?.total_lot *
               (data?.lastPrice?.open ?? 0) *
               sellPercent) /
             100
           }`
         );
-        setLotSell(`${(portfolio?.asset_amount * sellPercent) / 100}`);
+        setLotSell(`${(portfolio?.total_lot * sellPercent) / 100}`);
       }
     } else {
       if (sellPercent !== 0) {
@@ -187,13 +188,13 @@ const BuyPage: React.FC = () => {
     if (
       amount !==
       `${
-        (portfolio?.asset_amount * (data?.lastPrice?.open ?? 0) * sellPercent) /
+        (portfolio?.total_lot * (data?.lastPrice?.open ?? 0) * sellPercent) /
         100
       }`
     ) {
       setSellPercent(0);
     }
-    if (assetAmount !== `${(portfolio?.asset_amount * sellPercent) / 100}`) {
+    if (assetAmount !== `${(portfolio?.total_lot * sellPercent) / 100}`) {
       setSellPercent(0);
     }
   }, [amount, assetAmount]);
@@ -252,7 +253,7 @@ const BuyPage: React.FC = () => {
     }
     if (id !== undefined && router.query?.transaction !== 'buy') {
       void fetchPlayPortfolio();
-      setLotSell(portfolio?.asset_amount.toString());
+      setLotSell(portfolio?.total_lot.toString());
     }
   }, [id, userInfo]);
 
@@ -299,7 +300,7 @@ const BuyPage: React.FC = () => {
     ) {
       setIsDisable(true);
     } else if (
-      parseFloat(assetAmount) > portfolio?.asset_amount &&
+      parseFloat(assetAmount) > portfolio?.total_lot &&
       router.query?.transaction === 'sell'
     ) {
       setIsDisable(true);
@@ -518,8 +519,7 @@ const BuyPage: React.FC = () => {
               {`${standartCurrency(
                 router.query?.transaction === 'buy'
                   ? ballance?.balance ?? 0
-                  : (portfolio?.asset_amount ?? 0) *
-                      (data?.lastPrice?.open ?? 0)
+                  : (portfolio?.total_lot ?? 0) * (data?.lastPrice?.open ?? 0)
               ).replace('Rp', userInfo?.preferredCurrency ?? 'IDR')}`}{' '}
             </Typography>
           </div>
@@ -659,7 +659,7 @@ const BuyPage: React.FC = () => {
                     variant="filled"
                     className="flex justify-center p-1 normal-case h-5 rounded-full items-center w-5 bg-[#3AC4A0]"
                     onClick={() => {
-                      if (parseFloat(lotSell) < portfolio?.asset_amount) {
+                      if (parseFloat(lotSell) < portfolio?.total_lot) {
                         const newLotSell = parseFloat(lotSell) + 0.1;
                         setLotSell(newLotSell.toFixed(1));
                       }
@@ -745,7 +745,7 @@ const BuyPage: React.FC = () => {
                     {t('buyAsset.text13')}
                   </Typography>
                   <Typography className="text-[#7C7C7C] font-normal text-base">
-                    {portfolio?.asset_amount}
+                    {portfolio?.total_lot}
                   </Typography>
                 </div>
                 <div className="justify-between mb-5 flex">
@@ -969,14 +969,6 @@ const BuyPage: React.FC = () => {
                         : ''
                     }`}
                   >
-                    <div className="flex flex-col mb-4">
-                      <Typography className="text-[#262626] font-semibold">
-                        {t('playSimulation.orderReview')}
-                      </Typography>
-                      <Typography className="text-[#3C49D6] font-normal">
-                        #41683983
-                      </Typography>
-                    </div>
                     <div className="flex justify-between mb-5 md:mb-0">
                       <div className="flex flex-col">
                         <Typography className="text-[#262626] font-semibold">
@@ -1045,8 +1037,8 @@ const BuyPage: React.FC = () => {
                         <Typography className="text-[#7C7C7C] font-normal text-xs">
                           Order ID
                         </Typography>
-                        <Typography className="text-[#262626] font-semibold text-xs">
-                          #123456
+                        <Typography className="text-[#262626] font-semibold text-xs text-right">
+                          #{data?.id}
                         </Typography>
                       </div>
                       {orderType === 'pending' && (
@@ -1213,7 +1205,7 @@ const BuyPage: React.FC = () => {
                     {t('playSimulation.footerOrderDetail2')}
                   </Typography>
                   <Button
-                    className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4"
+                    className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4 mb-20 md:mb-0"
                     onClick={() => {
                       if (router.query.transaction === 'buy') {
                         submitOrder().catch(err => {

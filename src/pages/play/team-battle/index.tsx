@@ -15,19 +15,19 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const TeamBattle = (): React.ReactElement => {
-  const { t } = useTranslation();
-  const router = useRouter();
-  const [activeCategory, setActiveCategory] =
-    useState<CategoryBattleItem | null>(null);
-  const [show, setShow] = useState<boolean>(true);
-  const [fetchTrigger, setFetchTrigger] = useState<boolean>(false);
-
   const categoryBattle: CategoryBattleItem[] = [
     { id: 1, image: CategoryAll, title: 'All Category', value: '' },
     { id: 2, image: CategoryIDStocks, title: 'ID Stock', value: 'ID_STOCK' },
     { id: 3, image: CategoryUSStocks, title: 'US Stock', value: 'US_STOCK' },
     { id: 4, image: CategoryCrypto, title: 'Crypto', value: 'CRYPTO' }
   ];
+
+  const { t } = useTranslation();
+  const router = useRouter();
+  const [activeCategory, setActiveCategory] =
+    useState<CategoryBattleItem | null>(categoryBattle[0]);
+  const [show, setShow] = useState<boolean>(true);
+  const [fetchTrigger, setFetchTrigger] = useState<boolean>(false);
 
   const handleCategoryChange = (direction: 'next' | 'previous'): void => {
     const index =
@@ -44,7 +44,9 @@ const TeamBattle = (): React.ReactElement => {
   return (
     <>
       <div
-        className={`w-full h-full py-4 bg-cover ${show ? 'block' : 'hidden'}`}
+        className={`w-full h-full py-4 bg-cover px-2 ${
+          show ? 'block' : 'hidden'
+        }`}
       >
         <div className="flex justify-between items-center py-4 px-6">
           <Image
@@ -74,7 +76,7 @@ const TeamBattle = (): React.ReactElement => {
           <Typography className="lg:hidden block text-white font-poppins text-2xl font-semibold">
             {t('teamBattle.chooseCategory')}
           </Typography>
-          <div className="lg:w-full w-[400px] flex lg:justify-center justify-start lg:gap-[22px] lg:overflow-x-hidden overflow-x-auto no-scroll">
+          <div className="w-full flex lg:justify-center justify-start items-center lg:gap-[22px] lg:overflow-x-hidden overflow-x-auto no-scroll">
             {categoryBattle.map((item, index) => (
               <div
                 key={index}
@@ -95,7 +97,7 @@ const TeamBattle = (): React.ReactElement => {
               </div>
             ))}
           </div>
-          <div className="flex flex-col justify-center items-center gap-4">
+          <div className="flex flex-col justify-center items-center gap-4 mx-auto">
             <div className="flex justify-center items-center gap-4 mt-4">
               {activeCategory !== null && (
                 <div
@@ -114,7 +116,7 @@ const TeamBattle = (): React.ReactElement => {
               <Image
                 src={activeCategory?.image ?? CategoryAll}
                 alt={activeCategory?.title ?? 'Selected Category'}
-                className="lg:w-[240px] lg:h-[240px] w-[280px] h-[280px]"
+                className="lg:w-[240px] lg:h-[240px] w-[220px] h-[220px] "
               />
               {activeCategory !== null && (
                 <div
@@ -148,7 +150,7 @@ const TeamBattle = (): React.ReactElement => {
                 setFetchTrigger(true);
               }}
             >
-              Next
+              {t('teamBattle.next')}
             </Button>
           </div>
         </div>

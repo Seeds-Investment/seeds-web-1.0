@@ -3,7 +3,7 @@ export interface UserInfo {
   badge: string;
   bio: string;
   birthDate: string;
-  claims: Claim
+  claims: Claim;
   currentExp: number;
   email: string;
   email_verification: string;
@@ -44,28 +44,28 @@ interface Claim {
 }
 
 export interface Experience {
-    currentExp: number;
-    currentTier: string;
-    expExpiration: string;
-    nextExp: number;
-    tierList: TierList[];
+  currentExp: number;
+  currentTier: string;
+  expExpiration: string;
+  nextExp: number;
+  tierList: TierList[];
 }
 
 interface TierList {
-    exp: number;
-    image: string;
-    name: string;
-    rewards: Rewards[];
+  exp: number;
+  image: string;
+  name: string;
+  rewards: Rewards[];
 }
 
 interface Rewards {
-    description: string;
-    name: string;
+  description: string;
+  name: string;
 }
 
 export interface Result {
-    balance: number;
-    created_at: string;
-    id: string;
-    updated_at: string;
+  balance: number;
+  created_at: string;
+  id: string;
+  updated_at: string;
 }

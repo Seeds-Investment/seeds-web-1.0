@@ -199,10 +199,10 @@ const PostSection: React.FC<props> = ({
     });
   };
 
-  const calculateDaysLeft = (startTime: Date, endTime: Date): number => {
-    const daysDiff = moment(endTime).diff(moment(startTime), 'days');
-    return daysDiff;
-  };
+  // const calculateDaysLeft = (startTime: Date, endTime: Date): number => {
+  //   const daysDiff = moment(endTime).diff(moment(startTime), 'days');
+  //   return daysDiff;
+  // };
 
   function formatDate(inputDateString: any): string {
     const date = new Date(inputDateString);
@@ -1124,7 +1124,7 @@ const PostSection: React.FC<props> = ({
                     >
                       <div className="w-full bg-white">
                         <div className="w-full rounded-xl overflow-hidden">
-                          <div className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2">
+                          <div className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center">
                             <Image
                               alt=""
                               src={
@@ -1135,27 +1135,54 @@ const PostSection: React.FC<props> = ({
                               }
                               width={100}
                               height={100}
-                              className="w-auto h-full"
+                              className="w-auto object-cover h-full"
                             />
                           </div>
-                          <div className="pl-2 flex justify-between bg-[#3AC4A0] font-poppins">
+                          <div className="pl-2 flex justify-between bg-[#3AC4A0] font-poppins pt-2">
                             <div>
                               <div className="text-sm font-semibold text-white">
                                 {item.name}
                               </div>
                               <div className="text-white flex gap-2 text-[10px] mt-2">
-                                <div className="mt-1">
-                                  {t('playCenter.text4')}
+                                <div>
+                                  <div className="text-[8.93px]">
+                                    {t('quiz.entryFee')}
+                                  </div>
+                                  <div className="font-semibold text-[10.71px]">
+                                    {item.admission_fee === 0
+                                      ? t('quiz.free')
+                                      : item.admission_fee.toLocaleString(
+                                          'id-ID',
+                                          {
+                                            currency: 'IDR',
+                                            style: 'currency'
+                                          }
+                                        )}
+                                  </div>
                                 </div>
-                                <div className="font-normal text-white mt-1">
-                                  {calculateDaysLeft(
-                                    new Date(item?.play_time),
-                                    new Date(item?.end_time)
-                                  )}{' '}
-                                  {t('playCenter.text5')}
+                                <div>
+                                  <div className="text-[8.93px]">
+                                    {t('playCenter.text4')}
+                                  </div>
+                                  <div className="font-semibold text-[10.71px]">
+                                    {t('quiz.dayDuration', {
+                                      duration: Math.floor(
+                                        moment(item.ended_at).diff(
+                                          moment(item.started_at),
+                                          'days',
+                                          true
+                                        )
+                                      )
+                                    })}
+                                  </div>
                                 </div>
-                                <div className="border border-1 border-white bg-[#3AC4A0] py-1 px-2 rounded-full text-white text-[8px]">
-                                  Quiz
+                                <div>
+                                  <div className="text-[8.93px]">
+                                    {t('quiz.players')}
+                                  </div>
+                                  <div className="font-semibold text-[10.71px]">
+                                    {item.participants ?? 0}
+                                  </div>
                                 </div>
                               </div>
                             </div>

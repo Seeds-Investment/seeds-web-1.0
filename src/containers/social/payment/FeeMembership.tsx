@@ -13,11 +13,7 @@ interface props {
   userInfo: UserInfo;
 }
 
-const FeeMembership: React.FC<props> = ({
-  setStep,
-  detailPost,
-  userInfo
-}) => {
+const FeeMembership: React.FC<props> = ({ setStep, detailPost, userInfo }) => {
   return (
     <CCard className="flex p-8 mx-5 md:rounded-lg border-none rounded-none">
       <div className="flex flex-col justify-center pt-4">
@@ -35,12 +31,15 @@ const FeeMembership: React.FC<props> = ({
       </div>
 
       {/* Promo Code */}
-      <div className='w-full flex justify-center items-center mt-6'>
-        <div className='w-full max-w-[400px]'>
-          {
-            ((userInfo !== undefined) && ((detailPost?.premium_fee ?? 0) > 0)) &&
-              <PromoCode userInfo={userInfo} id={detailPost?.id} spotType={'Premium Content'}/>
-          }
+      <div className="w-full flex justify-center items-center mt-6">
+        <div className="w-full max-w-[400px]">
+          {userInfo !== undefined && (detailPost?.premium_fee ?? 0) > 0 && (
+            <PromoCode
+              userInfo={userInfo}
+              id={detailPost?.id}
+              spotType={'Premium Content'}
+            />
+          )}
         </div>
       </div>
 

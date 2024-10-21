@@ -70,7 +70,7 @@ export interface QRList {
 
 interface OrderDetail {
   paymentMethod: string;
-};
+}
 
 const SuccessPaymentPage: React.FC = () => {
   const width = useWindowInnerWidth();
@@ -106,7 +106,7 @@ const SuccessPaymentPage: React.FC = () => {
       const data = await getPaymentList();
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
-      setVaList(data.type_va)
+      setVaList(data.type_va);
     } catch (error) {
       toast.error(`Error fetching order detail ${error as string}`);
     } finally {
@@ -144,15 +144,18 @@ const SuccessPaymentPage: React.FC = () => {
   }
 
   useEffect(() => {
-    void fetchTournamentData()
+    void fetchTournamentData();
     void fetchOrderDetail();
     void fetchPaymentList();
     dispatch(setPromoCodeValidationResult(0));
-    if ((orderDetail?.howToPayApi !== undefined) && (orderDetail?.howToPayApi !== '')) {
+    if (
+      orderDetail?.howToPayApi !== undefined &&
+      orderDetail?.howToPayApi !== ''
+    ) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [id, orderDetail?.howToPayApi]);
-  
+
   const getSelectedPayment = (
     eWalletList: PaymentList[],
     vaList: PaymentList[],
@@ -176,7 +179,10 @@ const SuccessPaymentPage: React.FC = () => {
 
     if (paymentSelectedEWallet.length === 0 && paymentSelectedVA.length !== 0) {
       return paymentSelectedVA;
-    } else if (paymentSelectedVA.length === 0 && paymentSelectedEWallet.length !== 0) {
+    } else if (
+      paymentSelectedVA.length === 0 &&
+      paymentSelectedEWallet.length !== 0
+    ) {
       return paymentSelectedEWallet;
     } else {
       return [];

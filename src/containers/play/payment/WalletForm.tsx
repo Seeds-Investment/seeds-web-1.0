@@ -48,9 +48,10 @@ const WalletForm = ({
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
-  const [showOtherFees, setShowOtherFees] = useState<boolean>(false)
-  const { premiumCircleFee } = useSelector((state: RootState) => state?.premiumCircle ?? {});
-
+  const [showOtherFees, setShowOtherFees] = useState<boolean>(false);
+  const { premiumCircleFee } = useSelector(
+    (state: RootState) => state?.premiumCircle ?? {}
+  );
 
   const handleGetCoinsUser = async (): Promise<void> => {
     const useCoins = router.query.useCoins;
@@ -70,7 +71,7 @@ const WalletForm = ({
       const fee = Number(dataPost.quiz.fee || 0);
       const promoCodeDiscount = Number(newPromoCodeDiscount || 0);
 
-      if ((admissionFee + fee - promoCodeDiscount) === 0) {
+      if (admissionFee + fee - promoCodeDiscount === 0) {
         setShowOtherFees(false);
       } else {
         setShowOtherFees(true);
@@ -79,7 +80,7 @@ const WalletForm = ({
       const admissionFee = Number(premiumCircleFee || 0);
       const promoCodeDiscount = Number(newPromoCodeDiscount || 0);
 
-      if ((admissionFee - promoCodeDiscount) === 0) {
+      if (admissionFee - promoCodeDiscount === 0) {
         setShowOtherFees(false);
       } else {
         setShowOtherFees(true);
@@ -94,10 +95,11 @@ const WalletForm = ({
     let _discount = 0;
 
     _discount = payment.is_promo_available
-      ? (showOtherFees ? payment.promo_price : 0) + (coinsDiscount > 0 ? coinsDiscount : 0)
+      ? (showOtherFees ? payment.promo_price : 0) +
+        (coinsDiscount > 0 ? coinsDiscount : 0)
       : coinsDiscount > 0
-        ? coinsDiscount
-        : 0;
+      ? coinsDiscount
+      : 0;
     if (promoCodeValidationResult) {
       _discount += newPromoCodeDiscount;
     }
@@ -107,22 +109,22 @@ const WalletForm = ({
       _adminFee = payment.admin_fee;
       _totalFee = parseFloat(
         `${(
-          Number(_admissionFee)
-          + Number(dataPost?.quiz?.fee)
-          - Number(_discount)
-          + (showOtherFees ? Number(_adminFee) : 0)
-          + (showOtherFees ? Number(payment.service_fee) : 0)
+          Number(_admissionFee) +
+          Number(dataPost?.quiz?.fee) -
+          Number(_discount) +
+          (showOtherFees ? Number(_adminFee) : 0) +
+          (showOtherFees ? Number(payment.service_fee) : 0)
         ).toFixed(2)}`
       );
     } else {
-      _admissionFee = premiumCircleFee
+      _admissionFee = premiumCircleFee;
       _adminFee = payment.admin_fee;
       _totalFee = parseFloat(
         `${(
-          Number(_admissionFee)
-          - Number(_discount)
-          + (showOtherFees ? Number(_adminFee) : 0)
-          + (showOtherFees ? Number(payment.service_fee) : 0)
+          Number(_admissionFee) -
+          Number(_discount) +
+          (showOtherFees ? Number(_adminFee) : 0) +
+          (showOtherFees ? Number(payment.service_fee) : 0)
         ).toFixed(2)}`
       );
     }
@@ -136,8 +138,16 @@ const WalletForm = ({
     setAdmissionFee(_admissionFee);
     setAdminFee(_adminFee);
     setTotalFee(_totalFee);
-  }, [dataPost, showOtherFees, newPromoCodeDiscount, numberMonth, payment, coinsDiscount, promoCodeValidationResult]);
-  
+  }, [
+    dataPost,
+    showOtherFees,
+    newPromoCodeDiscount,
+    numberMonth,
+    payment,
+    coinsDiscount,
+    promoCodeValidationResult
+  ]);
+
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">
       <Typography className="mb-2 text-[#B9B7B7] font-semibold">
@@ -199,36 +209,37 @@ const WalletForm = ({
           className="mb-2"
         />
       ) : null}
-      {
-        showOtherFees &&
-          <>
+      {showOtherFees && (
+        <>
+          <InlineText
+            label={t(`${translationId}.serviceFeeLabel`)}
+            value={`${userInfo?.preferredCurrency ?? 'IDR'} ${
+              payment.service_fee
+            }`}
+            className="mb-2"
+          />
+          <InlineText
+            label={t(`${translationId}.adminFeeLabel`)}
+            value={`${userInfo?.preferredCurrency ?? 'IDR'} ${adminFee}`}
+            className="mb-2"
+          />
+          {payment.is_promo_available ? (
             <InlineText
-              label={t(`${translationId}.serviceFeeLabel`)}
-              value={`${userInfo?.preferredCurrency ?? 'IDR'} ${
-                payment.service_fee
+              label={t(`${translationId}.adminFeeDiscountLabel`)}
+              value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${
+                payment.promo_price
               }`}
               className="mb-2"
             />
-            <InlineText
-              label={t(`${translationId}.adminFeeLabel`)}
-              value={`${userInfo?.preferredCurrency ?? 'IDR'} ${adminFee}`}
-              className="mb-2"
-            />
-            {payment.is_promo_available ? (
-              <InlineText
-                label={t(`${translationId}.adminFeeDiscountLabel`)}
-                value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${
-                  payment.promo_price
-                }`}
-                className="mb-2"
-              />
-            ) : null}
-          </>
-      }
+          ) : null}
+        </>
+      )}
       {promoCodeValidationResult ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}
-          value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${newPromoCodeDiscount}`}
+          value={`- ${
+            userInfo?.preferredCurrency ?? 'IDR'
+          } ${newPromoCodeDiscount}`}
           className="mb-2"
         />
       ) : null}

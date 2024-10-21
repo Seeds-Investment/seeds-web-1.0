@@ -1,4 +1,4 @@
-import { formatMonthlyChart } from '@/helpers/dateFormat';
+import { type PriceBarHistory } from '@/utils/interfaces/play.interface';
 import moment from 'moment';
 import { useCallback, useMemo } from 'react';
 
@@ -37,8 +37,7 @@ interface IassetsData {
 
 interface IuseChart {
   data: IassetsData;
-  selectedTimeFrame: any;
-  onchangeTimeFrame: (value: any) => void;
+  selectedTimeFrame: string;
   chartItem: any;
 }
 
@@ -49,99 +48,59 @@ const useLineChart = (
 ): IuseChart => {
   const priceBarHistory = useMemo(() => data?.priceBarHistory ?? [], [data]);
 
-  // const [selectedTimeFrame, setSelectedTimeFrame] = useState<any>(
-  //   {
-  //     id: 1,
-  //     name: '1h',
-  //     value: 'hourly',
-  //   },
-  // );
-
-  const formatDateLabel = useCallback((timeFrame: any, date: string) => {
-    if (timeFrame === 'alltime') {
-      return moment(date).format('YYYY');
-    }
-    if (timeFrame === 'yearly') {
+  const formatDateLabel = useCallback((timeFrame: string, date: string) => {
+    if (timeFrame === 'alltime' || timeFrame === 'yearly') {
       return moment(date).format('YYYY');
     }
     if (timeFrame === 'monthly') {
-      return moment(date).format('MMM YY');
+      return moment(date).format('DD MMM YY');
     }
     if (timeFrame === 'weekly') {
-      return moment(date).format('dddd');
+      return moment(date).format('DD/MM/YY');
     }
     if (timeFrame === 'daily') {
-      return moment(date).format('hh:mm A');
+      return moment(date).format('DD/MM/YY hh:mm A');
     }
     return moment(date).format('hh:mm A');
   }, []);
-
-  const onchangeTimeFrame = (value: any): any => {
-    // setSelectedTimeFrame(value);
-  };
-
+  
   const chartItem = useMemo(() => {
-    const arrXLength = Array(6);
-    const _priceBarHistory =
-      fromPortfolio === true
-        ? data.datasets
-        : priceBarHistory.map((i: any) => {
-            return i.close;
-          });
+    const _priceBarHistory = fromPortfolio === true
+      ? data.datasets
+      : priceBarHistory?.map((i: PriceBarHistory) => i.close);
 
-    if (_priceBarHistory.length < arrXLength.length) {
-      const xZero = arrXLength.length - _priceBarHistory.length;
-      for (let i = 0; i < 6; i++) {
-        if (i < xZero) {
-          _priceBarHistory.unshift(0);
-        }
-      }
+    // Get the last 6 data points
+    const recentData = _priceBarHistory.slice(-6);
+    
+    if (recentData.length < 6) {
+      const padding = Array(6 - recentData.length).fill(0);
+      recentData.unshift(...padding);
     }
-    const chart = _priceBarHistory;
 
-    // label
     const totalGroup = 6;
-    const lables = fromPortfolio === true ? data.labels : priceBarHistory;
-    const objectEachGroup = Math.ceil(lables.length / totalGroup);
-    let label: any[] = [];
-
-    // label for 1m (mothly)
-    if (selectedTimeFrame === 'weekly') {
-      const lastDate = priceBarHistory[_priceBarHistory.length - 1]?.timestamp;
-      if (lastDate !== null) {
-        const previousSixMonths = formatMonthlyChart(new Date(lastDate));
-        label = previousSixMonths;
-        return { x: previousSixMonths, y: chart };
-      }
-    }
+    const labels = fromPortfolio === true ? data.labels : priceBarHistory;
+    const label: string[] = [];
 
     for (let g = 0; g < totalGroup; g++) {
-      const endIdx = (g + 1) * objectEachGroup;
-      const currentGroup =
-        fromPortfolio !== null
-          ? lables[endIdx - 1] ?? 0
-          : lables[endIdx - 1]?.timestamp ?? 0;
+      const endIdx = priceBarHistory?.length - 6 + (g + 1);
+      const currentGroup = (fromPortfolio ?? false)
+        ? labels[endIdx - 1] ?? 0
+        : labels[endIdx - 1]?.timestamp ?? 0;
+
       if (currentGroup === 0) {
         label.unshift('');
       } else {
-        const formatTime: string | never =
-          fromPortfolio === true
-            ? currentGroup
-            : formatDateLabel(selectedTimeFrame, currentGroup);
+        const formatTime = (fromPortfolio ?? false)
+          ? currentGroup
+          : formatDateLabel(selectedTimeFrame, currentGroup);
         label.push(formatTime);
       }
     }
 
-    return { x: label, y: chart };
-  }, [
-    data,
-    formatDateLabel,
-    fromPortfolio,
-    priceBarHistory,
-    selectedTimeFrame
-  ]);
+    return { x: label, y: recentData };
+  }, [data, formatDateLabel, fromPortfolio, priceBarHistory, selectedTimeFrame]);
 
-  return { data, selectedTimeFrame, onchangeTimeFrame, chartItem };
+  return { data, selectedTimeFrame, chartItem };
 };
 
 export default useLineChart;

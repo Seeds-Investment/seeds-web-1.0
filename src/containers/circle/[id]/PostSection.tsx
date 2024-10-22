@@ -197,11 +197,6 @@ const PostSection: React.FC<props> = ({
     });
   };
 
-  const calculateDaysLeft = (startTime: Date, endTime: Date): number => {
-    const daysDiff = moment(endTime).diff(moment(startTime), 'days');
-    return daysDiff;
-  };
-
   function formatDate(inputDateString: any): string {
     const date = new Date(inputDateString);
     const day = date.getUTCDate().toString().padStart(2, '0');
@@ -563,7 +558,6 @@ const PostSection: React.FC<props> = ({
     date.setUTCHours(date.getUTCHours() + 7);
     let hours = date.getUTCHours();
     const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-    // const seconds = date.getUTCSeconds().toString().padStart(2, '0');
 
     let ampm = 'AM';
     if (hours >= 12) {
@@ -1128,7 +1122,7 @@ const PostSection: React.FC<props> = ({
                         className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300 cursor-pointer"
                       >
                         <div className="w-full bg-white">
-                          <div className="w-full rounded-xl overflow-hidden">
+                          <div className="w-full rounded-t-xl overflow-hidden">
                             <div className="w-full h-auto max-w-[450px] flex justify-center items-center">
                               <Image
                                 alt=""
@@ -1143,27 +1137,56 @@ const PostSection: React.FC<props> = ({
                                 className="w-full h-auto"
                               />
                             </div>
-                            <div className="px-4 py-2 flex justify-between bg-[#3AC4A0] font-poppins">
-                              <div>
-                                <div className="text-sm font-semibold text-white">
-                                  {item.name}
+                          </div>
+                          <div className="flex justify-between bg-[#3AC4A0] font-poppins px-4 py-2">
+                            <div>
+                              <div className="text-sm font-semibold text-white">
+                                {item.name}
+                              </div>
+                              <div className="text-white flex gap-2 text-[10px] mt-2">
+                                <div>
+                                  <div className="text-[8.93px]">
+                                    {t('quiz.entryFee')}
+                                  </div>
+                                  <div className="font-semibold text-[10.71px]">
+                                    {item.admission_fee === 0
+                                      ? t('quiz.free')
+                                      : item.admission_fee.toLocaleString(
+                                          'id-ID',
+                                          {
+                                            currency: 'IDR',
+                                            style: 'currency'
+                                          }
+                                        )}
+                                  </div>
                                 </div>
-                                <div className="text-white flex gap-2 text-[10px] mt-1">
-                                  <div className="mt-1">
+                                <div>
+                                  <div className="text-[8.93px]">
                                     {t('playCenter.text4')}
                                   </div>
-                                  <div className="font-normal text-white mt-1">
-                                    {calculateDaysLeft(
-                                      new Date(item?.started_at ?? '2024-01-01T00:00:00Z'),
-                                      new Date(item?.ended_at ?? '2024-01-01T00:00:00Z')
-                                    )}{' '}
-                                    {t('playCenter.text5')}
+                                  <div className="font-semibold text-[10.71px]">
+                                    {t('quiz.dayDuration', {
+                                      duration: Math.floor(
+                                        moment(item.ended_at).diff(
+                                          moment(item.started_at),
+                                          'days',
+                                          true
+                                        )
+                                      )
+                                    })}
                                   </div>
-                                  <div className="border border-1 border-white bg-[#3AC4A0] py-1 px-2 rounded-full text-white text-[8px] flex justify-center items-center">
-                                    Quiz
+                                </div>
+                                <div>
+                                  <div className="text-[8.93px]">
+                                    {t('quiz.players')}
+                                  </div>
+                                  <div className="font-semibold text-[10.71px]">
+                                    {item.participants ?? 0}
                                   </div>
                                 </div>
                               </div>
+                            </div>
+                            <div className="flex justify-between bg-[#3AC4A0] font-poppins">
                               <div className="my-auto items-center text-center hover:scale-110 duration-300">
                                 {item?.is_joined === true ? (
                                   <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
@@ -1287,7 +1310,7 @@ const PostSection: React.FC<props> = ({
                                         toast.error(error);
                                       })
                                   }
-                                  className='bg-[#2934B2] rounded-full border-2 border-white w-[100px] text-center text-sm py-1 hover:scale-110 duration-300 cursor-pointer'
+                                  className='bg-[#2934B2] rounded-full border-2 border-white w-[100px] text-center text-sm py-1 hover:scale-110 hover:shadow-lg duration-300 cursor-pointer'
                                 >
                                   {t('social.postSection.play')}
                                 </div>

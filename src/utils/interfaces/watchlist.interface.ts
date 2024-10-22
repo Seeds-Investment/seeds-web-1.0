@@ -36,3 +36,10 @@ export interface Pricebar {
   vwap: number;
   volume: number;
 }
+
+export interface WatchlistForm {
+  play_id: string;
+  name: string;
+  image: File | string;
+  asset_list: string[];
+}

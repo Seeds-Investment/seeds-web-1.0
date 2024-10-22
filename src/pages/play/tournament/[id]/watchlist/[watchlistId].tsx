@@ -3,8 +3,7 @@ import ModalEditWatchlist from '@/components/popup/ModalEditWatchlist';
 import { calculatePercentageDifference } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import { getWatchlistById } from '@/repository/market.repository';
-import { getUserInfo } from '@/repository/profile.repository';
-import { type UserInfo } from '@/utils/interfaces/tournament.interface';
+import { useAppSelector } from '@/store/redux/store';
 import {
   type AssetWatchlist,
   type Watchlist
@@ -24,10 +23,11 @@ import { toast } from 'react-toastify';
 const AssetWatchList: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation();
-  const { watchlistId } = router.query;
+  const { id, watchlistId } = router.query;
+  const { dataUser } = useAppSelector(state => state.user);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
   const [detailWatchList, setDetailWatchList] = useState<AssetWatchlist>();
-  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isEditModal, setIsEditModal] = useState<boolean>(false);
   const [editedWatchlist, setEditedWatchlist] = useState<Watchlist>({
     id: '',
@@ -52,22 +52,7 @@ const AssetWatchList: React.FC = () => {
     if (watchlistId !== undefined) {
       void fetchDetailWatchlist();
     }
-  }, [watchlistId]);
-
-  const fetchDataUser = async (): Promise<void> => {
-    try {
-      const dataInfo = await getUserInfo();
-      setUserInfo(dataInfo);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    }
-  };
-
-  useEffect(() => {
-    fetchDataUser()
-      .then()
-      .catch(() => {});
-  }, []);
+  }, [watchlistId, isUpdated]);
 
   const handleArrow = (value: number): boolean => {
     if (value > 0) {
@@ -90,8 +75,8 @@ const AssetWatchList: React.FC = () => {
         <div className="flex flex-col">
           <div className="flex justify-between items-center mb-4">
             <Image
-              onClick={() => {
-                router.back();
+              onClick={async () => {
+                await router.push(`/play/tournament/${id as string}/watchlist`);
               }}
               src={ArrowBackwardIcon}
               alt="ArrowBackwardIcon"
@@ -128,7 +113,7 @@ const AssetWatchList: React.FC = () => {
                     <Typography className="font-poppins lg:text-sm text-xs font-semibold">
                       {asset?.realTicker} /{' '}
                       <span className="font-normal text-xs">
-                        {userInfo?.preferredCurrency ?? 'IDR'}
+                        {dataUser?.preferredCurrency ?? 'IDR'}
                       </span>
                     </Typography>
                     <Typography className="text-[#7C7C7C] font-normal text-xs font-poppins">
@@ -138,7 +123,7 @@ const AssetWatchList: React.FC = () => {
                 </div>
                 <div className="flex flex-col gap-[6px] items-end">
                   <Typography className="font-poppins text-sm font-semibold">
-                    {userInfo?.preferredCurrency}{' '}
+                    {dataUser?.preferredCurrency}{' '}
                     {asset?.priceBar?.close > 0.01
                       ? new Intl.NumberFormat().format(asset?.priceBar?.close)
                       : asset?.priceBar?.close}
@@ -186,13 +171,14 @@ const AssetWatchList: React.FC = () => {
               </div>
             ))}
           </div>
-          {isEditModal && userInfo != null && (
+          {isEditModal && dataUser != null && (
             <ModalEditWatchlist
               onClose={() => {
                 setIsEditModal(prev => !prev);
               }}
               data={editedWatchlist}
-              userInfo={userInfo}
+              userInfo={dataUser}
+              setUpdate={setIsUpdated}
             />
           )}
         </div>

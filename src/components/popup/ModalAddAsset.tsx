@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use client';
 import { calculatePercentageDifference } from '@/helpers/currency';
-import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import { getMarketList } from '@/repository/market.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
+import { type DetailAsset } from '@/utils/interfaces/watchlist.interface';
 import {
   ArrowTrendingDownIcon,
   ArrowTrendingUpIcon
@@ -22,17 +22,20 @@ interface Props {
   onClose: () => void;
   setAssetList: (text: string[]) => void;
   assetList: string[];
+  setDisplayAssetList?: React.Dispatch<React.SetStateAction<DetailAsset[]>>;
 }
 
 const ModalAddAsset: React.FC<Props> = ({
   onClose,
   setAssetList,
-  assetList
+  assetList,
+  setDisplayAssetList
 }) => {
   const { t } = useTranslation();
   const [checkboxState, setCheckboxState] = useState<string[]>(assetList);
+  const [assetState, setAssetState] = useState<DetailAsset[]>([]);
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const [assets, setAssets] = useState<AssetItemType[]>([]);
+  const [assets, setAssets] = useState<DetailAsset[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filter, setFilter] = useState({
     search: searchQuery,
@@ -42,16 +45,25 @@ const ModalAddAsset: React.FC<Props> = ({
     currency: ''
   });
 
-  const handleCheckboxChange = (id: string, checked: boolean): void => {
+  const handleCheckboxChange = (
+    asset: DetailAsset,
+    id: string,
+    checked: boolean
+  ): void => {
     if (checked) {
       setCheckboxState([...checkboxState, id]);
+      setAssetState(prev => [...prev, asset]);
     } else {
       setCheckboxState(checkboxState.filter((item: string) => item !== id));
+      setAssetState(prev => prev.filter(item => item.id !== asset?.id));
     }
   };
 
   const handleSave = (): void => {
     setAssetList(checkboxState);
+    if (setDisplayAssetList) {
+      setDisplayAssetList(prev => [...prev, ...assetState]);
+    }
     onClose();
   };
 
@@ -121,8 +133,7 @@ const ModalAddAsset: React.FC<Props> = ({
 
   return (
     <Modal
-      onClose={onClose}
-      backdropClasses="z-40 fixed top-0 left-0 w-full h-screen flex justify-start items-start"
+      backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/75 flex justify-start items-start"
       modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[40%] md:left-[10%] md:right-[-10%] xl:left-[22.5%] xl:right-[-22.5%] mt-[-12.35rem] w-full md:w-[80%] xl:w-[60%] h-[70vh] md:h-[50vh] p-4 rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white overflow-y-scroll"
     >
       <div className="flex justify-between">
@@ -224,7 +235,7 @@ const ModalAddAsset: React.FC<Props> = ({
                 type="checkbox"
                 checked={!!checkboxState.includes(asset?.id)}
                 onChange={e => {
-                  handleCheckboxChange(asset?.id, e.target.checked);
+                  handleCheckboxChange(asset, asset?.id, e.target.checked);
                 }}
               />
             </div>

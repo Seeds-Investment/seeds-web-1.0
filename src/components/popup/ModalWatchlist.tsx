@@ -14,6 +14,7 @@ import Modal from '../ui/modal/Modal';
 interface Props {
   onClose: () => void;
   assetId: string;
+  assetTicker: string;
   playId: string;
   assetName: string;
   fetchedWatchlists: AssetWatchlist[];
@@ -24,6 +25,7 @@ interface Props {
 const ModalWatchlist: React.FC<Props> = ({
   onClose,
   assetId,
+  assetTicker,
   playId,
   assetName,
   fetchedWatchlists,
@@ -153,7 +155,7 @@ const ModalWatchlist: React.FC<Props> = ({
             <Button
               onClick={async () => {
                 await router.push(
-                  `/play/tournament/${playId}/watchlist/create?${assetId}`
+                  `/play/tournament/${playId}/watchlist/create?assetTicker=${assetTicker}`
                 );
               }}
               className="w-full rounded-full font-poppins font-semibold text-sm bg-white border-2 border-[#3ac4a0] text-seeds-button-green"

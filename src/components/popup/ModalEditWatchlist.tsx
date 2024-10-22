@@ -7,7 +7,7 @@ import {
   getWatchlistById,
   updateWatchlist
 } from '@/repository/market.repository';
-import { type UserInfo } from '@/utils/interfaces/tournament.interface';
+import { type IUserData } from '@/utils/interfaces/play.interface';
 import {
   ArrowTrendingDownIcon,
   ArrowTrendingUpIcon
@@ -53,10 +53,16 @@ interface PriceBar {
 interface Props {
   onClose: () => void;
   data: Watchlist;
-  userInfo: UserInfo;
+  userInfo: IUserData;
+  setUpdate?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
+const ModalEditWatchlist: React.FC<Props> = ({
+  onClose,
+  data,
+  userInfo,
+  setUpdate
+}) => {
   const { t } = useTranslation();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
   const [assets, setAssets] = useState<AssetItemType[]>([]);
@@ -90,6 +96,9 @@ const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
       onClose();
+      if (setUpdate) {
+        setUpdate(prev => !prev);
+      }
     }
   };
 

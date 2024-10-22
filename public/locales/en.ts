@@ -2191,7 +2191,16 @@ export default {
       no: 'No',
       alreadyExist:
         'The asset you added is already in the watchlist that has been created.',
-      ok: 'Ok'
+      ok: 'Ok',
+      createNewWatchlist: 'New Watchlist',
+      descNewWatchlist:
+        'Create a watchlist to help you collect your favorite assets',
+      watchlistName: 'Watchlist Name',
+      groupName: 'Desired Group Name',
+      btnNewWatchlist: 'Create New Watchlist',
+      successWatchlist: 'Watchlist created successfully',
+      backToAsset: 'Back to Asset',
+      seeWatchlist: 'See Watchlist'
     },
     social: {
       sorry: 'Sorry, there is no post here!',

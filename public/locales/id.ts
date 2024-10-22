@@ -2119,7 +2119,16 @@ export default {
       no: 'Tidak',
       alreadyExist:
         'Aset yang Anda tambahkan sudah ada dalam daftar pantauan yang telah dibuat.',
-      ok: 'Oke'
+      ok: 'Oke',
+      createNewWatchlist: 'Daftar Pantauan Baru',
+      descNewWatchlist:
+        'Buat daftar pantauan untuk membantu Anda mengumpulkan aset favorit Anda',
+      watchlistName: 'Nama Daftar Pantauan',
+      groupName: 'Nama Grup yang Diinginkan',
+      btnNewWatchlist: 'Buat Daftar Pantauan Baru',
+      successWatchlist: 'Watchlist berhasil dibuat',
+      backToAsset: 'Kembali ke Asset',
+      seeWatchlist: 'Lihat Daftar Pantauan'
     },
     social: {
       sorry: 'Maaf, data postingan tidak ada!',

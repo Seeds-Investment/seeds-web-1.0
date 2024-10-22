@@ -46,11 +46,14 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
 
   const fetchWatchlists = async (): Promise<void> => {
     try {
-      const watchlistData: AssetWatchlist[] = await Promise.all(
+      const watchlistData = await Promise.allSettled(
         watchList.map(async watchlist => await getWatchlistById(watchlist.id))
       );
-      setFetchedWatchlists(watchlistData);
-      const initialCheckboxState = watchlistData
+      const fulfilledWatchlists = watchlistData
+        .filter(result => result.status === 'fulfilled')
+        .map(result => result.value) as AssetWatchlist[];
+      setFetchedWatchlists(fulfilledWatchlists);
+      const initialCheckboxState = fulfilledWatchlists
         .filter(watchlist =>
           watchlist.watchlist.assetList?.some(asset => asset.id === assetId)
         )
@@ -135,6 +138,7 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
         <ModalWatchlist
           assetName={data?.name}
           assetId={assetId}
+          assetTicker={data?.realTicker}
           playId={playId}
           onClose={() => {
             setIsOpenModalWatchlist(prev => !prev);

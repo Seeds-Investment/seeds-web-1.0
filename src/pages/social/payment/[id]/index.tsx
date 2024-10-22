@@ -5,7 +5,10 @@ import TnC from '@/containers/social/payment/TnC';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getDetailPostSocial } from '@/repository/social.respository';
-import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import {
+  selectPromoCodeValidationResult,
+  setPromoCodeValidationResult
+} from '@/store/redux/features/promo-code';
 import { type DataPost } from '@/utils/interfaces/social.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { useRouter } from 'next/router';
@@ -49,7 +52,7 @@ const PaymentContent: React.FC = () => {
     fetchData()
       .then()
       .catch(() => {});
-    
+
     if (promoCodeValidationResult?.id !== id) {
       dispatch(setPromoCodeValidationResult(0));
     }
@@ -64,12 +67,14 @@ const PaymentContent: React.FC = () => {
   return (
     <PageGradient defaultGradient className="w-full">
       {step === 'fee' ? (
-        (userInfo !== undefined && data !== undefined) &&
+        userInfo !== undefined &&
+        data !== undefined && (
           <FeeMembership
             setStep={setStep}
             detailPost={data}
             userInfo={userInfo}
           />
+        )
       ) : step === 'tnc' ? (
         <div className="lg:mx-20">
           <TnC
@@ -82,12 +87,7 @@ const PaymentContent: React.FC = () => {
           />
         </div>
       ) : step === 'payment' ? (
-        <>
-          {
-            data !== undefined &&
-              <PaymentMethod data={data} />
-          }
-        </>
+        <>{data !== undefined && <PaymentMethod data={data} />}</>
       ) : null}
     </PageGradient>
   );

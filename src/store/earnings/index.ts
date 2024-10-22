@@ -6,10 +6,9 @@ const store = configureStore({
   reducer: {
     withdraw: withdrawReducer,
     successReceipt: successReceiptReducer
-  },
+  }
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 
 export default store;
-

@@ -10,9 +10,10 @@ import { type PaymentData } from '@/pages/play/quiz/[id]/help-option';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { joinQuiz } from '@/repository/quiz.repository';
+import { getQuizById, joinQuiz } from '@/repository/quiz.repository';
 import { type RootState } from '@/store/premium-circle';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -94,20 +95,37 @@ const PaymentList: React.FC<props> = ({
 }): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
+  const { id } = router.query;
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [qRisList, setQRisList] = useState([]);
   const [ccList, setCcList] = useState([]);
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
+  const [virtualAccountList, setVirtualAccountList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const [isFreeQuiz, setIsFreeQuiz] = useState<boolean>(false);
   const [newPromoCodeDiscount, setNewPromoCodeDiscount] = useState<number>(0);
-  const { premiumCircleFee, premiumCircleMonth } = useSelector((state: RootState) => state?.premiumCircle ?? {});
+  const { premiumCircleFee, premiumCircleMonth } = useSelector(
+    (state: RootState) => state?.premiumCircle ?? {}
+  );
+  const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
 
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
+
+  const fetchDetailQuiz = async (): Promise<void> => {
+    if (!userInfo) return;
+    try {
+      const quizDetails = await getQuizById({
+        id: id as string,
+        currency: userInfo?.preferredCurrency?.toUpperCase()
+      });
+      setDetailQuiz(quizDetails);
+    } catch (error) {
+      toast(`Error fetching quiz details: ${error as string}`);
+    }
+  };
 
   const fetchPaymentList = async (): Promise<void> => {
     try {
@@ -115,9 +133,27 @@ const PaymentList: React.FC<props> = ({
       const data = await getPaymentList(
         userInfo?.preferredCurrency?.toUpperCase()
       );
-      setQRisList(data.type_qris);
-      setEWalletList(data.type_ewallet);
-      setCcList(data.type_cc);
+
+      setQRisList(
+        data?.type_qris?.filter((item: { payment_method: string }) =>
+          detailQuiz?.payment_method?.includes(item?.payment_method)
+        )
+      );
+      setEWalletList(
+        data?.type_ewallet?.filter((item: { payment_method: string }) =>
+          detailQuiz?.payment_method?.includes(item?.payment_method)
+        )
+      );
+      setCcList(
+        data?.type_cc?.filter((item: { payment_method: string }) =>
+          detailQuiz?.payment_method?.includes(item?.payment_method)
+        )
+      );
+      setVirtualAccountList(
+        data?.type_va?.filter((item: { payment_method: string }) =>
+          detailQuiz?.payment_method?.includes(item?.payment_method)
+        )
+      );
     } catch (error) {
       toast(`Error fetching Payment List: ${error as string}`);
     } finally {
@@ -146,44 +182,38 @@ const PaymentList: React.FC<props> = ({
   }, []);
 
   useEffect(() => {
-    void fetchPaymentList();
-  }, [userInfo?.preferredCurrency]);
+    if (userInfo) {
+      void fetchDetailQuiz();
+    }
+  }, [userInfo]);
 
   useEffect(() => {
-    if (dataPost.quiz) {
-      const admissionFee = Number(dataPost?.quiz?.admission_fee);
-      const promoDiscount = Number(newPromoCodeDiscount);
-      const fee = Number(dataPost?.quiz?.fee);
-
-      if ((admissionFee - promoDiscount + fee) > 0) {
-        setIsFreeQuiz(false);
-      } else {
-        setIsFreeQuiz(true);
-      }
-    }
-  }, [dataPost, newPromoCodeDiscount]);
+    void fetchPaymentList();
+  }, [detailQuiz]);
 
   useEffect(() => {
     if (promoCodeValidationResult) {
-      setNewPromoCodeDiscount(promoCodeValidationResult?.response?.total_discount ?? 0)
+      setNewPromoCodeDiscount(
+        promoCodeValidationResult?.response?.total_discount ?? 0
+      );
     }
   }, [promoCodeValidationResult]);
 
   const getMonthValue = (premiumCircleMonth: string): number => {
     switch (premiumCircleMonth) {
-      case "1 month":
-          return 1;
-      case "3 month":
-          return 2;
-      case "6 month":
-          return 3;
-      case "12 month":
-          return 4;
+      case '1 month':
+        return 1;
+      case '3 month':
+        return 2;
+      case '6 month':
+        return 3;
+      case '12 month':
+        return 4;
       default:
-          return 1;
+        return 1;
     }
-  }
-  
+  };
+
   const handlePay = async (
     type: string,
     paymentGateway: string,
@@ -211,7 +241,7 @@ const PaymentList: React.FC<props> = ({
             payment_gateway: paymentGateway,
             payment_method: paymentMethod,
             phone_number: `+62${phoneNumber as string}`,
-            promo_code: '',
+            promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
             invitation_code: invitationCode as string,
             is_use_coins: useCoins as boolean,
             success_url: `${
@@ -229,7 +259,7 @@ const PaymentList: React.FC<props> = ({
             payment_gateway: paymentGateway,
             payment_method: paymentMethod,
             phone_number: `+62${phoneNumber as string}`,
-            promo_code: '',
+            promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
             invitation_code: invitationCode as string,
             is_use_coins: useCoins as boolean
           });
@@ -315,32 +345,43 @@ const PaymentList: React.FC<props> = ({
   const renderLoading = (): JSX.Element => <Loading />;
 
   const renderContent = (): JSX.Element => (
-    <div className="relative md:bg-[url('/assets/vector/purple-ellipse.svg')] bg-[white] bg-opacity-30 bg-no-repeat bg-left-top w-full h-full flex flex-col items-center pt-8 md:p-8 rounded-xl">
+    <div className="flex justify-center items-center flex-col pb-10">
       <Typography className="w-full max-w-[600px] text-left px-8 md:text-center text-neutral-500 text-lg font-semibold mb-3">
         {t('PlayPayment.title')}
       </Typography>
-      <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
-        {
-          !isFreeQuiz &&
-            <PaymentOptions
-              label="QRIS"
-              options={qRisList}
-              onChange={setOption}
-              currentValue={option}
-            />
-        }
-        <PaymentOptions
-          label={t('PlayPayment.eWalletLabel')}
-          options={eWalletList}
-          onChange={setOption}
-          currentValue={option}
-        />
-        <PaymentOptions
-          label={t('PlayPayment.creditCardLabel')}
-          options={ccList}
-          onChange={setOption}
-          currentValue={option}
-        />
+      <div className="bg-white shadow max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
+        {qRisList?.length > 0 && (
+          <PaymentOptions
+            label="QRIS"
+            options={qRisList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
+        {eWalletList?.length > 0 && (
+          <PaymentOptions
+            label={t('PlayPayment.eWalletLabel')}
+            options={eWalletList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
+        {virtualAccountList?.length > 0 && (
+          <PaymentOptions
+            label={t('PlayPayment.virtualAccountLabel')}
+            options={virtualAccountList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
+        {ccList?.length > 0 && (
+          <PaymentOptions
+            label={t('PlayPayment.creditCardLabel')}
+            options={ccList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
         <SubmitButton
           disabled={option?.id == null}
           fullWidth
@@ -385,6 +426,7 @@ const PaymentList: React.FC<props> = ({
             handlePay={handlePay}
             dataPost={dataPost}
             newPromoCodeDiscount={newPromoCodeDiscount}
+            username={userInfo?.name}
           />
         )}
       </Dialog>

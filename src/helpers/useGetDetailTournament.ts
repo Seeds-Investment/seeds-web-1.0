@@ -10,8 +10,11 @@ interface UseTournamentBarrierReturn {
   isStarted: boolean;
 }
 
-export const useGetDetailTournament = (id: string | undefined): UseTournamentBarrierReturn => {
-  const [detailTournament, setDetailTournament] = useState<IDetailTournament | null>(null);
+export const useGetDetailTournament = (
+  id: string | undefined
+): UseTournamentBarrierReturn => {
+  const [detailTournament, setDetailTournament] =
+    useState<IDetailTournament | null>(null);
   const isStarted = useIsStarted(detailTournament?.play_time);
   const router = useRouter();
 
@@ -25,7 +28,7 @@ export const useGetDetailTournament = (id: string | undefined): UseTournamentBar
   }, [id]);
 
   useEffect(() => {
-    if (id !== null && (id !== undefined)) {
+    if (id !== null && id !== undefined) {
       void getDetail();
     }
   }, [id, getDetail]);
@@ -39,6 +42,6 @@ export const useGetDetailTournament = (id: string | undefined): UseTournamentBar
 
   return {
     detailTournament,
-    isStarted,
+    isStarted
   };
 };

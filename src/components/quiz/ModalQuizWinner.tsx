@@ -66,32 +66,29 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
           <Typography className="block font-poppins font-semibold text-xl text-center text-wrap text-[#262626] mb-2">
             {t('quiz.winnerModalTitle')}
           </Typography>
-          {
-            (isShowWinnerAlert && prizeType === 'LINK') &&
-              <div className='flex flex-col justify-center items-center gap2'>
-                <div className='flex justify-center items-center gap-1'>
-                  <Typography className="font-poppins font-semibold text-md text-center text-wrap text-[#262626]">
-                    {t('quiz.winnerAlertMessage2')}
-                  </Typography>
-                  <Typography className="font-poppins font-semibold text-md text-center text-wrap text-[#262626]">
-                    {t('quiz.winnerAlertMessage3')}
-                  </Typography>
-                  <Typography className="font-poppins font-semibold text-md text-center text-wrap text-[#262626]">
-                    {
-                      language === 'EN'
-                       ? `${winningPosition}${ordinalName}`
-                       : `${winningPosition}`
-                    }
-                  </Typography>
-                  <Typography className="font-poppins font-semibold text-md text-center text-wrap text-[#262626]">
-                    {t('quiz.winnerAlertMessage4')}
-                  </Typography>
-                </div>
-                <Typography className="font-poppins font-semibold text-md text-center text-wrap text-[#262626] italic">
-                  {`"${quizName}"`}
+          {isShowWinnerAlert && prizeType === 'LINK' && (
+            <div className="flex flex-col justify-center items-center gap2">
+              <div className="flex justify-center items-center gap-1">
+                <Typography className="font-poppins font-semibold text-md text-center text-wrap text-[#262626]">
+                  {t('quiz.winnerAlertMessage2')}
+                </Typography>
+                <Typography className="font-poppins font-semibold text-md text-center text-wrap text-[#262626]">
+                  {t('quiz.winnerAlertMessage3')}
+                </Typography>
+                <Typography className="font-poppins font-semibold text-md text-center text-wrap text-[#262626]">
+                  {language === 'EN'
+                    ? `${winningPosition}${ordinalName}`
+                    : `${winningPosition}`}
+                </Typography>
+                <Typography className="font-poppins font-semibold text-md text-center text-wrap text-[#262626]">
+                  {t('quiz.winnerAlertMessage4')}
                 </Typography>
               </div>
-          }
+              <Typography className="font-poppins font-semibold text-md text-center text-wrap text-[#262626] italic">
+                {`"${quizName}"`}
+              </Typography>
+            </div>
+          )}
           <div
             className="w-full flex flex-col items-center justify-center px-4 py-2"
             style={{
@@ -104,7 +101,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
               height={100}
               src="/assets/quiz/crown-duotone.png"
               alt="crown"
-              className='w-[50px] h-[50px] md:w-[80px] md:h-[80px]'
+              className="w-[50px] h-[50px] md:w-[80px] md:h-[80px]"
             />
             <Image
               width={162}
@@ -123,90 +120,86 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
               {t('quiz.score')} {score}
             </Typography>
           </div>
-          {
-            ((prizeType === 'CASH') || (prizeType === '')) &&
-              <Typography className="font-poppins font-semibold text-md md:text-lg text-[#262626] mb-4">
-                {t('quiz.earn')} {preferredCurrency} {prize?.toLocaleString('id-ID')}
-              </Typography>
-          }
-          {
-            ((prizeType === 'CASH') || (prizeType === '')) &&
-              <Typography className="font-poppins text-md md:text-lg text-[#262626] mb-4 text-center px-8">
-                {t('quiz.tax')}
-              </Typography>
-          }
-          {
-            (isShowWinnerAlert && prizeType === 'LINK') &&
-              <div className='flex gap-2 mb-4 px-4 md:px-0'>
-                <div className='flex justify-center items-center w-[24px] h-[24px]'>
-                  <Image
-                    width={200}
-                    height={200}
-                    src={InfoBlue}
-                    alt="InfoBlue"
-                    className='w-full h-full'
-                  />
-                </div>
-                <Typography className="font-poppins text-sm text-[#262626] text-center">
-                  {t('quiz.winnerAlertMessage7')}
-                </Typography>
+          {(prizeType === 'CASH' || prizeType === '') && (
+            <Typography className="font-poppins font-semibold text-md md:text-lg text-[#262626] mb-4">
+              {t('quiz.earn')} {preferredCurrency}{' '}
+              {prize?.toLocaleString('id-ID')}
+            </Typography>
+          )}
+          {(prizeType === 'CASH' || prizeType === '') && (
+            <Typography className="font-poppins text-md md:text-lg text-[#262626] mb-4 text-center px-8">
+              {t('quiz.tax')}
+            </Typography>
+          )}
+          {isShowWinnerAlert && prizeType === 'LINK' && (
+            <div className="flex gap-2 mb-4 px-4 md:px-0">
+              <div className="flex justify-center items-center w-[24px] h-[24px]">
+                <Image
+                  width={200}
+                  height={200}
+                  src={InfoBlue}
+                  alt="InfoBlue"
+                  className="w-full h-full"
+                />
               </div>
-          }
-          {
-            ((isShowWinnerAlert && prizeType === 'LINK') && (winningImageSrc !== undefined)) &&
-              <div className='w-full px-4 flex justify-center items-center'>
+              <Typography className="font-poppins text-sm text-[#262626] text-center">
+                {t('quiz.winnerAlertMessage7')}
+              </Typography>
+            </div>
+          )}
+          {isShowWinnerAlert &&
+            prizeType === 'LINK' &&
+            winningImageSrc !== undefined && (
+              <div className="w-full px-4 flex justify-center items-center">
                 <a
                   href={winningLink ?? ''}
                   target="_blank"
-                  className='w-auto h-[100px] flex justify-center items-center rounded-lg overflow-hidden cursor-pointer hover:shadow-xl duration-300 animate-shadow-move'
+                  className="w-auto h-[100px] flex justify-center items-center rounded-lg overflow-hidden cursor-pointer hover:shadow-xl duration-300 animate-shadow-move"
                 >
-                  {
-                    winningImageSrc !== '' ?
-                      <Image
-                        width={200}
-                        height={200}
-                        src={winningImageSrc}
-                        alt="winningImageSrc"
-                        className='w-auto h-full'
-                      />
-                      :
-                      <div className='w-[200px] h-full bg-seeds-button-green flex justify-center items-center text-white font-semibold font-poppins italic'>
-                        {t('quiz.winnerAlertMessage8')}
-                      </div>
-                  }
+                  {winningImageSrc !== '' ? (
+                    <Image
+                      width={200}
+                      height={200}
+                      src={winningImageSrc}
+                      alt="winningImageSrc"
+                      className="w-auto h-full"
+                    />
+                  ) : (
+                    <div className="w-[200px] h-full bg-seeds-button-green flex justify-center items-center text-white font-semibold font-poppins italic">
+                      {t('quiz.winnerAlertMessage8')}
+                    </div>
+                  )}
                 </a>
               </div>
-          }
+            )}
           <div className="px-4 md:px-0 w-full md:w-2/3 gap-4 flex flex-row md:flex-col py-4 mb-32">
-            {
-              ((prizeType === 'CASH') || (prizeType === '')) ?
-                <button
-                  onClick={() => {
-                    router.push(`/withdrawal?quizId=${quizId}`).catch(err => {
-                      toast(`Error: ${err as string}`);
-                    });
-                  }}
-                  className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-12 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
-                >
-                  <div
-                    className={`h-12 w-full bg-[#C286FF] rounded-full absolute inset-0`}
-                  />
-                  <div className="z-10 text-center  text-md md:text-xl font-semibold text-white">
-                    {t('quiz.withdraw')}
-                  </div>
-                </button>
-                :
-                <a
-                  href={winningLink ?? ''}
-                  target="_blank"
-                  className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-12 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
-                >
-                  <div className="z-10 text-center text-md md:text-xl font-semibold text-white">
-                    {t('quiz.claimPrize')}
-                  </div>
-                </a>
-
-            }
+            {prizeType === 'CASH' || prizeType === '' ? (
+              <button
+                onClick={() => {
+                  router.push(`/withdrawal?quizId=${quizId}`).catch(err => {
+                    toast(`Error: ${err as string}`);
+                  });
+                }}
+                className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-12 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
+              >
+                <div
+                  className={`h-12 w-full bg-[#C286FF] rounded-full absolute inset-0`}
+                />
+                <div className="z-10 text-center  text-md md:text-xl font-semibold text-white">
+                  {t('quiz.withdraw')}
+                </div>
+              </button>
+            ) : (
+              <a
+                href={winningLink ?? ''}
+                target="_blank"
+                className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-12 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
+              >
+                <div className="z-10 text-center text-md md:text-xl font-semibold text-white">
+                  {t('quiz.claimPrize')}
+                </div>
+              </a>
+            )}
             <button
               onClick={() => {
                 router.push(`/play/quiz/${quizId}/leaderboard`).catch(err => {

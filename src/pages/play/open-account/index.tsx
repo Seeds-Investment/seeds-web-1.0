@@ -48,7 +48,7 @@ const Player = (): React.ReactElement => {
               data={item}
             />
           ))}
-          {((bannerData?.length === 0) || (bannerData === null)) && (
+          {(bannerData?.length === 0 || bannerData === null) && (
             <div className="flex flex-col justify-center items-center py-8">
               <Image src={seedyChatPersonal} alt="Seedy No Chat" />
               <Typography className="font-poppins font-semibold text-xl text-[#262626]">

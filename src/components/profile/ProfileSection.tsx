@@ -7,7 +7,11 @@ import { standartCurrency } from '@/helpers/currency';
 import { getEarningBalance } from '@/repository/earning.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { updateBlockUser } from '@/repository/user.repository';
-import { type Experience, type Result, type UserInfo } from '@/utils/interfaces/earning.interfaces';
+import {
+  type Experience,
+  type Result,
+  type UserInfo
+} from '@/utils/interfaces/earning.interfaces';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -89,7 +93,7 @@ const Profile = ({
     try {
       setIsLoadingEarn(true);
       const result = await getEarningBalance(currency);
-      setEarning(result)
+      setEarning(result);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -115,7 +119,7 @@ const Profile = ({
                 <Typography className="text-lg font-semibold font-poppins text-[#201B1C]">
                   @{profileData?.seeds_tag ?? profileData?.seedsTag ?? ''}
                 </Typography>
-                {(Boolean((profileData?.verified))) && (
+                {Boolean(profileData?.verified) && (
                   <Image
                     src={Verified?.src}
                     alt={Verified?.alt}
@@ -216,35 +220,36 @@ const Profile = ({
 
           {/* My Earnings Breakpoint: XL */}
           <div
-            onClick={async() => await router.push('/my-profile/my-earnings')}
-            className='hidden w-full mt-2 bg-gradient-to-r from-[#53B5A3] to-[#5BE3C0] xl:flex justify-between items-center px-4 py-2 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300'
+            onClick={async () => await router.push('/my-profile/my-earnings')}
+            className="hidden w-full mt-2 bg-gradient-to-r from-[#53B5A3] to-[#5BE3C0] xl:flex justify-between items-center px-4 py-2 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300"
           >
-            <div className='flex justify-start items-center'>
-              <div className='w-[40px] h-[40px] rounded-full p-2 bg-white'>
+            <div className="flex justify-start items-center">
+              <div className="w-[40px] h-[40px] rounded-full p-2 bg-white">
                 <Image
                   src={Wallet}
                   alt={'Wallet'}
                   height={100}
                   width={100}
-                  className='w-full h-full'
+                  className="w-full h-full"
                 />
               </div>
-              <div className='flex flex-col justify-start items-start ml-4 text-white'>
-                <div className='text-sm'>
-                  {t('earning.myEarnings')}
-                </div>
-                <div className='font-semibold text-md'>
-                  {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(earning?.balance ?? 0).replace('Rp', '')}
+              <div className="flex flex-col justify-start items-start ml-4 text-white">
+                <div className="text-sm">{t('earning.myEarnings')}</div>
+                <div className="font-semibold text-md">
+                  {userInfo?.preferredCurrency !== undefined
+                    ? userInfo?.preferredCurrency
+                    : 'IDR'}
+                  {standartCurrency(earning?.balance ?? 0).replace('Rp', '')}
                 </div>
               </div>
             </div>
-            <div className='flex justify-center items-center h-[20px]'>
+            <div className="flex justify-center items-center h-[20px]">
               <Image
                 src={ArrowTaillessRight}
                 alt={'Arrow'}
                 height={100}
                 width={100}
-                className='w-full h-full'
+                className="w-full h-full"
               />
             </div>
           </div>
@@ -256,7 +261,7 @@ const Profile = ({
           <Typography className="self-center text-sm font-semibold font-poppins text-[#222222]">
             @{profileData?.seeds_tag ?? profileData?.seedsTag ?? ''}
           </Typography>
-          {(Boolean((profileData?.verified))) && (
+          {Boolean(profileData?.verified) && (
             <Image
               src={Verified?.src}
               alt={Verified?.alt}
@@ -353,35 +358,36 @@ const Profile = ({
 
       {/* My Earnings Breakpoint: SM */}
       <div
-        onClick={async() => await router.push('/my-profile/my-earnings')}
-        className='xl:hidden w-full mt-4 bg-gradient-to-r from-[#53B5A3] to-[#5BE3C0] flex justify-between items-center px-4 py-2 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300'
+        onClick={async () => await router.push('/my-profile/my-earnings')}
+        className="xl:hidden w-full mt-4 bg-gradient-to-r from-[#53B5A3] to-[#5BE3C0] flex justify-between items-center px-4 py-2 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300"
       >
-        <div className='flex justify-start items-center'>
-          <div className='w-[40px] h-[40px] rounded-full p-2 bg-white'>
+        <div className="flex justify-start items-center">
+          <div className="w-[40px] h-[40px] rounded-full p-2 bg-white">
             <Image
               src={Wallet}
               alt={'Wallet'}
               height={100}
               width={100}
-              className='w-full h-full'
+              className="w-full h-full"
             />
           </div>
-          <div className='flex flex-col justify-start items-start ml-4 text-white'>
-            <div className='text-sm'>
-              {t('earning.myEarnings')}
-            </div>
-            <div className='font-semibold text-md'>
-              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(earning?.balance ?? 0).replace('Rp', '')}
+          <div className="flex flex-col justify-start items-start ml-4 text-white">
+            <div className="text-sm">{t('earning.myEarnings')}</div>
+            <div className="font-semibold text-md">
+              {userInfo?.preferredCurrency !== undefined
+                ? userInfo?.preferredCurrency
+                : 'IDR'}
+              {standartCurrency(earning?.balance ?? 0).replace('Rp', '')}
             </div>
           </div>
         </div>
-        <div className='flex justify-center items-center h-[20px]'>
+        <div className="flex justify-center items-center h-[20px]">
           <Image
             src={ArrowTaillessRight}
             alt={'Arrow'}
             height={100}
             width={100}
-            className='w-full h-full'
+            className="w-full h-full"
           />
         </div>
       </div>

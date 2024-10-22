@@ -24,18 +24,18 @@ interface Props {
 }
 
 interface PayAttibutes {
-  admin_fee: number,
-  id: string,
-  is_active: boolean,
-  is_priority: boolean,
-  is_promo_available: boolean,
-  logo_url: string,
-  minimum_withdrawal: number,
-  payment_gateway: string,
-  payment_method: string,
-  payment_type: string,
-  promo_price: number,
-  service_fee: number,
+  admin_fee: number;
+  id: string;
+  is_active: boolean;
+  is_priority: boolean;
+  is_promo_available: boolean;
+  logo_url: string;
+  minimum_withdrawal: number;
+  payment_gateway: string;
+  payment_method: string;
+  payment_type: string;
+  promo_price: number;
+  service_fee: number;
 }
 
 const ModalWithdrawList: React.FC<Props> = ({
@@ -59,7 +59,7 @@ const ModalWithdrawList: React.FC<Props> = ({
     } catch (error) {
       toast(`Error choosing method: ${error as string}`);
     } finally {
-      onClose()
+      onClose();
     }
   };
   return (
@@ -72,11 +72,9 @@ const ModalWithdrawList: React.FC<Props> = ({
         {/* Title */}
         <div className="flex justify-between">
           <Typography className="font-bold text-lg text-[#3AC4A0]">
-            {
-              paymentType === 'bank' ?
-                t('earning.bankAccountList')
-                : t('earning.eWalletList')
-            }
+            {paymentType === 'bank'
+              ? t('earning.bankAccountList')
+              : t('earning.eWalletList')}
           </Typography>
           <Image
             src={XIcon}
@@ -98,22 +96,27 @@ const ModalWithdrawList: React.FC<Props> = ({
             onChange={e => {
               handleSearch(e);
             }}
-            placeholder={paymentType === 'bank' ? `${t('earning.searchBankAccount')}` : `${t('earning.searchWallet')}`}
+            placeholder={
+              paymentType === 'bank'
+                ? `${t('earning.searchBankAccount')}`
+                : `${t('earning.searchWallet')}`
+            }
             className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
           />
         </div>
 
-        <div className='w-full flex flex-col mt-4 overflow-y-scroll'>
-        {
-          listVA?.length !== 0 ? (
+        <div className="w-full flex flex-col mt-4 overflow-y-scroll">
+          {listVA?.length !== 0 ? (
             listVA?.map(item => (
               <div
                 key={item?.id}
-                onClick={() => { handleChooseMethod(item); }}
-                className='w-full px-8 py-4 border-b border-[#E2E2E2] font-poppins hover:bg-[#E2E2E2] hover:shadow-lg duration-300 cursor-pointer rounded-lg'
+                onClick={() => {
+                  handleChooseMethod(item);
+                }}
+                className="w-full px-8 py-4 border-b border-[#E2E2E2] font-poppins hover:bg-[#E2E2E2] hover:shadow-lg duration-300 cursor-pointer rounded-lg"
               >
                 <div>
-                  <div className='w-fit h-[30px] flex justify-center items-center'>
+                  <div className="w-fit h-[30px] flex justify-center items-center">
                     <Image
                       src={item?.logo_url}
                       alt="payment_logo"
@@ -122,13 +125,16 @@ const ModalWithdrawList: React.FC<Props> = ({
                       className="w-fit h-full"
                     />
                   </div>
-                  <div className='font-normal text-xs md:text-sm mt-1 text-[#27A590]'>
-                    {t('earning.adminFee')}: {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(item?.admin_fee ?? 0).replace('Rp', '')}
+                  <div className="font-normal text-xs md:text-sm mt-1 text-[#27A590]">
+                    {t('earning.adminFee')}:{' '}
+                    {userInfo?.preferredCurrency !== undefined
+                      ? userInfo?.preferredCurrency
+                      : 'IDR'}
+                    {standartCurrency(item?.admin_fee ?? 0).replace('Rp', '')}
                   </div>
                 </div>
               </div>
-              )
-            )
+            ))
           ) : (
             <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0 mb-16">
               <Image alt="" src={IconNoData} className="w-[250px]" />
@@ -137,10 +143,8 @@ const ModalWithdrawList: React.FC<Props> = ({
               </p>
               <p className="text-[#7C7C7C]">{t('earning.otherKeyword')}</p>
             </div>
-          )
-        }
+          )}
         </div>
-        
       </Modal>
     </>
   );

@@ -26,7 +26,7 @@ export default function FAQ(): React.ReactElement {
           : width !== undefined && width > 600
           ? 'w-[600px]'
           : ''
-      } bg-white`}
+      }bg-white`}
     >
       <CardGradient
         defaultGradient
@@ -54,15 +54,7 @@ export default function FAQ(): React.ReactElement {
                 : width !== undefined && width > 600
                 ? 'w-full overflow-x-visible'
                 : ''
-            }   ${
-              width !== undefined && width < 370
-                ? 'h-full'
-                : width !== undefined && width < 400
-                ? 'h-[50rem]'
-                : width !== undefined && width < 415
-                ? 'h-[48rem]'
-                : 'h-full'
-            } `}
+            } h-auto`}
           >
             <div className="flex md:flex-row p-3 flex-col max-w-6xl mx-auto py-10">
               <div className="flex justify-center w-full md:w-fit md:justify-start">

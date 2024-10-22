@@ -32,11 +32,11 @@ export interface DataPost {
 }
 
 export interface Owner {
-  avatar: string
-  label: string
-  name: string
-  username: string
-  verified: boolean
+  avatar: string;
+  label: string;
+  name: string;
+  username: string;
+  verified: boolean;
 }
 
 export interface CircleI {

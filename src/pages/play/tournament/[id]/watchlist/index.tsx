@@ -11,8 +11,7 @@ import ModalEditWatchlist from '@/components/popup/ModalEditWatchlist';
 import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import { deleteWatchlist, getWatchlist } from '@/repository/market.repository';
-import { getUserInfo } from '@/repository/profile.repository';
-import { type UserInfo } from '@/utils/interfaces/tournament.interface';
+import { useAppSelector } from '@/store/redux/store';
 import { type Watchlist } from '@/utils/interfaces/watchlist.interface';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import {
@@ -29,6 +28,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { ArrowBackwardIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -38,7 +38,7 @@ const TournamentHome: React.FC = () => {
   const id = router.query.id;
   useGetDetailTournament(id as string);
   const { t } = useTranslation();
-  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const { dataUser } = useAppSelector(state => state.user);
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
   const [isEditModal, setIsEditModal] = useState<boolean>(false);
   const [deletePost, setDeletePost] = useState<boolean>(false);
@@ -58,25 +58,10 @@ const TournamentHome: React.FC = () => {
   });
 
   useEffect(() => {
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    if (id !== null && userInfo !== undefined) {
+    if (id !== null && dataUser !== undefined) {
       void fetchPlayWatchlist();
     }
-  }, [id, userInfo, watchlistParams, isDeleted, isDetailModal, isEditModal]);
-
-  const fetchData = async (): Promise<void> => {
-    try {
-      const dataInfo = await getUserInfo();
-      setUserInfo(dataInfo);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    }
-  };
+  }, [id, dataUser, watchlistParams, isDeleted, isDetailModal, isEditModal]);
 
   const fetchPlayWatchlist = async (): Promise<void> => {
     try {
@@ -119,22 +104,34 @@ const TournamentHome: React.FC = () => {
         />
       )}
 
-      {isEditModal && userInfo && (
+      {isEditModal && dataUser && (
         <ModalEditWatchlist
           onClose={() => {
             setIsEditModal(prev => !prev);
           }}
           data={editedWatchlist}
-          userInfo={userInfo}
+          userInfo={dataUser}
         />
       )}
 
       <div className="w-full rounded-xl p-5 bg-white">
         {/* Page Title */}
-        <div className="flex flex-col justify-start w-full">
-          <Typography className="lg:text-xl text-base font-semibold font-poppins">
-            {t('tournament.watchlist.myWatchlist')}
-          </Typography>
+        <div className="flex flex-col justify-start w-full gap-[5px]">
+          <div className="flex justify-between ">
+            <Image
+              onClick={async () => {
+                await router.push(`/play/tournament/${id as string}/home`);
+              }}
+              src={ArrowBackwardIcon}
+              alt="ArrowBackwardIcon"
+              width={30}
+              height={30}
+              className="cursor-pointer"
+            />
+            <Typography className="flex-1 text-center lg:text-xl text-base font-semibold font-poppins">
+              {t('tournament.watchlist.myWatchlist')}
+            </Typography>
+          </div>
           <Typography className="lg:text-base text-sm font-normal text-[#7C7C7C] font-poppins">
             {t('tournament.watchlist.myWatchlistDescription')}
           </Typography>

@@ -1420,6 +1420,20 @@ export default {
     }
   },
   social: {
+    postSection: {
+      shareBattle: 'Bagikan Pertandingan Ini',
+      shareLinks: "Bagikan Tautan",
+      share: "Bagikan",
+      play: "Main",
+      joined: "Bergabung",
+      player: "Pemain",
+      players: "Pemain",
+      fee: "Biaya",
+      free: "Gratis",
+      category: "Kategori",
+      participant: "peserta",
+      participants: "peserta"
+    },
     postSetting: {
       publicTitle: 'Publik',
       publicDesc: 'Semua orang bisa melihat postinganmu',

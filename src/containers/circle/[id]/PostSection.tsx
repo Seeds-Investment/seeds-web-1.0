@@ -1,6 +1,7 @@
 'use client';
 import more_vertical from '@/assets/more-option/more_vertical.svg';
 import MoreOption from '@/components/MoreOption';
+import ModalShareBattle from '@/components/popup/ModalShareBattle';
 import {
   Bookmark,
   ChatBubble,
@@ -12,6 +13,7 @@ import ImageCarousel from '@/containers/circle/[id]/CarouselImage';
 import PieCirclePost from '@/containers/circle/[id]/PieCirclePost';
 import PollingView from '@/containers/circle/[id]/PollingView';
 import TrackerEvent from '@/helpers/GTM';
+import { standartCurrency } from '@/helpers/currency';
 import { generateRandomColor } from '@/helpers/generateRandomColor';
 import { isGuest } from '@/helpers/guest';
 import { getAssetById } from '@/repository/asset.repository';
@@ -23,6 +25,7 @@ import {
 } from '@/repository/circleDetail.repository';
 import { getPlayById } from '@/repository/play.repository';
 import { getQuizById } from '@/repository/quiz.repository';
+import { getBattleDetail } from '@/repository/team-battle.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
@@ -45,6 +48,10 @@ import {
 import { BookmarkFill, XIcon } from 'public/assets/vector';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { BsTag } from "react-icons/bs";
+import { FiLayers } from "react-icons/fi";
+import { GoPeople } from "react-icons/go";
+import { IoShareSocialOutline } from "react-icons/io5";
 import { toast } from 'react-toastify';
 import PDFViewer from './PDFViewer';
 
@@ -75,6 +82,7 @@ interface UserData {
   birthDate: string;
   phone: string;
   _pin: string;
+  preferredCurrency: string;
 }
 
 interface ShareData {
@@ -162,22 +170,12 @@ const PostSection: React.FC<props> = ({
   const router = useRouter();
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [isCopied, setIsCopied] = useState(false);
-  // const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [isShare, setIsShare] = useState(false);
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [thumbnailList, setThumbnailList] = useState<any>([]);
-
-  // useEffect(() => {
-  //   const fetchData = async (): Promise<void> => {
-  //     try {
-  //       const response = await getUserInfo();
-  //       setUserInfo(response);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   void fetchData();
-  // }, []);
+  const [isShareModal, setIsShareModal] = useState<boolean>(false);
+  const [sharedId, setSharedId] = useState<string>('');
+  const [sharedName, setSharedName] = useState<string>('');
 
   const handleOpen = (): void => {
     setIsShare(!isShare);
@@ -489,6 +487,12 @@ const PostSection: React.FC<props> = ({
             currency: ''
           }).then((res: any) => {
             tempThumbnailList.push({ thumbnailType: 'quiz', ...res });
+          });
+        } else if (el?.includes('-battles') === true) {
+          await getBattleDetail(
+            el?.replace('-battles', '')
+          ).then((res: any) => {
+            tempThumbnailList.push({ thumbnailType: 'battles', ...res });
           });
         } else if (el?.includes('-asset') === true) {
           await getAssetById(el?.replace('-asset', '')).then((res: any) => {
@@ -990,9 +994,9 @@ const PostSection: React.FC<props> = ({
               )}
             </div>
             <div className="flex justify-start gap-4 flex-wrap">
-              {thumbnailList.length > 0 &&
-                thumbnailList.map((item: any, index: number) => {
-                  return item.thumbnailType !== 'quiz' ? (
+              {thumbnailList?.length > 0 &&
+                thumbnailList?.map((item: any, index: number) => {
+                  return ((item.thumbnailType !== 'quiz') && (item.thumbnailType !== 'battles')) ? (
                     <div
                       className="cursor-pointer border-2 rounded-xl border-neutral-ultrasoft bg-neutral-ultrasoft/10 min-w-[140px] max-w-[150px] h-fit"
                       key={`${item?.id as string}${index}`}
@@ -1112,68 +1116,187 @@ const PostSection: React.FC<props> = ({
                       )}
                     </div>
                   ) : (
-                    <div
-                      onClick={async () =>
-                        await router
-                          .push(`/play/quiz/${item?.id as string}`)
-                          .catch(error => {
-                            toast.error(error);
-                          })
-                      }
-                      className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
-                    >
-                      <div className="w-full bg-white">
-                        <div className="w-full rounded-xl overflow-hidden">
-                          <div className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2">
-                            <Image
-                              alt=""
-                              src={
-                                item.banner?.image_url !== undefined &&
-                                item.banner?.image_url !== ''
-                                  ? item.banner.image_url
-                                  : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
-                              }
-                              width={100}
-                              height={100}
-                              className="w-auto h-full"
-                            />
-                          </div>
-                          <div className="pl-2 flex justify-between bg-[#3AC4A0] font-poppins">
-                            <div>
-                              <div className="text-sm font-semibold text-white">
-                                {item.name}
-                              </div>
-                              <div className="text-white flex gap-2 text-[10px] mt-2">
-                                <div className="mt-1">
-                                  {t('playCenter.text4')}
-                                </div>
-                                <div className="font-normal text-white mt-1">
-                                  {calculateDaysLeft(
-                                    new Date(item?.play_time),
-                                    new Date(item?.end_time)
-                                  )}{' '}
-                                  {t('playCenter.text5')}
-                                </div>
-                                <div className="border border-1 border-white bg-[#3AC4A0] py-1 px-2 rounded-full text-white text-[8px]">
-                                  Quiz
-                                </div>
-                              </div>
+                    item.thumbnailType === 'quiz' ? (
+                      <div
+                        onClick={async () =>
+                          await router
+                            .push(`/play/quiz/${item?.id as string}`)
+                            .catch(error => {
+                              toast.error(error);
+                            })
+                        }
+                        className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300 cursor-pointer"
+                      >
+                        <div className="w-full bg-white">
+                          <div className="w-full rounded-xl overflow-hidden">
+                            <div className="w-full h-auto max-w-[450px] flex justify-center items-center">
+                              <Image
+                                alt=""
+                                src={
+                                  item.banner?.image_url !== undefined &&
+                                  item.banner?.image_url !== ''
+                                    ? item.banner.image_url
+                                    : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
+                                }
+                                width={1000}
+                                height={1000}
+                                className="w-full h-auto"
+                              />
                             </div>
-                            <div className="my-auto items-center">
-                              {item?.is_joined === true ? (
-                                <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 mx-2 py-1 rounded-full hover:shadow-lg duration-300">
-                                  {t('tournament.tournamentCard.openButton')}
+                            <div className="px-4 py-2 flex justify-between bg-[#3AC4A0] font-poppins">
+                              <div>
+                                <div className="text-sm font-semibold text-white">
+                                  {item.name}
                                 </div>
-                              ) : (
-                                <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 mx-2 rounded-full hover:shadow-lg duration-300">
-                                  {t('tournament.tournamentCard.joinButton')}
+                                <div className="text-white flex gap-2 text-[10px] mt-1">
+                                  <div className="mt-1">
+                                    {t('playCenter.text4')}
+                                  </div>
+                                  <div className="font-normal text-white mt-1">
+                                    {calculateDaysLeft(
+                                      new Date(item?.started_at ?? '2024-01-01T00:00:00Z'),
+                                      new Date(item?.ended_at ?? '2024-01-01T00:00:00Z')
+                                    )}{' '}
+                                    {t('playCenter.text5')}
+                                  </div>
+                                  <div className="border border-1 border-white bg-[#3AC4A0] py-1 px-2 rounded-full text-white text-[8px] flex justify-center items-center">
+                                    Quiz
+                                  </div>
                                 </div>
-                              )}
+                              </div>
+                              <div className="my-auto items-center text-center hover:scale-110 duration-300">
+                                {item?.is_joined === true ? (
+                                  <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
+                                    {t('tournament.tournamentCard.openButton')}
+                                  </div>
+                                ) : (
+                                  <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
+                                    {t('tournament.tournamentCard.joinButton')}
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div
+                        className="flex rounded-t-3xl overflow-hidden shadow hover:shadow-lg duration-300"
+                      >
+                        <div className="w-full bg-white">
+                          <div className="w-full overflow-hidden">
+                            <div
+                              onClick={async () =>
+                                await router
+                                  .push(`/play/team-battle/${item?.id as string}`)
+                                  .catch(error => {
+                                    toast.error(error);
+                                  })
+                              }
+                              className="w-full h-auto max-w-[450px] flex justify-center items-center cursor-pointer"
+                            >
+                              <Image
+                                alt=""
+                                src={
+                                  item.banner !== undefined &&
+                                  item.banner !== ''
+                                    ? item.banner
+                                    : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
+                                }
+                                width={1000}
+                                height={1000}
+                                className="w-full h-auto"
+                              />
+                            </div>
+                            <div className="p-4 flex flex-col justify-between bg-gradient-to-r from-[#227e7f] to-[#4760a8] font-poppins text-white">
+                              <div className='w-full text-center mb-2 font-semibold'>
+                                {item?.title ?? 'Team Battle'}
+                              </div>
+                              <div className='flex justify-center items-center gap-2'>
+                                <div>
+                                  <div className='flex justify-center items-center gap-1 text-xs'>
+                                    <div>
+                                      <FiLayers />
+                                    </div>
+                                    <div>
+                                      {t('social.postSection.category')}
+                                    </div>
+                                  </div>
+                                  <div className='flex justify-center items-center text-xs font-semibold'>
+                                    {
+                                      item?.category[0] === 'ID_STOCK'
+                                        ? 'ID Stock'
+                                        : item?.category[0] === 'US_STOCK'
+                                          ? 'US Stock'
+                                          : item?.category[0] === 'CRYPTO'
+                                            ? 'Crypto'
+                                            : item?.category[0]
+                                    }
+                                  </div>
+                                </div>
+                                <div className='border-x-[1px] px-4'>
+                                  <div className='flex justify-center items-center gap-1 text-xs'>
+                                    <div>
+                                      <GoPeople />
+                                    </div>
+                                    <div>
+                                      {t('social.postSection.joined')}
+                                    </div>
+                                  </div>
+                                  <div className='flex justify-center items-center text-xs font-semibold'>
+                                    {item?.participants ?? 0} {(item?.participants ?? 0) > 1 ? t('social.postSection.players') : t('social.postSection.player')}
+                                  </div>
+                                </div>
+                                <div>
+                                  <div className='flex justify-center items-center gap-1 text-xs'>
+                                    <div>
+                                      <BsTag />
+                                    </div>
+                                    <div>
+                                      {t('social.postSection.fee')}
+                                    </div>
+                                  </div>
+                                  <div className='flex justify-center items-center text-xs font-semibold'>
+                                    {
+                                      item?.admission_fee !== 0
+                                        ? `${userInfo?.preferredCurrency}${standartCurrency(item?.admission_fee ?? 0).replace('Rp', '')}`
+                                        : t('social.postSection.free')
+                                    }
+                                  </div>
+                                </div>
+                              </div>
+                              <div className='flex justify-between items-center mt-4 px-2'>
+                                <div
+                                  onClick={() => {
+                                    setIsShareModal(true)
+                                    setSharedId(item?.id)
+                                    setSharedName(item?.title)
+                                  }}
+                                  className='flex justify-center items-center gap-2 hover:scale-110 duration-300 cursor-pointer'
+                                >
+                                  <IoShareSocialOutline className='bg-[#2934B2] rounded-full w-[30px] h-[30px] p-[4px] border-[1px] border-white'/>
+                                  <div>
+                                    {t('social.postSection.share')}
+                                  </div>
+                                </div>
+                                <div
+                                  onClick={async () =>
+                                    await router
+                                      .push(`/play/team-battle/${item?.id as string}`)
+                                      .catch(error => {
+                                        toast.error(error);
+                                      })
+                                  }
+                                  className='bg-[#2934B2] rounded-full border-2 border-white w-[100px] text-center text-sm py-1 hover:scale-110 duration-300 cursor-pointer'
+                                >
+                                  {t('social.postSection.play')}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
                   );
                 })}
               {
@@ -1531,6 +1654,15 @@ const PostSection: React.FC<props> = ({
           </div>
         </div>
       </div>
+      {isShareModal && (
+        <ModalShareBattle
+          onClose={() => {
+            setIsShareModal(prev => !prev);
+          }}
+          url={sharedId ?? ''}
+          title={sharedName ?? ''}
+        />
+      )}
     </>
   );
 };

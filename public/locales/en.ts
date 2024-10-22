@@ -1495,6 +1495,20 @@ export default {
     }
   },
   social: {
+    postSection: {
+      shareBattle: 'Share This Battle',
+      shareLinks: "Share Link",
+      share: "Share",
+      play: "Play",
+      joined: "Joined",
+      player: "Player",
+      players: "Players",
+      fee: "Fee",
+      free: "Free",
+      category: "Category",
+      participant: "participant",
+      participants: "participants"
+    },
     postSetting: {
       publicTitle: 'Public',
       publicDesc: 'Everyone can see your post',

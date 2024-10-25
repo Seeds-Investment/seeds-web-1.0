@@ -2160,7 +2160,10 @@ export default {
         "Don't forget to read Play Arena's terms and conditions before you start playing."
     },
     watchlist: {
-      watchlist: 'Watchlist',
+      myWatchlist: 'My Watchlist',
+      myWatchlistDescription: 'Check your watchlist',
+      assets: 'Assets',
+      btnEditAsset: 'Edit Asset',
       noData: 'No Watchlist yet',
       create: 'Create your Watchlist now!',
       createWatchlist: 'Create Watchlist',
@@ -2175,7 +2178,29 @@ export default {
       deleteConfirm: 'Are you sure want to delete this watchlist?',
       changeAsset: 'Change Asset',
       enter: 'Enter Watchlist name...',
-      search: 'Search'
+      search: 'Search',
+      modalHeader: 'Add Assets to Watchlist',
+      addToWatchlist: 'Add to Watchlist',
+      newWatchlist: 'Create a new Watchlist',
+      horay: 'Hoorayyy!!',
+      successAddAsset: 'successfully added to watchlist',
+      continue: 'Continue',
+      ops: 'Oops!!',
+      cancelAddAsset: 'Cancel adding assets to watchlist?',
+      yes: 'Yes',
+      no: 'No',
+      alreadyExist:
+        'The asset you added is already in the watchlist that has been created.',
+      ok: 'Ok',
+      createNewWatchlist: 'New Watchlist',
+      descNewWatchlist:
+        'Create a watchlist to help you collect your favorite assets',
+      watchlistName: 'Watchlist Name',
+      groupName: 'Desired Group Name',
+      btnNewWatchlist: 'Create New Watchlist',
+      successWatchlist: 'Watchlist created successfully',
+      backToAsset: 'Back to Asset',
+      seeWatchlist: 'See Watchlist'
     },
     social: {
       sorry: 'Sorry, there is no post here!',

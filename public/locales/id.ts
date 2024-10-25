@@ -2088,7 +2088,10 @@ export default {
         'Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya'
     },
     watchlist: {
-      watchlist: 'Daftar Pantau',
+      myWatchlist: 'Daftar Pantau Saya',
+      myWatchlistDescription: 'Periksa daftar pantauan Anda',
+      assets: 'Aset',
+      btnEditAsset: 'Edit Aset',
       noData: 'Belum Ada Daftar Pantau',
       create: 'Yuk buat Daftar Pantau sekarang!',
       createWatchlist: 'Buat Daftar Pantau',
@@ -2103,7 +2106,29 @@ export default {
       deleteConfirm: 'Apa Kamu yakin ingin menghapus Daftar Pantau ini?',
       changeAsset: 'Ubah Aset',
       enter: 'Masukan nama Daftar Pantau...',
-      search: 'Cari'
+      search: 'Cari',
+      modalHeader: 'Tambahkan Aset ke Daftar Pantauan',
+      addToWatchlist: 'Tambahkan ke Daftar Pantauan',
+      newWatchlist: 'Buat Daftar Pantauan baru',
+      horay: 'Horey!!',
+      successAddAsset: 'berhasil ditambahkan ke watchlist',
+      continue: 'Lanjutkan',
+      ops: 'Ups!!',
+      cancelAddAsset: 'Batalkan penambahan aset ke daftar pantauan?',
+      yes: 'Ya',
+      no: 'Tidak',
+      alreadyExist:
+        'Aset yang Anda tambahkan sudah ada dalam daftar pantauan yang telah dibuat.',
+      ok: 'Oke',
+      createNewWatchlist: 'Daftar Pantauan Baru',
+      descNewWatchlist:
+        'Buat daftar pantauan untuk membantu Anda mengumpulkan aset favorit Anda',
+      watchlistName: 'Nama Daftar Pantauan',
+      groupName: 'Nama Grup yang Diinginkan',
+      btnNewWatchlist: 'Buat Daftar Pantauan Baru',
+      successWatchlist: 'Watchlist berhasil dibuat',
+      backToAsset: 'Kembali ke Asset',
+      seeWatchlist: 'Lihat Daftar Pantauan'
     },
     social: {
       sorry: 'Maaf, data postingan tidak ada!',

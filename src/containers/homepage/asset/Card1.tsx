@@ -18,8 +18,11 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
+interface AssetSocketI extends AssetI {
+  socketPrice: number;
+}
 interface props {
-  data: AssetI;
+  data: AssetSocketI;
   currency: string;
   playId: string;
   assetId: string;
@@ -119,7 +122,7 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
       </div>
       <p className="text-xl font-semibold text-black my-2">
         {currency ?? 'IDR'}{' '}
-        {standartCurrency(data?.lastPrice?.close ?? 0).replace('Rp', '')}
+        {standartCurrency(data?.socketPrice ?? 0).replace('Rp', '')}
       </p>
       <div className="w-full flex flex-row justify-between">
         <p className="text-sm font-normal text-[#5E44FF]">

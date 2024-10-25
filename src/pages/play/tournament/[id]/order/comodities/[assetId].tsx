@@ -7,6 +7,7 @@ import SuccessOrderModal from '@/containers/tournament/order/SuccesPopup';
 import { standartCurrency } from '@/helpers/currency';
 import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
+import useGetLastPrice from '@/hooks/useGetLastPrice';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import { getDetailAsset } from '@/repository/asset.repository';
 import {
@@ -15,7 +16,12 @@ import {
   getPlayBallance
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { type SuccessOrderData } from '@/utils/interfaces/play.interface';
+import { useAppSelector } from '@/store/redux/store';
+import {
+  AssetI,
+  type SuccessOrderData
+} from '@/utils/interfaces/play.interface';
+import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import {
   Avatar,
   Button,
@@ -85,7 +91,7 @@ const BuyPage: React.FC = () => {
   const { t } = useTranslation();
   const height = useWindowInnerHeight();
 
-  const [data, setData] = useState<DetailAsset>();
+  const [data, setData] = useState<AssetI>();
   const [ballance, setBallance] = useState<Ballance>({
     balance: 0,
     portfolio: 0,
@@ -139,7 +145,9 @@ const BuyPage: React.FC = () => {
     if (sellPercent !== 0) {
       setAmount(
         `${
-          (portfolio?.total_lot * (data?.lastPrice?.open ?? 0) * sellPercent) /
+          (portfolio?.total_lot *
+            (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0) *
+            sellPercent) /
           100
         }`
       );
@@ -151,7 +159,9 @@ const BuyPage: React.FC = () => {
     if (
       amount !==
       `${
-        (portfolio?.total_lot * (data?.lastPrice?.open ?? 0) * sellPercent) /
+        (portfolio?.total_lot *
+          (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0) *
+          sellPercent) /
         100
       }`
     ) {
@@ -161,6 +171,9 @@ const BuyPage: React.FC = () => {
       setSellPercent(0);
     }
   }, [amount, assetAmount]);
+  const { dataUser } = useAppSelector(state => state.user);
+  const prefCurrency = dataUser?.preferredCurrency.toLowerCase() ?? 'usd';
+  const lastPrice = useGetLastPrice(data?.seedsTicker);
 
   const [userInfo, setUserInfo] = useState<UserData>();
   useEffect(() => {
@@ -238,9 +251,19 @@ const BuyPage: React.FC = () => {
       setTimeout((): void => {
         if (value.length > 0) {
           if (isDevide) {
-            setNewVal(`${parseInt(value) / (data?.lastPrice?.open ?? 0)}`);
+            setNewVal(
+              `${
+                parseInt(value) /
+                (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
+              }`
+            );
           } else {
-            setNewVal(`${parseFloat(value) * (data?.lastPrice?.open ?? 0)}`);
+            setNewVal(
+              `${
+                parseFloat(value) *
+                (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
+              }`
+            );
           }
         }
       }, 100)
@@ -277,7 +300,8 @@ const BuyPage: React.FC = () => {
     if (amount === '0') {
       setIsDisable(true);
     } else if (
-      +amount * (data?.lastPrice?.open ?? 0) > ballance.balance &&
+      +amount * (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0) >
+        ballance.balance &&
       router.query?.transaction === 'buy'
     ) {
       setIsDisable(true);
@@ -376,7 +400,7 @@ const BuyPage: React.FC = () => {
     const handleRouteChange = async (): Promise<void> => {
       if (data !== undefined && detailTournament !== null && id !== undefined) {
         if (!detailTournament?.all_category?.includes(data?.assetType)) {
-          toast.error(t('tournament.assets.assetTypeWarning'))
+          toast.error(t('tournament.assets.assetTypeWarning'));
           await router.push(`/play/tournament/${id as string}/home`);
         }
       }
@@ -402,7 +426,8 @@ const BuyPage: React.FC = () => {
             {`${standartCurrency(
               router.query?.transaction === 'buy'
                 ? ballance?.balance
-                : portfolio?.total_lot * (data?.lastPrice?.open ?? 0)
+                : portfolio?.total_lot *
+                    (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
             ).replace('Rp', userInfo?.preferredCurrency as string)}`}{' '}
           </Typography>
         </div>
@@ -414,8 +439,11 @@ const BuyPage: React.FC = () => {
               {data?.realTicker}
             </p>
             <p className="text-xs font-normal text-[#7C7C7C] my-2">
-              Current cost: Rp{' '}
-              {new Intl.NumberFormat().format(data?.lastPrice?.open)} per gram
+              Current cost: {prefCurrency}{' '}
+              {new Intl.NumberFormat().format(
+                lastPrice[prefCurrency as PreferredCurrencyI]
+              )}{' '}
+              per gram
             </p>
           </div>
         )}
@@ -544,7 +572,10 @@ const BuyPage: React.FC = () => {
                 {router.query.transaction === 'buy' && (
                   <input
                     type="text"
-                    value={(data?.lastPrice?.open ?? 0) * +assetAmount}
+                    value={
+                      (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0) *
+                      +assetAmount
+                    }
                     onChange={e => {
                       handleChangeNumber(
                         e,
@@ -569,7 +600,8 @@ const BuyPage: React.FC = () => {
               <input
                 type="text"
                 value={standartCurrency(
-                  (data?.lastPrice?.open ?? 0) * +lotSell
+                  (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0) *
+                    +lotSell
                 ).replace('Rp', '')}
                 readOnly
                 className="w-full border rounded-xl py-3 px-4 border-[#7C7C7C] text-base text-[#262626] focus:border-seeds-button-green font-poppins outline-none"
@@ -755,9 +787,13 @@ const BuyPage: React.FC = () => {
                               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                               userInfo?.preferredCurrency
                             }
-                            {data?.lastPrice?.open !== undefined
+                            {lastPrice[prefCurrency as PreferredCurrencyI] !==
+                            undefined
                               ? standartCurrency(
-                                  +assetAmount * data?.lastPrice?.open
+                                  +assetAmount *
+                                    lastPrice[
+                                      prefCurrency as PreferredCurrencyI
+                                    ]
                                 ).replace('Rp', '')
                               : 'No data available'}
                           </Typography>
@@ -767,9 +803,13 @@ const BuyPage: React.FC = () => {
                               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                               userInfo?.preferredCurrency
                             }
-                            {data?.lastPrice?.open !== undefined
+                            {lastPrice[prefCurrency as PreferredCurrencyI] !==
+                            undefined
                               ? standartCurrency(
-                                  +lotSell * data?.lastPrice?.open
+                                  +lotSell *
+                                    lastPrice[
+                                      prefCurrency as PreferredCurrencyI
+                                    ]
                                 ).replace('Rp', '')
                               : 'No data available'}
                           </Typography>
@@ -811,7 +851,10 @@ const BuyPage: React.FC = () => {
                         {router.query.transaction === 'buy' ? (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
                             {standartCurrency(
-                              +assetAmount * (data?.lastPrice?.open ?? 0)
+                              +assetAmount *
+                                (lastPrice[
+                                  prefCurrency as PreferredCurrencyI
+                                ] ?? 0)
                             ).replace(
                               'Rp',
                               userInfo?.preferredCurrency as string
@@ -820,7 +863,10 @@ const BuyPage: React.FC = () => {
                         ) : (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
                             {standartCurrency(
-                              +lotSell * (data?.lastPrice?.open ?? 0)
+                              +lotSell *
+                                (lastPrice[
+                                  prefCurrency as PreferredCurrencyI
+                                ] ?? 0)
                             ).replace(
                               'Rp',
                               userInfo?.preferredCurrency as string

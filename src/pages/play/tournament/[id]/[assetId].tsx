@@ -17,6 +17,7 @@ import OverviewItem from '@/containers/play/asset/OverviewItem';
 import SocialCard from '@/containers/play/asset/SocialCard';
 import Card2Skeleton from '@/containers/play/asset/skeleton/Card2Skeleton';
 import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
+import useGetLastPrice from '@/hooks/useGetLastPrice';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
 import { getPostForYou } from '@/repository/circleDetail.repository';
@@ -29,6 +30,7 @@ import {
   type IUserData
 } from '@/utils/interfaces/play.interface';
 import { type BallanceTournament } from '@/utils/interfaces/tournament.interface';
+import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 
@@ -80,7 +82,9 @@ const AssetDetailPage: React.FC = () => {
 
   const [forYouData, setForYouData] = useState<ForYouPostI[]>();
   const [assetType, setAssetType] = useState<string>('');
+  const prefCurrency = userInfo?.preferredCurrency.toLowerCase();
   const { detailTournament } = useGetDetailTournament(id as string);
+  const lastPrice = useGetLastPrice(data?.seedsTicker);
 
   const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {
@@ -143,7 +147,7 @@ const AssetDetailPage: React.FC = () => {
     const handleRouteChange = async (): Promise<void> => {
       if (data !== undefined && detailTournament !== null && id !== undefined) {
         if (!detailTournament?.all_category?.includes(data?.assetType)) {
-          toast.error(t('tournament.assets.assetTypeWarning'))
+          toast.error(t('tournament.assets.assetTypeWarning'));
           await router.push(`/play/tournament/${id as string}/home`);
         }
       }
@@ -209,7 +213,13 @@ const AssetDetailPage: React.FC = () => {
       <div className="flex flex-col md:flex-row gap-5">
         {data !== undefined ? (
           <Card1
-            data={data}
+            data={{
+              ...data,
+              socketPrice:
+                typeof prefCurrency === 'string'
+                  ? lastPrice[prefCurrency.toLowerCase() as PreferredCurrencyI]
+                  : 0
+            }}
             currency={userInfo?.preferredCurrency as string}
             playId={id as string}
             assetId={assetId as string}

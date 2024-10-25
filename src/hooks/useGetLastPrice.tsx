@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import socketService from '@/repository/socket.repository';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const useGetLastPrice = (ticker?: string) => {
   const [connect, setConnect] = useState(false);
@@ -27,7 +28,7 @@ const useGetLastPrice = (ticker?: string) => {
       });
 
       socketService.addListener('joined_asset', (message: any) => {
-        console.log('joinned room:', message, 'cek');
+        toast('Connected to market data');
       });
 
       socketService.addListener(

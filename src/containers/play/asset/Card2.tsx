@@ -12,7 +12,7 @@ interface props {
 const KeystatCard: React.FC<props> = ({ data, currency }) => {
   const { t } = useTranslation();
   return (
-    <CCard className="flex gap-8 w-full md:w-2/3 p-4 md:mt-5 md:rounded-lg border-none rounded-none">
+    <CCard className="flex gap-8 w-full md:w-1/2 p-4 md:mt-5 md:rounded-lg border-none rounded-none">
       <div className="flex gap-2 items-center pt-4">
         <p className="text-sm items-center text-[#262626]">
           {t('play.keystat')}

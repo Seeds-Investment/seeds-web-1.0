@@ -297,31 +297,31 @@ export interface TopTournament {
   payment_method: string[];
   is_free_voucher_claimed: boolean;
   }
-export type MarketAssetI = AssetListI[]
+export type MarketAssetI = AssetListI[];
 
 export interface AssetListI {
-  id: string
-  seedsTicker: string
-  realTicker: string
-  logo: string
-  name: string
-  exchange: string
-  exchangeCurrency: string
-  listedCountry: string
-  createdAt: string
-  updatedAt: string
-  assetType: string
-  exchangeRate: number
-  assetSubType?: string[]
-  priceBar: PriceBar
+  id: string;
+  seedsTicker: string;
+  realTicker: string;
+  logo: string;
+  name: string;
+  exchange: string;
+  exchangeCurrency: string;
+  listedCountry: string;
+  createdAt: string;
+  updatedAt: string;
+  assetType: string;
+  exchangeRate: number;
+  assetSubType?: string[];
+  priceBar: PriceBar;
 }
 
 export interface PriceBar {
-  timestamp: string
-  open: number
-  high: number
-  low: number
-  close: number
-  vwap: number
-  volume: number
+  timestamp: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  vwap: number;
+  volume: number;
 }

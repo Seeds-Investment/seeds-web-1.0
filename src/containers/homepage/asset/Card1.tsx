@@ -1,13 +1,22 @@
-import LiveIcon from '@/assets/play/tournament/live.svg';
+import FavoriteAdded from '@/assets/play/tournament/favorite-asset-checked.svg';
+import Favorite from '@/assets/play/tournament/favorite-asset.svg';
 import CCard from '@/components/CCard';
+import ModalWatchlist from '@/components/popup/ModalWatchlist';
 import {
   calculatePercentageDifference,
   standartCurrency
 } from '@/helpers/currency';
+import { getWatchlist, getWatchlistById } from '@/repository/market.repository';
 import { type AssetI } from '@/utils/interfaces/play.interface';
+import {
+  type AssetWatchlist,
+  type Watchlist
+} from '@/utils/interfaces/watchlist.interface';
 import { Avatar } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface AssetSocketI extends AssetI {
   socketPrice: number;
@@ -15,12 +24,66 @@ interface AssetSocketI extends AssetI {
 interface props {
   data: AssetSocketI;
   currency: string;
+  playId: string;
+  assetId: string;
 }
 
-const Card1: React.FC<props> = ({ data, currency }) => {
+const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
   const { t } = useTranslation();
+  const [watchList, setWatchlist] = useState<Watchlist[]>([]);
+  const [isOpenModalWatchlist, setIsOpenModalWatchlist] =
+    useState<boolean>(false);
+  const [checkboxState, setCheckboxState] = useState<string[]>([]);
+  const [fetchedWatchlists, setFetchedWatchlists] = useState<AssetWatchlist[]>(
+    []
+  );
+
+  const fetchPlayWatchlist = async (): Promise<void> => {
+    try {
+      const response = await getWatchlist({ play_id: playId });
+      setWatchlist(response?.listWatchlist);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const fetchWatchlists = async (): Promise<void> => {
+    try {
+      const watchlistData = await Promise.allSettled(
+        watchList.map(async watchlist => await getWatchlistById(watchlist.id))
+      );
+      const fulfilledWatchlists = watchlistData
+        .filter(result => result.status === 'fulfilled')
+        .map(result => result.value) as AssetWatchlist[];
+      setFetchedWatchlists(fulfilledWatchlists);
+      const initialCheckboxState = fulfilledWatchlists
+        .filter(watchlist =>
+          watchlist.watchlist.assetList?.some(asset => asset.id === assetId)
+        )
+        .map(watchlist => watchlist.watchlist.id);
+
+      setCheckboxState(initialCheckboxState);
+    } catch (error) {
+      toast.error(`Error fetching watchlists ${error as string}`);
+    }
+  };
+
+  useEffect(() => {
+    if (playId !== undefined) {
+      void fetchPlayWatchlist();
+    }
+  }, [playId]);
+
+  useEffect(() => {
+    if (watchList.length > 0 && assetId !== undefined) {
+      void fetchWatchlists();
+    }
+  }, [watchList]);
+
+  const isAssetInWatchlist = checkboxState.length > 0;
+
   return (
-    <CCard className="flex w-full md:w-1/3 p-4 md:mt-5 md:rounded-lg border-none rounded-none">
+    <CCard className="flex w-full md:w-1/2 p-4 md:mt-5 md:rounded-lg border-none rounded-none">
       <div className="flex flex-row justify-between">
         <div className="flex flex-row">
           <Avatar
@@ -31,16 +94,30 @@ const Card1: React.FC<props> = ({ data, currency }) => {
             className="mr-5"
           />
           <div className="flex flex-col w-full">
+            <p className="text-lg font-semibold font-poppins text-black">
+              {data?.name ?? 'Loading...'}
+            </p>
             <div className="flex flex-row gap-2">
               <p className="text-base font-semibold font-poppins text-black">
                 {data?.realTicker} / {data?.assetType === 'CRYPTO' && 'B'}
-                {currency ?? 'IDR'}
+                <span className="text-[#7C7C7C] font-normal">
+                  {currency ?? 'IDR'}
+                </span>
               </p>
             </div>
-            <p className="text-lg font-normal text-black mb-3 font-poppins">
-              {data?.name ?? 'Loading...'}
-            </p>
           </div>
+        </div>
+        <div
+          onClick={() => {
+            setIsOpenModalWatchlist(prev => !prev);
+          }}
+          className="cursor-pointer"
+        >
+          <Image
+            src={isAssetInWatchlist ? FavoriteAdded : Favorite}
+            alt="favorite"
+            className="w-5 h-5"
+          />
         </div>
       </div>
       <p className="text-xl font-semibold text-black my-2">
@@ -59,11 +136,21 @@ const Card1: React.FC<props> = ({ data, currency }) => {
           }{' '}
           %) - {t('playSimulation.today')}
         </p>
-        <div className="flex items-center gap-1">
-          <Image src={LiveIcon} alt="live" className="w-5 h-5" />
-          <p>Live</p>
-        </div>
       </div>
+      {isOpenModalWatchlist && (
+        <ModalWatchlist
+          assetName={data?.name}
+          assetId={assetId}
+          assetTicker={data?.realTicker}
+          playId={playId}
+          onClose={() => {
+            setIsOpenModalWatchlist(prev => !prev);
+          }}
+          fetchedWatchlists={fetchedWatchlists}
+          checkboxState={checkboxState}
+          setCheckboxState={setCheckboxState}
+        />
+      )}
     </CCard>
   );
 };

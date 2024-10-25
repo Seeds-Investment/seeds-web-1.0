@@ -1,6 +1,7 @@
 import Endpoints from '@/utils/_static/endpoint';
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
+import { toast } from 'react-toastify';
 
 interface WatchlistForm {
   play_id: string;
@@ -31,13 +32,18 @@ export const getMarketList = async (params: any): Promise<any> => {
     return await Promise.resolve(null);
   }
 
-  return await marketService.get(`/list`, {
-    params,
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`
-    }
-  });
+  try {
+    const response = await marketService.get(`/list`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    toast.error(error.response.data.message);
+  }
 };
 
 export const getMarketCurrency = async (): Promise<any> => {
@@ -246,6 +252,57 @@ export const deleteWatchlist = async (id: string): Promise<any> => {
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+};
+
+export const checkAssetInWatchlist = async (
+  watchlistId: string,
+  assetId: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+
+    return await marketService.get(
+      `/watchlist/${watchlistId}/watch/${assetId}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+};
+
+export const addAssetToWatchlist = async (
+  watchlistId: string,
+  assetId: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+
+    return await marketService.post(
+      `/watchlist/${watchlistId}/watch/${assetId}`,
+      {},
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
   } catch (error) {
     return await Promise.reject(error);
   }

@@ -213,6 +213,7 @@ const AssetDetailPage: React.FC = () => {
       <div className="flex flex-col md:flex-row gap-5">
         {data !== undefined ? (
           <Card1
+           
             data={{
               ...data,
               socketPrice:
@@ -220,7 +221,11 @@ const AssetDetailPage: React.FC = () => {
                   ? lastPrice[prefCurrency.toLowerCase() as PreferredCurrencyI]
                   : 0
             }}
+           
             currency={userInfo?.preferredCurrency as string}
+            playId={id as string}
+            assetId={assetId as string}
+         
           />
         ) : (
           <Card2Skeleton />
@@ -239,7 +244,6 @@ const AssetDetailPage: React.FC = () => {
         <div className="h-[35rem] mb-5">
           <LineChart data={chartItem} />
         </div>
-
         <Tabs value={'daily'}>
           <TabsHeader
             className="bg-transparent rounded-xl"

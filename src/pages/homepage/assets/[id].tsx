@@ -6,6 +6,7 @@ import Card1 from '@/containers/homepage/asset/Card1';
 import Card2 from '@/containers/homepage/asset/Card2';
 import Card1Skeleton from '@/containers/homepage/asset/skeleton/Card1Skeleton';
 import Card2Skeleton from '@/containers/homepage/asset/skeleton/Card2Skeleton';
+import useGetLastPrice from '@/hooks/useGetLastPrice';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
 import { getPlayPortfolio } from '@/repository/play.repository';
@@ -15,6 +16,7 @@ import {
   type Assets,
   type IUserData
 } from '@/utils/interfaces/play.interface';
+import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import { Button, Tab, Tabs, TabsHeader } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -57,7 +59,8 @@ const AssetDetailPage: React.FC = () => {
       .then()
       .catch(() => {});
   }, []);
-
+  const prefCurrency = userInfo?.preferredCurrency.toLowerCase();
+  const lastPrice = useGetLastPrice(data?.seedsTicker);
   const handleChangeParams = (value: string): void => {
     setParams(prevState => ({
       ...prevState,
@@ -119,7 +122,15 @@ const AssetDetailPage: React.FC = () => {
         <div className="flex flex-col md:flex-row gap-5">
           {data !== undefined ? (
             <Card1
-              data={data}
+              data={{
+                ...data,
+                socketPrice:
+                  typeof prefCurrency === 'string'
+                    ? lastPrice[
+                        prefCurrency.toLowerCase() as PreferredCurrencyI
+                      ]
+                    : 0
+              }}
               currency={userInfo?.preferredCurrency as string}
             />
           ) : (

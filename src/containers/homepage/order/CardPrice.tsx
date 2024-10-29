@@ -2,9 +2,11 @@ import CCard from '@/components/CCard';
 import { standartCurrency } from '@/helpers/currency';
 import { type AssetI } from '@/utils/interfaces/play.interface';
 import { Avatar } from '@material-tailwind/react';
-
+interface AssetSocketI extends AssetI {
+  socketPrice: number;
+}
 interface props {
-  data: AssetI;
+  data: AssetSocketI;
   currency: string;
 }
 
@@ -34,7 +36,7 @@ const CardPrice: React.FC<props> = ({ data, currency }) => {
         <div className="flex items-center">
           <p className="text-xl font-semibold text-black my-2">
             {currency ?? 'IDR'}{' '}
-            {standartCurrency(data?.lastPrice?.open ?? 0).replace('Rp', '')}
+            {standartCurrency(data?.socketPrice ?? 0).replace('Rp', '')}
           </p>
         </div>
       </div>

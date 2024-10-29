@@ -2004,7 +2004,7 @@ export default {
       totalInvestment: 'Total Investasi',
       portfolio: 'Portofolio',
       virtualBalance: 'Saldo Virtual',
-      watchList: 'Daftar Tonton',
+      watchList: 'Daftar Pantauan',
       transaction: 'Transaksi',
       openOrder: 'Pesanan',
       historyTransaction: 'Riwayat Transaksi',
@@ -2128,7 +2128,8 @@ export default {
       btnNewWatchlist: 'Buat Daftar Pantauan Baru',
       successWatchlist: 'Watchlist berhasil dibuat',
       backToAsset: 'Kembali ke Asset',
-      seeWatchlist: 'Lihat Daftar Pantauan'
+      seeWatchlist: 'Lihat Daftar Pantauan',
+      noWatchlist: 'Daftar pantauan belum dibuat'
     },
     social: {
       sorry: 'Maaf, data postingan tidak ada!',

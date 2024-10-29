@@ -2200,7 +2200,8 @@ export default {
       btnNewWatchlist: 'Create New Watchlist',
       successWatchlist: 'Watchlist created successfully',
       backToAsset: 'Back to Asset',
-      seeWatchlist: 'See Watchlist'
+      seeWatchlist: 'See Watchlist',
+      noWatchlist: 'Watchlist has not been created'
     },
     social: {
       sorry: 'Sorry, there is no post here!',

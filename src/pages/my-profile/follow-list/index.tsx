@@ -31,6 +31,10 @@ const Follow: React.FC = () => {
     setSearch(event.target.value);
   };
 
+  const truncateTag = (tag: string): string => {
+    return tag.length > 15 ? `${tag.slice(0, 15)}...` : tag;
+  };
+
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -98,7 +102,7 @@ const Follow: React.FC = () => {
                               {item.name}
                             </Typography>
                             <Typography className="font-normal font-poppins text-sm text-[#7C7C7C]">
-                              @{item.seeds_tag}
+                              @{truncateTag(item.seeds_tag)}
                             </Typography>
                           </div>
                         </div>

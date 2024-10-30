@@ -2180,10 +2180,10 @@ export default {
       enter: 'Enter Watchlist name...',
       search: 'Search',
       modalHeader: 'Add Assets to Watchlist',
-      addToWatchlist: 'Add to Watchlist',
+      addToWatchlist: 'Save Changes',
       newWatchlist: 'Create a new Watchlist',
       horay: 'Hoorayyy!!',
-      successAddAsset: 'successfully added to watchlist',
+      successAddAsset: 'Watchlist updated successfully',
       continue: 'Continue',
       ops: 'Oops!!',
       cancelAddAsset: 'Cancel adding assets to watchlist?',
@@ -2200,7 +2200,8 @@ export default {
       btnNewWatchlist: 'Create New Watchlist',
       successWatchlist: 'Watchlist created successfully',
       backToAsset: 'Back to Asset',
-      seeWatchlist: 'See Watchlist'
+      seeWatchlist: 'See Watchlist',
+      noWatchlist: 'Watchlist has not been created'
     },
     social: {
       sorry: 'Sorry, there is no post here!',

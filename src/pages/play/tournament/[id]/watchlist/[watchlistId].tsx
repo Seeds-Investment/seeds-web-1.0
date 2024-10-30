@@ -105,7 +105,7 @@ const AssetWatchList: React.FC = () => {
             {detailWatchList?.watchlist?.assetList?.map(asset => (
               <div
                 key={asset?.id}
-                className="w-full flex items-center justify-between bg-[#F9F9F9] p-3 rounded-lg gap-3"
+                className="w-full flex items-center justify-between bg-[#F9F9F9] p-3 rounded-lg gap-3 mb-2"
               >
                 <div className="flex items-center gap-3">
                   <Avatar src={asset?.logo} alt="logo" width={40} height={40} />

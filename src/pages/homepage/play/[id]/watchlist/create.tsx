@@ -249,7 +249,7 @@ const CreateWatchlist: React.FC = () => {
             <ModalSuccesAddWatchlist
               assetId={assetList[0]?.id}
               playId={id as string}
-              isPlaySimulation={false}
+              isPlaySimulation={true}
             />
           )}
         </div>

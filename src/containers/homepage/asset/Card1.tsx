@@ -26,9 +26,16 @@ interface props {
   currency: string;
   playId: string;
   assetId: string;
+  playSimulation: boolean;
 }
 
-const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
+const Card1: React.FC<props> = ({
+  data,
+  currency,
+  playId,
+  assetId,
+  playSimulation
+}) => {
   const { t } = useTranslation();
   const [watchList, setWatchlist] = useState<Watchlist[]>([]);
   const [isOpenModalWatchlist, setIsOpenModalWatchlist] =
@@ -37,6 +44,8 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
   const [fetchedWatchlists, setFetchedWatchlists] = useState<AssetWatchlist[]>(
     []
   );
+  const [isRefetch, setIsRefetch] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchPlayWatchlist = async (): Promise<void> => {
     try {
@@ -49,6 +58,7 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
 
   const fetchWatchlists = async (): Promise<void> => {
     try {
+      setIsLoading(true);
       const watchlistData = await Promise.allSettled(
         watchList.map(async watchlist => await getWatchlistById(watchlist.id))
       );
@@ -63,8 +73,11 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
         .map(watchlist => watchlist.watchlist.id);
 
       setCheckboxState(initialCheckboxState);
+      setIsRefetch(false);
     } catch (error) {
       toast.error(`Error fetching watchlists ${error as string}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -75,10 +88,14 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
   }, [playId]);
 
   useEffect(() => {
-    if (watchList.length > 0 && assetId !== undefined) {
+    if (watchList?.length > 0 && assetId !== undefined) {
       void fetchWatchlists();
     }
-  }, [watchList]);
+  }, [watchList, assetId]);
+
+  useEffect(() => {
+    void fetchWatchlists();
+  }, [isRefetch]);
 
   const isAssetInWatchlist = checkboxState.length > 0;
 
@@ -107,18 +124,20 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
             </div>
           </div>
         </div>
-        <div
-          onClick={() => {
-            setIsOpenModalWatchlist(prev => !prev);
-          }}
-          className="cursor-pointer"
-        >
-          <Image
-            src={isAssetInWatchlist ? FavoriteAdded : Favorite}
-            alt="favorite"
-            className="w-5 h-5"
-          />
-        </div>
+        {!isLoading && (
+          <div
+            onClick={() => {
+              setIsOpenModalWatchlist(prev => !prev);
+            }}
+            className="cursor-pointer"
+          >
+            <Image
+              src={isAssetInWatchlist ? FavoriteAdded : Favorite}
+              alt="favorite"
+              className="w-5 h-5"
+            />
+          </div>
+        )}
       </div>
       <p className="text-xl font-semibold text-black my-2">
         {currency ?? 'IDR'}{' '}
@@ -149,6 +168,8 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
           fetchedWatchlists={fetchedWatchlists}
           checkboxState={checkboxState}
           setCheckboxState={setCheckboxState}
+          isPlaySimulation={playSimulation}
+          setIsRefetch={setIsRefetch}
         />
       )}
     </CCard>

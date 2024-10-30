@@ -37,7 +37,7 @@ const Card2: React.FC<props> = ({ data, currency }) => {
   };
 
   return (
-    <CCard className="flex w-full md:w-2/3 p-2 md:mt-5 md:rounded-lg border-none rounded-none">
+    <CCard className="flex w-full md:w-1/2 p-2 md:mt-5 md:rounded-lg border-none rounded-none">
       <p className="text-sm text-center items-center text-[#262626]">
         {t('playSimulation.remainingTime')} :
       </p>

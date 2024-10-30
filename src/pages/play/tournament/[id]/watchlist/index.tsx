@@ -4,7 +4,6 @@
 
 import more_vertical from '@/assets/more-option/more_vertical.svg';
 import WatchlistNoData from '@/assets/play/tournament/watchlistNoData.svg';
-import WatchlistProfile from '@/assets/play/tournament/watchlistProfile.svg';
 import AssetPagination from '@/components/AssetPagination';
 import ModalAddWatchlist from '@/components/popup/ModalAddWatchlist';
 import ModalEditWatchlist from '@/components/popup/ModalEditWatchlist';
@@ -15,7 +14,6 @@ import { useAppSelector } from '@/store/redux/store';
 import { type Watchlist } from '@/utils/interfaces/watchlist.interface';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import {
-  Avatar,
   Button,
   Dialog,
   DialogBody,
@@ -158,12 +156,6 @@ const TournamentHome: React.FC = () => {
                       }}
                       className="w-full flex items-center gap-5"
                     >
-                      <Avatar
-                        alt="watchlist-image"
-                        src={watchLists?.imgUrl ?? WatchlistProfile}
-                        width={50}
-                        height={50}
-                      />
                       <Typography className="font-poppins text-base font-semibold">
                         {watchLists?.name}
                       </Typography>
@@ -265,9 +257,11 @@ const TournamentHome: React.FC = () => {
               </p>
               <div
                 onClick={() => {
-                  setIsDetailModal(true);
+                  router.push(
+                    `/play/tournament/${id as string}/watchlist/create`
+                  );
                 }}
-                className="bg-[#3AC4A0] mt-8 py-4 px-16 rounded-full text-white cursor-pointer"
+                className="bg-[#3AC4A0] mt-8 py-4 px-16 rounded-full font-poppins font-semibold text-white cursor-pointer"
               >
                 {t('tournament.watchlist.createWatchlist')}
               </div>

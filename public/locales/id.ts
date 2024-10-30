@@ -2004,7 +2004,7 @@ export default {
       totalInvestment: 'Total Investasi',
       portfolio: 'Portofolio',
       virtualBalance: 'Saldo Virtual',
-      watchList: 'Daftar Tonton',
+      watchList: 'Daftar Pantauan',
       transaction: 'Transaksi',
       openOrder: 'Pesanan',
       historyTransaction: 'Riwayat Transaksi',
@@ -2108,10 +2108,10 @@ export default {
       enter: 'Masukan nama Daftar Pantau...',
       search: 'Cari',
       modalHeader: 'Tambahkan Aset ke Daftar Pantauan',
-      addToWatchlist: 'Tambahkan ke Daftar Pantauan',
+      addToWatchlist: 'Simpan Perubahan',
       newWatchlist: 'Buat Daftar Pantauan baru',
       horay: 'Horey!!',
-      successAddAsset: 'berhasil ditambahkan ke watchlist',
+      successAddAsset: 'Daftar Pantauan berhasil diperbarui',
       continue: 'Lanjutkan',
       ops: 'Ups!!',
       cancelAddAsset: 'Batalkan penambahan aset ke daftar pantauan?',
@@ -2128,7 +2128,8 @@ export default {
       btnNewWatchlist: 'Buat Daftar Pantauan Baru',
       successWatchlist: 'Watchlist berhasil dibuat',
       backToAsset: 'Kembali ke Asset',
-      seeWatchlist: 'Lihat Daftar Pantauan'
+      seeWatchlist: 'Lihat Daftar Pantauan',
+      noWatchlist: 'Daftar pantauan belum dibuat'
     },
     social: {
       sorry: 'Maaf, data postingan tidak ada!',

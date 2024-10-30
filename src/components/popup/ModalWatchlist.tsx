@@ -20,6 +20,8 @@ interface Props {
   fetchedWatchlists: AssetWatchlist[];
   checkboxState: string[];
   setCheckboxState: React.Dispatch<React.SetStateAction<string[]>>;
+  isPlaySimulation: boolean;
+  setIsRefetch: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ModalWatchlist: React.FC<Props> = ({
@@ -30,7 +32,9 @@ const ModalWatchlist: React.FC<Props> = ({
   assetName,
   fetchedWatchlists,
   checkboxState,
-  setCheckboxState
+  setCheckboxState,
+  isPlaySimulation,
+  setIsRefetch
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -41,15 +45,18 @@ const ModalWatchlist: React.FC<Props> = ({
   const [isOpenAlreadyExists, setIsOpenAlreadyExists] =
     useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [checkedWatchlist, setCheckedWatchlist] = useState<string[]>([
+    ...checkboxState
+  ]);
 
   const handleCheckboxChange = (
     watchlistId: string,
     isChecked: boolean
   ): void => {
     if (isChecked) {
-      setCheckboxState([...checkboxState, watchlistId]);
+      setCheckedWatchlist([...checkedWatchlist, watchlistId]);
     } else {
-      setCheckboxState(checkboxState.filter(id => id !== watchlistId));
+      setCheckedWatchlist(checkedWatchlist.filter(id => id !== watchlistId));
     }
   };
 
@@ -62,7 +69,7 @@ const ModalWatchlist: React.FC<Props> = ({
           const watchlistId = watchlist.watchlist.id;
           const currentAssetList =
             watchlist.watchlist.assetList?.map(item => item.id) ?? [];
-          const isChecked = checkboxState.includes(watchlistId);
+          const isChecked = checkedWatchlist.includes(watchlistId);
           const isAssetInWatchlist = currentAssetList.includes(assetId);
 
           if (isChecked && !isAssetInWatchlist) {
@@ -84,8 +91,13 @@ const ModalWatchlist: React.FC<Props> = ({
       );
       if (requestCount > 0) {
         setIsOpenSuccessAddAsset(true);
-      } else {
+        setCheckboxState(checkedWatchlist);
+        setIsRefetch(true);
+      } else if (requestCount === 0 && checkedWatchlist.length > 0) {
         setIsOpenAlreadyExists(true);
+        setCheckboxState(checkedWatchlist);
+      } else {
+        setIsOpenCancelAddAsset(true);
       }
     } catch (error) {
       toast.error(`Error adding ${assetName} to watchlist: ${error as string}`);
@@ -125,28 +137,40 @@ const ModalWatchlist: React.FC<Props> = ({
               className="hover:scale-110 transition ease-out cursor-pointer"
             />
           </div>
-          <div className="h-[150px] overflow-y-auto px-6 flex flex-col gap-2 mb-8">
-            {fetchedWatchlists.map(data => (
-              <div
-                key={data?.watchlist?.id}
-                className="flex justify-between items-center bg-[#F9F9F9] p-2 rounded-lg sc"
-              >
+          <div className="h-[150px] overflow-y-auto px-6 flex flex-col gap-2 mb-8 watchlist-scroll">
+            {fetchedWatchlists.length > 0 ? (
+              fetchedWatchlists.map(data => (
+                <div
+                  key={data?.watchlist?.id}
+                  className="flex justify-between items-center bg-[#F9F9F9] p-2 rounded-lg sc"
+                >
+                  <Typography className="font-poppins font-normal text-base">
+                    {data?.watchlist?.name}
+                  </Typography>
+                  <input
+                    className="cursor-pointer w-5 h-5"
+                    type="checkbox"
+                    checked={checkedWatchlist.includes(data?.watchlist?.id)}
+                    onChange={e => {
+                      handleCheckboxChange(
+                        data?.watchlist?.id,
+                        e.target.checked
+                      );
+                    }}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="flex justify-center items-center h-full">
                 <Typography className="font-poppins font-normal text-base">
-                  {data?.watchlist?.name}
+                  {t('tournament.watchlist.noWatchlist')}
                 </Typography>
-                <input
-                  className="cursor-pointer w-5 h-5"
-                  type="checkbox"
-                  checked={checkboxState.includes(data?.watchlist?.id)}
-                  onChange={e => {
-                    handleCheckboxChange(data?.watchlist?.id, e.target.checked);
-                  }}
-                />
               </div>
-            ))}
+            )}
           </div>
           <div className="flex flex-col items-center justify-center gap-4 px-6">
             <Button
+              disabled={fetchedWatchlists.length === 0}
               onClick={handleAddToWatchlist}
               className="w-full rounded-full font-poppins font-semibold text-sm bg-seeds-button-green"
             >
@@ -155,7 +179,11 @@ const ModalWatchlist: React.FC<Props> = ({
             <Button
               onClick={async () => {
                 await router.push(
-                  `/play/tournament/${playId}/watchlist/create?assetTicker=${assetTicker}`
+                  `${
+                    isPlaySimulation
+                      ? `/homepage/play/${playId}/watchlist/create?assetTicker=${assetTicker}`
+                      : `/play/tournament/${playId}/watchlist/create?assetTicker=${assetTicker}`
+                  }`
                 );
               }}
               className="w-full rounded-full font-poppins font-semibold text-sm bg-white border-2 border-[#3ac4a0] text-seeds-button-green"
@@ -236,7 +264,7 @@ const ModalWatchlist: React.FC<Props> = ({
               {t('tournament.watchlist.horay')}
             </Typography>
             <Typography className="font-poppins font-normal text-sm text-[#7C7C7C] text-center">
-              {`${assetName} ${t('tournament.watchlist.successAddAsset')}`}
+              {`${t('tournament.watchlist.successAddAsset')}`}
             </Typography>
           </div>
           <Button

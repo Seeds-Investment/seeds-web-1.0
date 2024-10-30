@@ -8,9 +8,14 @@ import Modal from '../ui/modal/Modal';
 interface Props {
   assetId: string;
   playId: string;
+  isPlaySimulation: boolean;
 }
 
-const ModalSuccesAddWatchlist: React.FC<Props> = ({ assetId, playId }) => {
+const ModalSuccesAddWatchlist: React.FC<Props> = ({
+  assetId,
+  playId,
+  isPlaySimulation
+}) => {
   const { t } = useTranslation();
   const router = useRouter();
   return (
@@ -36,7 +41,13 @@ const ModalSuccesAddWatchlist: React.FC<Props> = ({ assetId, playId }) => {
         <div className="flex flex-col gap-4 w-full">
           <Button
             onClick={async () => {
-              await router.push(`/play/tournament/${playId}/${assetId}`);
+              await router.push(
+                `${
+                  isPlaySimulation
+                    ? `/homepage/assets/${assetId}?playId=${playId}`
+                    : `/play/tournament/${playId}/${assetId}`
+                }`
+              );
             }}
             className="bg-seeds-button-green w-full capitalize rounded-full font-poppins font-semibold text-sm"
           >
@@ -44,7 +55,13 @@ const ModalSuccesAddWatchlist: React.FC<Props> = ({ assetId, playId }) => {
           </Button>
           <Button
             onClick={async () => {
-              await router.push(`/play/tournament/${playId}/watchlist`);
+              await router.push(
+                `${
+                  isPlaySimulation
+                    ? `/homepage/play/${playId}/watchlist`
+                    : `/play/tournament/${playId}/watchlist`
+                }`
+              );
             }}
             className="bg-white text-seeds-green border-2 border-seeds-green w-full capitalize rounded-full font-poppins font-semibold text-sm"
           >

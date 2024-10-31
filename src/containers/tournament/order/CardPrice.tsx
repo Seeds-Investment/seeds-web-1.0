@@ -1,4 +1,5 @@
 import CCard from '@/components/CCard';
+import { formatAssetPrice } from '@/helpers/currency';
 import { useAppSelector } from '@/store/redux/store';
 import { Avatar } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -83,8 +84,7 @@ const CardPrice: React.FC<props> = ({ data, loading }) => {
             </div>
             <div className="flex items-center mx-3">
               <p className="text-lg font-semibold text-black my-2">
-                {preferredCurrency}{' '}
-                {new Intl.NumberFormat().format(data.socketPrice ?? 0)}
+                {preferredCurrency} {formatAssetPrice(data.socketPrice ?? 0)}
               </p>
             </div>
           </div>

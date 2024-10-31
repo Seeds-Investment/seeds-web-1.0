@@ -706,6 +706,7 @@ export default {
       day: 'DD',
       month: 'MM',
       year: 'YYYY',
+      seedsTag: 'Seedstag is a unique username on our seeds apps',
       validation: {
         seedsTag: 'SeedsTag already used',
         regex: 'SeedsTag cannot contain spaces or symbols, please delete!',

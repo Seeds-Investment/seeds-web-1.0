@@ -627,6 +627,7 @@ export default {
       day: 'HH',
       month: 'BB',
       year: 'TTTT',
+      seedsTag: 'Seedstag adalah unique username Anda di aplikasi Seeds kami',
       validation: {
         seedsTag: 'SeedsTag sudah dipakai, nih',
         regex: 'SeedsTag tidak boleh berisi spasi atau simbol, harap dihapus!',

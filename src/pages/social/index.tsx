@@ -364,7 +364,7 @@ const Social: React.FC = () => {
       />
 
       {!isGuest() && (
-        <div className="fixed bottom-10 right-10 z-20">
+        <div className="fixed bottom-10 right-10 z-10">
           <div className="bg-[#3AC4A0] p-2 rounded-full cursor-pointer hover:scale-110 duration-300">
             <PlusIcon
               width={50}

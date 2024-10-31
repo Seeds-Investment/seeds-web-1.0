@@ -4,7 +4,7 @@ import CCard from '@/components/CCard';
 import ModalWatchlist from '@/components/popup/ModalWatchlist';
 import {
   calculatePercentageDifference,
-  standartCurrency
+  formatAssetPrice
 } from '@/helpers/currency';
 import { getWatchlist, getWatchlistById } from '@/repository/market.repository';
 import { type AssetI } from '@/utils/interfaces/play.interface';
@@ -75,7 +75,7 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
   }, [playId]);
 
   useEffect(() => {
-    if (watchList.length > 0 && assetId !== undefined) {
+    if (watchList?.length > 0 && assetId !== undefined) {
       void fetchWatchlists();
     }
   }, [watchList]);
@@ -121,13 +121,11 @@ const Card1: React.FC<props> = ({ data, currency, playId, assetId }) => {
         </div>
       </div>
       <p className="text-xl font-semibold text-black my-2">
-        {currency ?? 'IDR'}{' '}
-        {standartCurrency(data?.socketPrice ?? 0).replace('Rp', '')}
+        {currency ?? 'IDR'} {formatAssetPrice(data?.socketPrice ?? 0)}
       </p>
       <div className="w-full flex flex-row justify-between">
         <p className="text-sm font-normal text-[#5E44FF]">
-          {currency ?? 'IDR'}{' '}
-          {standartCurrency(data?.lastPrice?.vwap ?? 0).replace('Rp', '')} (
+          {currency ?? 'IDR'} {formatAssetPrice(data?.lastPrice?.vwap ?? 0)} (
           {
             calculatePercentageDifference(
               data?.lastPrice?.open ?? 0,

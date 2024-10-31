@@ -34,7 +34,7 @@ export const getPromocodeActive = async (
   if (accessToken === null || accessToken === '') {
     return await Promise.resolve('Access token not found');
   }
-  
+
   try {
     const response = await promoService.get('/list/active', {
       params: {

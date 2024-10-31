@@ -15,7 +15,10 @@ import {
 } from '@/repository/quiz.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import LanguageContext from '@/store/language/language-context';
-import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import {
+  selectPromoCodeValidationResult,
+  setPromoCodeValidationResult
+} from '@/store/redux/features/promo-code';
 import i18n from '@/utils/common/i18n';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -173,28 +176,28 @@ const QuizDetail = (): React.ReactElement => {
   }, [detailQuiz]);
 
   useEffect(() => {
-    if ((
-      detailQuiz !== undefined)
-      && (userInfo !== undefined)
-      && (detailQuiz?.status === 'ENDED')
-      && (detailQuiz?.prize_type === 'LINK')
+    if (
+      detailQuiz !== undefined &&
+      userInfo !== undefined &&
+      detailQuiz?.status === 'ENDED' &&
+      detailQuiz?.prize_type === 'LINK'
     ) {
       const index = detailQuiz?.winners.indexOf(userInfo.id);
       if ((detailQuiz?.winners).includes(userInfo?.id)) {
-        setIsShowWinnerAlert(true)
+        setIsShowWinnerAlert(true);
       }
       if (index !== -1) {
-        setWinningPosition(index+1);
-        setWinningLink(detailQuiz?.winner_link_url[index] ?? '')
+        setWinningPosition(index + 1);
+        setWinningLink(detailQuiz?.winner_link_url[index] ?? '');
       }
       if (winningPosition === 1) {
-        setOrdinalName('st')
+        setOrdinalName('st');
       } else if (winningPosition === 2) {
-        setOrdinalName('nd')
+        setOrdinalName('nd');
       } else if (winningPosition === 3) {
-        setOrdinalName('rd')
+        setOrdinalName('rd');
       } else {
-        setOrdinalName('th')
+        setOrdinalName('th');
       }
     }
   }, [detailQuiz, userInfo, ordinalName, winningLink]);
@@ -300,11 +303,13 @@ const QuizDetail = (): React.ReactElement => {
           </div>
 
           {/* Winner Section */}
-          {
-            detailQuiz !== null && detailQuiz !== undefined &&
-              <QuizWinnerSection detailQuiz={detailQuiz} preferredCurrency={userInfo?.preferredCurrency ?? 'IDR'}/>
-          }
-          
+          {detailQuiz !== null && detailQuiz !== undefined && (
+            <QuizWinnerSection
+              detailQuiz={detailQuiz}
+              preferredCurrency={userInfo?.preferredCurrency ?? 'IDR'}
+            />
+          )}
+
           <div className="mt-4 flex flex-row gap-8">
             {detailQuiz?.sponsors?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
@@ -336,7 +341,7 @@ const QuizDetail = (): React.ReactElement => {
             ) : null}
           </div>
         </div>
-        <div className="w-full h-fit bg-white rounded-xl p-4 mb-32 md:mb-0">
+        <div className="w-full h-[300px] bg-white rounded-xl p-4 mb-32 md:mb-0">
           <div
             className={`flex flex-row justify-between items-start gap-2 ${
               (detailQuiz?.admission_fee ?? 0) > 0 ? 'mt-4' : ''

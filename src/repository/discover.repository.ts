@@ -155,7 +155,10 @@ export const bookEvent = async (params: {
   }
 };
 
-export const updateEventNotification = async (payload: string[], id: string): Promise<any> => {
+export const updateEventNotification = async (
+  payload: string[],
+  id: string
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -191,15 +194,12 @@ export const checkInOutEvent = async (params: {
       return await Promise.resolve('Access token not found');
     }
 
-    return await discoverService.post(`/event/check-in-out`,
-      params,
-      {
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${accessToken ?? ''}`
-        }
+    return await discoverService.post(`/event/check-in-out`, params, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
       }
-    );
+    });
   } catch (error) {
     await Promise.reject(error);
   }

@@ -78,9 +78,9 @@ const HeaderLogin: React.FC = () => {
   }, []);
 
   const handleOpenLogout = (): void => {
-    handleOpenModal()
+    handleOpenModal();
     setIsLogoutModal(true);
-  }
+  };
 
   return (
     <div>

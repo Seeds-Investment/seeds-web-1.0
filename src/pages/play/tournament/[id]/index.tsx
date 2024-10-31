@@ -23,7 +23,10 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import LanguageContext from '@/store/language/language-context';
-import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import {
+  selectPromoCodeValidationResult,
+  setPromoCodeValidationResult
+} from '@/store/redux/features/promo-code';
 import {
   type IDetailTournament,
   type UserInfo
@@ -599,7 +602,7 @@ const TournamentDetail: React.FC = () => {
             </Typography>
           </div>
         </div>
-        <div className="w-full h-fit bg-white rounded-xl p-4 mb-32 md:mb-0">
+        <div className="w-full h-[300px] bg-white rounded-xl p-4 mb-32 md:mb-0">
           {userInfo !== undefined &&
             (detailTournament?.admission_fee ?? 0) > 0 && (
               <PromoCode

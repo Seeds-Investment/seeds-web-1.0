@@ -90,14 +90,17 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
         quantity: 1,
         name: userInfo?.name,
         email: userInfo?.email,
-        promo_code: promoCodeValidationResult !== 0 ? promoCodeValidationResult?.response?.promo_code : '',
+        promo_code:
+          promoCodeValidationResult !== 0
+            ? promoCodeValidationResult?.response?.promo_code
+            : '',
         spot_type: 'Premium Content'
       });
 
-      if ((response?.payment_url !== undefined) && (response?.payment_url !== '')) {
+      if (response?.payment_url !== undefined && response?.payment_url !== '') {
         window.open(response.payment_url as string, '_blank');
       }
-      
+
       await router
         .push(`/social/payment/receipt/${response.order_id as string}`)
         .catch(error => {
@@ -123,10 +126,10 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
           spot_type: 'Premium Content',
           item_price: admissionFee,
           item_id: data?.id,
-          currency: userInfo?.preferredCurrency ?? 'IDR',
+          currency: userInfo?.preferredCurrency ?? 'IDR'
         });
-        
-        setNewPromoCodeDiscount(response?.total_discount)
+
+        setNewPromoCodeDiscount(response?.total_discount);
       }
     };
 
@@ -193,15 +196,14 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
           setOpenDialog(false);
         }}
       >
-        {
-          ((userInfo !== undefined) && (option !== undefined)) &&
-            <ModalEWallet
-              payment={option}
-              handlePay={handlePay}
-              dataPost={data}
-              newPromoCodeDiscount={newPromoCodeDiscount}
-            />
-        }
+        {userInfo !== undefined && option !== undefined && (
+          <ModalEWallet
+            payment={option}
+            handlePay={handlePay}
+            dataPost={data}
+            newPromoCodeDiscount={newPromoCodeDiscount}
+          />
+        )}
       </Dialog>
     </CCard>
   );

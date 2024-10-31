@@ -76,7 +76,7 @@ export const formatNumber = (
   return formattedNumber.replace(/\.00$/, ''); // Remove decimal places if they are ".00"
 };
 
-export const formatAssetPrice = (price: number) => {
+export const formatAssetPrice = (price: number): number => {
   if (price > 11) {
     return Math.round(price * 100) / 100;
   } else if (price < 11 && price > 1) {

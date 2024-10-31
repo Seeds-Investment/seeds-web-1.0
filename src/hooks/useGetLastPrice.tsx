@@ -20,7 +20,7 @@ const useGetLastPrice = (ticker?: string) => {
   });
 
   useEffect(() => {
-    if (ticker) {
+    if (ticker !== undefined) {
       socketService.connectAsset();
 
       socketService.addListener('connect', () => {
@@ -59,8 +59,8 @@ const useGetLastPrice = (ticker?: string) => {
   }, [ticker]);
 
   useEffect(() => {
-    if (connect && ticker) {
-      socketService.emit('join_asset', { ticker: ticker });
+    if (connect && ticker !== undefined) {
+      socketService.emit('join_asset', { ticker });
     }
   }, [connect, ticker]);
 

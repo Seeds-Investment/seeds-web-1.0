@@ -24,7 +24,7 @@ import {
   type SuccessOrderData
 } from '@/utils/interfaces/play.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
-import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
+import { type PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import {
   Avatar,
   Button,

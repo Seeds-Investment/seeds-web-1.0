@@ -27,6 +27,7 @@ interface props {
   playId: string;
   assetId: string;
   playSimulation: boolean;
+  playTeamBattle: boolean;
 }
 
 const Card1: React.FC<props> = ({
@@ -34,7 +35,8 @@ const Card1: React.FC<props> = ({
   currency,
   playId,
   assetId,
-  playSimulation
+  playSimulation,
+  playTeamBattle
 }) => {
   const { t } = useTranslation();
   const [watchList, setWatchlist] = useState<Watchlist[]>([]);
@@ -167,6 +169,7 @@ const Card1: React.FC<props> = ({
           checkboxState={checkboxState}
           setCheckboxState={setCheckboxState}
           isPlaySimulation={playSimulation}
+          isTeamBattle={playTeamBattle}
           setIsRefetch={setIsRefetch}
         />
       )}

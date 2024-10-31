@@ -116,6 +116,7 @@ const AssetDetailPage: React.FC = () => {
               playId={playId as string}
               assetId={id as string}
               playSimulation={true}
+              playTeamBattle={false}
             />
           ) : (
             <Card1Skeleton />

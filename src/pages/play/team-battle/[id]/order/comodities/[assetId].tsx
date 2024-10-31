@@ -17,9 +17,9 @@ import {
   getBattleBalance
 } from '@/repository/team-battle.repository';
 import { useAppSelector } from '@/store/redux/store';
-import { AssetI } from '@/utils/interfaces/play.interface';
+import { type AssetI } from '@/utils/interfaces/play.interface';
 import { type SuccessOrderDataBattle } from '@/utils/interfaces/team-battle.interface';
-import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
+import { type PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import {
   Avatar,
   Button,
@@ -56,19 +56,6 @@ export interface Ballance {
 
 interface UserData {
   preferredCurrency: string;
-}
-
-interface DetailAsset {
-  id: string;
-  providerName: string;
-  realTicker: string;
-  logo: string;
-  name: string;
-  lastPrice: LastPrice;
-}
-
-interface LastPrice {
-  open: number;
 }
 
 interface AssetPortfolio {

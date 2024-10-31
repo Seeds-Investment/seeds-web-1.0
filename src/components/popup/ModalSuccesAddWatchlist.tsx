@@ -9,12 +9,14 @@ interface Props {
   assetId: string;
   playId: string;
   isPlaySimulation: boolean;
+  isTeamBattle: boolean;
 }
 
 const ModalSuccesAddWatchlist: React.FC<Props> = ({
   assetId,
   playId,
-  isPlaySimulation
+  isPlaySimulation,
+  isTeamBattle
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -43,8 +45,10 @@ const ModalSuccesAddWatchlist: React.FC<Props> = ({
             onClick={async () => {
               await router.push(
                 `${
-                  isPlaySimulation
+                  isPlaySimulation && !isTeamBattle
                     ? `/homepage/assets/${assetId}?playId=${playId}`
+                    : isTeamBattle && !isPlaySimulation
+                    ? `/play/team-battle/${playId}/${assetId}`
                     : `/play/tournament/${playId}/${assetId}`
                 }`
               );
@@ -57,8 +61,10 @@ const ModalSuccesAddWatchlist: React.FC<Props> = ({
             onClick={async () => {
               await router.push(
                 `${
-                  isPlaySimulation
+                  isPlaySimulation && !isTeamBattle
                     ? `/homepage/play/${playId}/watchlist`
+                    : isTeamBattle && !isPlaySimulation
+                    ? `/play/team-battle/${playId}/watchlist`
                     : `/play/tournament/${playId}/watchlist`
                 }`
               );

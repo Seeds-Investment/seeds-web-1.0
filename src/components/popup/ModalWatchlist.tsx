@@ -21,6 +21,7 @@ interface Props {
   checkboxState: string[];
   setCheckboxState: React.Dispatch<React.SetStateAction<string[]>>;
   isPlaySimulation: boolean;
+  isTeamBattle: boolean;
   setIsRefetch: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -34,6 +35,7 @@ const ModalWatchlist: React.FC<Props> = ({
   checkboxState,
   setCheckboxState,
   isPlaySimulation,
+  isTeamBattle,
   setIsRefetch
 }) => {
   const { t } = useTranslation();
@@ -180,8 +182,10 @@ const ModalWatchlist: React.FC<Props> = ({
               onClick={async () => {
                 await router.push(
                   `${
-                    isPlaySimulation
+                    isPlaySimulation && !isTeamBattle
                       ? `/homepage/play/${playId}/watchlist/create?assetTicker=${assetTicker}`
+                      : isTeamBattle && !isPlaySimulation
+                      ? `/play/team-battle/${playId}/watchlist/create?assetTicker=${assetTicker}`
                       : `/play/tournament/${playId}/watchlist/create?assetTicker=${assetTicker}`
                   }`
                 );

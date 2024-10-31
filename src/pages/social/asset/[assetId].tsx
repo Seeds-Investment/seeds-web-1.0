@@ -28,7 +28,7 @@ import {
   type IPortfolioSummary,
   type IUserData
 } from '@/utils/interfaces/play.interface';
-import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
+import { type PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 
@@ -182,6 +182,10 @@ const AssetDetailPage: React.FC = () => {
                   : 0
             }}
             currency={userInfo?.preferredCurrency as string}
+            playId={id as string}
+            assetId={assetId as string}
+            playSimulation={false}
+            playTeamBattle={false}
           />
         ) : (
           <Card2Skeleton />

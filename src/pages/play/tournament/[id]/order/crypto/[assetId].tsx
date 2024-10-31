@@ -19,10 +19,10 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import { useAppSelector } from '@/store/redux/store';
 import {
-  AssetI,
+  type AssetI,
   type SuccessOrderData
 } from '@/utils/interfaces/play.interface';
-import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
+import { type PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import {
   Avatar,
   Button,
@@ -59,20 +59,6 @@ export interface Ballance {
 
 interface UserData {
   preferredCurrency: string;
-}
-
-interface DetailAsset {
-  id: string;
-  providerName: string;
-  realTicker: string;
-  logo: string;
-  name: string;
-  lastPrice: LastPrice;
-  assetType: string;
-}
-
-interface LastPrice {
-  open: number;
 }
 
 interface AssetPortfolio {

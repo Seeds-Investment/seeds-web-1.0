@@ -250,6 +250,7 @@ const CreateWatchlist: React.FC = () => {
               assetId={assetList[0]?.id}
               playId={id as string}
               isPlaySimulation={true}
+              isTeamBattle={false}
             />
           )}
         </div>

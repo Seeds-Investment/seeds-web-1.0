@@ -16,6 +16,7 @@ import {
 import Image from 'next/image';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { MultiValue } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { toast } from 'react-toastify';
 import ModalMembershipType from './modalMembershipType';
@@ -80,6 +81,10 @@ const CreateCirclePage = ({
 }: any): JSX.Element => {
   const [hashtags, setHashtag] = useState<HashtagInterface[]>();
   const [categories, setCategories] = useState<any[]>();
+  const [selectedCategories, setSelectedCategories] = useState<
+    MultiValue<string>
+  >([]);
+  const [limitReached, setLimitReached] = useState(false);
   const [openModalMembership, setOpenModalMembership] = useState(false);
   const [isAgree, setIsAgree] = useState();
   const { t } = useTranslation();
@@ -104,9 +109,9 @@ const CreateCirclePage = ({
 
   useEffect(() => {
     const isDuplicate = (): boolean => {
-      return circleNameArray.some((item) => item?.name === formRequest?.name);
+      return circleNameArray.some(item => item?.name === formRequest?.name);
     };
-    setIsNameDuplicate(isDuplicate())
+    setIsNameDuplicate(isDuplicate());
   }, [circleNameArray, formRequest]);
 
   const handleOpenModalMembership = (): void => {
@@ -121,6 +126,7 @@ const CreateCirclePage = ({
   };
 
   const fetchHashtags = async (): Promise<void> => {
+    //  Get API for Hashtags
     try {
       getHashtag(initialFilterHashtags)
         .then(res => {
@@ -140,6 +146,7 @@ const CreateCirclePage = ({
   };
 
   const fetchCircleCategory = async (): Promise<void> => {
+    // Get API for Categories option
     try {
       getCircleCategories(initialFilterHashtags)
         .then(res => {
@@ -163,17 +170,27 @@ const CreateCirclePage = ({
       setIsLoadingCircle(true);
       const response = await getCircle({ ...initialFilter });
       const newData = response.data !== null ? response.data : [];
-      setCircleNameArray(newData)
+      setCircleNameArray(newData);
     } catch (error) {
       toast.error(`Error fetching circle data: ${error as string}`);
     } finally {
       setIsLoadingCircle(false);
     }
   };
+  const handleCategoryChange = (newCategories: MultiValue<string>): void => {
+    // Handle Category option, set limit to just 5 options
+    if (newCategories.length <= 5) {
+      setSelectedCategories(newCategories);
+      setLimitReached(false);
+    } else {
+      setSelectedCategories(newCategories.slice(0, 5));
+      setLimitReached(true);
+    }
+  };
 
   return (
     <div>
-      {((formRequest !== undefined) && !isLoadingCircle) && (
+      {formRequest !== undefined && !isLoadingCircle && (
         <>
           <ModalMembershipType
             openModal={openModalMembership}
@@ -256,12 +273,13 @@ const CreateCirclePage = ({
                         : 'Nama Circle'
                     }
                   />
-                  {
-                    isNameDuplicate &&
-                      <div className='mt-1 text-[#DD2525] text-sm'>
-                        {t('circle.create.name.duplicate1')} {formRequest?.name ?? ''} {t('circle.create.name.duplicate2')}
-                      </div>
-                  }
+                  {isNameDuplicate && (
+                    <div className="mt-1 text-[#DD2525] text-sm">
+                      {t('circle.create.name.duplicate1')}{' '}
+                      {formRequest?.name ?? ''}{' '}
+                      {t('circle.create.name.duplicate2')}
+                    </div>
+                  )}
                   {error.name !== null ? (
                     <Typography color="red" className="text-xs mt-2">
                       {error.name}
@@ -295,8 +313,9 @@ const CreateCirclePage = ({
                   </label>
                   <CreatableSelect
                     isMulti
-                    onChange={changeCategory}
+                    onChange={handleCategoryChange}
                     options={categories}
+                    value={selectedCategories}
                     placeholder="Choose Categories"
                   />
                   {error.hashtags !== null ? (
@@ -304,6 +323,11 @@ const CreateCirclePage = ({
                       {error.category}
                     </Typography>
                   ) : null}
+                  {limitReached && (
+                    <Typography color="red" className="text-xs mt-2">
+                      Maximum choose 5 categories!
+                    </Typography>
+                  )}
                 </div>
 
                 <div className="mb-8">
@@ -444,7 +468,7 @@ const CreateCirclePage = ({
                   Terms and Conditions
                 </a>
 
-                {((isAgree === true) && !isNameDuplicate) ? (
+                {isAgree === true && !isNameDuplicate ? (
                   <Button
                     className="w-full bg-seeds-button-green mt-10 rounded-full capitalize"
                     onClick={() =>

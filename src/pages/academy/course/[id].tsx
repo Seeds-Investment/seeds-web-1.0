@@ -132,7 +132,7 @@ const DetailCourse: React.FC = () => {
                 />
               </>
             ) : (
-              <div className='flex justify-center items-center'>
+              <div className="flex justify-center items-center">
                 <Image
                   src={NoDataSeedy}
                   alt="no video"

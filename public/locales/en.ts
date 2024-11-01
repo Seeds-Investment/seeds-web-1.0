@@ -706,6 +706,7 @@ export default {
       day: 'DD',
       month: 'MM',
       year: 'YYYY',
+      seedsTag: 'Seedstag is a unique username on our seeds apps',
       validation: {
         seedsTag: 'SeedsTag already used',
         regex: 'SeedsTag cannot contain spaces or symbols, please delete!',
@@ -1003,12 +1004,13 @@ export default {
     emptyVoucher2: "Stay tuned and don't miss upcoming vouchers!",
     applied: 'Promo code successfully applied!',
     unApplied: 'Promo code has been removed successfully!',
-    apply: "Apply",
-    noExpired: "No expired date",
-    havePromo: "Have a promo code? Enter it here!",
+    apply: 'Apply',
+    noExpired: 'No expired date',
+    havePromo: 'Have a promo code? Enter it here!',
     notFound: 'Promo code not found. Make sure you entered a valid promo code.',
-    limitPurchaseMessage: 'You need to reach the minimum transaction before using the promo!',
-    limitDailyMessage: 'The promo code quota is already exceeding today’s limit',
+    limitPurchaseMessage:
+      'You need to reach the minimum transaction before using the promo!',
+    limitDailyMessage: 'The promo code quota is already exceeding today’s limit'
   },
   temporary: {
     welcome: {
@@ -1965,9 +1967,11 @@ export default {
     winnerAlertMessage2: 'You won the',
     winnerAlertMessage3: '',
     winnerAlertMessage4: 'position of',
-    winnerAlertMessage5: 'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
+    winnerAlertMessage5:
+      'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
     winnerAlertMessage6: 'Claim Prize',
-    winnerAlertMessage7: 'Click the image or Claim Button to be redirected to the prize.',
+    winnerAlertMessage7:
+      'Click the image or Claim Button to be redirected to the prize.',
     winnerAlertMessage8: 'Claim Prize Here'
   },
   micrositeQuiz: {
@@ -2157,7 +2161,10 @@ export default {
         "Don't forget to read Play Arena's terms and conditions before you start playing."
     },
     watchlist: {
-      watchlist: 'Watchlist',
+      myWatchlist: 'My Watchlist',
+      myWatchlistDescription: 'Check your watchlist',
+      assets: 'Assets',
+      btnEditAsset: 'Edit Asset',
       noData: 'No Watchlist yet',
       create: 'Create your Watchlist now!',
       createWatchlist: 'Create Watchlist',
@@ -2172,7 +2179,30 @@ export default {
       deleteConfirm: 'Are you sure want to delete this watchlist?',
       changeAsset: 'Change Asset',
       enter: 'Enter Watchlist name...',
-      search: 'Search'
+      search: 'Search',
+      modalHeader: 'Add Assets to Watchlist',
+      addToWatchlist: 'Save Changes',
+      newWatchlist: 'Create a new Watchlist',
+      horay: 'Hoorayyy!!',
+      successAddAsset: 'Watchlist updated successfully',
+      continue: 'Continue',
+      ops: 'Oops!!',
+      cancelAddAsset: 'Cancel adding assets to watchlist?',
+      yes: 'Yes',
+      no: 'No',
+      alreadyExist:
+        'The asset you added is already in the watchlist that has been created.',
+      ok: 'Ok',
+      createNewWatchlist: 'New Watchlist',
+      descNewWatchlist:
+        'Create a watchlist to help you collect your favorite assets',
+      watchlistName: 'Watchlist Name',
+      groupName: 'Desired Group Name',
+      btnNewWatchlist: 'Create New Watchlist',
+      successWatchlist: 'Watchlist created successfully',
+      backToAsset: 'Back to Asset',
+      seeWatchlist: 'See Watchlist',
+      noWatchlist: 'Watchlist has not been created'
     },
     social: {
       sorry: 'Sorry, there is no post here!',
@@ -2266,6 +2296,13 @@ export default {
   },
   seedsEvent: {
     myEvent: 'My Event',
+    myCertificate: 'My Certificate',
+    myCertificates: 'My Certificates',
+    sendEmailConfirm:
+      'Are you sure to send this certificate to your registered email?',
+    emailMessage: 'The certificate was sent successfully to your email.',
+    yes: 'Yes',
+    no: 'No',
     search: 'Search',
     enter: 'Enter',
     past: 'Past Event',
@@ -2585,5 +2622,91 @@ export default {
     text15: 'Participant 50 points',
     text16: 'Season',
     text17: 'All Time'
+  },
+  teamBattle: {
+    battleCompetition: 'Battle Competition',
+    chooseCategory: 'Please Choose Category',
+    joinAsPublicConfirm: 'Are you sure you want to join as public?',
+    joinAsInvitation: 'Input your code invitation',
+    placeholderInvitation: 'Input here',
+    chooseUniversity: 'Choose Your University',
+    chooseCommunity: 'Choose Your Community',
+    chooseRegion: 'Choose Your Region',
+    leaderBoard: 'Leaderboard',
+    fullLeaderboard: 'full leaderboard',
+    theWinner: 'The Winner',
+    rank: 'Rank',
+    nameTeam: 'Name & Team',
+    return: 'Return',
+    currentRank: 'Current Rank',
+    next: 'Next',
+    timeTo: `It's time to`,
+    battle: 'Battle!',
+    prize: 'Prize',
+    leaderboardPopup: 'More participants will be joining soon',
+    willBegin: 'The stage will begin in:',
+    battleClosed1: "Opps! Sorry, you can't join the game.",
+    battleClosed2: "It's already in the",
+    battleClosed3: 'The battle has already ended.',
+    battleClosed4: 'The battle is canceled.',
+    stageNotStarted: 'Stage not yet started',
+    mainPage: {
+      period: 'Period',
+      registration: 'Registration',
+      elimination: 'Elimination',
+      semifinal: 'Semifinal',
+      final: 'Final',
+      participants: 'Participants',
+      totalParticipants: 'Total Participants',
+      join: 'Join',
+      play: 'Play',
+      sponsor: 'Sponsor',
+      sponsors: 'Sponsors',
+      tnc: 'Term & Condition',
+      wrongInvitationCode: 'Invalid invitation code!'
+    },
+    participant: {
+      participant: 'Participant',
+      noData: 'There is no data yet',
+      emptyTitle: 'Participant',
+      elimination: 'Elimination Stage',
+      semifinal: 'Semifinal Stage',
+      final: 'Final Stage'
+    },
+    popUpStage: {
+      winTitle: 'You Win!',
+      qualifiedTitle: 'Congratulations!',
+      failTitle: 'You Lose!',
+      eliminatedTitle: 'Unfortunately',
+      winDescription: 'Well done! You’ve successfully won the final stage!',
+      qualifiedDescription:
+        'You made it to the next stage. Keep up the good work!',
+      failDescription:
+        'So close! You almost made it to the top! Keep pushing for winning!',
+      eliminatedDescription:
+        "You didn't make it through to the next stage this time.",
+      yourRank: 'Your rank'
+    },
+    stagePage: {
+      gamePeriod: 'Period Game',
+      letsCheck: `Let's Check`,
+      yourRank: 'Your Rank',
+      enter: 'Enter',
+      onGoing: `Oops! It's not ongoing yet. The {{data}} stage will be held on`
+    },
+    waitingPage: {
+      success: `You're successfully registered for the competition.`,
+      enter: 'Enter Stage',
+      battleDesc: 'Battle started!',
+      back: 'Back to Play Center',
+      begin: 'The competition will begin in:'
+    },
+    history: {
+      myBattle: 'My Battle',
+      activeBattle: 'Active Battle',
+      pastBattle: 'Past Battle',
+      notFound: `You don't have any {{data}} yet`,
+      moreInfo: 'More Information'
+    }
   }
 };

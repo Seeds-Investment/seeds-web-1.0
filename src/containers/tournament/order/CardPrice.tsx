@@ -1,4 +1,6 @@
 import CCard from '@/components/CCard';
+import { formatAssetPrice } from '@/helpers/currency';
+import { useAppSelector } from '@/store/redux/store';
 import { Avatar } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +15,7 @@ interface DetailAsset {
   logo: string;
   name: string;
   lastPrice: LastPrice;
+  socketPrice?: number;
 }
 interface LastPrice {
   open: number;
@@ -38,7 +41,7 @@ const SkeletonLoader = (): JSX.Element => {
 const CardPrice: React.FC<props> = ({ data, loading }) => {
   const router = useRouter();
   const { t } = useTranslation();
-
+  const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
   if (loading) {
     return (
       <CCard className="flex w-full p-4 border-none rounded-xl shadow-none bg-[#F9F9F9]">
@@ -81,7 +84,7 @@ const CardPrice: React.FC<props> = ({ data, loading }) => {
             </div>
             <div className="flex items-center mx-3">
               <p className="text-lg font-semibold text-black my-2">
-                Rp. {new Intl.NumberFormat().format(data?.lastPrice?.open ?? 0)}
+                {preferredCurrency} {formatAssetPrice(data.socketPrice ?? 0)}
               </p>
             </div>
           </div>

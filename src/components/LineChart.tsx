@@ -23,7 +23,6 @@ const getGradient = (ctx: any, chartArea: any): any => {
 const LineChart: React.FC<LineChartProps> = ({ data }) => {
   const labelDummy = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
   const dataDummy = [0, 0, 0, 0, 0, 0];
-  console.log(data);
 
   const dataChart = {
     labels: data?.x ?? labelDummy,
@@ -60,8 +59,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
         ticks: {
           font: {
             family: 'Arial',
-            size: 15
-            // weight: 'bold'
+            size: 12
           },
           color: '#7C7C7C',
           backgroundColor: '#7C7C7C',

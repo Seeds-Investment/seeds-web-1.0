@@ -129,7 +129,10 @@ const SuccessPaymentPage: React.FC = () => {
     void fetchOrderDetail();
     void fetchPaymentList();
     dispatch(setPromoCodeValidationResult(0));
-    if ((orderDetail?.howToPayApi !== undefined) && (orderDetail?.howToPayApi !== '')) {
+    if (
+      orderDetail?.howToPayApi !== undefined &&
+      orderDetail?.howToPayApi !== ''
+    ) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [id, orderDetail?.howToPayApi]);
@@ -138,7 +141,7 @@ const SuccessPaymentPage: React.FC = () => {
     dispatch(setPrice(0));
     dispatch(setMonth(''));
   }, []);
-  
+
   const paymentSelectedEWallet: PaymentList[] = eWalletList.filter(
     (el: undefined | PaymentList): any => {
       return el?.payment_method === orderDetail?.paymentMethod;
@@ -177,10 +180,9 @@ const SuccessPaymentPage: React.FC = () => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {(
-                  orderDetail?.transactionStatus !== 'SETTLEMENT' && 
-                  orderDetail?.transactionStatus !== 'SUCCESS' && 
-                  orderDetail?.transactionStatus !== 'SUCCEEDED') ? (
+                {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                orderDetail?.transactionStatus !== 'SUCCESS' &&
+                orderDetail?.transactionStatus !== 'SUCCEEDED' ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -201,20 +203,16 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {(
-                  orderDetail?.transactionStatus !== 'SETTLEMENT' &&
-                  orderDetail?.transactionStatus !== 'SUCCESS' &&
-                  orderDetail?.transactionStatus !== 'SUCCEEDED'
-                )
+                {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                orderDetail?.transactionStatus !== 'SUCCESS' &&
+                orderDetail?.transactionStatus !== 'SUCCEEDED'
                   ? t('circle.payment.pendingPaidCircle')
                   : t('circle.payment.paymentSuccessful')}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {(
-                  orderDetail?.transactionStatus !== 'SETTLEMENT' &&
-                  orderDetail?.transactionStatus !== 'SUCCESS' &&
-                  orderDetail?.transactionStatus !== 'SUCCEEDED'
-                )
+                {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                orderDetail?.transactionStatus !== 'SUCCESS' &&
+                orderDetail?.transactionStatus !== 'SUCCEEDED'
                   ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`
@@ -271,74 +269,74 @@ const SuccessPaymentPage: React.FC = () => {
                       `${orderDetail.currency} ${formatCurrency(
                         (orderDetail?.grossAmount ?? 0) === 0
                           ? 0
-                          :  (orderDetail?.grossAmount ?? 0)
-                            - (paymentSelectedEWallet[0]?.admin_fee ?? 0)
-                            - (paymentSelectedEWallet[0]?.service_fee ?? 0)
-                            + (paymentSelectedEWallet[0]?.is_promo_available ?? true
-                              ? paymentSelectedEWallet[0]?.promo_price ?? 0 : 0)
+                          : (orderDetail?.grossAmount ?? 0) -
+                              (paymentSelectedEWallet[0]?.admin_fee ?? 0) -
+                              (paymentSelectedEWallet[0]?.service_fee ?? 0) +
+                              (paymentSelectedEWallet[0]?.is_promo_available ??
+                              true
+                                ? paymentSelectedEWallet[0]?.promo_price ?? 0
+                                : 0)
                       )}`}
                   </Typography>
                 </div>
 
                 {/* Admin Fee */}
-                {
-                  (orderDetail?.grossAmount ?? 0) > 0 &&
-                    <div className="flex flex-row justify-between mb-5">
-                      <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                        {t('circle.payment.adminFee')}
-                      </Typography>
-                      <Typography className="text-sm font-semibold text-[#262626]">
-                        {orderDetail?.currency !== undefined &&
-                          `${orderDetail.currency} ${formatCurrency(
-                            paymentSelectedEWallet.length > 0
-                              ? paymentSelectedEWallet[0]?.admin_fee ?? 0
-                              : 0
-                          )}`}
-                      </Typography>
-                    </div>
-                }
-
-                {/* Service Fee */}
-                {
-                  (orderDetail?.grossAmount ?? 0) > 0 &&
-                    <div className="flex flex-row justify-between mb-5">
-                      <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                        {t('circle.payment.serviceFee')}
-                      </Typography>
-                      <Typography className="text-sm font-semibold text-[#262626]">
-                        {orderDetail?.currency !== undefined &&
-                          `${orderDetail.currency} ${formatCurrency(
-                            paymentSelectedEWallet.length > 0
-                              ? paymentSelectedEWallet[0]?.service_fee ?? 0
-                              : 0
-                          )}`}
-                      </Typography>
-                    </div>
-                }
-
-                {/* Discount Fee */}
-                {
-                (orderDetail?.grossAmount ?? 0) > 0 &&
-                paymentSelectedEWallet.length > 0 && (
-                  <div>
-                    {paymentSelectedEWallet[0]?.is_promo_available && (
-                      <div className="flex flex-row justify-between mb-5">
-                        <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                          {t('circle.payment.discountFee')}
-                        </Typography>
-                        <Typography className="text-sm font-semibold text-[#262626]">
-                          {orderDetail?.currency !== undefined
-                            ? `- ${orderDetail.currency} ${formatCurrency(
-                                paymentSelectedEWallet.length > 0
-                                  ? paymentSelectedEWallet[0]?.promo_price ?? 0
-                                  : 0
-                              )}`
-                            : ''}
-                        </Typography>
-                      </div>
-                    )}
+                {(orderDetail?.grossAmount ?? 0) > 0 && (
+                  <div className="flex flex-row justify-between mb-5">
+                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                      {t('circle.payment.adminFee')}
+                    </Typography>
+                    <Typography className="text-sm font-semibold text-[#262626]">
+                      {orderDetail?.currency !== undefined &&
+                        `${orderDetail.currency} ${formatCurrency(
+                          paymentSelectedEWallet.length > 0
+                            ? paymentSelectedEWallet[0]?.admin_fee ?? 0
+                            : 0
+                        )}`}
+                    </Typography>
                   </div>
                 )}
+
+                {/* Service Fee */}
+                {(orderDetail?.grossAmount ?? 0) > 0 && (
+                  <div className="flex flex-row justify-between mb-5">
+                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                      {t('circle.payment.serviceFee')}
+                    </Typography>
+                    <Typography className="text-sm font-semibold text-[#262626]">
+                      {orderDetail?.currency !== undefined &&
+                        `${orderDetail.currency} ${formatCurrency(
+                          paymentSelectedEWallet.length > 0
+                            ? paymentSelectedEWallet[0]?.service_fee ?? 0
+                            : 0
+                        )}`}
+                    </Typography>
+                  </div>
+                )}
+
+                {/* Discount Fee */}
+                {(orderDetail?.grossAmount ?? 0) > 0 &&
+                  paymentSelectedEWallet.length > 0 && (
+                    <div>
+                      {paymentSelectedEWallet[0]?.is_promo_available && (
+                        <div className="flex flex-row justify-between mb-5">
+                          <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                            {t('circle.payment.discountFee')}
+                          </Typography>
+                          <Typography className="text-sm font-semibold text-[#262626]">
+                            {orderDetail?.currency !== undefined
+                              ? `- ${orderDetail.currency} ${formatCurrency(
+                                  paymentSelectedEWallet.length > 0
+                                    ? paymentSelectedEWallet[0]?.promo_price ??
+                                        0
+                                    : 0
+                                )}`
+                              : ''}
+                          </Typography>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 <hr />
 
                 {/* Total Amount */}
@@ -358,11 +356,9 @@ const SuccessPaymentPage: React.FC = () => {
                     {t('circle.payment.idTransaction')}
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626] text-right">
-                    {
-                      (orderDetail?.transactionId ?? '') === ''
-                        ? '-'
-                        : orderDetail?.transactionId
-                    }
+                    {(orderDetail?.transactionId ?? '') === ''
+                      ? '-'
+                      : orderDetail?.transactionId}
                   </Typography>
                 </div>
               </Card>

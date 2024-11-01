@@ -2,27 +2,73 @@ import moment from 'moment';
 
 moment.updateLocale('id-ID', {
   months: [
-    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
   ],
   monthsShort: [
-    'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'Mei',
+    'Jun',
+    'Jul',
+    'Agu',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Des'
   ],
-  weekdays: [
-    'Minggu',  'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
-  ]
+  weekdays: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
 });
 
 moment.updateLocale('en-US', {
   months: [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
   ],
   monthsShort: [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
   ],
   weekdays: [
-    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
   ]
 });
 
@@ -51,7 +97,11 @@ export const getShortDate = (date: string): string => {
   return result;
 };
 
-export const getTournamentTime = (dateStart: Date, dateEnd: Date, locale: 'id-ID' | 'en-US'): string => {
+export const getTournamentTime = (
+  dateStart: Date,
+  dateEnd: Date,
+  locale: 'id-ID' | 'en-US'
+): string => {
   moment.locale(locale);
 
   const startTimeID = moment(dateStart).format('DD MMM YYYY, HH:mm');
@@ -59,10 +109,10 @@ export const getTournamentTime = (dateStart: Date, dateEnd: Date, locale: 'id-ID
 
   const startTimeEN = moment(dateStart).format('MMM DD, YYYY, HH:mm');
   const endTimeEN = moment(dateEnd).format('MMM DD, YYYY, HH:mm');
-  
+
   return locale === 'id-ID'
     ? `${startTimeID} - ${endTimeID}`
-    : `${startTimeEN} - ${endTimeEN}`
+    : `${startTimeEN} - ${endTimeEN}`;
 };
 
 export const formatMonthlyChart = (date: Date): string[] => {
@@ -82,9 +132,12 @@ export const formatMonthlyChart = (date: Date): string[] => {
   return months.reverse();
 };
 
-export const getLastUpdated = (date: Date, locale: 'id-ID' | 'en-US'): string => {
+export const getLastUpdated = (
+  date: Date,
+  locale: 'id-ID' | 'en-US'
+): string => {
   moment.locale(locale);
-  
+
   return locale === 'id-ID'
     ? moment(date).format('DD MMMM YYYY - HH:mm')
     : moment(date).format('MMMM DD, YYYY - HH:mm');
@@ -92,13 +145,16 @@ export const getLastUpdated = (date: Date, locale: 'id-ID' | 'en-US'): string =>
 
 export const getEventDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
   moment.locale(locale);
-  
+
   return locale === 'id-ID'
     ? moment(date).format('DD MMMM YYYY - HH:mm')
     : moment(date).format('MMMM DD, YYYY - HH:mm');
 };
 
-export const getEventDetailsDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
+export const getEventDetailsDate = (
+  date: Date,
+  locale: 'id-ID' | 'en-US'
+): string => {
   moment.locale(locale);
 
   return locale === 'id-ID'
@@ -106,19 +162,33 @@ export const getEventDetailsDate = (date: Date, locale: 'id-ID' | 'en-US'): stri
     : moment(date).format('dddd, MMMM DD, YYYY');
 };
 
-export const getEventClock = (eventDate: Date, endedAt: Date ): string => {
-  const startTime = moment(eventDate).format('HH:mm')
-  const endTime = moment(endedAt).format('HH:mm')
+export const getEventClock = (eventDate: Date, endedAt: Date): string => {
+  const startTime = moment(eventDate).format('HH:mm');
+  const endTime = moment(endedAt).format('HH:mm');
 
-  return `${startTime} - ${endTime}`
+  return `${startTime} - ${endTime}`;
 };
 
-export const getEarningDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
+export const getEarningDate = (
+  date: Date,
+  locale: 'id-ID' | 'en-US'
+): string => {
   moment.locale(locale);
   return moment(date).format('DD MMMM YYYY');
 };
 
-export const getEarningReceiptDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
+export const getEarningReceiptDate = (
+  date: Date,
+  locale: 'id-ID' | 'en-US'
+): string => {
   moment.locale(locale);
   return moment(date).format('DD MMMM YYYY HH:mm:ss');
+};
+
+export const getBattlePeriod = (date: Date): string => {
+  return moment(date).format('DD/MM/YYYY');
+};
+
+export const getBattleStageDate = (date: string): string => {
+  return moment(date).format('D MMM YYYY HH:mm');
 };

@@ -25,8 +25,9 @@ import Slider from 'react-slick';
 import { toast } from 'react-toastify';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
-import PlayButton from '../../../public/assets/playButton.svg';
-import QuizButton from '../../../public/assets/quizButton.svg';
+import PlayButton from '../../../public/assets/arena.svg';
+import BattleButton from '../../../public/assets/battle.svg';
+import QuizButton from '../../../public/assets/quiz.svg';
 interface Banner {
   no: number;
   id: string;
@@ -326,7 +327,13 @@ const Player = (): React.ReactElement => {
                                     ? item?.is_joined
                                       ? `/play/tournament/${item.id}/home`
                                       : `/play/tournament/${item.id}`
-                                    : `/play/quiz/${item?.id}`
+                                    : item?.play_center_type === 'battle'
+                                    ? item?.is_joined
+                                      ? `/play/team-battle/${item.id}/stage`
+                                      : `/play/team-battle/${item.id}`
+                                    : item?.is_joined
+                                    ? `/play/quiz/${item.id}/done`
+                                    : `/play/quiz/${item.id}`
                                 }`
                               )
                               .catch(error => {
@@ -412,10 +419,7 @@ const Player = (): React.ReactElement => {
           <div className="w-full my-5 h-auto cursor-pointer">
             <Slider {...sliderSettings}>
               {bannerAsset?.map(asset => (
-                <div
-                  key={asset.id}
-                  className="w-full relative"
-                >
+                <div key={asset.id} className="w-full relative">
                   <Image
                     className="object-cover w-full"
                     src={asset.banner}
@@ -423,9 +427,9 @@ const Player = (): React.ReactElement => {
                     width={1000}
                     height={150}
                     onClick={async () => {
-                      (asset?.play_center_type === 'quiz'
+                      asset?.play_center_type === 'quiz'
                         ? await router.push(`/play/quiz/${asset.id}`)
-                        : await router.push(`/play/tournament/${asset.id}`));
+                        : await router.push(`/play/tournament/${asset.id}`);
                     }}
                   />
                 </div>
@@ -440,14 +444,19 @@ const Player = (): React.ReactElement => {
           <Typography className="text-center mb-5 text-xl font-semibold text-[#262626] font-poppins">
             Seeds Play
           </Typography>
-          <div className="justify-center flex gap-4">
+          <div className="flex flex-row justify-between sm:gap-4 w-full sm:w-auto">
             <button
               onClick={() => {
                 void router.push('/play/quiz');
               }}
+              className="flex flex-col items-center text-center"
             >
-              <Image alt="" src={QuizButton} className="mb-2" />
-              <Typography className="text-center text-xl font-normal text-[#262626] font-poppins">
+              <Image
+                alt=""
+                src={QuizButton}
+                className="mb-2 w-28 h-28 sm:w-32 sm:h-32 object-contain"
+              />
+              <Typography className="text-base sm:text-xl font-normal text-[#262626] font-poppins">
                 Seeds Quiz
               </Typography>
             </button>
@@ -455,10 +464,30 @@ const Player = (): React.ReactElement => {
               onClick={() => {
                 void router.push('/play/tournament');
               }}
+              className="flex flex-col items-center text-center"
             >
-              <Image alt="" src={PlayButton} className="mb-2" />
-              <Typography className="text-center text-xl font-normal text-[#262626] font-poppins">
+              <Image
+                alt=""
+                src={PlayButton}
+                className="mb-2 w-28 h-28 sm:w-32 sm:h-32 object-contain"
+              />
+              <Typography className="text-base sm:text-xl font-normal text-[#262626] font-poppins">
                 Play Arena
+              </Typography>
+            </button>
+            <button
+              onClick={() => {
+                void router.push('/play/team-battle');
+              }}
+              className="flex flex-col items-center text-center"
+            >
+              <Image
+                alt=""
+                src={BattleButton}
+                className="mb-2 w-28 h-28 sm:w-32 sm:h-32 object-contain"
+              />
+              <Typography className="text-base sm:text-xl font-normal text-[#262626] font-poppins">
+                Team Battle
               </Typography>
             </button>
           </div>
@@ -533,9 +562,13 @@ const Player = (): React.ReactElement => {
                               ? item?.is_joined
                                 ? `/play/tournament/${item.id}/home`
                                 : `/play/tournament/${item.id}`
+                              : item?.play_center_type === 'battle'
+                              ? item?.is_joined
+                                ? `/play/team-battle/${item.id}/stage`
+                                : `/play/team-battle/${item.id}`
                               : item?.is_joined
-                              ? `/play/quiz/${item?.id}/done`
-                              : `/play/quiz/${item?.id}`
+                              ? `/play/quiz/${item.id}/done`
+                              : `/play/quiz/${item.id}`
                           }`
                         )
                         .catch(error => {
@@ -606,6 +639,19 @@ const Player = (): React.ReactElement => {
                                 </button>
                               )}
                               {item?.play_center_type === 'play' && (
+                                <div>
+                                  <div className="w-full flex justify-center items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
+                                    {item?.is_joined
+                                      ? t(
+                                          'tournament.tournamentCard.openButton'
+                                        )
+                                      : t(
+                                          'tournament.tournamentCard.joinButton'
+                                        )}
+                                  </div>
+                                </div>
+                              )}
+                              {item?.play_center_type === 'battle' && (
                                 <div>
                                   <div className="w-full flex justify-center items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
                                     {item?.is_joined

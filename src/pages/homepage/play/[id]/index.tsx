@@ -19,7 +19,7 @@ import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
 import type { AssetsInterface } from '@/containers/homepage/trending/AssetsPage';
 import AssetTrendingCardSkeleton from '@/containers/homepage/trending/skeleton/AssetsCardSkeleton';
 import { calculatePercentageChange } from '@/helpers/assetPercentageChange';
-import { standartCurrency } from '@/helpers/currency';
+import { formatAssetPrice, standartCurrency } from '@/helpers/currency';
 import { getMarketList } from '@/repository/market.repository';
 import { getPlayBallance, getPlayById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -353,10 +353,10 @@ export default function PlayAssetsPage(): React.ReactElement {
               {userInfo?.preferredCurrency !== undefined
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
-              {standartCurrency(ballance?.return_value ?? 0).replace('Rp', '')}
+              {formatAssetPrice(ballance?.return_value ?? 0)}
               {` (${ballance?.return_value < 0 ? '' : '+'}${(
-                ballance?.return_percentage ?? 0
-              ).toFixed(2)}%)`}
+                formatAssetPrice(ballance?.return_percentage ?? 0)
+              )}%)`}
             </Typography>
             <Typography className="text-white font-poppins z-10 text-sm md:text-lg">
               {`${t('tournament.assets.virtualBalance')}: `}

@@ -495,7 +495,6 @@ const BuyPage: React.FC = () => {
       setIsLoading(false);
     }
   };
-  console.log('data ', data)
 
   useEffect(() => {
     const handleRouteChange = async (): Promise<void> => {
@@ -916,7 +915,7 @@ const BuyPage: React.FC = () => {
                 type="button"
                 disabled={isDisable}
                 variant="filled"
-                className={`rounded-full w-full lg:w-[200px] ml-auto justify-items-end items-end py-3 mb-5 ${
+                className={`flex justify-center rounded-full w-full lg:w-[200px] ml-auto justify-items-end items-end py-3 mb-5 ${
                   isDisable ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0]'
                 }`}
                 onClick={() => {
@@ -937,7 +936,7 @@ const BuyPage: React.FC = () => {
               <Button
                 type="button"
                 variant="filled"
-                className={`mb-5 rounded-full w-full ml-auto justify-items-end items-end py-3 bg-[#DD2525]`}
+                className={`flex justify-center mb-5 rounded-full w-full ml-auto justify-items-end items-end py-3 bg-[#DD2525]`}
                 onClick={() => {
                   handleModal();
                 }}
@@ -1227,7 +1226,7 @@ const BuyPage: React.FC = () => {
                     {t('playSimulation.footerOrderDetail2')}
                   </Typography>
                   <Button
-                    className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4 mb-20 md:mb-0"
+                    className="flex justify-center rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4 mb-20 md:mb-0"
                     onClick={() => {
                       if (router.query.transaction === 'buy') {
                         submitOrder().catch(err => {

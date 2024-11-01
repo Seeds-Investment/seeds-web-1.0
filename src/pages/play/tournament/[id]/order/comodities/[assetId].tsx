@@ -259,7 +259,6 @@ const BuyPage: React.FC = () => {
   useEffect(() => {
     if (
       id !== undefined &&
-      router.query?.transaction !== 'sell' &&
       userInfo !== undefined
     ) {
       void fetchPlayBallance(userInfo.preferredCurrency);
@@ -600,7 +599,7 @@ const BuyPage: React.FC = () => {
                 type="button"
                 disabled={isDisable}
                 variant="filled"
-                className={`rounded-full w-full ml-auto justify-items-end items-end py-3 mb-5 ${
+                className={`flex justify-center rounded-full w-full ml-auto justify-items-end items-end py-3 mb-5 ${
                   isDisable ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0]'
                 }`}
                 onClick={() => {
@@ -608,7 +607,7 @@ const BuyPage: React.FC = () => {
                 }}
               >
                 <Typography
-                  className={`font-poppins normal-case font-semibold text-sm ${
+                  className={`flex justify-center font-poppins normal-case font-semibold text-sm ${
                     isDisable ? 'text-[#7C7C7C]' : 'text-white'
                   }`}
                 >

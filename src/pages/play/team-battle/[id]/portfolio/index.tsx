@@ -26,10 +26,10 @@ import {
 import { type AssetActiveBattle } from '@/utils/interfaces/team-battle.interface';
 import {
   PortfolioFilter,
-  Summary,
   // type ActiveAsset,
   type BallanceTournament,
   type ChartProportion,
+  type Summary,
   type UserInfo
 } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
@@ -246,9 +246,9 @@ const Portfolio = (): React.ReactElement => {
                   'Rp',
                   ''
                 )}
-                {` (${
-                  ballance?.return_value < 0 ? '' : '+'
-                }${summary?.gnl_percentage?.toFixed(2)}%)`}
+                {` (${ballance?.return_value < 0 ? '' : '+'}${
+                  summary?.gnl_percentage?.toFixed(2) as string
+                }%)`}
               </Typography>
               <Typography className="text-white font-poppins z-10 text-sm md:text-lg">
                 {t('tournament.portfolio.today')}

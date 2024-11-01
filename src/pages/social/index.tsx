@@ -11,6 +11,7 @@ import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import { getCircle, likeCircle } from '@/repository/circle.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { getStatusDailyQuiz } from '@/repository/quiz.repository';
 import {
   getSocialPostFollowing,
   getSocialPostForYou,
@@ -32,6 +33,7 @@ import { BiLike, BiSolidLike } from 'react-icons/bi';
 import { GrDocumentText } from 'react-icons/gr';
 import { LuUsers } from 'react-icons/lu';
 import { PiCrownSimpleFill } from 'react-icons/pi';
+import { toast } from 'react-toastify';
 
 interface UserData {
   id: string;
@@ -99,6 +101,8 @@ const Social: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isIncrease, setIsIncrease] = useState(false);
   const [isOpenModalAdd, setIsOpenModalAdd] = useState<boolean>(false);
+  const [dailyQuestionActive, setDailyQuestionActive] =
+    useState<boolean>(false);
   const optionsFilter: optionSortBy[] = [
     {
       title: t('social.fiterSortBy.all'),
@@ -414,6 +418,20 @@ const Social: React.FC = () => {
     }
   }, [activeTab, filter.page, filter.sort_by, golId, filter.type]);
 
+  const fetchDailyQuizStatus = async () => {
+    try {
+      const response = await getStatusDailyQuiz();
+      if (response.is_played === false) {
+        setDailyQuestionActive(true);
+      }
+    } catch (error) {
+      toast.error('Something went wrong');
+    }
+  };
+
+  useEffect(() => {
+    void fetchDailyQuizStatus();
+  }, []);
   return (
     <PageGradient defaultGradient className="w-full">
       {isLoading && <Loading />}

@@ -328,3 +328,17 @@ export const validateInvitationCode = async (
     throw error;
   }
 };
+
+export const getStatusDailyQuiz = async (): Promise<{ is_played: boolean }> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  return await quizService.get(`/daily-quiz/is_played`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

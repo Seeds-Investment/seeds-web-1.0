@@ -259,7 +259,6 @@ const BuyPage: React.FC = () => {
   useEffect(() => {
     if (
       id !== undefined &&
-      router.query?.transaction !== 'sell' &&
       userInfo !== undefined
     ) {
       void fetchPlayBallance(userInfo.preferredCurrency);
@@ -553,7 +552,7 @@ const BuyPage: React.FC = () => {
             {router.query.transaction === 'buy' && (
               <div className="mt-4 mx-2">
                 <Typography className="mb-2 font-poppins text-base font-semibold text-black">
-                  {t('buyAsset.text8')} (IDR)
+                  {t('buyAsset.text8')} ({prefCurrency})
                 </Typography>
                 {router.query.transaction === 'buy' && (
                   <input
@@ -579,7 +578,7 @@ const BuyPage: React.FC = () => {
             )}
             {router.query.transaction === 'sell' && (
               <Typography className="mb-2 font-poppins text-base font-semibold text-black">
-                {t('buyAsset.text8')} (IDR)
+                {t('buyAsset.text8')} ({prefCurrency})
               </Typography>
             )}
             {router.query.transaction === 'sell' && (
@@ -600,7 +599,7 @@ const BuyPage: React.FC = () => {
                 type="button"
                 disabled={isDisable}
                 variant="filled"
-                className={`rounded-full w-full ml-auto justify-items-end items-end py-3 mb-5 ${
+                className={`flex justify-center rounded-full w-full ml-auto justify-items-end items-end py-3 mb-5 ${
                   isDisable ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0]'
                 }`}
                 onClick={() => {
@@ -608,7 +607,7 @@ const BuyPage: React.FC = () => {
                 }}
               >
                 <Typography
-                  className={`font-poppins normal-case font-semibold text-sm ${
+                  className={`flex justify-center font-poppins normal-case font-semibold text-sm ${
                     isDisable ? 'text-[#7C7C7C]' : 'text-white'
                   }`}
                 >

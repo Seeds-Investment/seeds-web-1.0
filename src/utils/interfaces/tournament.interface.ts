@@ -325,3 +325,10 @@ export interface PriceBar {
   vwap: number;
   volume: number;
 }
+
+export interface Summary {
+  value: number;
+  gnl: number;
+  gnl_percentage: number;
+  currency: string;
+}

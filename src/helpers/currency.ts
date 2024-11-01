@@ -83,7 +83,15 @@ export const formatAssetPrice = (price: number): number => {
     return Math.round(price * 1000) / 1000;
   } else if (price > 0.1 && price < 1) {
     return Math.round(price * 10000) / 10000;
-  } else if (price > 0.1) {
+  } else if (price < 0.1 && price > 0) {
+    return Math.round(price * 1000000) / 1000000;
+  } else if (price < -11) {
+    return Math.round(price * 100) / 100;
+  } else if (price > -11 && price < -1) {
+    return Math.round(price * 1000) / 1000;
+  } else if (price < -0.1 && price > -1) {
+    return Math.round(price * 10000) / 10000;
+  } else if (price > -0.1 && price < 0) {
     return Math.round(price * 1000000) / 1000000;
   } else {
     return price ?? 0;

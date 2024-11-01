@@ -241,7 +241,6 @@ const BuyPage: React.FC = () => {
   useEffect(() => {
     if (
       id !== undefined &&
-      router.query?.transaction !== 'sell' &&
       userInfo !== undefined
     ) {
       void fetchPlayBallance(userInfo.preferredCurrency);
@@ -915,7 +914,7 @@ const BuyPage: React.FC = () => {
                 type="button"
                 disabled={isDisable}
                 variant="filled"
-                className={`rounded-full w-full lg:w-1/5 ml-auto justify-items-end items-end py-2 ${
+                className={`flex justify-center rounded-full w-full lg:w-1/5 ml-auto justify-items-end items-end py-2 mb-2 ${
                   isDisable ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0]'
                 }`}
                 onClick={() => {
@@ -936,7 +935,7 @@ const BuyPage: React.FC = () => {
               <Button
                 type="button"
                 variant="filled"
-                className={`rounded-full w-full ml-auto justify-items-end items-end py-2 bg-[#DD2525]`}
+                className={`flex justify-center rounded-full w-full ml-auto justify-items-end items-end py-2 mb-2 bg-[#DD2525]`}
                 onClick={() => {
                   handleModal();
                 }}

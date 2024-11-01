@@ -14,7 +14,9 @@ import { useAppSelector } from '@/store/redux/store';
 import { type AssetI, type Assets } from '@/utils/interfaces/play.interface';
 import { type PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import { Button, Tab, Tabs, TabsHeader } from '@material-tailwind/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { ArrowBackwardIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -100,6 +102,22 @@ const AssetDetailPage: React.FC = () => {
     <>
       {isLoading ? <Loading /> : ''}
       <PageGradient defaultGradient className="w-full">
+        <CCard className="flex flex-row justify-between p-4 mt-5 md:rounded-lg border-none rounded-none">
+          <Image
+            src={ArrowBackwardIcon}
+            alt="Back"
+            width={30}
+            height={30}
+            className="cursor-pointer"
+            onClick={async () => {
+              await router.push(`/homepage/play/${playId as string}`);
+            }}
+          />
+          <p className="font-bold text-black text-lg">
+            {t('playSimulation.assetDetail')}
+          </p>
+          <div></div>
+        </CCard>
         <div className="flex flex-col md:flex-row gap-5">
           {data !== undefined ? (
             <Card1

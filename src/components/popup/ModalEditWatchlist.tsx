@@ -1,13 +1,19 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use client';
-import { calculatePercentageDifference } from '@/helpers/currency';
+import {
+  calculatePercentageDifference,
+  formatAssetPrice
+} from '@/helpers/currency';
 import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import {
   getWatchlistById,
   updateWatchlist
 } from '@/repository/market.repository';
-import { type IUserData } from '@/utils/interfaces/play.interface';
+import {
+  type IDetailTournament,
+  type UserInfo
+} from '@/utils/interfaces/tournament.interface';
 import {
   ArrowTrendingDownIcon,
   ArrowTrendingUpIcon
@@ -53,15 +59,17 @@ interface PriceBar {
 interface Props {
   onClose: () => void;
   data: Watchlist;
-  userInfo: IUserData;
+  userInfo: UserInfo;
   setUpdate?: React.Dispatch<React.SetStateAction<boolean>>;
+  detailTournament?: IDetailTournament;
 }
 
 const ModalEditWatchlist: React.FC<Props> = ({
   onClose,
   data,
   userInfo,
-  setUpdate
+  setUpdate,
+  detailTournament
 }) => {
   const { t } = useTranslation();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
@@ -74,11 +82,14 @@ const ModalEditWatchlist: React.FC<Props> = ({
 
   useEffect(() => {
     void fetchPlayWatchlist();
-  }, [data?.id]);
+  }, [data?.id, userInfo?.preferredCurrency]);
 
   const fetchPlayWatchlist = async (): Promise<void> => {
     try {
-      const response = await getWatchlistById(data?.id);
+      const response = await getWatchlistById(
+        data?.id,
+        userInfo?.preferredCurrency
+      );
       setAssets(response?.watchlist?.assetList);
 
       response?.watchlist?.assetList.forEach((asset: AssetList) => {
@@ -121,13 +132,15 @@ const ModalEditWatchlist: React.FC<Props> = ({
             setForm({ ...form, asset_list: text });
           }}
           assetList={form?.asset_list}
+          userInfo={userInfo}
+          detailTournament={detailTournament}
         />
       )}
 
       <Modal
         onClose={onClose}
         backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/75 flex justify-start items-start"
-        modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[40%] md:left-[10%] md:right-[-10%] xl:left-[22.5%] xl:right-[-22.5%] mt-[-12.35rem] w-full md:w-[80%] xl:w-[60%] h-[70vh] md:h-[50vh] p-4 rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white overflow-y-scroll"
+        modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[40%] md:left-[10%] md:right-[-10%] xl:left-[22.5%] xl:right-[-22.5%] mt-[-12.35rem] w-full md:w-[80%] xl:w-[60%] h-[430px] md:h-[410px] p-4 lg:rounded-3xl rounded-t-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
       >
         <div className="flex justify-between">
           <Typography className="font-bold text-lg text-[#3AC4A0]">
@@ -152,7 +165,7 @@ const ModalEditWatchlist: React.FC<Props> = ({
             {t('tournament.watchlist.changeAsset')}
           </div>
         </div>
-        <div className="w-full gap-4 mt-4">
+        <div className="w-full gap-4 mt-4 lg:h-[220px] h-[235px] overflow-y-auto team-battle-scroll">
           {assets?.map(asset => (
             <div
               key={asset.id}
@@ -168,16 +181,18 @@ const ModalEditWatchlist: React.FC<Props> = ({
                     </span>
                   </Typography>
                   <Typography className="text-[#7C7C7C] font-normal text-xs font-poppins">
-                    {asset?.name}
+                    {asset?.name !== undefined && asset.name.length > 18
+                      ? `${asset.name.slice(0, 18)}...`
+                      : asset?.name}
                   </Typography>
                 </div>
               </div>
               <div className="flex flex-col gap-[6px] items-end">
                 <Typography className="font-poppins text-sm font-semibold">
                   {userInfo?.preferredCurrency}{' '}
-                  {asset?.priceBar?.close > 0.01
-                    ? new Intl.NumberFormat().format(asset?.priceBar?.close)
-                    : asset?.priceBar?.close}
+                  {new Intl.NumberFormat().format(
+                    formatAssetPrice(asset?.priceBar?.close)
+                  ) ?? 0}
                 </Typography>
                 <Typography
                   className={`flex font-normal text-xs ${

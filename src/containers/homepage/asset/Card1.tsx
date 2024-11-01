@@ -146,7 +146,7 @@ const Card1: React.FC<props> = ({
       </p>
       <div className="w-full flex flex-row justify-between">
         <p className="text-sm font-normal text-[#5E44FF]">
-          {currency ?? 'IDR'} {formatAssetPrice(data?.lastPrice?.vwap ?? 0)} (
+          {currency ?? 'IDR'} {formatAssetPrice(data?.lastPrice?.close ?? 0)} (
           {
             calculatePercentageDifference(
               data?.lastPrice?.open ?? 0,

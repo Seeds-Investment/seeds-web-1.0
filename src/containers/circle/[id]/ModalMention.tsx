@@ -34,14 +34,14 @@ import { VoiceRecorder } from './VoiceRecording';
 
 interface SuccessOrderData {
   id: string;
-  play_id: string;
-  user_id: string;
+  play_id?: string;
+  user_id?: string;
   asset: any;
   type: 'BUY' | 'SELL';
-  lot: number;
+  lot?: number;
   bid_price: number;
   stop_loss: number;
-  pnl: number;
+  pnl?: number;
   created_at: string;
   updated_at: string;
 }

@@ -15,7 +15,7 @@ interface Props {
   winningLink: string;
 }
 
-const ModalQuizWinnerAlert: React.FC<Props> = ({ 
+const ModalQuizWinnerAlert: React.FC<Props> = ({
   onClose,
   quizName,
   winningPosition,
@@ -28,7 +28,7 @@ const ModalQuizWinnerAlert: React.FC<Props> = ({
   return (
     <Modal
       onClose={onClose}
-      topPlacement='top-[40%]'
+      topPlacement="top-[40%]"
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/50 flex justify-start items-start"
     >
       <div className="w-full flex justify-end items-end">
@@ -60,12 +60,13 @@ const ModalQuizWinnerAlert: React.FC<Props> = ({
         <Typography className="text-md text-black mt-2">
           {t('quiz.winnerAlertMessage2')}
         </Typography>
-        <div className='flex justify-center items-center gap-1'>
+        <div className="flex justify-center items-center gap-1">
           <Typography className="font-bold text-md text-black">
             {t('quiz.winnerAlertMessage3')}
           </Typography>
           <Typography className="font-bold text-md text-black">
-            {winningPosition}{language === 'EN' ? ordinalName : ''}
+            {winningPosition}
+            {language === 'EN' ? ordinalName : ''}
           </Typography>
           <Typography className="text-md text-black">
             {t('quiz.winnerAlertMessage4')}
@@ -77,7 +78,7 @@ const ModalQuizWinnerAlert: React.FC<Props> = ({
         <a
           href={winningLink}
           target="_blank"
-          className='bg-seeds-button-green text-white rounded-full cursor-pointer py-2 px-4 mt-4 mb-2 hover:opacity-80 hover:scale-110 duration-300'
+          className="bg-seeds-button-green text-white rounded-full cursor-pointer py-2 px-4 mt-4 mb-2 hover:opacity-80 hover:scale-110 duration-300"
         >
           {t('quiz.winnerAlertMessage6')}
         </a>

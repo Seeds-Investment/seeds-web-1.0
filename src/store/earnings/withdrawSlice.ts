@@ -23,7 +23,7 @@ const initialState: WithdrawState = {
     promo_price: 0,
     service_fee: 0
   },
-  accountNumber: '',
+  accountNumber: ''
 };
 
 const withdrawSlice = createSlice({
@@ -38,10 +38,11 @@ const withdrawSlice = createSlice({
     },
     setAccountNumber(state, action) {
       state.accountNumber = action.payload;
-    },
-  },
+    }
+  }
 });
 
-export const { setAccountName, setBankAccount, setAccountNumber } = withdrawSlice.actions;
+export const { setAccountName, setBankAccount, setAccountNumber } =
+  withdrawSlice.actions;
 
 export default withdrawSlice.reducer;

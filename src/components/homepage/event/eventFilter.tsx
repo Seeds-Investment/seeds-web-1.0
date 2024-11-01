@@ -1,7 +1,4 @@
-import {
-  type EventStatus,
-  type StatusEvent
-} from '@/pages/homepage/event';
+import { type EventStatus, type StatusEvent } from '@/pages/homepage/event';
 import Image from 'next/image';
 import { ArrowDownCollapse } from 'public/assets/vector';
 
@@ -33,9 +30,7 @@ const EventFilter: React.FC<EventFilterProps> = ({
 }) => {
   return (
     <div className="w-full h-fit text-[#7C7C7C] font-semibold flex justify-between items-center">
-      <div>
-        {monthYear ?? ''}
-      </div>
+      <div>{monthYear ?? ''}</div>
       <div className="relative w-[120px] rounded-lg text-center">
         <div
           onClick={() => {
@@ -46,18 +41,13 @@ const EventFilter: React.FC<EventFilterProps> = ({
           <div className="font-semibold text-[#7C7C7C]">
             {eventParams?.year}
           </div>
-          <Image
-            src={ArrowDownCollapse}
-            alt="Select"
-            width={20}
-            height={20}
-          />
+          <Image src={ArrowDownCollapse} alt="Select" width={20} height={20} />
         </div>
         {showDropdown && (
           <div className="absolute bottom-[-100px] right-[0px] w-[120px] md:w-[200px] bg-white shadow-xl p-2 rounded-lg">
             <div
               onClick={() => {
-                setEventStatus(statusEvent[0].status)
+                setEventStatus(statusEvent[0].status);
                 setEventParams({
                   ...eventParams,
                   section: statusEvent[0].status,

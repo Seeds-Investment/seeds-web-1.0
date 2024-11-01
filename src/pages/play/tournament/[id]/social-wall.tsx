@@ -276,7 +276,7 @@ const SocialWall = (): React.ReactElement => {
           {!loadingPostList ? (
             dataPost?.length !== 0 ? (
               <>
-                {dataPost.map(el => {
+                {dataPost?.map(el => {
                   return (
                     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                     <div className="flex flex-col" key={`${el?.id} ${el?.id}`}>

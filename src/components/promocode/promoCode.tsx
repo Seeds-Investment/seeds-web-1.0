@@ -1,6 +1,9 @@
 import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
-import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import {
+  selectPromoCodeValidationResult,
+  setPromoCodeValidationResult
+} from '@/store/redux/features/promo-code';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Switch, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -35,10 +38,13 @@ const PromoCodeButton: React.FC<PromoProps> = ({
   );
 
   useEffect(() => {
-    if ((promoCodeValidationResult !== undefined) && (promoCodeValidationResult !== 0)) {
-      setUsePromo(true)
+    if (
+      promoCodeValidationResult !== undefined &&
+      promoCodeValidationResult !== 0
+    ) {
+      setUsePromo(true);
     } else {
-      setUsePromo(false)
+      setUsePromo(false);
     }
   }, []);
 
@@ -46,11 +52,11 @@ const PromoCodeButton: React.FC<PromoProps> = ({
     if (spotType === 'Paid Tournament') {
       return `/play/tournament/${id}/promo`;
     } else if (spotType === 'Paid Quiz') {
-      return `/play/quiz/${id}/promo`
+      return `/play/quiz/${id}/promo`;
     } else if (spotType === 'Premium Circle') {
-      return `/connect/payment/${id}/promo`
+      return `/connect/payment/${id}/promo`;
     } else if (spotType === 'Premium Content') {
-      return `/social/payment/${id}/promo`
+      return `/social/payment/${id}/promo`;
     }
     return '';
   };
@@ -67,35 +73,46 @@ const PromoCodeButton: React.FC<PromoProps> = ({
             }
           }
         }}
-        className={`${(useCoins ?? false) ? 'border-[#BDBDBD] bg-white' : 'border-[#3AC4A0] bg-[#F0FFF4] hover:bg-[#d3ffdf] cursor-pointer hover:shadow-md duration-300'} flex justify-start items-center border rounded-lg py-2 px-4 gap-2`}
+        className={`${
+          useCoins ?? false
+            ? 'border-[#BDBDBD] bg-white'
+            : 'border-[#3AC4A0] bg-[#F0FFF4] hover:bg-[#d3ffdf] cursor-pointer hover:shadow-md duration-300'
+        } flex justify-start items-center border rounded-lg py-2 px-4 gap-2`}
       >
-        <div className='w-[30px] h-[30px] flex justify-center items-center'>
+        <div className="w-[30px] h-[30px] flex justify-center items-center">
           <Image
-            src={(useCoins ?? false) ? VoucherInvalid : Voucher}
+            src={useCoins ?? false ? VoucherInvalid : Voucher}
             alt="Voucher"
             width={100}
             height={100}
             className="object-contain h-full w-full"
           />
         </div>
-        <Typography className={`${(useCoins ?? false) ? 'text-[#BDBDBD]' : 'text-[#27A590]' } font-poppins flex justify-center items-center font-semibold`}>
+        <Typography
+          className={`${
+            useCoins ?? false ? 'text-[#BDBDBD]' : 'text-[#27A590]'
+          } font-poppins flex justify-center items-center font-semibold`}
+        >
           Voucher & Promo
         </Typography>
       </div>
-      {
-        ((promoCodeValidationResult !== undefined) && (promoCodeValidationResult !== 0)) &&
-          <div className='flex gap-2 justify-between items-center mt-2'>
-            <Typography className='w-full font-poppins text-sm text-[#27A590] font-semibold'>
-              {t(`promo.totalDiscount`)} {userInfo?.preferredCurrency ?? 'IDR'}{`${standartCurrency(promoCodeValidationResult?.response?.total_discount ?? 0).replace('Rp', '')}`}
+      {promoCodeValidationResult !== undefined &&
+        promoCodeValidationResult !== 0 && (
+          <div className="flex gap-2 justify-between items-center mt-2">
+            <Typography className="w-full font-poppins text-sm text-[#27A590] font-semibold">
+              {t(`promo.totalDiscount`)} {userInfo?.preferredCurrency ?? 'IDR'}
+              {`${standartCurrency(
+                promoCodeValidationResult?.response?.total_discount ?? 0
+              ).replace('Rp', '')}`}
             </Typography>
-            
-            <div className='flex justify-center items-center'>
+
+            <div className="flex justify-center items-center">
               <Switch
                 className="checked:bg-[#3AC4A0]"
                 checked={usePromo}
                 onChange={() => {
-                  toast.success(t(`promo.unApplied`))
-                  setUsePromo(false)
+                  toast.success(t(`promo.unApplied`));
+                  setUsePromo(false);
                   setTimeout(() => {
                     dispatch(setPromoCodeValidationResult(0));
                   }, 500);
@@ -103,9 +120,9 @@ const PromoCodeButton: React.FC<PromoProps> = ({
               />
             </div>
           </div>
-      }
+        )}
     </>
-  )
-}
+  );
+};
 
-export default PromoCodeButton
+export default PromoCodeButton;

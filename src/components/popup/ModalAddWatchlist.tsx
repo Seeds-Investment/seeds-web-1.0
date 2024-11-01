@@ -3,6 +3,7 @@
 'use client';
 import { postCloud } from '@/repository/cloud.repository';
 import { createWatchlist } from '@/repository/market.repository';
+import { type WatchlistForm } from '@/utils/interfaces/watchlist.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
@@ -11,13 +12,6 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import Modal from '../ui/modal/Modal';
 import ModalAddAsset from './ModalAddAsset';
-
-interface WatchlistForm {
-  play_id: string;
-  name: string;
-  image: File | string;
-  asset_list: string[];
-}
 
 interface Props {
   onClose: () => void;

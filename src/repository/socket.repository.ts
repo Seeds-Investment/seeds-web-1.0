@@ -4,13 +4,17 @@ class SocketService {
   private socket: Socket | null = null;
 
   connect(id: string): void {
-    this.socket = io(
-      process.env.SOCKET_URL ?? 'wss://seeds-dev-gcp.seeds.finance',
-      {
-        transports: ['websocket'],
-        query: { uuid: id }
-      }
-    );
+    this.socket = io('wss://app.seeds.finance', {
+      transports: ['websocket'],
+      query: { uuid: id }
+    });
+  }
+
+  connectAsset(): void {
+    this.socket = io('wss://seeds-dev-gcp.seeds.finance', {
+      path: '/seeds/socket.io',
+      transports: ['websocket']
+    });
   }
 
   disconnect(id: string): void {
@@ -19,6 +23,12 @@ class SocketService {
         guid: this.socket.id,
         uuid: id
       });
+      this.socket.disconnect();
+    }
+  }
+
+  disconnectAsset(): void {
+    if (this.socket != null) {
       this.socket.disconnect();
     }
   }

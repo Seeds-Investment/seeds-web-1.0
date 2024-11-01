@@ -67,7 +67,7 @@ interface QRList {
 
 interface OrderDetail {
   paymentMethod: string;
-};
+}
 
 const SuccessPaymentPage: React.FC = () => {
   const width = useWindowInnerWidth();
@@ -103,7 +103,7 @@ const SuccessPaymentPage: React.FC = () => {
       const data = await getPaymentList();
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
-      setVaList(data.type_va)
+      setVaList(data.type_va);
     } catch (error) {
       toast.error(`Error fetching order detail ${error as string}`);
     } finally {
@@ -162,11 +162,14 @@ const SuccessPaymentPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if ((orderDetail?.howToPayApi !== undefined) && (orderDetail?.howToPayApi !== '')) {
+    if (
+      orderDetail?.howToPayApi !== undefined &&
+      orderDetail?.howToPayApi !== ''
+    ) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [orderId, orderDetail?.howToPayApi]);
-  
+
   const getSelectedPayment = (
     eWalletList: PaymentList[],
     vaList: PaymentList[],
@@ -190,7 +193,10 @@ const SuccessPaymentPage: React.FC = () => {
 
     if (paymentSelectedEWallet.length === 0 && paymentSelectedVA.length !== 0) {
       return paymentSelectedVA;
-    } else if (paymentSelectedVA.length === 0 && paymentSelectedEWallet.length !== 0) {
+    } else if (
+      paymentSelectedVA.length === 0 &&
+      paymentSelectedEWallet.length !== 0
+    ) {
       return paymentSelectedEWallet;
     } else {
       return [];
@@ -205,7 +211,7 @@ const SuccessPaymentPage: React.FC = () => {
 
   return (
     <div className="pt-10">
-      {(isLoadingOrder && isLoadingPayment && isLoadingHowToPay) && <Loading />}
+      {isLoadingOrder && isLoadingPayment && isLoadingHowToPay && <Loading />}
       <PageGradient
         defaultGradient
         className="relative overflow-hidden h-full flex flex-col items-center sm:p-0 sm:pb-16 w-full"
@@ -252,12 +258,14 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED'
+                {orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                orderDetail?.transactionStatus === 'SUCCEEDED'
                   ? ''
                   : t('seedsEvent.payment.receipt.pending')}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED'
+                {orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                orderDetail?.transactionStatus === 'SUCCEEDED'
                   ? t('seedsEvent.payment.receipt.successful')
                   : `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                       orderDetail?.grossAmount ?? 0
@@ -310,11 +318,12 @@ const SuccessPaymentPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {`${orderDetail?.currency} ${formatCurrency(
-                        orderDetail?.grossAmount
-                          - ((paymentSelected[0]?.admin_fee ?? 0)
-                          + (paymentSelected[0]?.service_fee ?? 0))
-                          + ((paymentSelected[0]?.is_promo_available ?? false)
-                            ? (paymentSelected[0]?.promo_price ?? 0) : 0)
+                        orderDetail?.grossAmount -
+                          ((paymentSelected[0]?.admin_fee ?? 0) +
+                            (paymentSelected[0]?.service_fee ?? 0)) +
+                          (paymentSelected[0]?.is_promo_available ?? false
+                            ? paymentSelected[0]?.promo_price ?? 0
+                            : 0)
                       )}`}
                     </Typography>
                   </div>
@@ -541,7 +550,9 @@ const SuccessPaymentPage: React.FC = () => {
               {orderDetail?.vaNumber !== undefined && steps.length > 0 && (
                 <Card className="p-5 mt-8 bg-white">
                   <div className="flex justify-between">
-                    <h1 className="text-xl font-bold mb-4">{t('seedsEvent.payment.howToPay')}</h1>
+                    <h1 className="text-xl font-bold mb-4">
+                      {t('seedsEvent.payment.howToPay')}
+                    </h1>
                     <button className="ml-2" onClick={toggleDropdown}>
                       {isOpen ? '▲' : '▼'}
                     </button>
@@ -574,8 +585,8 @@ const SuccessPaymentPage: React.FC = () => {
                 </Card>
               )}
 
-              <div className='flex gap-2 w-full justify-start items-center my-4'>
-                <div className='w-[16px] h-[16px] flex justify-center items-center'>
+              <div className="flex gap-2 w-full justify-start items-center my-4">
+                <div className="w-[16px] h-[16px] flex justify-center items-center">
                   <Image
                     src={EventBookInfo}
                     alt={'EventBookInfo'}
@@ -583,12 +594,11 @@ const SuccessPaymentPage: React.FC = () => {
                     height={20}
                   />
                 </div>
-                <Typography className='font-poppins text-sm text-[#3C49D6]'>
-                  {
-                    orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED'
-                      ? t('seedsEvent.payment.receipt.messageComplete')
-                      : t('seedsEvent.payment.receipt.messageUncomplete')
-                  }
+                <Typography className="font-poppins text-sm text-[#3C49D6]">
+                  {orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                  orderDetail?.transactionStatus === 'SUCCEEDED'
+                    ? t('seedsEvent.payment.receipt.messageComplete')
+                    : t('seedsEvent.payment.receipt.messageUncomplete')}
                 </Typography>
               </div>
 
@@ -598,23 +608,27 @@ const SuccessPaymentPage: React.FC = () => {
                   className="w-full font-semibold text-white bg-seeds-button-green rounded-full py-2 capitalize"
                   onClick={() => {
                     if (
-                      orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED'
+                      orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                      orderDetail?.transactionStatus === 'SUCCEEDED'
                     ) {
                       void router.replace(
                         `/homepage/event/${id}/${orderId}/booking-success-details`
                       );
                     } else {
-                      void router.replace(`/homepage/event/${id}/payment/receipt/${orderId}`).then(() => {
-                        router.reload();
-                      });
+                      void router
+                        .replace(
+                          `/homepage/event/${id}/payment/receipt/${orderId}`
+                        )
+                        .then(() => {
+                          router.reload();
+                        });
                     }
                   }}
                 >
-                  {
-                    orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED'
-                      ? t('seedsEvent.payment.receipt.seeTicket')
-                      : t('seedsEvent.payment.receipt.refreshPage')
-                  }
+                  {orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                  orderDetail?.transactionStatus === 'SUCCEEDED'
+                    ? t('seedsEvent.payment.receipt.seeTicket')
+                    : t('seedsEvent.payment.receipt.refreshPage')}
                 </button>
               </div>
             </Card>

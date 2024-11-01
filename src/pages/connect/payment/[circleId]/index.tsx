@@ -58,12 +58,7 @@ const CirclePayment: React.FC = () => {
 
   const handlePages = (): any => {
     if (pages === 'chooseSubs') {
-      return (
-        <ChooseSubs
-          setPages={setPages}
-          dataPost={dataPost}
-        />
-      );
+      return <ChooseSubs setPages={setPages} dataPost={dataPost} />;
     } else if (pages === 'terms') {
       return (
         <div className="flex justify-center ">

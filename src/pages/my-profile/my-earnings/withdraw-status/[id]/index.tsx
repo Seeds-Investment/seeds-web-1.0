@@ -13,14 +13,22 @@ const WithdrawStatus = (): React.ReactElement => {
   return (
     <>
       <div className="w-full flex flex-col justify-center items-center rounded-xl p-5 bg-white py-16 lg:py-32">
-        <Image alt="" src={IconProcessed} width={100} height={100} className="w-[200px] h-[200px] md:w-[250px] md:h-[250px]" />
+        <Image
+          alt=""
+          src={IconProcessed}
+          width={100}
+          height={100}
+          className="w-[200px] h-[200px] md:w-[250px] md:h-[250px]"
+        />
         <p className="font-semibold text-black">
           {t('earning.withdrawOnProgress')}
         </p>
-        <p className="text-[#7C7C7C] text-center">{t('earning.withdrawOnProgressDescription')}</p>
+        <p className="text-[#7C7C7C] text-center">
+          {t('earning.withdrawOnProgressDescription')}
+        </p>
         <div
-          onClick={async() => await router.push('/my-profile/my-earnings')}
-          className='mt-8 bg-seeds-button-green py-2 w-[200px] md:w-[350px] text-white font-poppins text-center rounded-full cursor-pointer hover:shadow-lg duration-300'
+          onClick={async () => await router.push('/my-profile/my-earnings')}
+          className="mt-8 bg-seeds-button-green py-2 w-[200px] md:w-[350px] text-white font-poppins text-center rounded-full cursor-pointer hover:shadow-lg duration-300"
         >
           {t('earning.back')}
         </div>
@@ -30,4 +38,3 @@ const WithdrawStatus = (): React.ReactElement => {
 };
 
 export default withAuth(WithdrawStatus);
-

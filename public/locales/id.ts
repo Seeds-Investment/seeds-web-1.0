@@ -627,6 +627,7 @@ export default {
       day: 'HH',
       month: 'BB',
       year: 'TTTT',
+      seedsTag: 'Seedstag adalah unique username Anda di aplikasi Seeds kami',
       validation: {
         seedsTag: 'SeedsTag sudah dipakai, nih',
         regex: 'SeedsTag tidak boleh berisi spasi atau simbol, harap dihapus!',
@@ -2005,11 +2006,11 @@ export default {
       totalInvestment: 'Total Investasi',
       portfolio: 'Portofolio',
       virtualBalance: 'Saldo Virtual',
-      watchList: 'Daftar Tonton',
+      watchList: 'Daftar Pantauan',
       transaction: 'Transaksi',
       openOrder: 'Pesanan',
       historyTransaction: 'Riwayat Transaksi',
-      pending: 'Menunggu - Limit Pembelian',
+      pending: 'Menunggu Pesanan',
       sorry: 'Maaf!',
       noData: 'Data yang Kamu cari tidak ada.',
       amount: 'Nilai',
@@ -2089,7 +2090,10 @@ export default {
         'Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya'
     },
     watchlist: {
-      watchlist: 'Daftar Pantau',
+      myWatchlist: 'Daftar Pantau Saya',
+      myWatchlistDescription: 'Periksa daftar pantauan Anda',
+      assets: 'Aset',
+      btnEditAsset: 'Edit Aset',
       noData: 'Belum Ada Daftar Pantau',
       create: 'Yuk buat Daftar Pantau sekarang!',
       createWatchlist: 'Buat Daftar Pantau',
@@ -2104,7 +2108,30 @@ export default {
       deleteConfirm: 'Apa Kamu yakin ingin menghapus Daftar Pantau ini?',
       changeAsset: 'Ubah Aset',
       enter: 'Masukan nama Daftar Pantau...',
-      search: 'Cari'
+      search: 'Cari',
+      modalHeader: 'Tambahkan Aset ke Daftar Pantauan',
+      addToWatchlist: 'Simpan Perubahan',
+      newWatchlist: 'Buat Daftar Pantauan baru',
+      horay: 'Horey!!',
+      successAddAsset: 'Daftar Pantauan berhasil diperbarui',
+      continue: 'Lanjutkan',
+      ops: 'Ups!!',
+      cancelAddAsset: 'Batalkan penambahan aset ke daftar pantauan?',
+      yes: 'Ya',
+      no: 'Tidak',
+      alreadyExist:
+        'Aset yang Anda tambahkan sudah ada dalam daftar pantauan yang telah dibuat.',
+      ok: 'Oke',
+      createNewWatchlist: 'Daftar Pantauan Baru',
+      descNewWatchlist:
+        'Buat daftar pantauan untuk membantu Anda mengumpulkan aset favorit Anda',
+      watchlistName: 'Nama Daftar Pantauan',
+      groupName: 'Nama Grup yang Diinginkan',
+      btnNewWatchlist: 'Buat Daftar Pantauan Baru',
+      successWatchlist: 'Watchlist berhasil dibuat',
+      backToAsset: 'Kembali ke Asset',
+      seeWatchlist: 'Lihat Daftar Pantauan',
+      noWatchlist: 'Daftar pantauan belum dibuat'
     },
     social: {
       sorry: 'Maaf, data postingan tidak ada!',
@@ -2198,6 +2225,13 @@ export default {
   },
   seedsEvent: {
     myEvent: 'Event Saya',
+    myCertificate: 'Sertifikat Saya',
+    myCertificates: 'Sertifikat Saya',
+    sendEmailConfirm:
+      'Apa kamu yakin untuk mengirimkan sertifikat ke emailmu yang digunakan untuk mendaftar event ini?',
+    emailMessage: 'Sertifikat berhasil dikirim ke email anda.',
+    yes: 'Ya',
+    no: 'Tidak',
     search: 'Cari event',
     enter: 'Cari',
     past: 'Event Berakhir',
@@ -2519,5 +2553,93 @@ export default {
     text15: 'Peserta 50 poin',
     text16: 'Musim',
     text17: 'Kapan saja'
+  },
+  teamBattle: {
+    battleCompetition: 'Kompetisi Pertandingan',
+    chooseCategory: 'Silakan Pilih Kategori',
+    joinAsPublicConfirm: 'Apakah Anda yakin ingin bergabung sebagai publik?',
+    joinAsInvitation: 'Masukkan kode undangan Anda',
+    placeholderInvitation: 'Masukkan di sini',
+    chooseUniversity: 'Pilih Universitas Anda',
+    chooseCommunity: 'Pilih Komunitas Anda',
+    chooseRegion: 'Pilih Wilayah Anda',
+    leaderBoard: 'Klasemen',
+    fullLeaderboard: 'semua klasemen',
+    theWinner: 'Pemenang',
+    rank: 'Peringkat',
+    nameTeam: 'Nama & Tim',
+    return: 'Keuntungan',
+    currentRank: 'Peringkat Sekarang',
+    next: 'Selanjutnya',
+    timeTo: `Waktunya`,
+    battle: 'Bertanding!',
+    prize: 'Hadiah',
+    leaderboardPopup: 'Lebih banyak peserta akan segera bergabung',
+    willBegin: 'Babak akan dimulai pada:',
+    battleClosed1: 'Ups! Maaf, kamu tidak bisa bergabung ke dalam game.',
+    battleClosed2: 'Team Battle sudah berada di tahap',
+    battleClosed3: 'Team Battle sudah berakhir.',
+    battleClosed4: 'Team Battle telah dibatalkan.',
+    stageNotStarted: 'Babak belum dimulai',
+    mainPage: {
+      period: 'Periode',
+      registration: 'Registrasi',
+      elimination: 'Penyisihan',
+      semifinal: 'Semifinal',
+      final: 'Final',
+      participants: 'Peserta',
+      totalParticipants: 'Total Peserta',
+      join: 'Gabung',
+      play: 'Mulai Permainan',
+      sponsor: 'Sponsor',
+      sponsors: 'Sponsor',
+      tnc: 'Syarat & Ketentuan',
+      wrongInvitationCode: 'Kode undangan tidak valid!'
+    },
+    participant: {
+      participant: 'Peserta',
+      noData: 'Belum ada data',
+      emptyTitle: 'Peserta',
+      elimination: 'Babak Penyisihan',
+      semifinal: 'Babak Semifinal',
+      final: 'Babak Final'
+    },
+    popUpStage: {
+      winTitle: 'Kamu Menang!',
+      qualifiedTitle: 'Selamat!',
+      failTitle: 'Kamu Kalah!',
+      eliminatedTitle: 'Yah, Sayangnya',
+      winDescription:
+        'Kerja Bagus! Kamu telah berhasil memenangkan tahap akhir! Tetap semangat!',
+      qualifiedDescription:
+        'Kamu berhasil masuk ke tahap selanjutnya. Pertahankan kerja keras kamu!',
+      failDescription:
+        'Hampir saja! Kamu hampir mencapai puncak! Terus berjuang untuk menang!',
+      eliminatedDescription:
+        'Kali ini kamu tidak bisa lanjut ke tahap selanjutnya. Terus berjuang! Kamu lebih dari ini!',
+      yourRank: 'Peringkat Kamu'
+    },
+    stagePage: {
+      gamePeriod: 'Periode Permainan',
+      letsCheck: 'Yuk Cek',
+      yourRank: 'Peringkat Kamu',
+      enter: 'Masuk',
+      onGoing:
+        'Opps! Pertandingan belum dimulai. Babak {{data}} akan diadakan pada'
+    },
+    waitingPage: {
+      success: 'Kamu berhasil didaftarkan untuk mengikuti kompetisi ini.',
+      enter: 'Masuk Stage',
+      battleDesc: 'Pertandingan telah dimulai!',
+      back: 'Kembali ke Play Center',
+      begin: 'Kompetisi akan dimulai pada:'
+    },
+    history: {
+      myBattle: 'Battle Saya',
+      activeBattle: 'Battle Aktif',
+      pastBattle: 'Battle Sebelumnya',
+      notFound: `Kamu tidak memiliki {{data}}`,
+      moreInfo: 'Informasi Lainnya'
+    }
   }
 };

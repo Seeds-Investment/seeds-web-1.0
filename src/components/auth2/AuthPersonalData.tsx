@@ -7,6 +7,7 @@ import { Button, Typography } from '@material-tailwind/react';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import info from 'public/assets/info.svg';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -206,6 +207,12 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
             <br />
           )}
         </Typography>
+        <div className="flex">
+          <Image src={info} alt="" />
+          <Typography className="font-poppins text-sm text-[#47C0AA] self-start ps-1">
+            {t('authRegister.authPersonalData.seedsTag')}
+          </Typography>
+        </div>
       </div>
       <div className="w-full">
         <AuthBoD

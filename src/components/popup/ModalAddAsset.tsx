@@ -1,13 +1,21 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use client';
-import { calculatePercentageChange } from '@/helpers/assetPercentageChange';
-import { standartCurrency } from '@/helpers/currency';
-import { type AssetItemType } from '@/pages/homepage/play/[id]';
+import {
+  calculatePercentageDifference,
+  formatAssetPrice
+} from '@/helpers/currency';
 import { getMarketList } from '@/repository/market.repository';
-import { getUserInfo } from '@/repository/profile.repository';
-import { type UserInfo } from '@/utils/interfaces/tournament.interface';
-import { Typography } from '@material-tailwind/react';
+import {
+  type IDetailTournament,
+  type UserInfo
+} from '@/utils/interfaces/tournament.interface';
+import { type DetailAsset } from '@/utils/interfaces/watchlist.interface';
+import {
+  ArrowTrendingDownIcon,
+  ArrowTrendingUpIcon
+} from '@heroicons/react/24/outline';
+import { Avatar, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
@@ -19,44 +27,56 @@ interface Props {
   onClose: () => void;
   setAssetList: (text: string[]) => void;
   assetList: string[];
+  setDisplayAssetList?: React.Dispatch<React.SetStateAction<DetailAsset[]>>;
+  userInfo?: UserInfo;
+  detailTournament?: IDetailTournament;
 }
 
 const ModalAddAsset: React.FC<Props> = ({
   onClose,
   setAssetList,
-  assetList
+  assetList,
+  setDisplayAssetList,
+  userInfo,
+  detailTournament
 }) => {
   const { t } = useTranslation();
   const [checkboxState, setCheckboxState] = useState<string[]>(assetList);
-  const [userInfo, setUserInfo] = useState<UserInfo>();
-  const [assets, setAssets] = useState<AssetItemType[]>([]);
+  const [assetState, setAssetState] = useState<DetailAsset[]>([]);
+  const [assets, setAssets] = useState<DetailAsset[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [activeFilter, setActiveFilter] = useState<string>(
+    detailTournament?.category ?? ''
+  );
   const [filter, setFilter] = useState({
     search: searchQuery,
     limit: 5,
     page: 1,
-    type: 'ALL',
+    type: detailTournament?.category,
     currency: ''
   });
 
-  const handleCheckboxChange = (id: string, checked: boolean): void => {
+  const handleCheckboxChange = (
+    asset: DetailAsset,
+    id: string,
+    checked: boolean
+  ): void => {
     if (checked) {
       setCheckboxState([...checkboxState, id]);
+      setAssetState(prev => [...prev, asset]);
     } else {
       setCheckboxState(checkboxState.filter((item: string) => item !== id));
+      setAssetState(prev => prev.filter(item => item.id !== asset?.id));
     }
   };
 
   const handleSave = (): void => {
     setAssetList(checkboxState);
+    if (setDisplayAssetList) {
+      setDisplayAssetList(prev => [...prev, ...assetState]);
+    }
     onClose();
   };
-
-  useEffect(() => {
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
 
   useEffect(() => {
     if (userInfo !== undefined) {
@@ -71,15 +91,6 @@ const ModalAddAsset: React.FC<Props> = ({
     setSearchQuery(event.target.value);
   };
 
-  const fetchData = async (): Promise<void> => {
-    try {
-      const dataInfo = await getUserInfo();
-      setUserInfo(dataInfo);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    }
-  };
-
   const fetchDataAssets = async (): Promise<void> => {
     try {
       const response = await getMarketList({
@@ -91,8 +102,8 @@ const ModalAddAsset: React.FC<Props> = ({
       } else {
         setAssets(response.marketAssetList);
       }
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
     }
   };
 
@@ -108,99 +119,166 @@ const ModalAddAsset: React.FC<Props> = ({
     }
   }, [filter, userInfo, searchQuery]);
 
+  const handleArrow = (value: number): boolean => {
+    if (value > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <Modal
-      onClose={onClose}
-      backdropClasses="z-40 fixed top-0 left-0 w-full h-screen flex justify-start items-start"
-      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[40%] md:left-[10%] md:right-[-10%] xl:left-[22.5%] xl:right-[-22.5%] mt-[-12.35rem] w-full md:w-[80%] xl:w-[60%] h-[70vh] md:h-[50vh] p-4 rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white overflow-y-scroll"
+      backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/75 flex justify-start items-start"
+      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[40%] md:left-[10%] md:right-[-10%] xl:left-[22.5%] xl:right-[-22.5%] mt-[-12.35rem] w-full md:w-[80%] xl:w-[60%] h-[430px] md:h-[410px] p-4 lg:rounded-3xl rounded-t-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
     >
-      <div className="flex justify-between">
-        <Typography className="font-bold text-lg text-[#3AC4A0]">
-          {t('tournament.watchlist.addAsset')}
-        </Typography>
-        <Image
-          src={XIcon}
-          alt="X"
-          width={30}
-          height={30}
-          onClick={onClose}
-          className="hover:scale-110 transition ease-out cursor-pointer"
-        />
+      <div className="flex flex-col gap-3">
+        <div className="flex justify-between items-center">
+          <Typography className="font-bold text-lg text-[#3AC4A0]">
+            {t('tournament.watchlist.addAsset')}
+          </Typography>
+          <Image
+            src={XIcon}
+            alt="X"
+            width={30}
+            height={30}
+            onClick={onClose}
+            className="hover:scale-110 transition ease-out cursor-pointer"
+          />
+        </div>
+        <div className="flex flex-row items-center gap-2 overflow-x-auto xs sm:w-full w-[285px] sm:h-[50px] h-[30px]">
+          {detailTournament?.category === 'ALL' && (
+            <div
+              onClick={() => {
+                setActiveFilter(detailTournament?.category);
+                setFilter(prevState => ({
+                  ...prevState,
+                  type: detailTournament?.category
+                }));
+              }}
+              className={`${
+                activeFilter === detailTournament?.category
+                  ? 'bg-seeds-green text-white'
+                  : 'text-seeds-green'
+              } flex items-center border-2 border-seeds-green lg:px-2 px-1 lg:py-1 font-poppins lg:text-sm text-xs rounded-lg cursor-pointer`}
+            >
+              {detailTournament?.category}
+            </div>
+          )}
+          {detailTournament?.all_category.map(category => (
+            <div
+              key={category}
+              onClick={() => {
+                setActiveFilter(category);
+                setFilter(prevState => ({ ...prevState, type: category }));
+              }}
+              className={`${
+                activeFilter === category
+                  ? 'bg-seeds-green text-white'
+                  : 'text-seeds-green'
+              } text-nowrap border-2 border-seeds-green lg:px-2 px-1 lg:py-1 font-poppins lg:text-sm text-xs rounded-lg cursor-pointer`}
+            >
+              {category?.replace(/_/g, ' ')}
+            </div>
+          ))}
+        </div>
+        <div className="w-full flex gap-2">
+          <input
+            id="search"
+            type="text"
+            name="search"
+            value={searchQuery}
+            onChange={e => {
+              handleSearch(e);
+            }}
+            placeholder={`${t('tournament.watchlist.search')}`}
+            className="block w-full text-[#262626] h-10 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
+          />
+        </div>
       </div>
-      <div className="w-full flex gap-2 mt-4">
-        <input
-          id="search"
-          type="text"
-          name="search"
-          value={searchQuery}
-          onChange={e => {
-            handleSearch(e);
-          }}
-          placeholder={`${t('tournament.watchlist.search')}`}
-          className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
-        />
-      </div>
-      <div className="w-full gap-4 mt-4">
-        {assets.map(item => (
+      <div className="w-full gap-4 lg:h-[175px] h-[195px] overflow-y-auto lg:mt-0 mt-3">
+        {assets?.map(asset => (
           <div
-            key={item.id}
+            key={asset.id}
             className="w-full h-fit py-2 mb-2 bg-[#F7FBFA] flex justify-between pl-2 pr-4 md:pl-4"
           >
-            <div className="flex justify-start items-center gap-2 md:gap-4">
-              <div className="h-[30px] w-[30px]">
-                <img src={item?.logo} className="w-full h-full" />
-              </div>
-              <div>
-                <div>
-                  {item?.seedsTicker} / {item?.exchangeCurrency}
-                </div>
-                <div className="hidden md:flex">{item?.name}</div>
-                <div className="md:hidden">
-                  {item?.name?.length < 12
-                    ? item?.name
-                    : `${item?.name?.slice(0, 11)}...`}
-                </div>
+            <div className="flex items-center gap-3">
+              <Avatar src={asset?.logo} alt="logo" width={40} height={40} />
+              <div className="flex flex-col gap-[6px]">
+                <Typography className="font-poppins lg:text-sm text-xs font-semibold">
+                  {asset?.realTicker} /{' '}
+                  <span className="font-normal text-xs">
+                    {userInfo?.preferredCurrency ?? 'IDR'}
+                  </span>
+                </Typography>
+                <Typography className="text-[#7C7C7C] font-normal text-xs font-poppins">
+                  {asset?.name !== undefined && asset.name.length > 18
+                    ? `${asset.name.slice(0, 15)}...`
+                    : asset?.name}
+                </Typography>
               </div>
             </div>
-            <div className="flex">
-              <div className="flex flex-col justify-end items-end">
-                <div>
-                  {userInfo?.preferredCurrency !== undefined
-                    ? userInfo?.preferredCurrency
-                    : 'IDR'}
-                  {standartCurrency(item?.priceBar?.close ?? 0).replace(
-                    'Rp',
-                    ''
+            <div className="flex gap-[6px] items-center">
+              <div className="flex flex-col items-end">
+                <Typography className="font-poppins text-xs font-semibold">
+                  {userInfo?.preferredCurrency}{' '}
+                  {new Intl.NumberFormat().format(
+                    formatAssetPrice(asset?.priceBar?.close)
+                  ) ?? 0}
+                </Typography>
+                <Typography
+                  className={`flex font-normal text-xs ${
+                    handleArrow(
+                      calculatePercentageDifference(
+                        asset?.priceBar?.open,
+                        asset?.priceBar?.close
+                      ).value
+                    )
+                      ? 'text-[#3AC4A0]'
+                      : 'text-red-500'
+                  }`}
+                >
+                  {handleArrow(
+                    calculatePercentageDifference(
+                      asset?.priceBar?.open,
+                      asset?.priceBar?.close
+                    ).value
+                  ) ? (
+                    <ArrowTrendingUpIcon
+                      height={15}
+                      width={15}
+                      className="mr-2"
+                    />
+                  ) : (
+                    <ArrowTrendingDownIcon
+                      height={15}
+                      width={15}
+                      className="mr-2"
+                    />
                   )}
-                </div>
-                {item?.priceBar !== undefined && (
-                  <div
-                    className={`${
-                      item?.priceBar?.close >= item?.priceBar?.open
-                        ? 'text-[#3AC4A0]'
-                        : 'text-[#DD2525]'
-                    } text-base`}
-                  >
-                    {`(${calculatePercentageChange(
-                      item?.priceBar?.open ?? 0,
-                      item?.priceBar?.close ?? 0
-                    )}%)`}
-                  </div>
-                )}
+                  (
+                  {
+                    calculatePercentageDifference(
+                      asset?.priceBar?.open,
+                      asset?.priceBar?.close
+                    )?.value
+                  }{' '}
+                  %)
+                </Typography>
               </div>
               <input
                 className="ml-4"
                 type="checkbox"
-                checked={!!checkboxState.includes(item?.id)}
+                checked={!!checkboxState.includes(asset?.id)}
                 onChange={e => {
-                  handleCheckboxChange(item?.id, e.target.checked);
+                  handleCheckboxChange(asset, asset?.id, e.target.checked);
                 }}
               />
             </div>
           </div>
         ))}
       </div>
-      <div className="mt-4 gap-2 w-full">
+      <div className="gap-2 w-full">
         <button
           onClick={() => {
             handleSave();

@@ -128,11 +128,13 @@ const DetailPortfolio = (): React.ReactElement => {
               )
             }
           >
-            <img
-              alt=""
-              src={marketAsset?.logo ?? CoinLogo}
-              className="w-[30px] md:w-[40px]"
-            />
+            <div className='flex justify-center items-center w-[30px] md:w-[40px]'>
+              <img
+                alt=""
+                src={marketAsset?.logo ?? CoinLogo}
+                className="w-full h-auto"
+              />
+            </div>
             <div className="flex flex-col justify-center items-start">
               <div className="flex gap-1">
                 <Typography className="text-sm md:text-lg text-black font-poppins font-semibold">

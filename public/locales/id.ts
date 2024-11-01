@@ -627,6 +627,7 @@ export default {
       day: 'HH',
       month: 'BB',
       year: 'TTTT',
+      seedsTag: 'Seedstag adalah unique username Anda di aplikasi Seeds kami',
       validation: {
         seedsTag: 'SeedsTag sudah dipakai, nih',
         regex: 'SeedsTag tidak boleh berisi spasi atau simbol, harap dihapus!',
@@ -2004,7 +2005,7 @@ export default {
       totalInvestment: 'Total Investasi',
       portfolio: 'Portofolio',
       virtualBalance: 'Saldo Virtual',
-      watchList: 'Daftar Tonton',
+      watchList: 'Daftar Pantauan',
       transaction: 'Transaksi',
       openOrder: 'Pesanan',
       historyTransaction: 'Riwayat Transaksi',
@@ -2088,7 +2089,10 @@ export default {
         'Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya'
     },
     watchlist: {
-      watchlist: 'Daftar Pantau',
+      myWatchlist: 'Daftar Pantau Saya',
+      myWatchlistDescription: 'Periksa daftar pantauan Anda',
+      assets: 'Aset',
+      btnEditAsset: 'Edit Aset',
       noData: 'Belum Ada Daftar Pantau',
       create: 'Yuk buat Daftar Pantau sekarang!',
       createWatchlist: 'Buat Daftar Pantau',
@@ -2103,7 +2107,30 @@ export default {
       deleteConfirm: 'Apa Kamu yakin ingin menghapus Daftar Pantau ini?',
       changeAsset: 'Ubah Aset',
       enter: 'Masukan nama Daftar Pantau...',
-      search: 'Cari'
+      search: 'Cari',
+      modalHeader: 'Tambahkan Aset ke Daftar Pantauan',
+      addToWatchlist: 'Simpan Perubahan',
+      newWatchlist: 'Buat Daftar Pantauan baru',
+      horay: 'Horey!!',
+      successAddAsset: 'Daftar Pantauan berhasil diperbarui',
+      continue: 'Lanjutkan',
+      ops: 'Ups!!',
+      cancelAddAsset: 'Batalkan penambahan aset ke daftar pantauan?',
+      yes: 'Ya',
+      no: 'Tidak',
+      alreadyExist:
+        'Aset yang Anda tambahkan sudah ada dalam daftar pantauan yang telah dibuat.',
+      ok: 'Oke',
+      createNewWatchlist: 'Daftar Pantauan Baru',
+      descNewWatchlist:
+        'Buat daftar pantauan untuk membantu Anda mengumpulkan aset favorit Anda',
+      watchlistName: 'Nama Daftar Pantauan',
+      groupName: 'Nama Grup yang Diinginkan',
+      btnNewWatchlist: 'Buat Daftar Pantauan Baru',
+      successWatchlist: 'Watchlist berhasil dibuat',
+      backToAsset: 'Kembali ke Asset',
+      seeWatchlist: 'Lihat Daftar Pantauan',
+      noWatchlist: 'Daftar pantauan belum dibuat'
     },
     social: {
       sorry: 'Maaf, data postingan tidak ada!',

@@ -28,6 +28,14 @@ export interface DataPost {
   slug: string;
   premium_fee: number;
   status_payment: boolean;
+  is_followed?: boolean;
+  cover?: string;
+  name?: string;
+  is_liked?: boolean;
+  total_like?: number;
+  total_post?: number;
+  total_member?: number;
+  avatar?: string;
 }
 
 export interface Owner {

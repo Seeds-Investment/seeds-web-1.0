@@ -9,6 +9,7 @@ import post_report_photo from '@/assets/more-option/post_report_photo.png';
 import report_user from '@/assets/more-option/report_user.svg';
 import user_report_photo from '@/assets/more-option/user_report_photo.png';
 import ModalMention from '@/containers/circle/[id]/ModalMention';
+import { blockOtherUser } from '@/repository/profile.repository';
 import { follow } from '@/repository/user.repository';
 import {
   Button,
@@ -89,15 +90,6 @@ const listReportUser = async (): Promise<any> => {
   }
 };
 
-const handleFollow = async (userId: string): Promise<void> => {
-  try {
-    const response = await follow(userId);
-    return response;
-  } catch (error: any) {
-    toast(error.message, { type: 'error' });
-  }
-};
-
 const Icon = (): any => {
   return (
     <svg
@@ -121,8 +113,7 @@ const MoreOption = ({
   myInfo,
   dataPost,
   userInfo,
-  setDataPost,
-  handleSubmitBlockUser
+  setDataPost
 }: props): any => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -164,6 +155,23 @@ const MoreOption = ({
   const [selectedPost, setSelectedPost] = React.useState(null);
   const [selectedUser, setSelectedUser] = React.useState(null);
   const [mobileView, setMobileView] = useState(false);
+
+  const handleFollow = async (userId: string): Promise<void> => {
+    try {
+      const response = await follow(userId);
+      const isFollowed = response?.status;
+      setDataPost((prev: []) =>
+        prev.map((post: { user_id: string; is_followed: boolean }) => {
+          if (post.user_id === userId) {
+            return { ...post, is_followed: isFollowed };
+          }
+          return post;
+        })
+      );
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
 
   const handleOpen = (): void => {
     if (isOpen) {
@@ -229,8 +237,8 @@ const MoreOption = ({
       });
   };
 
-  const handleSubmitReportPost = async (event: any): Promise<any> => {
-    event.preventDefault();
+  const handleSubmitReportPost = async (): Promise<void> => {
+    event?.preventDefault();
     try {
       const response = await fetch(
         `${
@@ -253,8 +261,8 @@ const MoreOption = ({
       console.error('Error:', error);
     }
   };
-  const handleSubmitReportUser = async (event: any): Promise<any> => {
-    event.preventDefault();
+  const handleSubmitReportUser = async (): Promise<void> => {
+    event?.preventDefault();
     try {
       const response = await fetch(
         `${
@@ -278,11 +286,8 @@ const MoreOption = ({
     }
   };
 
-  const handleSubmitDeletePost = async (
-    event: any,
-    postId: string
-  ): Promise<any> => {
-    event.preventDefault();
+  const handleSubmitDeletePost = async (postId: string): Promise<void> => {
+    event?.preventDefault();
     try {
       const response = await fetch(
         `${
@@ -299,9 +304,27 @@ const MoreOption = ({
         }
       );
       const data = await response.json();
+      setDataPost((prev: []) =>
+        prev.filter((post: { id: string }) => post.id !== postId)
+      );
       return data;
     } catch (error) {
       console.error('Error:', error);
+    }
+  };
+
+  const handleSubmitBlockUser = async (): Promise<void> => {
+    event?.preventDefault();
+    try {
+      const response = await blockOtherUser({ user_id: dataPost.user_id });
+      setDataPost((prev: []) =>
+        prev.filter(
+          (post: { user_id: string }) => post.user_id !== dataPost.user_id
+        )
+      );
+      return response;
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
     }
   };
 
@@ -327,7 +350,7 @@ const MoreOption = ({
               onClick={() => {
                 setMobileView(true);
               }}
-              className="block md:hidden"
+              className="block sm:hidden"
             >
               <Image
                 src={more_vertical}
@@ -335,7 +358,7 @@ const MoreOption = ({
                 className="cursor-pointer"
               />
             </div>
-            <div className="hidden md:block">
+            <div className="hidden sm:block">
               <Menu placement="left-start">
                 <MenuHandler>
                   <Image
@@ -344,7 +367,7 @@ const MoreOption = ({
                     className="cursor-pointer"
                   />
                 </MenuHandler>
-                <MenuList className="hidden md:flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
+                <MenuList className="hidden sm:flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
                   <MenuItem
                     className={`${
                       dataPost.user_id === (myInfo?.id ?? userInfo.id)
@@ -360,7 +383,9 @@ const MoreOption = ({
                     }}
                   >
                     <AiOutlineUserDelete size={20} />
-                    Unfollow
+                    {dataPost.is_followed === true
+                      ? t('social.unfollow')
+                      : t('social.follow')}
                   </MenuItem>
                   <MenuItem
                     className={`${
@@ -451,7 +476,7 @@ const MoreOption = ({
               </Menu>
             </div>
             {mobileView && (
-              <div className="md:hidden">
+              <div className="sm:hidden">
                 <div className="fixed inset-0 bg-black opacity-50 z-40" />
                 <div
                   className="fixed inset-0 flex items-end justify-center md:items-center z-50"
@@ -471,7 +496,7 @@ const MoreOption = ({
                       </div>
                     </div>
                     <div>
-                      <div className="md:flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
+                      <div className="sm:flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
                         <MenuItem
                           className={`${
                             dataPost.user_id === (myInfo?.id ?? userInfo.id)
@@ -487,7 +512,9 @@ const MoreOption = ({
                           }}
                         >
                           <AiOutlineUserDelete size={20} />
-                          Unfollow
+                          {dataPost.is_followed === true
+                            ? t('social.unfollow')
+                            : t('social.follow')}
                         </MenuItem>
                         <MenuItem
                           className={`${
@@ -588,7 +615,7 @@ const MoreOption = ({
           </div>
           {/* TODO: MODAL REPORT POST */}
           <Dialog
-            className="p-5 m-0 max-w-sm self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
+            className="p-5 m-0 max-w-lg self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
             dismiss={{
               outsidePress: false
             }}
@@ -691,7 +718,7 @@ const MoreOption = ({
             open={verifyReportPost === 'xs'}
             size={'xs'}
             handler={handleVerifyReportPost}
-            className="text-center py-5 px-4 m-0 max-w-sm self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
+            className="text-center py-5 px-4 m-0 max-w-lg self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
           >
             <DialogBody className="flex flex-col items-center p-0 mb-6 font-poppins">
               <Image src={post_report_photo} alt="reportPostFigure" />
@@ -716,7 +743,7 @@ const MoreOption = ({
           </Dialog>
           {/* TODO: MODAL REPORT USER */}
           <Dialog
-            className="p-5 m-0 max-w-sm self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
+            className="p-5 m-0 max-w-lg self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
             dismiss={{
               outsidePress: false
             }}
@@ -753,7 +780,7 @@ const MoreOption = ({
                 {`${t('social.reportUser.text3')}`}
               </p>
               <div className="flex flex-col text-[#262626] text-base font-normal">
-                {listUser.map((item, index) => {
+                {listUser?.map((item, index) => {
                   return (
                     <div
                       className="flex items-center justify-between"
@@ -807,7 +834,7 @@ const MoreOption = ({
             open={verifyReportUser === 'xs'}
             size={'xs'}
             handler={handleVerifyReportUser}
-            className="text-center py-5 px-4 m-0 max-w-sm self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
+            className="text-center py-5 px-4 m-0 max-w-lg self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
           >
             <form onSubmit={handleSubmitReportUser}>
               <DialogBody className="flex flex-col items-center p-0 mb-6 font-poppins">
@@ -848,7 +875,7 @@ const MoreOption = ({
             open={blockUser === 'xs'}
             size={'xs'}
             handler={handleOpenBlock}
-            className="text-center p-5 m-0 max-w-xs sm:max-w-xs md:max-w-xs lg:max-w-xs self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
+            className="text-center py-5 px-4 m-0 max-w-lg self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
           >
             <form onSubmit={handleSubmitBlockUser}>
               <DialogBody className="p-0 mb-6 font-poppins">
@@ -898,9 +925,9 @@ const MoreOption = ({
             className="text-center p-5 m-0 max-w-full sm:max-w-xs self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl"
           >
             <form
-              onSubmit={async () =>
-                await handleSubmitDeletePost(event, dataPost.id)
-              }
+              onSubmit={async () => {
+                await handleSubmitDeletePost(dataPost.id);
+              }}
             >
               <DialogBody className="p-0 mb-6 font-poppins">
                 <p className="text-base font-semibold leading-6 text-gray-900 p-0 mb-4">

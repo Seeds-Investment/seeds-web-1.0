@@ -106,7 +106,7 @@ const EditProfile: React.FC = () => {
   };
 
   const handleBack = async (): Promise<void> => {
-    await router.push('/my-profile');
+    router.back();
   };
 
   useEffect(() => {

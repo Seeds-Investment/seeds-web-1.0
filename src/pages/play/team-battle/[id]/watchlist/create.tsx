@@ -1,10 +1,18 @@
 import Loading from '@/components/popup/Loading';
 import ModalAddAsset from '@/components/popup/ModalAddAsset';
 import ModalSuccesAddWatchlist from '@/components/popup/ModalSuccesAddWatchlist';
-import { calculatePercentageDifference } from '@/helpers/currency';
+import {
+  calculatePercentageDifference,
+  formatAssetPrice
+} from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import { createWatchlist, getMarketList } from '@/repository/market.repository';
-import { useAppSelector } from '@/store/redux/store';
+import { getUserInfo } from '@/repository/profile.repository';
+import { getBattleArena } from '@/repository/team-battle.repository';
+import {
+  type IDetailTournament,
+  type UserInfo
+} from '@/utils/interfaces/tournament.interface';
 import {
   type DetailAsset,
   type WatchlistForm
@@ -28,7 +36,8 @@ const CreateWatchlist: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAssetModalOpen, setIsAssetModalOpen] = useState<boolean>(false);
   const [isOpenSuccessModal, setIsOpenSuccessModal] = useState<boolean>(false);
-  const { dataUser } = useAppSelector(state => state.user);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [watchlistForm, setWatchlistForm] = useState<WatchlistForm>({
     play_id: id as string,
     name: '',
@@ -61,6 +70,18 @@ const CreateWatchlist: React.FC = () => {
     }
   };
 
+  const fetchDetailTournament = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const response = await getBattleArena(id as string);
+      setDetailTournament(response);
+    } catch (error) {
+      toast.error(`Error fetching data tournament: ${error as string}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setWatchlistForm({ ...watchlistForm, name: event.target.value });
   };
@@ -77,11 +98,32 @@ const CreateWatchlist: React.FC = () => {
     }
   };
 
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
   useEffect(() => {
     if (assetTicker !== undefined) {
       void fetchSelectedAsset();
     }
   }, [assetTicker]);
+
+  useEffect(() => {
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (id !== undefined) {
+      void fetchDetailTournament();
+    }
+  }, [id]);
 
   const handleArrow = (value: number): boolean => {
     if (value > 0) {
@@ -161,20 +203,22 @@ const CreateWatchlist: React.FC = () => {
                     <Typography className="font-poppins lg:text-sm text-xs font-semibold">
                       {asset?.realTicker} /{' '}
                       <span className="font-normal text-xs">
-                        {dataUser?.preferredCurrency ?? 'IDR'}
+                        {userInfo?.preferredCurrency ?? 'IDR'}
                       </span>
                     </Typography>
                     <Typography className="text-[#7C7C7C] font-normal text-xs font-poppins">
-                      {asset?.name}
+                      {asset?.name !== undefined && asset.name.length > 18
+                        ? `${asset.name.slice(0, 18)}...`
+                        : asset?.name}
                     </Typography>
                   </div>
                 </div>
                 <div className="flex flex-col gap-[6px] items-end">
                   <Typography className="font-poppins text-sm font-semibold">
-                    {dataUser?.preferredCurrency}{' '}
-                    {asset?.priceBar?.close > 0.01
-                      ? new Intl.NumberFormat().format(asset?.priceBar?.close)
-                      : asset?.priceBar?.close}
+                    {userInfo?.preferredCurrency}{' '}
+                    {new Intl.NumberFormat().format(
+                      formatAssetPrice(asset?.priceBar?.close)
+                    ) ?? 0}
                   </Typography>
                   <Typography
                     className={`flex font-normal text-xs ${
@@ -243,6 +287,8 @@ const CreateWatchlist: React.FC = () => {
               }}
               assetList={watchlistForm?.asset_list}
               setDisplayAssetList={setAssetList}
+              userInfo={userInfo}
+              detailTournament={detailTournament}
             />
           )}
           {isOpenSuccessModal && (

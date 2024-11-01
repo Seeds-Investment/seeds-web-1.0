@@ -1,9 +1,17 @@
 import Loading from '@/components/popup/Loading';
 import ModalEditWatchlist from '@/components/popup/ModalEditWatchlist';
-import { calculatePercentageDifference } from '@/helpers/currency';
+import {
+  calculatePercentageDifference,
+  formatAssetPrice
+} from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import { getWatchlistById } from '@/repository/market.repository';
-import { useAppSelector } from '@/store/redux/store';
+import { getPlayById } from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
+import {
+  type IDetailTournament,
+  type UserInfo
+} from '@/utils/interfaces/tournament.interface';
 import {
   type AssetWatchlist,
   type Watchlist
@@ -24,11 +32,12 @@ const AssetWatchList: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const { id, watchlistId } = router.query;
-  const { dataUser } = useAppSelector(state => state.user);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
   const [detailWatchList, setDetailWatchList] = useState<AssetWatchlist>();
   const [isEditModal, setIsEditModal] = useState<boolean>(false);
+  const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [editedWatchlist, setEditedWatchlist] = useState<Watchlist>({
     id: '',
     play_id: '',
@@ -39,7 +48,10 @@ const AssetWatchList: React.FC = () => {
   const fetchDetailWatchlist = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const response = await getWatchlistById(watchlistId as string);
+      const response = await getWatchlistById(
+        watchlistId as string,
+        userInfo?.preferredCurrency
+      );
       setDetailWatchList(response);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -48,11 +60,44 @@ const AssetWatchList: React.FC = () => {
     }
   };
 
+  const fetchDetailTournament = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const response = await getPlayById(id as string);
+      setDetailTournament(response);
+    } catch (error) {
+      toast.error(`Error fetching data tournament: ${error as string}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
   useEffect(() => {
     if (watchlistId !== undefined) {
       void fetchDetailWatchlist();
     }
-  }, [watchlistId, isUpdated]);
+  }, [watchlistId, isUpdated, userInfo?.preferredCurrency]);
+
+  useEffect(() => {
+    if (id !== undefined) {
+      void fetchDetailTournament();
+    }
+  }, [id]);
+
+  useEffect(() => {
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
 
   const handleArrow = (value: number): boolean => {
     if (value > 0) {
@@ -104,8 +149,13 @@ const AssetWatchList: React.FC = () => {
           <div className="my-2">
             {detailWatchList?.watchlist?.assetList?.map(asset => (
               <div
+                onClick={() => {
+                  void router.push(
+                    `/play/tournament/${id as string}/${asset?.id}`
+                  );
+                }}
                 key={asset?.id}
-                className="w-full flex items-center justify-between bg-[#F9F9F9] p-3 rounded-lg gap-3 mb-2"
+                className="w-full flex items-center justify-between bg-[#F9F9F9] hover:bg-[#efefef] duration-150 cursor-pointer p-3 rounded-lg gap-3 mb-2"
               >
                 <div className="flex items-center gap-3">
                   <Avatar src={asset?.logo} alt="logo" width={40} height={40} />
@@ -113,20 +163,22 @@ const AssetWatchList: React.FC = () => {
                     <Typography className="font-poppins lg:text-sm text-xs font-semibold">
                       {asset?.realTicker} /{' '}
                       <span className="font-normal text-xs">
-                        {dataUser?.preferredCurrency ?? 'IDR'}
+                        {userInfo?.preferredCurrency ?? 'IDR'}
                       </span>
                     </Typography>
                     <Typography className="text-[#7C7C7C] font-normal text-xs font-poppins">
-                      {asset?.name}
+                      {asset?.name !== undefined && asset.name.length > 18
+                        ? `${asset.name.slice(0, 18)}...`
+                        : asset?.name}
                     </Typography>
                   </div>
                 </div>
                 <div className="flex flex-col gap-[6px] items-end">
                   <Typography className="font-poppins text-sm font-semibold">
-                    {dataUser?.preferredCurrency}{' '}
-                    {asset?.priceBar?.close > 0.01
-                      ? new Intl.NumberFormat().format(asset?.priceBar?.close)
-                      : asset?.priceBar?.close}
+                    {userInfo?.preferredCurrency}{' '}
+                    {new Intl.NumberFormat().format(
+                      formatAssetPrice(asset?.priceBar?.close)
+                    ) ?? 0}
                   </Typography>
                   <Typography
                     className={`flex font-normal text-xs ${
@@ -171,14 +223,15 @@ const AssetWatchList: React.FC = () => {
               </div>
             ))}
           </div>
-          {isEditModal && dataUser != null && (
+          {isEditModal && userInfo != null && (
             <ModalEditWatchlist
               onClose={() => {
                 setIsEditModal(prev => !prev);
               }}
               data={editedWatchlist}
-              userInfo={dataUser}
+              userInfo={userInfo}
               setUpdate={setIsUpdated}
+              detailTournament={detailTournament}
             />
           )}
         </div>

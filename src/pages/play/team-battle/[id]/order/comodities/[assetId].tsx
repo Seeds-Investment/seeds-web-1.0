@@ -557,7 +557,7 @@ const BuyPage: React.FC = () => {
             {router.query.transaction === 'buy' && (
               <div className="mt-4 mx-2">
                 <Typography className="mb-2 font-poppins text-base font-semibold text-black">
-                  {t('buyAsset.text8')} (IDR)
+                  {t('buyAsset.text8')} ({prefCurrency})
                 </Typography>
                 {router.query.transaction === 'buy' && (
                   <input
@@ -583,7 +583,7 @@ const BuyPage: React.FC = () => {
             )}
             {router.query.transaction === 'sell' && (
               <Typography className="mb-2 font-poppins text-base font-semibold text-black">
-                {t('buyAsset.text8')} (IDR)
+                {t('buyAsset.text8')} ({prefCurrency})
               </Typography>
             )}
             {router.query.transaction === 'sell' && (

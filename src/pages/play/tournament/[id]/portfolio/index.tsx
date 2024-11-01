@@ -25,6 +25,7 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   PortfolioFilter,
+  Summary,
   type ActiveAsset,
   type BallanceTournament,
   type ChartProportion,
@@ -62,6 +63,7 @@ const Portfolio = (): React.ReactElement => {
   const [portfolioActiveTab, setPortfolioActiveTab] = useState(
     PortfolioFilter.OVERVIEW
   );
+  const [summary, setSummary] = useState<Summary>();
 
   const [ballance, setBallance] = useState<BallanceTournament>({
     balance: 0,
@@ -76,7 +78,6 @@ const Portfolio = (): React.ReactElement => {
   const [activeAssetParams, setActiveAssetParams] = useState({
     play_id: id as string,
     category: portfolioActiveTab === 'OVERVIEW' ? null : portfolioActiveTab,
-    currency: userInfo?.preferredCurrency ?? 'IDR',
     per_page: 5,
     page: 1
   });
@@ -134,6 +135,7 @@ const Portfolio = (): React.ReactElement => {
       setLoadingPortfolio(true);
       const response = await getPlayPortfolio(id as string, currency);
       setChartProportion(response?.pie?.chart_proportions ?? []);
+      setSummary(response?.summary);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -148,7 +150,10 @@ const Portfolio = (): React.ReactElement => {
   const fetchActiveAsset = async (retries = 3): Promise<void> => {
     try {
       setLoadingActiveAsset(true);
-      const response = await getActiveAsset(activeAssetParams);
+      const response = await getActiveAsset({
+        ...activeAssetParams,
+        currency: userInfo?.preferredCurrency as string
+      });
       setActiveAsset(response?.data);
       setActiveAssetLength(response?.metadata?.total);
     } catch (error) {
@@ -243,7 +248,7 @@ const Portfolio = (): React.ReactElement => {
                 )}
                 {` (${
                   ballance?.return_value < 0 ? '' : '+'
-                }${ballance?.return_percentage?.toFixed(2)}%)`}
+                }${summary?.gnl_percentage?.toFixed(2)}%)`}
               </Typography>
               <Typography className="text-white font-poppins z-10 text-sm md:text-lg">
                 {t('tournament.portfolio.today')}

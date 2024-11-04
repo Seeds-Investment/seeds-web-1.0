@@ -79,11 +79,14 @@ export default function ListAssets(): React.ReactElement {
   const fetchDataAssets = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const response = await getTrendingAssets(filter);
-      if (response.result === null) {
+      const response = await getTrendingAssets({
+        ...filter,
+        sortBy: 'most_traded'
+      });
+      if (response.data === null) {
         setAssets([]);
       } else {
-        setAssets(response.result);
+        setAssets(response.data.data);
         setMetadata(response.metadata);
       }
       setIsLoading(false);

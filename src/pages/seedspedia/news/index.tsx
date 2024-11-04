@@ -4,7 +4,7 @@ import NewsCard from '@/components/seedsPedia/newsCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getArticle } from '@/repository/article.repository';
 import i18n from '@/utils/common/i18n';
-import { ArticleDetail } from '@/utils/interfaces/play.interface';
+import { type ArticleDetail } from '@/utils/interfaces/play.interface';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';

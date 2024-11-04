@@ -1,32 +1,16 @@
 'use-client';
 import { getArticleById } from '@/repository/article.repository';
+import { ArticleDetail } from '@/utils/interfaces/play.interface';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 interface ArticleCardProps {
-  articleId: string;
+  articleId: number;
+  data?: ArticleDetail;
 }
 
-interface ArticleDetail {
-  id: number;
-  title: string;
-  author: string;
-  link: string;
-  videoUrl: string;
-  imageUrl: string;
-  content: string;
-  sourceId: string;
-  language: string;
-  category: string;
-  publicationDate: string;
-  total_likes: number;
-  total_comments: number;
-  total_shares: number;
-  is_liked: boolean;
-}
-
-const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
+const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
@@ -62,7 +46,7 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
   }
 
   useEffect(() => {
-    if (typeof articleId !== 'string') {
+    if (typeof articleId !== 'string' && !data) {
       const fetchArticleDetail = (): void => {
         getArticleById(articleId)
           .then(response => {
@@ -77,6 +61,12 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
       fetchArticleDetail();
     }
   }, [articleId]);
+
+  useEffect(() => {
+    if (data) {
+      setArticleDetail(data);
+    }
+  }, [data]);
 
   function isImageUrlValid(url: string): boolean {
     return url?.startsWith('http://') || url?.startsWith('https://');

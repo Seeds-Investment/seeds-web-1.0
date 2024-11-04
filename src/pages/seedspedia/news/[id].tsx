@@ -10,8 +10,8 @@ import {
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import i18n from '@/utils/common/i18n';
-import { ArticleDetail } from '@/utils/interfaces/play.interface';
-import { IOtherUserProfile } from '@/utils/interfaces/user.interface';
+import { type ArticleDetail } from '@/utils/interfaces/play.interface';
+import { type IOtherUserProfile } from '@/utils/interfaces/user.interface';
 import { Input } from '@material-tailwind/react';
 import { format, parseISO } from 'date-fns';
 import { id as ID } from 'date-fns/locale';

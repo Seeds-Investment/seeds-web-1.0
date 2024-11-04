@@ -9,6 +9,9 @@ import {
   postComment
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import i18n from '@/utils/common/i18n';
+import { ArticleDetail } from '@/utils/interfaces/play.interface';
+import { IOtherUserProfile } from '@/utils/interfaces/user.interface';
 import { Input } from '@material-tailwind/react';
 import { format, parseISO } from 'date-fns';
 import { id as ID } from 'date-fns/locale';
@@ -17,40 +20,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface UserData {
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  phone: string;
-  _pin: string;
-}
-
-export interface ArticleListRoot {
-  promoCodeList: Article[];
-  metadata: Metadata;
-}
-interface Article {
-  id: number;
-  title: string;
-  author: string;
-  link: string;
-  videoUrl: string;
-  imageUrl: string;
-  content: string;
-  sourceId: string;
-  language: string;
-  category: string;
-  publicationDate: string;
-  total_likes: number;
-  total_comments: number;
-  total_shares: number;
-  is_liked: boolean;
-}
-
 interface FormRequestInterface {
   comment: string;
 }
@@ -58,32 +27,6 @@ interface FormRequestInterface {
 const initialFormRequest = {
   comment: ''
 };
-
-export interface Metadata {
-  currentPage: number;
-  limit: number;
-  totalPage: number;
-  totalRow: number;
-}
-
-interface ArticleDetail {
-  id: number;
-  title: string;
-  author: string;
-  link: string;
-  videoUrl: string;
-  imageUrl: string;
-  content: string;
-  sourceId: string;
-  language: string;
-  category: string;
-  publicationDate: string;
-  total_likes: number;
-  total_comments: number;
-  total_shares: number;
-  is_liked: boolean;
-}
-
 interface ArticleComment {
   id: string;
   name: string;
@@ -96,7 +39,7 @@ const params = {
   page: 1,
   limit: 8,
   order_by: 'scheduled_at,DESC',
-  source: 'news',
+  source: 'articles',
   language: '',
   search: '',
   category: 'all'
@@ -107,7 +50,7 @@ export default function ArticleDetailPage(): JSX.Element {
   const { id } = router.query;
   const accessToken =
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const [userInfo, setUserInfo] = useState<IOtherUserProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [comment, setComment] = useState('');
   // const [liked, setLiked] = useState(false);
@@ -116,7 +59,7 @@ export default function ArticleDetailPage(): JSX.Element {
   );
   const { t } = useTranslation();
   const [articleComment, setArticleComment] = useState<ArticleComment[]>([]);
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [articles, setArticles] = useState<ArticleDetail[]>([]);
   const [open, setOpen] = useState(false);
   const [formRequest, setFormRequest] =
     useState<FormRequestInterface>(initialFormRequest);
@@ -125,7 +68,7 @@ export default function ArticleDetailPage(): JSX.Element {
 
   async function fetchArticles(): Promise<void> {
     try {
-      const response = await getArticle(params);
+      const response = await getArticle({ ...params, language: i18n.language });
       if (response.status === 200) {
         setArticles(response.data);
       } else {
@@ -144,7 +87,7 @@ export default function ArticleDetailPage(): JSX.Element {
     fetchData().catch(error => {
       console.error('Error in fetchData:', error);
     });
-  }, []);
+  }, [i18n.language]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -163,7 +106,7 @@ export default function ArticleDetailPage(): JSX.Element {
     if (typeof id === 'string') {
       // Check if id is a valid string
       const fetchArticleDetail = (): void => {
-        getArticleById(id)
+        getArticleById(Number(id))
           .then(response => {
             if (response.status === 200) {
               setArticleDetail(response.news);
@@ -311,16 +254,6 @@ export default function ArticleDetailPage(): JSX.Element {
   if (articleDetail == null) {
     return <p>Loading...</p>;
   }
-
-  // const customGradient = (
-  //   <>
-  //     <span className="-z-0 absolute top-0 mt-[50%] -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
-  //     <span className="-z-0 absolute top-0 mt-[55%] left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
-  //     {/* <span className="-z-0 absolute -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
-  //     <span className="-z-0 absolute top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
-  //     <span className="-z-0 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
-  //   </>
-  // );
 
   const defaultNews = '/assets/default-news.png';
   const imageUrl = articleDetail?.imageUrl;

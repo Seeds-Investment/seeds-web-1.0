@@ -3,42 +3,15 @@ import Footer from '@/components/layouts/Footer';
 import NewsCard from '@/components/seedsPedia/newsCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getArticle } from '@/repository/article.repository';
+import i18n from '@/utils/common/i18n';
+import { ArticleDetail } from '@/utils/interfaces/play.interface';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
-export interface ArticleListRoot {
-  promoCodeList: Article[];
-  metadata: Metadata;
-}
-interface Article {
-  id: string;
-  title: string;
-  author: string;
-  link: string;
-  videoUrl: string;
-  imageUrl: string;
-  content: string;
-  sourceId: string;
-  language: string;
-  category: string;
-  is_liked: boolean;
-  publicationDate: string;
-  total_likes: number;
-  total_comments: number;
-  total_shares: number;
-}
-
-export interface Metadata {
-  currentPage: number;
-  limit: number;
-  totalPage: number;
-  totalRow: number;
-}
 
 export default function ArticleList(): React.ReactElement {
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [articles, setArticles] = useState<ArticleDetail[]>([]);
   const [searchInput, setSearchInput] = useState('');
-  console.log(articles, 'sdnjndjfdhs');
 
   const [activeCategory, setActiveCategory] = useState('All');
   const [params, setParams] = useState({
@@ -56,7 +29,8 @@ export default function ArticleList(): React.ReactElement {
       const response = await getArticle({
         ...params,
         source: params.source,
-        category: params.category
+        category: params.category,
+        language: i18n.language
       });
 
       if (response.status === 200) {
@@ -72,22 +46,13 @@ export default function ArticleList(): React.ReactElement {
   useEffect(() => {
     setParams(prevParams => ({
       ...prevParams,
+      language: i18n.language,
       search: searchInput,
       page: 1
     }));
 
     void fetchArticles();
-  }, [searchInput]);
-
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      await fetchArticles();
-    };
-
-    fetchData().catch(error => {
-      console.error('Error in fetchData:', error);
-    });
-  }, [params]);
+  }, [searchInput, i18n.language]);
 
   const updateCategory = (newCategory: string): void => {
     setParams(prevParams => ({
@@ -99,26 +64,6 @@ export default function ArticleList(): React.ReactElement {
   };
 
   const { t } = useTranslation();
-
-  // const timeAgo = (dateString: string): string => {
-  //   const createdDate = new Date(dateString);
-  //   const currentDate = new Date();
-  //   const timeDifference = currentDate.getTime() - createdDate.getTime();
-  //   const secondsDifference = Math.floor(timeDifference / 1000);
-
-  //   if (secondsDifference < 60) {
-  //     return `${secondsDifference} seconds ago`;
-  //   } else if (secondsDifference < 3600) {
-  //     const minutes = Math.floor(secondsDifference / 60);
-  //     return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
-  //   } else if (secondsDifference < 86400) {
-  //     const hours = Math.floor(secondsDifference / 3600);
-  //     return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
-  //   } else {
-  //     const days = Math.floor(secondsDifference / 86400);
-  //     return `${days} ${days === 1 ? 'day' : 'days'} ago`;
-  //   }
-  // };
 
   const categoryItemClass =
     'py-1 rounded-full text-center w-full text-base font-poppins font-semibold px-2';
@@ -136,22 +81,9 @@ export default function ArticleList(): React.ReactElement {
     'World'
   ];
 
-  // const customGradient = (
-  //   <>
-  //     <span className="-z-10 lg:fixed hidden lg:block bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
-  //     <span className="-z-10 lg:fixed hidden lg:block bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
-  //     {/* <span className="-z-10  hidden lg:block -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
-  //     <span className="-z-10 lg:fixed hidden lg:block bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
-  //     <span className="-z-10 lg:fixed hidden lg:block bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
-  //   </>
-  // );
-
   return (
     <>
-      <PageGradient
-        // customGradient={customGradient}
-        className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20"
-      >
+      <PageGradient className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
         <div className="flex z-10 flex-col lg:flex-col justify-center text-center">
           <div className="flex flex-col">
             <div className="text-3xl font-semibold bg-clip-text text-black">
@@ -345,7 +277,13 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="grid z-10 lg:grid-cols-6 gap-4 mt-8">
           {articles?.map(article => {
-            return <NewsCard key={article.id} articleId={article.id} />;
+            return (
+              <NewsCard
+                key={article.id}
+                articleId={article.id}
+                data={article}
+              />
+            );
           })}
         </div>
         <div className="hidden lg:flex  justify-center mx-auto my-8">

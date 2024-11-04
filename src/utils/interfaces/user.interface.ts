@@ -36,3 +36,15 @@ export interface SearchUserParams {
   page?: number;
   limit?: number;
 }
+
+export type PreferredCurrencyI =
+  | 'eur'
+  | 'gbp'
+  | 'idr'
+  | 'jpy'
+  | 'myr'
+  | 'php'
+  | 'sgd'
+  | 'thb'
+  | 'usd'
+  | 'vnd';

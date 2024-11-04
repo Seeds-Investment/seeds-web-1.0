@@ -706,6 +706,7 @@ export default {
       day: 'DD',
       month: 'MM',
       year: 'YYYY',
+      seedsTag: 'Seedstag is a unique username on our seeds apps',
       validation: {
         seedsTag: 'SeedsTag already used',
         regex: 'SeedsTag cannot contain spaces or symbols, please delete!',
@@ -2160,7 +2161,10 @@ export default {
         "Don't forget to read Play Arena's terms and conditions before you start playing."
     },
     watchlist: {
-      watchlist: 'Watchlist',
+      myWatchlist: 'My Watchlist',
+      myWatchlistDescription: 'Check your watchlist',
+      assets: 'Assets',
+      btnEditAsset: 'Edit Asset',
       noData: 'No Watchlist yet',
       create: 'Create your Watchlist now!',
       createWatchlist: 'Create Watchlist',
@@ -2175,7 +2179,30 @@ export default {
       deleteConfirm: 'Are you sure want to delete this watchlist?',
       changeAsset: 'Change Asset',
       enter: 'Enter Watchlist name...',
-      search: 'Search'
+      search: 'Search',
+      modalHeader: 'Add Assets to Watchlist',
+      addToWatchlist: 'Save Changes',
+      newWatchlist: 'Create a new Watchlist',
+      horay: 'Hoorayyy!!',
+      successAddAsset: 'Watchlist updated successfully',
+      continue: 'Continue',
+      ops: 'Oops!!',
+      cancelAddAsset: 'Cancel adding assets to watchlist?',
+      yes: 'Yes',
+      no: 'No',
+      alreadyExist:
+        'The asset you added is already in the watchlist that has been created.',
+      ok: 'Ok',
+      createNewWatchlist: 'New Watchlist',
+      descNewWatchlist:
+        'Create a watchlist to help you collect your favorite assets',
+      watchlistName: 'Watchlist Name',
+      groupName: 'Desired Group Name',
+      btnNewWatchlist: 'Create New Watchlist',
+      successWatchlist: 'Watchlist created successfully',
+      backToAsset: 'Back to Asset',
+      seeWatchlist: 'See Watchlist',
+      noWatchlist: 'Watchlist has not been created'
     },
     social: {
       sorry: 'Sorry, there is no post here!',

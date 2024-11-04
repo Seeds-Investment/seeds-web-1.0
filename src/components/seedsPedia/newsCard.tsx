@@ -1,6 +1,5 @@
 'use-client';
-import { getArticleById } from '@/repository/article.repository';
-import { ArticleDetail } from '@/utils/interfaces/play.interface';
+import { type ArticleDetail } from '@/utils/interfaces/play.interface';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Link from 'next/link';
@@ -46,24 +45,7 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
   }
 
   useEffect(() => {
-    if (typeof articleId !== 'string' && !data) {
-      const fetchArticleDetail = (): void => {
-        getArticleById(articleId)
-          .then(response => {
-            if (response.status === 200) {
-              setArticleDetail(response.news);
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching article detail:', error);
-          });
-      };
-      fetchArticleDetail();
-    }
-  }, [articleId]);
-
-  useEffect(() => {
-    if (data) {
+    if (data !== undefined) {
       setArticleDetail(data);
     }
   }, [data]);

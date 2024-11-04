@@ -1,9 +1,10 @@
 import ArtPagination from '@/components/ArtPagination';
-import NewsCard from '@/components/seedsPedia/newsCard';
+import NewsCard from '@/components/homepage/newsCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getArticle } from '@/repository/article.repository';
+import LanguageContext from '@/store/language/language-context';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 export interface ArticleListRoot {
@@ -36,20 +37,30 @@ export interface Metadata {
 }
 
 export default function ArticleList(): React.ReactElement {
+  const languageCtx = useContext(LanguageContext);
   const [articles, setArticles] = useState<Article[]>([]);
   const [hotNews, setHotNews] = useState<Article[]>([]);
   const [searchInput, setSearchInput] = useState('');
 
   const [activeCategory, setActiveCategory] = useState('All');
+  
   const [params, setParams] = useState({
     page: 1,
     limit: 9,
     source: 'news',
-    language: '',
+    language: languageCtx?.language === 'ID' ? 'indonesian' : 'english',
     search: '',
     category: 'All',
-    totalPage: 9
+    totalPage: 9,
+    sort_by: 'all'
   });
+
+  useEffect(() => {
+    setParams(prevParams => ({
+      ...prevParams,
+      language: languageCtx?.language === 'EN' ? 'english' : 'indonesian'
+    }));
+  }, [languageCtx.language]);
 
   async function fetchArticles(): Promise<void> {
     try {
@@ -120,28 +131,8 @@ export default function ArticleList(): React.ReactElement {
     setActiveCategory(newCategory);
   };
   const hotNewsItemClass = 'mb-2 mx-48';
-
+  
   const { t } = useTranslation();
-
-  // const timeAgo = (dateString: string): string => {
-  //   const createdDate = new Date(dateString);
-  //   const currentDate = new Date();
-  //   const timeDifference = currentDate.getTime() - createdDate.getTime();
-  //   const secondsDifference = Math.floor(timeDifference / 1000);
-
-  //   if (secondsDifference < 60) {
-  //     return `${secondsDifference} seconds ago`;
-  //   } else if (secondsDifference < 3600) {
-  //     const minutes = Math.floor(secondsDifference / 60);
-  //     return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
-  //   } else if (secondsDifference < 86400) {
-  //     const hours = Math.floor(secondsDifference / 3600);
-  //     return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
-  //   } else {
-  //     const days = Math.floor(secondsDifference / 86400);
-  //     return `${days} ${days === 1 ? 'day' : 'days'} ago`;
-  //   }
-  // };
 
   const categoryItemClass = 'py-1 rounded-full text-center w-full text-md px-2';
 
@@ -160,9 +151,6 @@ export default function ArticleList(): React.ReactElement {
 
   const customGradient = (
     <>
-      {/* <span className="-z-10 lg:fixed hidden lg:block bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" /> */}
-      {/* <span className="-z-10 lg:fixed hidden lg:block bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" /> */}
-      {/* <span className="-z-10  hidden lg:block -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
       <span className="-z-10 lg:fixed hidden lg:block bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
       <span className="-z-10 lg:fixed hidden lg:block bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
     </>
@@ -218,11 +206,19 @@ export default function ArticleList(): React.ReactElement {
                 {t('articleList.text3')}
               </div>
               <select
-                className="me-5 bg-transparent mt-1 hidden lg:block text-base font-semibold"
-                aria-label="All"
+                className="bg-transparent mt-2 hidden lg:block text-base font-semibold cursor-pointer"
+                aria-label="Sort Options"
+                onChange={e => {
+                  setParams({ ...params, sort_by: e.target.value });
+                }}
               >
-                <option value="option1">All</option>
-                <option value="option2">All</option>
+                <option value="all">{t('articleList.article.sort.all')}</option>
+                <option value="relevant">
+                  {t('articleList.article.sort.relevant')}
+                </option>
+                <option value="recent">
+                  {t('articleList.article.sort.recent')}
+                </option>
               </select>
             </div>
           </div>
@@ -232,11 +228,17 @@ export default function ArticleList(): React.ReactElement {
             {t('articleList.text3')} :
           </div>
           <select
-            className="me-5 justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
-            aria-label="All"
+            className="justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
+            aria-label="Sort Options"
+            onChange={e => {
+              setParams({ ...params, sort_by: e.target.value });
+            }}
           >
-            <option value="option1">All</option>
-            <option value="option2">All</option>
+            <option value="all">{t('articleList.article.sort.all')}</option>
+            <option value="relevant">
+              {t('articleList.article.sort.relevant')}
+            </option>
+            <option value="recent">{t('articleList.article.sort.recent')}</option>
           </select>
         </div>
         <div className="lg:hidden mt-4 ">

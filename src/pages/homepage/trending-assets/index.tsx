@@ -34,7 +34,7 @@ const initialFilter: Filter = {
   search: '',
   limit: 10,
   page: 1,
-  sortBy: 'rating',
+  sortBy: 'most_traded',
   currency: ''
 };
 
@@ -46,10 +46,9 @@ const initialMetadata: Metadata = {
 };
 
 const optionSortBy = [
-  { label: 'All', value: '' },
-  { label: 'Top Gainers', value: 'top gainers' },
-  { label: 'Top Lowest', value: 'top lowest' },
-  { label: 'Most Trades', value: 'most trades' }
+  { label: 'Most Traded', value: 'most_traded' },
+  { label: 'Top Gainers', value: 'top_gainers' },
+  { label: 'Top Losers', value: 'top_losers' }
 ];
 
 export default function ListAssets(): React.ReactElement {
@@ -80,10 +79,10 @@ export default function ListAssets(): React.ReactElement {
     try {
       setIsLoading(true);
       const response = await getTrendingAssets(filter);
-      if (response.result === null) {
+      if (response.data === null) {
         setAssets([]);
       } else {
-        setAssets(response.result);
+        setAssets(response.data.data);
         setMetadata(response.metadata);
       }
       setIsLoading(false);
@@ -198,7 +197,7 @@ export default function ListAssets(): React.ReactElement {
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
               setFilter(prevState => ({
                 ...prevState,
-                sort_by: e.target.value
+                sortBy: e.target.value
               }));
             }}
           >

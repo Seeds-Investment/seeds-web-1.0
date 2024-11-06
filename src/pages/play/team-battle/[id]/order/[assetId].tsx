@@ -307,7 +307,7 @@ const BuyPage: React.FC = () => {
     } else {
       setIsDisable(false);
     }
-  }, [assetAmount, amount, ballance.balance]);
+  }, [assetAmount, amount, ballance?.balance]);
 
   useEffect(() => {
     if (!isActive) {

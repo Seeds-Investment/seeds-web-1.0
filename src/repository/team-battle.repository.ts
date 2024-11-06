@@ -154,11 +154,13 @@ export const getBattleArena = async (id: string): Promise<any> => {
 
 export const getBattleAssets = async (
   id: string,
-  assetId: string
+  assetId: string,
+  params?: { currency: string }
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
     return await teamBattleService(`/${id}/assets/${assetId}`, {
+      params,
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`

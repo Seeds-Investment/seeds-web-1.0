@@ -562,3 +562,15 @@ export interface CreateGroupResponse {
   total_memberships: number;
   total_online: number;
 }
+
+export interface DetailFollowing {
+  id: string;
+  is_followed: boolean;
+  name: string;
+  seeds_tag: string;
+  avatar: string;
+  role: string;
+  verified: boolean;
+  bio: string;
+  badge: string;
+}

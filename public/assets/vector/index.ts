@@ -1,3 +1,4 @@
+export { default as ArrowBackwardIconWhite } from 'public/assets/vector/arrow-backward-white.svg';
 export { default as ArrowBackwardIcon } from 'public/assets/vector/arrow-backward.svg';
 export { default as ArrowDownCollapse } from 'public/assets/vector/arrow-down-collapse.svg';
 export { default as ArrowLeftBlack } from 'public/assets/vector/arrow-left-black.svg';
@@ -26,6 +27,7 @@ export { default as CloseCircleIcon } from 'public/assets/vector/close-circle.sv
 export { default as CloseModalCross } from 'public/assets/vector/close-modal-cross.svg';
 export { default as Copy } from 'public/assets/vector/copy.svg';
 export { default as CreatePinIcon } from 'public/assets/vector/create-pin.svg';
+export { default as DeleteIconX } from 'public/assets/vector/delete-icon.svg';
 export { default as DeleteIcon } from 'public/assets/vector/delete.svg';
 export { default as Disclosure } from 'public/assets/vector/disclosure.png';
 export { default as Dogecoin } from 'public/assets/vector/doggo.svg';
@@ -95,4 +97,3 @@ export { default as VoucherInvalid } from 'public/assets/vector/voucher-invalid.
 export { default as Voucher } from 'public/assets/vector/voucher.svg';
 export { default as XIconWhite } from 'public/assets/vector/x-icon-white.svg';
 export { default as XIcon } from 'public/assets/vector/x.svg';
-

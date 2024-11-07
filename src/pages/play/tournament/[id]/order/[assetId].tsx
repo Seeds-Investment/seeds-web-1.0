@@ -7,7 +7,7 @@ import CardLimitOrder from '@/containers/tournament/order/CardLimitOrder';
 import CardPrice from '@/containers/tournament/order/CardPrice';
 import CardSwitch from '@/containers/tournament/order/CardSwitch';
 import SuccessOrderModal from '@/containers/tournament/order/SuccesPopup';
-import { standartCurrency } from '@/helpers/currency';
+import { formatAssetPrice, standartCurrency } from '@/helpers/currency';
 import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import useGetLastPrice from '@/hooks/useGetLastPrice';
@@ -143,14 +143,16 @@ const BuyPage: React.FC = () => {
     loss: ''
   });
   const [lotSell, setLotSell] = useState<string>('0');
-
+  const lastPriceAsset = data?.lastPrice.close;
   useEffect(() => {
     if (router?.query?.transaction === 'sell') {
       if (sellPercent !== 0) {
         setAmount(
           `${
             (portfolio?.total_lot *
-              (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0) *
+              (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                ? lastPrice[prefCurrency as PreferredCurrencyI]
+                : lastPriceAsset ?? 0) *
               sellPercent) /
             100
           }`
@@ -164,7 +166,9 @@ const BuyPage: React.FC = () => {
           (
             (ballance?.balance * buyPercent) /
             100 /
-            (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
+            (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+              ? lastPrice[prefCurrency as PreferredCurrencyI]
+              : lastPriceAsset ?? 0)
           ).toFixed(1)
         );
       }
@@ -176,7 +180,9 @@ const BuyPage: React.FC = () => {
       amount !==
       `${
         (portfolio?.total_lot *
-          (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0) *
+          (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+            ? lastPrice[prefCurrency as PreferredCurrencyI]
+            : lastPriceAsset ?? 0) *
           sellPercent) /
         100
       }`
@@ -364,14 +370,18 @@ const BuyPage: React.FC = () => {
                 setNewVal(
                   `${
                     parseInt(value) /
-                    (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
+                    (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                      ? lastPrice[prefCurrency as PreferredCurrencyI]
+                      : lastPriceAsset ?? 0)
                   }`
                 );
               } else {
                 setNewVal(
                   `${
                     parseFloat(value) *
-                    (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
+                    (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                      ? lastPrice[prefCurrency as PreferredCurrencyI]
+                      : lastPriceAsset ?? 0)
                   }`
                 );
               }
@@ -387,14 +397,18 @@ const BuyPage: React.FC = () => {
                   setNewVal(
                     `${
                       parseInt(value) /
-                      (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
+                      (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                        ? lastPrice[prefCurrency as PreferredCurrencyI]
+                        : lastPriceAsset ?? 0)
                     }`
                   );
                 } else {
                   setNewVal(
                     `${
                       parseFloat(value) *
-                      (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
+                      (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                        ? lastPrice[prefCurrency as PreferredCurrencyI]
+                        : lastPriceAsset ?? 0)
                     }`
                   );
                 }
@@ -495,7 +509,6 @@ const BuyPage: React.FC = () => {
       setIsLoading(false);
     }
   };
-  console.log('data ', data)
 
   useEffect(() => {
     const handleRouteChange = async (): Promise<void> => {
@@ -525,12 +538,15 @@ const BuyPage: React.FC = () => {
               {router.query?.transaction === 'buy' && t('buyAsset.text5')}
             </Typography>
             <Typography className="z-10 text-3xl font-poppins font-semibold  text-[#FFFFFF]">
-              {`${standartCurrency(
+              {prefCurrency}
+              {` ${formatAssetPrice(
                 router.query?.transaction === 'buy'
                   ? ballance?.balance ?? 0
                   : (portfolio?.total_lot ?? 0) *
-                      (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
-              ).replace('Rp', userInfo?.preferredCurrency ?? 'IDR')}`}{' '}
+                      (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                        ? lastPrice[prefCurrency as PreferredCurrencyI]
+                        : lastPriceAsset ?? 0)
+              )}`}{' '}
             </Typography>
           </div>
         )}
@@ -539,7 +555,10 @@ const BuyPage: React.FC = () => {
           <CardPrice
             data={{
               ...data,
-              socketPrice: lastPrice[prefCurrency as PreferredCurrencyI]
+              socketPrice:
+                lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                  ? lastPrice[prefCurrency as PreferredCurrencyI]
+                  : lastPriceAsset ?? 0
             }}
             loading={isLoadingAsset}
           />
@@ -744,9 +763,11 @@ const BuyPage: React.FC = () => {
                 type="text"
                 value={
                   lastPrice[prefCurrency as PreferredCurrencyI] !== undefined
-                    ? standartCurrency(
-                        lastPrice[prefCurrency as PreferredCurrencyI] ?? 0
-                      ).replace('Rp', '')
+                    ? formatAssetPrice(
+                        lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                          ? lastPrice[prefCurrency as PreferredCurrencyI]
+                          : lastPriceAsset ?? 0
+                      )
                     : 0
                 }
                 readOnly
@@ -789,11 +810,12 @@ const BuyPage: React.FC = () => {
                     {t('buyAsset.text15')}
                   </Typography>
                   <Typography className="text-[#262626] font-bold text-base">
-                    `IDR{' '}
-                    {standartCurrency(
-                      (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0) *
-                        +lotSell
-                    ).replace('Rp', '')}
+                    `{prefCurrency}{' '}
+                    {formatAssetPrice(
+                      (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                        ? lastPrice[prefCurrency as PreferredCurrencyI]
+                        : lastPriceAsset ?? 0) * +lotSell
+                    )}
                     `
                   </Typography>
                 </div>
@@ -893,9 +915,11 @@ const BuyPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-[#7555DA] font-normal text-xs">
                       {price.length === 0
-                        ? standartCurrency(
-                            lastPrice[prefCurrency as PreferredCurrencyI]
-                          ).replace('Rp', '')
+                        ? formatAssetPrice(
+                            lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                              ? lastPrice[prefCurrency as PreferredCurrencyI]
+                              : lastPriceAsset ?? 0
+                          )
                         : standartCurrency(price).replace('Rp', '')}
                     </Typography>
                   </div>
@@ -916,7 +940,7 @@ const BuyPage: React.FC = () => {
                 type="button"
                 disabled={isDisable}
                 variant="filled"
-                className={`rounded-full w-full lg:w-[200px] ml-auto justify-items-end items-end py-3 mb-5 ${
+                className={`flex justify-center rounded-full w-full lg:w-[200px] ml-auto justify-items-end items-end py-3 mb-5 ${
                   isDisable ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0]'
                 }`}
                 onClick={() => {
@@ -937,7 +961,7 @@ const BuyPage: React.FC = () => {
               <Button
                 type="button"
                 variant="filled"
-                className={`mb-5 rounded-full w-full ml-auto justify-items-end items-end py-3 bg-[#DD2525]`}
+                className={`flex justify-center mb-5 rounded-full w-full ml-auto justify-items-end items-end py-3 bg-[#DD2525]`}
                 onClick={() => {
                   handleModal();
                 }}
@@ -1077,9 +1101,15 @@ const BuyPage: React.FC = () => {
                             </Typography>
                             <Typography className="text-[#262626] font-semibold text-xs">
                               {userInfo?.preferredCurrency}
-                              {standartCurrency(
-                                lastPrice[prefCurrency as PreferredCurrencyI]
-                              ).replace('Rp', '')}
+                              {formatAssetPrice(
+                                lastPrice[
+                                  prefCurrency as PreferredCurrencyI
+                                ] !== 0
+                                  ? lastPrice[
+                                      prefCurrency as PreferredCurrencyI
+                                    ]
+                                  : lastPriceAsset ?? 0
+                              )}
                             </Typography>
                           </div>
                         )}
@@ -1127,12 +1157,16 @@ const BuyPage: React.FC = () => {
 
                             {lastPrice[prefCurrency as PreferredCurrencyI] !==
                             undefined
-                              ? standartCurrency(
+                              ? formatAssetPrice(
                                   +lotSell *
-                                    lastPrice[
+                                    (lastPrice[
                                       prefCurrency as PreferredCurrencyI
-                                    ]
-                                ).replace('Rp', '')
+                                    ] !== 0
+                                      ? lastPrice[
+                                          prefCurrency as PreferredCurrencyI
+                                        ]
+                                      : lastPriceAsset ?? 0)
+                                )
                               : 'No data available'}
                           </Typography>
                         )}
@@ -1227,7 +1261,7 @@ const BuyPage: React.FC = () => {
                     {t('playSimulation.footerOrderDetail2')}
                   </Typography>
                   <Button
-                    className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4 mb-20 md:mb-0"
+                    className="flex justify-center rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4 mb-20 md:mb-0"
                     onClick={() => {
                       if (router.query.transaction === 'buy') {
                         submitOrder().catch(err => {

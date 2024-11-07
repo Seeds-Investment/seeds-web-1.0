@@ -176,7 +176,10 @@ export const getWatchlist = async (params: {
   }
 };
 
-export const getWatchlistById = async (id: string): Promise<any> => {
+export const getWatchlistById = async (
+  id: string,
+  currency?: string
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -184,6 +187,7 @@ export const getWatchlistById = async (id: string): Promise<any> => {
       return await Promise.resolve('Access token not found');
     }
     return await marketService(`/watchlist/${id}`, {
+      params: { currency },
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`

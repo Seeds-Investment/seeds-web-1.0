@@ -445,7 +445,7 @@ const SocialCard: React.FC<props> = ({ item }) => {
             className="rounded-full"
           />
           <p className="font-bold text-black text-lg">
-            @{item?.owner?.seeds_tag}
+            @{(item?.owner?.seeds_tag)?.length > 12 ? `${(item?.owner?.seeds_tag)?.substring(0, 12)}...` : item?.owner?.seeds_tag}
           </p>
         </div>
         <p className="font-thin text-[#7C7C7C] text-sm">

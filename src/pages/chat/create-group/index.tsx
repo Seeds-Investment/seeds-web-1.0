@@ -4,7 +4,7 @@ import { getFollowList, getUserInfo } from '@/repository/profile.repository';
 import { type DetailFollowing } from '@/utils/interfaces/chat.interface';
 import { type UserInfo } from '@/utils/interfaces/user.interface';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { Avatar, Typography } from '@material-tailwind/react';
+import { Avatar, Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIconWhite, DeleteIconX } from 'public/assets/vector';
@@ -76,7 +76,7 @@ const CreateGroup: React.FC = () => {
             </Typography>
           </div>
         </div>
-        <div className="bg-white w-full h-[680px] mt-[-20px] rounded-t-3xl">
+        <div className="bg-white w-full lg:h-[660px] h-[490px] mt-[-20px] rounded-t-3xl mb-5">
           {displayMembers.length > 0 && (
             <div className="flex justify-start items-center gap-2 py-2 px-3 overflow-x-auto w-[calc(100%-28px)] ml-2">
               {displayMembers.map(member => (
@@ -120,7 +120,7 @@ const CreateGroup: React.FC = () => {
               <div className="animate-spinner w-14 h-14 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
             </div>
           ) : (
-            <div className="h-[550px] overflow-y-auto">
+            <div className="md:h-[475px] h-[360px] overflow-y-auto">
               {followingsList.length > 0 &&
                 followingsList.map(following => (
                   <div
@@ -157,6 +157,11 @@ const CreateGroup: React.FC = () => {
                 ))}
             </div>
           )}
+          <div className="flex justify-center py-2 bottom-0">
+            <Button className="font-semibold font-poppins text-sm bg-seeds-button-green text-white md:w-[340px] w-full mx-2 rounded-full">
+              {t('chat.next')}
+            </Button>
+          </div>
         </div>
       </div>
     </PageGradient>

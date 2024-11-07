@@ -4,8 +4,8 @@ import {
   searchGifFromGhipy
 } from '@/repository/circleDetail.repository';
 import { type GiphyI } from '@/utils/interfaces/chat.interface';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import { Search } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 interface form {
   content_text: string;
@@ -98,29 +98,25 @@ const GifPost: React.FC<props> = ({
   };
 
   return (
-    <div className="block bg-white pl-[5vh] w-full">
-      <div className="flex h-14 w-[375px]">
-        <div className="flex flex-col justify-center">
-          <button type="button" onClick={cancelHandler}>
-            <Image alt="Back" src={back_nav} className="h-6 w-6 object-cover" />
-          </button>
-        </div>
-        <div className="flex justify-center items-center w-full">
-          <h1 className="font-poppins font-semibold text-lg">Choose GIF</h1>
-        </div>
+    <div className="block bg-white w-full">
+      <div className="flex flex-row items-center justify-between">
+        <button type="button" onClick={cancelHandler}>
+          <Image alt="Back" src={back_nav} className="h-6 w-6 object-cover" />
+        </button>
+        <h1 className="flex-1 text-center font-poppins font-semibold text-lg">
+          Choose GIF
+        </h1>
       </div>
-      <div className="flex justify-end mt-8">
-        <div className="flex justify-center flex-col relative left-10">
-          <Image alt="Search" src={Search} className="h-6 w-6 object-cover" />
-        </div>
+      <div className="relative w-full mt-8">
+        <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5" />
         <form>
           <input
             type="text"
             name="searchGif"
             value={search.searchGif}
             onChange={handleFormChange}
-            className="h-10 pl-12 focus:outline-none placeholder:text-neutral-soft rounded-xl w-[350px] border border-neutral-ultrasoft"
-            placeholder="Memes Stock"
+            className="block w-full text-[#262626] text-sm h-10 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-2 pl-10 rounded-full border border-[#BDBDBD]"
+            placeholder="Search GIF"
             onKeyDown={handleKeyDown}
           />
         </form>

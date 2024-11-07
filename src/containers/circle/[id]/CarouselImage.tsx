@@ -37,7 +37,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
               <img
                 src={images[currentIndex]}
                 alt={`Slide ${currentIndex}`}
-                className="max-w-full max-h-[300px] object-fit transition-transform duration-300 transform"
+                className="max-w-full max-h-[300px] object-cover transition-transform duration-300 transform"
               />
             ) : (
               <video

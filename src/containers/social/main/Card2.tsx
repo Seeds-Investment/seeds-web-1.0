@@ -47,7 +47,9 @@ const Card2: React.FC<props> = ({ userData, handleOpen }) => {
             <Image src={Sprout.src} alt={Sprout.alt} width={20} height={20} />
           </div>
           <p className="text-base font-light text-[#7C7C7C] mb-3 font-poppins">
-            @{userData.seedsTag}
+            {userData.seedsTag.length > 15
+              ? `@${userData.seedsTag.slice(0, 15)}...`
+              : `@${userData.seedsTag}`}
           </p>
           <div
             className="border border-[#7C7C7C] rounded-2xl w-full p-4 cursor-pointer"

@@ -69,7 +69,9 @@ const TrendingProfile: React.FC<props> = ({ isLoading, trendingProfile }) => {
                         {data.name}
                       </h1>
                       <p className="text-[#7C7C7C] text-sm font-light">
-                        @{data.seedsTag}
+                        {data.seedsTag.length > 15
+                          ? `@${(data.seedsTag as string).slice(0, 15)}...`
+                          : `@${data.seedsTag as string}`}
                       </p>
                       <p className="text-[#262626] text-xs font-normal">
                         {data.followers} Followers

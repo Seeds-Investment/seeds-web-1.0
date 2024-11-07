@@ -106,7 +106,9 @@ const Profile = ({
       {isLoading && isLoadingEarn && <Loading />}
       <div className="flex md:gap-5">
         <div className="shrink-0">
-          <img
+          <Image
+            width={128}
+            height={128}
             src={profileData?.avatar}
             alt="AVATAR"
             className="rounded-full h-32 w-32 object-cover"
@@ -117,7 +119,10 @@ const Profile = ({
             <div className="flex flex-col gap-1">
               <div className="flex gap-2">
                 <Typography className="text-lg font-semibold font-poppins text-[#201B1C]">
-                  @{profileData?.seeds_tag ?? profileData?.seedsTag ?? ''}
+                  @
+                  {profileData?.seeds_tag.length > 15
+                    ? `${profileData?.seeds_tag.slice(0, 15) as string}...`
+                    : profileData?.seeds_tag}
                 </Typography>
                 {Boolean(profileData?.verified) && (
                   <Image

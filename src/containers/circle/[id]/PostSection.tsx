@@ -867,7 +867,14 @@ const PostSection: React.FC<props> = ({
                         @
                         {dataPost.owner !== undefined
                           ? dataPost.owner.seeds_tag !== undefined
-                            ? dataPost.owner.seeds_tag
+                            ? dataPost.owner.seeds_tag.length > 15
+                              ? `${
+                                  dataPost.owner.seeds_tag.slice(
+                                    0,
+                                    15
+                                  ) as string
+                                }...`
+                              : dataPost.owner.seeds_tag
                             : dataPost.owner.username
                           : null}
                       </Typography>

@@ -890,12 +890,13 @@ export default {
       createPin: { title: 'Create PIN' },
       changePin: { title: 'Change PIN' },
       language: { title: 'Language' },
-      savedPost: { 
+      savedPost: {
         title: 'Saved Post',
         info: 'Information',
         infoMessage: 'This page contains your previous saved post.',
         noData: 'Ups, belum ada postingan tersimpan',
-        noDataMessage: 'Jelajahi postingan di halaman sosial dan simpan yang terbaik!'
+        noDataMessage:
+          'Jelajahi postingan di halaman sosial dan simpan yang terbaik!'
       },
       currency: { title: 'Currency' },
       block: { title: 'Block List' },
@@ -1498,17 +1499,17 @@ export default {
   social: {
     postSection: {
       shareBattle: 'Share This Battle',
-      shareLinks: "Share Link",
-      share: "Share",
-      play: "Play",
-      joined: "Joined",
-      player: "Player",
-      players: "Players",
-      fee: "Fee",
-      free: "Free",
-      category: "Category",
-      participant: "participant",
-      participants: "participants"
+      shareLinks: 'Share Link',
+      share: 'Share',
+      play: 'Play',
+      joined: 'Joined',
+      player: 'Player',
+      players: 'Players',
+      fee: 'Fee',
+      free: 'Free',
+      category: 'Category',
+      participant: 'participant',
+      participants: 'participants'
     },
     follow: 'Follow',
     unfollow: 'Unfollow',
@@ -1624,6 +1625,20 @@ export default {
       close: 'Close',
       paymentSuccessful: 'Successful',
       recurringSaved: 'Your recurring has been saved!'
+    },
+    dailyQuiz: {
+      rightAnswer: 'Congratulation,you’re right!',
+      wrongAnswer: 'Oops, not quite.',
+      answer: 'Answer',
+      shareText: 'Your will share this to your profile. Accept ?',
+      accept: 'Accept',
+      cancel: 'Cancel',
+      shareWin:
+        'Your success has been shared! Keep inspiring others with your financial knowledge!',
+      shareLose:
+        ' Your attempt has been shared! Keep learning and growing every day! ',
+      postWin: 'I am answered today’s daily quiz right! Feeling great!',
+      postLose: 'I am answered today’s daily quiz wrong. but i’m learning!'
     }
   },
   landingV2: {

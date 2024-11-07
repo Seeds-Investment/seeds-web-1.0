@@ -317,8 +317,8 @@ const PostSection: React.FC<props> = ({
                       <p className="font-semibold">Daily Quiz</p>
                       <p className="font-normal break-all text-sm">
                         {content === 'WIN'
-                          ? 'I am answered today’s daily quiz right! Feeling great!'
-                          : 'I am answered today’s daily quiz wrong. but i’m learning!'}
+                          ? t('social.dailyQuiz.postWin')
+                          : t('social.dailyQuiz.postLose')}
                       </p>
                     </div>
                   </div>

@@ -11,6 +11,7 @@ import { type DailyQuizRes } from '@/utils/interfaces/quiz.interfaces';
 import { type AxiosError } from 'axios';
 import Image from 'next/image';
 import React, { type Dispatch, type SetStateAction, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 interface props {
   data: DailyQuizRes | null;
@@ -29,6 +30,8 @@ const DailyQuestion: React.FC<props> = ({
   const [showSuccessShared, setShowSuccessShared] = useState<boolean>(false);
   const options = ['A', 'B', 'C', 'D'];
   const { id } = useAppSelector(state => state.user.dataUser);
+  const { t } = useTranslation();
+
   const handleClickOption = async (answerId: number): Promise<void> => {
     try {
       const response: DailyQuizRes = await submitAnswerDailyQuiz({
@@ -142,13 +145,17 @@ const DailyQuestion: React.FC<props> = ({
               <p className="font-semibold">Daily Quiz</p>
               <div className="font-normal break-all text-sm">
                 {answer ? (
-                  <p className="text-[#27A590]">Congrats, you&apos;re right</p>
+                  <p className="text-[#27A590]">
+                    {t('social.dailyQuiz.rightAnswer')}
+                  </p>
                 ) : (
-                  <p className="text-[#990A0A]">Oops not quite</p>
+                  <p className="text-[#990A0A]">
+                    {t('social.dailyQuiz.wrongAnswer')}
+                  </p>
                 )}
               </div>
               <p className="text-sm">
-                Answer:{' '}
+                {t('social.dailyQuiz.answer')}:{' '}
                 {`(${options[answerRecap - 1]}) ${
                   data?.data.daily_quiz[i18n.language as 'en' | 'id'].options[
                     `option_${answerRecap}` as 'option_1'
@@ -207,7 +214,7 @@ const DailyQuestion: React.FC<props> = ({
                     className="w-1/2"
                   />
                   <div className="text-sm sm:text-base md:text-lg text-black text-center">
-                    You will share this to your profile. Accept ?
+                    {t('social.dailyQuiz.shareText')}
                   </div>
                   <div className="text-white w-full flex gap-5 text-base sm:text-lg">
                     <button
@@ -216,13 +223,13 @@ const DailyQuestion: React.FC<props> = ({
                         setShowPopUp(!showPopUp);
                       }}
                     >
-                      Cancel
+                      {t('social.dailyQuiz.cancel')}
                     </button>
                     <button
                       className="w-1/2 bg-[#27A590] rounded-2xl py-3"
                       onClick={handleShareDailyQuiz}
                     >
-                      Accept
+                      {t('social.dailyQuiz.accept')}
                     </button>
                   </div>
                 </div>
@@ -255,8 +262,8 @@ const DailyQuestion: React.FC<props> = ({
                   />
                   <div className="text-sm sm:text-base md:text-lg text-black text-center">
                     {answer
-                      ? `You success has been shared! Keep inspiring others with your financial knowledge!`
-                      : ` Your attempt has been shared! Keep learning and growing every day!`}
+                      ? t('social.dailyQuiz.shareWin')
+                      : t('social.dailyQuiz.shareLose')}
                   </div>
                   <div className="text-white w-full flex gap-5 text-base sm:text-lg justify-center items-center">
                     <button

@@ -44,65 +44,71 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
                 Browser Anda tidak mendukung tag video.
               </video>
             )}
-            <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-2">
-              <button
-                className="bg-gray-800 text-white p-1 rounded-full hover:bg-gray-600"
-                onClick={goToPreviousSlide}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 19.5L8.25 12l7.5-7.5"
-                  />
-                </svg>
-              </button>
-              <button
-                className="bg-gray-800 text-white p-1 rounded-full hover:bg-gray-600"
-                onClick={goToNextSlide}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="absolute bottom-0 w-full flex justify-between px-2 py-2">
-              <h1 className="text-white font-poppins text-sm">
-                {currentIndex + 1} / {images.length}
-              </h1>
-              {images.map((_, index) => (
-                <div
-                  key={index}
-                  className={`w-4 h-4 rounded-full ${
-                    index === currentIndex ? 'bg-seeds-green' : 'bg-gray-300'
-                  }`}
-                  onClick={(): any => {
-                    setCurrentIndex(index);
-                  }}
-                ></div>
-              ))}
-              <h1 className="font-poppins text-sm text-transparent">
-                {currentIndex + 1} / {images.length}
-              </h1>
-            </div>
+            {images.length > 1 && (
+              <>
+                <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-2">
+                  <button
+                    className="bg-gray-800 text-white p-1 rounded-full hover:bg-gray-600"
+                    onClick={goToPreviousSlide}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="h-6 w-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 19.5L8.25 12l7.5-7.5"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    className="bg-gray-800 text-white p-1 rounded-full hover:bg-gray-600"
+                    onClick={goToNextSlide}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="h-6 w-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div className="absolute bottom-0 w-full flex justify-between px-2 py-2">
+                  <h1 className="text-white font-poppins text-sm">
+                    {currentIndex + 1} / {images.length}
+                  </h1>
+                  {images.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`w-4 h-4 rounded-full ${
+                        index === currentIndex
+                          ? 'bg-seeds-green'
+                          : 'bg-gray-300'
+                      }`}
+                      onClick={(): any => {
+                        setCurrentIndex(index);
+                      }}
+                    ></div>
+                  ))}
+                  <h1 className="font-poppins text-sm text-transparent">
+                    {currentIndex + 1} / {images.length}
+                  </h1>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

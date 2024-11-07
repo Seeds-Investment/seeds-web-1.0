@@ -7,7 +7,7 @@ import CardPrice from '@/containers/homepage/order/CardPrice';
 import CardSwitch from '@/containers/homepage/order/CardSwitch';
 import SuccessOrderModal from '@/containers/homepage/order/SuccessOrderModal';
 import CardPriceSkeleton from '@/containers/homepage/order/skeleton/CardPriceSkeleton';
-import { standartCurrency } from '@/helpers/currency';
+import { formatAssetPrice, standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import useGetLastPrice from '@/hooks/useGetLastPrice';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
@@ -24,7 +24,7 @@ import {
   type SuccessOrderData
 } from '@/utils/interfaces/play.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
-import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
+import { type PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import {
   Avatar,
   Button,
@@ -122,7 +122,9 @@ const OrderPage: React.FC = () => {
       setAmount(
         `${
           ((portfolio?.total_lot ?? 0) *
-            (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0) *
+            (lastPrice[prefCurrency as PreferredCurrencyI] ??
+              lastPriceAsset ??
+              0) *
             sellPercent) /
           100
         }`
@@ -136,7 +138,9 @@ const OrderPage: React.FC = () => {
       amount !==
       `${
         ((portfolio?.total_lot ?? 0) *
-          (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0) *
+          (lastPrice[prefCurrency as PreferredCurrencyI] ??
+            lastPriceAsset ??
+            0) *
           sellPercent) /
         100
       }`
@@ -147,7 +151,7 @@ const OrderPage: React.FC = () => {
       setSellPercent(0);
     }
   }, [amount, assetAmount]);
-
+  const lastPriceAsset = data?.lastPrice.close;
   const [userInfo, setUserInfo] = useState<UserInfo>();
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -301,14 +305,18 @@ const OrderPage: React.FC = () => {
                 setNewVal(
                   `${
                     parseInt(value) /
-                    (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
+                    (lastPrice[prefCurrency as PreferredCurrencyI] ??
+                      lastPriceAsset ??
+                      0)
                   }`
                 );
               } else {
                 setNewVal(
                   `${
                     parseFloat(value) *
-                    (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
+                    (lastPrice[prefCurrency as PreferredCurrencyI] ??
+                      lastPriceAsset ??
+                      0)
                   }`
                 );
               }
@@ -324,14 +332,18 @@ const OrderPage: React.FC = () => {
                   setNewVal(
                     `${
                       parseInt(value) /
-                      (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
+                      (lastPrice[prefCurrency as PreferredCurrencyI] ??
+                        lastPriceAsset ??
+                        0)
                     }`
                   );
                 } else {
                   setNewVal(
                     `${
                       parseFloat(value) *
-                      (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
+                      (lastPrice[prefCurrency as PreferredCurrencyI] ??
+                        lastPriceAsset ??
+                        0)
                     }`
                   );
                 }
@@ -433,12 +445,15 @@ const OrderPage: React.FC = () => {
                 t('playSimulation.portfolio')}
             </Typography>
             <Typography className="text-base font-poppins font-base text-black">
-              {`${standartCurrency(
+              {prefCurrency}
+              {` ${formatAssetPrice(
                 router.query?.transaction === 'buy'
                   ? ballance?.balance ?? 0
                   : (portfolio?.total_lot ?? 0) *
-                      (lastPrice[prefCurrency as PreferredCurrencyI] ?? 0)
-              ).replace('Rp', userInfo?.preferredCurrency ?? 'IDR')}`}{' '}
+                      (lastPrice[prefCurrency as PreferredCurrencyI] ??
+                        lastPriceAsset ??
+                        0)
+              )}`}{' '}
               {router.query?.transaction === 'sell' &&
                 `= ${portfolio.total_lot ?? 0} ${data?.realTicker ?? ''}`}
             </Typography>

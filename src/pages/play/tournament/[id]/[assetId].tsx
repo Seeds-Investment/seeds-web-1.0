@@ -30,7 +30,7 @@ import {
   type IUserData
 } from '@/utils/interfaces/play.interface';
 import { type BallanceTournament } from '@/utils/interfaces/tournament.interface';
-import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
+import { type PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 
@@ -175,6 +175,8 @@ const AssetDetailPage: React.FC = () => {
     }
   };
 
+  const lastPriceAsset = data?.lastPrice.close;
+
   useEffect(() => {
     if (assetId !== null && userInfo !== undefined) {
       void fetchDetailAsset(userInfo.preferredCurrency);
@@ -202,7 +204,7 @@ const AssetDetailPage: React.FC = () => {
           height={30}
           className="cursor-pointer"
           onClick={() => {
-            router.back();
+            void router.push(`/play/tournament/${id as string}/home`);
           }}
         />
         <p className="font-bold text-black text-lg">
@@ -217,12 +219,16 @@ const AssetDetailPage: React.FC = () => {
               ...data,
               socketPrice:
                 typeof prefCurrency === 'string'
-                  ? lastPrice[prefCurrency.toLowerCase() as PreferredCurrencyI]
+                  ? lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                    ? lastPrice[prefCurrency as PreferredCurrencyI]
+                    : lastPriceAsset ?? 0
                   : 0
             }}
             currency={userInfo?.preferredCurrency as string}
             playId={id as string}
             assetId={assetId as string}
+            playSimulation={false}
+            playTeamBattle={false}
           />
         ) : (
           <Card2Skeleton />

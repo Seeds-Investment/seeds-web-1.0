@@ -1,12 +1,18 @@
-import AddIcon from '@/assets/play/tournament/add-watchlist.svg';
 import Loading from '@/components/popup/Loading';
 import ModalAddAsset from '@/components/popup/ModalAddAsset';
 import ModalSuccesAddWatchlist from '@/components/popup/ModalSuccesAddWatchlist';
-import { calculatePercentageDifference } from '@/helpers/currency';
+import {
+  calculatePercentageDifference,
+  formatAssetPrice
+} from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
-import { postCloud } from '@/repository/cloud.repository';
 import { createWatchlist, getMarketList } from '@/repository/market.repository';
-import { useAppSelector } from '@/store/redux/store';
+import { getPlayById } from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
+import {
+  type IDetailTournament,
+  type UserInfo
+} from '@/utils/interfaces/tournament.interface';
 import {
   type DetailAsset,
   type WatchlistForm
@@ -27,11 +33,11 @@ const CreateWatchlist: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { id, assetTicker } = router.query;
-  const [updateAvatar, setAvatar] = useState<File>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAssetModalOpen, setIsAssetModalOpen] = useState<boolean>(false);
   const [isOpenSuccessModal, setIsOpenSuccessModal] = useState<boolean>(false);
-  const { dataUser } = useAppSelector(state => state.user);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [watchlistForm, setWatchlistForm] = useState<WatchlistForm>({
     play_id: id as string,
     name: '',
@@ -58,7 +64,19 @@ const CreateWatchlist: React.FC = () => {
         }));
       }
     } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
+      toast.error(`Error fetching data asset: ${error as string}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchDetailTournament = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const response = await getPlayById(id as string);
+      setDetailTournament(response);
+    } catch (error) {
+      toast.error(`Error fetching data tournament: ${error as string}`);
     } finally {
       setIsLoading(false);
     }
@@ -68,31 +86,10 @@ const CreateWatchlist: React.FC = () => {
     setWatchlistForm({ ...watchlistForm, name: event.target.value });
   };
 
-  const handleFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): Promise<void> => {
-    const file = e.target.files?.[0];
-    setAvatar(file);
-    if (file !== null && file !== undefined) {
-      setWatchlistForm({ ...watchlistForm, image: URL.createObjectURL(file) });
-    }
-  };
-
   const handleSubmit = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      let updatedForm = { ...watchlistForm };
-      if (updateAvatar !== undefined && updateAvatar !== null) {
-        const { path: cloudResponse } = await postCloud({
-          file: updateAvatar,
-          type: 'OTHER_URL'
-        });
-        updatedForm = {
-          ...updatedForm,
-          image: cloudResponse
-        };
-      }
-      await createWatchlist(updatedForm);
+      await createWatchlist(watchlistForm);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -101,11 +98,32 @@ const CreateWatchlist: React.FC = () => {
     }
   };
 
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
   useEffect(() => {
     if (assetTicker !== undefined) {
       void fetchSelectedAsset();
     }
   }, [assetTicker]);
+
+  useEffect(() => {
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (id !== undefined) {
+      void fetchDetailTournament();
+    }
+  }, [id]);
 
   const handleArrow = (value: number): boolean => {
     if (value > 0) {
@@ -145,34 +163,6 @@ const CreateWatchlist: React.FC = () => {
             </Typography>
           </div>
           <div className="flex flex-row gap-3 items-center mb-4">
-            {updateAvatar !== undefined && updateAvatar !== null ? (
-              <Avatar
-                src={URL.createObjectURL(updateAvatar)}
-                alt="Avatar"
-                width={35}
-                height={35}
-              />
-            ) : (
-              <div className="rounded-full bg-[#DCFCE4] w-[56px] h-[56px] flex items-center justify-center cursor-pointer">
-                <Image
-                  onClick={() => {
-                    document.getElementById('fileInput')?.click();
-                  }}
-                  className="hover:transform hover:scale-105 duration-200"
-                  src={AddIcon}
-                  alt="AddIcon"
-                  width={30}
-                  height={30}
-                />
-                <input
-                  className="hidden"
-                  id="fileInput"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                />
-              </div>
-            )}
             <div className="border-2 border-[#BDBDBD] flex flex-col gap-1 p-2 rounded-[10px] w-full">
               <Typography className="font-poppins font-semibold text-xs">
                 {t('tournament.watchlist.watchlistName')}
@@ -213,20 +203,22 @@ const CreateWatchlist: React.FC = () => {
                     <Typography className="font-poppins lg:text-sm text-xs font-semibold">
                       {asset?.realTicker} /{' '}
                       <span className="font-normal text-xs">
-                        {dataUser?.preferredCurrency ?? 'IDR'}
+                        {userInfo?.preferredCurrency ?? 'IDR'}
                       </span>
                     </Typography>
                     <Typography className="text-[#7C7C7C] font-normal text-xs font-poppins">
-                      {asset?.name}
+                      {asset?.name !== undefined && asset.name.length > 18
+                        ? `${asset.name.slice(0, 18)}...`
+                        : asset?.name}
                     </Typography>
                   </div>
                 </div>
                 <div className="flex flex-col gap-[6px] items-end">
                   <Typography className="font-poppins text-sm font-semibold">
-                    {dataUser?.preferredCurrency}{' '}
-                    {asset?.priceBar?.close > 0.01
-                      ? new Intl.NumberFormat().format(asset?.priceBar?.close)
-                      : asset?.priceBar?.close}
+                    {userInfo?.preferredCurrency}{' '}
+                    {new Intl.NumberFormat().format(
+                      formatAssetPrice(asset?.priceBar?.close)
+                    ) ?? 0}
                   </Typography>
                   <Typography
                     className={`flex font-normal text-xs ${
@@ -274,8 +266,7 @@ const CreateWatchlist: React.FC = () => {
           <div className="flex justify-center">
             <Button
               disabled={
-                watchlistForm.image === '' ||
-                watchlistForm.name === '' ||
+                watchlistForm.name.length < 2 ||
                 watchlistForm.asset_list.length === 0
               }
               onClick={async () => {
@@ -296,12 +287,16 @@ const CreateWatchlist: React.FC = () => {
               }}
               assetList={watchlistForm?.asset_list}
               setDisplayAssetList={setAssetList}
+              userInfo={userInfo}
+              detailTournament={detailTournament}
             />
           )}
           {isOpenSuccessModal && (
             <ModalSuccesAddWatchlist
               assetId={assetList[0]?.id}
               playId={id as string}
+              isPlaySimulation={false}
+              isTeamBattle={false}
             />
           )}
         </div>

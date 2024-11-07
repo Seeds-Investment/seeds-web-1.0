@@ -121,7 +121,7 @@ const AssetWatchList: React.FC = () => {
           <div className="flex justify-between items-center mb-4">
             <Image
               onClick={async () => {
-                await router.push(`/play/tournament/${id as string}/watchlist`);
+                await router.push(`/homepage/play/${id as string}/watchlist`);
               }}
               src={ArrowBackwardIcon}
               alt="ArrowBackwardIcon"
@@ -149,13 +149,13 @@ const AssetWatchList: React.FC = () => {
           <div className="my-2">
             {detailWatchList?.watchlist?.assetList?.map(asset => (
               <div
+                key={asset?.id}
                 onClick={() => {
                   void router.push(
-                    `/play/tournament/${id as string}/${asset?.id}`
+                    `/homepage/assets/${asset?.id}?playId=${id as string}`
                   );
                 }}
-                key={asset?.id}
-                className="w-full flex items-center justify-between bg-[#F9F9F9] hover:bg-[#efefef] duration-150 cursor-pointer p-3 rounded-lg gap-3 mb-2"
+                className="w-full flex items-center justify-between hover:bg-[#efefef] duration-150 cursor-pointer bg-[#F9F9F9] p-3 rounded-lg gap-4 mb-2"
               >
                 <div className="flex items-center gap-3">
                   <Avatar src={asset?.logo} alt="logo" width={40} height={40} />
@@ -174,7 +174,7 @@ const AssetWatchList: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-[6px] items-end">
-                  <Typography className="font-poppins text-sm font-semibold">
+                  <Typography className="font-poppins text-xs font-semibold">
                     {userInfo?.preferredCurrency}{' '}
                     {new Intl.NumberFormat().format(
                       formatAssetPrice(asset?.priceBar?.close)

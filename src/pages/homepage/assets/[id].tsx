@@ -10,15 +10,13 @@ import useGetLastPrice from '@/hooks/useGetLastPrice';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
 import { getPlayPortfolio } from '@/repository/play.repository';
-import { getUserInfo } from '@/repository/profile.repository';
-import {
-  type AssetI,
-  type Assets,
-  type IUserData
-} from '@/utils/interfaces/play.interface';
-import { PreferredCurrencyI } from '@/utils/interfaces/user.interface';
+import { useAppSelector } from '@/store/redux/store';
+import { type AssetI, type Assets } from '@/utils/interfaces/play.interface';
+import { type PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import { Button, Tab, Tabs, TabsHeader } from '@material-tailwind/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { ArrowBackwardIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -41,25 +39,10 @@ const AssetDetailPage: React.FC = () => {
     tf: 'daily'
   });
   const { chartItem } = useLineChart(data, params.tf);
-  const [userInfo, setUserInfo] = useState<IUserData>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [assets, setAssets] = useState<Assets[]>([]);
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
-
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
-  const prefCurrency = userInfo?.preferredCurrency.toLowerCase();
+  const { dataUser } = useAppSelector(state => state.user);
+  const prefCurrency = dataUser?.preferredCurrency?.toLowerCase();
   const lastPrice = useGetLastPrice(data?.seedsTicker);
   const handleChangeParams = (value: string): void => {
     setParams(prevState => ({
@@ -80,16 +63,16 @@ const AssetDetailPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (id !== undefined && userInfo !== undefined) {
-      void fetchPlayPortfolio(playId as string, userInfo.preferredCurrency);
+    if (id !== undefined && dataUser !== undefined) {
+      void fetchPlayPortfolio(playId as string, dataUser.preferredCurrency);
     }
-  }, [id, userInfo]);
+  }, [id, dataUser]);
 
   useEffect(() => {
-    if (id !== null && userInfo !== undefined) {
-      void fetchDetailAsset(userInfo.preferredCurrency);
+    if (id !== null && dataUser !== undefined) {
+      void fetchDetailAsset(dataUser.preferredCurrency);
     }
-  }, [id, userInfo, params]);
+  }, [id, dataUser, params]);
 
   const fetchPlayPortfolio = async (
     id: string,
@@ -119,6 +102,22 @@ const AssetDetailPage: React.FC = () => {
     <>
       {isLoading ? <Loading /> : ''}
       <PageGradient defaultGradient className="w-full">
+        <CCard className="flex flex-row justify-between p-4 mt-5 md:rounded-lg border-none rounded-none">
+          <Image
+            src={ArrowBackwardIcon}
+            alt="Back"
+            width={30}
+            height={30}
+            className="cursor-pointer"
+            onClick={async () => {
+              await router.push(`/homepage/play/${playId as string}`);
+            }}
+          />
+          <p className="font-bold text-black text-lg">
+            {t('playSimulation.assetDetail')}
+          </p>
+          <div></div>
+        </CCard>
         <div className="flex flex-col md:flex-row gap-5">
           {data !== undefined ? (
             <Card1
@@ -131,16 +130,17 @@ const AssetDetailPage: React.FC = () => {
                       ]
                     : 0
               }}
-              currency={userInfo?.preferredCurrency as string}
+              currency={dataUser?.preferredCurrency}
+              playId={playId as string}
+              assetId={id as string}
+              playSimulation={true}
+              playTeamBattle={false}
             />
           ) : (
             <Card1Skeleton />
           )}
           {data !== undefined ? (
-            <Card2
-              data={data}
-              currency={userInfo?.preferredCurrency as string}
-            />
+            <Card2 data={data} currency={dataUser?.preferredCurrency} />
           ) : (
             <Card2Skeleton />
           )}

@@ -6,8 +6,8 @@ import {
 } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import { getWatchlistById } from '@/repository/market.repository';
-import { getPlayById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { getBattleArena } from '@/repository/team-battle.repository';
 import {
   type IDetailTournament,
   type UserInfo
@@ -63,7 +63,7 @@ const AssetWatchList: React.FC = () => {
   const fetchDetailTournament = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const response = await getPlayById(id as string);
+      const response = await getBattleArena(id as string);
       setDetailTournament(response);
     } catch (error) {
       toast.error(`Error fetching data tournament: ${error as string}`);
@@ -121,7 +121,9 @@ const AssetWatchList: React.FC = () => {
           <div className="flex justify-between items-center mb-4">
             <Image
               onClick={async () => {
-                await router.push(`/play/tournament/${id as string}/watchlist`);
+                await router.push(
+                  `/play/team-battle/${id as string}/watchlist`
+                );
               }}
               src={ArrowBackwardIcon}
               alt="ArrowBackwardIcon"
@@ -149,12 +151,14 @@ const AssetWatchList: React.FC = () => {
           <div className="my-2">
             {detailWatchList?.watchlist?.assetList?.map(asset => (
               <div
+                key={asset?.id}
                 onClick={() => {
                   void router.push(
-                    `/play/tournament/${id as string}/${asset?.id}`
+                    `/play/team-battle/${id as string}/${
+                      asset?.id
+                    }`
                   );
                 }}
-                key={asset?.id}
                 className="w-full flex items-center justify-between bg-[#F9F9F9] hover:bg-[#efefef] duration-150 cursor-pointer p-3 rounded-lg gap-3 mb-2"
               >
                 <div className="flex items-center gap-3">

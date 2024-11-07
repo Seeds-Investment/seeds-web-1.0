@@ -22,15 +22,10 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   };
 
   return (
-    <div className="flex justify-start w-full mb-20 md:pl-0">
+    <div className="relative flex justify-start w-full">
       <div className="w-fit">
         <div className="max-w-full w-fit h-[300px] bg-transparent">
-          <div className="relative bg-black max-w-full px-2 py-2">
-            <h1 className="text-white font-poppins text-sm">
-              {images.length} page
-            </h1>
-          </div>
-          <div className="flex justify-center h-full w-full">
+          <div className="relative flex justify-center h-full w-full">
             {images[currentIndex].split('.')[
               images[currentIndex].split('.').length - 1
             ] !== 'mp4' ? (
@@ -49,27 +44,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
                 Browser Anda tidak mendukung tag video.
               </video>
             )}
-          </div>
-          <div className="relative bg-black max-w-full px-2 py-2">
-            <h1 className="text-white font-poppins text-sm">
-              {currentIndex + 1} / {images.length}
-            </h1>
-          </div>
-          <div className="w-full p-4">
-            <div className="relative bottom-10 flex justify-center space-x-2">
-              {images.map((_, index) => (
-                <div
-                  key={index}
-                  className={`w-4 h-4 rounded-full ${
-                    index === currentIndex ? 'bg-seeds-green' : 'bg-gray-300'
-                  }`}
-                  onClick={(): any => {
-                    setCurrentIndex(index);
-                  }}
-                ></div>
-              ))}
-            </div>
-            <div className="relative bottom-[25vh] flex justify-between">
+            <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-2">
               <button
                 className="bg-gray-800 text-white p-1 rounded-full hover:bg-gray-600"
                 onClick={goToPreviousSlide}
@@ -108,6 +83,25 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
                   />
                 </svg>
               </button>
+            </div>
+            <div className="absolute bottom-0 w-full flex justify-between px-2 py-2">
+              <h1 className="text-white font-poppins text-sm">
+                {currentIndex + 1} / {images.length}
+              </h1>
+              {images.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-4 h-4 rounded-full ${
+                    index === currentIndex ? 'bg-seeds-green' : 'bg-gray-300'
+                  }`}
+                  onClick={(): any => {
+                    setCurrentIndex(index);
+                  }}
+                ></div>
+              ))}
+              <h1 className="font-poppins text-sm text-transparent">
+                {currentIndex + 1} / {images.length}
+              </h1>
             </div>
           </div>
         </div>

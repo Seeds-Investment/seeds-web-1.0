@@ -11,12 +11,13 @@ import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import { getCircle, likeCircle } from '@/repository/circle.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { getStatusDailyQuiz } from '@/repository/quiz.repository';
+import { getDailyQuiz } from '@/repository/quiz.repository';
 import {
   getSocialPostFollowing,
   getSocialPostForYou,
   getSocialPostMySpace
 } from '@/repository/social.respository';
+import { type DailyQuizRes } from '@/utils/interfaces/quiz.interfaces';
 import { type DataPost } from '@/utils/interfaces/social.interfaces';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import {
@@ -103,6 +104,7 @@ const Social: React.FC = () => {
   const [isOpenModalAdd, setIsOpenModalAdd] = useState<boolean>(false);
   const [dailyQuestionActive, setDailyQuestionActive] =
     useState<boolean>(false);
+  const [dailyQuestion, setDailyQuestion] = useState<DailyQuizRes | null>(null);
   const optionsFilter: optionSortBy[] = [
     {
       title: t('social.fiterSortBy.all'),
@@ -418,20 +420,39 @@ const Social: React.FC = () => {
     }
   }, [activeTab, filter.page, filter.sort_by, golId, filter.type]);
 
-  const fetchDailyQuizStatus = async () => {
+  // const fetchDailyQuizStatus = async () => {
+  //   try {
+  //     const response = await getStatusDailyQuiz();
+  //     if (response.is_played === true) {
+  //       setDailyQuestionActive(false);
+  //     } else if (response.data !== undefined) {
+  //       setDailyQuestionActive(true);
+  //     }
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       if (error.response?.data.message === "you haven't play today") {
+  //         setDailyQuestionActive(true);
+  //       }
+  //     } else {
+  //       toast.error('something when wrong');
+  //     }
+  //   }
+  // };
+
+  const fetchDailyQuiz = async (): Promise<void> => {
     try {
-      const response = await getStatusDailyQuiz();
-      if (response.is_played === false) {
-        setDailyQuestionActive(true);
-      }
+      const response = await getDailyQuiz();
+      setDailyQuestion(response);
+      setDailyQuestionActive(!response.is_played);
     } catch (error) {
-      toast.error('Something went wrong');
+      toast.error('something when wrong');
     }
   };
 
   useEffect(() => {
-    void fetchDailyQuizStatus();
+    void fetchDailyQuiz();
   }, []);
+
   return (
     <PageGradient defaultGradient className="w-full">
       {isLoading && <Loading />}
@@ -546,7 +567,13 @@ const Social: React.FC = () => {
             </div>
           </div>
           <div className="flex justify-start w-full border border-neutral-ultrasoft" />
-          <DailyQuestion />
+          {dailyQuestionActive && (
+            <DailyQuestion
+              data={dailyQuestion}
+              setGolId={setGolId}
+              setDailyQuestionActive={setDailyQuestionActive}
+            />
+          )}
           {dataPost.length > 0 &&
             dataPost.map((el: any, idx: number) => {
               return (

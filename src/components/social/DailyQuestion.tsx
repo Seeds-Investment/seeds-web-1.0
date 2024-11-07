@@ -1,42 +1,83 @@
+import FalseAnswerBordered from '@/assets/social/false-answer-bordered.png';
 import FalseAnswer from '@/assets/social/false-answer.svg';
-import SeedyQuestion from '@/assets/social/seedy-question.svg';
+import SeedyQuestion from '@/assets/social/seedy-question.png';
+import TrueAnswerBordered from '@/assets/social/true-answer-bordered.png';
 import TrueAnswer from '@/assets/social/true-answer.svg';
+import { createPostCircleDetail } from '@/repository/circleDetail.repository';
+import { submitAnswerDailyQuiz } from '@/repository/quiz.repository';
+import { useAppSelector } from '@/store/redux/store';
+import i18n from '@/utils/common/i18n';
+import { type DailyQuizRes } from '@/utils/interfaces/quiz.interfaces';
+import { type AxiosError } from 'axios';
 import Image from 'next/image';
-import React, { useState } from 'react';
-
-const DailyQuestion: React.FC = () => {
+import React, { type Dispatch, type SetStateAction, useState } from 'react';
+import { toast } from 'react-toastify';
+interface props {
+  data: DailyQuizRes | null;
+  setDailyQuestionActive: Dispatch<SetStateAction<boolean>>;
+  setGolId: Dispatch<SetStateAction<number>>;
+}
+const DailyQuestion: React.FC<props> = ({
+  data,
+  setGolId,
+  setDailyQuestionActive
+}) => {
   const [evaluation, setEvaluation] = useState<string>('flex');
   const [answer, setAnswer] = useState<boolean>(false);
-  const [answerRecap, setAnswerRecap] = useState<string>('');
+  const [answerRecap, setAnswerRecap] = useState<number>(1);
   const [showPopUp, setShowPopUp] = useState<boolean>(false);
   const [showSuccessShared, setShowSuccessShared] = useState<boolean>(false);
-  const dataDummy = {
-    daily_question:
-      'Iure ratione accusantium repellendus dicta illo rem ducimus fugiat ea debitis similique repudiandae?',
-    options: [
-      {
-        id: 1,
-        answer: 'Lorem ipsum dolor sit amet consectetur adipisicing elit',
-        key: false
-      },
-      {
-        id: 1,
-        answer: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-        key: true
+  const options = ['A', 'B', 'C', 'D'];
+  const { id } = useAppSelector(state => state.user.dataUser);
+  const handleClickOption = async (answerId: number): Promise<void> => {
+    try {
+      const response: DailyQuizRes = await submitAnswerDailyQuiz({
+        question_id: data?.data.id as string,
+        answer_id: answerId
+      });
+
+      if (response.data !== undefined) {
+        setAnswer(response.data.is_correct);
+        setEvaluation('hidden');
+        setAnswerRecap(answerId);
       }
-    ]
+    } catch (error) {
+      const err = error as AxiosError;
+      toast(err.message ?? 'Unknown Error');
+    }
   };
 
-  const options = ['A', 'B'];
+  const handleShareDailyQuiz = async (): Promise<void> => {
+    try {
+      const payload: {
+        content_text: string;
+        media_urls: string[];
+        privacy: string;
+        is_pinned: boolean;
+        user_id: string;
+        hashtags: string[];
+        premium_fee: number;
+      } = {
+        content_text: `*[${answer ? 'WIN' : 'LOSE'}](${
+          data?.participant_id as string
+        })`,
+        media_urls: [],
+        privacy: 'public',
+        is_pinned: false,
+        hashtags: [],
+        premium_fee: 0,
+        user_id: id
+      };
 
-  const handleClickOption = (
-    key: boolean,
-    answerText: string,
-    index: number
-  ): void => {
-    setEvaluation('hidden');
-    setAnswer(key);
-    setAnswerRecap(`(${options[index]}) ${answerText}`);
+      const response = await createPostCircleDetail(payload);
+      if (response !== undefined) {
+        setShowPopUp(!showPopUp);
+        setShowSuccessShared(!showSuccessShared);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast(err.message ?? 'Unknown Error');
+    }
   };
   return (
     <>
@@ -44,33 +85,44 @@ const DailyQuestion: React.FC = () => {
         className={`flex-col gap-3 my-3 pb-3 border-b border-[#dfdfdf] font-poppins ${evaluation}`}
       >
         <div className="flex items-center gap-2">
-          <div className="p-2 rounded-full border-2 border-[#345294]">
+          <div className="p-2">
             <Image
               src={SeedyQuestion}
-              width={100}
-              height={100}
               alt="question-icon"
-              className="min-w-8 min-h-8 max-w-10 max-h-10"
+              className="w-12 h-12 lg:w-14 lg:h-14 object-contain"
             />
           </div>
           <div>
             <p className="font-semibold">Daily Quiz</p>
             <p className="font-normal break-all text-sm">
-              {dataDummy.daily_question}
+              {data?.data.daily_quiz[i18n.language as 'en' | 'id'].question}
             </p>
           </div>
         </div>
-        {dataDummy?.options.map((item, i) => {
+        {Array.from([1, 2, 3, 4]).map((el, i) => {
           return (
-            <div
-              className="p-2 border-2 hover:border-black rounded-xl text-sm cursor-pointer"
-              key={i}
-              onClick={() => {
-                handleClickOption(item.key, item.answer, i);
-              }}
-            >
-              {options[i]}. {item.answer}
-            </div>
+            data?.data.daily_quiz[i18n.language as 'en' | 'id'].options[
+              `option_${el}` as 'option_1'
+            ] !== undefined && (
+              <div
+                className="p-2 border-2 hover:border-black rounded-xl text-sm cursor-pointer"
+                key={i}
+                onClick={async () => {
+                  await handleClickOption(
+                    data?.data.daily_quiz[i18n.language as 'en' | 'id'].options[
+                      `option_${el}` as 'option_1'
+                    ].id
+                  );
+                }}
+              >
+                {options[i]}.{' '}
+                {
+                  data?.data.daily_quiz[i18n.language as 'en' | 'id'].options[
+                    `option_${el}` as 'option_1'
+                  ].option
+                }
+              </div>
+            )
           );
         })}
       </div>
@@ -79,13 +131,11 @@ const DailyQuestion: React.FC = () => {
           className={`flex-col gap-3 my-3 pb-3 border-b border-[#dfdfdf] font-poppins flex`}
         >
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-full border-2 border-[#345294]">
+            <div className="p-2">
               <Image
-                src={answer ? TrueAnswer : FalseAnswer}
-                width={100}
-                height={100}
+                src={answer ? TrueAnswerBordered : FalseAnswerBordered}
                 alt="question-icon"
-                className="min-w-8 min-h-8 max-w-10 max-h-10"
+                className="w-12 h-12 lg:w-14 lg:h-14 object-contain"
               />
             </div>
             <div>
@@ -97,7 +147,14 @@ const DailyQuestion: React.FC = () => {
                   <p className="text-[#990A0A]">Oops not quite</p>
                 )}
               </div>
-              <p className="text-sm">Answer: {answerRecap}</p>
+              <p className="text-sm">
+                Answer:{' '}
+                {`(${options[answerRecap - 1]}) ${
+                  data?.data.daily_quiz[i18n.language as 'en' | 'id'].options[
+                    `option_${answerRecap}` as 'option_1'
+                  ].option as string
+                }`}
+              </p>
             </div>
           </div>
           <div
@@ -105,10 +162,7 @@ const DailyQuestion: React.FC = () => {
               answer ? 'bg-[#BAFBD0]' : 'bg-[#FF9292]'
             } rounded-2xl`}
           >
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab
-            accusamus dicta vitae laboriosam ad fugit! Ipsum doloribus facere et
-            veniam corporis dolorem pariatur, nisi unde magni ad totam! Minus,
-            possimus.
+            {data?.data.daily_quiz[i18n.language as 'en' | 'id'].description}
           </div>
           <div className="flex gap-3 flex-row justify-center items-center">
             <button
@@ -119,7 +173,12 @@ const DailyQuestion: React.FC = () => {
             >
               Share
             </button>
-            <button className="w-32 px-3 py-2 text-white bg-[#3AC4A0] rounded-3xl">
+            <button
+              className="w-32 px-3 py-2 text-white bg-[#3AC4A0] rounded-3xl"
+              onClick={() => {
+                setDailyQuestionActive(false);
+              }}
+            >
               OK
             </button>
           </div>
@@ -161,10 +220,7 @@ const DailyQuestion: React.FC = () => {
                     </button>
                     <button
                       className="w-1/2 bg-[#27A590] rounded-2xl py-3"
-                      onClick={() => {
-                        setShowPopUp(!showPopUp);
-                        setShowSuccessShared(!showSuccessShared);
-                      }}
+                      onClick={handleShareDailyQuiz}
                     >
                       Accept
                     </button>
@@ -207,6 +263,8 @@ const DailyQuestion: React.FC = () => {
                       className="w-1/2 bg-[#27A590] rounded-2xl py-3"
                       onClick={() => {
                         setShowSuccessShared(!showSuccessShared);
+                        setGolId(prev => prev++);
+                        setDailyQuestionActive(false);
                       }}
                     >
                       OK

@@ -47,6 +47,7 @@ interface UserData {
   birthDate: string;
   phone: string;
   preferredLanguage: string;
+  preferredCurrency: string;
   _pin: string;
   verified: boolean;
 }
@@ -75,6 +76,7 @@ const initialUserInfo = {
   birthDate: '',
   phone: '',
   preferredLanguage: '',
+  preferredCurrency: '',
   verified: false,
   _pin: ''
 };
@@ -485,7 +487,7 @@ const Social: React.FC = () => {
 
       {!isGuest() && activeTab !== 'circle' && (
         <div className="fixed bottom-10 right-10 z-20">
-          <div className="bg-[#3AC4A0] p-2 rounded-full">
+          <div className="bg-[#3AC4A0] p-2 rounded-full cursor-pointer hover:scale-110 duration-300">
             <PlusIcon
               width={50}
               height={50}

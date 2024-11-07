@@ -802,6 +802,13 @@ export default {
       createPin: { title: 'Buat PIN' },
       changePin: { title: 'Ganti PIN' },
       language: { title: 'Bahasa' },
+      savedPost: { 
+        title: 'Postingan Tersimpan',
+        info: 'Informasi',
+        infoMessage: 'Halaman ini berisi daftar postingan yang pernah anda simpan.',
+        noData: 'Opps, there’s no saved data yet',
+        noDataMessage: 'Find some posts and saved the best one!'
+      },
       currency: { title: 'Mata Uang' },
       block: { title: 'Daftar Blokir' },
       legal: { title: 'Hukum' },
@@ -1414,6 +1421,20 @@ export default {
     }
   },
   social: {
+    postSection: {
+      shareBattle: 'Bagikan Pertandingan Ini',
+      shareLinks: "Bagikan Tautan",
+      share: "Bagikan",
+      play: "Main",
+      joined: "Bergabung",
+      player: "Pemain",
+      players: "Pemain",
+      fee: "Biaya",
+      free: "Gratis",
+      category: "Kategori",
+      participant: "peserta",
+      participants: "peserta"
+    },
     follow: 'Mengikuti',
     unfollow: 'Berhenti Mengikuti',
     postSetting: {

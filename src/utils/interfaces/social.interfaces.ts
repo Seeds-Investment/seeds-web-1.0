@@ -28,6 +28,7 @@ export interface DataPost {
   slug: string;
   premium_fee: number;
   status_payment: boolean;
+  circle?: CircleI;
   is_followed?: boolean;
   cover?: string;
   name?: string;
@@ -46,6 +47,18 @@ export interface Owner {
   verified: boolean;
 }
 
+export interface CircleI {
+  avatar: string
+  cover: string
+  monthly_time: number
+  name: string
+  premium_fee: number
+  role: string
+  status_joined: boolean
+  type: string
+}
+
+
 export interface QrisDetail {
   admin_fee: number;
   id: string;
@@ -59,4 +72,24 @@ export interface QrisDetail {
   payment_type: string;
   promo_price: number;
   service_fee: number;
+}
+
+export interface UserInfoI {
+  id: string;
+  name: string;
+  seedsTag: string;
+  email: string;
+  pin: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+  _pin: string;
+}
+
+export interface SavedPostMetadata {
+  total: number
+  currentPage: number
+  limit: number
+  totalPage: number
 }

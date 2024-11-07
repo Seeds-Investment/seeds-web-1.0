@@ -890,6 +890,13 @@ export default {
       createPin: { title: 'Create PIN' },
       changePin: { title: 'Change PIN' },
       language: { title: 'Language' },
+      savedPost: { 
+        title: 'Saved Post',
+        info: 'Information',
+        infoMessage: 'This page contains your previous saved post.',
+        noData: 'Ups, belum ada postingan tersimpan',
+        noDataMessage: 'Jelajahi postingan di halaman sosial dan simpan yang terbaik!'
+      },
       currency: { title: 'Currency' },
       block: { title: 'Block List' },
       legal: { title: 'Legal' },
@@ -1489,6 +1496,20 @@ export default {
     }
   },
   social: {
+    postSection: {
+      shareBattle: 'Share This Battle',
+      shareLinks: "Share Link",
+      share: "Share",
+      play: "Play",
+      joined: "Joined",
+      player: "Player",
+      players: "Players",
+      fee: "Fee",
+      free: "Free",
+      category: "Category",
+      participant: "participant",
+      participants: "participants"
+    },
     follow: 'Follow',
     unfollow: 'Unfollow',
     postSetting: {

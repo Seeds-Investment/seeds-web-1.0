@@ -16,6 +16,7 @@ import KeyStatistic from '@/containers/play/asset/KeyStatistic';
 import OverviewItem from '@/containers/play/asset/OverviewItem';
 import SocialCard from '@/containers/play/asset/SocialCard';
 import Card2Skeleton from '@/containers/play/asset/skeleton/Card2Skeleton';
+import useGetLastPrice from '@/hooks/useGetLastPrice';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
 import { getPostForYou } from '@/repository/circleDetail.repository';
@@ -26,6 +27,7 @@ import {
   type ForYouPostI,
   type IUserData
 } from '@/utils/interfaces/play.interface';
+import { type PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 
@@ -83,6 +85,8 @@ const AssetDetailPage: React.FC = () => {
   );
   const [forYouData, setForYouData] = useState<ForYouPostI[]>();
   const [assetType, setAssetType] = useState<string>('');
+  const prefCurrency = userInfo?.preferredCurrency.toLowerCase();
+  const lastPrice = useGetLastPrice(data?.seedsTicker);
 
   const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {
@@ -150,7 +154,7 @@ const AssetDetailPage: React.FC = () => {
       toast('Failed to fetch asset');
     }
   };
-
+const lastPriceAsset = data?.lastPrice.close;
   useEffect(() => {
     if (assetId !== null && userInfo !== undefined) {
       void fetchDetailAsset(userInfo.preferredCurrency);
@@ -176,7 +180,7 @@ const AssetDetailPage: React.FC = () => {
           width={30}
           height={30}
           className="cursor-pointer"
-          onClick={async() => {
+          onClick={async () => {
             await router.push(`/play/team-battle/${id as string}/arena`);
           }}
         />
@@ -187,7 +191,22 @@ const AssetDetailPage: React.FC = () => {
       </CCard>
       <div className="flex flex-col md:flex-row gap-5">
         {data !== undefined ? (
-          <Card1 data={data} currency={userInfo?.preferredCurrency as string} />
+          <Card1
+            data={{
+              ...data,
+              socketPrice:
+                typeof prefCurrency === 'string'
+                  ? lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                    ? lastPrice[prefCurrency as PreferredCurrencyI]
+                    : lastPriceAsset ?? 0
+                  : 0
+            }}
+            currency={userInfo?.preferredCurrency as string}
+            playId={id as string}
+            assetId={assetId as string}
+            playSimulation={false}
+            playTeamBattle={true}
+          />
         ) : (
           <Card2Skeleton />
         )}

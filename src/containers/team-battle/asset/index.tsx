@@ -44,7 +44,8 @@ const PlayAssetsList: React.FC<Props> = ({
         type: assetType,
         sub_type: subType,
         search: searchValue,
-        sort_by: sortBy
+        sort_by: sortBy,
+        currency: userInfo?.preferredCurrency
       });
       setAssets(assetsData.marketAssetList);
     } catch (error) {
@@ -53,8 +54,10 @@ const PlayAssetsList: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    fetchAssets();
-  }, [assetType, subType, searchValue, sortBy]);
+    if (userInfo?.preferredCurrency !== undefined) {
+      fetchAssets();
+    }
+  }, [assetType, subType, searchValue, sortBy, userInfo?.preferredCurrency]);
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -65,6 +68,7 @@ const PlayAssetsList: React.FC<Props> = ({
       toast.error(`Error fetching data: ${error as string}`);
     }
   };
+
   useEffect(() => {
     void fetchData();
   }, []);

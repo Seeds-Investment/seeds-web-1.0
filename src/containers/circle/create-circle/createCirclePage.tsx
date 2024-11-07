@@ -313,7 +313,10 @@ const CreateCirclePage = ({
                   </label>
                   <CreatableSelect
                     isMulti
-                    onChange={handleCategoryChange}
+                    onChange={(value) => {
+                      handleCategoryChange(value);
+                      changeCategory(value);
+                    }}
                     options={categories}
                     value={selectedCategories}
                     placeholder="Choose Categories"

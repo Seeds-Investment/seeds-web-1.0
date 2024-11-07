@@ -18,7 +18,7 @@ import CountdownTimer from '@/components/play/CountdownTimer';
 import Loading from '@/components/popup/Loading';
 import FloatingButtonBattle from '@/components/team-battle/FloatingButtonBattle';
 import ModalDetailBattle from '@/components/team-battle/ModalDetailBattle';
-import { standartCurrency } from '@/helpers/currency';
+import { formatAssetPrice, standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import { getMarketList } from '@/repository/market.repository';
@@ -274,7 +274,7 @@ const BattleHome: React.FC = () => {
         <div className="grid grid-cols-3 text-white mb-5">
           <div
             className="flex justify-start col-span-1 items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            onClick={async() => {
+            onClick={async () => {
               await router.push(`/play/team-battle/${id as string}/stage`);
             }}
           >
@@ -554,11 +554,8 @@ const BattleHome: React.FC = () => {
                       <div className="font-semibold text-sm md:text-base">
                         {userInfo?.preferredCurrency !== undefined
                           ? userInfo?.preferredCurrency
-                          : 'IDR'}
-                        {standartCurrency(data?.priceBar?.close ?? 0).replace(
-                          'Rp',
-                          ''
-                        )}
+                          : 'IDR'}{' '}
+                        {formatAssetPrice(data?.priceBar?.close ?? 0)}
                       </div>
                       <div className="flex justify-center gap-2">
                         <Image

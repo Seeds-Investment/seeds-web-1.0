@@ -7,7 +7,7 @@ import AssetPagination from '@/components/AssetPagination';
 import Loading from '@/components/popup/Loading';
 import ModalCancelOrder from '@/components/popup/ModalCancelOrder';
 import VirtualBalanceChart from '@/containers/tournament/portfolio-chart/VirtualBalanceChart';
-import { standartCurrency } from '@/helpers/currency';
+import { formatAssetPrice, standartCurrency } from '@/helpers/currency';
 import { getShortDate } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import {
@@ -454,11 +454,8 @@ const BattleVirtualBalance = (): React.ReactElement => {
                               <div className="text-black font-semibold">
                                 {userInfo?.preferredCurrency !== undefined
                                   ? userInfo?.preferredCurrency
-                                  : 'IDR'}
-                                {standartCurrency(data?.bid_price ?? 0).replace(
-                                  'Rp',
-                                  ''
-                                )}
+                                  : 'IDR'}{' '}
+                                {formatAssetPrice(data?.bid_price ?? 0)}
                               </div>
                             </div>
                             <div className="flex flex-col justify-end items-end">
@@ -466,11 +463,11 @@ const BattleVirtualBalance = (): React.ReactElement => {
                               <div className="text-black font-semibold">
                                 {userInfo?.preferredCurrency !== undefined
                                   ? userInfo?.preferredCurrency
-                                  : 'IDR'}
-                                {standartCurrency(
+                                  : 'IDR'}{' '}
+                                {formatAssetPrice(
                                   (data?.bid_price ?? 0) *
                                     (data?.total_assets ?? 0)
-                                ).replace('Rp', '')}
+                                )}
                               </div>
                             </div>
                           </div>

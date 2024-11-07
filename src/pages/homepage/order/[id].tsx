@@ -122,9 +122,9 @@ const OrderPage: React.FC = () => {
       setAmount(
         `${
           ((portfolio?.total_lot ?? 0) *
-            (lastPrice[prefCurrency as PreferredCurrencyI] ??
-              lastPriceAsset ??
-              0) *
+            (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+              ? lastPrice[prefCurrency as PreferredCurrencyI]
+              : (lastPriceAsset as number)) *
             sellPercent) /
           100
         }`
@@ -138,9 +138,9 @@ const OrderPage: React.FC = () => {
       amount !==
       `${
         ((portfolio?.total_lot ?? 0) *
-          (lastPrice[prefCurrency as PreferredCurrencyI] ??
-            lastPriceAsset ??
-            0) *
+          (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+            ? lastPrice[prefCurrency as PreferredCurrencyI]
+            : (lastPriceAsset as number)) *
           sellPercent) /
         100
       }`
@@ -305,18 +305,18 @@ const OrderPage: React.FC = () => {
                 setNewVal(
                   `${
                     parseInt(value) /
-                    (lastPrice[prefCurrency as PreferredCurrencyI] ??
-                      lastPriceAsset ??
-                      0)
+                    (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                      ? lastPrice[prefCurrency as PreferredCurrencyI]
+                      : (lastPriceAsset as number))
                   }`
                 );
               } else {
                 setNewVal(
                   `${
                     parseFloat(value) *
-                    (lastPrice[prefCurrency as PreferredCurrencyI] ??
-                      lastPriceAsset ??
-                      0)
+                    (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                      ? lastPrice[prefCurrency as PreferredCurrencyI]
+                      : (lastPriceAsset as number))
                   }`
                 );
               }
@@ -332,18 +332,18 @@ const OrderPage: React.FC = () => {
                   setNewVal(
                     `${
                       parseInt(value) /
-                      (lastPrice[prefCurrency as PreferredCurrencyI] ??
-                        lastPriceAsset ??
-                        0)
+                      (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                        ? lastPrice[prefCurrency as PreferredCurrencyI]
+                        : (lastPriceAsset as number))
                     }`
                   );
                 } else {
                   setNewVal(
                     `${
                       parseFloat(value) *
-                      (lastPrice[prefCurrency as PreferredCurrencyI] ??
-                        lastPriceAsset ??
-                        0)
+                      (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                        ? lastPrice[prefCurrency as PreferredCurrencyI]
+                        : (lastPriceAsset as number))
                     }`
                   );
                 }
@@ -429,7 +429,10 @@ const OrderPage: React.FC = () => {
           <CardPrice
             data={{
               ...data,
-              socketPrice: lastPrice[prefCurrency as PreferredCurrencyI]
+              socketPrice:
+                lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                  ? lastPrice[prefCurrency as PreferredCurrencyI]
+                  : (lastPriceAsset as number)
             }}
             currency={userInfo?.preferredCurrency ?? 'IDR'}
           />
@@ -450,9 +453,9 @@ const OrderPage: React.FC = () => {
                 router.query?.transaction === 'buy'
                   ? ballance?.balance ?? 0
                   : (portfolio?.total_lot ?? 0) *
-                      (lastPrice[prefCurrency as PreferredCurrencyI] ??
-                        lastPriceAsset ??
-                        0)
+                      (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                        ? lastPrice[prefCurrency as PreferredCurrencyI]
+                        : (lastPriceAsset as number))
               )}`}{' '}
               {router.query?.transaction === 'sell' &&
                 `= ${portfolio.total_lot ?? 0} ${data?.realTicker ?? ''}`}

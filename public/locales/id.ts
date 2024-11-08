@@ -2503,7 +2503,7 @@ export default {
     groupName: 'Nama Grup',
     enterGroupName: 'Masukan nama grup',
     description: 'Deskripsi',
-    enterGroupDescription: 'Masukan deskripsi grup',
+    groupDescription: 'Deskripsi Grup',
     typeGroup: 'Tipe Grup',
     public: 'Publik',
     private: 'Pribadi',
@@ -2523,7 +2523,11 @@ export default {
     seen: 'Dilihat',
     muteNotificationTitle: 'Yakin mau membisukan notifikasi ini?',
     muteNotificationSubtitle:
-      'Peserta lain tidak akan tau jika kamu membisukan chat ini'
+      'Peserta lain tidak akan tau jika kamu membisukan chat ini',
+    setPhoto: 'Atur Gambar',
+    btnCreateGroup: 'Buat Obrolan Grup',
+    btnYes: 'Ya',
+    btnNo: 'Tidak'
   },
   play: {
     keystat: 'Key Stats'

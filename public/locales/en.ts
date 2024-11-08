@@ -2574,7 +2574,7 @@ export default {
     groupName: 'Group Name',
     enterGroupName: 'Enter Group Name',
     description: 'Description',
-    enterGroupDescription: 'Enter Group Description',
+    groupDescription: 'Group Description',
     typeGroup: 'Type Group',
     public: 'Public',
     private: 'Private',
@@ -2594,7 +2594,11 @@ export default {
     seen: 'Seen',
     muteNotificationTitle: 'Are you sure to mute notifications?',
     muteNotificationSubtitle:
-      'Other participants will not see that you muted this chat'
+      'Other participants will not see that you muted this chat',
+    setPhoto: 'Set Photo',
+    btnCreateGroup: 'Create Group Chat',
+    btnYes: 'Yes',
+    btnNo: 'No'
   },
   play: {
     keystat: 'Key Stats'

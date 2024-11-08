@@ -1,4 +1,6 @@
 import AddIcon from '@/assets/play/tournament/add-watchlist.svg';
+import { createGroup } from '@/repository/chat.repository';
+import { postCloud } from '@/repository/cloud.repository';
 import { type CreateGroupForm } from '@/utils/interfaces/chat.interface';
 import { CameraIcon } from '@heroicons/react/24/outline';
 import { Avatar, Button } from '@material-tailwind/react';
@@ -53,18 +55,18 @@ const DetailCreateGroup: React.FC<DetailCreateGroupProps> = ({
   const handleSubmit = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      // let updatedForm = { ...createGroupForm };
-      // if (updateAvatar !== null && updateAvatar !== undefined) {
-      //   const { path: cloudResponse } = await postCloud({
-      //     file: updateAvatar,
-      //     type: 'OTHER_URL'
-      //   });
-      //   updatedForm = {
-      //     ...updatedForm,
-      //     avatar: cloudResponse
-      //   };
-      // }
-      // await createGroup(updatedForm);
+      let updatedForm = { ...createGroupForm };
+      if (updateAvatar !== null && updateAvatar !== undefined) {
+        const { path: cloudResponse } = await postCloud({
+          file: updateAvatar,
+          type: 'OTHER_URL'
+        });
+        updatedForm = {
+          ...updatedForm,
+          avatar: cloudResponse
+        };
+      }
+      await createGroup(updatedForm);
       setIsOpenConfirmModal(false);
       await router.replace('/chat');
       toast.success('Group Chat created successfully!');

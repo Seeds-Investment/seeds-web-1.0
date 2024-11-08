@@ -90,19 +90,22 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
                   <h1 className="text-white font-poppins text-sm">
                     {currentIndex + 1} / {images.length}
                   </h1>
-                  {images.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`w-4 h-4 rounded-full ${
-                        index === currentIndex
-                          ? 'bg-seeds-green'
-                          : 'bg-gray-300'
-                      }`}
-                      onClick={(): any => {
-                        setCurrentIndex(index);
-                      }}
-                    ></div>
-                  ))}
+                  <div className="flex gap-2">
+                    {images.map((_, index) => (
+                      <div
+                        key={index}
+                        className={`w-4 h-4 rounded-full ${
+                          index === currentIndex
+                            ? 'bg-seeds-green'
+                            : 'bg-gray-300'
+                        }`}
+                        onClick={(): any => {
+                          setCurrentIndex(index);
+                        }}
+                      ></div>
+                    ))}
+                  </div>
+
                   <h1 className="font-poppins text-sm text-transparent">
                     {currentIndex + 1} / {images.length}
                   </h1>

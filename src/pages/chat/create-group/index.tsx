@@ -1,33 +1,51 @@
+import DetailCreateGroup from '@/components/chat/DetailCreateGroup';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
-import { getFollowList, getUserInfo } from '@/repository/profile.repository';
-import { type DetailFollowing } from '@/utils/interfaces/chat.interface';
-import { type UserInfo } from '@/utils/interfaces/user.interface';
+import { searchUser } from '@/repository/people.repository';
+import {
+  type CreateGroupForm,
+  type SearchUserChat
+} from '@/utils/interfaces/chat.interface';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Avatar, Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIconWhite, DeleteIconX } from 'public/assets/vector';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 const CreateGroup: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const searchRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [followingsList, setFollowingsList] = useState<DetailFollowing[]>([]);
-  const [selectedMember, setSelectedMember] = useState<string[]>([]);
-  const [displayMembers, setDisplayMembers] = useState<DetailFollowing[]>([]);
+  const [searchParams, setSearchParams] = useState<{
+    search: string;
+    page: number;
+    limit: number;
+    sortBy: string;
+  }>({
+    search: ' ',
+    page: 1,
+    limit: 10,
+    sortBy: ''
+  });
+  const [userList, setUserList] = useState<SearchUserChat[]>([]);
+  const [displayMembers, setDisplayMembers] = useState<SearchUserChat[]>([]);
+  const [showNextStep, setShowNextStep] = useState<boolean>(false);
+  const [newGroupForm, setNewGroupForm] = useState<CreateGroupForm>({
+    name: '',
+    description: '',
+    avatar: '',
+    memberships: []
+  });
 
-  const fetchUserFollowings = async (): Promise<void> => {
+  const fetchSearchUser = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const userInfo: UserInfo = await getUserInfo();
-      if (userInfo !== undefined) {
-        const response = await getFollowList(userInfo.id, 'followings');
-        setFollowingsList(response.data);
-      }
+      const response = await searchUser(searchParams);
+      setUserList(response.result);
     } catch (error) {
       toast.error(`Error fetching data following: ${error as string}`);
     } finally {
@@ -36,26 +54,50 @@ const CreateGroup: React.FC = () => {
   };
 
   useEffect(() => {
-    void fetchUserFollowings();
-  }, []);
+    void fetchSearchUser();
+  }, [searchParams]);
+
+  const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    let keyword = searchRef.current?.value;
+
+    if (keyword === '') {
+      keyword = ' ';
+    }
+
+    if (event.key === 'Enter' && keyword !== undefined) {
+      event.preventDefault();
+      setSearchParams({
+        ...searchParams,
+        page: 1,
+        limit: 9,
+        search: keyword
+      });
+    }
+  };
 
   const handleSelectMember = (
     userId: string,
     isSelected: boolean,
-    member: DetailFollowing
+    member: SearchUserChat
   ): void => {
     if (isSelected) {
-      setSelectedMember([...selectedMember, userId]);
+      setNewGroupForm(prev => ({
+        ...prev,
+        memberships: [...prev.memberships, userId]
+      }));
       setDisplayMembers(prev => [...prev, member]);
     } else {
-      setSelectedMember(selectedMember.filter(member => member !== userId));
+      setNewGroupForm(prev => ({
+        ...prev,
+        memberships: [...prev.memberships.filter(id => id !== userId)]
+      }));
       setDisplayMembers(prev => prev.filter(member => member.id !== userId));
     }
   };
 
   return (
     <PageGradient defaultGradient className="w-full">
-      <div className="w-full bg-white">
+      <div className={`w-full bg-white ${showNextStep ? 'hidden' : 'block'}`}>
         <div
           style={{ backgroundImage: "url('/assets/chat/bg-chat.svg')" }}
           className="w-full bg-cover rounded-t-xl lg:h-[150px] h-[130px] flex items-center"
@@ -104,10 +146,10 @@ const CreateGroup: React.FC = () => {
           <div className="py-5 px-6">
             <div className="relative w-full">
               <input
-                // ref={searchRef}
+                ref={searchRef}
                 id="search"
                 type="text"
-                // onKeyDown={handleSearch}
+                onKeyDown={handleSearch}
                 name="search"
                 placeholder={t('chat.search') ?? ''}
                 className="block w-full text-[#262626] text-sm h-10 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-2 pl-4 rounded-xl border border-[#BDBDBD]"
@@ -121,49 +163,60 @@ const CreateGroup: React.FC = () => {
             </div>
           ) : (
             <div className="md:h-[475px] h-[360px] overflow-y-auto">
-              {followingsList.length > 0 &&
-                followingsList.map(following => (
+              {userList.length > 0 &&
+                userList.map(user => (
                   <div
-                    key={following?.id}
-                    className="flex justify-between items-center mx-[22px] py-4 border-b border-b-[#E9E9E9]"
+                    key={user?.id}
+                    onClick={() => {
+                      const isSelected = newGroupForm?.memberships?.includes(
+                        user?.id
+                      );
+                      handleSelectMember(user?.id, !isSelected, user);
+                    }}
+                    className="flex justify-between items-center mx-[22px] py-4 px-2 border-b border-b-[#E9E9E9] hover:bg-[#efefef] cursor-pointer rounded-lg duration-150"
                   >
                     <div className="flex flex-row items-center gap-[6px]">
-                      <Avatar src={following?.avatar} width={32} height={32} />
+                      <Avatar src={user?.avatar} width={32} height={32} />
                       <div className="flex flex-col gap-2">
                         <Typography className="font-semibold font-poppins text-black text-sm">
-                          {following?.name}
+                          {user?.name}
                         </Typography>
                         <Typography className="font-normal font-poppins text-black text-xs">
-                          {following?.seeds_tag !== undefined &&
-                          following?.seeds_tag.length > 15
-                            ? `@${following.seeds_tag.slice(0, 15)}...`
-                            : `@${following.seeds_tag}`}
+                          {user?.seedsTag !== undefined &&
+                          user?.seedsTag.length > 15
+                            ? `@${user.seedsTag.slice(0, 15)}...`
+                            : `@${user.seedsTag}`}
                         </Typography>
                       </div>
                     </div>
                     <input
                       className="cursor-pointer w-5 h-5 appearance-none rounded-full border-2 border-gray-500 checked:bg-seeds-green checked:border-[#1A857D]"
                       type="checkbox"
-                      checked={selectedMember.includes(following?.id)}
-                      onChange={e => {
-                        handleSelectMember(
-                          following?.id,
-                          e.target.checked,
-                          following
-                        );
-                      }}
+                      checked={newGroupForm?.memberships?.includes(user?.id)}
                     />
                   </div>
                 ))}
             </div>
           )}
           <div className="flex justify-center py-2 bottom-0">
-            <Button className="font-semibold font-poppins text-sm bg-seeds-button-green text-white md:w-[340px] w-full mx-2 rounded-full">
+            <Button
+              disabled={newGroupForm?.memberships?.length < 2}
+              onClick={() => {
+                setShowNextStep(prev => !prev);
+              }}
+              className="font-semibold font-poppins text-sm bg-seeds-button-green text-white md:w-[340px] w-full mx-2 rounded-full"
+            >
               {t('chat.next')}
             </Button>
           </div>
         </div>
       </div>
+      <DetailCreateGroup
+        showNextStep={showNextStep}
+        setShowNextStep={setShowNextStep}
+        createGroupForm={newGroupForm}
+        setCreateGroupForm={setNewGroupForm}
+      />
     </PageGradient>
   );
 };

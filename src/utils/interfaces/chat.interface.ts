@@ -536,16 +536,17 @@ export interface Pagination {
 
 export interface CreateGroupForm {
   name: string;
-  desc: string;
-  hashtag: string[];
+  description?: string;
+  avatar?: string;
+  memberships: string[];
 }
 
 export interface CreateGroupParams {
-  avatar: string;
+  avatar?: string;
   name: string;
-  description: string;
-  privacy: string;
-  hashtag: string[];
+  description?: string;
+  privacy?: string;
+  hashtag?: string[];
   memberships: string[];
 }
 
@@ -561,16 +562,4 @@ export interface CreateGroupResponse {
   updated_at: string;
   total_memberships: number;
   total_online: number;
-}
-
-export interface DetailFollowing {
-  id: string;
-  is_followed: boolean;
-  name: string;
-  seeds_tag: string;
-  avatar: string;
-  role: string;
-  verified: boolean;
-  bio: string;
-  badge: string;
 }

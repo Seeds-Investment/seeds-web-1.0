@@ -10,15 +10,15 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Avatar, Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { ArrowBackwardIconWhite, DeleteIconX } from 'public/assets/vector';
-import { useEffect, useRef, useState } from 'react';
+import { ArrowBackwardIconWhite } from 'public/assets/vector';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-const CreateGroup: React.FC = () => {
+const CreateMessage: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const searchRef = useRef<HTMLInputElement>(null);
+  const [searchedUser, setSearchedUser] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useState<{
     search: string;
@@ -32,7 +32,6 @@ const CreateGroup: React.FC = () => {
     sortBy: ''
   });
   const [userList, setUserList] = useState<SearchUserChat[]>([]);
-  const [displayMembers, setDisplayMembers] = useState<SearchUserChat[]>([]);
   const [showNextStep, setShowNextStep] = useState<boolean>(false);
   const [newGroupForm, setNewGroupForm] = useState<CreateGroupForm>({
     name: '',
@@ -55,45 +54,21 @@ const CreateGroup: React.FC = () => {
 
   useEffect(() => {
     void fetchSearchUser();
-  }, [searchParams]);
+  }, [searchParams, searchedUser]);
 
-  const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-    let keyword = searchRef.current?.value;
+  const handleTypeUser = (searchName: string): void => {
+    setSearchedUser(searchName)
+    setSearchParams({
+      ...searchParams,
+      page: 1,
+      limit: 10,
+      search: searchName !== '' ? searchName : ' '
+    });
+  }
 
-    if (keyword === '') {
-      keyword = ' ';
-    }
-
-    if (event.key === 'Enter' && keyword !== undefined) {
-      event.preventDefault();
-      setSearchParams({
-        ...searchParams,
-        page: 1,
-        limit: 9,
-        search: keyword
-      });
-    }
-  };
-
-  const handleSelectMember = (
-    userId: string,
-    isSelected: boolean,
-    member: SearchUserChat
-  ): void => {
-    if (isSelected) {
-      setNewGroupForm(prev => ({
-        ...prev,
-        memberships: [...prev.memberships, userId]
-      }));
-      setDisplayMembers(prev => [...prev, member]);
-    } else {
-      setNewGroupForm(prev => ({
-        ...prev,
-        memberships: [...prev.memberships.filter(id => id !== userId)]
-      }));
-      setDisplayMembers(prev => prev.filter(member => member.id !== userId));
-    }
-  };
+  const handleRedirectChat = (userId: string):void => {
+    void router.push(`/chat?roomId=${userId}`);
+  }
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -119,37 +94,12 @@ const CreateGroup: React.FC = () => {
           </div>
         </div>
         <div className="bg-white w-full lg:h-[660px] h-[490px] mt-[-20px] rounded-t-3xl mb-5">
-          {displayMembers.length > 0 && (
-            <div className="flex justify-start items-center gap-2 py-2 px-3 overflow-x-auto w-[calc(100%-28px)] ml-2">
-              {displayMembers.map(member => (
-                <div key={member.id} className="relative flex shrink-0">
-                  <Avatar
-                    className="block"
-                    src={member?.avatar}
-                    width={32}
-                    height={32}
-                  />
-                  <Image
-                    className="absolute bottom-0 right-0 cursor-pointer"
-                    src={DeleteIconX}
-                    alt="icon"
-                    width={16}
-                    height={16}
-                    onClick={() => {
-                      handleSelectMember(member?.id, false, member);
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
           <div className="py-5 px-6">
             <div className="relative w-full">
               <input
-                ref={searchRef}
+                onChange={(e) => {handleTypeUser(e.target.value)}}
                 id="search"
                 type="text"
-                onKeyDown={handleSearch}
                 name="search"
                 placeholder={t('chat.search') ?? ''}
                 className="block w-full text-[#262626] text-sm h-10 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-2 pl-4 rounded-xl border border-[#BDBDBD]"
@@ -163,15 +113,12 @@ const CreateGroup: React.FC = () => {
             </div>
           ) : (
             <div className="md:h-[475px] h-[360px] overflow-y-auto">
-              {userList.length > 0 &&
-                userList.map(user => (
+              {userList?.length > 0 &&
+                userList?.map(user => (
                   <div
                     key={user?.id}
                     onClick={() => {
-                      const isSelected = newGroupForm?.memberships?.includes(
-                        user?.id
-                      );
-                      handleSelectMember(user?.id, !isSelected, user);
+                      handleRedirectChat(user?.id);
                     }}
                     className="flex justify-between items-center mx-[22px] py-4 px-2 border-b border-b-[#E9E9E9] hover:bg-[#efefef] cursor-pointer rounded-lg duration-150"
                   >
@@ -189,11 +136,6 @@ const CreateGroup: React.FC = () => {
                         </Typography>
                       </div>
                     </div>
-                    <input
-                      className="cursor-pointer w-5 h-5 appearance-none rounded-full border-2 border-gray-500 checked:bg-seeds-green checked:border-[#1A857D]"
-                      type="checkbox"
-                      checked={newGroupForm?.memberships?.includes(user?.id)}
-                    />
                   </div>
                 ))}
             </div>
@@ -221,4 +163,4 @@ const CreateGroup: React.FC = () => {
   );
 };
 
-export default withAuth(CreateGroup);
+export default withAuth(CreateMessage);

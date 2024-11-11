@@ -1,7 +1,9 @@
 import { type Chat } from '@/utils/interfaces/chat.interface';
 import { Typography } from '@material-tailwind/react';
 import moment from 'moment';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { readChatIcon } from 'public/assets/chat';
 
 interface props {
   data: Chat;
@@ -36,17 +38,29 @@ const ChatList: React.FC<props> = ({ data }) => {
               : moment(data?.created_at).format('L')}
           </Typography>
         </div>
-        <div className="flex">
+        <div className="w-full flex justify-between">
           <Typography className="font-normal text-sm text-[#7C7C7C] font-poppins max-w-[70%] max-h-[20px] text-ellipsis overflow-hidden">
             {data?.content_text.slice(0, 30)}
           </Typography>
           {data.total_unread > 0 && (
-            <div className="rounded-full bg-[#3AC4A0] w-[24px] h-[24px] flex justify-center items-center">
-              <Typography className="font-normal text-[10px] text-white font-poppins">
+            <div className="rounded-full bg-[#FF6565] w-[24px] h-[24px] flex justify-center items-center">
+              <Typography className="font-normal text-[10px] text-[#FFEBEB] font-poppins">
                 {data?.total_unread}
               </Typography>
             </div>
           )}
+          {
+            data?.read_at !== "0001-01-01T00:00:00Z" &&
+              <div className='flex justify-center items-center w-[20px] h-auto'>
+                <Image
+                  src={readChatIcon}
+                  alt="readChatIcon"
+                  width={1000}
+                  height={1000}
+                  className='w-full h-auto'
+                />
+              </div>
+          }
         </div>
       </div>
     </div>

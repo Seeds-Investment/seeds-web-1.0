@@ -2496,6 +2496,7 @@ export default {
     dataNotFound: 'Data Tidak Ditemukan'
   },
   chat: {
+    chat: 'Chat',
     personalEmptyState: 'Tidak ada percakapan',
     communityEmptyState: 'Tidak ada percakapan komunitas',
     selectUsername: 'Kamu belum membuat percakapan. Yuk, pilih nama pengguna.',
@@ -2520,11 +2521,14 @@ export default {
     request: 'Request',
     reject: 'Tolak',
     accept: 'Terima',
+    newMessage: 'Pesan Baru',
+    newMessageDescription: 'Katakan halo dan mulai percakapan!',
     newGroup: 'Grup Baru',
+    newGroupDescription: 'Ayo berkirim pesan 🎉 Buat grup baru!',
     groupName: 'Nama Grup',
     enterGroupName: 'Masukan nama grup',
     description: 'Deskripsi',
-    enterGroupDescription: 'Masukan deskripsi grup',
+    groupDescription: 'Deskripsi Grup',
     typeGroup: 'Tipe Grup',
     public: 'Publik',
     private: 'Pribadi',
@@ -2544,7 +2548,11 @@ export default {
     seen: 'Dilihat',
     muteNotificationTitle: 'Yakin mau membisukan notifikasi ini?',
     muteNotificationSubtitle:
-      'Peserta lain tidak akan tau jika kamu membisukan chat ini'
+      'Peserta lain tidak akan tau jika kamu membisukan chat ini',
+    setPhoto: 'Atur Gambar',
+    btnCreateGroup: 'Buat Obrolan Grup',
+    btnYes: 'Ya',
+    btnNo: 'Tidak'
   },
   play: {
     keystat: 'Key Stats'

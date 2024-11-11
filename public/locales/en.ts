@@ -2566,7 +2566,9 @@ export default {
     dataNotFound: 'Data Not Found'
   },
   chat: {
-    personalEmptyState: 'No Conversation',
+    chat: 'Chat',
+    personalEmptyState: 'No message here!',
+    startChat: 'Start a chat!',
     communityEmptyState: 'No Community Chat',
     selectUsername:
       'You didn’t made any conversation yet, please select username.',
@@ -2591,11 +2593,14 @@ export default {
     request: 'Request',
     reject: 'Reject',
     accept: 'Accept',
+    newMessage: 'New Message',
+    newMessageDescription: 'Say hi and kick off the conversation!',
     newGroup: 'New Group',
+    newGroupDescription: "Let's chat  🎉 Start a new group!",
     groupName: 'Group Name',
     enterGroupName: 'Enter Group Name',
     description: 'Description',
-    enterGroupDescription: 'Enter Group Description',
+    groupDescription: 'Group Description',
     typeGroup: 'Type Group',
     public: 'Public',
     private: 'Private',
@@ -2615,7 +2620,11 @@ export default {
     seen: 'Seen',
     muteNotificationTitle: 'Are you sure to mute notifications?',
     muteNotificationSubtitle:
-      'Other participants will not see that you muted this chat'
+      'Other participants will not see that you muted this chat',
+    setPhoto: 'Set Photo',
+    btnCreateGroup: 'Create Group Chat',
+    btnYes: 'Yes',
+    btnNo: 'No'
   },
   play: {
     keystat: 'Key Stats'

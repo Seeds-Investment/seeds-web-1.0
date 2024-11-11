@@ -536,16 +536,17 @@ export interface Pagination {
 
 export interface CreateGroupForm {
   name: string;
-  desc: string;
-  hashtag: string[];
+  description?: string;
+  avatar?: string;
+  memberships: string[];
 }
 
 export interface CreateGroupParams {
-  avatar: string;
+  avatar?: string;
   name: string;
-  description: string;
-  privacy: string;
-  hashtag: string[];
+  description?: string;
+  privacy?: string;
+  hashtag?: string[];
   memberships: string[];
 }
 

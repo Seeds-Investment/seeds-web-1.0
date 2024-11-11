@@ -7,8 +7,13 @@ export { default as galleryChat } from './gallery.svg';
 export { default as leaveGroup } from './leaveGroup.png';
 export { default as mic } from './mic.svg';
 export { default as moreVerticalGreen } from './moreVertical.svg';
+export { default as newChat } from './newChat.svg';
 export { default as newGroup } from './newGroup.png';
+export { default as newGroupIcon } from './newGroupIcon.svg';
+export { default as newMessageIcon } from './newMessageIcon.svg';
+export { default as noMessage } from './noMessage.svg';
 export { default as plusRounded } from './plusRounded.svg';
+export { default as readChatIcon } from './readChat.svg';
 export { default as seedsChat } from './seedsChat.png';
 export { default as seedyChatCommunty } from './seedsChatCommunity.png';
 export { default as seedyChatNotSelected } from './seedsChatNotSelected.png';
@@ -17,3 +22,4 @@ export { default as sendChat } from './sendGreen.svg';
 export { default as emoji } from './smile.svg';
 export { default as threedotsVertical } from './threedots.svg';
 export { default as wave } from './wave.svg';
+

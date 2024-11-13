@@ -1,9 +1,10 @@
 import { type Chat } from '@/utils/interfaces/chat.interface';
-import { Typography } from '@material-tailwind/react';
+import { Avatar, Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { readChatIcon } from 'public/assets/chat';
+import DefaultAvatar from '../../../public/assets/chat/default-avatar.svg';
 
 interface props {
   data: Chat;
@@ -25,7 +26,13 @@ const ChatList: React.FC<props> = ({ data }) => {
       }}
     >
       <div className="flex items-center shrink-0">
-        <img src={data?.avatar} alt="avatar" className="rounded-full w-8 h-8" />
+        <Avatar
+          src={data?.avatar === '' ? DefaultAvatar.src : data?.avatar}
+          alt="avatar"
+          width={32}
+          height={32}
+          className="rounded-full w-8 h-8"
+        />
       </div>
       <div className="flex flex-col w-full">
         <div className="flex justify-between">
@@ -49,18 +56,17 @@ const ChatList: React.FC<props> = ({ data }) => {
               </Typography>
             </div>
           )}
-          {
-            data?.read_at !== "0001-01-01T00:00:00Z" &&
-              <div className='flex justify-center items-center w-[20px] h-auto'>
-                <Image
-                  src={readChatIcon}
-                  alt="readChatIcon"
-                  width={1000}
-                  height={1000}
-                  className='w-full h-auto'
-                />
-              </div>
-          }
+          {data?.read_at !== '0001-01-01T00:00:00Z' && (
+            <div className="flex justify-center items-center w-[20px] h-auto">
+              <Image
+                src={readChatIcon}
+                alt="readChatIcon"
+                width={1000}
+                height={1000}
+                className="w-full h-auto"
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -352,11 +352,11 @@ const ModalMention: React.FC<props> = ({
     const cleanedString = form.content_text.replace(regexPattern, '');
     const totalChar = cleanedString.length;
 
-    if (totalChar > 255 && form.privacy !== 'premium') {
+    if (totalChar > 500 && form.privacy !== 'premium') {
       setIsError(true);
       setIsDisable(true);
       setErrorMessage(`${t('social.errorState.thread3')}`);
-    } else if (totalChar > 500 && form.privacy === 'premium') {
+    } else if (totalChar > 1000 && form.privacy === 'premium') {
       setIsError(true);
       setIsDisable(true);
       setErrorMessage(`${t('social.errorState.thread1')}`);

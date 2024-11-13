@@ -297,7 +297,7 @@ export default {
         'Attention : Users are required to read terms and conditions “Seeds T&C”  before using Seeds. Terms and conditions can be changed without prior notice.To register and use Seeds app, it means the user has read thoroughly and agreed to these terms & conditions which will be conducted as the user agreement. Seeds reserve the right to stop or restrict user access without prior notice. Users are suggested to visit Seeds app regularly to have the most updated change within the terms and conditions.'
     },
     privacy: {
-      title: 'Privacy Policy',
+      title: 'Privacy & Policy',
       lastUpdated: 'Last Updated: ',
       date: '26 April 2022',
       overview: {
@@ -2747,5 +2747,9 @@ export default {
       notFound: `You don't have any {{data}} yet`,
       moreInfo: 'More Information'
     }
+  },
+  seedspedia: {
+    sorry: 'Sorry',
+    dataNotFound: 'The data you are looking for does not exist'
   }
 };

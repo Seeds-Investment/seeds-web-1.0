@@ -435,7 +435,7 @@ const QuizDetail = (): React.ReactElement => {
             </div>
           </div>
           <button
-            disabled={loading}
+            disabled={loading || detailQuiz?.status === 'PUBLISHED'}
             onClick={() => {
               if (localStorage.getItem('accessToken') !== null) {
                 if (detailQuiz?.participant_status === 'JOINED') {
@@ -460,8 +460,9 @@ const QuizDetail = (): React.ReactElement => {
               }
             }}
             className={`text-white px-10 py-2 rounded-full font-semibold mt-4 w-full ${
-              invitationCode === '' &&
-              detailQuiz?.is_need_invitation_code === true
+              (invitationCode === '' &&
+                detailQuiz?.is_need_invitation_code === true) ||
+              detailQuiz?.status === 'PUBLISHED'
                 ? 'bg-[#7d7d7d]'
                 : 'bg-seeds-button-green text-white'
             }`}

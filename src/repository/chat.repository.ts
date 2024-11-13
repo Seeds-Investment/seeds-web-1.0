@@ -18,7 +18,8 @@ import {
   type MutePersonalChatParams,
   type PersonalChatMediaResponse,
   type PersonalChatNotesResponse,
-  type SendMessageParams
+  type SendMessageParams,
+  type UpdateGroupForm
 } from '@/utils/interfaces/chat.interface';
 import { toast } from 'react-toastify';
 
@@ -315,11 +316,10 @@ export const getPersonalChatCommonGroups = async ({
   });
 };
 
-export const getGroupMember = async ({
-  id,
-  page = 1,
-  limit = 3
-}: GroupMemberParams): Promise<GroupMemberResponse> => {
+export const getGroupMember = async (
+  id: string,
+  params?: GroupMemberParams
+): Promise<GroupMemberResponse> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {
@@ -327,7 +327,7 @@ export const getGroupMember = async ({
   }
   const path = Endpoints.chat.groupMember.replace(':id', id);
   return await baseUrl.get(path, {
-    params: { page, limit, id },
+    params,
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`
@@ -392,4 +392,23 @@ export const rejectRequest = async (data: string): Promise<void> => {
       }
     }
   );
+};
+
+export const updateGroup = async (
+  id: string,
+  data: UpdateGroupForm
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+
+  const path = `${Endpoints.chat.groupDetail}/${id}`;
+  await baseUrl.put(path, data, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
 };

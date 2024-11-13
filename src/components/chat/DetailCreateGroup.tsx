@@ -66,10 +66,12 @@ const DetailCreateGroup: React.FC<DetailCreateGroupProps> = ({
           avatar: cloudResponse
         };
       }
-      await createGroup(updatedForm);
+      const response = await createGroup(updatedForm);
       setIsOpenConfirmModal(false);
-      await router.replace('/chat');
-      toast.success('Group Chat created successfully!');
+      if (response !== undefined) {
+        await router.push(`/chat?roomId=${response.id}&isGroupChat=true`);
+        toast.success('Group Chat created successfully!');
+      }
     } catch (error: any) {
       toast.error(
         `Error create group: ${error?.response?.data?.message as string}`
@@ -110,13 +112,7 @@ const DetailCreateGroup: React.FC<DetailCreateGroupProps> = ({
                 />
               ) : (
                 <div className="rounded-full bg-white w-[56px] h-[56px] flex items-center justify-center">
-                  <Image
-                    className="hover:transform hover:scale-105 duration-200"
-                    src={AddIcon}
-                    alt="AddIcon"
-                    width={30}
-                    height={30}
-                  />
+                  <Image src={AddIcon} alt="AddIcon" width={30} height={30} />
                 </div>
               )}
               <button

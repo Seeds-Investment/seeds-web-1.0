@@ -48,9 +48,9 @@ export interface IGroupChatDetail {
   name: string;
   description: string;
   privacy: string;
-  hashtags: string[];
-  memberships: Record<string, unknown>;
-  created_by: string;
+  hashtags: string[] | null;
+  memberships: string[];
+  deleted_by: string;
   created_at: string;
   updated_at: string;
   total_memberships: number;
@@ -183,9 +183,9 @@ export interface PersonalChatMediaData {
 }
 export interface Metadata {
   total: number;
-  current_page: number;
+  currentPage: number;
   limit: number;
-  total_page: number;
+  totalPage: number;
 }
 
 export interface CommonGroupResponse {
@@ -220,9 +220,8 @@ export interface TopMember {
 }
 
 export interface GroupMemberParams {
-  id: string;
-  page: number;
-  limit: number;
+  page?: number;
+  limit?: number;
 }
 
 export interface GroupMemberResponse {
@@ -562,4 +561,13 @@ export interface CreateGroupResponse {
   updated_at: string;
   total_memberships: number;
   total_online: number;
+}
+
+export interface UpdateGroupForm {
+  avatar: string;
+  name: string;
+  description: string;
+  privacy: string;
+  hashtags: string[] | null;
+  memberships: string[];
 }

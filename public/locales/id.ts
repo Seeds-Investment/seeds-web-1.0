@@ -2552,7 +2552,15 @@ export default {
     setPhoto: 'Atur Gambar',
     btnCreateGroup: 'Buat Obrolan Grup',
     btnYes: 'Ya',
-    btnNo: 'Tidak'
+    btnNo: 'Tidak',
+    members: 'Anggota',
+    addGroupDescription: 'Tambahkan Deskripsi Grup',
+    menuBar: {
+      changeGroupInfo: 'Change Group Info',
+      mutedNotif: 'Muted Notifications',
+      leaveGroup: 'Leave Group'
+    },
+    addNewMember: 'Tambahkan Anggota Baru'
   },
   play: {
     keystat: 'Key Stats'

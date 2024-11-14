@@ -2624,7 +2624,15 @@ export default {
     setPhoto: 'Set Photo',
     btnCreateGroup: 'Create Group Chat',
     btnYes: 'Yes',
-    btnNo: 'No'
+    btnNo: 'No',
+    members: 'Members',
+    addGroupDescription: 'Add Group Description',
+    menuBar: {
+      changeGroupInfo: 'Change Group Info',
+      mutedNotif: 'Muted Notifications',
+      leaveGroup: 'Leave Group'
+    },
+    addNewMember: 'Add New Member'
   },
   play: {
     keystat: 'Key Stats'

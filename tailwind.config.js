@@ -37,7 +37,8 @@ module.exports = withMT({
         'ellipse-purple': "url('../src/assets/ellipse-purple.png')",
         'quiz-gradient': 'linear-gradient(88deg, #10A8AD 0%, #79F0B8 137.56%)',
         slashedBanner:
-          "url('/src/assets/play/tournament/bannerLeaderboard.png')"
+          "url('/src/assets/play/tournament/bannerLeaderboard.png')",
+        userInfoBackground: "url('../assets/userInfoBackground.svg')"
       },
       backgroundSize: {
         '50%': '50%',

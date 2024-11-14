@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 import 'swiper/css';
 import { Autoplay, EffectCoverflow } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper, type SwiperClass } from 'swiper/react';
-interface Item {
+export interface Item {
   banner: string;
   type?: string;
   image?: string;
@@ -39,9 +39,9 @@ export const SlideCircle: React.FC = () => {
   const [isChange, setChange] = useState(true);
   const [activeIdx, setActiveIdx] = useState<number>(0);
 
-const HandleSlideChange = (swiper: SwiperClass): void => {
-  setActiveIdx(swiper.realIndex);
-};
+  const HandleSlideChange = (swiper: SwiperClass): void => {
+    setActiveIdx(swiper.realIndex);
+  };
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {

@@ -43,7 +43,8 @@ const PlayAssetsList: React.FC<Props> = ({
       type: assetType,
       sub_type: subType,
       search: searchValue,
-      sort_by: sortBy
+      sort_by: sortBy,
+      currency: userInfo?.preferredCurrency
     });
     setAssets(assetsData.marketAssetList);
   };

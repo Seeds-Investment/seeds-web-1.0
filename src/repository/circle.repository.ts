@@ -242,3 +242,22 @@ export const withdrawCircle = async (formRequest: any): Promise<any> => {
     return error.response;
   }
 };
+
+export const likeCircle = async (circleId: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await circleService.post(
+    `/like/${circleId}`,
+    { id: circleId },
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    }
+  );
+};

@@ -1436,6 +1436,8 @@ export default {
       participant: 'peserta',
       participants: 'peserta'
     },
+    follow: 'Mengikuti',
+    unfollow: 'Berhenti Mengikuti',
     postSetting: {
       publicTitle: 'Publik',
       publicDesc: 'Semua orang bisa melihat postinganmu',
@@ -1512,7 +1514,8 @@ export default {
     navbar: {
       following: 'Mengikuti',
       foryou: 'Untukmu',
-      space: 'Space'
+      space: 'Space',
+      circle: 'Circle'
     },
     filterType: {
       all: 'Semua',
@@ -1550,6 +1553,21 @@ export default {
       close: 'Tutup',
       paymentSuccessful: 'Berhasil',
       recurringSaved: 'Pembayaran anda telah tersimpan'
+    },
+    dailyQuiz: {
+      rightAnswer: 'Selamat, kamu benar!',
+      wrongAnswer: 'Oops, kurang tepat.',
+      answer: 'Jawaban',
+      shareText: 'Kamu akan membagikan ini ke profil kamu. Setuju?',
+      accept: 'Terima',
+      cancel: 'Batal',
+      shareWin:
+        'Kesuksesan kamu telah dibagikan! Teruslah menginspirasi orang lain dengan pengetahuan finansialmu!',
+      shareLose:
+        'Usaha kamu telah dibagikan! Teruslah belajar dan tumbuh setiap hari! ',
+      postWin:
+        'Saya berhasil menjawab daily quiz hari ini dengan benar! Senang sekali!',
+      postLose: 'Saya salah menjawab daily hari ini. tapi saya belajar!'
     }
   },
   landingV2: {

@@ -1,5 +1,6 @@
 'use client';
 import more_vertical from '@/assets/more-option/more_vertical.svg';
+import SeedyQuestion from '@/assets/social/seedy-question.png';
 import MoreOption from '@/components/MoreOption';
 import ModalShareBattle from '@/components/popup/ModalShareBattle';
 import {
@@ -293,6 +294,35 @@ const PostSection: React.FC<props> = ({
                     </pre>
                   )}
                 </button>
+              );
+            }
+          } else if (part.startsWith('*[')) {
+            const contentMatch = part.match(/\[([^\]]+)\]/);
+            const linkMatch = part.match(/\(([^)]+)\)/);
+            if (contentMatch !== null && linkMatch !== null) {
+              const link = linkMatch[1];
+              const content = contentMatch[1];
+
+              return (
+                <div className={`flex-col gap-3 font-poppins`} key={link}>
+                  <div className="flex items-center gap-2">
+                    <div className="p-2">
+                      <Image
+                        src={SeedyQuestion}
+                        alt="question-icon"
+                        className="w-12 h-12 lg:w-14 lg:h-14 object-contain"
+                      />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Daily Quiz</p>
+                      <p className="font-normal break-all text-sm">
+                        {content === 'WIN'
+                          ? t('social.dailyQuiz.postWin')
+                          : t('social.dailyQuiz.postLose')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               );
             }
           } else if (part.match(/#\[[^\]]+\]\([^)]+\)/) !== null) {

@@ -222,6 +222,7 @@ export interface TopMember {
 export interface GroupMemberParams {
   page?: number;
   limit?: number;
+  search?: string;
 }
 
 export interface GroupMemberResponse {

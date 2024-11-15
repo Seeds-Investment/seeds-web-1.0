@@ -802,10 +802,11 @@ export default {
       createPin: { title: 'Buat PIN' },
       changePin: { title: 'Ganti PIN' },
       language: { title: 'Bahasa' },
-      savedPost: { 
+      savedPost: {
         title: 'Postingan Tersimpan',
         info: 'Informasi',
-        infoMessage: 'Halaman ini berisi daftar postingan yang pernah anda simpan.',
+        infoMessage:
+          'Halaman ini berisi daftar postingan yang pernah anda simpan.',
         noData: 'Opps, there’s no saved data yet',
         noDataMessage: 'Find some posts and saved the best one!'
       },
@@ -1423,17 +1424,17 @@ export default {
   social: {
     postSection: {
       shareBattle: 'Bagikan Pertandingan Ini',
-      shareLinks: "Bagikan Tautan",
-      share: "Bagikan",
-      play: "Main",
-      joined: "Bergabung",
-      player: "Pemain",
-      players: "Pemain",
-      fee: "Biaya",
-      free: "Gratis",
-      category: "Kategori",
-      participant: "peserta",
-      participants: "peserta"
+      shareLinks: 'Bagikan Tautan',
+      share: 'Bagikan',
+      play: 'Main',
+      joined: 'Bergabung',
+      player: 'Pemain',
+      players: 'Pemain',
+      fee: 'Biaya',
+      free: 'Gratis',
+      category: 'Kategori',
+      participant: 'peserta',
+      participants: 'peserta'
     },
     postSetting: {
       publicTitle: 'Publik',
@@ -2560,7 +2561,9 @@ export default {
       mutedNotif: 'Muted Notifications',
       leaveGroup: 'Leave Group'
     },
-    addNewMember: 'Tambahkan Anggota Baru'
+    addNewMember: 'Tambahkan Anggota Baru',
+    searchMember: 'Cari Anggota',
+    shareGroup: 'Undang melalui Link'
   },
   play: {
     keystat: 'Key Stats'

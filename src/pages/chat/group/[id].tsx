@@ -1,6 +1,8 @@
 import BackNav from '@/assets/circle-page/back_nav.svg';
 import MoreButton from '@/assets/more-option/more_vertical.svg';
 import AddGroupMembers from '@/components/chat/AddGroupMembers';
+import SearchGroupMembers from '@/components/chat/SearchGroupMembers';
+import ModalShareGroup from '@/components/popup/ModalShareGroup';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import { getGroupDetail, getGroupMember } from '@/repository/chat.repository';
@@ -39,7 +41,10 @@ const DetailGroup: React.FC = () => {
   const { dataUser } = useAppSelector(state => state.user);
   const [detailGroup, setDetailGroup] = useState<IGroupChatDetail>();
   const [groupMembers, setGroupMembers] = useState<GroupMemberResponse>();
+  const [isOpenSearchMembers, setIsOpenSearchMembers] =
+    useState<boolean>(false);
   const [isOpenAddMembers, setIsOpenAddMembers] = useState<boolean>(false);
+  const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const [updateGroupForm, setUpdateGroupForm] = useState<UpdateGroupForm>({
     avatar: '',
     name: '',
@@ -76,8 +81,19 @@ const DetailGroup: React.FC = () => {
 
   return (
     <PageGradient defaultGradient className="w-full">
+      {isShareModal && (
+        <ModalShareGroup
+          onClose={() => {
+            setIsShareModal(prev => !prev);
+          }}
+          url={id ?? ''}
+          groupId={id ?? ''}
+        />
+      )}
       <div
-        className={`w-full bg-white ${isOpenAddMembers ? 'hidden' : 'block'}`}
+        className={`w-full bg-white ${
+          isOpenAddMembers || isOpenSearchMembers ? 'hidden' : 'block'
+        }`}
       >
         <div className="w-full flex flex-col gap-3 shadow-lg md:px-8 px-5 py-4">
           <div className="flex justify-between items-center">
@@ -159,7 +175,12 @@ const DetailGroup: React.FC = () => {
                   />
                 </div>
               )}
-              <div className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150">
+              <div
+                onClick={async () => {
+                  setIsShareModal(true);
+                }}
+                className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150"
+              >
                 <RiLink
                   color="#1A857D"
                   size={24}
@@ -167,11 +188,22 @@ const DetailGroup: React.FC = () => {
                 />
               </div>
               <div className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150">
-                <LuSearch
-                  color="#1A857D"
-                  size={24}
-                  className="md:w-6 md:h-6 w-5 h-5"
-                />
+                {groupMembers?.data
+                  ?.filter(member => member?.user_id === dataUser?.id)
+                  .find(member => member?.role === 'admin') != null && (
+                  <div
+                    onClick={() => {
+                      setIsOpenSearchMembers(prev => !prev);
+                    }}
+                    className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150"
+                  >
+                    <LuSearch
+                      color="#1A857D"
+                      size={24}
+                      className="md:w-6 md:h-6 w-5 h-5"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -233,6 +265,12 @@ const DetailGroup: React.FC = () => {
         groupId={id as string}
         updateGroupForm={updateGroupForm}
         setUpdateGroupForm={setUpdateGroupForm}
+      />
+      <SearchGroupMembers
+        isOpenSearchMembers={isOpenSearchMembers}
+        setIsOpenSearchMembers={setIsOpenSearchMembers}
+        groupMembers={groupMembers?.data as GroupMemberData[]}
+        groupId={id as string}
       />
     </PageGradient>
   );

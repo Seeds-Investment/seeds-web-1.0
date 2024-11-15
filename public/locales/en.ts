@@ -890,12 +890,13 @@ export default {
       createPin: { title: 'Create PIN' },
       changePin: { title: 'Change PIN' },
       language: { title: 'Language' },
-      savedPost: { 
+      savedPost: {
         title: 'Saved Post',
         info: 'Information',
         infoMessage: 'This page contains your previous saved post.',
         noData: 'Ups, belum ada postingan tersimpan',
-        noDataMessage: 'Jelajahi postingan di halaman sosial dan simpan yang terbaik!'
+        noDataMessage:
+          'Jelajahi postingan di halaman sosial dan simpan yang terbaik!'
       },
       currency: { title: 'Currency' },
       block: { title: 'Block List' },
@@ -1498,17 +1499,17 @@ export default {
   social: {
     postSection: {
       shareBattle: 'Share This Battle',
-      shareLinks: "Share Link",
-      share: "Share",
-      play: "Play",
-      joined: "Joined",
-      player: "Player",
-      players: "Players",
-      fee: "Fee",
-      free: "Free",
-      category: "Category",
-      participant: "participant",
-      participants: "participants"
+      shareLinks: 'Share Link',
+      share: 'Share',
+      play: 'Play',
+      joined: 'Joined',
+      player: 'Player',
+      players: 'Players',
+      fee: 'Fee',
+      free: 'Free',
+      category: 'Category',
+      participant: 'participant',
+      participants: 'participants'
     },
     postSetting: {
       publicTitle: 'Public',
@@ -2632,7 +2633,9 @@ export default {
       mutedNotif: 'Muted Notifications',
       leaveGroup: 'Leave Group'
     },
-    addNewMember: 'Add New Member'
+    addNewMember: 'Add New Member',
+    searchMember: 'Search Member',
+    shareGroup: 'Invite via Link'
   },
   play: {
     keystat: 'Key Stats'

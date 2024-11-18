@@ -1,6 +1,7 @@
 export { default as camera } from './camera.svg';
 export { default as chatIcon1 } from './chat1.svg';
 export { default as chatEmpty } from './chatEmpty.png';
+export { default as closeIcon } from './closeIcon.svg';
 export { default as dropdownGreen } from './dropdownGreen.svg';
 export { default as filterSearch } from './filterSearch.svg';
 export { default as galleryChat } from './gallery.svg';
@@ -13,6 +14,10 @@ export { default as newGroupIcon } from './newGroupIcon.svg';
 export { default as newMessageIcon } from './newMessageIcon.svg';
 export { default as noMessage } from './noMessage.svg';
 export { default as plusRounded } from './plusRounded.svg';
+export { default as optionFolder } from './pop-up-option-folder.svg';
+export { default as optionImage } from './pop-up-option-image.svg';
+export { default as optionMic } from './pop-up-option-mic.svg';
+export { default as popUpOption } from './popUpOption.svg';
 export { default as readChatIcon } from './readChat.svg';
 export { default as seedsChat } from './seedsChat.png';
 export { default as seedyChatCommunty } from './seedsChatCommunity.png';

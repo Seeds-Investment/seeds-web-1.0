@@ -1,6 +1,7 @@
 import talk from '@/assets/circle-page/talk.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { closeIcon } from 'public/assets/chat';
 import {
   useEffect,
   useRef,
@@ -117,6 +118,18 @@ export const ChatVoiceRecorder: React.FC<props> = ({
           </div>
         )} */}
       <div className="flex items-center w-full">
+        <div
+          onClick={() => {setIsVoiceRecording(false)}}
+          className='flex justify-center items-center w-[36px] h-auto mr-2'
+        >
+          <Image
+            src={closeIcon}
+            alt="closeIcon"
+            width={100}
+            height={100}
+            className="h-auto w-full cursor-pointer hover:scale-110 duration-300"
+          />
+        </div>
         <Typography className="font-poppins text-xs text-[#BDBDBD] flex-grow">
           {t('chat.tapAndHold')}
         </Typography>

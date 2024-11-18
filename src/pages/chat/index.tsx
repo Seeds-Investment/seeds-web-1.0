@@ -15,6 +15,7 @@ import GifChat from '@/containers/chat/GifChat';
 import withAuth from '@/helpers/withAuth';
 import LeaveButton from '../../../public/assets/chat/logout-icon.svg';
 // import useGetOnlineStatus from '@/hooks/useGetOnlineStatus';
+import { getChatDate } from '@/helpers/dateFormat';
 import { searchUser } from '@/repository/auth.repository';
 import {
   acceptRequest,
@@ -68,13 +69,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
-  camera,
-  galleryChat,
-  mic,
   newChat,
   noMessage,
+  optionFolder,
+  optionImage,
+  optionMic,
+  popUpOption,
+  readChatIcon,
   seedyChatCommunty,
-  seedyChatNotSelected,
   sendChat
 } from 'public/assets/chat';
 import { ArrowBackwardIconWhite, XIcon } from 'public/assets/vector';
@@ -131,6 +133,7 @@ const ChatPages: React.FC = () => {
   const [isLeavePopupOpen, setIsLeavePopupOpen] = useState<boolean>(false);
   const [isShowGifPopup, setIsShowGifPopup] = useState<boolean>(false);
   const [isVoiceRecording, setIsVoiceRecording] = useState<boolean>(false);
+  const [isShowPopUpOption, setIsShowPopUpOption] = useState<boolean>(false);
   const [messageList, setMessageList] = useState<IChatBubble[] | []>([]);
   const [message, setMessage] = useState<string>('');
   const [searchFilter, setSearchFilter] = useState<SearchUserParams>(
@@ -644,6 +647,7 @@ const ChatPages: React.FC = () => {
         }
       }
     }
+    setIsShowPopUpOption(!isShowPopUpOption)
   };
 
   useEffect(() => {
@@ -1129,7 +1133,7 @@ const ChatPages: React.FC = () => {
       ) : (
         <div className="flex justify-start gap-4">
           <CCard
-            className={`w-full border-none rounded-xl bg-white h-[90vh] max-h-[90vh] ${
+            className={`w-full border-none rounded-xl h-fit ${
               chatList?.length !== 0 || isChatActive
                 ? 'hidden'
                 : 'lg:flex flex-col'
@@ -1155,7 +1159,7 @@ const ChatPages: React.FC = () => {
                 </Typography>
               </div>
             </div>
-            <div className="flex flex-col mb-4 px-4 bg-white mt-[-20px] rounded-t-3xl">
+            <div className="flex flex-col mb-4 bg-white px-4 mt-[-20px] rounded-t-3xl">
               <Tabs value={activeTab}>
                 <TabsHeader
                   className="w-full text-center justify-center rounded-none bg-transparent p-0 mt-3"
@@ -1197,7 +1201,7 @@ const ChatPages: React.FC = () => {
                       isLoading={isLoading}
                     />
                     {chatList?.length === 0 && (
-                      <div className="flex flex-col items-center py-10">
+                      <div className="flex flex-col items-center pt-10 pb-16">
                         <Image src={noMessage} alt="Seedy No Chat" />
                         <Typography className="font-poppins text-md text-[#BDBDBD] mt-[-24px]">
                           {t('chat.personalEmptyState')}
@@ -1252,14 +1256,13 @@ const ChatPages: React.FC = () => {
               </Tabs>
             </div>
           </CCard>
-          {/* {(chatList?.length !== 0 || isChatActive) && ( */}
           {isChatActive && (
             <CCard
               className={`lg:flex lg:flex-col border-none rounded-xl bg-white ${
                 isChatActive ? 'w-full flex' : 'w-full'
               }`}
             >
-              {roomId !== undefined && isChatActive ? (
+              {roomId !== undefined && isChatActive &&
                 <>
                   {isSearchActive ? (
                     <div className="flex w-full justify-around">
@@ -1464,7 +1467,7 @@ const ChatPages: React.FC = () => {
                   )}
                   <div
                     ref={containerRef}
-                    className={`relative bg-white flex-grow w-full min-h-[420px] py-4 max-h-[70vh] overflow-y-scroll`}
+                    className={`relative bg-white shadow-sm flex-grow w-full min-h-[420px] py-4 max-h-[70vh] overflow-y-scroll`}
                   >
                     {messageList.length === 0 && (
                       <div className="flex flex-col items-center py-10">
@@ -1481,9 +1484,9 @@ const ChatPages: React.FC = () => {
                         </Typography>
                       </div>
                     )}
-                    {messageList.length > 0 && (
+                    {messageList?.length > 0 && (
                       <div className="flex flex-col gap-4 justify-end">
-                        {messageList.map((message: IChatBubble, index) => {
+                        {messageList?.map((message: IChatBubble, index) => {
                           if (message.created_by === dataUser.id) {
                             if (message.content_text?.length > 0) {
                               return (
@@ -1491,31 +1494,36 @@ const ChatPages: React.FC = () => {
                                   key={message.id}
                                   className="flex flex-col w-full"
                                 >
-                                  <div className="bg-[#DCFCE4] p-2 self-end max-w-[60%] rounded-lg mx-4">
+                                  <div className="flex gap-3 bg-[#EDFCD3] px-4 self-end max-w-[60%] rounded-full mx-4">
                                     <Typography
-                                      className={
+                                      className={`my-1 ${
                                         message.content_text.includes(
-                                          searchText
-                                        ) && searchText !== ''
-                                          ? 'font-poppins break-all text-[#262626] bg-[#FBF719]'
-                                          : 'font-poppins break-all text-[#262626]'
-                                      }
+                                            searchText
+                                          ) && searchText !== ''
+                                            ? 'font-poppins break-all text-black bg-[#FBF719]'
+                                            : 'font-poppins break-all text-black'  
+                                      }`}
                                     >
                                       {message.content_text}
                                     </Typography>
+                                    <div className='flex justify-center items-center gap-2 mt-3'>
+                                      <Typography className='text-xs text-[#7C7C7C]'>
+                                        {getChatDate(message?.created_at ?? '0001-01-01T00:00:00Z')}
+                                      </Typography>
+                                      {
+                                        message?.read_at !== '0001-01-01T00:00:00Z' &&
+                                          <div className='flex justify-center items-center w-auto h-[10px]'>
+                                            <Image
+                                              src={readChatIcon}
+                                              width={1000}
+                                              height={1000}
+                                              alt='readChatIcon'
+                                              className='w-full h-auto'
+                                            />
+                                          </div>
+                                      }
+                                    </div>
                                   </div>
-                                  {message?.read_at !==
-                                    '0001-01-01T00:00:00Z' && (
-                                    <>
-                                      {(messageList[index + 1]?.read_at ===
-                                        '0001-01-01T00:00:00Z' ||
-                                        messageList?.length === index + 1) && (
-                                        <Typography className="font-poppins text-[#BDBDBD] self-end mr-4">
-                                          {t('chat.seen')}
-                                        </Typography>
-                                      )}
-                                    </>
-                                  )}
                                 </div>
                               );
                             }
@@ -1578,18 +1586,23 @@ const ChatPages: React.FC = () => {
                                     alt="avatar"
                                     className="rounded-full w-8 h-8"
                                   />
-                                  <div className="bg-[#3AC4A0] p-2 self-start max-w-[60%] rounded-lg mx-2">
+                                  <div className="flex gap-3 bg-[#DCFCE4] py-1 px-4 self-start max-w-[60%] rounded-full mx-4">
                                     <Typography
                                       className={
                                         message.content_text.includes(
                                           searchText
                                         ) && searchText !== ''
-                                          ? 'font-poppins break-all text-[#fff] bg-[#FBF719]'
-                                          : 'font-poppins break-all text-[#fff]'
+                                          ? 'font-poppins break-all text-black bg-[#FBF719]'
+                                          : 'font-poppins break-all text-black'
                                       }
                                     >
                                       {message.content_text}
                                     </Typography>
+                                    <div className='flex justify-center items-center gap-2 mt-3'>
+                                      <Typography className='text-xs text-[#7C7C7C]'>
+                                        {getChatDate(message?.created_at ?? '0001-01-01T00:00:00Z')}
+                                      </Typography>
+                                    </div>
                                   </div>
                                 </div>
                               );
@@ -1712,103 +1725,112 @@ const ChatPages: React.FC = () => {
                         />
                       </div>
                     ) : (
-                      <div className="flex items-center gap-2">
-                        <div className="relative flex">
-                          <div
-                            className="dropdown-option flex cursor-pointer"
-                            onClick={() => {
-                              handleDropdownOptionClick('Gif');
-                            }}
-                          >
-                            <svg
-                              width="16"
-                              height="14"
-                              viewBox="0 0 16 14"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M13.4 0C14.786 0 15.92 1.187 15.996 2.682L16 2.844V11.156C16 12.673 14.915 13.912 13.547 13.996L13.4 14H2.6C1.214 14 0.0799999 12.813 0.00399995 11.318L0 11.156V2.844C0 1.327 1.085 0.0879999 2.452 0.00399995L2.6 0H13.4ZM13.25 1H2.75C1.824 1 1.066 1.793 1.004 2.797L1 2.929V11.071C1 12.092 1.72 12.928 2.63 12.996L2.75 13H13.25C14.176 13 14.934 12.207 14.996 11.204L15 11.07V2.93C15 1.909 14.28 1.073 13.37 1.005L13.25 1ZM4.851 4.002C5.471 4.002 5.999 4.099 6.432 4.301C6.699 4.425 6.806 4.725 6.672 4.972C6.60066 5.09307 6.48654 5.18302 6.35215 5.22412C6.21776 5.26521 6.07286 5.25447 5.946 5.194C5.678 5.069 5.314 5.002 4.851 5.002C3.825 5.002 3.081 5.834 3.081 7.002C3.081 8.121 3.894 9 4.851 9C5.448 9 5.853 8.649 5.911 8.327L5.919 8.247V7.501L5.54 7.5C5.242 7.5 5 7.276 5 7C5 6.755 5.191 6.55 5.443 6.508L5.541 6.5L6.459 6.501C6.58139 6.49737 6.70126 6.53623 6.79824 6.61097C6.89522 6.68571 6.96333 6.79173 6.991 6.911L7 7.001V8.247C7 9.124 6.114 10 4.851 10C3.256 10 2 8.642 2 7.001C2 5.32 3.177 4.002 4.851 4.002ZM9 4C9.11703 3.99996 9.23036 4.04097 9.32026 4.11589C9.41016 4.19081 9.47093 4.29489 9.492 4.41L9.5 4.5V9.5C9.50023 9.62495 9.45367 9.74545 9.36949 9.83778C9.28531 9.93012 9.16961 9.98759 9.04518 9.99888C8.92074 10.0102 8.79659 9.97446 8.69717 9.89878C8.59775 9.8231 8.53026 9.71295 8.508 9.59L8.5 9.5V4.5C8.5 4.36739 8.55268 4.24021 8.64645 4.14645C8.74021 4.05268 8.86739 4 9 4ZM13.5 4C13.6249 3.99977 13.7455 4.04633 13.8378 4.13051C13.9301 4.21469 13.9876 4.33039 13.9989 4.45482C14.0102 4.57926 13.9745 4.70341 13.8988 4.80283C13.8231 4.90225 13.7129 4.96974 13.59 4.992L13.5 5H12V7H13.5C13.6249 6.99977 13.7455 7.04633 13.8378 7.13051C13.9301 7.21469 13.9876 7.33039 13.9989 7.45482C14.0102 7.57926 13.9745 7.70341 13.8988 7.80283C13.8231 7.90225 13.7129 7.96974 13.59 7.992L13.5 8H12V9.5C12.0002 9.62495 11.9537 9.74545 11.8695 9.83778C11.7853 9.93012 11.6696 9.98759 11.5452 9.99888C11.4207 10.0102 11.2966 9.97446 11.1972 9.89878C11.0977 9.8231 11.0303 9.71295 11.008 9.59L11 9.5V4.5C11 4.36739 11.0527 4.24021 11.1464 4.14645C11.2402 4.05268 11.3674 4 11.5 4H13.5Z"
-                                fill="#201B1C"
-                              />
-                            </svg>
-                          </div>
-                          {isShowGifPopup && (
-                            <div className="absolute left-2 bottom-8 flex flex-col mt-2 bg-white border border-gray-300 rounded-md shadow-md">
-                              <GifChat
-                                sendGif={handleSendGifMessage}
-                                onClose={() => {
-                                  setIsShowGifPopup(false);
-                                }}
-                              />
-                            </div>
-                          )}
-                        </div>
-                        <div className="flex w-5 cursor-pointer">
+                      <div className="flex items-center gap-2 py-2">
+                        <div className='flex justify-center items-center h-auto w-[60px] relative'>
                           <Image
-                            src={camera}
-                            alt="camera"
-                            width={16}
-                            height={16}
+                            src={popUpOption}
+                            alt="popUpOption"
+                            width={100}
+                            height={100}
+                            className="h-auto w-full cursor-pointer hover:scale-110 duration-300"
+                            onClick={() => {setIsShowPopUpOption(!isShowPopUpOption)}}
                           />
+                          {
+                            isShowPopUpOption &&
+                              <div
+                                className='flex flex-col justify-center items-center gap-2 px-2 py-3 rounded-full absolute top-[-150px] bg-gradient-to-b from-[#3AC4A0] to-[#106B6E]'
+                              >
+                                <div className='flex justify-center items-center w-[24px] h-auto'>
+                                  <Image
+                                    onClick={() => {
+                                      setIsVoiceRecording(true);
+                                      setIsShowPopUpOption(!isShowPopUpOption)
+                                    }}
+                                    src={optionMic}
+                                    alt="optionMic"
+                                    width={100}
+                                    height={100}
+                                    className="h-auto w-full cursor-pointer hover:scale-110 duration-300"
+                                  />
+                                </div>
+                                <div className="flex relative cursor-pointer">
+                                  <input
+                                    type="file"
+                                    id="MediaUpload"
+                                    onChange={handleSendImageMessage}
+                                    className="absolute inset-0 opacity-0 cursor-pointer"
+                                    accept="image/jpg,image/jpeg,image/png,video/mp4,video/mov"
+                                  />
+                                  <div className='flex justify-center items-center w-[24px] h-auto'>
+                                    <Image
+                                      src={optionImage}
+                                      alt="optionImage"
+                                      width={100}
+                                      height={100}
+                                      className="h-auto w-full cursor-pointer hover:scale-110 duration-300"
+                                    />
+                                  </div>
+                                </div>
+                                <div className='flex justify-center items-center w-[24px] h-auto'>
+                                  <Image
+                                    src={optionFolder}
+                                    alt="optionFolder"
+                                    width={100}
+                                    height={100}
+                                    className="h-auto w-full cursor-pointer hover:scale-110 duration-300"
+                                  />
+                                </div>
+                              </div>
+                          }
                         </div>
-                        <div className="flex relative cursor-pointer">
-                          <input
-                            type="file"
-                            id="MediaUpload"
-                            onChange={handleSendImageMessage}
-                            className="absolute inset-0 opacity-0"
-                            accept="image/jpg,image/jpeg,image/png,video/mp4,video/mov"
-                          />
-                          <Image
-                            src={galleryChat}
-                            alt="gallery"
-                            width={16}
-                            height={16}
-                            className="w-full h-full"
-                          />
-                        </div>
-                        <div className="flex w-full">
+                        <div className="flex w-full relative">
                           <textarea
                             value={message}
                             onChange={handleMessageChange}
                             onKeyDown={handleKeyDown}
                             rows={1}
-                            className="focus:outline-none placeholder:text-[#7C7C7C] bg-[#E9E9E9] w-full text-sm font-normal py-3 px-4 rounded-full resize-none"
+                            className="focus:outline-none placeholder:text-[#7C7C7C] border-[1px] border-[#BDBDBD] w-full text-sm font-normal py-3 px-4 rounded-full resize-none relative"
                             placeholder={t('chat.textInputPlaceholder') ?? ''}
                           />
-                        </div>
-                        <div
-                          onClick={() => {
-                            setIsVoiceRecording(true);
-                          }}
-                          className="w-5"
-                        >
-                          <Image src={mic} alt="mic" width={20} height={20} />
+                          <div className='absolute right-[20px] md:right-[20px] bottom-[10px] md:bottom-[9px]'>
+                            <div className="relative flex">
+                              <div
+                                className="dropdown-option flex cursor-pointer"
+                                onClick={() => {
+                                  handleDropdownOptionClick('Gif');
+                                }}
+                              >
+                                <div className='bg-[#BDBDBD] hover:bg-[#a3a3a3] duration-300 rounded-md p-1 text-white text-xs md:text-sm'>
+                                  GIF
+                                </div>
+                              </div>
+                              {isShowGifPopup && (
+                                <div className="absolute right-0 bottom-8 flex flex-col mt-2 bg-white border border-gray-300 rounded-md shadow-md">
+                                  <GifChat
+                                    sendGif={handleSendGifMessage}
+                                    onClose={() => {
+                                      setIsShowGifPopup(false);
+                                    }}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
                         <button onClick={handleSendMessage}>
                           <Image
                             src={sendChat}
                             alt="send"
-                            width={20}
-                            height={20}
+                            width={50}
+                            height={50}
+                            className='hover:scale-110 duration-300'
                           />
                         </button>
                       </div>
                     )}
                   </div>
                 </>
-              ) : (
-                <div className="flex flex-col justify-center items-center h-full">
-                  <Image src={seedyChatNotSelected} alt="No Conversation Yet" />
-                  <Typography className="font-poppins font-semibold text-xl text-[#3AC4A0]">
-                    {t('chat.personalEmptyState')}
-                  </Typography>
-                  <Typography className="font-poppins font-medium text-[#7C7C7C]">
-                    {t('chat.selectUsername')}
-                  </Typography>
-                </div>
-              )}
+              }
             </CCard>
           )}
         </div>

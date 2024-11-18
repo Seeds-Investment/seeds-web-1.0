@@ -1,6 +1,6 @@
 import withAuth from '@/helpers/withAuth';
 import { getBanner } from '@/repository/discover.repository';
-import { Banners } from '@/utils/interfaces/play.interface';
+import type { Banners } from '@/utils/interfaces/play.interface';
 import { Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';

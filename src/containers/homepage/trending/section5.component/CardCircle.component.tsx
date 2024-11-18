@@ -1,5 +1,5 @@
 import { chrownCirclePremium } from '@/constants/assets/icons';
-import { CircleInterface } from '@/pages/connect';
+import { type CircleInterface } from '@/pages/connect';
 import {
   Button,
   Card,
@@ -49,8 +49,8 @@ const CardCircle: React.FC<props> = ({ data }) => {
           })`
         };
         return (
-          <SwiperSlide>
-            <Card key={idx} className="md:w-40 w-full h-64 flex flex-col gap-0">
+          <SwiperSlide key={idx}>
+            <Card className="md:w-40 w-full h-64 flex flex-col gap-0">
               <CardHeader
                 className="p-0 m-0 rounded-b-none"
                 shadow={false}

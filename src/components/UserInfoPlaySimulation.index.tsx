@@ -50,7 +50,6 @@ interface props {
 const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
   const router = useRouter();
   const { t } = useTranslation();
-  const [iconClicked, setIconClicked] = useState<boolean>(false);
   const [playDetail, setPlayDetail] = useState<UserDetails>({
     play_id: '08e1bdf9-d618-408b-8a2e-9fe98f66de8e',
     user_detail: {
@@ -62,11 +61,6 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
   });
   const [seedsCoins, setSeedsCoins] = useState<SeedsCoin>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
-
-  const IsClicked = () => {
-    setIconClicked(!iconClicked);
-    return IsClicked;
-  };
 
   const fetchPlayerDetail = async (currency: string): Promise<any> => {
     try {
@@ -119,7 +113,7 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
       {isGuest() || (
         <div className="flex flex-col gap-3 px-2 py-3">
           <Typography className="capitalize text-[#FFFFFF] text-3xl font-semibold">
-            {`Hi, ${userInfo?.name ?? userInfo?.seedsTag}!✌`}
+            {`Hi, ${userInfo?.name as string}!✌`}
           </Typography>
           <Typography className="capitalize text-[#FFFFFF] text-base font-normal">
             {t('homepage.section2.text17')}
@@ -133,11 +127,7 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
                       {t('homepage.section2.text1')}
                     </Typography>
                     <div className="flex rounded-[75px] w-4 text-center border items-center justify-center">
-                      <Menu
-                        open={iconClicked}
-                        handler={setIconClicked}
-                        placement="bottom-start"
-                      >
+                      <Menu placement="bottom-start">
                         <MenuHandler>
                           <div className="w-6 h-4 border-none rounded-[75px] items-center justify-center hover:cursor-pointer">
                             <IoIosInformation />

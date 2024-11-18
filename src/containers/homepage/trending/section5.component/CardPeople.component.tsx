@@ -8,7 +8,7 @@ import {
 } from '@material-tailwind/react';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { people } from '../../Section5New';
+import type { people } from '../../Section5New';
 
 interface props {
   data: people[];
@@ -33,7 +33,7 @@ const CardPeople: React.FC<props> = ({ data }) => {
       modules={[Autoplay]}
     >
       {data.map((data, idx: number) => (
-        <SwiperSlide>
+        <SwiperSlide key={idx}>
           <Card
             key={idx}
             className="md:w-40 h-52 w-full flex flex-col gap-2 justify-center items-center rounded-[15px] bg-[#F3F4F8]"

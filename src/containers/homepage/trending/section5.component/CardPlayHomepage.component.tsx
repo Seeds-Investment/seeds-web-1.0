@@ -1,6 +1,6 @@
 import BlurTop from '@/assets/product/BlurTop.svg';
 import { SlideQuiz } from '@/components/product/SlideQuiz';
-import { SlideTournament } from '@/components/product/SlideTournament';
+import { CardSlideTournament } from '@/containers/homepage/trending/section5.component/CardSlideTournament.component';
 import {
   Tab,
   TabPanel,
@@ -41,7 +41,7 @@ const CardPlayHomepage: React.FC = () => {
     {
       label: 'Top Tournament',
       value: 'top tournament',
-      content: <SlideTournament />
+      content: <CardSlideTournament />
     },
     {
       label: 'Team Battle',

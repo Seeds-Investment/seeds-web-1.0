@@ -36,7 +36,7 @@ const TopgainersAssetHomepage: React.FC<props> = ({ data, loading }) => {
       >
         {data.length !== 0
           ? data.map((data, idx: number) => (
-              <SwiperSlide>
+              <SwiperSlide key={idx}>
                 <Card
                   onClick={async () => {
                     await router.push(`homepage/assets/${data.asset_id}`);

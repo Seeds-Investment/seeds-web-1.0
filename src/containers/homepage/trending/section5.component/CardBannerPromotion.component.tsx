@@ -1,4 +1,4 @@
-import { Banners } from '@/utils/interfaces/play.interface';
+import { type Banners } from '@/utils/interfaces/play.interface';
 import { Card, CardHeader } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -26,11 +26,8 @@ const CardBannerPromotion: React.FC<BannerProps> = ({ data }) => {
       breakpoints={breakpoints}
     >
       {data.map((item, idx: number) => (
-        <SwiperSlide>
-          <Card
-            key={idx}
-            className="md:w-80 w-full rounded-[10px] md:h-36 h-32"
-          >
+        <SwiperSlide key={idx}>
+          <Card className="md:w-80 w-full rounded-[10px] md:h-36 h-32">
             <CardHeader floated={false} className="p-0 m-0">
               <Image
                 onClick={async () => {

@@ -10,10 +10,10 @@ import { useTranslation } from 'react-i18next';
 import ArticlePage from '../../article/ArticlePage';
 import NewsPage from '../../news/NewsPage';
 
-const CardSeedsPedia = () => {
+const CardSeedsPedia: React.FC = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<string>('news');
-  const handleTabChange = (value: string) => {
+  const handleTabChange = (value: string): void => {
     setActiveTab(value);
   };
   return (

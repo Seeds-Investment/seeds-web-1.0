@@ -1,9 +1,9 @@
 import withAuth from '@/helpers/withAuth';
-import { CircleInterface } from '@/pages/connect';
+import { type CircleInterface } from '@/pages/connect';
 import { getCircle } from '@/repository/circle.repository';
 import { getBanner } from '@/repository/discover.repository';
 import { searchUser } from '@/repository/people.repository';
-import { Banners } from '@/utils/interfaces/play.interface';
+import { type Banners } from '@/utils/interfaces/play.interface';
 import {
   Button,
   TabPanel,
@@ -18,7 +18,7 @@ import CardBannerPromotion from './trending/section5.component/CardBannerPromoti
 import CardCircle from './trending/section5.component/CardCircle.component';
 import CardPeople from './trending/section5.component/CardPeople.component';
 import CardPlayHomepage from './trending/section5.component/CardPlayHomepage.component';
-import CardSeedsPedia from './trending/section5.component/cardSeedsPedia.component';
+import CardSeedsPedia from './trending/section5.component/CardSeedsPedia.component';
 
 const categories = [
   {
@@ -72,7 +72,7 @@ const Section5New: React.FC = () => {
   const [dataBanner, setDataBanner] = useState<Banners[]>([]);
   const [dataPeople, setDataPeople] = useState<people[]>([]);
   const [circleData, setCircleData] = useState<CircleInterface[]>([]);
-  const handleMultiTabChange = (value: string) => {
+  const handleMultiTabChange = (value: string): void => {
     setMultiTab(value);
     if (value === 'seedspedia') {
       void (<CardSeedsPedia />);

@@ -56,6 +56,11 @@ const TopGainers: React.FC = () => {
   }, []);
 
   if (isLoading) {
+    return (
+      <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
+        Loading...
+      </Typography>
+    );
   }
 
   return (

@@ -108,6 +108,7 @@ const initialSearchUserFilter: SearchUserParams = {
 
 const ChatPages: React.FC = () => {
   const router = useRouter();
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { dataUser } = useAppSelector(state => state.user);
   const { roomId, isGroupChat } = router.query;
   const [chatList, setChatList] = useState<Chat[] | []>([]);
@@ -181,6 +182,22 @@ const ChatPages: React.FC = () => {
       }));
     }
   };
+
+  const handleClickOutside = (e: MouseEvent): void => {
+    if (
+      dropdownRef.current !== null &&
+      !dropdownRef.current.contains(e.target as Node)
+    ) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleListClick = (): void => {
     setIsDropdownOpen(false);
@@ -391,12 +408,10 @@ const ChatPages: React.FC = () => {
     }
   };
 
-  const leaveCommunity = async (message: string): Promise<void> => {
+  const leaveCommunity = async (): Promise<void> => {
     try {
-      await leaveGroupChat({
-        id: roomId as string,
-        user_id: dataUser.id,
-        message_text: message
+      await leaveGroupChat(roomId as string, {
+        user_id: dataUser.id
       });
       await router.push('/chat');
     } catch (error: any) {
@@ -886,7 +901,7 @@ const ChatPages: React.FC = () => {
           }}
           onGroupClick={() => {
             setIsNewPopupOpen(false);
-            void router.push('/chat/create-group');
+            void router.push('/chat/group/create');
           }}
         />
       )}
@@ -1393,7 +1408,10 @@ const ChatPages: React.FC = () => {
                           )}
                         </div>
                       </div>
-                      <div className="relative flex items-center cursor-pointer">
+                      <div
+                        className="relative flex items-center cursor-pointer"
+                        ref={dropdownRef}
+                      >
                         <BsThreeDotsVertical
                           className="cursor-pointer text-white"
                           width={24}

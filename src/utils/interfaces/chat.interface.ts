@@ -118,9 +118,8 @@ export interface MuteGroupChatParams {
 }
 
 export interface LeaveGroupParams {
-  id?: string;
   user_id: string;
-  message_text: string;
+  message_text?: string;
 }
 
 export interface GetChatNotesParams {
@@ -569,5 +568,4 @@ export interface UpdateGroupForm {
   description: string;
   privacy: string;
   hashtags: string[] | null;
-  memberships: string[];
 }

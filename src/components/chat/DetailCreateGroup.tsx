@@ -28,16 +28,17 @@ const DetailCreateGroup: React.FC<DetailCreateGroupProps> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [updateAvatar, setAvatar] = useState<File>();
+
+  const [updateAvatar, setAvatar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState<boolean>(false);
 
   const handleFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0] ?? null;
     setAvatar(file);
-    if (file !== null && file !== undefined) {
+    if (file != null) {
       setCreateGroupForm({
         ...createGroupForm,
         avatar: URL.createObjectURL(file)
@@ -45,7 +46,10 @@ const DetailCreateGroup: React.FC<DetailCreateGroupProps> = ({
     }
   };
 
-  const handleInputChange = (key: string, value: string): void => {
+  const handleInputChange = (
+    key: keyof CreateGroupForm,
+    value: string
+  ): void => {
     setCreateGroupForm(prevState => ({
       ...prevState,
       [key]: value
@@ -55,16 +59,13 @@ const DetailCreateGroup: React.FC<DetailCreateGroupProps> = ({
   const handleSubmit = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      let updatedForm = { ...createGroupForm };
-      if (updateAvatar !== null && updateAvatar !== undefined) {
+      const updatedForm = { ...createGroupForm };
+      if (updateAvatar != null) {
         const { path: cloudResponse } = await postCloud({
           file: updateAvatar,
           type: 'OTHER_URL'
         });
-        updatedForm = {
-          ...updatedForm,
-          avatar: cloudResponse
-        };
+        updatedForm.avatar = cloudResponse;
       }
       const response = await createGroup(updatedForm);
       setIsOpenConfirmModal(false);
@@ -104,7 +105,7 @@ const DetailCreateGroup: React.FC<DetailCreateGroupProps> = ({
             className="w-full bg-cover h-[210px] bg-[#DCFCE4] flex justify-center items-center"
           >
             <div className="flex flex-col items-center gap-4">
-              {updateAvatar !== undefined && updateAvatar !== null ? (
+              {updateAvatar != null ? (
                 <Avatar
                   src={URL.createObjectURL(updateAvatar)}
                   className="w-20 h-20"

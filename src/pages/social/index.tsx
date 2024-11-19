@@ -420,7 +420,7 @@ const Social: React.FC = () => {
         void fetchPostCircle();
       }
     }
-  }, [activeTab, filter.page, filter.sort_by, golId, filter.type]);
+  }, [filter.page, filter.sort_by, golId, filter.type]);
 
   // const fetchDailyQuizStatus = async () => {
   //   try {
@@ -445,7 +445,7 @@ const Social: React.FC = () => {
     try {
       const response = await getDailyQuiz();
       setDailyQuestion(response);
-      setDailyQuestionActive(!response.is_played);
+      setDailyQuestionActive(response.is_played === false);
     } catch (error) {
       toast.error('something when wrong');
     }

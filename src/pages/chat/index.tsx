@@ -1550,19 +1550,43 @@ const ChatPages: React.FC = () => {
                               message.media_urls[0]?.includes('mp3')
                             ) {
                               return (
-                                <audio
+                                <div
                                   key={message?.id}
-                                  controls
-                                  className="self-end"
+                                  className="w-fit flex flex-col justify-center items-center bg-[#EDFCD3] rounded-2xl p-3 relative self-end mx-4"
                                 >
-                                  <source
-                                    src={message.media_urls[0]}
-                                    type="audio/wav"
-                                    className="w-full"
-                                  />
-                                  Your browser does not support the audio
-                                  element.
-                                </audio>
+                                  <div className='flex justify-center items-center gap-2'>
+                                    <div className='flex justify-center items-center h-[50px] w-auto rounded-full overflow-hidden'>
+                                      <img
+                                        src={dataUser?.avatar}
+                                        alt="Seedy No Chat"
+                                        className="h-full w-auto"
+                                      />
+                                    </div>
+                                    <div className="flex flex-col items-center">
+                                      <audio controls className="self-end w-[200px] md:w-[300px]">
+                                        <source src={message.media_urls[0]} type="audio/wav" className="w-full"/>
+                                        Your browser does not support the audio element.
+                                      </audio>
+                                    </div>
+                                  </div>
+                                  <div className='w-full flex justify-end items-center gap-2 mt-2'>
+                                    <Typography className='text-xs text-[#7C7C7C]'>
+                                      {getChatDate(message?.created_at ?? '0001-01-01T00:00:00Z')}
+                                    </Typography>
+                                    {
+                                      message?.read_at !== '0001-01-01T00:00:00Z' &&
+                                        <div className='flex justify-center items-center w-auto h-[10px]'>
+                                          <Image
+                                            src={readChatIcon}
+                                            width={1000}
+                                            height={1000}
+                                            alt='readChatIcon'
+                                            className='w-full h-auto'
+                                          />
+                                        </div>
+                                    }
+                                  </div>
+                                </div>
                               );
                             }
                             if (

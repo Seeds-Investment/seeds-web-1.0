@@ -1,8 +1,7 @@
 import { searchUser } from '@/repository/people.repository';
 import {
   type GroupMemberData,
-  type SearchUserChat,
-  type UpdateGroupForm
+  type SearchUserChat
 } from '@/utils/interfaces/chat.interface';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Avatar, Button, Typography } from '@material-tailwind/react';
@@ -15,19 +14,17 @@ import { toast } from 'react-toastify';
 interface AddGroupMembersProps {
   setIsOpenAddMembers: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenAddMembers: boolean;
-  groupMembers: GroupMemberData[];
+  memberData: GroupMemberData[];
   groupId: string;
-  updateGroupForm: UpdateGroupForm;
-  setUpdateGroupForm: React.Dispatch<React.SetStateAction<UpdateGroupForm>>;
+  groupMembers: string[];
 }
 
 const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
   setIsOpenAddMembers,
   isOpenAddMembers,
-  groupMembers,
+  memberData,
   groupId,
-  updateGroupForm,
-  setUpdateGroupForm
+  groupMembers
 }) => {
   const { t } = useTranslation();
   const searchRef = useRef<HTMLInputElement>(null);
@@ -45,6 +42,11 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
   });
   const [userList, setUserList] = useState<SearchUserChat[]>([]);
   const [displayMembers, setDisplayMembers] = useState<SearchUserChat[]>([]);
+  const [updateGroupMembers, setUpdateGroupMembers] = useState<{
+    memberships: string[];
+  }>({
+    memberships: groupMembers
+  });
 
   const fetchSearchUser = async (): Promise<void> => {
     try {
@@ -52,7 +54,7 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
       const response = await searchUser(searchParams);
       const filteredUsers: SearchUserChat[] = response.result.filter(
         (user: SearchUserChat) =>
-          !groupMembers?.some(member => member.user_id === user.id)
+          !memberData?.some(member => member.user_id === user.id)
       );
       setUserList(filteredUsers);
     } catch (error) {
@@ -67,19 +69,13 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
   }, [searchParams]);
 
   const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-    let keyword = searchRef.current?.value;
-
-    if (keyword === '') {
-      keyword = ' ';
-    }
-
-    if (event.key === 'Enter' && keyword !== undefined) {
-      event.preventDefault();
+    if (event.key === 'Enter' && searchRef.current?.value !== undefined) {
+      const searchValue =
+        searchRef.current?.value?.trim() === '' ? ' ' : searchRef.current?.value;
       setSearchParams({
         ...searchParams,
         page: 1,
-        limit: 9,
-        search: keyword
+        search: searchValue
       });
     }
   };
@@ -89,26 +85,24 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
     isSelected: boolean,
     member: SearchUserChat
   ): void => {
-    if (isSelected) {
-      setUpdateGroupForm(prev => ({
-        ...prev,
-        memberships: [...prev.memberships, userId]
-      }));
-      setDisplayMembers(prev => [...prev, member]);
-    } else {
-      setUpdateGroupForm(prev => ({
-        ...prev,
-        memberships: [...prev.memberships.filter(id => id !== userId)]
-      }));
-      setDisplayMembers(prev => prev.filter(member => member.id !== userId));
-    }
+    setUpdateGroupMembers(prev => ({
+      memberships: isSelected
+        ? [...prev.memberships, userId]
+        : prev.memberships.filter(id => id !== userId)
+    }));
+    setDisplayMembers(prev =>
+      isSelected
+        ? [...prev, member]
+        : prev.filter(member => member.id !== userId)
+    );
   };
 
   const handleAddNewMember = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      // const response = await updateGroup(groupId, updateGroupForm);
+      // const response = await updateGroup(groupId, updateGroupMembers);
       // setIsOpenAddMembers(prev => !prev);
+      console.log(updateGroupMembers);
     } catch (error) {
       toast.error(`Error adding new member: ${error as string}`);
     } finally {
@@ -131,6 +125,7 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
             className="text-white cursor-pointer hover:scale-110 duration-150"
             onClick={() => {
               setIsOpenAddMembers(prev => !prev);
+              setDisplayMembers([]);
             }}
           />
           <Typography className="flex-1 text-center font-poppins font-semibold text-lg text-white">
@@ -189,7 +184,7 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
                   key={user?.id}
                   onClick={() => {
                     const isSelected: boolean =
-                      updateGroupForm?.memberships?.includes(user?.id);
+                      updateGroupMembers?.memberships?.includes(user?.id);
                     handleSelectMember(user?.id, !isSelected, user);
                   }}
                   className="flex justify-between items-center mx-[22px] py-4 px-2 border-b border-b-[#E9E9E9] hover:bg-[#efefef] cursor-pointer rounded-lg duration-150"
@@ -211,7 +206,9 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
                   <input
                     className="cursor-pointer w-5 h-5 appearance-none rounded-full border-2 border-gray-500 checked:bg-seeds-green checked:border-[#1A857D]"
                     type="checkbox"
-                    checked={updateGroupForm?.memberships?.includes(user?.id)}
+                    checked={updateGroupMembers?.memberships?.includes(
+                      user?.id
+                    )}
                   />
                 </div>
               ))}
@@ -219,7 +216,7 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
         )}
         <div className="flex justify-center py-2 bottom-0">
           <Button
-            disabled={updateGroupForm?.memberships?.length === 0}
+            disabled={displayMembers?.length === 0}
             onClick={handleAddNewMember}
             className="font-semibold font-poppins text-sm bg-seeds-button-green text-white md:w-[340px] w-full mx-2 rounded-full"
           >

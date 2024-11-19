@@ -1,16 +1,23 @@
 import BackNav from '@/assets/circle-page/back_nav.svg';
 import MoreButton from '@/assets/more-option/more_vertical.svg';
 import AddGroupMembers from '@/components/chat/AddGroupMembers';
+import EditInfoGroup from '@/components/chat/EditInfoGroup';
+import LeaveCommunityPopUp from '@/components/chat/PopUpLeave';
+import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
-import { getGroupDetail, getGroupMember } from '@/repository/chat.repository';
+import {
+  getGroupDetail,
+  getGroupMember,
+  leaveGroupChat
+} from '@/repository/chat.repository';
 import { useAppSelector } from '@/store/redux/store';
 import {
   type GroupMemberData,
   type GroupMemberResponse,
-  type IGroupChatDetail,
-  type UpdateGroupForm
+  type IGroupChatDetail
 } from '@/utils/interfaces/chat.interface';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   Avatar,
   Menu,
@@ -21,7 +28,8 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import { XIcon } from 'public/assets/vector';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuSearch } from 'react-icons/lu';
 import { MdOutlineGroupAdd } from 'react-icons/md';
@@ -34,37 +42,36 @@ import NotifOffButton from '../../../../public/assets/chat/notification-off-icon
 
 const DetailGroup: React.FC = () => {
   const { t } = useTranslation();
+  const { dataUser } = useAppSelector(state => state.user);
   const router = useRouter();
   const { id } = router.query;
-  const { dataUser } = useAppSelector(state => state.user);
+  const searchRef = useRef<HTMLInputElement>(null);
+
   const [detailGroup, setDetailGroup] = useState<IGroupChatDetail>();
   const [groupMembers, setGroupMembers] = useState<GroupMemberResponse>();
+  const [filteredMembers, setFilteredMembers] = useState<GroupMemberData[]>([]);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isRefetchInfoGroup, setIsRefetchInfoGroup] = useState<boolean>(false);
+  const [isOpenEditGroup, setIsOpenEditGroup] = useState<boolean>(false);
+  const [isOpenModalLeave, setIsOpenModalLeave] = useState<boolean>(false);
   const [isOpenAddMembers, setIsOpenAddMembers] = useState<boolean>(false);
-  const [updateGroupForm, setUpdateGroupForm] = useState<UpdateGroupForm>({
-    avatar: '',
-    name: '',
-    description: '',
-    privacy: '',
-    hashtags: [],
-    memberships: []
-  });
+  const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
 
   const fetchGroupDetail = async (): Promise<void> => {
     try {
-      const groupDetail = await getGroupDetail(id as string);
-      const groupMember = await getGroupMember(id as string);
+      setIsLoading(true);
+      const [groupDetail, groupMember] = await Promise.all([
+        getGroupDetail(id as string),
+        getGroupMember(id as string)
+      ]);
       setDetailGroup(groupDetail);
-      setUpdateGroupForm({
-        avatar: groupDetail.avatar,
-        name: groupDetail.name,
-        description: groupDetail.description,
-        privacy: groupDetail.privacy,
-        hashtags: groupDetail.hashtags,
-        memberships: groupMember.data.map(member => member.id)
-      });
       setGroupMembers(groupMember);
     } catch (error: any) {
       toast.error('Failed to fetch Group Detail');
+    } finally {
+      setIsRefetchInfoGroup(false);
+      setIsLoading(false);
     }
   };
 
@@ -72,168 +79,264 @@ const DetailGroup: React.FC = () => {
     if (id !== undefined) {
       void fetchGroupDetail();
     }
-  }, [id]);
+  }, [id, isRefetchInfoGroup]);
+
+  useEffect(() => {
+    if (groupMembers?.data != null) {
+      setFilteredMembers(groupMembers.data);
+    }
+  }, [groupMembers]);
+
+  const handleLeaveGroup = async (): Promise<void> => {
+    try {
+      await leaveGroupChat(id as string, {
+        user_id: dataUser.id
+      });
+      await router.push('/chat');
+    } catch (error) {
+      toast.error(`Failed to leave group: ${error as string}`);
+    }
+  };
+
+  const handleSearch = (): void => {
+    const keyword = searchRef.current?.value?.toLowerCase() ?? '';
+
+    if (keyword === '') {
+      setFilteredMembers(groupMembers?.data ?? []);
+    } else {
+      const filtered = groupMembers?.data.filter(member =>
+        member.user_name.toLowerCase().includes(keyword)
+      );
+      setFilteredMembers(filtered ?? []);
+    }
+  };
 
   return (
     <PageGradient defaultGradient className="w-full">
-      <div
-        className={`w-full bg-white ${isOpenAddMembers ? 'hidden' : 'block'}`}
-      >
-        <div className="w-full flex flex-col gap-3 shadow-lg md:px-8 px-5 py-4">
-          <div className="flex justify-between items-center">
-            <div
-              onClick={async () => {
-                await router.push(
-                  `/chat?roomId=${id as string}&isGroupChat=true`
-                );
-              }}
-            >
-              <Image
-                alt="Back"
-                src={BackNav}
-                className="h-6 w-6 object-cover cursor-pointer"
-              />
-            </div>
-            <Menu placement="bottom-start">
-              <MenuHandler>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div
+          className={`w-full bg-white ${
+            isOpenAddMembers || isOpenEditGroup ? 'hidden' : 'block'
+          }`}
+        >
+          <div className="w-full flex flex-col gap-3 shadow-lg md:px-8 px-5 py-4">
+            <div className="flex justify-between items-center">
+              <div
+                onClick={async () => {
+                  await router.push(
+                    `/chat?roomId=${id as string}&isGroupChat=true`
+                  );
+                }}
+              >
                 <Image
-                  src={MoreButton}
-                  alt="threeDots"
-                  className="cursor-pointer"
+                  alt="Back"
+                  src={BackNav}
+                  className="h-6 w-6 object-cover cursor-pointer"
                 />
-              </MenuHandler>
-              <MenuList>
-                <MenuItem className="font-poppins text-sm font-normal text-[#201B1C] flex items-center gap-2">
-                  <Image src={EditButton} alt="edit" width={20} />
-                  {t('chat.menuBar.changeGroupInfo')}
-                </MenuItem>
-                <MenuItem className="font-poppins text-sm font-normal text-[#201B1C] flex items-center gap-2">
-                  <Image src={NotifOffButton} alt="notif" width={20} />
-                  {t('chat.menuBar.mutedNotif')}
-                </MenuItem>
-                <MenuItem className="font-poppins text-sm font-normal text-[#B81516] flex items-center gap-2">
-                  <Image src={LeaveButton} alt="logout" width={20} />
-                  {t('chat.menuBar.leaveGroup')}
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          </div>
-          <div className="flex justify-between items-center md:pl-4 py-5">
-            <div className="grid grid-cols-[auto_1fr] gap-[18px] place-items-center">
-              <Avatar
-                src={
-                  detailGroup?.avatar === ''
-                    ? DefaultAvatar.src
-                    : detailGroup?.avatar
-                }
-                alt="avatar"
-                width={80}
-                height={80}
-                className="md:max-w-20 md:max-h-20 w-14 h-14"
-              />
-              <div className="flex flex-col">
-                <Typography className="text-base font-semibold text-[#262626] font-poppins">
-                  {detailGroup?.name}
-                </Typography>
-                <Typography className="text-sm text-[#262626] font-normal font-poppins">
-                  {`${detailGroup?.total_memberships as number} ${t(
-                    'chat.members'
-                  )}`}
-                </Typography>
               </div>
+              <Menu placement="bottom-start">
+                <MenuHandler>
+                  <Image
+                    src={MoreButton}
+                    alt="threeDots"
+                    className="cursor-pointer"
+                  />
+                </MenuHandler>
+                <MenuList>
+                  <MenuItem
+                    onClick={() => {
+                      setIsOpenEditGroup(prev => !prev);
+                    }}
+                    className="font-poppins text-sm font-normal text-[#201B1C] flex items-center gap-2"
+                  >
+                    <Image src={EditButton} alt="edit" width={20} />
+                    {t('chat.menuBar.changeGroupInfo')}
+                  </MenuItem>
+                  <MenuItem className="font-poppins text-sm font-normal text-[#201B1C] flex items-center gap-2">
+                    <Image src={NotifOffButton} alt="notif" width={20} />
+                    {t('chat.menuBar.mutedNotif')}
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setIsOpenModalLeave(prev => !prev);
+                    }}
+                    className="font-poppins text-sm font-normal text-[#B81516] flex items-center gap-2"
+                  >
+                    <Image src={LeaveButton} alt="logout" width={20} />
+                    {t('chat.menuBar.leaveGroup')}
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </div>
-            <div className="flex items-center gap-[10px]">
-              {groupMembers?.data
-                ?.filter(member => member?.user_id === dataUser?.id)
-                .find(member => member?.role === 'admin') != null && (
-                <div
-                  onClick={() => {
-                    setIsOpenAddMembers(prev => !prev);
-                  }}
-                  className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150"
-                >
-                  <MdOutlineGroupAdd
+            <div className="flex justify-between items-center md:pl-4 py-5">
+              <div className="grid grid-cols-[auto_1fr] gap-[18px] place-items-center">
+                <Avatar
+                  src={
+                    detailGroup?.avatar === ''
+                      ? DefaultAvatar.src
+                      : detailGroup?.avatar
+                  }
+                  alt="avatar"
+                  width={80}
+                  height={80}
+                  className="md:max-w-20 md:max-h-20 w-14 h-14"
+                />
+                <div className="flex flex-col">
+                  <Typography className="text-base font-semibold text-[#262626] font-poppins">
+                    {detailGroup?.name}
+                  </Typography>
+                  <Typography className="text-sm text-[#262626] font-normal font-poppins">
+                    {`${detailGroup?.total_memberships as number} ${t(
+                      'chat.members'
+                    )}`}
+                  </Typography>
+                </div>
+              </div>
+              <div className="flex items-center gap-[10px]">
+                {groupMembers?.data
+                  ?.filter(member => member?.user_id === dataUser?.id)
+                  .find(member => member?.role === 'admin') != null && (
+                  <div
+                    onClick={() => {
+                      setIsOpenAddMembers(prev => !prev);
+                    }}
+                    className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150"
+                  >
+                    <MdOutlineGroupAdd
+                      color="#1A857D"
+                      size={24}
+                      className="md:w-6 md:h-6 w-5 h-5"
+                    />
+                  </div>
+                )}
+                <div className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150">
+                  <RiLink
                     color="#1A857D"
                     size={24}
                     className="md:w-6 md:h-6 w-5 h-5"
                   />
                 </div>
-              )}
-              <div className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150">
-                <RiLink
-                  color="#1A857D"
-                  size={24}
-                  className="md:w-6 md:h-6 w-5 h-5"
-                />
-              </div>
-              <div className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150">
-                <LuSearch
-                  color="#1A857D"
-                  size={24}
-                  className="md:w-6 md:h-6 w-5 h-5"
-                />
+                <div
+                  onClick={() => {
+                    setIsSearchActive(prev => !prev);
+                  }}
+                  className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150"
+                >
+                  <LuSearch
+                    color="#1A857D"
+                    size={24}
+                    className="md:w-6 md:h-6 w-5 h-5"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="w-full flex flex-col p-8 gap-8">
-          <div className="w-full flex justify-between">
-            {detailGroup?.description === '' ? (
-              <Typography className="text-sm font-semibold text-[#1A857D] font-poppins cursor-pointer hover:underline">
-                {t('chat.addGroupDescription')}
-              </Typography>
-            ) : (
-              <div className="flex flex-col gap-2">
-                <Typography className="text-sm font-semibold text-[#1A857D] font-poppins">
-                  {t('chat.groupDescription')}
+          <div className="w-full flex flex-col p-8 gap-8">
+            <div className="w-full flex justify-between">
+              {detailGroup?.description === '' ? (
+                <Typography
+                  onClick={() => {
+                    setIsOpenEditGroup(prev => !prev);
+                  }}
+                  className="text-sm font-semibold text-[#1A857D] font-poppins cursor-pointer hover:underline"
+                >
+                  {t('chat.addGroupDescription')}
                 </Typography>
-                <Typography className="text-sm font-normal text-[#262626] font-poppins">
-                  {detailGroup?.description}
-                </Typography>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Typography className="text-sm font-semibold text-[#1A857D] font-poppins">
+                    {t('chat.groupDescription')}
+                  </Typography>
+                  <Typography className="text-sm font-normal text-[#262626] font-poppins">
+                    {detailGroup?.description}
+                  </Typography>
+                </div>
+              )}
+            </div>
+            {isSearchActive && (
+              <div className="flex justify-between items-center gap-4">
+                <div className="relative w-full">
+                  <input
+                    ref={searchRef}
+                    id="search"
+                    type="text"
+                    onKeyDown={handleSearch}
+                    name="search"
+                    placeholder={t('chat.search') ?? ''}
+                    className="block w-full text-[#262626] text-sm h-10 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-2 pl-4 rounded-xl border border-[#BDBDBD]"
+                  />
+                  <MagnifyingGlassIcon className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5" />
+                </div>
+                <Image
+                  onClick={() => {
+                    setIsSearchActive(prev => !prev);
+                    setFilteredMembers(groupMembers?.data ?? []);
+                  }}
+                  className="cursor-pointer hover:scale-110 duration-100"
+                  src={XIcon}
+                  width={24}
+                  height={24}
+                  alt="XIcon"
+                />
               </div>
             )}
-          </div>
-          <div className="flex flex-col gap-4">
-            {groupMembers?.data
-              ?.sort((a, b) => {
-                if (a?.role === 'admin' && b?.role !== 'admin') return -1;
-                if (a?.role !== 'admin' && b?.role === 'admin') return 1;
-                return 0;
-              })
-              ?.map((item: GroupMemberData, index: number) => (
-                <div key={index}>
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-5">
-                      <Avatar
-                        src={item?.user_avatar}
-                        alt="Avatar"
-                        width={48}
-                        height={48}
-                        className="w-12 h-12"
-                      />
-                      <Typography className="text-md font-semibold text-[#262626] font-poppins">
-                        {item?.user_name}
-                      </Typography>
+            <div className="flex flex-col gap-4">
+              {filteredMembers
+                ?.sort((a, b) => {
+                  if (a?.role === 'admin' && b?.role !== 'admin') return -1;
+                  if (a?.role !== 'admin' && b?.role === 'admin') return 1;
+                  return 0;
+                })
+                ?.map((item: GroupMemberData, index: number) => (
+                  <div key={index}>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-5">
+                        <Avatar
+                          src={item?.user_avatar}
+                          alt="Avatar"
+                          width={48}
+                          height={48}
+                          className="w-12 h-12"
+                        />
+                        <Typography className="text-md font-semibold text-[#262626] font-poppins">
+                          {item?.user_name}
+                        </Typography>
+                      </div>
+                      {item?.role === 'admin' && (
+                        <Typography className="text-sm text-[#3AC4A0] font-normal font-poppins bg-[#EDFCD3] rounded-md p-2 w-fit">
+                          Admin
+                        </Typography>
+                      )}
                     </div>
-                    {item?.role === 'admin' && (
-                      <Typography className="text-sm text-[#3AC4A0] font-normal font-poppins bg-[#EDFCD3] rounded-md p-2 w-fit">
-                        Admin
-                      </Typography>
-                    )}
                   </div>
-                </div>
-              ))}
+                ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <AddGroupMembers
         isOpenAddMembers={isOpenAddMembers}
         setIsOpenAddMembers={setIsOpenAddMembers}
-        groupMembers={groupMembers?.data as GroupMemberData[]}
+        memberData={groupMembers?.data as GroupMemberData[]}
         groupId={id as string}
-        updateGroupForm={updateGroupForm}
-        setUpdateGroupForm={setUpdateGroupForm}
+        groupMembers={groupMembers?.data?.map(item => item.user_id) ?? []}
       />
+      <EditInfoGroup
+        setIsOpenEditInfoGroup={setIsOpenEditGroup}
+        isOpenEditInfoGroup={isOpenEditGroup}
+        groupDetail={detailGroup as IGroupChatDetail}
+        setIsRefetchInfoGroup={setIsRefetchInfoGroup}
+      />
+      {isOpenModalLeave && (
+        <LeaveCommunityPopUp
+          onClose={() => {
+            setIsOpenModalLeave(prev => !prev);
+          }}
+          onClick={handleLeaveGroup}
+        />
+      )}
     </PageGradient>
   );
 };

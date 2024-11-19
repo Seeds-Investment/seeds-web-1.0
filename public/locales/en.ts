@@ -2611,7 +2611,11 @@ export default {
       mutedNotif: 'Muted Notifications',
       leaveGroup: 'Leave Group'
     },
-    addNewMember: 'Add New Member'
+    addNewMember: 'Add New Member',
+    editGroup: 'Edit Group',
+    camera: 'Camera',
+    gallery: 'Gallery',
+    placeholderDesc: 'Type your group description here!'
   },
   play: {
     keystat: 'Key Stats'

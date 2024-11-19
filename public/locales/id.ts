@@ -2539,7 +2539,11 @@ export default {
       mutedNotif: 'Muted Notifications',
       leaveGroup: 'Leave Group'
     },
-    addNewMember: 'Tambahkan Anggota Baru'
+    addNewMember: 'Tambahkan Anggota Baru',
+    editGroup: 'Edit Grup',
+    camera: 'Kamera',
+    gallery: 'Galeri',
+    placeholderDesc: 'Ketik deskripsi grup Anda di sini!'
   },
   play: {
     keystat: 'Key Stats'

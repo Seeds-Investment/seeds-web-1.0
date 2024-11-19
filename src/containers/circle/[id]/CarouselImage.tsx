@@ -140,56 +140,16 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
           >
             X
           </button>
-
-          <div className="relative w-full h-full max-w-full max-h-full flex justify-center items-center">
-            <button
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full z-10"
-              onClick={goToPreviousSlide}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="h-8 w-8"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 19.5L8.25 12l7.5-7.5"
-                />
-              </svg>
-            </button>
-
-            <img
-              src={images[currentIndex]}
-              alt={`Modal Image ${currentIndex}`}
-              className="max-w-full max-h-[90vh] object-contain"
-              style={{ transform: `scale(${zoom})` }}
-            />
-
-            <button
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full z-10"
-              onClick={goToNextSlide}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="h-8 w-8"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                />
-              </svg>
-            </button>
+          <div className="relative">
+            <div className="flex justify-center items-center">
+              <img
+                src={images[currentIndex]}
+                alt={`Modal Image ${currentIndex}`}
+                className="max-w-full max-h-[90vh] object-contain"
+                style={{ transform: `scale(${zoom})` }}
+              />
+            </div>
           </div>
-
           <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-4">
             <button
               className="bg-white text-black p-3 rounded-full"

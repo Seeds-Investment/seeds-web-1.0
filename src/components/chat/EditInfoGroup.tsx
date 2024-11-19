@@ -21,6 +21,7 @@ import { CiCamera } from 'react-icons/ci';
 import { MdCheck } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import Loading from '../popup/Loading';
+import ModalCamera from './ModalCamera';
 
 interface EditInfoGroupProps {
   setIsOpenEditInfoGroup: React.Dispatch<React.SetStateAction<boolean>>;
@@ -47,6 +48,7 @@ const EditInfoGroup: React.FC<EditInfoGroupProps> = ({
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isModalCameraOpen, setIsModalCameraOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setUpdateGroupForm({
@@ -168,7 +170,12 @@ const EditInfoGroup: React.FC<EditInfoGroupProps> = ({
                 <MenuList>
                   <div className="flex flex-row items-center gap-6">
                     <div className="flex flex-col items-center gap-2">
-                      <div className="w-16 h-16 rounded-full bg-[#DCFCE4] cursor-pointer border border-[#1A857D] flex justify-center items-center">
+                      <div
+                        onClick={() => {
+                          setIsModalCameraOpen(true);
+                        }}
+                        className="w-16 h-16 rounded-full bg-[#DCFCE4] cursor-pointer border border-[#1A857D] flex justify-center items-center"
+                      >
                         <CiCamera size={32} color="#1A857D" />
                       </div>
                       <Typography>{t('chat.camera')}</Typography>
@@ -244,6 +251,13 @@ const EditInfoGroup: React.FC<EditInfoGroupProps> = ({
             </div>
           </div>
         </>
+      )}
+      {isModalCameraOpen && (
+        <ModalCamera
+          onClose={() => {
+            setIsModalCameraOpen(false);
+          }}
+        />
       )}
     </div>
   );

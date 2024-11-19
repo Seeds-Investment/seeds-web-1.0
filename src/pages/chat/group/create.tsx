@@ -19,6 +19,7 @@ const CreateGroup: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const searchRef = useRef<HTMLInputElement>(null);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useState<{
     search: string;
@@ -34,6 +35,7 @@ const CreateGroup: React.FC = () => {
   const [userList, setUserList] = useState<SearchUserChat[]>([]);
   const [displayMembers, setDisplayMembers] = useState<SearchUserChat[]>([]);
   const [showNextStep, setShowNextStep] = useState<boolean>(false);
+
   const [newGroupForm, setNewGroupForm] = useState<CreateGroupForm>({
     name: '',
     description: '',
@@ -42,8 +44,8 @@ const CreateGroup: React.FC = () => {
   });
 
   const fetchSearchUser = async (): Promise<void> => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const response = await searchUser(searchParams);
       setUserList(response.result);
     } catch (error) {
@@ -58,19 +60,15 @@ const CreateGroup: React.FC = () => {
   }, [searchParams]);
 
   const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-    let keyword = searchRef.current?.value;
-
-    if (keyword === '') {
-      keyword = ' ';
-    }
-
-    if (event.key === 'Enter' && keyword !== undefined) {
-      event.preventDefault();
+    if (event.key === 'Enter' && searchRef.current?.value !== undefined) {
+      const searchValue =
+        searchRef.current?.value?.trim() === ''
+          ? ' '
+          : searchRef.current?.value;
       setSearchParams({
         ...searchParams,
         page: 1,
-        limit: 9,
-        search: keyword
+        search: searchValue
       });
     }
   };
@@ -80,19 +78,18 @@ const CreateGroup: React.FC = () => {
     isSelected: boolean,
     member: SearchUserChat
   ): void => {
-    if (isSelected) {
-      setNewGroupForm(prev => ({
-        ...prev,
-        memberships: [...prev.memberships, userId]
-      }));
-      setDisplayMembers(prev => [...prev, member]);
-    } else {
-      setNewGroupForm(prev => ({
-        ...prev,
-        memberships: [...prev.memberships.filter(id => id !== userId)]
-      }));
-      setDisplayMembers(prev => prev.filter(member => member.id !== userId));
-    }
+    setNewGroupForm(prev => ({
+      ...prev,
+      memberships: isSelected
+        ? [...prev.memberships, userId]
+        : prev.memberships.filter(id => id !== userId)
+    }));
+
+    setDisplayMembers(prev =>
+      isSelected
+        ? [...prev, member]
+        : prev.filter(existingMember => existingMember.id !== userId)
+    );
   };
 
   return (
@@ -110,7 +107,7 @@ const CreateGroup: React.FC = () => {
               height={24}
               className="text-white cursor-pointer hover:scale-110 duration-150"
               onClick={() => {
-                router.back();
+                void router.replace('/chat');
               }}
             />
             <Typography className="flex-1 text-center font-poppins font-semibold text-lg text-white">

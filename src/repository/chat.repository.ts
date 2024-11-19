@@ -202,14 +202,37 @@ export const deleteGroupChat = async (id: string): Promise<void> => {
   });
 };
 
-export const leaveGroupChat = async (data: LeaveGroupParams): Promise<void> => {
+export const leaveGroupChat = async (
+  id: string,
+  params: LeaveGroupParams
+): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {
     toast('Access token not found');
   }
-  const path = Endpoints.chat.leaveGroupChat.replace(':id', data?.id as string);
-  await baseUrl.put(path, data, {
+
+  console.log(accessToken);
+
+  const path = `${Endpoints.chat.leaveGroupChat.replace(':id', id)}?user_id=${
+    params.user_id
+  }`;
+  return await baseUrl.put(path, params, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const deleteGroup = async (id: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = `${Endpoints.chat.groupDetail}/${id}`;
+  await baseUrl.delete(path, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`

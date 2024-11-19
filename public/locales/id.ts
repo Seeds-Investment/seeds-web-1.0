@@ -2491,7 +2491,7 @@ export default {
     newChat: 'Percakapan Baru',
     willHelp: 'Seeds akan membantu kamu 🙌',
     startConversation: 'Mulai percakapan sekarang!',
-    textInputPlaceholder: 'Ketik Pesan…',
+    textInputPlaceholder: 'Buat Pesan…',
     seeMore: 'Lihat Lebih Banyak',
     links: 'Tautan',
     commonGroup: `Grup yang sama`,

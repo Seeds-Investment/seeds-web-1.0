@@ -2563,7 +2563,7 @@ export default {
     newChat: 'New Chat',
     willHelp: 'Seedy will help you 🙌',
     startConversation: 'Start a conversation now!',
-    textInputPlaceholder: 'Type message…',
+    textInputPlaceholder: 'Create Message…',
     seeMore: 'See more',
     links: 'Links',
     commonGroup: `Group's in common`,

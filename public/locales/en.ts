@@ -2615,7 +2615,8 @@ export default {
     editGroup: 'Edit Group',
     camera: 'Camera',
     gallery: 'Gallery',
-    placeholderDesc: 'Type your group description here!'
+    placeholderDesc: 'Type your group description here!',
+    modalCameraTitle: 'Take a photo'
   },
   play: {
     keystat: 'Key Stats'

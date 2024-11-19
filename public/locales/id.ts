@@ -2543,7 +2543,8 @@ export default {
     editGroup: 'Edit Grup',
     camera: 'Kamera',
     gallery: 'Galeri',
-    placeholderDesc: 'Ketik deskripsi grup Anda di sini!'
+    placeholderDesc: 'Ketik deskripsi grup Anda di sini!',
+    modalCameraTitle: 'Ambil Foto'
   },
   play: {
     keystat: 'Key Stats'

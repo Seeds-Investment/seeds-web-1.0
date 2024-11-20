@@ -1,3 +1,4 @@
+import { addNewMember } from '@/repository/chat.repository';
 import { searchUser } from '@/repository/people.repository';
 import {
   type GroupMemberData,
@@ -16,7 +17,7 @@ interface AddGroupMembersProps {
   isOpenAddMembers: boolean;
   memberData: GroupMemberData[];
   groupId: string;
-  groupMembers: string[];
+  setIsRefetchInfoGroup: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
@@ -24,7 +25,7 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
   isOpenAddMembers,
   memberData,
   groupId,
-  groupMembers
+  setIsRefetchInfoGroup
 }) => {
   const { t } = useTranslation();
   const searchRef = useRef<HTMLInputElement>(null);
@@ -43,9 +44,9 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
   const [userList, setUserList] = useState<SearchUserChat[]>([]);
   const [displayMembers, setDisplayMembers] = useState<SearchUserChat[]>([]);
   const [updateGroupMembers, setUpdateGroupMembers] = useState<{
-    memberships: string[];
+    users_id: string[];
   }>({
-    memberships: groupMembers
+    users_id: []
   });
 
   const fetchSearchUser = async (): Promise<void> => {
@@ -66,12 +67,20 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
 
   useEffect(() => {
     void fetchSearchUser();
-  }, [searchParams]);
+  }, [searchParams, memberData]);
+
+  useEffect(() => {
+    setUpdateGroupMembers({
+      users_id: memberData?.map(member => member.user_id)
+    });
+  }, [memberData]);
 
   const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter' && searchRef.current?.value !== undefined) {
       const searchValue =
-        searchRef.current?.value?.trim() === '' ? ' ' : searchRef.current?.value;
+        searchRef.current?.value?.trim() === ''
+          ? ' '
+          : searchRef.current?.value;
       setSearchParams({
         ...searchParams,
         page: 1,
@@ -86,9 +95,9 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
     member: SearchUserChat
   ): void => {
     setUpdateGroupMembers(prev => ({
-      memberships: isSelected
-        ? [...prev.memberships, userId]
-        : prev.memberships.filter(id => id !== userId)
+      users_id: isSelected
+        ? [...prev.users_id, userId]
+        : prev.users_id.filter(id => id !== userId)
     }));
     setDisplayMembers(prev =>
       isSelected
@@ -100,9 +109,10 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
   const handleAddNewMember = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      // const response = await updateGroup(groupId, updateGroupMembers);
-      // setIsOpenAddMembers(prev => !prev);
-      console.log(updateGroupMembers);
+      await addNewMember(groupId, updateGroupMembers.users_id);
+      setIsOpenAddMembers(prev => !prev);
+      setDisplayMembers([]);
+      setIsRefetchInfoGroup(true);
     } catch (error) {
       toast.error(`Error adding new member: ${error as string}`);
     } finally {
@@ -184,7 +194,7 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
                   key={user?.id}
                   onClick={() => {
                     const isSelected: boolean =
-                      updateGroupMembers?.memberships?.includes(user?.id);
+                      updateGroupMembers?.users_id?.includes(user?.id);
                     handleSelectMember(user?.id, !isSelected, user);
                   }}
                   className="flex justify-between items-center mx-[22px] py-4 px-2 border-b border-b-[#E9E9E9] hover:bg-[#efefef] cursor-pointer rounded-lg duration-150"
@@ -206,9 +216,7 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
                   <input
                     className="cursor-pointer w-5 h-5 appearance-none rounded-full border-2 border-gray-500 checked:bg-seeds-green checked:border-[#1A857D]"
                     type="checkbox"
-                    checked={updateGroupMembers?.memberships?.includes(
-                      user?.id
-                    )}
+                    checked={updateGroupMembers?.users_id?.includes(user?.id)}
                   />
                 </div>
               ))}

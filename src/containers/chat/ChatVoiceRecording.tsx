@@ -124,6 +124,7 @@ export const ChatVoiceRecorder: React.FC<props> = ({
       <div
         onClick={() => {
           setAudio(null)
+          setBlob(null)
           setIsVoiceRecording(false)
         }}
         className='flex justify-center items-center w-[36px] h-auto md:mr-2 mt-4 md:mt-0'
@@ -151,7 +152,7 @@ export const ChatVoiceRecorder: React.FC<props> = ({
       </div>
       <div className={`flex md:hidden ${audio !== null ? 'mb-8' : ''} ${recording ? 'mb-8' : ''}`}>
         {
-          audio !== null ?
+          (audio !== null && blob !== null) ?
             <div className='w-full'>
               {(blob !== null) && (
                 <AudioVisualizer
@@ -164,19 +165,21 @@ export const ChatVoiceRecorder: React.FC<props> = ({
                 />
               )}
             </div>
-            :
-            <div className='w-full'>
-              {(mediaRecorder?.current != null) && (
-                <LiveAudioVisualizer
-                  mediaRecorder={mediaRecorder?.current}
-                  width={300}
-                  height={100}
-                  barWidth={4}
-                  gap={3}
-                  barColor={'#7555DA'}
-                />
-              )}
-            </div>
+            : recording ?
+              <div className='w-full'>
+                {(mediaRecorder?.current != null) && (
+                  <LiveAudioVisualizer
+                    mediaRecorder={mediaRecorder?.current}
+                    width={300}
+                    height={100}
+                    barWidth={4}
+                    gap={3}
+                    barColor={'#7555DA'}
+                  />
+                )}
+              </div>
+              :
+              null
         }
       </div>
       <div className="flex justify-center items-center w-full gap-4 xl:gap-8">
@@ -184,7 +187,7 @@ export const ChatVoiceRecorder: React.FC<props> = ({
           <div
             onClick={() => {
               setAudio(null)
-              setIsVoiceRecording(false)
+              setBlob(null)
             }}
             className='flex justify-center items-center w-[28px] h-auto'
           >
@@ -210,7 +213,7 @@ export const ChatVoiceRecorder: React.FC<props> = ({
         </div>
         <div className='hidden md:flex'>
           {
-            audio !== null ?
+            (audio !== null && blob !== null) ?
               <div>
                 {(blob !== null) && (
                   <AudioVisualizer
@@ -223,19 +226,21 @@ export const ChatVoiceRecorder: React.FC<props> = ({
                   />
                 )}
               </div>
-              :
-              <div>
-                {(mediaRecorder?.current !== null) && (
-                  <LiveAudioVisualizer
-                    mediaRecorder={mediaRecorder?.current}
-                    width={150}
-                    height={75}
-                    barWidth={3}
-                    gap={2}
-                    barColor={'#7555DA'}
-                  />
-                )}
-              </div>
+              : recording ?
+                <div>
+                  {(mediaRecorder?.current !== null) && (
+                    <LiveAudioVisualizer
+                      mediaRecorder={mediaRecorder?.current}
+                      width={150}
+                      height={75}
+                      barWidth={3}
+                      gap={2}
+                      barColor={'#7555DA'}
+                    />
+                  )}
+                </div>
+                :
+                null
           }
         </div>
         <div

@@ -445,7 +445,7 @@ const Social: React.FC = () => {
     try {
       const response = await getDailyQuiz();
       setDailyQuestion(response);
-      setDailyQuestionActive(response.is_played === false);
+      setDailyQuestionActive(response.is_played);
     } catch (error) {
       toast.error('something when wrong');
     }
@@ -569,7 +569,7 @@ const Social: React.FC = () => {
             </div>
           </div>
           <div className="flex justify-start w-full border border-neutral-ultrasoft" />
-          {dailyQuestionActive && (
+          {!dailyQuestionActive && (
             <DailyQuestion
               data={dailyQuestion}
               setGolId={setGolId}

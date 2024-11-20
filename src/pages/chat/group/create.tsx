@@ -106,8 +106,8 @@ const CreateGroup: React.FC = () => {
               width={24}
               height={24}
               className="text-white cursor-pointer hover:scale-110 duration-150"
-              onClick={() => {
-                void router.replace('/chat');
+              onClick={async () => {
+                await router.replace('/chat');
               }}
             />
             <Typography className="flex-1 text-center font-poppins font-semibold text-lg text-white">

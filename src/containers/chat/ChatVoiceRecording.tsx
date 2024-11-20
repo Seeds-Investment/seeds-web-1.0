@@ -8,7 +8,9 @@ import {
   type Dispatch,
   type SetStateAction
 } from 'react';
+import { AudioVisualizer, LiveAudioVisualizer } from 'react-audio-visualize';
 import { toast } from 'react-toastify';
+
 interface props {
   setLoading: Dispatch<SetStateAction<boolean>>;
   setAudio: Dispatch<SetStateAction<File | null>>;
@@ -16,6 +18,7 @@ interface props {
   postMedia: (mediaFile: File) => Promise<void>;
   setIsVoiceRecording: Dispatch<SetStateAction<boolean>>;
 }
+
 export const ChatVoiceRecorder: React.FC<props> = ({
   setLoading,
   setAudio,
@@ -26,6 +29,7 @@ export const ChatVoiceRecorder: React.FC<props> = ({
   const [recording, setRecording] = useState<boolean>(false);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const audioChunks = useRef<Blob[]>([]);
+  const [blob, setBlob] = useState<Blob | null>(null);
 
   const [time, setTime] = useState(0);
 
@@ -74,6 +78,8 @@ export const ChatVoiceRecorder: React.FC<props> = ({
           const audioBlob = new Blob(audioChunks.current, {
             type: 'audio/mpeg'
           });
+          
+          setBlob(audioBlob);
 
           const currentDatetime = new Date();
           const filename = `Recording-${currentDatetime.toISOString()}.mpeg`;
@@ -116,7 +122,10 @@ export const ChatVoiceRecorder: React.FC<props> = ({
   return (
     <div className='w-full flex flex-col md:flex-row justify-center items-center mb-4 md:mb-0'>
       <div
-        onClick={() => {setIsVoiceRecording(false)}}
+        onClick={() => {
+          setAudio(null)
+          setIsVoiceRecording(false)
+        }}
         className='flex justify-center items-center w-[36px] h-auto md:mr-2 mt-4 md:mt-0'
       >
         <Image
@@ -127,8 +136,8 @@ export const ChatVoiceRecorder: React.FC<props> = ({
           className="h-auto w-full cursor-pointer hover:scale-125 duration-300"
         />
       </div>
-      <div className='flex flex-col justify-center items-center md:hidden mt-2 mb-4'>
-        <Typography className='font-poppins text-black'>
+      <div className='flex flex-col justify-center items-center md:hidden mt-4 mb-6'>
+        <Typography className='font-poppins text-black font-medium text-lg'>
           Voice Notes
         </Typography>
         <div>
@@ -140,8 +149,38 @@ export const ChatVoiceRecorder: React.FC<props> = ({
           }
         </div>
       </div>
-      <div className="flex justify-center items-center w-full gap-8">
-        <div className='flex justify-center items-center gap-2'>
+      <div className={`flex md:hidden ${audio !== null ? 'mb-8' : ''} ${recording ? 'mb-8' : ''}`}>
+        {
+          audio !== null ?
+            <div className='w-full'>
+              {(blob !== null) && (
+                <AudioVisualizer
+                  blob={blob}
+                  width={300}
+                  height={100}
+                  barWidth={4}
+                  gap={3}
+                  barColor={'#7555DA'}
+                />
+              )}
+            </div>
+            :
+            <div className='w-full'>
+              {(mediaRecorder?.current != null) && (
+                <LiveAudioVisualizer
+                  mediaRecorder={mediaRecorder?.current}
+                  width={300}
+                  height={100}
+                  barWidth={4}
+                  gap={3}
+                  barColor={'#7555DA'}
+                />
+              )}
+            </div>
+        }
+      </div>
+      <div className="flex justify-center items-center w-full gap-4 xl:gap-8">
+        <div className='flex justify-center items-center gap-4'>
           <div
             onClick={() => {
               setAudio(null)
@@ -157,16 +196,46 @@ export const ChatVoiceRecorder: React.FC<props> = ({
               className="h-auto w-full cursor-pointer hover:scale-125 duration-300"
             />
           </div>
-          <Typography className='hidden md:flex font-poppins text-black text-sm'>
+          <Typography className='hidden lg:flex font-poppins text-black text-sm font-medium'>
             Voice Notes
           </Typography>
         </div>
-        <div className='hidden md:flex'>
+        <div className='hidden lg:flex w-[80px] justify-center items-center'>
           {
             recording ?
               <Typography className='text-[#BDBDBD] font-poppins'>{formatTime(time)}</Typography>
               :
               <Typography className='text-[#BDBDBD] font-poppins'>00:00</Typography>
+          }
+        </div>
+        <div className='hidden md:flex'>
+          {
+            audio !== null ?
+              <div>
+                {(blob !== null) && (
+                  <AudioVisualizer
+                    blob={blob}
+                    width={200}
+                    height={75}
+                    barWidth={3}
+                    gap={2}
+                    barColor={'#7555DA'}
+                  />
+                )}
+              </div>
+              :
+              <div>
+                {(mediaRecorder?.current !== null) && (
+                  <LiveAudioVisualizer
+                    mediaRecorder={mediaRecorder?.current}
+                    width={150}
+                    height={75}
+                    barWidth={3}
+                    gap={2}
+                    barColor={'#7555DA'}
+                  />
+                )}
+              </div>
           }
         </div>
         <div

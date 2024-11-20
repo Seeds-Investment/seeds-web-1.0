@@ -2,6 +2,7 @@ import BackNav from '@/assets/circle-page/back_nav.svg';
 import MoreButton from '@/assets/more-option/more_vertical.svg';
 import AddGroupMembers from '@/components/chat/AddGroupMembers';
 import EditInfoGroup from '@/components/chat/EditInfoGroup';
+import ModalShareGroup from '@/components/chat/ModalShareGroup';
 import LeaveCommunityPopUp from '@/components/chat/PopUpLeave';
 import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -9,7 +10,8 @@ import withAuth from '@/helpers/withAuth';
 import {
   getGroupDetail,
   getGroupMember,
-  leaveGroupChat
+  leaveGroupChat,
+  muteGroupChat
 } from '@/repository/chat.repository';
 import { useAppSelector } from '@/store/redux/store';
 import {
@@ -56,6 +58,7 @@ const DetailGroup: React.FC = () => {
   const [isOpenEditGroup, setIsOpenEditGroup] = useState<boolean>(false);
   const [isOpenModalLeave, setIsOpenModalLeave] = useState<boolean>(false);
   const [isOpenAddMembers, setIsOpenAddMembers] = useState<boolean>(false);
+  const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
 
   const fetchGroupDetail = async (): Promise<void> => {
@@ -79,13 +82,28 @@ const DetailGroup: React.FC = () => {
     if (id !== undefined) {
       void fetchGroupDetail();
     }
-  }, [id, isRefetchInfoGroup]);
+  }, [id]);
+
+  useEffect(() => {
+    if (isRefetchInfoGroup) {
+      void fetchGroupDetail();
+    }
+  }, [isRefetchInfoGroup]);
 
   useEffect(() => {
     if (groupMembers?.data != null) {
       setFilteredMembers(groupMembers.data);
     }
   }, [groupMembers]);
+
+  const handleMuteGroup = async (): Promise<void> => {
+    try {
+      await muteGroupChat({ group_id: id as string, type: '' });
+      toast.success(t('chat.successMute'));
+    } catch (error) {
+      toast.error(`Failed to mute group: ${error as string}`);
+    }
+  };
 
   const handleLeaveGroup = async (): Promise<void> => {
     try {
@@ -154,7 +172,10 @@ const DetailGroup: React.FC = () => {
                     <Image src={EditButton} alt="edit" width={20} />
                     {t('chat.menuBar.changeGroupInfo')}
                   </MenuItem>
-                  <MenuItem className="font-poppins text-sm font-normal text-[#201B1C] flex items-center gap-2">
+                  <MenuItem
+                    onClick={handleMuteGroup}
+                    className="font-poppins text-sm font-normal text-[#201B1C] flex items-center gap-2"
+                  >
                     <Image src={NotifOffButton} alt="notif" width={20} />
                     {t('chat.menuBar.mutedNotif')}
                   </MenuItem>
@@ -211,7 +232,12 @@ const DetailGroup: React.FC = () => {
                     />
                   </div>
                 )}
-                <div className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150">
+                <div
+                  onClick={() => {
+                    setIsShareModal(prev => !prev);
+                  }}
+                  className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150"
+                >
                   <RiLink
                     color="#1A857D"
                     size={24}
@@ -233,7 +259,7 @@ const DetailGroup: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="w-full flex flex-col p-8 gap-8">
+          <div className="w-full flex flex-col p-8 gap-6">
             <div className="w-full flex justify-between">
               {detailGroup?.description === '' ? (
                 <Typography
@@ -256,7 +282,7 @@ const DetailGroup: React.FC = () => {
               )}
             </div>
             {isSearchActive && (
-              <div className="flex justify-between items-center gap-4">
+              <div className="flex justify-between items-center gap-4 mb-2">
                 <div className="relative w-full">
                   <input
                     ref={searchRef}
@@ -265,7 +291,7 @@ const DetailGroup: React.FC = () => {
                     onKeyDown={handleSearch}
                     name="search"
                     placeholder={t('chat.search') ?? ''}
-                    className="block w-full text-[#262626] text-sm h-10 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-2 pl-4 rounded-xl border border-[#BDBDBD]"
+                    className="block w-full text-[#262626] text-sm h-10 placeholder:text-[#BDBDBD] focus:outline-0 p-2 pl-4 rounded-xl border border-[#BDBDBD]"
                   />
                   <MagnifyingGlassIcon className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5" />
                 </div>
@@ -321,7 +347,7 @@ const DetailGroup: React.FC = () => {
         setIsOpenAddMembers={setIsOpenAddMembers}
         memberData={groupMembers?.data as GroupMemberData[]}
         groupId={id as string}
-        groupMembers={groupMembers?.data?.map(item => item.user_id) ?? []}
+        setIsRefetchInfoGroup={setIsRefetchInfoGroup}
       />
       <EditInfoGroup
         setIsOpenEditInfoGroup={setIsOpenEditGroup}
@@ -335,6 +361,14 @@ const DetailGroup: React.FC = () => {
             setIsOpenModalLeave(prev => !prev);
           }}
           onClick={handleLeaveGroup}
+        />
+      )}
+      {isShareModal && (
+        <ModalShareGroup
+          onClose={() => {
+            setIsShareModal(false);
+          }}
+          groupId={id as string}
         />
       )}
     </PageGradient>

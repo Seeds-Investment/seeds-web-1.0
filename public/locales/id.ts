@@ -2544,7 +2544,9 @@ export default {
     camera: 'Kamera',
     gallery: 'Galeri',
     placeholderDesc: 'Ketik deskripsi grup Anda di sini!',
-    modalCameraTitle: 'Ambil Foto'
+    modalCameraTitle: 'Ambil Foto',
+    shareGroup: 'Undang melalui Link',
+    successMute: 'Notifikasi Dibisukan'
   },
   play: {
     keystat: 'Key Stats'

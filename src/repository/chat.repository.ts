@@ -435,3 +435,26 @@ export const updateGroup = async (
     }
   });
 };
+
+export const addNewMember = async (
+  id: string,
+  data: string[]
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+
+  const path = `${Endpoints.chat.groupDetail}/${id}/add`;
+  await baseUrl.post(
+    path,
+    { data },
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    }
+  );
+};

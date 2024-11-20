@@ -22,24 +22,40 @@ export interface Chat {
 export interface IChatBubble {
   id: string;
   content_text: string;
-  media_urls: string[];
+  created_by: string;
   created_at: string;
   accept_at: string;
   read_at: string;
-  created_by: string;
-  reference_type?: string;
-  reference: IChatReference;
+  reference: any;
+  media_urls: string[];
+  owner: Owner;
 }
 
-export interface IChatReference {
-  user_id: string;
-  url: string;
-  expired_at: IChatTime;
-}
-
-export interface IChatTime {
-  nanos: number;
-  seconds: number;
+export interface Owner {
+  id: string;
+  phoneNumber: string;
+  email: string;
+  birthDate: string;
+  name: string;
+  seedsTag: string;
+  refCode: string;
+  avatar: string;
+  role: string;
+  verified: boolean;
+  email_verification: boolean;
+  bio: string;
+  badge: string;
+  preferredLanguage: string;
+  preferredCurrency: string;
+  last_login_at: string;
+  followers: number;
+  following: number;
+  isFollowed: boolean;
+  isBlocked: boolean;
+  community: string;
+  userRole: string;
+  city: string;
+  ReferralPoint: number;
 }
 
 export interface IGroupChatDetail {

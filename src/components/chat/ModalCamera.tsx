@@ -8,9 +8,10 @@ import CustomWebcam from '../webcam';
 
 interface Props {
   onClose: () => void;
+  onCapture: (captureImage: File) => void;
 }
 
-const ModalCamera: React.FC<Props> = ({ onClose }) => {
+const ModalCamera: React.FC<Props> = ({ onClose, onCapture }) => {
   const { t } = useTranslation();
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -19,6 +20,11 @@ const ModalCamera: React.FC<Props> = ({ onClose }) => {
       setIsMobile(true);
     }
   }, []);
+
+  const handleWebcamCapture = (image: File): void => {
+    onCapture(image); // Lempar data ke parent
+    onClose(); // Tutup modal setelah capture
+  };
 
   return (
     <Modal
@@ -38,7 +44,10 @@ const ModalCamera: React.FC<Props> = ({ onClose }) => {
           {t('chat.modalCameraTitle')}
         </Typography>
       </div>
-      <CustomWebcam type={isMobile ? 'portrait' : 'landscape'} />
+      <CustomWebcam
+        type={isMobile ? 'portrait' : 'landscape'}
+        onCapture={handleWebcamCapture}
+      />
     </Modal>
   );
 };

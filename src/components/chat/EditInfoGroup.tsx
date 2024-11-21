@@ -73,6 +73,14 @@ const EditInfoGroup: React.FC<EditInfoGroupProps> = ({
     }
   };
 
+  const handleCameraCapture = (capturedImage: File): void => {
+    setAvatar(capturedImage);
+    setUpdateGroupForm(prevState => ({
+      ...prevState,
+      avatar: URL.createObjectURL(capturedImage)
+    }));
+  };
+
   const handleInputChange = (
     key: keyof UpdateGroupForm,
     value: string
@@ -257,6 +265,7 @@ const EditInfoGroup: React.FC<EditInfoGroupProps> = ({
           onClose={() => {
             setIsModalCameraOpen(false);
           }}
+          onCapture={handleCameraCapture}
         />
       )}
     </div>

@@ -2546,7 +2546,9 @@ export default {
     placeholderDesc: 'Ketik deskripsi grup Anda di sini!',
     modalCameraTitle: 'Ambil Foto',
     shareGroup: 'Undang melalui Link',
-    successMute: 'Notifikasi Dibisukan'
+    successMute: 'Notifikasi Dibisukan',
+    retake: 'Ulangi',
+    usePhoto: 'Gunakan'
   },
   play: {
     keystat: 'Key Stats'

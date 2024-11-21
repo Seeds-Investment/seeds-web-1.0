@@ -2618,7 +2618,9 @@ export default {
     placeholderDesc: 'Type your group description here!',
     modalCameraTitle: 'Take a photo',
     shareGroup: 'Invite via Link',
-    successMute: 'Notification Muted'
+    successMute: 'Notification Muted',
+    retake: 'Retake',
+    usePhoto: 'Use Photo'
   },
   play: {
     keystat: 'Key Stats'

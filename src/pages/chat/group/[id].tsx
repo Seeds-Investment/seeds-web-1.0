@@ -163,15 +163,19 @@ const DetailGroup: React.FC = () => {
                   />
                 </MenuHandler>
                 <MenuList>
-                  <MenuItem
-                    onClick={() => {
-                      setIsOpenEditGroup(prev => !prev);
-                    }}
-                    className="font-poppins text-sm font-normal text-[#201B1C] flex items-center gap-2"
-                  >
-                    <Image src={EditButton} alt="edit" width={20} />
-                    {t('chat.menuBar.changeGroupInfo')}
-                  </MenuItem>
+                  {groupMembers?.data
+                    ?.filter(member => member?.user_id === dataUser?.id)
+                    .find(member => member?.role === 'admin') != null && (
+                    <MenuItem
+                      onClick={() => {
+                        setIsOpenEditGroup(prev => !prev);
+                      }}
+                      className="font-poppins text-sm font-normal text-[#201B1C] flex items-center gap-2"
+                    >
+                      <Image src={EditButton} alt="edit" width={20} />
+                      {t('chat.menuBar.changeGroupInfo')}
+                    </MenuItem>
+                  )}
                   <MenuItem
                     onClick={handleMuteGroup}
                     className="font-poppins text-sm font-normal text-[#201B1C] flex items-center gap-2"

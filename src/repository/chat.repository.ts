@@ -438,7 +438,7 @@ export const updateGroup = async (
 
 export const addNewMember = async (
   id: string,
-  data: string[]
+  users_id: string[]
 ): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
@@ -449,7 +449,7 @@ export const addNewMember = async (
   const path = `${Endpoints.chat.groupDetail}/${id}/add`;
   await baseUrl.post(
     path,
-    { data },
+    { users_id },
     {
       headers: {
         Accept: 'application/json',

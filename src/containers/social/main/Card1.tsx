@@ -61,7 +61,7 @@ const Card1: React.FC<props> = ({
     <CCard className="flex p-2 md:mt-5 md:rounded-lg border-none rounded-none">
       {!isGuest() && (
         <div className="flex flex-row items-center justify-center w-full mb-2">
-          <div className="mr-2 w-1/2">
+          <div className="mr-2 w-full md:w-1/2">
             <div
               className="relative"
               onClick={() => {
@@ -86,7 +86,7 @@ const Card1: React.FC<props> = ({
             <MenuHandler>
               <Button className="flex flex-row gap-2 border-[#E9E9E9] bg-[#FFF] rounded-md text-[#7C7C7C]">
                 <FilterIcon />
-                Filter
+                <div className='hidden md:flex'>Filter</div>
               </Button>
             </MenuHandler>
             <MenuList className="w-1/6">

@@ -7,7 +7,7 @@ import AssetPagination from '@/components/AssetPagination';
 import Loading from '@/components/popup/Loading';
 import ModalCancelOrder from '@/components/popup/ModalCancelOrder';
 import VirtualBalanceChart from '@/containers/tournament/portfolio-chart/VirtualBalanceChart';
-import { standartCurrency } from '@/helpers/currency';
+import { formatAssetPrice, standartCurrency } from '@/helpers/currency';
 import { getShortDate } from '@/helpers/dateFormat';
 import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
@@ -54,6 +54,7 @@ interface HistoryTransaction {
   lot: number;
   pnl: number;
   stop_loss: number;
+  status: string;
   type: string;
   updated_at: string;
 }
@@ -72,10 +73,10 @@ interface UserInfo {
 }
 
 interface HistoryTransactionMetadata {
-  currentPage: number
-  limit: number
-  totalPage: number
-  totalRow: number
+  currentPage: number;
+  limit: number;
+  totalPage: number;
+  totalRow: number;
 }
 
 const VirtualBalance = (): React.ReactElement => {
@@ -104,7 +105,8 @@ const VirtualBalance = (): React.ReactElement => {
   const [historyTransaction, setHistoryTransaction] = useState<
     HistoryTransaction[]
   >([]);
-  const [historyTransactionMetadata, setHistoryTransactionMetadata] = useState<HistoryTransactionMetadata>();
+  const [historyTransactionMetadata, setHistoryTransactionMetadata] =
+    useState<HistoryTransactionMetadata>();
   const [historyParams, setHistoryParams] = useState({
     limit: 5,
     page: 1
@@ -185,7 +187,7 @@ const VirtualBalance = (): React.ReactElement => {
         currency
       });
       setHistoryTransaction(response?.playOrders);
-      setHistoryTransactionMetadata(response?.metadata)
+      setHistoryTransactionMetadata(response?.metadata);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -273,80 +275,91 @@ const VirtualBalance = (): React.ReactElement => {
                 <TabPanel value="openOrder">
                   {openOrder !== null ? (
                     <>
-                      {openOrder?.slice(orderParams.startIndex, orderParams.endIndex)?.map(data => (
-                        <div
-                          key={data?.id}
-                          className="bg-[#4DA81C] pl-1 rounded-lg shadow-lg text-xs md:text-sm"
-                        >
-                          <div className="w-full flex justify-between items-center p-2 mt-4 bg-[#F9F9F9] md:bg-white border border-[#E9E9E9] md:border-none rounded-tl-lg">
-                            <div className="flex gap-2 md:gap-4 w-full justify-between items-center">
-                              <div className="flex justify-center items-center w-[30px] h-[30px] md:w-[40px] md:h-[40px] xl:w-[50px] xl:h-[50px]">
-                                <img
-                                  alt=""
-                                  src={data?.asset_icon}
-                                  className="w-auto h-full"
-                                />
-                              </div>
-                              <div className="w-full">
-                                <div className="flex gap-1 text-sm md:text-md xl:text-lg w-full">
-                                  <div className="font-semibold">
-                                    {data?.asset_ticker} / {data?.currency}
+                      {openOrder
+                        ?.slice(orderParams.startIndex, orderParams.endIndex)
+                        ?.map(data => (
+                          <div
+                            key={data?.id}
+                            className="bg-[#4DA81C] pl-1 rounded-lg shadow-lg text-xs md:text-sm"
+                          >
+                            <div className="w-full flex justify-between items-center p-2 mt-4 bg-[#F9F9F9] md:bg-white border border-[#E9E9E9] md:border-none rounded-tl-lg">
+                              <div className="flex gap-2 md:gap-4 w-full justify-between items-center">
+                                <div className="flex justify-center items-center w-[30px] h-[30px] md:w-[40px] md:h-[40px] xl:w-[50px] xl:h-[50px]">
+                                  <img
+                                    alt=""
+                                    src={data?.asset_icon}
+                                    className="w-auto h-full"
+                                  />
+                                </div>
+                                <div className="w-full">
+                                  <div className="flex gap-1 text-sm md:text-md xl:text-lg w-full">
+                                    <div className="font-semibold">
+                                      {data?.asset_ticker} / {data?.currency}
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-between items-center w-full">
+                                    <div
+                                      className={`${
+                                        data?.order === 'BUY'
+                                          ? 'text-[#4DA81C]'
+                                          : 'text-[#DD2525]'
+                                      } text-[11px] md:text-sm`}
+                                    >
+                                      {t('tournament.assets.pending')} -{' '}
+                                      {data?.order}
+                                    </div>
+                                    <div className="text-[#7C7C7C] text-[10px] md:text-sm">
+                                      {getShortDate(data?.created_at)}
+                                    </div>
                                   </div>
                                 </div>
-                                <div className="flex justify-between items-center w-full">
-                                  <div className="text-[#4DA81C] text-[11px] md:text-sm">
-                                    {t('tournament.assets.pending')}
-                                  </div>
-                                  <div className="text-[#7C7C7C] text-[10px] md:text-sm">
-                                    {getShortDate(data?.created_at)}
-                                  </div>
-                                </div>
+                              </div>
+                            </div>
+                            <div className=" bg-[#E9E9E9] p-2 flex justify-between">
+                              <div className="text-[#7C7C7C] ">
+                                {t('tournament.assets.amount')}
+                              </div>
+                              <div className="font-semibold">
+                                {data?.amount}
+                              </div>
+                            </div>
+                            <div className=" bg-white p-2 flex justify-between">
+                              <div className="text-[#7C7C7C]">
+                                {t('tournament.assets.price')}
+                              </div>
+                              <div className="text-black font-semibold">
+                                {userInfo?.preferredCurrency !== undefined
+                                  ? userInfo?.preferredCurrency
+                                  : 'IDR'}
+                                {standartCurrency(data?.price ?? 0).replace(
+                                  'Rp',
+                                  ''
+                                )}
+                              </div>
+                            </div>
+                            <div className=" bg-[#E9E9E9] p-2 flex justify-between">
+                              <div className="text-[#7C7C7C]">Total</div>
+                              <div className="text-black font-semibold">
+                                {userInfo?.preferredCurrency !== undefined
+                                  ? userInfo?.preferredCurrency
+                                  : 'IDR'}
+                                {standartCurrency(
+                                  (data?.price ?? 0) * (data?.amount ?? 0)
+                                ).replace('Rp', '')}
+                              </div>
+                            </div>
+                            <div className="flex justify-center items-center bg-white">
+                              <div
+                                onClick={() => {
+                                  handleShowModalCancelOrder(data?.id);
+                                }}
+                                className="text-[#DD2525] font-semibold border border-[#DD2525] px-4 py-2 my-4 w-[80%] md:w-[300px] rounded-full text-center cursor-pointer hover:shadow-xl duration-300"
+                              >
+                                {t('tournament.assets.cancel')}
                               </div>
                             </div>
                           </div>
-                          <div className=" bg-[#E9E9E9] p-2 flex justify-between">
-                            <div className="text-[#7C7C7C] ">
-                              {t('tournament.assets.amount')}
-                            </div>
-                            <div className="font-semibold">{data?.amount}</div>
-                          </div>
-                          <div className=" bg-white p-2 flex justify-between">
-                            <div className="text-[#7C7C7C]">
-                              {t('tournament.assets.price')}
-                            </div>
-                            <div className="text-black font-semibold">
-                              {userInfo?.preferredCurrency !== undefined
-                                ? userInfo?.preferredCurrency
-                                : 'IDR'}
-                              {standartCurrency(data?.price ?? 0).replace(
-                                'Rp',
-                                ''
-                              )}
-                            </div>
-                          </div>
-                          <div className=" bg-[#E9E9E9] p-2 flex justify-between">
-                            <div className="text-[#7C7C7C]">Total</div>
-                            <div className="text-black font-semibold">
-                              {userInfo?.preferredCurrency !== undefined
-                                ? userInfo?.preferredCurrency
-                                : 'IDR'}
-                              {standartCurrency(
-                                (data?.price ?? 0) * (data?.amount ?? 0)
-                              ).replace('Rp', '')}
-                            </div>
-                          </div>
-                          <div className="flex justify-center items-center bg-white">
-                            <div
-                              onClick={() => {
-                                handleShowModalCancelOrder(data?.id);
-                              }}
-                              className="text-[#DD2525] font-semibold border border-[#DD2525] px-4 py-2 my-4 w-[80%] md:w-[300px] rounded-full text-center cursor-pointer hover:shadow-xl duration-300"
-                            >
-                              {t('tournament.assets.cancel')}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                        ))}
                     </>
                   ) : (
                     <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0 mt-8">
@@ -405,8 +418,14 @@ const VirtualBalance = (): React.ReactElement => {
                                   </div>
                                 </div>
                                 <div className="flex justify-between items-center w-full">
-                                  <div className="text-[#4DA81C] text-[11px] md:text-sm">
-                                    {t('tournament.assets.pending')}
+                                  <div
+                                    className={`${
+                                      data?.type === 'BUY'
+                                        ? 'text-[#4DA81C]'
+                                        : 'text-[#DD2525]'
+                                    } text-[11px] md:text-sm`}
+                                  >
+                                    {`${data?.status} - ${data?.type}`}
                                   </div>
                                   <div className="text-[#7C7C7C] text-[10px] md:text-sm">
                                     {getShortDate(data?.created_at)}
@@ -435,11 +454,8 @@ const VirtualBalance = (): React.ReactElement => {
                               <div className="text-black font-semibold">
                                 {userInfo?.preferredCurrency !== undefined
                                   ? userInfo?.preferredCurrency
-                                  : 'IDR'}
-                                {standartCurrency(data?.bid_price ?? 0).replace(
-                                  'Rp',
-                                  ''
-                                )}
+                                  : 'IDR'}{' '}
+                                {formatAssetPrice(data?.bid_price ?? 0)}
                               </div>
                             </div>
                             <div className="flex flex-col justify-end items-end">
@@ -447,10 +463,10 @@ const VirtualBalance = (): React.ReactElement => {
                               <div className="text-black font-semibold">
                                 {userInfo?.preferredCurrency !== undefined
                                   ? userInfo?.preferredCurrency
-                                  : 'IDR'}
-                                {standartCurrency(
+                                  : 'IDR'}{' '}
+                                {formatAssetPrice(
                                   (data?.bid_price ?? 0) * (data?.lot ?? 0)
-                                ).replace('Rp', '')}
+                                )}
                               </div>
                             </div>
                           </div>
@@ -478,7 +494,9 @@ const VirtualBalance = (): React.ReactElement => {
                   <div className="flex justify-center mx-auto my-8">
                     <AssetPagination
                       currentPage={historyParams.page}
-                      totalPages={Math.ceil(historyTransactionMetadata?.totalPage ?? 0)}
+                      totalPages={Math.ceil(
+                        historyTransactionMetadata?.totalPage ?? 0
+                      )}
                       onPageChange={page => {
                         setHistoryParams({ ...historyParams, page });
                       }}

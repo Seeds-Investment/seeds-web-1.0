@@ -35,9 +35,10 @@ export const getWithdrawalList = async (currency?: string): Promise<any> => {
   );
 };
 
-export const getWithdrawalMyEarning = async (
-  params: { currency: string; search: string; }
-): Promise<any> => {
+export const getWithdrawalMyEarning = async (params: {
+  currency: string;
+  search: string;
+}): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 

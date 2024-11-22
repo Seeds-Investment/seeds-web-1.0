@@ -1,15 +1,24 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use client';
-import { calculatePercentageChange } from '@/helpers/assetPercentageChange';
-import { standartCurrency } from '@/helpers/currency';
+import {
+  calculatePercentageDifference,
+  formatAssetPrice
+} from '@/helpers/currency';
 import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import {
   getWatchlistById,
   updateWatchlist
 } from '@/repository/market.repository';
-import { type UserInfo } from '@/utils/interfaces/tournament.interface';
-import { Typography } from '@material-tailwind/react';
+import {
+  type IDetailTournament,
+  type UserInfo
+} from '@/utils/interfaces/tournament.interface';
+import {
+  ArrowTrendingDownIcon,
+  ArrowTrendingUpIcon
+} from '@heroicons/react/24/outline';
+import { Avatar, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
@@ -51,9 +60,17 @@ interface Props {
   onClose: () => void;
   data: Watchlist;
   userInfo: UserInfo;
+  setUpdate?: React.Dispatch<React.SetStateAction<boolean>>;
+  detailTournament?: IDetailTournament;
 }
 
-const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
+const ModalEditWatchlist: React.FC<Props> = ({
+  onClose,
+  data,
+  userInfo,
+  setUpdate,
+  detailTournament
+}) => {
   const { t } = useTranslation();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
   const [assets, setAssets] = useState<AssetItemType[]>([]);
@@ -65,11 +82,14 @@ const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
 
   useEffect(() => {
     void fetchPlayWatchlist();
-  }, []);
+  }, [data?.id, userInfo?.preferredCurrency]);
 
   const fetchPlayWatchlist = async (): Promise<void> => {
     try {
-      const response = await getWatchlistById(data?.id);
+      const response = await getWatchlistById(
+        data?.id,
+        userInfo?.preferredCurrency
+      );
       setAssets(response?.watchlist?.assetList);
 
       response?.watchlist?.assetList.forEach((asset: AssetList) => {
@@ -87,6 +107,17 @@ const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
       onClose();
+      if (setUpdate) {
+        setUpdate(prev => !prev);
+      }
+    }
+  };
+
+  const handleArrow = (value: number): boolean => {
+    if (value > 0) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -101,13 +132,15 @@ const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
             setForm({ ...form, asset_list: text });
           }}
           assetList={form?.asset_list}
+          userInfo={userInfo}
+          detailTournament={detailTournament}
         />
       )}
 
       <Modal
         onClose={onClose}
         backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/75 flex justify-start items-start"
-        modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[40%] md:left-[10%] md:right-[-10%] xl:left-[22.5%] xl:right-[-22.5%] mt-[-12.35rem] w-full md:w-[80%] xl:w-[60%] h-[70vh] md:h-[50vh] p-4 rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white overflow-y-scroll"
+        modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[40%] md:left-[10%] md:right-[-10%] xl:left-[22.5%] xl:right-[-22.5%] mt-[-12.35rem] w-full md:w-[80%] xl:w-[60%] h-[430px] md:h-[410px] p-4 lg:rounded-3xl rounded-t-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
       >
         <div className="flex justify-between">
           <Typography className="font-bold text-lg text-[#3AC4A0]">
@@ -132,54 +165,74 @@ const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
             {t('tournament.watchlist.changeAsset')}
           </div>
         </div>
-        <div className="w-full gap-4 mt-4">
-          {assets?.map(item => (
+        <div className="w-full gap-4 mt-4 lg:h-[220px] h-[235px] overflow-y-auto team-battle-scroll">
+          {assets?.map(asset => (
             <div
-              key={item.id}
+              key={asset.id}
               className="w-full h-fit py-2 mb-2 bg-[#F7FBFA] flex justify-between pl-2 pr-4 md:pl-4"
             >
-              <div className="flex justify-start items-center gap-2 md:gap-4">
-                <div className="h-[30px] w-[30px]">
-                  <img src={item?.logo} className="w-full h-full" />
-                </div>
-                <div>
-                  <div>
-                    {item?.seedsTicker} / {item?.exchangeCurrency}
-                  </div>
-                  <div className="hidden md:flex">{item?.name}</div>
-                  <div className="md:hidden">
-                    {item?.name?.length < 12
-                      ? item?.name
-                      : `${item?.name?.slice(0, 11)}...`}
-                  </div>
+              <div className="flex items-center gap-3">
+                <Avatar src={asset?.logo} alt="logo" width={40} height={40} />
+                <div className="flex flex-col gap-[6px]">
+                  <Typography className="font-poppins lg:text-sm text-xs font-semibold">
+                    {asset?.realTicker} /{' '}
+                    <span className="font-normal text-xs">
+                      {userInfo?.preferredCurrency ?? 'IDR'}
+                    </span>
+                  </Typography>
+                  <Typography className="text-[#7C7C7C] font-normal text-xs font-poppins">
+                    {asset?.name !== undefined && asset.name.length > 18
+                      ? `${asset.name.slice(0, 18)}...`
+                      : asset?.name}
+                  </Typography>
                 </div>
               </div>
-              <div className="flex">
-                <div className="flex flex-col justify-end items-end">
-                  <div>
-                    {userInfo?.preferredCurrency !== undefined
-                      ? userInfo?.preferredCurrency
-                      : 'IDR'}
-                    {standartCurrency(item?.priceBar?.close ?? 0).replace(
-                      'Rp',
-                      ''
-                    )}
-                  </div>
-                  {item?.priceBar !== undefined && (
-                    <div
-                      className={`${
-                        item?.priceBar?.close >= item?.priceBar?.open
-                          ? 'text-[#3AC4A0]'
-                          : 'text-[#DD2525]'
-                      } text-base`}
-                    >
-                      {`(${calculatePercentageChange(
-                        item?.priceBar?.open ?? 0,
-                        item?.priceBar?.close ?? 0
-                      )}%)`}
-                    </div>
+              <div className="flex flex-col gap-[6px] items-end">
+                <Typography className="font-poppins text-sm font-semibold">
+                  {userInfo?.preferredCurrency}{' '}
+                  {new Intl.NumberFormat().format(
+                    formatAssetPrice(asset?.priceBar?.close)
+                  ) ?? 0}
+                </Typography>
+                <Typography
+                  className={`flex font-normal text-xs ${
+                    handleArrow(
+                      calculatePercentageDifference(
+                        asset?.priceBar?.open,
+                        asset?.priceBar?.close
+                      ).value
+                    )
+                      ? 'text-[#3AC4A0]'
+                      : 'text-red-500'
+                  }`}
+                >
+                  {handleArrow(
+                    calculatePercentageDifference(
+                      asset?.priceBar?.open,
+                      asset?.priceBar?.close
+                    ).value
+                  ) ? (
+                    <ArrowTrendingUpIcon
+                      height={15}
+                      width={15}
+                      className="mr-2"
+                    />
+                  ) : (
+                    <ArrowTrendingDownIcon
+                      height={15}
+                      width={15}
+                      className="mr-2"
+                    />
                   )}
-                </div>
+                  (
+                  {
+                    calculatePercentageDifference(
+                      asset?.priceBar?.open,
+                      asset?.priceBar?.close
+                    )?.value
+                  }{' '}
+                  %)
+                </Typography>
               </div>
             </div>
           ))}

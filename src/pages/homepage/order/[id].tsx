@@ -7,8 +7,9 @@ import CardPrice from '@/containers/homepage/order/CardPrice';
 import CardSwitch from '@/containers/homepage/order/CardSwitch';
 import SuccessOrderModal from '@/containers/homepage/order/SuccessOrderModal';
 import CardPriceSkeleton from '@/containers/homepage/order/skeleton/CardPriceSkeleton';
-import { standartCurrency } from '@/helpers/currency';
+import { formatAssetPrice, standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
+import useGetLastPrice from '@/hooks/useGetLastPrice';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import { getDetailAsset } from '@/repository/asset.repository';
 import {
@@ -17,11 +18,13 @@ import {
   getPlayBallance
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { useAppSelector } from '@/store/redux/store';
 import {
   type AssetI,
   type SuccessOrderData
 } from '@/utils/interfaces/play.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
+import { type PreferredCurrencyI } from '@/utils/interfaces/user.interface';
 import {
   Avatar,
   Button,
@@ -111,13 +114,17 @@ const OrderPage: React.FC = () => {
     profit: '',
     loss: ''
   });
-
+  const { dataUser } = useAppSelector(state => state.user);
+  const prefCurrency = dataUser?.preferredCurrency.toLowerCase() ?? 'usd';
+  const lastPrice = useGetLastPrice(data?.seedsTicker);
   useEffect(() => {
     if (sellPercent !== 0) {
       setAmount(
         `${
           ((portfolio?.total_lot ?? 0) *
-            (data?.lastPrice?.open ?? 0) *
+            (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+              ? lastPrice[prefCurrency as PreferredCurrencyI]
+              : (lastPriceAsset as number)) *
             sellPercent) /
           100
         }`
@@ -131,7 +138,9 @@ const OrderPage: React.FC = () => {
       amount !==
       `${
         ((portfolio?.total_lot ?? 0) *
-          (data?.lastPrice?.open ?? 0) *
+          (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+            ? lastPrice[prefCurrency as PreferredCurrencyI]
+            : (lastPriceAsset as number)) *
           sellPercent) /
         100
       }`
@@ -142,7 +151,7 @@ const OrderPage: React.FC = () => {
       setSellPercent(0);
     }
   }, [amount, assetAmount]);
-
+  const lastPriceAsset = data?.lastPrice.close;
   const [userInfo, setUserInfo] = useState<UserInfo>();
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -293,10 +302,22 @@ const OrderPage: React.FC = () => {
           setDebounceTimer(
             setTimeout((): void => {
               if (isDevide) {
-                setNewVal(`${parseInt(value) / (data?.lastPrice?.open ?? 0)}`);
+                setNewVal(
+                  `${
+                    parseInt(value) /
+                    (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                      ? lastPrice[prefCurrency as PreferredCurrencyI]
+                      : (lastPriceAsset as number))
+                  }`
+                );
               } else {
                 setNewVal(
-                  `${parseFloat(value) * (data?.lastPrice?.open ?? 0)}`
+                  `${
+                    parseFloat(value) *
+                    (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                      ? lastPrice[prefCurrency as PreferredCurrencyI]
+                      : (lastPriceAsset as number))
+                  }`
                 );
               }
             }, 100)
@@ -309,11 +330,21 @@ const OrderPage: React.FC = () => {
               if (value.length > 0) {
                 if (isDevide) {
                   setNewVal(
-                    `${parseInt(value) / (data?.lastPrice?.open ?? 0)}`
+                    `${
+                      parseInt(value) /
+                      (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                        ? lastPrice[prefCurrency as PreferredCurrencyI]
+                        : (lastPriceAsset as number))
+                    }`
                   );
                 } else {
                   setNewVal(
-                    `${parseFloat(value) * (data?.lastPrice?.open ?? 0)}`
+                    `${
+                      parseFloat(value) *
+                      (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                        ? lastPrice[prefCurrency as PreferredCurrencyI]
+                        : (lastPriceAsset as number))
+                    }`
                   );
                 }
               }
@@ -396,7 +427,13 @@ const OrderPage: React.FC = () => {
       <CCard className="flex flex-col w-full p-5 border-none rounded-xl">
         {data !== undefined ? (
           <CardPrice
-            data={data}
+            data={{
+              ...data,
+              socketPrice:
+                lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                  ? lastPrice[prefCurrency as PreferredCurrencyI]
+                  : (lastPriceAsset as number)
+            }}
             currency={userInfo?.preferredCurrency ?? 'IDR'}
           />
         ) : (
@@ -411,11 +448,15 @@ const OrderPage: React.FC = () => {
                 t('playSimulation.portfolio')}
             </Typography>
             <Typography className="text-base font-poppins font-base text-black">
-              {`${standartCurrency(
+              {prefCurrency}
+              {` ${formatAssetPrice(
                 router.query?.transaction === 'buy'
                   ? ballance?.balance ?? 0
-                  : (portfolio?.total_lot ?? 0) * (data?.lastPrice?.open ?? 0)
-              ).replace('Rp', userInfo?.preferredCurrency ?? 'IDR')}`}{' '}
+                  : (portfolio?.total_lot ?? 0) *
+                      (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                        ? lastPrice[prefCurrency as PreferredCurrencyI]
+                        : (lastPriceAsset as number))
+              )}`}{' '}
               {router.query?.transaction === 'sell' &&
                 `= ${portfolio.total_lot ?? 0} ${data?.realTicker ?? ''}`}
             </Typography>
@@ -611,10 +652,9 @@ const OrderPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-[#7555DA] font-normal text-xs">
                       {price.length === 0
-                        ? standartCurrency(data?.lastPrice?.open ?? 0).replace(
-                            'Rp',
-                            ''
-                          )
+                        ? standartCurrency(
+                            lastPrice[prefCurrency as PreferredCurrencyI] ?? 0
+                          ).replace('Rp', '')
                         : standartCurrency(price ?? 0).replace('Rp', '')}
                     </Typography>
                   </div>
@@ -684,14 +724,6 @@ const OrderPage: React.FC = () => {
                         : ''
                     }`}
                   >
-                    <div className="flex flex-col mb-4">
-                      <Typography className="text-[#262626] font-semibold">
-                        {t('playSimulation.orderReview')}
-                      </Typography>
-                      <Typography className="text-[#3C49D6] font-normal">
-                        #41683983
-                      </Typography>
-                    </div>
                     <div className="flex justify-between mb-5 md:mb-0">
                       <div className="flex flex-col">
                         <Typography className="text-[#262626] font-semibold">
@@ -760,8 +792,8 @@ const OrderPage: React.FC = () => {
                         <Typography className="text-[#7C7C7C] font-normal text-xs">
                           Order ID
                         </Typography>
-                        <Typography className="text-[#262626] font-semibold text-xs">
-                          #123456
+                        <Typography className="text-[#262626] font-semibold text-xs text-right">
+                          #{data?.id}
                         </Typography>
                       </div>
                       {orderType === 'pending' && (
@@ -785,7 +817,8 @@ const OrderPage: React.FC = () => {
                             <Typography className="text-[#262626] font-semibold text-xs">
                               {userInfo?.preferredCurrency ?? 'IDR'}
                               {standartCurrency(
-                                data?.lastPrice?.open ?? 0
+                                lastPrice[prefCurrency as PreferredCurrencyI] ??
+                                  0
                               ).replace('Rp', '')}
                             </Typography>
                           </div>
@@ -887,7 +920,7 @@ const OrderPage: React.FC = () => {
                     {t('playSimulation.footerOrderDetail2')}
                   </Typography>
                   <Button
-                    className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4"
+                    className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4 mb-20 md:mb-0"
                     onClick={() => {
                       submitOrder().catch(err => {
                         toast.error(`${err as string}`);

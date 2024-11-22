@@ -84,7 +84,6 @@ const EditProfile: React.FC = () => {
     e.preventDefault();
     try {
       let updatedForm: any = { ...form };
-
       if (updateAvatar !== undefined && updateAvatar !== null) {
         const { path: cloudResponse } = await postCloud({
           file: updateAvatar,
@@ -105,6 +104,11 @@ const EditProfile: React.FC = () => {
       console.error(error.response.data.message);
     }
   };
+
+  const handleBack = async (): Promise<void> => {
+    router.back();
+  };
+
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -142,6 +146,7 @@ const EditProfile: React.FC = () => {
               src={ArrowBackwardIcon}
               alt="arrow-backward-icon"
               className="mr-[18px]"
+              onClick={handleBack}
             />
             <Typography className="font-montserrat font-bold text-[#262626] text-base">
               {t('editProfile.title')}

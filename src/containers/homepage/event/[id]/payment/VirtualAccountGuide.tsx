@@ -65,17 +65,15 @@ const VirtualAccountGuide = ({
   useEffect(() => {
     const totalFee = parseInt(
       `${
-        (admissionFee ?? 0) 
-        + (
-          (adminFee ?? 0)
-          + (serviceFee ?? 0)
-          - (payment?.is_promo_available ? (promoPrice ?? 0) : 0)
-        )
+        (admissionFee ?? 0) +
+        ((adminFee ?? 0) +
+          (serviceFee ?? 0) -
+          (payment?.is_promo_available ? promoPrice ?? 0 : 0))
       }`
     );
-    setTotalFee(totalFee)
-  }, [])
-  
+    setTotalFee(totalFee);
+  }, []);
+
   return (
     <div className="max-h-[70vh]">
       <div className="flex items-center">

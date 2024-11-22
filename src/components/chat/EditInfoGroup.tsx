@@ -182,22 +182,26 @@ const EditInfoGroup: React.FC<EditInfoGroupProps> = ({
                         onClick={() => {
                           setIsModalCameraOpen(true);
                         }}
-                        className="w-16 h-16 rounded-full bg-[#DCFCE4] cursor-pointer border border-[#1A857D] flex justify-center items-center"
+                        className="w-16 h-16 rounded-full hover:bg-[#DCFCE4] hover:text-[#1A857D] text-[#BDBDBD] cursor-pointer border hover:border-[#1A857D] flex justify-center items-center"
                       >
-                        <CiCamera size={32} color="#1A857D" />
+                        <CiCamera size={32} />
                       </div>
-                      <Typography>{t('chat.camera')}</Typography>
+                      <Typography className="text-black font-poppins font-normal text-sm">
+                        {t('chat.camera')}
+                      </Typography>
                     </div>
                     <div className="flex flex-col items-center gap-2">
                       <div
                         onClick={() => {
                           fileInputRef.current?.click();
                         }}
-                        className="w-16 h-16 rounded-full bg-[#DCFCE4] cursor-pointer border border-[#1A857D] flex justify-center items-center"
+                        className="w-16 h-16 rounded-full hover:bg-[#DCFCE4] hover:text-[#1A857D] text-[#BDBDBD] cursor-pointer border hover:border-[#1A857D] flex justify-center items-center"
                       >
-                        <AiOutlinePicture size={32} color="#1A857D" />
+                        <AiOutlinePicture size={32} />
                       </div>
-                      <Typography>{t('chat.gallery')}</Typography>
+                      <Typography className="text-black font-poppins font-normal text-sm">
+                        {t('chat.gallery')}
+                      </Typography>
                     </div>
                   </div>
                 </MenuList>

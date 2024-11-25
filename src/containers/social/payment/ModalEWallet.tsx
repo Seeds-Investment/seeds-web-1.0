@@ -6,6 +6,7 @@ import InlineText from '@/containers/play/payment/components/InlineText';
 import { standartCurrency } from '@/helpers/currency';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type DataPost } from '@/utils/interfaces/social.interfaces';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Input, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,13 +24,15 @@ interface WalletFormProps {
   ) => Promise<void>;
   dataPost: DataPost;
   newPromoCodeDiscount: number;
+  userInfo: UserInfo;
 }
 
 const ModalEWallet = ({
   payment,
   handlePay,
   dataPost,
-  newPromoCodeDiscount
+  newPromoCodeDiscount,
+  userInfo
 }: WalletFormProps): JSX.Element => {
   const translationId = 'PlayPayment.WalletForm';
   const { t } = useTranslation();
@@ -123,25 +126,25 @@ const ModalEWallet = ({
       {renderPhoneInput()}
       <InlineText
         label={t('social.payment.socialFee')}
-        value={standartCurrency(dataPost?.premium_fee ?? 0)}
+        value={`${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(dataPost?.premium_fee ?? 0)}`}
         className="mb-2"
       />
       {showOtherFees && (
         <>
           <InlineText
             label={t(`${translationId}.serviceFeeLabel`)}
-            value={`${standartCurrency(payment.service_fee ?? 0)}`}
+            value={`${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(payment.service_fee ?? 0)}`}
             className="mb-2"
           />
           <InlineText
             label={t(`${translationId}.adminFeeLabel`)}
-            value={`${standartCurrency(payment?.admin_fee ?? 0)}`}
+            value={`${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(payment?.admin_fee ?? 0)}`}
             className="mb-2"
           />
           {payment.is_promo_available ? (
             <InlineText
               label={t(`${translationId}.adminFeeDiscountLabel`)}
-              value={`- ${standartCurrency(payment.promo_price ?? 0)}`}
+              value={`- ${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(payment.promo_price ?? 0)}`}
               className="mb-2"
             />
           ) : null}
@@ -151,7 +154,7 @@ const ModalEWallet = ({
         <>
           <InlineText
             label="Promo Code"
-            value={`- ${standartCurrency(
+            value={`- ${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
               promoCodeValidationResult?.response?.total_discount
             )}`}
             className="mb-4"
@@ -165,10 +168,12 @@ const ModalEWallet = ({
         </Typography>
         {promoCodeValidationResult?.response?.final_price !== 0 ? (
           <Typography className="text-xl text-[#3AC4A0] font-semibold text-right my-5">
+            {userInfo?.preferredCurrency ?? 'IDR'}{' '}
             {standartCurrency(totalFee ?? 0)}
           </Typography>
         ) : (
           <Typography className="text-xl text-[#3AC4A0] font-semibold text-right my-5">
+            {userInfo?.preferredCurrency ?? 'IDR'}{' '}
             {standartCurrency(totalFee ?? 0)}
           </Typography>
         )}

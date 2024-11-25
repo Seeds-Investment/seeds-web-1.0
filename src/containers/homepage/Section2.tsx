@@ -1,4 +1,4 @@
-import { formatCurrency, standartCurrency } from '@/helpers/currency';
+import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
 import {
   getPlaySimulation,
@@ -320,7 +320,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                 </div>
                 <h1 className="text-xl font-semibold mt-2 text-[#262626]">
                   {userInfo?.preferredCurrency ?? 'IDR'}{' '}
-                  {formatCurrency((playerData?.asset ?? 0).toFixed(0))}
+                  {standartCurrency((playerData?.asset ?? 0))}
                 </h1>
                 <h3 className="text-xs mt-2 text-[#7C7C7C]">
                   {t('homepage.section2.text2')}:{' '}

@@ -283,7 +283,7 @@ const BuyPage: React.FC = () => {
     if (assetAmount.length === 0 && amount.length === 0) {
       setIsDisable(true);
     } else if (
-      parseFloat(amount) > ballance.balance &&
+      parseFloat(amount) > ballance?.balance &&
       router.query?.transaction === 'buy'
     ) {
       setIsDisable(true);
@@ -295,7 +295,7 @@ const BuyPage: React.FC = () => {
     } else {
       setIsDisable(false);
     }
-  }, [assetAmount, amount, ballance.balance]);
+  }, [assetAmount, amount, ballance?.balance]);
 
   const fetchDetailAsset = async (currency: string): Promise<void> => {
     try {

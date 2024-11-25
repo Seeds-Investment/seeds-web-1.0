@@ -304,7 +304,7 @@ const BuyPage: React.FC = () => {
         (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
           ? lastPrice[prefCurrency as PreferredCurrencyI]
           : lastPriceAsset ?? 0) >
-        ballance.balance &&
+        ballance?.balance &&
       router.query?.transaction === 'buy'
     ) {
       setIsDisable(true);
@@ -316,7 +316,7 @@ const BuyPage: React.FC = () => {
     } else {
       setIsDisable(false);
     }
-  }, [assetAmount, amount, ballance.balance]);
+  }, [assetAmount, amount, ballance?.balance]);
 
   const fetchDetailAsset = async (currency: string): Promise<void> => {
     try {

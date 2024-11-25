@@ -15,6 +15,7 @@ import GifChat from '@/containers/chat/GifChat';
 import withAuth from '@/helpers/withAuth';
 import LeaveButton from '../../../public/assets/chat/logout-icon.svg';
 // import useGetOnlineStatus from '@/hooks/useGetOnlineStatus';
+import ModalCamera from '@/components/chat/ModalCamera';
 import { getChatDate } from '@/helpers/dateFormat';
 import { searchUser } from '@/repository/auth.repository';
 import {
@@ -82,8 +83,15 @@ import {
 import { ArrowBackwardIconWhite, XIcon } from 'public/assets/vector';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AiOutlinePicture } from 'react-icons/ai';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { CiBellOff, CiSearch, CiTrash } from 'react-icons/ci';
+import {
+  CiBellOff,
+  CiCamera,
+  CiSearch,
+  CiTrash,
+  CiVideoOn
+} from 'react-icons/ci';
 import { toast } from 'react-toastify';
 import defaultAvatar from '../../../public/assets/chat/default-avatar.svg';
 
@@ -135,6 +143,8 @@ const ChatPages: React.FC = () => {
   const [isShowGifPopup, setIsShowGifPopup] = useState<boolean>(false);
   const [isVoiceRecording, setIsVoiceRecording] = useState<boolean>(false);
   const [isShowPopUpOption, setIsShowPopUpOption] = useState<boolean>(false);
+  const [isShowMediaOption, setIsShowMediaOption] = useState<boolean>(false);
+  const [isModalCameraOpen, setIsModalCameraOpen] = useState<boolean>(false);
   const [messageList, setMessageList] = useState<IChatBubble[] | []>([]);
   const [message, setMessage] = useState<string>('');
   const [searchFilter, setSearchFilter] = useState<SearchUserParams>(
@@ -662,7 +672,23 @@ const ChatPages: React.FC = () => {
         }
       }
     }
-    setIsShowPopUpOption(!isShowPopUpOption)
+    setIsShowMediaOption(!isShowMediaOption);
+  };
+
+  const handleCameraCapture = async (capturedImage: File): Promise<void> => {
+    const mediaUrl = (await postMedia(capturedImage)) as string;
+    const data =
+      activeTab === 'COMMUNITY'
+        ? { media_urls: [mediaUrl], group_id: roomId as string }
+        : { media_urls: [mediaUrl], user_id: roomId as string };
+    try {
+      await sendPersonalMessage(data);
+      void fetchChat();
+    } catch (error: any) {
+      toast(error, { type: 'error' });
+    } finally {
+      setIsShowMediaOption(!isShowMediaOption);
+    }
   };
 
   useEffect(() => {
@@ -1794,6 +1820,7 @@ const ChatPages: React.FC = () => {
                             className="h-auto w-full cursor-pointer hover:scale-110 duration-300"
                             onClick={() => {
                               setIsShowPopUpOption(!isShowPopUpOption);
+                              setIsShowMediaOption(false);
                             }}
                           />
                           {isShowPopUpOption && (
@@ -1812,18 +1839,12 @@ const ChatPages: React.FC = () => {
                                 />
                               </div>
                               <div className="flex relative">
-                                <input
-                                  type="file"
-                                  id="MediaUpload"
-                                  onChange={handleSendImageMessage}
-                                  className="hidden"
-                                  accept="image/jpg,image/jpeg,image/png,video/mp4,video/mov"
-                                />
                                 <div className="flex justify-center items-center w-[24px] h-auto cursor-pointer">
                                   <Image
-                                  onClick={() => {
-                                    document.getElementById('MediaUpload')?.click();
-                                  }}
+                                    onClick={() => {
+                                      setIsShowMediaOption(!isShowMediaOption);
+                                      setIsShowPopUpOption(!isShowPopUpOption);
+                                    }}
                                     src={optionImage}
                                     alt="optionImage"
                                     width={100}
@@ -1843,7 +1864,80 @@ const ChatPages: React.FC = () => {
                               </div>
                             </div>
                           )}
+                          {isShowMediaOption && (
+                            <div className="absolute top-[-190px] left-[5px] bg-[#F9F9F9] p-6 rounded-2xl shadow-md">
+                              <div className="flex flex-col gap-3">
+                                <Image
+                                  className="cursor-pointer hover:scale-125 duration-200"
+                                  onClick={() => {
+                                    setIsShowMediaOption(false);
+                                    setIsShowPopUpOption(true);
+                                  }}
+                                  src={XIcon}
+                                  alt="XIcon"
+                                  width={20}
+                                  height={20}
+                                />
+                                <div className="flex flex-row items-center gap-6 hover:outline-none">
+                                  <div className="flex flex-col items-center gap-2">
+                                    <div
+                                      onClick={() => {
+                                        setIsModalCameraOpen(true);
+                                      }}
+                                      className="w-16 h-16 rounded-full hover:bg-[#DCFCE4] hover:text-[#1A857D] text-[#BDBDBD] cursor-pointer border hover:border-[#1A857D] flex justify-center items-center"
+                                    >
+                                      <CiCamera size={32} />
+                                    </div>
+                                    <Typography className="text-black font-poppins font-normal text-sm">
+                                      {t('chat.camera')}
+                                    </Typography>
+                                  </div>
+                                  <div className="flex flex-col items-center gap-2">
+                                    <div
+                                      onClick={() => {}}
+                                      className="w-16 h-16 rounded-full hover:bg-[#DCFCE4] hover:text-[#1A857D] text-[#BDBDBD] cursor-pointer border hover:border-[#1A857D] flex justify-center items-center"
+                                    >
+                                      <CiVideoOn size={32} />
+                                    </div>
+                                    <Typography className="text-black font-poppins font-normal text-sm">
+                                      {t('chat.record')}
+                                    </Typography>
+                                  </div>
+                                  <div className="flex flex-col items-center gap-2">
+                                    <div
+                                      onClick={() => {
+                                        document
+                                          .getElementById('MediaUpload')
+                                          ?.click();
+                                      }}
+                                      className="w-16 h-16 rounded-full hover:bg-[#DCFCE4] hover:text-[#1A857D] text-[#BDBDBD] cursor-pointer border hover:border-[#1A857D] flex justify-center items-center"
+                                    >
+                                      <AiOutlinePicture size={32} />
+                                      <input
+                                        type="file"
+                                        id="MediaUpload"
+                                        onChange={handleSendImageMessage}
+                                        className="hidden"
+                                        accept="image/jpg,image/jpeg,image/png,video/mp4,video/mov"
+                                      />
+                                    </div>
+                                    <Typography className="text-black font-poppins font-normal text-sm">
+                                      {t('chat.gallery')}
+                                    </Typography>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
+                        {isModalCameraOpen && (
+                          <ModalCamera
+                            onClose={() => {
+                              setIsModalCameraOpen(false);
+                            }}
+                            onCapture={handleCameraCapture}
+                          />
+                        )}
                         <div className="flex w-full relative">
                           <textarea
                             value={message}

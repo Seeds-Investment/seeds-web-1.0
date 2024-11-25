@@ -151,7 +151,7 @@ export const SlideQuiz: React.FC = () => {
                       floated={false}
                       shadow={false}
                       color="transparent"
-                      className="m-0 w-72 object-cover rounded-none rounded-t-[18px]"
+                      className="m-0 w-full h-36 object-cover rounded-none rounded-t-[18px] p-0"
                     >
                       <Image
                         src={item.banner.image_url}

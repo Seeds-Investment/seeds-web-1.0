@@ -4,8 +4,7 @@ import { Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import TopgainersAssetHomepage from './top-gainers-hooks/TopGainers.Component';
-
+import TopgainersAssetHomepage from './top-gainers-hooks/TopGainers.component';
 export interface topgainers {
   asset_id: string;
   asset_name: string;

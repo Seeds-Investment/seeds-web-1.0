@@ -382,3 +382,28 @@ export interface Banners {
   updated_at: string;
   deleted_at: string;
 }
+
+export interface TeamBattle {
+  id: string;
+  play_id: string;
+  name: string;
+  category: string;
+  all_category: string[];
+  play_type: string;
+  publish_time: string;
+  open_registration_time: string;
+  play_time: string;
+  end_time: string;
+  min_participant: number;
+  max_participant: number;
+  admission_fee: number;
+  prize_fix_amount: number;
+  prize_fix_percentages: number[];
+  status: string;
+  banner: string;
+  created_at: string;
+  updated_at: string;
+  joined_participants: number;
+  is_joined: boolean;
+  play_center_type: string;
+}

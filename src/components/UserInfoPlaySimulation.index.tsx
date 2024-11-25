@@ -143,7 +143,7 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
                       </Menu>
                     </div>
                   </div>
-                  <Typography className="text-[#392594] font-semibold text-base">
+                  <Typography className="text-[#392594] font-semibold md:text-base text-[14px]">
                     {standartCurrency(playDetail?.user_detail.asset).replace(
                       'Rp',
                       ''
@@ -164,7 +164,7 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
                       {t('homepage.section2.text3')}
                     </Typography>
                   </div>
-                  <Typography className="text-[#392594] font-semibold text-base">
+                  <Typography className="text-[#392594] font-semibold md:text-base text-[14px]">
                     {seedsCoins?.total_available_coins}
                   </Typography>
                 </div>
@@ -187,7 +187,7 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
                   <Typography className="font-poppins text-xs capitalize text-[#7C7C7C]">
                     {t('homepage.section2.text19')}
                   </Typography>
-                  <Typography className="text-[#392594] font-poppins font-medium text-base">
+                  <Typography className="text-[#392594] font-poppins font-medium md:text-base text-[14px]">
                     {standartCurrency(playDetail.prize[0])}
                   </Typography>
                 </div>

@@ -155,7 +155,7 @@ const Section5New: React.FC = () => {
     } else if (multiTab === 'play') {
       void (<CardPlayHomepage />);
     }
-  }, []);
+  }, [multiTab]);
 
   return (
     <div className="w-full h-auto cursor-default">

@@ -19,21 +19,6 @@ interface props {
   onClick: (index: number) => void;
 }
 
-const BannerComponent: React.FC<BannerLoad> = ({
-  BannerList,
-  loading,
-  className
-}) => {
-  const router = useRouter();
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
-
-  const breakPoints = {
-    320: { slidesPerView: 1 },
-    480: { slidesPerView: 2 },
-    720: { slidesPerView: 3 },
-    1080: { slidesPerView: 3 }
-  };
 
   const CustomPagination: React.FC<props> = ({
     activeIndex,
@@ -57,6 +42,22 @@ const BannerComponent: React.FC<BannerLoad> = ({
         ))}
       </div>
     );
+  };
+
+const BannerComponent: React.FC<BannerLoad> = ({
+  BannerList,
+  loading,
+  className
+}) => {
+  const router = useRouter();
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
+
+  const breakPoints = {
+    320: { slidesPerView: 1 },
+    480: { slidesPerView: 2 },
+    720: { slidesPerView: 3 },
+    1080: { slidesPerView: 3 }
   };
 
   useEffect(() => {

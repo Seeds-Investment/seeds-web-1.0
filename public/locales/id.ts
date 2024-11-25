@@ -2543,6 +2543,7 @@ export default {
     editGroup: 'Edit Grup',
     camera: 'Kamera',
     gallery: 'Galeri',
+    record: 'Rekam',
     placeholderDesc: 'Ketik deskripsi grup Anda di sini!',
     modalCameraTitle: 'Ambil Foto',
     shareGroup: 'Undang melalui Link',

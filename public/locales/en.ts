@@ -2615,6 +2615,7 @@ export default {
     editGroup: 'Edit Group',
     camera: 'Camera',
     gallery: 'Gallery',
+    record: 'Record',
     placeholderDesc: 'Type your group description here!',
     modalCameraTitle: 'Take a photo',
     shareGroup: 'Invite via Link',

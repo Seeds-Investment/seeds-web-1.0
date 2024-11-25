@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React, { useCallback, useRef, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import { useTranslation } from 'react-i18next';
+import { CiCrop } from 'react-icons/ci';
 import { FaExchangeAlt } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
 import { MdCheck, MdOutlineCameraswitch } from 'react-icons/md';
@@ -100,6 +101,13 @@ const CustomWebcam: React.FC<CustomWebcamProps> = ({
     }
   };
 
+  const handleUsePhoto = (): void => {
+    if (captureImage !== null) {
+      const file = dataURLToFile(captureImage, 'capture_image.jpg');
+      onCapture(file);
+    }
+  };
+
   const videoConstraints: MediaTrackConstraintSet = {
     facingMode,
     width: type === 'landscape' ? 940 : 440,
@@ -177,7 +185,9 @@ const CustomWebcam: React.FC<CustomWebcamProps> = ({
                 }}
               />
               <div
-                onClick={retake}
+                onClick={() => {
+                  setIsUsePhoto(false);
+                }}
                 className="absolute md:bottom-4 bottom-12 md:left-[25%] left-[20%] w-10 h-10 bg-transparent border-2 border-white flex items-center justify-center rounded-full cursor-pointer hover:scale-105 duration-200"
               >
                 <IoMdClose size={26} color="white" />
@@ -200,21 +210,27 @@ const CustomWebcam: React.FC<CustomWebcamProps> = ({
             />
             <div
               onClick={retake}
-              className="absolute bottom-6 md:left-1/3 left-[25%] cursor-pointer hover:pb-1 duration-200"
+              className="absolute bottom-6 md:left-[25%] left-[15%] cursor-pointer hover:pb-1 duration-200"
             >
               <Typography className="font-poppins font-normal text-lg text-white">
                 {t('chat.retake')}
               </Typography>
             </div>
             <div
-              onClick={() => {
-                setIsUsePhoto(true);
-              }}
-              className="absolute bottom-6 md:right-1/3 right-[25%] cursor-pointer hover:pb-1 duration-200"
+              onClick={handleUsePhoto}
+              className="absolute bottom-6 left-1/2 transform -translate-x-1/2 cursor-pointer hover:pb-1 duration-200"
             >
               <Typography className="font-poppins font-normal text-lg text-white">
                 {t('chat.usePhoto')}
               </Typography>
+            </div>
+            <div
+              onClick={() => {
+                setIsUsePhoto(true);
+              }}
+              className="absolute bottom-5 md:right-[28%] right-[20%] cursor-pointer hover:pb-1 duration-200 w-10 h-10 bg-transparent flex items-center justify-center rounded-full hover:scale-105"
+            >
+              <CiCrop size={26} color="white" />
             </div>
           </div>
         )

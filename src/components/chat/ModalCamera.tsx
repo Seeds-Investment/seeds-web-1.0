@@ -1,6 +1,6 @@
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { XIcon } from 'public/assets/vector'; // Pastikan Anda memiliki ikon X di direktori Anda
+import { XIcon } from 'public/assets/vector';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Modal from '../ui/modal/Modal';
@@ -22,8 +22,8 @@ const ModalCamera: React.FC<Props> = ({ onClose, onCapture }) => {
   }, []);
 
   const handleWebcamCapture = (image: File): void => {
-    onCapture(image); // Lempar data ke parent
-    onClose(); // Tutup modal setelah capture
+    onCapture(image);
+    onClose();
   };
 
   return (

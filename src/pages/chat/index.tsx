@@ -16,6 +16,7 @@ import withAuth from '@/helpers/withAuth';
 import LeaveButton from '../../../public/assets/chat/logout-icon.svg';
 // import useGetOnlineStatus from '@/hooks/useGetOnlineStatus';
 import ModalCamera from '@/components/chat/ModalCamera';
+import ModalRecordVideo from '@/components/chat/ModalRecordVideo';
 import { getChatDate } from '@/helpers/dateFormat';
 import { searchUser } from '@/repository/auth.repository';
 import {
@@ -145,6 +146,7 @@ const ChatPages: React.FC = () => {
   const [isShowPopUpOption, setIsShowPopUpOption] = useState<boolean>(false);
   const [isShowMediaOption, setIsShowMediaOption] = useState<boolean>(false);
   const [isModalCameraOpen, setIsModalCameraOpen] = useState<boolean>(false);
+  const [isModalRecordOpen, setIsModalRecordOpen] = useState<boolean>(false);
   const [messageList, setMessageList] = useState<IChatBubble[] | []>([]);
   const [message, setMessage] = useState<string>('');
   const [searchFilter, setSearchFilter] = useState<SearchUserParams>(
@@ -675,12 +677,23 @@ const ChatPages: React.FC = () => {
     setIsShowMediaOption(!isShowMediaOption);
   };
 
-  const handleCameraCapture = async (capturedImage: File): Promise<void> => {
-    const mediaUrl = (await postMedia(capturedImage)) as string;
+  const handleMediaCapture = async (
+    file: File,
+    text?: string
+  ): Promise<void> => {
+    const mediaUrl = (await postMedia(file)) as string;
     const data =
       activeTab === 'COMMUNITY'
-        ? { media_urls: [mediaUrl], group_id: roomId as string }
-        : { media_urls: [mediaUrl], user_id: roomId as string };
+        ? {
+            media_urls: [mediaUrl],
+            content_text: text as string,
+            group_id: roomId as string
+          }
+        : {
+            media_urls: [mediaUrl],
+            content_text: text as string,
+            user_id: roomId as string
+          };
     try {
       await sendPersonalMessage(data);
       void fetchChat();
@@ -1532,7 +1545,10 @@ const ChatPages: React.FC = () => {
                       <div className="flex flex-col gap-4 justify-end">
                         {messageList?.map((message: IChatBubble, index) => {
                           if (message.created_by === dataUser.id) {
-                            if (message.content_text?.length > 0) {
+                            if (
+                              message.content_text?.length > 0 &&
+                              message?.media_urls?.length === 0
+                            ) {
                               return (
                                 <div
                                   key={message.id}
@@ -1637,34 +1653,126 @@ const ChatPages: React.FC = () => {
                               return (
                                 <div
                                   key={message.id}
-                                  className="p-2 self-end max-w-[60%] rounded-lg mx-4"
+                                  className="flex flex-col p-2 self-end max-w-[60%] rounded-lg mx-4 bg-[#EDFCD3]"
                                 >
-                                  <video width="320" height="240" controls>
+                                  <video
+                                    width="320"
+                                    height="240"
+                                    controls
+                                    className="rounded-2xl"
+                                  >
                                     <source
                                       src={message.media_urls[0]}
                                       type="video/mp4"
                                     />
                                   </video>
+                                  <div className="mt-2">
+                                    {message?.content_text?.length > 0 && (
+                                      <Typography
+                                        className={`${
+                                          message?.content_text.includes(
+                                            searchText
+                                          ) && searchText !== ''
+                                            ? 'font-poppins break-all text-black bg-[#FBF719]'
+                                            : 'font-poppins break-all text-black'
+                                        }`}
+                                      >
+                                        {message?.content_text}
+                                      </Typography>
+                                    )}
+                                    <div className="w-full flex justify-end items-center gap-2">
+                                      <Typography className="text-xs text-[#7C7C7C]">
+                                        {getChatDate(
+                                          message?.created_at ??
+                                            '0001-01-01T00:00:00Z'
+                                        )}
+                                      </Typography>
+                                      {message?.read_at !==
+                                        '0001-01-01T00:00:00Z' && (
+                                        <div className="flex justify-center items-center w-auto h-[10px]">
+                                          <Image
+                                            src={readChatIcon}
+                                            width={1000}
+                                            height={1000}
+                                            alt="readChatIcon"
+                                            className="w-full h-auto"
+                                          />
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
                                 </div>
                               );
                             } else {
                               return (
                                 <div
                                   key={message.id}
-                                  className="p-2 self-end max-w-[60%] rounded-lg mx-4"
+                                  className="flex flex-col p-2 self-end max-w-[60%] rounded-lg mx-4 bg-[#EDFCD3]"
                                 >
-                                  <img src={message?.media_urls[0]} />
+                                  {message?.media_urls?.length > 0 && (
+                                    <Image
+                                      className="max-w-[225px] max-h-[200px] object-cover rounded-3xl"
+                                      src={message.media_urls[0]}
+                                      alt="Image"
+                                      width={225}
+                                      height={170}
+                                    />
+                                  )}
+                                  <div className="mt-2">
+                                    {message?.content_text?.length > 0 && (
+                                      <Typography
+                                        className={`${
+                                          message?.content_text.includes(
+                                            searchText
+                                          ) && searchText !== ''
+                                            ? 'font-poppins break-all text-black bg-[#FBF719]'
+                                            : 'font-poppins break-all text-black'
+                                        }`}
+                                      >
+                                        {message?.content_text}
+                                      </Typography>
+                                    )}
+                                    <div className="w-full flex justify-end items-center gap-2">
+                                      <Typography className="text-xs text-[#7C7C7C]">
+                                        {getChatDate(
+                                          message?.created_at ??
+                                            '0001-01-01T00:00:00Z'
+                                        )}
+                                      </Typography>
+                                      {message?.read_at !==
+                                        '0001-01-01T00:00:00Z' && (
+                                        <div className="flex justify-center items-center w-auto h-[10px]">
+                                          <Image
+                                            src={readChatIcon}
+                                            width={1000}
+                                            height={1000}
+                                            alt="readChatIcon"
+                                            className="w-full h-auto"
+                                          />
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
                                 </div>
                               );
                             }
                           } else {
-                            if (message.content_text?.length > 0) {
+                            if (
+                              message.content_text?.length > 0 &&
+                              message?.media_urls?.length === 0
+                            ) {
                               return (
-                                <div className="flex ml-4" key={message.id}>
+                                <div
+                                  className="flex ml-4 gap-2"
+                                  key={message.id}
+                                >
                                   <Image
                                     width={32}
                                     height={32}
-                                    src={otherUserData?.avatar as string}
+                                    src={
+                                      message?.owner?.avatar ??
+                                      otherUserData?.avatar
+                                    }
                                     alt="avatar"
                                     className="rounded-full w-8 h-8"
                                   />
@@ -1697,11 +1805,17 @@ const ChatPages: React.FC = () => {
                               message.media_urls[0]?.includes('mp3')
                             ) {
                               return (
-                                <div className="flex ml-4" key={message.id}>
+                                <div
+                                  className="flex ml-4 gap-2"
+                                  key={message.id}
+                                >
                                   <Image
                                     width={32}
                                     height={32}
-                                    src={otherUserData?.avatar as string}
+                                    src={
+                                      message?.owner?.avatar ??
+                                      otherUserData?.avatar
+                                    }
                                     alt="avatar"
                                     className="rounded-full w-8 h-8"
                                   />
@@ -1723,42 +1837,113 @@ const ChatPages: React.FC = () => {
                                 message.media_urls[0]?.includes('mov'))
                             ) {
                               return (
-                                <div className="flex ml-4" key={message.id}>
+                                <div
+                                  className="flex ml-4 gap-2"
+                                  key={message.id}
+                                >
                                   <Image
                                     width={32}
                                     height={32}
-                                    src={otherUserData?.avatar as string}
+                                    src={
+                                      message?.owner?.avatar ??
+                                      otherUserData?.avatar
+                                    }
                                     alt="avatar"
                                     className="rounded-full w-8 h-8"
                                   />
                                   <div
                                     key={message.id}
-                                    className="p-2 self-start max-w-[60%] rounded-lg"
+                                    className="flex flex-col p-2 self-start max-w-[60%] rounded-lg bg-[#DCFCE4]"
                                   >
-                                    <video width="320" height="240" controls>
+                                    <video
+                                      width="320"
+                                      height="260"
+                                      className="rounded-2xl"
+                                      controls
+                                    >
                                       <source
                                         src={message.media_urls[0]}
                                         type="video/mp4"
                                       />
                                     </video>
+                                    <div className="mt-2">
+                                      {message?.content_text?.length > 0 && (
+                                        <Typography
+                                          className={`${
+                                            message?.content_text.includes(
+                                              searchText
+                                            ) && searchText !== ''
+                                              ? 'font-poppins break-all text-black bg-[#FBF719]'
+                                              : 'font-poppins break-all text-black'
+                                          }`}
+                                        >
+                                          {message?.content_text}
+                                        </Typography>
+                                      )}
+                                      <div className="w-full flex justify-end items-center gap-2">
+                                        <Typography className="text-xs text-[#7C7C7C]">
+                                          {getChatDate(
+                                            message?.created_at ??
+                                              '0001-01-01T00:00:00Z'
+                                          )}
+                                        </Typography>
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               );
                             } else {
                               return (
-                                <div className="flex ml-4" key={message.id}>
+                                <div
+                                  className="flex ml-4 gap-2"
+                                  key={message.id}
+                                >
                                   <Image
                                     width={32}
                                     height={32}
-                                    src={otherUserData?.avatar as string}
+                                    src={
+                                      message?.owner?.avatar ??
+                                      otherUserData?.avatar
+                                    }
                                     alt="avatar"
                                     className="rounded-full w-8 h-8"
                                   />
                                   <div
                                     key={message.id}
-                                    className="p-2 self-start max-w-[60%] rounded-lg"
+                                    className="flex flex-col p-2 self-start max-w-[60%] rounded-lg bg-[#DCFCE4]"
                                   >
-                                    <img src={message?.media_urls[0]} />
+                                    {message?.media_urls?.length > 0 && (
+                                      <Image
+                                        className="max-w-[225px] max-h-[200px] object-cover rounded-3xl"
+                                        src={message.media_urls[0]}
+                                        alt="Image"
+                                        width={225}
+                                        height={170}
+                                      />
+                                    )}
+                                    <div className="mt-2">
+                                      {message?.content_text?.length > 0 && (
+                                        <Typography
+                                          className={`${
+                                            message?.content_text.includes(
+                                              searchText
+                                            ) && searchText !== ''
+                                              ? 'font-poppins break-all text-black bg-[#FBF719]'
+                                              : 'font-poppins break-all text-black'
+                                          }`}
+                                        >
+                                          {message?.content_text}
+                                        </Typography>
+                                      )}
+                                      <div className="w-full flex justify-end items-center gap-2">
+                                        <Typography className="text-xs text-[#7C7C7C]">
+                                          {getChatDate(
+                                            message?.created_at ??
+                                              '0001-01-01T00:00:00Z'
+                                          )}
+                                        </Typography>
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               );
@@ -1883,6 +2068,8 @@ const ChatPages: React.FC = () => {
                                     <div
                                       onClick={() => {
                                         setIsModalCameraOpen(true);
+                                        setIsShowPopUpOption(false);
+                                        setIsShowMediaOption(false);
                                       }}
                                       className="w-16 h-16 rounded-full hover:bg-[#DCFCE4] hover:text-[#1A857D] text-[#BDBDBD] cursor-pointer border hover:border-[#1A857D] flex justify-center items-center"
                                     >
@@ -1894,7 +2081,11 @@ const ChatPages: React.FC = () => {
                                   </div>
                                   <div className="flex flex-col items-center gap-2">
                                     <div
-                                      onClick={() => {}}
+                                      onClick={() => {
+                                        setIsModalRecordOpen(true);
+                                        setIsShowPopUpOption(false);
+                                        setIsShowMediaOption(false);
+                                      }}
                                       className="w-16 h-16 rounded-full hover:bg-[#DCFCE4] hover:text-[#1A857D] text-[#BDBDBD] cursor-pointer border hover:border-[#1A857D] flex justify-center items-center"
                                     >
                                       <CiVideoOn size={32} />
@@ -1935,7 +2126,18 @@ const ChatPages: React.FC = () => {
                             onClose={() => {
                               setIsModalCameraOpen(false);
                             }}
-                            onCapture={handleCameraCapture}
+                            onCapture={handleMediaCapture}
+                            isCropShapeRound={false}
+                            isInputMessage={true}
+                          />
+                        )}
+                        {isModalRecordOpen && (
+                          <ModalRecordVideo
+                            onClose={() => {
+                              setIsModalRecordOpen(false);
+                            }}
+                            onCapture={handleMediaCapture}
+                            isInputMessage={true}
                           />
                         )}
                         <div className="flex w-full relative">

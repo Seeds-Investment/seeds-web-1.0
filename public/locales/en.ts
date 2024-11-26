@@ -2618,10 +2618,12 @@ export default {
     record: 'Record',
     placeholderDesc: 'Type your group description here!',
     modalCameraTitle: 'Take a photo',
+    modalRecordVideoTitle: 'Record a video',
     shareGroup: 'Invite via Link',
     successMute: 'Notification Muted',
     retake: 'Retake',
-    usePhoto: 'Use Photo'
+    usePhoto: 'Use Photo',
+    createMessagePlaceholder: 'Create Message ...'
   },
   play: {
     keystat: 'Key Stats'

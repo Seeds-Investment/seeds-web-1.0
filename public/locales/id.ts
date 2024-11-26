@@ -2546,10 +2546,12 @@ export default {
     record: 'Rekam',
     placeholderDesc: 'Ketik deskripsi grup Anda di sini!',
     modalCameraTitle: 'Ambil Foto',
+    modalRecordVideoTitle: 'Rekam Video',
     shareGroup: 'Undang melalui Link',
     successMute: 'Notifikasi Dibisukan',
     retake: 'Ulangi',
-    usePhoto: 'Gunakan'
+    usePhoto: 'Gunakan',
+    createMessagePlaceholder: 'Buat Pesan ...'
   },
   play: {
     keystat: 'Key Stats'

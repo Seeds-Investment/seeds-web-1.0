@@ -270,6 +270,7 @@ const EditInfoGroup: React.FC<EditInfoGroupProps> = ({
             setIsModalCameraOpen(false);
           }}
           onCapture={handleCameraCapture}
+          isCropShapeRound={true}
         />
       )}
     </div>

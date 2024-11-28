@@ -257,7 +257,7 @@ const UniqueInputButton: React.FC<props> = ({
           </button>
         </div>
       </div>
-      <div className="flex flex-col sm:hidden items-center">
+      <div className="flex flex-col sm:hidden items-center mb-16">
         <input
           type="file"
           id="MediaUpload"

@@ -13,19 +13,19 @@ import {
 import { useRouter } from 'next/router';
 import React from 'react';
 
-interface IassetsData {
-  id: string;
-  quote: string;
-  currency: string;
-  image: string;
-  name: string;
-  price: number;
-  regularPercentage: number;
-  assetType: string;
+interface AssetsData {
+  asset_id: string;
+  asset_name: string;
+  asset_icon: string;
+  asset_ticker: string;
+  asset_exchange: string;
+  asset_type: string;
+  asset_price: number;
+  regular_percentage: number;
 }
 
 interface props {
-  data: IassetsData;
+  data: AssetsData;
   currency: string;
   handleSelectedAsset?: any;
   isDefaultChecked?: any;
@@ -63,8 +63,8 @@ const AssetTrendingCard: React.FC<props> = ({
                     isGuest()
                       ? '/auth'
                       : playId !== undefined
-                      ? `/homepage/assets/${data.id}?playId=${playId}`
-                      : `/homepage/assets/${data.id}`
+                      ? `/homepage/assets/${data.asset_id}?playId=${playId}`
+                      : `/homepage/assets/${data.asset_id}`
                   }`
                 )
                 .catch(error => {
@@ -76,36 +76,41 @@ const AssetTrendingCard: React.FC<props> = ({
     >
       <CardBody className="p-3 inline-block h-auto">
         <div className="flex flex-row items-center">
-          <Avatar size="md" variant="circular" src={data.image} alt="logo" />
+          <Avatar
+            size="md"
+            variant="circular"
+            src={data.asset_icon}
+            alt="logo"
+          />
           <div className="flex ml-5 w-1/2 flex-col gap-0.5">
             <div className="flex flex-row">
               <Typography className="font-semibold text-base text-[#262626]">
-                {data.quote} /
+                {data.asset_ticker}
               </Typography>
-              <Typography className="font-normal ml-1 text-base text-[#262626]">
+              {/* <Typography className="font-normal ml-1 text-base text-[#262626]">
                 {data.currency}
-              </Typography>
+              </Typography> */}
             </div>
             <Typography className="font-normal text-sm text-[#7C7C7C]">
-              {data.name}
+              {data.asset_name}
             </Typography>
           </div>
 
           <div className="ml-auto flex flex-col gap-0.5">
             <div className="flex justify-end">
               <Typography className="font-semibold text-base text-[#262626]">
-                {currency} {new Intl.NumberFormat().format(data.price)}
+                {currency} {new Intl.NumberFormat().format(data.asset_price)}
               </Typography>
             </div>
             <div className="flex justify-end">
               <Typography
                 className={`flex font-normal text-sm ${
-                  handleArrow(data.regularPercentage)
+                  handleArrow(data.regular_percentage)
                     ? 'text-[#3AC4A0]'
                     : 'text-red-500'
                 }`}
               >
-                {handleArrow(data.regularPercentage) ? (
+                {handleArrow(data.regular_percentage) ? (
                   <ArrowTrendingUpIcon
                     height={20}
                     width={20}
@@ -118,7 +123,7 @@ const AssetTrendingCard: React.FC<props> = ({
                     className="mr-2"
                   />
                 )}
-                {`(${data.regularPercentage.toFixed(2).replace('-', '')}%)`}
+                {`(${data.regular_percentage.toFixed(2).replace('-', '')}%)`}
               </Typography>
             </div>
           </div>

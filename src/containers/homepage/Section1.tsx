@@ -1,3 +1,4 @@
+import TrackerEvent from '@/helpers/GTM';
 import { getBanner } from '@/repository/discover.repository';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -101,7 +102,13 @@ const Section1 = (): React.ReactElement => {
     <div className="w-full h-auto cursor-default">
       <Slider {...sliderSettings}>
         {bannerAsset.map(asset => (
-          <div key={asset.id} className="w-full relative">
+          <div
+            key={asset.id}
+            className="w-full relative"
+            onClick={() => {
+              TrackerEvent({ event: 'SW_homepage_banner' });
+            }}
+          >
             <Image
               className="object-cover w-full"
               src={asset.image_url}

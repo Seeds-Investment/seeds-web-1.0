@@ -11,7 +11,7 @@ class SocketService {
   }
 
   connectAsset(): void {
-    this.socket = io('wss://seeds-dev-gcp.seeds.finance', {
+    this.socket = io('wss://app.seeds.finance', {
       path: '/seeds/socket.io',
       transports: ['websocket']
     });

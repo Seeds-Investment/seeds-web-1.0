@@ -181,7 +181,7 @@ const AssetDetailPage: React.FC = () => {
                 typeof prefCurrency === 'string'
                   ? lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                     ? lastPrice[prefCurrency as PreferredCurrencyI]
-                    : lastPriceAsset ?? 0
+                    : (lastPriceAsset as number)
                   : 0
             }}
             currency={userInfo?.preferredCurrency as string}

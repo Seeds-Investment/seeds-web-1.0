@@ -435,7 +435,11 @@ const QuizDetail = (): React.ReactElement => {
             </div>
           </div>
           <button
-            disabled={loading}
+            disabled={
+              loading ||
+              detailQuiz?.status === 'PUBLISHED' ||
+              detailQuiz?.status === 'CANCELED'
+            }
             onClick={() => {
               if (localStorage.getItem('accessToken') !== null) {
                 if (detailQuiz?.participant_status === 'JOINED') {

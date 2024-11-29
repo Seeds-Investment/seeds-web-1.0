@@ -31,6 +31,10 @@ const Follow: React.FC = () => {
     setSearch(event.target.value);
   };
 
+  const truncateTag = (tag: string): string => {
+    return tag.length > 15 ? `${tag.slice(0, 15)}...` : tag;
+  };
+
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -97,12 +101,8 @@ const Follow: React.FC = () => {
                             <Typography className="font-semibold font-poppins text-base text-[#262626]">
                               {item.name}
                             </Typography>
-                            <Typography className="font-normal font-poppins text-xs md:text-sm text-[#7C7C7C]">
-                              {item.seeds_tag.length > 10
-                              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                                ? `@${item.seeds_tag.substring(0, 10)}...`
-                                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                                : `@${item.seeds_tag}`}
+                            <Typography className="font-normal font-poppins text-sm text-[#7C7C7C]">
+                              @{truncateTag(item.seeds_tag)}
                             </Typography>
                           </div>
                         </div>

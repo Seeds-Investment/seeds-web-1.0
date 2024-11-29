@@ -354,8 +354,8 @@ export default function PlayAssetsPage(): React.ReactElement {
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
               {formatAssetPrice(ballance?.return_value ?? 0)}
-              {` (${ballance?.return_value < 0 ? '' : '+'}${(
-                formatAssetPrice(ballance?.return_percentage ?? 0)
+              {` (${ballance?.return_value < 0 ? '' : '+'}${formatAssetPrice(
+                ballance?.return_percentage ?? 0
               )}%)`}
             </Typography>
             <Typography className="text-white font-poppins z-10 text-sm md:text-lg">
@@ -611,11 +611,8 @@ export default function PlayAssetsPage(): React.ReactElement {
                       <div className="font-semibold text-sm md:text-base">
                         {userInfo?.preferredCurrency !== undefined
                           ? userInfo?.preferredCurrency
-                          : 'IDR'}
-                        {standartCurrency(data?.priceBar?.close ?? 0).replace(
-                          'Rp',
-                          ''
-                        )}
+                          : 'IDR'}{' '}
+                        {formatAssetPrice(data?.priceBar?.close ?? 0)}
                       </div>
                       <div className="flex justify-center gap-2">
                         <Image

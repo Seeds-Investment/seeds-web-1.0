@@ -125,9 +125,9 @@ const AssetDetailPage: React.FC = () => {
                 ...data,
                 socketPrice:
                   typeof prefCurrency === 'string'
-                    ? lastPrice[
-                        prefCurrency.toLowerCase() as PreferredCurrencyI
-                      ]
+                    ? lastPrice[prefCurrency as PreferredCurrencyI] !== 0
+                      ? lastPrice[prefCurrency as PreferredCurrencyI]
+                      : data.lastPrice.close ?? 0
                     : 0
               }}
               currency={dataUser?.preferredCurrency}

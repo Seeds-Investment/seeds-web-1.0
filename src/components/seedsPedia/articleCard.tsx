@@ -1,5 +1,6 @@
 'use-client';
-import { getArticleById, postLike } from '@/repository/article.repository';
+import { postLike } from '@/repository/article.repository';
+import { type ArticleDetail } from '@/utils/interfaces/play.interface';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Link from 'next/link';
@@ -7,28 +8,10 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 interface ArticleCardProps {
-  articleId: string;
+  articleId: number;
   articleName?: string;
+  data?: ArticleDetail;
 }
-
-interface ArticleDetail {
-  id: number;
-  title: string;
-  author: string;
-  link: string;
-  videoUrl: string;
-  imageUrl: string;
-  content: string;
-  sourceId: string;
-  language: string;
-  category: string;
-  publicationDate: string;
-  total_likes: number;
-  total_comments: number;
-  total_shares: number;
-  is_liked: boolean;
-}
-
 interface FormRequestInterface {
   comment: string;
 }
@@ -39,7 +22,8 @@ const initialFormRequest = {
 
 const ArticleCard: React.FC<ArticleCardProps> = ({
   articleId,
-  articleName
+  articleName,
+  data
 }) => {
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
@@ -73,23 +57,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   }
 
   useEffect(() => {
-    if (typeof articleId !== 'string') {
-      // Check if articleId is a valid non-empty string
-      const fetchArticleDetail = (): void => {
-        getArticleById(articleId)
-          .then(response => {
-            if (response.status === 200) {
-              setArticleDetail(response.news);
-            }
-            console.log(response);
-          })
-          .catch(error => {
-            console.error('Error fetching article detail:', error);
-          });
-      };
-      fetchArticleDetail();
+    if (data !== undefined) {
+      setArticleDetail(data);
     }
-  }, [articleId]);
+  }, [data]);
+
   const router = useRouter();
 
   const likeArticle = async (articleId: number): Promise<void> => {

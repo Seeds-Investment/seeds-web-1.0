@@ -13,6 +13,7 @@ export { default as BattleSecondMedal } from 'public/assets/vector/battle-second
 export { default as BattleThirdMedal } from 'public/assets/vector/battle-third-medal.svg';
 export { default as BattleVersus } from 'public/assets/vector/battle-versus.svg';
 export { default as BookmarkFill } from 'public/assets/vector/bookmark-fill.svg';
+export { default as BookmarkSetting } from 'public/assets/vector/bookmark-setting.svg';
 export { default as Bookmark } from 'public/assets/vector/bookmark.svg';
 export { default as BronzeMedalIcon } from 'public/assets/vector/bronze-medal-1.svg';
 export { default as BronzeMedal } from 'public/assets/vector/bronze-medal.svg';

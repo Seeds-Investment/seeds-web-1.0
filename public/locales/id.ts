@@ -802,6 +802,14 @@ export default {
       createPin: { title: 'Buat PIN' },
       changePin: { title: 'Ganti PIN' },
       language: { title: 'Bahasa' },
+      savedPost: {
+        title: 'Postingan Tersimpan',
+        info: 'Informasi',
+        infoMessage:
+          'Halaman ini berisi daftar postingan yang pernah anda simpan.',
+        noData: 'Opps, there’s no saved data yet',
+        noDataMessage: 'Find some posts and saved the best one!'
+      },
       currency: { title: 'Mata Uang' },
       block: { title: 'Daftar Blokir' },
       legal: { title: 'Hukum' },
@@ -1414,6 +1422,22 @@ export default {
     }
   },
   social: {
+    postSection: {
+      shareBattle: 'Bagikan Pertandingan Ini',
+      shareLinks: 'Bagikan Tautan',
+      share: 'Bagikan',
+      play: 'Main',
+      joined: 'Bergabung',
+      player: 'Pemain',
+      players: 'Pemain',
+      fee: 'Biaya',
+      free: 'Gratis',
+      category: 'Kategori',
+      participant: 'peserta',
+      participants: 'peserta'
+    },
+    follow: 'Mengikuti',
+    unfollow: 'Berhenti Mengikuti',
     postSetting: {
       publicTitle: 'Publik',
       publicDesc: 'Semua orang bisa melihat postinganmu',
@@ -1490,7 +1514,8 @@ export default {
     navbar: {
       following: 'Mengikuti',
       foryou: 'Untukmu',
-      space: 'Space'
+      space: 'Space',
+      circle: 'Circle'
     },
     filterType: {
       all: 'Semua',
@@ -1528,6 +1553,21 @@ export default {
       close: 'Tutup',
       paymentSuccessful: 'Berhasil',
       recurringSaved: 'Pembayaran anda telah tersimpan'
+    },
+    dailyQuiz: {
+      rightAnswer: 'Selamat, kamu benar!',
+      wrongAnswer: 'Oops, kurang tepat.',
+      answer: 'Jawaban',
+      shareText: 'Kamu akan membagikan ini ke profil kamu. Setuju?',
+      accept: 'Terima',
+      cancel: 'Batal',
+      shareWin:
+        'Kesuksesan kamu telah dibagikan! Teruslah menginspirasi orang lain dengan pengetahuan finansialmu!',
+      shareLose:
+        'Usaha kamu telah dibagikan! Teruslah belajar dan tumbuh setiap hari! ',
+      postWin:
+        'Saya berhasil menjawab daily quiz hari ini dengan benar! Senang sekali!',
+      postLose: 'Saya salah menjawab daily hari ini. tapi saya belajar!'
     }
   },
   landingV2: {

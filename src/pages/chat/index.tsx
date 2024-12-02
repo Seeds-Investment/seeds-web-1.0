@@ -30,6 +30,7 @@ import {
   getGroupDetail,
   getListChat,
   getPersonalChatCommonGroups,
+  getStorageMetadata,
   leaveGroupChat,
   muteGroupChat,
   mutePersonalChat,
@@ -41,13 +42,19 @@ import {
 import { UseUploadMedia } from '@/repository/circleDetail.repository';
 import { getOtherUser } from '@/repository/profile.repository';
 import socketService from '@/repository/socket.repository';
-import { useAppSelector } from '@/store/redux/store';
+import { setFileMetadata } from '@/store/redux/features/chat-documents';
+import {
+  type AppDispatch,
+  type RootState,
+  useAppSelector
+} from '@/store/redux/store';
 import type {
   Chat,
   CommonGroupData,
   GetListChatParams,
   IChatBubble,
   IGroupChatDetail,
+  MetadataFileInfo,
   PersonalChatMediaData,
   PersonalChatNotesData,
   SearchUserChat
@@ -82,10 +89,27 @@ import {
   sendChat
 } from 'public/assets/chat';
 import { ArrowBackwardIconWhite, XIcon } from 'public/assets/vector';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  type ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiOutlinePicture } from 'react-icons/ai';
-import { BsThreeDotsVertical } from 'react-icons/bs';
+import {
+  BsFileEarmark,
+  BsFiletypeDoc,
+  BsFiletypeDocx,
+  BsFiletypePdf,
+  BsFiletypePpt,
+  BsFiletypePptx,
+  BsFiletypeXls,
+  BsFiletypeXlsx,
+  BsThreeDotsVertical
+} from 'react-icons/bs';
 import {
   CiBellOff,
   CiCamera,
@@ -93,7 +117,7 @@ import {
   CiTrash,
   CiVideoOn
 } from 'react-icons/ci';
-import { FaRegFilePdf } from 'react-icons/fa6';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import defaultAvatar from '../../../public/assets/chat/default-avatar.svg';
 
@@ -157,7 +181,7 @@ const ChatPages: React.FC = () => {
     []
   );
   const [searchText, setSearchText] = useState<string>('');
-  const [limit, setLimit] = useState<number>(20);
+  const [limit, setLimit] = useState<number>(10);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [personalMediaData, setPersonalMediaData] = useState<
     PersonalChatMediaData[] | []
@@ -682,41 +706,72 @@ const ChatPages: React.FC = () => {
     file: File,
     text?: string
   ): Promise<void> => {
+    setIsShowPopUpOption(!isShowPopUpOption);
+    setIsShowMediaOption(!isShowMediaOption);
+
+    if (file === null || file === undefined) {
+      return;
+    }
+
+    const maxFileSize = 64 * 1024 * 1024;
+
+    if (file.size > maxFileSize) {
+      toast.error(`${t('chat.maxFileAlert')} 64Mb`);
+      return;
+    }
+
     const mediaUrl = (await postMedia(file)) as string;
-    const data =
-      activeTab === 'COMMUNITY'
-        ? {
-            media_urls: [mediaUrl],
-            content_text: text as string,
-            group_id: roomId as string
-          }
-        : {
-            media_urls: [mediaUrl],
-            content_text: text as string,
-            user_id: roomId as string
-          };
-    try {
-      await sendPersonalMessage(data);
-      void fetchChat();
-    } catch (error: any) {
-      toast(error, { type: 'error' });
-    } finally {
-      setIsShowMediaOption(!isShowMediaOption);
+    if (mediaUrl !== '') {
+      const data =
+        activeTab === 'COMMUNITY'
+          ? {
+              media_urls: [mediaUrl],
+              content_text: text as string,
+              group_id: roomId as string
+            }
+          : {
+              media_urls: [mediaUrl],
+              content_text: text as string,
+              user_id: roomId as string
+            };
+      try {
+        await sendPersonalMessage(data);
+        void fetchChat();
+      } catch (error: any) {
+        toast(error, { type: 'error' });
+      }
     }
   };
 
-  const handleSendDocument = async (event: any): Promise<void> => {
-    const fileMedia = event.target.files[0];
+  const handleSendDocument = async (
+    event: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    const fileMedia = event.target.files?.[0];
+    setIsShowPopUpOption(!isShowPopUpOption);
+
+    if (fileMedia == null) {
+      return;
+    }
+
+    const maxFileSize = 50 * 1024 * 1024;
+
+    if (fileMedia.size > maxFileSize) {
+      toast.error(`${t('chat.maxFileAlert')} 64Mb`);
+      return;
+    }
+
     const mediaUrl = (await postMedia(fileMedia)) as string;
-    const data =
-      activeTab === 'COMMUNITY'
-        ? { media_urls: [mediaUrl], group_id: roomId as string }
-        : { media_urls: [mediaUrl], user_id: roomId as string };
-    try {
-      await sendPersonalMessage(data);
-      void fetchChat();
-    } catch (error: any) {
-      toast(error, { type: 'error' });
+    if (mediaUrl !== '') {
+      const data =
+        activeTab === 'COMMUNITY'
+          ? { media_urls: [mediaUrl], group_id: roomId as string }
+          : { media_urls: [mediaUrl], user_id: roomId as string };
+      try {
+        await sendPersonalMessage(data);
+        void fetchChat();
+      } catch (error: any) {
+        toast(error, { type: 'error' });
+      }
     }
   };
 
@@ -730,20 +785,19 @@ const ChatPages: React.FC = () => {
     'pptx'
   ];
 
-  const processFileUrl = async (
-    url: string
-  ): Promise<{
-    fileName: string;
-    fileSize: string;
-    fileType: string;
-  }> => {
-    // const response = await getMetadataFile(url);
+  const processFileUrl = async (url: string): Promise<MetadataFileInfo> => {
+    const response: MetadataFileInfo = await getStorageMetadata(url);
+    return response;
+  };
 
-    return {
-      fileName: 'xyzaiwhdlawidhlawhdwalhalw',
-      fileSize: '20kb',
-      fileType: 'pdf'
-    };
+  const formatFileSize = (sizeInBytes: number): string => {
+    if (sizeInBytes < 1024) {
+      return `${sizeInBytes} B`;
+    }
+    if (sizeInBytes < 1024 * 1024) {
+      return `${(sizeInBytes / 1024).toFixed(0)} KB`;
+    }
+    return `${(sizeInBytes / (1024 * 1024)).toFixed(0)} MB`;
   };
 
   const RenderDocumentInfo = ({
@@ -751,40 +805,68 @@ const ChatPages: React.FC = () => {
   }: {
     message: string;
   }): JSX.Element => {
-    const [fileDetails, setFileDetails] = useState({
-      fileName: '',
-      fileSize: '',
-      fileType: ''
+    const dispatch = useDispatch<AppDispatch>();
+    const fileMetadataCache = useSelector(
+      (state: RootState) => state.chatDocuments.cache
+    );
+    const [fileDetails, setFileDetails] = useState<MetadataFileInfo>({
+      id: '',
+      name: '',
+      size: 0,
+      extension: '',
+      type: '',
+      url: '',
+      created_at: '',
+      updated_at: ''
     });
 
     useEffect(() => {
       const fetchFileDetails = async (): Promise<void> => {
+        if (
+          fileMetadataCache[message] !== null &&
+          fileMetadataCache[message] !== undefined
+        ) {
+          setFileDetails(fileMetadataCache[message]);
+          return;
+        }
         try {
           const details = await processFileUrl(message);
+          dispatch(setFileMetadata({ url: message, metadata: details }));
           setFileDetails(details);
         } catch (error: any) {
-          toast.error('Error processing PDF:', error);
+          toast.error('Error processing document:', error);
         }
       };
 
       void fetchFileDetails();
     }, [message]);
 
+    const fileTypeIcons: Record<string, JSX.Element> = {
+      pdf: <BsFiletypePdf size={24} />,
+      doc: <BsFiletypeDoc size={24} />,
+      docx: <BsFiletypeDocx size={24} />,
+      xls: <BsFiletypeXls size={24} />,
+      xlsx: <BsFiletypeXlsx size={24} />,
+      ppt: <BsFiletypePpt size={24} />,
+      pptx: <BsFiletypePptx size={24} />
+    };
+
     return (
       <a
         href={message}
         target="_blank"
+        download={fileDetails.name.slice(0, fileDetails.name.indexOf('.'))}
         className="w-full flex items-center gap-2 cursor-pointer no-underline"
       >
-        <FaRegFilePdf size={24} />
+        {fileTypeIcons[fileDetails.extension] ?? <BsFileEarmark size={24} />}
         <div className="flex flex-col">
-          <Typography className="font-normal text-sm font-poppins text-black">
-            {fileDetails.fileName.length > 15
-              ? `${fileDetails.fileName.slice(0, 8)}...`
-              : fileDetails.fileName}
+          <Typography className="font-normal text-sm font-poppins text-black text-nowrap">
+            {fileDetails.name.length > 15
+              ? `${fileDetails.name.slice(0, 8)}...`
+              : fileDetails.name}
           </Typography>
           <Typography className="font-normal text-xs font-poppins">
-            {fileDetails?.fileSize} . {fileDetails?.fileType}
+            {formatFileSize(fileDetails.size)} . {fileDetails?.extension}
           </Typography>
         </div>
       </a>

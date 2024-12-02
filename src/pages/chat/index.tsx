@@ -93,6 +93,7 @@ import {
   CiTrash,
   CiVideoOn
 } from 'react-icons/ci';
+import { FaRegFilePdf } from 'react-icons/fa6';
 import { toast } from 'react-toastify';
 import defaultAvatar from '../../../public/assets/chat/default-avatar.svg';
 
@@ -704,13 +705,91 @@ const ChatPages: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if ((router?.asPath ?? '').includes('roomId')) {
-      setIsChatActive(true);
-    } else {
-      setIsChatActive(false);
+  const handleSendDocument = async (event: any): Promise<void> => {
+    const fileMedia = event.target.files[0];
+    const mediaUrl = (await postMedia(fileMedia)) as string;
+    const data =
+      activeTab === 'COMMUNITY'
+        ? { media_urls: [mediaUrl], group_id: roomId as string }
+        : { media_urls: [mediaUrl], user_id: roomId as string };
+    try {
+      await sendPersonalMessage(data);
+      void fetchChat();
+    } catch (error: any) {
+      toast(error, { type: 'error' });
     }
-  }, [router?.asPath]);
+  };
+
+  const allowedExtensions = [
+    'pdf',
+    'doc',
+    'docx',
+    'xls',
+    'xlsx',
+    'ppt',
+    'pptx'
+  ];
+
+  const processFileUrl = async (
+    url: string
+  ): Promise<{
+    fileName: string;
+    fileSize: string;
+    fileType: string;
+  }> => {
+    // const response = await getMetadataFile(url);
+
+    return {
+      fileName: 'xyzaiwhdlawidhlawhdwalhalw',
+      fileSize: '20kb',
+      fileType: 'pdf'
+    };
+  };
+
+  const RenderDocumentInfo = ({
+    message
+  }: {
+    message: string;
+  }): JSX.Element => {
+    const [fileDetails, setFileDetails] = useState({
+      fileName: '',
+      fileSize: '',
+      fileType: ''
+    });
+
+    useEffect(() => {
+      const fetchFileDetails = async (): Promise<void> => {
+        try {
+          const details = await processFileUrl(message);
+          setFileDetails(details);
+        } catch (error: any) {
+          toast.error('Error processing PDF:', error);
+        }
+      };
+
+      void fetchFileDetails();
+    }, [message]);
+
+    return (
+      <a
+        href={message}
+        target="_blank"
+        className="w-full flex items-center gap-2 cursor-pointer no-underline"
+      >
+        <FaRegFilePdf size={24} />
+        <div className="flex flex-col">
+          <Typography className="font-normal text-sm font-poppins text-black">
+            {fileDetails.fileName.length > 15
+              ? `${fileDetails.fileName.slice(0, 8)}...`
+              : fileDetails.fileName}
+          </Typography>
+          <Typography className="font-normal text-xs font-poppins">
+            {fileDetails?.fileSize} . {fileDetails?.fileType}
+          </Typography>
+        </div>
+      </a>
+    );
+  };
 
   useEffect(() => {
     if (roomId === null) {
@@ -1703,6 +1782,43 @@ const ChatPages: React.FC = () => {
                                   </div>
                                 </div>
                               );
+                            }
+                            if (
+                              message?.media_urls?.length > 0 &&
+                              allowedExtensions.some(ext =>
+                                message?.media_urls[0]?.includes(ext)
+                              )
+                            ) {
+                              return (
+                                <div
+                                  key={message.id}
+                                  className="flex items-center p-4 self-end max-w-60% rounded-lg mx-4 gap-2 bg-[#EDFCD3]"
+                                >
+                                  <RenderDocumentInfo
+                                    message={message?.media_urls[0]}
+                                  />
+                                  <div className="flex justify-end items-center gap-2 w-full">
+                                    <Typography className="text-xs text-[#7C7C7C] text-nowrap">
+                                      {getChatDate(
+                                        message?.created_at ??
+                                          '0001-01-01T00:00:00Z'
+                                      )}
+                                    </Typography>
+                                    {message?.read_at !==
+                                      '0001-01-01T00:00:00Z' && (
+                                      <div className="flex justify-center items-center w-auto h-[10px]">
+                                        <Image
+                                          src={readChatIcon}
+                                          width={1000}
+                                          height={1000}
+                                          alt="readChatIcon"
+                                          className="w-full h-auto"
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              );
                             } else {
                               return (
                                 <div
@@ -2040,11 +2156,23 @@ const ChatPages: React.FC = () => {
                               </div>
                               <div className="flex justify-center items-center w-[24px] h-auto">
                                 <Image
+                                  onClick={() => {
+                                    document
+                                      .getElementById('docUpload')
+                                      ?.click();
+                                  }}
                                   src={optionFolder}
                                   alt="optionFolder"
                                   width={100}
                                   height={100}
                                   className="h-auto w-full cursor-pointer hover:scale-110 duration-300"
+                                />
+                                <input
+                                  type="file"
+                                  id="docUpload"
+                                  onChange={handleSendDocument}
+                                  className="hidden"
+                                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
                                 />
                               </div>
                             </div>

@@ -2623,7 +2623,8 @@ export default {
     successMute: 'Notification Muted',
     retake: 'Retake',
     usePhoto: 'Use Photo',
-    createMessagePlaceholder: 'Create Message ...'
+    createMessagePlaceholder: 'Create Message ...',
+    maxFileAlert: 'The file size is too large, the maximum file size is'
   },
   play: {
     keystat: 'Key Stats'

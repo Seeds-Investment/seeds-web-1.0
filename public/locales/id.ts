@@ -2551,7 +2551,8 @@ export default {
     successMute: 'Notifikasi Dibisukan',
     retake: 'Ulangi',
     usePhoto: 'Gunakan',
-    createMessagePlaceholder: 'Buat Pesan ...'
+    createMessagePlaceholder: 'Buat Pesan ...',
+    maxFileAlert: 'Ukuran file terlalu besar, ukuran file maksimal'
   },
   play: {
     keystat: 'Key Stats'

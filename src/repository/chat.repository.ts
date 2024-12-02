@@ -458,3 +458,20 @@ export const addNewMember = async (
     }
   );
 };
+
+export const getStorageMetadata = async (id: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+    return;
+  }
+
+  const path = `v1/storage/metadata?url=${id}`;
+  return await baseUrl.get(path, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

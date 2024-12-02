@@ -585,3 +585,14 @@ export interface UpdateGroupForm {
   privacy: string;
   hashtags: string[] | null;
 }
+
+export interface MetadataFileInfo {
+  id: string;
+  name: string;
+  size: number;
+  extension: string;
+  type: string;
+  url: string;
+  created_at: string;
+  updated_at: string;
+}

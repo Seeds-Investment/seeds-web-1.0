@@ -1,6 +1,7 @@
 import IconNoData from '@/assets/play/tournament/noData.svg';
 import Seedy from '@/assets/promo/seedy.svg';
 import SeedyBNW from '@/assets/promo/seedy_bnw.svg';
+import SeedyPlan from '@/assets/promo/seedy_plan.svg';
 import { standartCurrency } from '@/helpers/currency';
 import { getDetailCircle } from '@/repository/circleDetail.repository';
 import { getPlayById } from '@/repository/play.repository';
@@ -11,6 +12,7 @@ import {
 } from '@/repository/promo.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import { getDetailPostSocial } from '@/repository/social.respository';
+import { getAvailableVoucherPlan } from '@/repository/subscription.repository';
 import { type RootState } from '@/store/premium-circle';
 import {
   selectPromoCodeValidationResult,
@@ -58,6 +60,7 @@ interface IPromoCode {
   start_date: string;
   tnc: string;
   type: string;
+  user_id: string;
 }
 
 interface IDetailPost {
@@ -331,21 +334,27 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
         fetchId,
         totalTransaction
       );
+      const availableVoucherPlanResponse = await getAvailableVoucherPlan(
+        promoParams.page,
+        promoParams.limit,
+        spotType
+      );
+
       if (Array.isArray(activePromoCodesResponse?.data)) {
-        if (activePromoCodesResponse?.data !== null) {
-          setActivePromoCodes(prevPromoCodes => [
-            ...prevPromoCodes,
-            ...activePromoCodesResponse?.data
-          ]);
-        }
+        setActivePromoCodes(prevPromoCodes => [
+          ...prevPromoCodes,
+          ...activePromoCodesResponse?.data,
+          ...(availableVoucherPlanResponse?.data ?? [])
+        ]);
       } else {
         setMetadata(undefined);
       }
+
       setIsIncrease(false);
       setMetadata(activePromoCodesResponse?.metadata);
     } catch (error) {
       setIsIncrease(false);
-      toast.error('Error fetching promo codes:');
+      toast.error('Error fetching promo codes and voucher plans');
     } finally {
       setIsIncrease(false);
       setLoading(false);
@@ -615,21 +624,41 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
                 ? detailPost?.premium_fee ?? 0
                 : 0;
 
+              const hasUserId =
+                typeof item?.user_id === 'string' &&
+                item?.user_id.trim() !== '';
               const itemUnavailable =
                 admissionFee < minTransaction || !(item?.is_eligible ?? false);
+
+              // Background color
               const bgColor = isPromoSelected
                 ? 'bg-gradient-to-r from-[#BDFFE5] to-white border-[#27A590]'
+                : hasUserId
+                ? 'bg-white border-[#27A590]'
                 : itemUnavailable
                 ? 'bg-white border-[#BDBDBD]'
                 : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]';
 
-              const imgSrc = itemUnavailable ? SeedyBNW : Seedy;
+              // Image source
+              const imgSrc = hasUserId
+                ? SeedyPlan
+                : itemUnavailable
+                ? SeedyBNW
+                : Seedy;
+
+              // Sidebar background color
               const sideBarBgColor = isPromoSelected
+                ? 'bg-[#27A590]'
+                : hasUserId
                 ? 'bg-[#27A590]'
                 : itemUnavailable
                 ? 'bg-[#BDBDBD]'
                 : 'bg-[#D89918]';
+
+              // Border color
               const borderColor = isPromoSelected
+                ? 'border-[#27A590]'
+                : hasUserId
                 ? 'border-[#27A590]'
                 : itemUnavailable
                 ? 'border-[#BDBDBD]'
@@ -699,18 +728,19 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
                         </div>
                         <div
                           className={`${
-                            isPromoSelected ? 'bg-[#27A590]' : 'bg-[#FDBA22]'
+                            hasUserId
+                              ? 'bg-[#27A590]'
+                              : isPromoSelected
+                              ? 'bg-[#27A590]'
+                              : 'bg-[#FDBA22]'
                           } absolute right-[-10px] bottom-[10px] text-white text-sm md:text-base lg:text-sm px-4 rounded-full`}
                         >
-                          {item?.max_redeem === 0 ? (
+                          {item?.quantity === 0 ? (
                             <div className="text-[35px] flex justify-center items-center">
                               &#8734;
                             </div>
                           ) : (
-                            `${
-                              (item?.max_redeem ?? 0) -
-                              (item?.promo_redeemed ?? 0)
-                            }x`
+                            `${item?.quantity}x`
                           )}
                         </div>
                       </div>

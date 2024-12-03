@@ -210,6 +210,25 @@ export const getPlaySimulation = async (
   }
 };
 
+export const getPlayAssetTrending = async (params: any): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    return await playService.get('asset/trending', {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching asset trending', error);
+  }
+};
+
 export const getPlaySimulationDetail = async (
   currency: string
 ): Promise<any> => {

@@ -34,14 +34,14 @@ import { VoiceRecorder } from './VoiceRecording';
 
 interface SuccessOrderData {
   id: string;
-  play_id?: string;
-  user_id?: string;
+  play_id: string;
+  user_id: string;
   asset: any;
   type: 'BUY' | 'SELL';
-  lot?: number;
+  lot: number;
   bid_price: number;
   stop_loss: number;
-  pnl?: number;
+  pnl: number;
   created_at: string;
   updated_at: string;
 }
@@ -165,6 +165,10 @@ const tagOption = [
   {
     id: 4,
     name: 'Quiz'
+  },
+  {
+    id: 5,
+    name: 'Team Battle'
   }
 ];
 interface typeOfSelected {
@@ -224,7 +228,8 @@ const ModalMention: React.FC<props> = ({
     peopleList: [],
     circleList: [],
     playList: [],
-    quizList: []
+    quizList: [],
+    teamBattle: []
   });
   const [form, setForm] = useState<form>({
     content_text: '',
@@ -347,11 +352,11 @@ const ModalMention: React.FC<props> = ({
     const cleanedString = form.content_text.replace(regexPattern, '');
     const totalChar = cleanedString.length;
 
-    if (totalChar > 255 && form.privacy !== 'premium') {
+    if (totalChar > 500 && form.privacy !== 'premium') {
       setIsError(true);
       setIsDisable(true);
       setErrorMessage(`${t('social.errorState.thread3')}`);
-    } else if (totalChar > 500 && form.privacy === 'premium') {
+    } else if (totalChar > 1000 && form.privacy === 'premium') {
       setIsError(true);
       setIsDisable(true);
       setErrorMessage(`${t('social.errorState.thread1')}`);
@@ -368,7 +373,7 @@ const ModalMention: React.FC<props> = ({
       }
     }
 
-    if (form.content_text.length < 3) {
+    if (form.content_text.length < 1) {
       setLastWordsWithChar('');
     }
   }, [form.content_text]);
@@ -384,7 +389,7 @@ const ModalMention: React.FC<props> = ({
   }, [otherTagId]);
 
   useEffect(() => {
-    if (selectedValue.tag.length > 0) {
+    if (selectedValue?.tag?.length > 0) {
       setIsSymbol(false);
       if (form.content_text.includes(' ')) {
         let isSpace = false;
@@ -499,7 +504,7 @@ const ModalMention: React.FC<props> = ({
       setForm(prevForm => ({ ...prevForm, content_text: newActualValue }));
       setForm(prevForm => ({ ...prevForm, [name]: newActualValue }));
     }
-    const API_TYPE = ['people', 'plays', 'circles', 'quizes'];
+    const API_TYPE = ['people', 'plays', 'circles', 'quizes', 'battles'];
     const matches: any = value.match(/[@#$]\[.*?\]\(.*?\)|[@#$]\w+/g);
     const words = value.split(' ');
     const circleFind = value.split('@');
@@ -523,7 +528,7 @@ const ModalMention: React.FC<props> = ({
       const cleanedValue = lastMention.replace(/[#$@]/g, '');
 
       if (debounceTimer !== null) clearTimeout(debounceTimer);
-      if (lastMention.length > 3) {
+      if (lastMention.length > 1) {
         setDebounceTimer(
           setTimeout((): void => {
             void (async (): Promise<void> => {
@@ -579,6 +584,11 @@ const ModalMention: React.FC<props> = ({
                       ...item,
                       id: `${item.id as string}-quiz`,
                       display: item.name
+                    })),
+                    teamBattle: results[4]?.data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-battles`,
+                      display: item.name
                     }))
                   });
                   setTimeout(() => {
@@ -614,6 +624,15 @@ const ModalMention: React.FC<props> = ({
                           id: `${item.id as string}-quiz`
                         }))
                       );
+                    } 
+                    else if (results[4]?.data?.length > 0) {
+                      setOtherTagId(5);
+                      setTagLists(
+                        results[4].data.map((item: any) => ({
+                          ...item,
+                          id: `${item.id as string}-battles`
+                        }))
+                      );
                     }
                   }, 500);
                 }
@@ -640,6 +659,9 @@ const ModalMention: React.FC<props> = ({
     }
     if (type?.id === 4) {
       setTagLists(otherTagList?.quizList);
+    }
+    if (type?.id === 5) {
+      setTagLists(otherTagList?.teamBattle);
     }
   };
 
@@ -882,11 +904,11 @@ const ModalMention: React.FC<props> = ({
         peopleList: [],
         circleList: [],
         playList: [],
-        quizList: []
+        quizList: [],
+        teamBattle: []
       });
       setDollarLists([]);
       setHashtags([]);
-      // window.location.reload();
     } catch (error: any) {
       console.error('Error posting or editing:', error.message);
     } finally {
@@ -911,14 +933,51 @@ const ModalMention: React.FC<props> = ({
       applyCustomStyle();
     }
   }, [open, pages]);
+  
+  useEffect(() => {
+    setTagLists([])
+    setLastWordsWithSymbol('')
+  }, [handleOpen]);
 
+  const renderAvatar = (imageUrl: string): JSX.Element => {
+    return (
+      <img
+        src={imageUrl}
+        alt={`image avatar`}
+        className="rounded-full h-[48px] w-[48px] object-cover"
+      />
+    );
+  };
+
+  const renderNameAndTag = (
+    name: string,
+    seedsTag: string,
+    verified?: boolean
+  ): JSX.Element => {
+    return (
+      <div className="flex flex-col">
+        <div className="flex items-center gap-2">
+          <Typography className="text-lg text-black font-poppins font-medium">
+            {name}
+          </Typography>
+          {verified !== undefined && verified && (
+            <CheckCircleIcon width={20} height={20} color="#5E44FF" />
+          )}
+        </div>
+
+        <Typography className="font-poppins text-neutral-medium text-base">
+          @{seedsTag}
+        </Typography>
+      </div>
+    );
+  };
   const renderUserSuggestion = (): JSX.Element | undefined => {
     if (
-      (lastWordWithSymbol.length > 2 &&
+      (lastWordWithSymbol.length > 1 &&
         lastWordWithSymbol.includes('@') &&
         isSymbol) ||
       (otherTagId !== 1 &&
-        lastWordWithChar.length > 2 &&
+        lastWordWithChar.length > 1 &&
         lastWordWithChar.includes('@'))
     ) {
       return (
@@ -950,17 +1009,15 @@ const ModalMention: React.FC<props> = ({
               );
             })}
           </div>
-          <div className="max-h-[400px] overflow-auto w-[90%] ml-10">
+          <div className="max-h-[400px] overflow-auto w-[90%] ml-10 bg-white">
             {tagLists?.map((el: any, i: number) => {
               if (
                 el?.tag === undefined &&
-                el?.name
-                  .toLowerCase()
-                  .includes(lastWordWithChar.split('@')[1]) === true
+                el?.name?.toLowerCase()?.includes(lastWordWithChar.split('@')[1]) === true
               ) {
                 return (
                   <div
-                    className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
+                    className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2 hover:bg-[#F2F2F2] duration-300"
                     key={el.id}
                     onClick={() => {
                       const newTag = {
@@ -977,7 +1034,8 @@ const ModalMention: React.FC<props> = ({
                         peopleList: [],
                         circleList: [],
                         playList: [],
-                        quizList: []
+                        quizList: [],
+                        teamBattle: []
                       });
                       setFindId((prevState: number) => prevState + 1);
                       setLastWordsWithChar('');
@@ -1032,10 +1090,66 @@ const ModalMention: React.FC<props> = ({
                     ) : null}
                   </div>
                 );
+              } else if (
+                el?.tag === undefined &&
+                el?.title?.toLowerCase()?.includes(lastWordWithChar.split('@')[1]) === true
+              ) {
+                return (
+                  <div
+                    className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2 hover:bg-[#F2F2F2] duration-300"
+                    key={el.id}
+                    onClick={() => {
+                      const newTag = {
+                        tag: el.tag,
+                        id: el?.id
+                      };
+                      if (
+                        el?.members !== undefined ||
+                        el?.participants !== undefined
+                      ) {
+                        newTag.tag = el?.title;
+                      }
+                      setOtherTagList({
+                        peopleList: [],
+                        circleList: [],
+                        playList: [],
+                        quizList: [],
+                        teamBattle: []
+                      });
+                      setFindId((prevState: number) => prevState + 1);
+                      setLastWordsWithChar('');
+                      setSelectedValue(newTag);
+                      setIsSymbol(false);
+                    }}
+                  >
+                    {el?.avatar !== undefined
+                      ? renderAvatar(el.avatar)
+                      : el?.banner !== undefined
+                      ? renderAvatar(
+                          el?.banner?.image_url !== undefined
+                            ? el?.banner?.image_url
+                            : el?.banner
+                        )
+                      : null}
+
+                    {el?.tag !== undefined ? (
+                      renderNameAndTag(el?.name, el?.tag)
+                    ) : el?.participants !== undefined ? (
+                      <div className="flex flex-col gap-2">
+                        <Typography className="text-lg text-black font-poppins font-medium">
+                          {el?.title}
+                        </Typography>
+                        <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                          {el?.participants} {el?.participants > 1 ? t('social.postSection.players') : t('social.postSection.player')}
+                        </Typography>
+                      </div>
+                    ) : null}
+                  </div>
+                );
               } else if (el?.tag !== undefined) {
                 return (
                   <div
-                    className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
+                    className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2 hover:bg-[#F2F2F2] duration-300"
                     key={el.id}
                     onClick={() => {
                       const newTag = {
@@ -1052,7 +1166,8 @@ const ModalMention: React.FC<props> = ({
                         peopleList: [],
                         circleList: [],
                         playList: [],
-                        quizList: []
+                        quizList: [],
+                        teamBattle: []
                       });
                       setFindId((prevState: number) => prevState + 1);
                       setLastWordsWithChar('');
@@ -1096,7 +1211,7 @@ const ModalMention: React.FC<props> = ({
                           {el?.name}
                         </Typography>
                         <Typography className="font-poppins text-neutral-soft text-base font-normal">
-                          {el?.participants} participants
+                          {el?.participants} {el?.participants > 1 ? t('social.postSection.players') : t('social.postSection.player')}
                         </Typography>
                       </div>
                     ) : null}
@@ -1113,7 +1228,7 @@ const ModalMention: React.FC<props> = ({
 
   const renderDollarSuggestion = (): JSX.Element | undefined => {
     if (
-      lastWordWithSymbol.length > 3 &&
+      lastWordWithSymbol.length > 1 &&
       lastWordWithSymbol.includes('$') &&
       isSymbol
     ) {
@@ -1155,7 +1270,7 @@ const ModalMention: React.FC<props> = ({
 
   const renderUserHashtags = (): JSX.Element | undefined => {
     if (
-      lastWordWithSymbol.length > 3 &&
+      lastWordWithSymbol.length > 1 &&
       lastWordWithSymbol.includes('#') &&
       isSymbol
     ) {
@@ -1290,39 +1405,6 @@ const ModalMention: React.FC<props> = ({
     }
   };
 
-  const renderAvatar = (imageUrl: string): JSX.Element => {
-    return (
-      <img
-        src={imageUrl}
-        alt={`image avatar`}
-        className="rounded-full h-[48px] w-[48px] object-cover"
-      />
-    );
-  };
-
-  const renderNameAndTag = (
-    name: string,
-    seedsTag: string,
-    verified?: boolean
-  ): JSX.Element => {
-    return (
-      <div className="flex flex-col">
-        <div className="flex items-center gap-2">
-          <Typography className="text-lg text-black font-poppins font-medium">
-            {name}
-          </Typography>
-          {verified !== undefined && verified && (
-            <CheckCircleIcon width={20} height={20} color="#5E44FF" />
-          )}
-        </div>
-
-        <Typography className="font-poppins text-neutral-medium text-base">
-          @{seedsTag}
-        </Typography>
-      </div>
-    );
-  };
-
   const renderHashtags = (name: string, desc: string): JSX.Element => {
     return (
       <div className="flex flex-col">
@@ -1368,7 +1450,8 @@ const ModalMention: React.FC<props> = ({
               peopleList: [],
               circleList: [],
               playList: [],
-              quizList: []
+              quizList: [],
+              teamBattle: []
             });
             setDollarLists([]);
             setHashtags([]);
@@ -1436,7 +1519,8 @@ const ModalMention: React.FC<props> = ({
                         peopleList: [],
                         circleList: [],
                         playList: [],
-                        quizList: []
+                        quizList: [],
+                        teamBattle: []
                       });
                       setDollarLists([]);
                       setHashtags([]);
@@ -1715,7 +1799,8 @@ const ModalMention: React.FC<props> = ({
                               peopleList: [],
                               circleList: [],
                               playList: [],
-                              quizList: []
+                              quizList: [],
+                              teamBattle: []
                             });
                             setDollarLists([]);
                             setHashtags([]);

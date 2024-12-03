@@ -10,12 +10,25 @@ class SocketService {
     });
   }
 
+  connectAsset(): void {
+    this.socket = io('wss://app.seeds.finance', {
+      path: '/seeds/socket.io',
+      transports: ['websocket']
+    });
+  }
+
   disconnect(id: string): void {
     if (this.socket != null) {
       this.socket.emit('user.offline', {
         guid: this.socket.id,
         uuid: id
       });
+      this.socket.disconnect();
+    }
+  }
+
+  disconnectAsset(): void {
+    if (this.socket != null) {
       this.socket.disconnect();
     }
   }

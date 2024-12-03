@@ -1,8 +1,10 @@
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
+import { blockOtherUser } from '@/repository/profile.repository';
 import { getBlocklist } from '@/repository/user.repository';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import blockImage from '../../../assets/block.svg';
 
 interface DataPlayer {
@@ -34,18 +36,27 @@ interface DataPlayer {
 const BlockList: React.FC = () => {
   const [blocklistData, setBlocklistData] = useState<DataPlayer[]>([]);
 
+  const handleBlockUnblock = async (userId: string): Promise<void> => {
+    try {
+      const response = await blockOtherUser({ user_id: userId });
+      return response;
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    } finally {
+      await fetchData();
+    }
+  };
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const response = await getBlocklist();
+      setBlocklistData(response.data);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response = await getBlocklist();
-        console.log(response.data, 'kf');
-
-        setBlocklistData(response.data);
-      } catch (error) {
-        console.error('Error fetching blocklist:', error);
-      }
-    };
-
     void fetchData();
   }, []);
 
@@ -109,7 +120,12 @@ const BlockList: React.FC = () => {
                 </div>
               </div>
               <div className="mt-2">
-                <button className=" bg-[#3AC4A0] text-white text-xs font-semibold px-4 py-2 border rounded-full border-[#3AC4A0]">
+                <button
+                  onClick={() => {
+                    void handleBlockUnblock(data.id);
+                  }}
+                  className=" bg-[#3AC4A0] text-white text-xs font-semibold px-4 py-2 border rounded-full border-[#3AC4A0]"
+                >
                   Unblock
                 </button>
               </div>

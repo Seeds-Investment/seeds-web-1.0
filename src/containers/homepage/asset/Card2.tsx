@@ -1,6 +1,6 @@
 import CCard from '@/components/CCard';
 import CountdownTimer from '@/components/play/CountdownTimer';
-import { standartCurrency } from '@/helpers/currency';
+import { formatAssetPrice } from '@/helpers/currency';
 import { getPlayById } from '@/repository/play.repository';
 import { type AssetI } from '@/utils/interfaces/play.interface';
 import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
@@ -37,7 +37,7 @@ const Card2: React.FC<props> = ({ data, currency }) => {
   };
 
   return (
-    <CCard className="flex w-full md:w-2/3 p-2 md:mt-5 md:rounded-lg border-none rounded-none">
+    <CCard className="flex w-full md:w-1/2 p-2 md:mt-5 md:rounded-lg border-none rounded-none">
       <p className="text-sm text-center items-center text-[#262626]">
         {t('playSimulation.remainingTime')} :
       </p>
@@ -55,8 +55,7 @@ const Card2: React.FC<props> = ({ data, currency }) => {
       <div className="flex flex-row">
         <div className="flex-col w-1/3 text-center items-center">
           <p className="text-sm md:text-base font-semibold text-black">
-            {currency ?? 'IDR'}{' '}
-            {standartCurrency(data?.lastPrice?.open ?? 0).replace('Rp', '')}
+            {currency ?? 'IDR'} {formatAssetPrice(data?.lastPrice?.open ?? 0)}
           </p>
           <p className="text-sm md:text-base font-light text-[#7C7C7C]">
             {t('playSimulation.open')}
@@ -64,8 +63,7 @@ const Card2: React.FC<props> = ({ data, currency }) => {
         </div>
         <div className="flex-col w-1/3 text-center items-center">
           <p className="text-sm md:text-base font-semibold text-black">
-            {currency ?? 'IDR'}{' '}
-            {standartCurrency(data?.lastPrice?.high ?? 0).replace('Rp', '')}
+            {currency ?? 'IDR'} {formatAssetPrice(data?.lastPrice?.high ?? 0)}
           </p>
           <p className="text-sm md:text-base font-light text-[#7C7C7C]">
             {t('playSimulation.dayHigh')}
@@ -73,8 +71,7 @@ const Card2: React.FC<props> = ({ data, currency }) => {
         </div>
         <div className="flex-col w-1/3 text-center items-center">
           <p className="text-sm md:text-base font-semibold text-black">
-            {currency ?? 'IDR'}{' '}
-            {standartCurrency(data?.lastPrice?.low ?? 0).replace('Rp', '')}
+            {currency ?? 'IDR'} {formatAssetPrice(data?.lastPrice?.low ?? 0)}
           </p>
           <p className="text-sm md:text-base font-light text-[#7C7C7C]">
             {t('playSimulation.dayLow')}

@@ -213,10 +213,10 @@ const CopyPie: React.FC<props> = ({ handleOpen, isOpen, form }) => {
       is_pinned: form.is_pinned
     };
 
-    const newDataPie = selectedAsset.map(item => ({
-      asset_id: item.id,
-      price: item.price,
-      allocation: item.value
+    const newDataPie = selectedAsset?.map(item => ({
+      asset_id: item?.id,
+      price: item?.price,
+      allocation: item?.value
     }));
 
     payload.pie = newDataPie;
@@ -243,15 +243,15 @@ const CopyPie: React.FC<props> = ({ handleOpen, isOpen, form }) => {
       pie: form.pie
     });
 
-    const assetData = form.pie.map((item: any) => ({
-      id: item.id,
-      realTicker: item.real_ticker,
-      exchange_currency: item.exchange_currency,
-      logo: item.logo,
-      name: item.name,
-      price: item.price_bar.open,
-      exchangeRate: item.exchange_rate,
-      value: item.allocation,
+    const assetData = form?.pie?.map((item: any) => ({
+      id: item?.id,
+      realTicker: item?.real_ticker,
+      exchange_currency: item?.exchange_currency,
+      logo: item?.logo,
+      name: item?.name,
+      price: item?.price_bar?.open,
+      exchangeRate: item?.exchange_rate,
+      value: item?.allocation,
       isLock: false
     }));
 

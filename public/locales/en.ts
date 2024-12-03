@@ -706,6 +706,7 @@ export default {
       day: 'DD',
       month: 'MM',
       year: 'YYYY',
+      seedsTag: 'Seedstag is a unique username on our seeds apps',
       validation: {
         seedsTag: 'SeedsTag already used',
         regex: 'SeedsTag cannot contain spaces or symbols, please delete!',
@@ -889,6 +890,14 @@ export default {
       createPin: { title: 'Create PIN' },
       changePin: { title: 'Change PIN' },
       language: { title: 'Language' },
+      savedPost: {
+        title: 'Saved Post',
+        info: 'Information',
+        infoMessage: 'This page contains your previous saved post.',
+        noData: 'Ups, belum ada postingan tersimpan',
+        noDataMessage:
+          'Jelajahi postingan di halaman sosial dan simpan yang terbaik!'
+      },
       currency: { title: 'Currency' },
       block: { title: 'Block List' },
       legal: { title: 'Legal' },
@@ -1488,6 +1497,22 @@ export default {
     }
   },
   social: {
+    postSection: {
+      shareBattle: 'Share This Battle',
+      shareLinks: 'Share Link',
+      share: 'Share',
+      play: 'Play',
+      joined: 'Joined',
+      player: 'Player',
+      players: 'Players',
+      fee: 'Fee',
+      free: 'Free',
+      category: 'Category',
+      participant: 'participant',
+      participants: 'participants'
+    },
+    follow: 'Follow',
+    unfollow: 'Unfollow',
     postSetting: {
       publicTitle: 'Public',
       publicDesc: 'Everyone can see your post',
@@ -1561,7 +1586,8 @@ export default {
     navbar: {
       following: 'Following',
       foryou: 'For You',
-      space: 'Space'
+      space: 'Space',
+      circle: 'Circle'
     },
     filterType: {
       all: 'All',
@@ -1599,6 +1625,20 @@ export default {
       close: 'Close',
       paymentSuccessful: 'Successful',
       recurringSaved: 'Your recurring has been saved!'
+    },
+    dailyQuiz: {
+      rightAnswer: 'Congratulation,you’re right!',
+      wrongAnswer: 'Oops, not quite.',
+      answer: 'Answer',
+      shareText: 'Your will share this to your profile. Accept ?',
+      accept: 'Accept',
+      cancel: 'Cancel',
+      shareWin:
+        'Your success has been shared! Keep inspiring others with your financial knowledge!',
+      shareLose:
+        ' Your attempt has been shared! Keep learning and growing every day! ',
+      postWin: 'I am answered today’s daily quiz right! Feeling great!',
+      postLose: 'I am answered today’s daily quiz wrong. but i’m learning!'
     }
   },
   landingV2: {
@@ -2160,7 +2200,10 @@ export default {
         "Don't forget to read Play Arena's terms and conditions before you start playing."
     },
     watchlist: {
-      watchlist: 'Watchlist',
+      myWatchlist: 'My Watchlist',
+      myWatchlistDescription: 'Check your watchlist',
+      assets: 'Assets',
+      btnEditAsset: 'Edit Asset',
       noData: 'No Watchlist yet',
       create: 'Create your Watchlist now!',
       createWatchlist: 'Create Watchlist',
@@ -2175,7 +2218,30 @@ export default {
       deleteConfirm: 'Are you sure want to delete this watchlist?',
       changeAsset: 'Change Asset',
       enter: 'Enter Watchlist name...',
-      search: 'Search'
+      search: 'Search',
+      modalHeader: 'Add Assets to Watchlist',
+      addToWatchlist: 'Save Changes',
+      newWatchlist: 'Create a new Watchlist',
+      horay: 'Hoorayyy!!',
+      successAddAsset: 'Watchlist updated successfully',
+      continue: 'Continue',
+      ops: 'Oops!!',
+      cancelAddAsset: 'Cancel adding assets to watchlist?',
+      yes: 'Yes',
+      no: 'No',
+      alreadyExist:
+        'The asset you added is already in the watchlist that has been created.',
+      ok: 'Ok',
+      createNewWatchlist: 'New Watchlist',
+      descNewWatchlist:
+        'Create a watchlist to help you collect your favorite assets',
+      watchlistName: 'Watchlist Name',
+      groupName: 'Desired Group Name',
+      btnNewWatchlist: 'Create New Watchlist',
+      successWatchlist: 'Watchlist created successfully',
+      backToAsset: 'Back to Asset',
+      seeWatchlist: 'See Watchlist',
+      noWatchlist: 'Watchlist has not been created'
     },
     social: {
       sorry: 'Sorry, there is no post here!',

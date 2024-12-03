@@ -8,6 +8,7 @@ import CoinLogo from '@/assets/play/tournament/coinLogo.svg';
 import Loading from '@/components/popup/Loading';
 import {
   calculatePercentageDifference,
+  formatAssetPrice,
   standartCurrency
 } from '@/helpers/currency';
 import { getDetailAsset } from '@/repository/asset.repository';
@@ -92,7 +93,9 @@ const DetailPortfolio = (): React.ReactElement => {
   const fetchPlayAsset = async (): Promise<void> => {
     try {
       setLoadingPlayAsset(true);
-      const response = await getBattleAssets(id as string, assetId as string);
+      const response = await getBattleAssets(id as string, assetId as string, {
+        currency: userInfo?.preferredCurrency as string
+      });
       setPlayAsset(response?.data);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -132,11 +135,13 @@ const DetailPortfolio = (): React.ReactElement => {
               )
             }
           >
-            <img
-              alt=""
-              src={marketAsset?.logo ?? CoinLogo}
-              className="w-[30px] md:w-[40px]"
-            />
+            <div className="flex justify-center items-center w-[30px] md:w-[40px]">
+              <img
+                alt=""
+                src={marketAsset?.logo ?? CoinLogo}
+                className="w-full h-auto"
+              />
+            </div>
             <div className="flex flex-col justify-center items-start">
               <div className="flex gap-1">
                 <Typography className="text-sm md:text-lg text-black font-poppins font-semibold">
@@ -156,10 +161,7 @@ const DetailPortfolio = (): React.ReactElement => {
               {userInfo?.preferredCurrency !== undefined
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
-              {standartCurrency(playAsset?.current_price ?? 0).replace(
-                'Rp',
-                ''
-              )}
+              {formatAssetPrice(playAsset?.current_price ?? 0)}
             </Typography>
             <div className="flex justify-center gap-2">
               {priceBarHistory !== undefined &&
@@ -256,9 +258,10 @@ const DetailPortfolio = (): React.ReactElement => {
                     playAsset?.return_percentage < 0
                       ? 'text-[#DA2D1F]'
                       : 'text-[#3AC4A0]'
-                  } text-sm md:text-lg text-[#DA2D1F] font-poppins`}
+                  } text-sm md:text-lg font-poppins`}
                 >
-                  ({playAsset?.return_percentage}%)
+                  ({playAsset?.return_percentage < 0 ? '-' : '+'}
+                  {playAsset?.return_percentage}%)
                 </Typography>
               </div>
             </>
@@ -281,10 +284,7 @@ const DetailPortfolio = (): React.ReactElement => {
               {userInfo?.preferredCurrency !== undefined
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
-              {standartCurrency(playAsset?.average_price ?? 0).replace(
-                'Rp',
-                ''
-              )}
+              {formatAssetPrice(playAsset?.average_price ?? 0)}
             </Typography>
           </div>
           <div className="w-full flex justify-between">
@@ -303,10 +303,7 @@ const DetailPortfolio = (): React.ReactElement => {
               {userInfo?.preferredCurrency !== undefined
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
-              {standartCurrency(playAsset?.current_price ?? 0).replace(
-                'Rp',
-                ''
-              )}
+              {formatAssetPrice(playAsset?.current_price ?? 0)}
             </Typography>
           </div>
         </div>

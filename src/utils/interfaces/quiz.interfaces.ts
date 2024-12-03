@@ -290,3 +290,40 @@ export interface TopQuiz {
   ended_at: string;
   created_at: string;
 }
+
+export interface DailyQuizRes {
+  participant_id: string;
+  is_played: boolean;
+  data: Data;
+}
+
+export interface Data {
+  id: string;
+  difficulty: string;
+  is_correct: boolean;
+  answer_id: number;
+  daily_quiz: DailyQuiz;
+}
+
+export interface DailyQuiz {
+  en: Questions;
+  id: Questions;
+}
+
+export interface Questions {
+  question: string;
+  options: DailyQuizOptions;
+  option_image: DailyQuizOptions;
+  description: string;
+}
+
+export interface DailyQuizOptions {
+  option_1: OptionI;
+  option_2: OptionI;
+  option_3: OptionI;
+  option_4: OptionI;
+}
+export interface OptionI {
+  id: number;
+  option: string;
+}

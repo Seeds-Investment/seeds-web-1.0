@@ -14,7 +14,7 @@ import TriangleBullish from '@/assets/play/tournament/triangleBullish.svg';
 import AssetPagination from '@/components/AssetPagination';
 import Loading from '@/components/popup/Loading';
 import TournamentPortfolioChart from '@/containers/tournament/portfolio-chart/TournamentPortfolioChart';
-import { standartCurrency } from '@/helpers/currency';
+import { formatAssetPrice, standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 // import { getActiveAsset } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -29,6 +29,7 @@ import {
   // type ActiveAsset,
   type BallanceTournament,
   type ChartProportion,
+  type Summary,
   type UserInfo
 } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
@@ -62,6 +63,7 @@ const Portfolio = (): React.ReactElement => {
   const [portfolioActiveTab, setPortfolioActiveTab] = useState(
     PortfolioFilter.OVERVIEW
   );
+  const [summary, setSummary] = useState<Summary>();
 
   const [ballance, setBallance] = useState<BallanceTournament>({
     balance: 0,
@@ -76,7 +78,6 @@ const Portfolio = (): React.ReactElement => {
   const [activeAssetParams, setActiveAssetParams] = useState({
     battle_id: id as string,
     category: portfolioActiveTab === 'OVERVIEW' ? null : portfolioActiveTab,
-    currency: userInfo?.preferredCurrency ?? 'IDR',
     limit: 5,
     page: 1
   });
@@ -134,6 +135,7 @@ const Portfolio = (): React.ReactElement => {
       setLoadingPortfolio(true);
       const response = await getBattlePortfolio(id as string, currency);
       setChartProportion(response?.pie?.chart_proportions ?? []);
+      setSummary(response?.summary);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -148,10 +150,10 @@ const Portfolio = (): React.ReactElement => {
   const fetchActiveAsset = async (retries = 3): Promise<void> => {
     try {
       setLoadingActiveAsset(true);
-      const response = await getActiveAssetBattle(
-        id as string,
-        activeAssetParams
-      );
+      const response = await getActiveAssetBattle(id as string, {
+        ...activeAssetParams,
+        currency: userInfo?.preferredCurrency as string
+      });
       setActiveAsset(response?.data);
       setActiveAssetLength(response?.metadata?.total);
     } catch (error) {
@@ -228,25 +230,22 @@ const Portfolio = (): React.ReactElement => {
               <Image
                 alt=""
                 src={
-                  ballance?.return_value < 0 ? TriangleBearish : TriangleBullish
+                  (summary?.gnl ?? 0) < 0 ? TriangleBearish : TriangleBullish
                 }
                 className="w-[20px]"
               />
               <Typography
                 className={`${
-                  ballance?.return_value < 0 ? 'text-[#DD2525]' : 'text-white'
+                  (summary?.gnl ?? 0) < 0 ? 'text-[#DD2525]' : 'text-white'
                 } font-poppins z-10 text-sm md:text-lg`}
               >
                 {userInfo?.preferredCurrency !== undefined
                   ? userInfo?.preferredCurrency
                   : 'IDR'}{' '}
-                {standartCurrency(ballance?.return_value ?? 0).replace(
-                  'Rp',
-                  ''
-                )}
-                {` (${
-                  ballance?.return_value < 0 ? '' : '+'
-                }${ballance?.return_percentage?.toFixed(2)}%)`}
+                {standartCurrency(summary?.gnl ?? 0).replace('Rp', '')}
+                {` (${(summary?.gnl ?? 0) < 0 ? '' : '+'}${
+                  summary?.gnl_percentage?.toFixed(2) as string
+                }%)`}
               </Typography>
               <Typography className="text-white font-poppins z-10 text-sm md:text-lg">
                 {t('tournament.portfolio.today')}
@@ -362,9 +361,7 @@ const Portfolio = (): React.ReactElement => {
                         {userInfo?.preferredCurrency !== undefined
                           ? userInfo?.preferredCurrency
                           : 'IDR'}{' '}
-                        {standartCurrency(
-                          (data?.average_price ?? 0) * (data?.total_lot ?? 0)
-                        ).replace('Rp', '')}
+                        {formatAssetPrice(data?.average_price ?? 0)}
                       </div>
                       <div className="flex justify-center gap-2 text-xs md:text-base">
                         <Image

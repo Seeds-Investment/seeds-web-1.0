@@ -1,6 +1,7 @@
 import Endpoints from '@/utils/_static/endpoint';
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
+import { toast } from 'react-toastify';
 
 interface WatchlistForm {
   play_id: string;
@@ -31,13 +32,18 @@ export const getMarketList = async (params: any): Promise<any> => {
     return await Promise.resolve(null);
   }
 
-  return await marketService.get(`/list`, {
-    params,
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`
-    }
-  });
+  try {
+    const response = await marketService.get(`/list`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    toast.error(error.response.data.message);
+  }
 };
 
 export const getMarketCurrency = async (): Promise<any> => {
@@ -55,13 +61,17 @@ export const getMarketCurrency = async (): Promise<any> => {
   });
 };
 
-export const getAssetOverview = async (id: string): Promise<any> => {
+export const getAssetOverview = async (
+  id: string,
+  params: { currency: string }
+): Promise<any> => {
   if (isUndefindOrNull(id) || isEmptyString(id)) {
     return await Promise.reject(new Error('ID is undefined, null, or empty.'));
   }
 
   const path = Endpoints.asset.getAssetOverview.replace(':id', id);
   return await marketService.get(path, {
+    params,
     headers: {
       Accept: 'application/json'
     }
@@ -170,7 +180,10 @@ export const getWatchlist = async (params: {
   }
 };
 
-export const getWatchlistById = async (id: string): Promise<any> => {
+export const getWatchlistById = async (
+  id: string,
+  currency?: string
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -178,6 +191,7 @@ export const getWatchlistById = async (id: string): Promise<any> => {
       return await Promise.resolve('Access token not found');
     }
     return await marketService(`/watchlist/${id}`, {
+      params: { currency },
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`
@@ -246,6 +260,57 @@ export const deleteWatchlist = async (id: string): Promise<any> => {
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+};
+
+export const checkAssetInWatchlist = async (
+  watchlistId: string,
+  assetId: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+
+    return await marketService.get(
+      `/watchlist/${watchlistId}/watch/${assetId}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+};
+
+export const addAssetToWatchlist = async (
+  watchlistId: string,
+  assetId: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+
+    return await marketService.post(
+      `/watchlist/${watchlistId}/watch/${assetId}`,
+      {},
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
   } catch (error) {
     return await Promise.reject(error);
   }

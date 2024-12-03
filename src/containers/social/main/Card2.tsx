@@ -27,7 +27,7 @@ interface props {
 const Card2: React.FC<props> = ({ userData, handleOpen }) => {
   const { t } = useTranslation();
   return (
-    <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none">
+    <CCard className="hidden md:flex p-8 md:mt-5 md:rounded-lg border-none rounded-none">
       <div className="flex flex-row">
         <Avatar
           size="md"

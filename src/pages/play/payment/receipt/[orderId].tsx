@@ -504,3 +504,4 @@ const SuccessPaymentPage: React.FC = () => {
 };
 
 export default withAuth(SuccessPaymentPage);
+

@@ -3,7 +3,7 @@ import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
 const devUrl =
   process?.env?.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance';
-const authService = baseAxios(`${devUrl}/asset/v1`);
+// const authService = baseAxios(`${devUrl}/asset/v1`);
 const authCircle = baseAxios(`${devUrl}/circle/v1`);
 const authPeople = baseAxios(`${devUrl}/user/v1`);
 const assetService = baseAxios(
@@ -25,12 +25,10 @@ const marketService = baseAxios(
 export const getTrendingAssets = async (params: {
   page: number;
   limit: number;
-  sortBy: string;
-  search: string;
-  currency: string;
+  sortBy:string;
 }): Promise<any> => {
   try {
-    let response = await authService.get('/trending', {
+    let response = await tournamentService.get('asset/trending', {
       params
     });
     return (response = { ...response, status: 200 });

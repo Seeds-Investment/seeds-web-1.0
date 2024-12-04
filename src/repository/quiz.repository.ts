@@ -2,6 +2,7 @@
 import { isGuest } from '@/helpers/guest';
 import baseAxios from '@/utils/common/axios';
 import {
+  type DailyQuizRes,
   type JoinQuizI,
   type LifelineReqI,
   type QuizCashoutI,
@@ -321,6 +322,63 @@ export const validateInvitationCode = async (
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
+
+    return response;
+  } catch (error) {
+    console.error('Error validating invitation code:', error);
+    throw error;
+  }
+};
+
+export const getStatusDailyQuiz = async (): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  return await quizService.get(`/daily-quiz/is_played`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const getDailyQuiz = async (): Promise<DailyQuizRes> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  return await quizService.get(`/daily-quiz`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const submitAnswerDailyQuiz = async (payload: {
+  question_id: string;
+  answer_id: number;
+}): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    const response = await quizService.post(
+      '/daily-quiz/submit-answer',
+      payload,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
 
     return response;
   } catch (error) {

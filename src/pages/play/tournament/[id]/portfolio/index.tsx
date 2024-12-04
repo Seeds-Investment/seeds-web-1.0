@@ -14,7 +14,7 @@ import TriangleBullish from '@/assets/play/tournament/triangleBullish.svg';
 import AssetPagination from '@/components/AssetPagination';
 import Loading from '@/components/popup/Loading';
 import TournamentPortfolioChart from '@/containers/tournament/portfolio-chart/TournamentPortfolioChart';
-import { standartCurrency } from '@/helpers/currency';
+import { formatAssetPrice, standartCurrency } from '@/helpers/currency';
 import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import {
@@ -230,23 +230,20 @@ const Portfolio = (): React.ReactElement => {
               <Image
                 alt=""
                 src={
-                  ballance?.return_value < 0 ? TriangleBearish : TriangleBullish
+                  (summary?.gnl ?? 0) < 0 ? TriangleBearish : TriangleBullish
                 }
                 className="w-[20px]"
               />
               <Typography
                 className={`${
-                  ballance?.return_value < 0 ? 'text-[#DD2525]' : 'text-white'
+                  (summary?.gnl ?? 0) < 0 ? 'text-[#DD2525]' : 'text-white'
                 } font-poppins z-10 text-sm md:text-lg`}
               >
                 {userInfo?.preferredCurrency !== undefined
                   ? userInfo?.preferredCurrency
                   : 'IDR'}{' '}
-                {standartCurrency(ballance?.return_value ?? 0).replace(
-                  'Rp',
-                  ''
-                )}
-                {` (${ballance?.return_value < 0 ? '' : '+'}${
+                {standartCurrency(summary?.gnl ?? 0).replace('Rp', '')}
+                {` (${(summary?.gnl ?? 0) < 0 ? '-' : '+'}${
                   summary?.gnl_percentage?.toFixed(2) as string
                 }%)`}
               </Typography>
@@ -364,9 +361,7 @@ const Portfolio = (): React.ReactElement => {
                         {userInfo?.preferredCurrency !== undefined
                           ? userInfo?.preferredCurrency
                           : 'IDR'}{' '}
-                        {standartCurrency(
-                          (data?.average_price ?? 0) * (data?.total_lot ?? 0)
-                        ).replace('Rp', '')}
+                        {formatAssetPrice(data?.average_price ?? 0)}
                       </div>
                       <div className="flex justify-center gap-2 text-xs md:text-base">
                         <Image

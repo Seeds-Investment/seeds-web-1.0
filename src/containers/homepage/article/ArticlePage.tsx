@@ -41,22 +41,23 @@ export default function ArticlePage(): React.ReactElement {
   const [articles, setArticles] = useState<Article[]>([]);
   const [activeCategory, setActiveCategory] = useState('All');
 
-  let languageValue = '';
-
-  if (languageCtx.language === 'EN') {
-    languageValue = 'english';
-  } else {
-    languageValue = 'indonesian';
-  }
   const [params, setParams] = useState({
     page: 1,
     limit: 4,
     source: 'articles',
-    language: languageValue,
+    language: languageCtx?.language === 'ID' ? 'indonesian' : 'english',
     search: '',
     category: 'All',
     totalPage: 9
   });
+
+  useEffect(() => {
+    setParams(prevParams => ({
+      ...prevParams,
+      language: languageCtx.language === 'EN' ? 'english' : 'indonesian'
+    }));
+  }, [languageCtx.language]);
+
   async function fetchArticles(): Promise<void> {
     try {
       const response = await getArticle({

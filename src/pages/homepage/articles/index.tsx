@@ -1,7 +1,8 @@
 import ArtPagination from '@/components/ArtPagination';
 import ArticleCard from '@/components/homepage/articleCard';
 import { getArticleHome } from '@/repository/article.repository';
-import React, { useEffect, useState } from 'react';
+import LanguageContext from '@/store/language/language-context';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import { toast } from 'react-toastify';
@@ -35,19 +36,29 @@ export interface Metadata {
 }
 
 export default function ArticleList(): React.ReactElement {
+  const languageCtx = useContext(LanguageContext);
   const [articles, setArticles] = useState<Article[]>([]);
   const [searchInput, setSearchInput] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+
   const [params, setParams] = useState({
     page: 1,
     limit: 10,
     source: 'articles',
-    language: '',
+    language: languageCtx?.language === 'ID' ? 'indonesian' : 'english',
     search: '',
     category: 'All',
     totalPage: 9,
     sort_by: 'all'
   });
+
+  useEffect(() => {
+    setParams(prevParams => ({
+      ...prevParams,
+      language: languageCtx?.language === 'EN' ? 'english' : 'indonesian'
+    }));
+  }, [languageCtx.language]);
+
   async function fetchArticles(): Promise<void> {
     try {
       const response = await getArticleHome({

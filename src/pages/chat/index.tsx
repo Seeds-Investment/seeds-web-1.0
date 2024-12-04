@@ -7,7 +7,6 @@ import ModalNewChat from '@/components/chat/ModalNewChat';
 import MutePopUp from '@/components/chat/MutePopup';
 import DeleteChatPopUp from '@/components/chat/PopUpDelete';
 import LeaveCommunityPopUp from '@/components/chat/PopUpLeave';
-import SearchChatPopup from '@/components/chat/SearchPopup';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { ChatVoiceRecorder } from '@/containers/chat/ChatVoiceRecording';
 import ContactList from '@/containers/chat/ContactList';
@@ -18,7 +17,6 @@ import LeaveButton from '../../../public/assets/chat/logout-icon.svg';
 import ModalCamera from '@/components/chat/ModalCamera';
 import ModalRecordVideo from '@/components/chat/ModalRecordVideo';
 import { getChatDate } from '@/helpers/dateFormat';
-import { searchUser } from '@/repository/auth.repository';
 import {
   acceptRequest,
   deleteGroupChat,
@@ -56,13 +54,9 @@ import type {
   IGroupChatDetail,
   MetadataFileInfo,
   PersonalChatMediaData,
-  PersonalChatNotesData,
-  SearchUserChat
+  PersonalChatNotesData
 } from '@/utils/interfaces/chat.interface';
-import type {
-  IOtherUserProfile,
-  SearchUserParams
-} from '@/utils/interfaces/user.interface';
+import type { IOtherUserProfile } from '@/utils/interfaces/user.interface';
 import {
   Avatar,
   Button,
@@ -136,17 +130,11 @@ const initialFilter: GetListChatParams = {
   unread: false
 };
 
-const initialSearchUserFilter: SearchUserParams = {
-  page: 1,
-  limit: 5,
-  search: ''
-};
-
 const ChatPages: React.FC = () => {
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { dataUser } = useAppSelector(state => state.user);
-  const { roomId, isGroupChat } = router.query;
+  const { roomId, isGroupChat, newPersonalChat } = router.query;
   const [chatList, setChatList] = useState<Chat[] | []>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isChatActive, setIsChatActive] = useState<boolean>(false);
@@ -161,7 +149,6 @@ const ChatPages: React.FC = () => {
   const [groupData, setgroupData] = useState<IGroupChatDetail | null>(null);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
-  const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false);
   const [isNewPopupOpen, setIsNewPopupOpen] = useState(false);
   const [isMutePopupOpen, setIsMutePopupOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -174,12 +161,6 @@ const ChatPages: React.FC = () => {
   const [isModalRecordOpen, setIsModalRecordOpen] = useState<boolean>(false);
   const [messageList, setMessageList] = useState<IChatBubble[] | []>([]);
   const [message, setMessage] = useState<string>('');
-  const [searchFilter, setSearchFilter] = useState<SearchUserParams>(
-    initialSearchUserFilter
-  );
-  const [sarchUserList, setSearchUserList] = useState<SearchUserChat[] | []>(
-    []
-  );
   const [searchText, setSearchText] = useState<string>('');
   const [limit, setLimit] = useState<number>(10);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -277,13 +258,6 @@ const ChatPages: React.FC = () => {
     } catch (error: any) {
       toast(error, { type: 'error' });
     }
-  };
-
-  const handleSearchInputChange = (value: string): void => {
-    setSearchFilter(prevFilter => ({
-      ...prevFilter, // Keep the previous state values
-      search: value // Update only the search property
-    }));
   };
 
   const handleSearchTextChange = (
@@ -461,30 +435,9 @@ const ChatPages: React.FC = () => {
     }
   };
 
-  const fetchUserNewChat = useCallback(async (): Promise<void> => {
-    if (searchFilter.search === '') {
-      return;
-    }
-    try {
-      setIsLoading(true);
-      const response = await searchUser(searchFilter);
-      if (response !== null) {
-        setSearchUserList(response.result);
-      }
-    } catch (error: any) {
-      toast('Oops! Error when try to search user');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [searchFilter]);
-
   useEffect(() => {
     void fetchListChat();
   }, [filter]);
-
-  useEffect(() => {
-    void fetchUserNewChat();
-  }, [fetchUserNewChat, searchFilter]);
 
   const fetchOtherUser = async (): Promise<void> => {
     try {
@@ -862,7 +815,7 @@ const ChatPages: React.FC = () => {
         <div className="flex flex-col">
           <Typography className="font-normal text-sm font-poppins text-black text-nowrap">
             {fileDetails.name.length > 15
-              ? `${fileDetails.name.slice(0, 8)}...`
+              ? `${fileDetails.name.slice(0, 8) as string}...`
               : fileDetails.name}
           </Typography>
           <Typography className="font-normal text-xs font-poppins">
@@ -932,6 +885,12 @@ const ChatPages: React.FC = () => {
       clearTimeout(timeoutId);
     };
   }, [isGroupChat, roomId]);
+
+  useEffect(() => {
+    if(roomId !== undefined && newPersonalChat !== undefined){
+      setIsChatActive(true);
+    }
+  },[roomId, newPersonalChat])
 
   const renderDetailChatItem = (): JSX.Element | undefined => {
     if (detailType === 'media') {
@@ -1072,19 +1031,6 @@ const ChatPages: React.FC = () => {
           onClick={leaveCommunity}
         />
       )}
-      {isSearchPopupOpen && (
-        <SearchChatPopup
-          onClose={() => {
-            setIsSearchPopupOpen(false);
-          }}
-          onChange={handleSearchInputChange}
-          value={searchFilter.search as string}
-          userList={sarchUserList}
-          onSelect={() => {
-            setIsChatActive(true);
-          }}
-        />
-      )}
       {isMutePopupOpen && (
         <MutePopUp
           onClose={() => {
@@ -1100,7 +1046,6 @@ const ChatPages: React.FC = () => {
           }}
           onPersonalClick={() => {
             setIsNewPopupOpen(false);
-            // setIsSearchPopupOpen(true);
             void router.push('/chat/create-message');
           }}
           onGroupClick={() => {

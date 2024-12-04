@@ -13,12 +13,14 @@ import {
 import { getQuizById } from '@/repository/quiz.repository';
 import { getDetailPostSocial } from '@/repository/social.respository';
 import { getAvailableVoucherPlan } from '@/repository/subscription.repository';
+import { getBattleDetail } from '@/repository/team-battle.repository';
 import { type RootState } from '@/store/premium-circle';
 import {
   selectPromoCodeValidationResult,
   setPromoCodeValidationResult
 } from '@/store/redux/features/promo-code';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
+import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
 import {
   type IDetailTournament,
   type UserInfo
@@ -146,6 +148,7 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
   const [dataCircle, setDataCircle] = useState<CircleData>();
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
+  const [detailBattle, setDetailBattle] = useState<TeamBattleDetail>();
   const [choosenIndex, setChoosenIndex] = useState<number>();
   const [isExceedingLimit, setIsExceedingLimit] = useState<boolean>(false);
 
@@ -153,6 +156,7 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
   const [quizFee, setQuizFee] = useState<number>();
   const [circleFee, setCircleFee] = useState<number>();
   const [postFee, setPostFee] = useState<number>();
+  const [battleFee, setBattleFee] = useState<number>();
 
   const [metadata, setMetadata] = useState<Metadata>();
 
@@ -267,6 +271,9 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
       } else if (spotType === 'Premium Content' && typeof id === 'string') {
         await fetchDetailPost();
         setPostFee(detailPost?.premium_fee);
+      } else if (spotType === 'Paid Battle' && typeof id === 'string') {
+        await fetchDetailBattle();
+        setBattleFee(detailBattle?.admission_fee);
       }
     };
 
@@ -302,6 +309,12 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
   }, [detailPost]);
 
   useEffect(() => {
+    if (detailBattle?.admission_fee !== undefined) {
+      setBattleFee(detailBattle.admission_fee);
+    }
+  }, [detailBattle]);
+
+  useEffect(() => {
     if (spotType === 'Paid Tournament' && tournamentFee !== undefined) {
       void fetchPromoData(id as string, tournamentFee);
     } else if (spotType === 'Paid Quiz' && quizFee !== undefined) {
@@ -310,8 +323,10 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
       void fetchPromoData(circleId as string, circleFee);
     } else if (spotType === 'Premium Content' && postFee !== undefined) {
       void fetchPromoData(circleId as string, postFee);
+    } else if (spotType === 'Paid Battle' && battleFee !== undefined) {
+      void fetchPromoData(id as string, battleFee);
     }
-  }, [tournamentFee, quizFee, circleFee, postFee, promoParams]);
+  }, [tournamentFee, quizFee, circleFee, postFee, promoParams, battleFee]);
   const fetchData = async (): Promise<void> => {
     try {
       const dataInfo = await getUserInfo();
@@ -405,6 +420,15 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
     }
   };
 
+  const fetchDetailBattle = useCallback(async () => {
+    try {
+      const resp: TeamBattleDetail = await getBattleDetail(id as string);
+      setDetailBattle(resp);
+    } catch (error) {
+      toast(`Error fetch battle: ${error as string}`);
+    }
+  }, [id]);
+
   const handlePromoCodeSelection = async (
     promoCode: string,
     index?: number
@@ -444,6 +468,14 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
           spot_type: spotType,
           item_price: detailPost?.premium_fee,
           item_id: detailPost?.id,
+          currency: userInfo?.preferredCurrency ?? 'IDR'
+        });
+      } else if (spotType === 'Paid Battle') {
+        response = await promoValidate({
+          promo_code: promoCode,
+          spot_type: spotType,
+          item_price: detailBattle?.admission_fee,
+          item_id: detailBattle?.id,
           currency: userInfo?.preferredCurrency ?? 'IDR'
         });
       }
@@ -537,6 +569,8 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
       return `/connect/payment/${circleId as string}`;
     } else if (spotType === 'Premium Content') {
       return `/social/payment/${id}`;
+    } else if (spotType === 'Paid Battle') {
+      return `/play/team-battle/${id}`;
     }
     return '';
   };
@@ -612,6 +646,7 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
               const isPaidQuiz = spotType === 'Paid Quiz';
               const isPremiumCircle = spotType === 'Premium Circle';
               const isPremiumContent = spotType === 'Premium Content';
+              const isPaidBattle = spotType === 'Paid Battle';
 
               const minTransaction = item?.min_transaction ?? 0;
               const admissionFee = isPaidTournament
@@ -622,6 +657,8 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
                 ? dataCircle?.premium_fee ?? 0
                 : isPremiumContent
                 ? detailPost?.premium_fee ?? 0
+                : isPaidBattle
+                ? detailBattle?.admission_fee ?? 0
                 : 0;
 
               const hasUserId =

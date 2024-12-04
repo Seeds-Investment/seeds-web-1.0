@@ -165,9 +165,8 @@ const CreateGroup: React.FC = () => {
                   <div
                     key={user?.id}
                     onClick={() => {
-                      const isSelected = newGroupForm?.memberships?.includes(
-                        user?.id
-                      );
+                      const isSelected: boolean =
+                        newGroupForm?.memberships?.includes(user?.id);
                       handleSelectMember(user?.id, !isSelected, user);
                     }}
                     className="flex justify-between items-center mx-[22px] py-4 px-2 border-b border-b-[#E9E9E9] hover:bg-[#efefef] cursor-pointer rounded-lg duration-150"

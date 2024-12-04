@@ -1278,7 +1278,11 @@ export default {
       paymentFailed: 'Payment Failed',
       paymentFailedDescription:
         'We can’t process your payment, Check your internet connection and try again.',
-      paymentFailedWarning: 'Payment Failed Circle Premium'
+      paymentFailedWarning: 'Payment Failed Circle Premium',
+      getAccessToUnlock: 'Get Access to unlock your membership',
+      enjoyUnlimitedAccess:
+        'Enjoy unlimited access to all premium content from various experts.',
+      getFullAccess: 'Get full access by paying once for a lifetime'
     }
   },
   articleList: {
@@ -2668,6 +2672,11 @@ export default {
   teamBattle: {
     battleCompetition: 'Battle Competition',
     chooseCategory: 'Please Choose Category',
+    summaryPayment: 'Summary of Payment',
+    entranceFee: 'Entrance Fee',
+    yourCurrentCurrency: 'Your current currency',
+    useSeedsCoin: 'Use Seeds Coin',
+    payButton: 'Pay',
     joinAsPublicConfirm: 'Are you sure you want to join as public?',
     joinAsInvitation: 'Input your code invitation',
     placeholderInvitation: 'Input here',

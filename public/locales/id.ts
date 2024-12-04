@@ -1200,7 +1200,11 @@ export default {
       paymentFailed: 'Pembayaran Gagal',
       paymentFailedDescription:
         'Kami tidak bisa memproses pembayaran anda. Cek koneksi internet anda dan coba lagi.',
-      paymentFailedWarning: 'Pembayaran Langganan Premium Gagal'
+      paymentFailedWarning: 'Pembayaran Langganan Premium Gagal',
+      getAccessToUnlock: 'Dapatkan akses untuk membuka membershipmu',
+      enjoyUnlimitedAccess:
+        'Nikmati akses tak terbatas ke semua konten premium dari berbagai ahli.',
+      getFullAccess: 'Dapatkan akses penuh dengan membayar sekali seumur hidup'
     }
   },
 
@@ -2599,6 +2603,11 @@ export default {
   teamBattle: {
     battleCompetition: 'Kompetisi Pertandingan',
     chooseCategory: 'Silakan Pilih Kategori',
+    summaryPayment: 'Ringkasan Pembayaran',
+    entranceFee: 'Biaya Masuk',
+    yourCurrentCurrency: 'Mata uang Anda saat ini',
+    useSeedsCoin: 'Gunakan Seeds Coin',
+    payButton: 'Bayar',
     joinAsPublicConfirm: 'Apakah Anda yakin ingin bergabung sebagai publik?',
     joinAsInvitation: 'Masukkan kode undangan Anda',
     placeholderInvitation: 'Masukkan di sini',

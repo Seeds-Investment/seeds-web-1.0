@@ -15,10 +15,10 @@ import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
-import ChevronRightSubs from 'public/assets/subscription/arrow.svg';
 import SubsSeedy from 'public/assets/subscription/subs-seedy.svg';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FaChevronRight } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import FollowButton from '../FollowButton';
 import MoreOptionHorizontal from '../MoreOptionHorizontal';
@@ -59,7 +59,7 @@ const Profile = ({
         setDataSubscription(response);
       }
     } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
+      console.error(`${error as string}`);
     }
   };
 
@@ -211,12 +211,12 @@ const Profile = ({
           </div>
           <div
             onClick={async () => await router.push('/seedsplan')}
-            className="hidden w-full mt-2 bg-[#65D8B9] xl:flex justify-between items-center px-8 py-1 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300 border border-[#27A590]"
+            className="hidden w-full mt-2 bg-gradient-radial-subs shadow-subs-complete hover:shadow-subs-complete-hover xl:flex justify-between items-center px-8 py-1 rounded-xl cursor-pointer font-poppins duration-300 border border-white"
           >
             <div className="flex items-center justify-between gap-4">
               <div className="ml-6">
                 {dataSubscription === null && (
-                  <div className="absolute bg-gradient-to-b from-[#5ab176] from-20%  w-[50px] h-[50px] rounded-full"></div>
+                  <div className="absolute bg-gradient-to-b from-[#fdb458] to-[#fccc6e]/60  w-[50px] h-[50px] rounded-full"></div>
                 )}
                 <div
                   className={`${
@@ -240,7 +240,7 @@ const Profile = ({
                   />
                 </div>
               </div>
-              <Typography className="text-black font-semibold font-poppins text-lg capitalize">
+              <Typography className="text-white font-semibold font-poppins text-sm capitalize">
                 {t(
                   `${
                     dataSubscription === null
@@ -285,11 +285,7 @@ const Profile = ({
               )}
             </div>
             <div className="flex justify-center items-center h-[16px]">
-              <Image
-                src={ChevronRightSubs}
-                alt="chevron-right"
-                className="w-full h-full"
-              />
+              <FaChevronRight className="text-white" size={16} />
             </div>
           </div>
         </div>
@@ -404,11 +400,11 @@ const Profile = ({
       {/* My Earnings Breakpoint: SM */}
       <div
         onClick={async () => await router.push('/seedsplan')}
-        className="xl:hidden w-full mt-2 bg-[#65D8B9] flex justify-between items-center px-4 py-1 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300 border border-[#27A590]"
+        className="xl:hidden w-full mt-2 bg-gradient-radial-subs shadow-subs-complete hover:shadow-subs-complete-hover flex justify-between items-center px-4 py-1 rounded-xl cursor-pointer font-poppins duration-300 border border-white"
       >
         <div className="flex items-center justify-between gap-4">
           {dataSubscription === null && (
-            <div className="absolute bg-gradient-to-b from-[#5ab176] from-20% w-[60px] h-[60px] rounded-full"></div>
+            <div className="absolute bg-gradient-to-b from-[#fdb458] to-[#fccc6e]/60 w-[60px] h-[60px] rounded-full"></div>
           )}
           <div
             className={`${dataSubscription === null ? 'relative left-1' : ''}`}
@@ -440,7 +436,7 @@ const Profile = ({
                 : 'flex-col'
             }`}
           >
-            <Typography className="text-black font-semibold font-poppins text-sm capitalize">
+            <Typography className="text-white font-semibold font-poppins text-sm capitalize">
               {t(
                 `${
                   dataSubscription === null
@@ -486,11 +482,7 @@ const Profile = ({
           </div>
         </div>
         <div className="flex justify-center items-center h-[18px]">
-          <Image
-            src={ChevronRightSubs}
-            alt="chevron-right"
-            className="w-full h-full"
-          />
+          <FaChevronRight className="text-white" size={16} />
         </div>
       </div>
     </>

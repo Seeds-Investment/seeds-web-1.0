@@ -52,7 +52,7 @@ export const getSubscriptionStatus = async (): Promise<any> => {
     });
     return response;
   } catch (error: any) {
-    toast(error.response.data.message, { type: 'error' });
+    throw new Error(error.response.data.message);
   }
 };
 

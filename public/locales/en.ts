@@ -2651,6 +2651,8 @@ export default {
       leaveGroup: 'Leave Group'
     },
     addNewMember: 'Add New Member',
+    searchMember: 'Search Member',
+    shareGroup: 'Invite via Link',
     editGroup: 'Edit Group',
     camera: 'Camera',
     gallery: 'Gallery',
@@ -2658,7 +2660,6 @@ export default {
     placeholderDesc: 'Type your group description here!',
     modalCameraTitle: 'Take a photo',
     modalRecordVideoTitle: 'Record a video',
-    shareGroup: 'Invite via Link',
     successMute: 'Notification Muted',
     retake: 'Retake',
     usePhoto: 'Use Photo',

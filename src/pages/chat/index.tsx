@@ -815,7 +815,7 @@ const ChatPages: React.FC = () => {
         <div className="flex flex-col">
           <Typography className="font-normal text-sm font-poppins text-black text-nowrap">
             {fileDetails.name.length > 15
-              ? `${fileDetails.name.slice(0, 8) as string}...`
+              ? `${fileDetails.name.slice(0, 8)}...`
               : fileDetails.name}
           </Typography>
           <Typography className="font-normal text-xs font-poppins">
@@ -857,6 +857,7 @@ const ChatPages: React.FC = () => {
   useEffect(() => {
     if (isGroupChat === undefined) return;
     setActiveTab('COMMUNITY');
+    setIsChatActive(true);
 
     const fetchGroupChat = async (): Promise<void> => {
       try {
@@ -887,10 +888,10 @@ const ChatPages: React.FC = () => {
   }, [isGroupChat, roomId]);
 
   useEffect(() => {
-    if(roomId !== undefined && newPersonalChat !== undefined){
+    if (newPersonalChat !== undefined) {
       setIsChatActive(true);
     }
-  },[roomId, newPersonalChat])
+  }, [newPersonalChat]);
 
   const renderDetailChatItem = (): JSX.Element | undefined => {
     if (detailType === 'media') {

@@ -37,11 +37,12 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
     sortBy: string;
   }>({
     search: ' ',
-    page: 1,
-    limit: 10,
+    page: 0,
+    limit: 15,
     sortBy: ''
   });
   const [userList, setUserList] = useState<SearchUserChat[]>([]);
+  const [newMemberList, setNewMemberList] = useState<SearchUserChat[]>([]);
   const [displayMembers, setDisplayMembers] = useState<SearchUserChat[]>([]);
   const [updateGroupMembers, setUpdateGroupMembers] = useState<{
     users_id: string[];
@@ -53,11 +54,7 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
     try {
       setIsLoading(true);
       const response = await searchUser(searchParams);
-      const filteredUsers: SearchUserChat[] = response.result.filter(
-        (user: SearchUserChat) =>
-          !memberData?.some(member => member.user_id === user.id)
-      );
-      setUserList(filteredUsers);
+      setUserList(response.result);
     } catch (error) {
       toast.error(`Error fetching data following: ${error as string}`);
     } finally {
@@ -67,13 +64,19 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
 
   useEffect(() => {
     void fetchSearchUser();
-  }, [searchParams, memberData]);
+  }, [searchParams]);
 
   useEffect(() => {
     setUpdateGroupMembers({
       users_id: memberData?.map(member => member.user_id)
     });
-  }, [memberData]);
+    setNewMemberList(
+      userList.filter(
+        (user: SearchUserChat) =>
+          !memberData?.some(member => member.user_id === user.id)
+      )
+    );
+  }, [memberData, userList]);
 
   const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter' && searchRef.current?.value !== undefined) {
@@ -187,9 +190,9 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
             <div className="animate-spinner w-14 h-14 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
           </div>
         ) : (
-          <div className="md:h-[475px] h-[360px] overflow-y-auto">
-            {userList.length > 0 &&
-              userList.map(user => (
+          <div className="md:h-[475px] h-[360px] overflow-y-auto team-battle-scroll">
+            {newMemberList.length > 0 &&
+              newMemberList.map(user => (
                 <div
                   key={user?.id}
                   onClick={() => {

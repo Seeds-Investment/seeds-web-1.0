@@ -2580,6 +2580,8 @@ export default {
       leaveGroup: 'Leave Group'
     },
     addNewMember: 'Tambahkan Anggota Baru',
+    searchMember: 'Cari Anggota',
+    shareGroup: 'Undang melalui Link',
     editGroup: 'Edit Grup',
     camera: 'Kamera',
     gallery: 'Galeri',
@@ -2587,7 +2589,6 @@ export default {
     placeholderDesc: 'Ketik deskripsi grup Anda di sini!',
     modalCameraTitle: 'Ambil Foto',
     modalRecordVideoTitle: 'Rekam Video',
-    shareGroup: 'Undang melalui Link',
     successMute: 'Notifikasi Dibisukan',
     retake: 'Ulangi',
     usePhoto: 'Gunakan',

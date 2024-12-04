@@ -4,6 +4,7 @@ import AddGroupMembers from '@/components/chat/AddGroupMembers';
 import EditInfoGroup from '@/components/chat/EditInfoGroup';
 import ModalShareGroup from '@/components/chat/ModalShareGroup';
 import LeaveCommunityPopUp from '@/components/chat/PopUpLeave';
+import SearchGroupMembers from '@/components/chat/SearchGroupMembers';
 import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
@@ -19,7 +20,6 @@ import {
   type GroupMemberResponse,
   type IGroupChatDetail
 } from '@/utils/interfaces/chat.interface';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   Avatar,
   Menu,
@@ -30,8 +30,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { XIcon } from 'public/assets/vector';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuSearch } from 'react-icons/lu';
 import { MdOutlineGroupAdd } from 'react-icons/md';
@@ -47,7 +46,6 @@ const DetailGroup: React.FC = () => {
   const { dataUser } = useAppSelector(state => state.user);
   const router = useRouter();
   const { id } = router.query;
-  const searchRef = useRef<HTMLInputElement>(null);
 
   const [detailGroup, setDetailGroup] = useState<IGroupChatDetail>();
   const [groupMembers, setGroupMembers] = useState<GroupMemberResponse>();
@@ -57,9 +55,10 @@ const DetailGroup: React.FC = () => {
   const [isRefetchInfoGroup, setIsRefetchInfoGroup] = useState<boolean>(false);
   const [isOpenEditGroup, setIsOpenEditGroup] = useState<boolean>(false);
   const [isOpenModalLeave, setIsOpenModalLeave] = useState<boolean>(false);
+  const [isOpenSearchMembers, setIsOpenSearchMembers] =
+    useState<boolean>(false);
   const [isOpenAddMembers, setIsOpenAddMembers] = useState<boolean>(false);
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
-  const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
 
   const fetchGroupDetail = async (): Promise<void> => {
     try {
@@ -116,19 +115,6 @@ const DetailGroup: React.FC = () => {
     }
   };
 
-  const handleSearch = (): void => {
-    const keyword = searchRef.current?.value?.toLowerCase() ?? '';
-
-    if (keyword === '') {
-      setFilteredMembers(groupMembers?.data ?? []);
-    } else {
-      const filtered = groupMembers?.data.filter(member =>
-        member.user_name.toLowerCase().includes(keyword)
-      );
-      setFilteredMembers(filtered ?? []);
-    }
-  };
-
   return (
     <PageGradient defaultGradient className="w-full">
       {isLoading ? (
@@ -136,7 +122,9 @@ const DetailGroup: React.FC = () => {
       ) : (
         <div
           className={`w-full bg-white ${
-            isOpenAddMembers || isOpenEditGroup ? 'hidden' : 'block'
+            isOpenAddMembers || isOpenSearchMembers || isOpenEditGroup
+              ? 'hidden'
+              : 'block'
           }`}
         >
           <div className="w-full flex flex-col gap-3 shadow-lg md:px-8 px-5 py-4">
@@ -250,7 +238,7 @@ const DetailGroup: React.FC = () => {
                 </div>
                 <div
                   onClick={() => {
-                    setIsSearchActive(prev => !prev);
+                    setIsOpenSearchMembers(prev => !prev);
                   }}
                   className="border border-[#1A857D] rounded-full md:w-12 md:h-12 w-10 h-10 flex justify-center items-center bg-[#dcfce4] hover:bg-[#b1e1c1] cursor-pointer duration-150"
                 >
@@ -263,7 +251,7 @@ const DetailGroup: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="w-full flex flex-col p-8 gap-6">
+          <div className="w-full flex flex-col p-8 gap-8">
             <div className="w-full flex justify-between">
               {detailGroup?.description === '' ? (
                 <Typography
@@ -285,35 +273,8 @@ const DetailGroup: React.FC = () => {
                 </div>
               )}
             </div>
-            {isSearchActive && (
-              <div className="flex justify-between items-center gap-4 mb-2">
-                <div className="relative w-full">
-                  <input
-                    ref={searchRef}
-                    id="search"
-                    type="text"
-                    onKeyDown={handleSearch}
-                    name="search"
-                    placeholder={t('chat.search') ?? ''}
-                    className="block w-full text-[#262626] text-sm h-10 placeholder:text-[#BDBDBD] focus:outline-0 p-2 pl-4 rounded-xl border border-[#BDBDBD]"
-                  />
-                  <MagnifyingGlassIcon className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5" />
-                </div>
-                <Image
-                  onClick={() => {
-                    setIsSearchActive(prev => !prev);
-                    setFilteredMembers(groupMembers?.data ?? []);
-                  }}
-                  className="cursor-pointer hover:scale-110 duration-100"
-                  src={XIcon}
-                  width={24}
-                  height={24}
-                  alt="XIcon"
-                />
-              </div>
-            )}
-            <div className="flex flex-col gap-4">
-              {filteredMembers
+            <div className="flex flex-col gap-4 overflow-y-auto h-[380px] pr-2 team-battle-scroll">
+              {groupMembers?.data
                 ?.sort((a, b) => {
                   if (a?.role === 'admin' && b?.role !== 'admin') return -1;
                   if (a?.role !== 'admin' && b?.role === 'admin') return 1;
@@ -349,7 +310,7 @@ const DetailGroup: React.FC = () => {
       <AddGroupMembers
         isOpenAddMembers={isOpenAddMembers}
         setIsOpenAddMembers={setIsOpenAddMembers}
-        memberData={groupMembers?.data as GroupMemberData[]}
+        memberData={filteredMembers}
         groupId={id as string}
         setIsRefetchInfoGroup={setIsRefetchInfoGroup}
       />
@@ -367,6 +328,14 @@ const DetailGroup: React.FC = () => {
           onClick={handleLeaveGroup}
         />
       )}
+      {isOpenModalLeave && (
+        <LeaveCommunityPopUp
+          onClose={() => {
+            setIsOpenModalLeave(prev => !prev);
+          }}
+          onClick={handleLeaveGroup}
+        />
+      )}
       {isShareModal && (
         <ModalShareGroup
           onClose={() => {
@@ -375,6 +344,11 @@ const DetailGroup: React.FC = () => {
           groupId={id as string}
         />
       )}
+      <SearchGroupMembers
+        isOpenSearchMembers={isOpenSearchMembers}
+        setIsOpenSearchMembers={setIsOpenSearchMembers}
+        filteredMember={filteredMembers}
+      />
     </PageGradient>
   );
 };

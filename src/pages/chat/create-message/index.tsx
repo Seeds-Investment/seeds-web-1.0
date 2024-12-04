@@ -1,11 +1,7 @@
-import DetailCreateGroup from '@/components/chat/DetailCreateGroup';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import { searchUser } from '@/repository/people.repository';
-import {
-  type CreateGroupForm,
-  type SearchUserChat
-} from '@/utils/interfaces/chat.interface';
+import { type SearchUserChat } from '@/utils/interfaces/chat.interface';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Avatar, Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -32,13 +28,7 @@ const CreateMessage: React.FC = () => {
     sortBy: ''
   });
   const [userList, setUserList] = useState<SearchUserChat[]>([]);
-  const [showNextStep, setShowNextStep] = useState<boolean>(false);
-  const [newGroupForm, setNewGroupForm] = useState<CreateGroupForm>({
-    name: '',
-    description: '',
-    avatar: '',
-    memberships: []
-  });
+  const [selectedUser, setSelectedUser] = useState<string>('');
 
   const fetchSearchUser = async (): Promise<void> => {
     try {
@@ -57,22 +47,18 @@ const CreateMessage: React.FC = () => {
   }, [searchParams, searchedUser]);
 
   const handleTypeUser = (searchName: string): void => {
-    setSearchedUser(searchName)
+    setSearchedUser(searchName);
     setSearchParams({
       ...searchParams,
       page: 1,
       limit: 10,
       search: searchName !== '' ? searchName : ' '
     });
-  }
-
-  const handleRedirectChat = (userId: string):void => {
-    void router.push(`/chat?roomId=${userId}`);
-  }
+  };
 
   return (
     <PageGradient defaultGradient className="w-full">
-      <div className={`w-full bg-white ${showNextStep ? 'hidden' : 'block'}`}>
+      <div className={`w-full bg-white`}>
         <div
           style={{ backgroundImage: "url('/assets/chat/bg-chat.svg')" }}
           className="w-full bg-cover rounded-t-xl lg:h-[150px] h-[130px] flex items-center"
@@ -97,7 +83,9 @@ const CreateMessage: React.FC = () => {
           <div className="py-5 px-6">
             <div className="relative w-full">
               <input
-                onChange={(e) => {handleTypeUser(e.target.value)}}
+                onChange={e => {
+                  handleTypeUser(e.target.value);
+                }}
                 id="search"
                 type="text"
                 name="search"
@@ -118,9 +106,13 @@ const CreateMessage: React.FC = () => {
                   <div
                     key={user?.id}
                     onClick={() => {
-                      handleRedirectChat(user?.id);
+                      setSelectedUser(user?.id);
                     }}
-                    className="flex justify-between items-center mx-[22px] py-4 px-2 border-b border-b-[#E9E9E9] hover:bg-[#efefef] cursor-pointer rounded-lg duration-150"
+                    className={`${
+                      selectedUser === user?.id
+                        ? 'border-2 border-seeds-green'
+                        : 'border-b border-b-[#E9E9E9]'
+                    } flex justify-between items-center mx-[22px] py-4 px-2 hover:bg-[#efefef] cursor-pointer rounded-lg`}
                   >
                     <div className="flex flex-row items-center gap-[6px]">
                       <Avatar src={user?.avatar} width={32} height={32} />
@@ -142,9 +134,11 @@ const CreateMessage: React.FC = () => {
           )}
           <div className="flex justify-center py-2 bottom-0">
             <Button
-              disabled={newGroupForm?.memberships?.length < 2}
-              onClick={() => {
-                setShowNextStep(prev => !prev);
+              disabled={selectedUser === ''}
+              onClick={async () => {
+                await router.push(
+                  `/chat?roomId=${selectedUser}&newPersonalChat=true`
+                );
               }}
               className="font-semibold font-poppins text-sm bg-seeds-button-green text-white md:w-[340px] w-full mx-2 rounded-full"
             >
@@ -153,12 +147,6 @@ const CreateMessage: React.FC = () => {
           </div>
         </div>
       </div>
-      <DetailCreateGroup
-        showNextStep={showNextStep}
-        setShowNextStep={setShowNextStep}
-        createGroupForm={newGroupForm}
-        setCreateGroupForm={setNewGroupForm}
-      />
     </PageGradient>
   );
 };

@@ -53,6 +53,9 @@ export interface TeamBattleDetail {
   my_last_stage: string;
   participants: number;
   type: string;
+  payment_method: string[];
+  admission_fee: number;
+  is_paid: boolean;
 }
 export interface LeaderboardBattle {
   user_id: string;

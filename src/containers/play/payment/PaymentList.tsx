@@ -334,7 +334,16 @@ const PaymentList: React.FC<props> = ({
     }
 
     if (option?.payment_type === 'qris') {
-      void handlePay(option?.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
+      if (option?.payment_gateway === 'BNC') {
+        void handlePay(option?.payment_type, 'BNC', 'BNC_QRIS', _totalFee);
+      } else {
+        void handlePay(
+          option?.payment_type,
+          'MIDTRANS',
+          'OTHER_QRIS',
+          _totalFee
+        );
+      }
     } else if (option?.payment_type === 'cc') {
       void handlePay(option?.payment_type, 'STRIPE', 'CC', _totalFee);
     } else {

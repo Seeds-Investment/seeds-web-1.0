@@ -2786,6 +2786,9 @@ export default {
     text14: 'Use it Now!',
     text15: 'Your new plan will begin at ',
     text16: 'Expired on ',
+    month: 'Month',
+    months: 'Months',
+    year: 'Year',
     WalletForm: {
       title: 'Enter {{wallet}} Number',
       phoneLabel: '{{wallet}} Number',

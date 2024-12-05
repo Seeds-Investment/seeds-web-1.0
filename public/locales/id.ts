@@ -2719,6 +2719,9 @@ export default {
     text14: 'Gunakan Voucher!',
     text15: 'Paket baru Anda akan dimulai pada ',
     text16: 'Kedaluwarsa pada ',
+    month: 'Bulan',
+    months: 'Bulan',
+    year: 'Tahun',
     WalletForm: {
       title: 'Masukkan nomor {{wallet}}',
       phoneLabel: 'Nomor {{wallet}}',

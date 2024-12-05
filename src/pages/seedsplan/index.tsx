@@ -21,20 +21,21 @@ import {
   type StatusSubscription
 } from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
+import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaChevronRight } from 'react-icons/fa';
-import { GiBackwardTime } from 'react-icons/gi';
+import { FaClockRotateLeft } from 'react-icons/fa6';
+import { GoArrowLeft, GoInfinity } from 'react-icons/go';
 import { HiUserGroup } from 'react-icons/hi2';
-import { IoMdArrowRoundBack } from 'react-icons/io';
 import { IoGameController } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 
 const SeedsPlan: React.FC = () => {
   const [subscription, setSubscription] = useState<string>('');
-  const [category, setCategory] = useState('All');
+  const [periodPlan, setPeriodPlan] = useState<number>(1);
   const [packagePlan, setPackagePlan] = useState('Silver');
   const [showTnc, setShowTnc] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,19 +43,19 @@ const SeedsPlan: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
-  const [dataPlan, setDataPlan] = useState<DataPlanI | undefined>(undefined);
+  const [dataPlan, setDataPlan] = useState<DataPlanI>();
   const [subscriptionStatus, setSubscriptionStatus] =
     useState<StatusSubscription | null>(null);
   const [dataVoucher, setDataVoucher] = useState<DataVoucherI | undefined>(
     undefined
   );
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const categorySeedsPlan = [
-    { label: 'All', category: 'All' },
-    { label: 'Play Arena', category: 'Paid Tournament' },
-    { label: 'Play Quiz', category: 'Paid Quiz' },
-    { label: 'Circle Premium', category: 'Premium Circle' }
-    // { label: 'Content Premium', category: 'Premium Content' }
+
+  const seedsPlanPeriod = [
+    { label: `1 ${t('seedsPlan.month')}`, period: 1 },
+    { label: `3 ${t('seedsPlan.months')}`, period: 3 },
+    { label: `6 ${t('seedsPlan.months')}`, period: 6 },
+    { label: `1 ${t('seedsPlan.year')}`, period: 12 }
   ];
 
   const getPlanList = async (): Promise<void> => {
@@ -85,7 +86,7 @@ const SeedsPlan: React.FC = () => {
         setSubscriptionStatus(response);
       }
     } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
+      console.error(`Error fetching data: ${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -104,13 +105,6 @@ const SeedsPlan: React.FC = () => {
     }
   }, [subscriptionStatus]);
 
-  const togglePopupTnc = (): void => {
-    setShowTnc(!showTnc);
-  };
-  const togglePopupHowToUse = (): void => {
-    setHowToUse(!showHowToUse);
-  };
-
   const filterPlan = dataPlan?.data?.find(item => item?.name === packagePlan);
   const filterTnc =
     filterPlan?.tnc?.[i18n.language === 'id' ? 'id' : 'en'] !== ''
@@ -123,37 +117,32 @@ const SeedsPlan: React.FC = () => {
     }
   }, [filterPlan?.id]);
 
-  const filteredDataVoucher = dataVoucher?.data?.filter(
-    item => item?.voucher_type === category
-  );
-
   return (
     <>
       <PageGradient defaultGradient className="w-full">
         <div
-          className="w-full bg-cover bg-center py-6 px-4 font-poppins md:rounded-xl shadow-md flex flex-col justify-center items-center"
+          className="w-full bg-cover bg-center py-6 px-4 font-poppins md:rounded-3xl shadow-md flex flex-col justify-center items-center"
           style={{
             backgroundImage: `url(${BgSeeds.src as string})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
         >
-          <div className="mb-4 flex flex-row justify-between items-center w-full">
-            <div
+          <div className="flex flex-row justify-between items-center w-full p-2">
+            <GoArrowLeft
               onClick={() => {
                 router.back();
               }}
-              className="transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            >
-              <IoMdArrowRoundBack size={35} />
-            </div>
+              className="hover:scale-110 duration-150 cursor-pointer"
+              size={34}
+              strokeWidth={0.75}
+            />
             <div className="text-xl md:text-2xl font-bold">MySeeds Plan</div>
-            <div
-              className="border-4 border-white text-white bg-[#487209] rounded-full p-2 cursor-pointer"
+            <FaClockRotateLeft
               onClick={async () => await router.push('/seedsplan/history')}
-            >
-              <GiBackwardTime size={25} style={{ strokeWidth: 10 }} />
-            </div>
+              className="cursor-pointer hover:scale-110 duration-150"
+              size={25}
+            />
           </div>
           <Image
             src={SeedsTrio}
@@ -162,9 +151,9 @@ const SeedsPlan: React.FC = () => {
             alt="seedsplan"
             className="w-60"
           />
-          <div className="font-semibold text-sm md:text-lg text-center">
+          <Typography className="font-poppins font-semibold text-base md:text-lg text-center text-white">
             {t('seedsPlan.desc')}
-          </div>
+          </Typography>
         </div>
         {loading ? (
           <div className="w-full flex justify-center h-fit mt-8">
@@ -257,9 +246,7 @@ const SeedsPlan: React.FC = () => {
               </div>
             )}
             <div
-              className={`
-                  col-span-2 w-full rounded-none px-2 pb-4
-                  ${packagePlan === 'Silver' ? 'to-[#cec9c9]' : 'to-[#f7fb43]'}
+              className={`col-span-2 w-full rounded-none px-2 pb-4 to-[#536D7FCC]
                   ${
                     subscription === 'non-active'
                       ? 'md:rounded-xl bg-gradient-to-b from-[#9ec849] py-4'
@@ -270,62 +257,71 @@ const SeedsPlan: React.FC = () => {
               {subscription === 'non-active' && (
                 <div
                   className={`${
-                    subscription === 'non-active'
-                      ? 'mt-4'
-                      : 'w-full md:w-3/4 mt-2'
-                  } flex flex-row gap-3 flex-wrap justify-center mb-4`}
+                    subscription === 'non-active' ? 'md:mt-4' : 'md:w-3/4 mt-2'
+                  } flex flex-row gap-2 items-center mb-4 w-full`}
                 >
-                  <div className="rounded-3xl bg-white w-11/12 lg:w-10/12">
+                  <div className="rounded-3xl bg-white w-full">
                     <button
-                      className={`text-xl p-3 w-1/2 rounded-3xl ${
+                      className={`text-sm md:text-base md:p-3 p-2 font-poppins w-4/12 rounded-full duration-100 ${
                         packagePlan === 'Silver'
-                          ? 'bg-[#3AC4A0]'
+                          ? 'bg-[#3AC4A0] text-white'
                           : 'bg-[#f9f9f9] text-[#bdbdbd]'
-                      } font-semibold border-white border-2`}
+                      } font-semibold border-white border-4`}
                       onClick={() => {
                         setPackagePlan('Silver');
-                        setCategory('All');
+                        setPeriodPlan(1);
                       }}
                     >
                       Silver
                     </button>
                     <button
-                      className={`text-xl p-3 w-1/2 rounded-3xl ${
+                      className={`text-sm md:text-base md:p-3 p-2 font-poppins w-4/12 rounded-full duration-100 ${
                         packagePlan === 'Gold'
-                          ? 'bg-[#3AC4A0]'
+                          ? 'bg-[#3AC4A0] text-white'
                           : 'bg-[#f9f9f9] text-[#bdbdbd]'
-                      } font-semibold border-white border-2 relative`}
+                      } font-semibold border-white border-4`}
                       onClick={() => {
                         setPackagePlan('Gold');
-                        setCategory('All');
+                        setPeriodPlan(1);
                       }}
                     >
                       Gold
-                      <span className="px-2 py-1 bg-[#ff3838] text-white rounded-3xl text-xs absolute top-0 right-0 2xl:right-16 font-normal">
+                    </button>
+                    <button
+                      className={`text-sm md:text-base text-right md:p-3 p-2 font-poppins w-4/12 rounded-full duration-100 ${
+                        packagePlan === 'Platinum'
+                          ? 'bg-[#3AC4A0] text-white'
+                          : 'bg-[#f9f9f9] text-[#bdbdbd]'
+                      } font-semibold border-white border-4`}
+                      onClick={() => {
+                        setPackagePlan('Platinum');
+                        setPeriodPlan(1);
+                      }}
+                    >
+                      Platinum
+                      <sup className="bg-[#ff3838] md:py-1 md:px-2 px-[3px] text-white rounded-3xl md:text-xs text-[10px] font-semibold md:ml-2">
                         {t('seedsPlan.text9')}
-                      </span>
+                      </sup>
                     </button>
                   </div>
                 </div>
               )}
               <div
                 className={`${
-                  subscription === 'non-active'
-                    ? 'mt-4'
-                    : 'w-full md:w-3/4 mt-2'
-                } flex flex-row gap-3 flex-wrap justify-center mb-4`}
+                  subscription === 'non-active' ? 'mt-4' : 'md:w-3/4 mt-2'
+                } w-full flex flex-row gap-3 mb-4`}
               >
-                {categorySeedsPlan?.map((item, index) => {
+                {seedsPlanPeriod?.map((item, index) => {
                   return (
                     <button
                       key={index}
-                      className={`px-3 py-1 rounded-3xl ${
-                        category === item.category
-                          ? 'bg-[#3ac4a0] text-black'
-                          : 'bg-[#ffffff] text-[#bdbdbd]'
+                      className={`px-3 py-2 rounded-lg w-3/12 font-poppins text-xs ${
+                        periodPlan === item.period
+                          ? 'bg-[#3ac4a0] text-white font-semibold'
+                          : 'bg-transparent text-white border border-white font-normal'
                       }`}
                       onClick={() => {
-                        setCategory(item.category);
+                        setPeriodPlan(item.period);
                       }}
                     >
                       {item.label}
@@ -339,134 +335,94 @@ const SeedsPlan: React.FC = () => {
                 } grid grid-cols-1 xl:grid-cols-2 gap-3`}
               >
                 {packagePlan === 'Silver'
-                  ? (category !== 'All'
-                      ? filteredDataVoucher
-                      : dataVoucher?.data
-                    )?.map((item, index) => {
+                  ? dataVoucher?.data?.map((item, index) => {
                       return (
-                        <>
-                          <div
-                            className="bg-white rounded-2xl w-full h-28 grid grid-cols-5 px-1"
-                            key={index}
-                          >
-                            <div className="col-span-1 flex justify-center items-center">
-                              {item?.voucher_type === 'Premium Circle' ||
-                              item?.voucher_type === 'Premium Content' ? (
-                                <HiUserGroup
-                                  size={50}
-                                  className="p-3 bg-[#3AC4A0] text-[#487209] rounded-full"
-                                />
-                              ) : (
-                                <IoGameController
-                                  size={50}
-                                  className="p-3 bg-[#3AC4A0] text-[#487209] rounded-full"
-                                />
-                              )}
-                            </div>
-                            <div className="col-span-3 flex flex-col justify-center">
-                              <div className="text-[#3AC4A0] font-bold text-sm truncate">
-                                {item?.name_promo_code}
-                              </div>
-                              <div
-                                className="text-[#7C7C7C] font-light text-xs truncate"
-                                dangerouslySetInnerHTML={{
-                                  __html:
-                                    item?.description?.[
-                                      i18n.language === 'id' ? 'id' : 'en'
-                                    ]
-                                }}
+                        <div
+                          className="bg-white rounded-2xl w-full h-28 grid grid-cols-4 px-1"
+                          key={index}
+                        >
+                          <div className="col-span-1 flex justify-center items-center">
+                            {item?.voucher_type === 'Premium Circle' ||
+                            item?.voucher_type === 'Premium Content' ? (
+                              <HiUserGroup
+                                size={50}
+                                className="p-3 bg-gradient-to-t from-[#3AC4A0]/0 to-[#0DB48866]/40 text-[#3AC4A0] rounded-full"
                               />
-                              <div className="font-bold text-sm truncate">
-                                {t('seedsPlan.text6')}{' '}
-                                {`${
-                                  item?.is_percentage
-                                    ? `${item?.discount_percentage}%`
-                                    : item?.discount_amount?.toLocaleString(
-                                        'id-ID',
-                                        {
-                                          currency:
-                                            userInfo?.preferredCurrency ??
-                                            'IDR',
-                                          style: 'currency',
-                                          maximumFractionDigits: 0
-                                        }
-                                      )
-                                }`}
-                              </div>
-                            </div>
-                            <div className="col-span-1 flex flex-col justify-center items-center border-s-2 border-dashed text-[#7C7C7C]">
-                              <div className="font-bold text-xl">
-                                {item?.quantity}
-                              </div>
-                              <div className="font-light text-xs">Voucher</div>
-                            </div>
+                            ) : (
+                              <IoGameController
+                                size={50}
+                                className="p-3 bg-gradient-to-t from-[#3AC4A0]/0 to-[#0DB48866]/40 text-[#3AC4A0] rounded-full"
+                              />
+                            )}
                           </div>
-                        </>
+                          <div className="col-span-2 flex flex-col justify-center gap-1">
+                            <Typography className="text-[#3AC4A0] font-poppins font-semibold text-base truncate">
+                              {item?.name_promo_code}
+                            </Typography>
+                            <div
+                              className="text-[#7C7C7C] font-poppins font-normal text-xs truncate"
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  item?.description?.[
+                                    i18n.language === 'id' ? 'id' : 'en'
+                                  ]
+                              }}
+                            />
+                          </div>
+                          <div className="col-span-1 flex justify-center items-center border-s-2 border-dashed text-[#7C7C7C]">
+                            <GoInfinity
+                              size={30}
+                              color="#D89918"
+                              strokeWidth={1}
+                              className="w-10"
+                            />
+                          </div>
+                        </div>
                       );
                     })
-                  : (category !== 'All'
-                      ? filteredDataVoucher
-                      : dataVoucher?.data
-                    )?.map((item, index) => {
+                  : dataVoucher?.data?.map((item, index) => {
                       return (
-                        <>
-                          <div
-                            className="bg-white rounded-2xl w-full h-28 grid grid-cols-5 px-1"
-                            key={index}
-                          >
-                            <div className="col-span-1 flex justify-center items-center">
-                              {item?.voucher_type === 'Premium Circle' ||
-                              item?.voucher_type === 'Premium Content' ? (
-                                <HiUserGroup
-                                  size={50}
-                                  className="p-3 bg-[#3AC4A0] text-[#487209] rounded-full"
-                                />
-                              ) : (
-                                <IoGameController
-                                  size={50}
-                                  className="p-3 bg-[#3AC4A0] text-[#487209] rounded-full"
-                                />
-                              )}
-                            </div>
-                            <div className="col-span-3 flex flex-col justify-center">
-                              <div className="text-[#3AC4A0] font-bold text-sm truncate">
-                                {item?.name_promo_code}
-                              </div>
-                              <div
-                                className="text-[#7C7C7C] font-light text-xs truncate"
-                                dangerouslySetInnerHTML={{
-                                  __html:
-                                    item?.description?.[
-                                      i18n.language === 'id' ? 'id' : 'en'
-                                    ]
-                                }}
+                        <div
+                          className="bg-white rounded-2xl w-full h-28 grid grid-cols-4 px-1"
+                          key={index}
+                        >
+                          <div className="col-span-1 flex justify-center items-center">
+                            {item?.voucher_type === 'Premium Circle' ||
+                            item?.voucher_type === 'Premium Content' ? (
+                              <HiUserGroup
+                                size={50}
+                                className="p-3 bg-gradient-to-t from-[#3AC4A0]/0 to-[#0DB48866]/40 text-[#3AC4A0] rounded-full"
                               />
-                              <div className="font-bold text-sm truncate">
-                                {t('seedsPlan.text6')}{' '}
-                                {`${
-                                  item?.is_percentage
-                                    ? `${item?.discount_percentage}%`
-                                    : item?.discount_amount?.toLocaleString(
-                                        'id-ID',
-                                        {
-                                          currency:
-                                            userInfo?.preferredCurrency ??
-                                            'IDR',
-                                          style: 'currency',
-                                          maximumFractionDigits: 0
-                                        }
-                                      )
-                                }`}
-                              </div>
-                            </div>
-                            <div className="col-span-1 flex flex-col justify-center items-center border-s-2 border-dashed text-[#7C7C7C]">
-                              <div className="font-bold text-xl">
-                                {item?.quantity}
-                              </div>
-                              <div className="font-light text-xs">Voucher</div>
-                            </div>
+                            ) : (
+                              <IoGameController
+                                size={50}
+                                className="p-3  bg-gradient-to-t from-[#3AC4A0]/0 to-[#0DB48866]/40 text-[#3AC4A0] rounded-full"
+                              />
+                            )}
                           </div>
-                        </>
+                          <div className="col-span-2 flex flex-col justify-center gap-1">
+                            <Typography className="text-[#3AC4A0] font-poppins font-semibold text-base truncate">
+                              {item?.name_promo_code}
+                            </Typography>
+                            <div
+                              className="text-[#7C7C7C] font-poppins font-normal text-xs truncate"
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  item?.description?.[
+                                    i18n.language === 'id' ? 'id' : 'en'
+                                  ]
+                              }}
+                            />
+                          </div>
+                          <div className="col-span-1 flex justify-center items-center border-s-2 border-dashed text-[#7C7C7C]">
+                            <GoInfinity
+                              size={30}
+                              color="#D89918"
+                              strokeWidth={1}
+                              className="w-10"
+                            />
+                          </div>
+                        </div>
                       );
                     })}
               </div>
@@ -496,7 +452,9 @@ const SeedsPlan: React.FC = () => {
                 <div>
                   <div
                     className="flex justify-between flew-row items-center pb-3 border-b border-dashed cursor-pointer"
-                    onClick={togglePopupTnc}
+                    onClick={() => {
+                      setShowTnc(!showTnc);
+                    }}
                   >
                     <div>{t('seedsPlan.button1')}</div>
                     <div>
@@ -505,7 +463,9 @@ const SeedsPlan: React.FC = () => {
                   </div>
                   <div
                     className="flex justify-between flew-row items-center py-3 border-b border-dashed cursor-pointer"
-                    onClick={togglePopupHowToUse}
+                    onClick={() => {
+                      setHowToUse(!showHowToUse);
+                    }}
                   >
                     <div>{t('seedsPlan.button2')}</div>
                     <div>
@@ -532,7 +492,10 @@ const SeedsPlan: React.FC = () => {
                             {filterPlan?.is_promo === true ? (
                               <>
                                 <span className="line-through">
-                                  {filterPlan?.price?.toLocaleString('id-ID', {
+                                  {(
+                                    filterPlan != null &&
+                                    filterPlan?.price * periodPlan
+                                  )?.toLocaleString('id-ID', {
                                     currency:
                                       userInfo?.preferredCurrency ?? 'IDR',
                                     style: 'currency',
@@ -543,7 +506,10 @@ const SeedsPlan: React.FC = () => {
                               </>
                             ) : (
                               <>
-                                {filterPlan?.price?.toLocaleString('id-ID', {
+                                {(
+                                  filterPlan != null &&
+                                  filterPlan?.price * periodPlan
+                                )?.toLocaleString('id-ID', {
                                   currency:
                                     userInfo?.preferredCurrency ?? 'IDR',
                                   style: 'currency',
@@ -558,14 +524,14 @@ const SeedsPlan: React.FC = () => {
                               filterPlan?.is_promo === true ? 'block' : 'hidden'
                             }`}
                           >
-                            {filterPlan?.price_after_promo?.toLocaleString(
-                              'id-ID',
-                              {
-                                currency: userInfo?.preferredCurrency ?? 'IDR',
-                                style: 'currency',
-                                maximumFractionDigits: 0
-                              }
-                            )}
+                            {(
+                              filterPlan != null &&
+                              filterPlan?.price_after_promo * periodPlan
+                            )?.toLocaleString('id-ID', {
+                              currency: userInfo?.preferredCurrency ?? 'IDR',
+                              style: 'currency',
+                              maximumFractionDigits: 0
+                            })}
                           </div>
                         </div>
                         <button
@@ -598,19 +564,29 @@ const SeedsPlan: React.FC = () => {
                             {filterPlan?.is_promo === true ? (
                               <>
                                 <span className="line-through">
-                                  {filterPlan?.price?.toLocaleString('id-ID', {
+                                  {(
+                                    filterPlan != null &&
+                                    filterPlan?.price * periodPlan
+                                  )?.toLocaleString('id-ID', {
                                     currency:
                                       userInfo?.preferredCurrency ?? 'IDR',
                                     style: 'currency',
                                     maximumFractionDigits: 0
                                   })}
                                 </span>
-                                /{filterPlan?.duration_in_months}{' '}
-                                {t('seedsPlan.text4')}
+                                /{periodPlan === 12 ? 1 : periodPlan}{' '}
+                                {periodPlan === 1
+                                  ? `${t('seedsPlan.month')}`
+                                  : periodPlan === 12
+                                  ? `${t('seedsPlan.year')}`
+                                  : `${t('seedsPlan.months')}`}
                               </>
                             ) : (
                               <>
-                                {filterPlan?.price?.toLocaleString('id-ID', {
+                                {(
+                                  filterPlan != null &&
+                                  filterPlan?.price * periodPlan
+                                )?.toLocaleString('id-ID', {
                                   currency:
                                     userInfo?.preferredCurrency ?? 'IDR',
                                   style: 'currency',
@@ -626,14 +602,14 @@ const SeedsPlan: React.FC = () => {
                               filterPlan?.is_promo === true ? 'block' : 'hidden'
                             }`}
                           >
-                            {filterPlan?.price_after_promo?.toLocaleString(
-                              'id-ID',
-                              {
-                                currency: userInfo?.preferredCurrency ?? 'IDR',
-                                style: 'currency',
-                                maximumFractionDigits: 0
-                              }
-                            )}
+                            {(
+                              filterPlan != null &&
+                              filterPlan?.price_after_promo * periodPlan
+                            )?.toLocaleString('id-ID', {
+                              currency: userInfo?.preferredCurrency ?? 'IDR',
+                              style: 'currency',
+                              maximumFractionDigits: 0
+                            })}
                           </div>
                         </div>
                         <button
@@ -657,10 +633,17 @@ const SeedsPlan: React.FC = () => {
       </PageGradient>
       <TncSeedsplan
         isOpen={showTnc}
-        onClose={togglePopupTnc}
+        onClose={() => {
+          setShowTnc(!showTnc);
+        }}
         tnc={filterTnc as string}
       />
-      <HowToUseSeedsplan isOpen={showHowToUse} onClose={togglePopupHowToUse} />
+      <HowToUseSeedsplan
+        isOpen={showHowToUse}
+        onClose={() => {
+          setHowToUse(!showHowToUse);
+        }}
+      />
     </>
   );
 };

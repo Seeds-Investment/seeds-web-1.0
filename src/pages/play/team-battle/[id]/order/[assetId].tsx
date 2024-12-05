@@ -158,7 +158,7 @@ const BuyPage: React.FC = () => {
             (portfolio?.total_lot *
               (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                 ? lastPrice[prefCurrency as PreferredCurrencyI]
-                : lastPriceAsset ?? 0) *
+                : (lastPriceAsset as number)) *
               sellPercent) /
             100
           }`
@@ -174,7 +174,7 @@ const BuyPage: React.FC = () => {
             100 /
             (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
               ? lastPrice[prefCurrency as PreferredCurrencyI]
-              : lastPriceAsset ?? 0)
+              : (lastPriceAsset as number))
           ).toFixed(1)
         );
       }
@@ -188,7 +188,7 @@ const BuyPage: React.FC = () => {
         (portfolio?.total_lot *
           (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
             ? lastPrice[prefCurrency as PreferredCurrencyI]
-            : lastPriceAsset ?? 0) *
+            : (lastPriceAsset as number)) *
           sellPercent) /
         100
       }`
@@ -376,7 +376,7 @@ const BuyPage: React.FC = () => {
                     parseInt(value) /
                     (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                       ? lastPrice[prefCurrency as PreferredCurrencyI]
-                      : lastPriceAsset ?? 0)
+                      : (lastPriceAsset as number))
                   }`
                 );
               } else {
@@ -385,7 +385,7 @@ const BuyPage: React.FC = () => {
                     parseFloat(value) *
                     (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                       ? lastPrice[prefCurrency as PreferredCurrencyI]
-                      : lastPriceAsset ?? 0)
+                      : (lastPriceAsset as number))
                   }`
                 );
               }
@@ -403,7 +403,7 @@ const BuyPage: React.FC = () => {
                       parseInt(value) /
                       (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                         ? lastPrice[prefCurrency as PreferredCurrencyI]
-                        : lastPriceAsset ?? 0)
+                        : (lastPriceAsset as number))
                     }`
                   );
                 } else {
@@ -412,7 +412,7 @@ const BuyPage: React.FC = () => {
                       parseFloat(value) *
                       (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                         ? lastPrice[prefCurrency as PreferredCurrencyI]
-                        : lastPriceAsset ?? 0)
+                        : (lastPriceAsset as number))
                     }`
                   );
                 }
@@ -544,7 +544,7 @@ const BuyPage: React.FC = () => {
                   : (portfolio?.total_lot ?? 0) *
                       (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                         ? lastPrice[prefCurrency as PreferredCurrencyI]
-                        : lastPriceAsset ?? 0)
+                        : (lastPriceAsset as number))
               )}`}{' '}
             </Typography>
           </div>
@@ -557,7 +557,7 @@ const BuyPage: React.FC = () => {
               socketPrice:
                 lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                   ? lastPrice[prefCurrency as PreferredCurrencyI]
-                  : lastPriceAsset ?? 0
+                  : (lastPriceAsset as number)
             }}
             loading={isLoadingAsset}
           />
@@ -764,7 +764,7 @@ const BuyPage: React.FC = () => {
                     ? formatAssetPrice(
                         lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                           ? lastPrice[prefCurrency as PreferredCurrencyI]
-                          : lastPriceAsset ?? 0
+                          : (lastPriceAsset as number)
                       )
                     : 0
                 }
@@ -812,7 +812,7 @@ const BuyPage: React.FC = () => {
                     {formatAssetPrice(
                       (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                         ? lastPrice[prefCurrency as PreferredCurrencyI]
-                        : lastPriceAsset ?? 0) * +lotSell
+                        : (lastPriceAsset as number)) * +lotSell
                     )}
                     `
                   </Typography>
@@ -916,7 +916,7 @@ const BuyPage: React.FC = () => {
                         ? formatAssetPrice(
                             lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                               ? lastPrice[prefCurrency as PreferredCurrencyI]
-                              : lastPriceAsset ?? 0
+                              : (lastPriceAsset as number)
                           )
                         : standartCurrency(price).replace('Rp', '')}
                     </Typography>
@@ -1106,7 +1106,7 @@ const BuyPage: React.FC = () => {
                                   ? lastPrice[
                                       prefCurrency as PreferredCurrencyI
                                     ]
-                                  : lastPriceAsset ?? 0
+                                  : (lastPriceAsset as number)
                               )}
                             </Typography>
                           </div>
@@ -1163,7 +1163,7 @@ const BuyPage: React.FC = () => {
                                       ? lastPrice[
                                           prefCurrency as PreferredCurrencyI
                                         ]
-                                      : lastPriceAsset ?? 0)
+                                      : (lastPriceAsset as number))
                                 )
                               : 'No data available'}
                           </Typography>

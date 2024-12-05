@@ -491,7 +491,7 @@ const Social: React.FC = () => {
             <PlusIcon
               width={50}
               height={50}
-              className="text-white"
+              className="text-white cursor-pointer"
               onClick={() => {
                 setIsOpenModalAdd(true);
               }}

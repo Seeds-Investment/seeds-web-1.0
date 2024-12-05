@@ -11,6 +11,8 @@ import {
   postLike
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import i18n from '@/utils/common/i18n';
+import { type IOtherUserProfile } from '@/utils/interfaces/user.interface';
 import { Input } from '@material-tailwind/react';
 import { format, parseISO } from 'date-fns';
 import { id as ID } from 'date-fns/locale';
@@ -20,18 +22,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import author from '../../../../../../public/assets/author.png';
-
-interface UserData {
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  phone: string;
-  _pin: string;
-}
 
 export interface ArticleListRoot {
   promoCodeList: Article[];
@@ -121,7 +111,7 @@ export default function ArticleDetailPage(): JSX.Element {
   const { id } = router.query;
   const accessToken =
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const [userInfo, setUserInfo] = useState<IOtherUserProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [comment, setComment] = useState('');
   // const [liked, setLiked] = useState(false);
@@ -139,7 +129,7 @@ export default function ArticleDetailPage(): JSX.Element {
 
   async function fetchArticles(): Promise<void> {
     try {
-      const response = await getArticle(params);
+      const response = await getArticle({ ...params, language: i18n.language });
       if (response.status === 200) {
         setArticles(response.data);
       } else {
@@ -158,7 +148,7 @@ export default function ArticleDetailPage(): JSX.Element {
     fetchData().catch(error => {
       console.error('Error in fetchData:', error);
     });
-  }, []);
+  }, [i18n.language]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -177,7 +167,7 @@ export default function ArticleDetailPage(): JSX.Element {
     if (typeof id === 'string') {
       // Check if id is a valid string
       const fetchArticleDetail = (): void => {
-        getArticleById(id)
+        getArticleById(Number(id))
           .then(response => {
             if (response.status === 200) {
               setArticleDetail(response.news);
@@ -251,7 +241,6 @@ export default function ArticleDetailPage(): JSX.Element {
       ...prevState,
       comment
     }));
-    console.log(comment);
   };
 
   const submitComment = async (articleId: number): Promise<void> => {
@@ -338,16 +327,6 @@ export default function ArticleDetailPage(): JSX.Element {
   const imageUrl = articleDetail?.imageUrl;
 
   const isImageValid = isImageUrlValid(imageUrl);
-
-  // const customGradient = (
-  //   <>
-  //     <span className="-z-0 absolute top-0 mt-[50%] -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
-  //     <span className="-z-0 absolute top-0 mt-[55%] left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
-  //     {/* <span className="-z-0 absolute -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
-  //     <span className="-z-0 absolute top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
-  //     <span className="-z-0 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
-  //   </>
-  // );
   return (
     <>
       {articleDetail.meta_description.length > 0 &&

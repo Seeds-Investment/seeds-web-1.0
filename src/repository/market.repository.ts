@@ -61,13 +61,17 @@ export const getMarketCurrency = async (): Promise<any> => {
   });
 };
 
-export const getAssetOverview = async (id: string): Promise<any> => {
+export const getAssetOverview = async (
+  id: string,
+  params: { currency: string }
+): Promise<any> => {
   if (isUndefindOrNull(id) || isEmptyString(id)) {
     return await Promise.reject(new Error('ID is undefined, null, or empty.'));
   }
 
   const path = Endpoints.asset.getAssetOverview.replace(':id', id);
   return await marketService.get(path, {
+    params,
     headers: {
       Accept: 'application/json'
     }

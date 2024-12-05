@@ -1,6 +1,7 @@
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import CommunityDesktop from 'public/assets/images/IlustCommunities.png';
 import { useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
@@ -19,40 +20,6 @@ export default function Section12(): React.ReactElement {
     const bottom = entry?.boundingClientRect.bottom ?? 0;
     setBottom(bottom);
   }, [entry]);
-
-  // const settings: Settings = {
-  //   centerMode: true,
-  //   slidesToShow: 1,
-  //   speed: 15000,
-  //   slidesToScroll: 3,
-  //   autoplay: true,
-  //   autoplaySpeed: 500,
-  //   infinite: true,
-  //   dots: false,
-  //   responsive: [
-  //     {
-  //       breakpoint: 1024,
-  //       settings: {
-  //         dots: false,
-  //         slidesToShow: 1
-  //       }
-  //     },
-  //     {
-  //       breakpoint: 768,
-  //       settings: {
-  //         dots: false,
-  //         slidesToShow: 1
-  //       }
-  //     },
-  //     {
-  //       breakpoint: 480,
-  //       settings: {
-  //         dots: false,
-  //         slidesToShow: 1
-  //       }
-  //     }
-  //   ]
-  // };
 
   return (
     <section
@@ -98,7 +65,7 @@ export default function Section12(): React.ReactElement {
               <Marquee direction="right" className="relative z-0">
                 <div className="z-10 w-full">
                   <Image
-                    src="/assets/images/IlustCommunities.png"
+                    src={CommunityDesktop}
                     alt={`comunity`}
                     width={1440}
                     height={557}
@@ -107,7 +74,7 @@ export default function Section12(): React.ReactElement {
                 </div>
                 <div className="z-10 w-full">
                   <Image
-                    src="/assets/images/IlustCommunities.png"
+                    src={CommunityDesktop}
                     alt={`comunity`}
                     width={1440}
                     height={557}
@@ -116,7 +83,7 @@ export default function Section12(): React.ReactElement {
                 </div>
                 <div className="z-10 w-full">
                   <Image
-                    src="/assets/images/IlustCommunities.png"
+                    src={CommunityDesktop}
                     alt={`comunity`}
                     width={1440}
                     height={557}
@@ -130,7 +97,7 @@ export default function Section12(): React.ReactElement {
               <Marquee direction="right" className="relative z-0">
                 <div className="z-10 w-full">
                   <Image
-                    src="/assets/images/communities-image-section.png"
+                    src={CommunityDesktop}
                     alt={`comunity`}
                     width={1440}
                     height={400}

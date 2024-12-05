@@ -1,7 +1,7 @@
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import CommunityDesktop from 'public/assets/images/IlustCommunities.png';
+import DiamanteLogo from 'public/assets/images/diamante.svg';
 import { useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
@@ -40,9 +40,18 @@ export default function Section12(): React.ReactElement {
             <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-tr from-[#9A76FE] from-10% to-[#4FE6AF] to-100% md:text-4xl lg:text-5xl">
               {t('landingV2.section12.text1')}
             </span>
-            <p className="text-md w-full lg:w-[70%] lg:text-2xl font-normal text-[#262626]">
+            <div className="w-[260px] md:w-[350px] h-auto flex justify-center items-center lg:my-4">
+              <Image
+                src={DiamanteLogo}
+                alt={`DiamanteLogo`}
+                width={1440}
+                height={1000}
+                className="w-full h-auto"
+              />
+            </div>
+            <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-tr from-[#9A76FE] from-10% to-[#4FE6AF] to-100% md:text-4xl lg:text-5xl">
               {t('landingV2.section12.text2')}
-            </p>
+            </span>
             <Link
               href={
                 'https://docs.google.com/forms/d/1-RI9IYyaO-5aPfS4BsTd2umTewQbh_kXVthWbys2Qdk/viewform?edit_requested=true'
@@ -51,7 +60,7 @@ export default function Section12(): React.ReactElement {
               className="cursor-pointer"
             >
               <Button
-                className="lg:my-4 px-14 lg:px-10 bg-[#7555DA] rounded-full"
+                className="lg:my-4 px-8 md:px-14 lg:px-10 bg-[#7555DA] rounded-full"
                 onClick={() => {}}
               >
                 <p className="text-lg font-semibold capitalize">
@@ -65,7 +74,7 @@ export default function Section12(): React.ReactElement {
               <Marquee direction="right" className="relative z-0">
                 <div className="z-10 w-full">
                   <Image
-                    src={CommunityDesktop}
+                    src="/assets/images/IlustCommunities.png"
                     alt={`comunity`}
                     width={1440}
                     height={557}
@@ -74,7 +83,7 @@ export default function Section12(): React.ReactElement {
                 </div>
                 <div className="z-10 w-full">
                   <Image
-                    src={CommunityDesktop}
+                    src="/assets/images/IlustCommunities.png"
                     alt={`comunity`}
                     width={1440}
                     height={557}
@@ -83,7 +92,7 @@ export default function Section12(): React.ReactElement {
                 </div>
                 <div className="z-10 w-full">
                   <Image
-                    src={CommunityDesktop}
+                    src="/assets/images/IlustCommunities.png"
                     alt={`comunity`}
                     width={1440}
                     height={557}
@@ -97,7 +106,7 @@ export default function Section12(): React.ReactElement {
               <Marquee direction="right" className="relative z-0">
                 <div className="z-10 w-full">
                   <Image
-                    src={CommunityDesktop}
+                    src="/assets/images/communities-image-section.png"
                     alt={`comunity`}
                     width={1440}
                     height={400}

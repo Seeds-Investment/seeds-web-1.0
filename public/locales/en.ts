@@ -1696,9 +1696,8 @@ export default {
       text4: 'Contact Us'
     },
     section12: {
-      text1: 'Our Communities',
-      text2:
-        "We're committed in improving financial literacy for Gen-Z and millennials in Southeast Asia.",
+      text1: 'Special Partnership',
+      text2: 'Other Partnership',
       text3: 'Partnership Program'
     }
   },

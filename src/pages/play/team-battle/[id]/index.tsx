@@ -107,7 +107,7 @@ const MainTeamBattle = (): React.ReactElement => {
   };
 
   const handleRedirectJoin = async (): Promise<void> => {
-    if (data?.is_paid === false) {
+    if (data?.is_paid === false && !data?.is_joined) {
       setIsModalPaymentOpen(true);
       return;
     }

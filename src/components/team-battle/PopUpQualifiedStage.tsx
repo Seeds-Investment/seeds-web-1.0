@@ -1,5 +1,6 @@
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import EliminatedSeedy from '../../../public/assets/team-battle/eliminated-battle.svg';
 import FailSeedy from '../../../public/assets/team-battle/fail-battle.svg';
@@ -20,7 +21,8 @@ const PopUpQualifiedStage: React.FC<PopUpQualifiedStageProps> = ({
   rank
 }) => {
   const { t } = useTranslation();
-  
+  const router = useRouter();
+
   if (!isOpen) return null;
 
   const popUpContent: Array<{
@@ -92,7 +94,13 @@ const PopUpQualifiedStage: React.FC<PopUpQualifiedStageProps> = ({
               {rank !== 0 ? `#${rank as number}` : ': unranked'}
             </Typography>
             <Button
-              onClick={onClose}
+              onClick={async () => {
+                if (categoryPopUp === 'qualified' || categoryPopUp === 'win') {
+                  onClose();
+                } else {
+                  await router.push('/play');
+                }
+              }}
               className="rounded-full border-[2px] bg-[#2934B2] border-white lg:text-[17px] text-sm font-semibold font-poppins w-[190px]"
             >
               OK

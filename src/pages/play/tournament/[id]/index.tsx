@@ -602,11 +602,14 @@ const TournamentDetail: React.FC = () => {
             <p className="text-lg font-semibold">
               {t('tournament.detailTerms')}
             </p>
-            {languageCtx.language === 'ID' ? (
-              <p className="text-[#7C7C7C]">{detailTournament?.tnc?.id}</p>
-            ) : (
-              <p className="text-[#7C7C7C]">{detailTournament?.tnc?.en}</p>
-            )}
+            <div
+              className="text-[#7C7C7C] font-poppins break-words "
+              dangerouslySetInnerHTML={{
+                __html: detailTournament?.tnc?.[
+                  languageCtx.language === 'id' ? 'id' : 'en'
+                ] as string
+              }}
+            />
           </div>
           <div className="mt-4">
             <Typography className="text-lg font-semibold font-poppins">

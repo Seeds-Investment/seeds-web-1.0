@@ -19,7 +19,7 @@ import CountdownTimer from '@/components/play/CountdownTimer';
 import FloatingButton from '@/components/play/FloatingButton';
 import Loading from '@/components/popup/Loading';
 import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
-import { standartCurrency } from '@/helpers/currency';
+import { formatAssetPrice, standartCurrency } from '@/helpers/currency';
 import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import { type AssetItemType } from '@/pages/homepage/play/[id]';
@@ -572,7 +572,11 @@ const TournamentHome: React.FC = () => {
                           `/play/tournament/${id as string}/${data?.id}`
                         )
                       }
+<<<<<<< HEAD
                       className="flex justify-between items-center p-4 mt-4 cursor-pointer bg-white hover:bg-[#F7F7F7] duration-300 rounded-lg "
+=======
+                      className="flex justify-between items-center p-4 mt-4 cursor-pointer bg-white hover:bg-[#F7F7F7] duration-300 rounded-lg"
+>>>>>>> 79f21e4e7da4caa4c0d9ecb4fdc4b4f7979ef5b6
                     >
                       <div className="flex gap-4 text-sm md:text-base">
                         <img
@@ -596,11 +600,8 @@ const TournamentHome: React.FC = () => {
                         <div className="font-semibold text-sm md:text-base">
                           {userInfo?.preferredCurrency !== undefined
                             ? userInfo?.preferredCurrency
-                            : 'IDR'}
-                          {standartCurrency(data?.priceBar?.close ?? 0).replace(
-                            'Rp',
-                            ''
-                          )}
+                            : 'IDR'}{' '}
+                          {formatAssetPrice(data?.priceBar?.close ?? 0)}
                         </div>
                         <div className="flex justify-center gap-2">
                           <Image

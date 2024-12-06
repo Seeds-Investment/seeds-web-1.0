@@ -789,7 +789,7 @@ const Comment: React.FC = () => {
           <div className="flex md:gap-8 flex-col">
             <div className="relative">
               <div className="bg-white my-8 rounded-xl shadow-sm">
-                <div className="flex justify-start pl-16 gap-10 pt-4">
+                <div className="flex justify-start pl-8 gap-8 pt-4">
                   <Image
                     src={ArrowBackwardIcon}
                     alt="Back"

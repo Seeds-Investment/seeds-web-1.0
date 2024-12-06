@@ -239,3 +239,51 @@ export interface AssetDetail {
   listed_country: string;
   asset_type: string;
 }
+
+export interface PaymentOptionList {
+  total: number;
+  recomendation: PaymentOption[];
+  type_va: PaymentOption[];
+  type_ewallet: PaymentOption[];
+  type_qris: PaymentOption[];
+  type_cc: PaymentOption[];
+}
+
+export interface PaymentOption {
+  id: string;
+  payment_gateway: string;
+  payment_method: string;
+  logo_url: string;
+  payment_type: string;
+  admin_fee: number;
+  service_fee: number;
+  promo_price: number;
+  is_active: boolean;
+  is_promo_available: boolean;
+  is_priority: boolean;
+  minimum_withdrawal: number;
+}
+
+export interface PaymentStatus {
+  orderId: string;
+  transactionId: string;
+  fraudStatus: string;
+  transactionStatus: string;
+  currency: string;
+  merchantId: string;
+  paymentGateway: string;
+  itemName: string;
+  itemId: string;
+  quantity: number;
+  grossAmount: number;
+  paymentMethod: string;
+  vaNumber: string;
+  howToPayApi: string;
+}
+
+export interface PaymentResult {
+  payment_status: string;
+  payment_url: string;
+  va_number: string;
+  order_id: string;
+}

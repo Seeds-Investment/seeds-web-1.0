@@ -166,7 +166,7 @@ export const SlideTournament: React.FC = () => {
                           color="transparent"
                           className="m-0 p-0 w-auto h-32 rounded-t-[13.37px] lg:rounded-t-[13.37px] rounded-b-none"
                         >
-                          <img
+                          <Image
                             src={
                               item.banner !== undefined && item.banner !== ''
                                 ? item.banner

@@ -119,11 +119,7 @@ const MainTeamBattle = (): React.ReactElement => {
         await router.push(`/play/team-battle/${id as string}/waiting`);
       }
     } else {
-      if (isRegistrationClosed()) {
-        setShowPopUpRegistrationClosed(!showPopUpRegistrationClosed);
-      } else {
-        setShowPopUpJoinBattle(!showPopUpJoinBattle);
-      }
+      setShowPopUpJoinBattle(true);
     }
   };
 
@@ -778,6 +774,7 @@ const MainTeamBattle = (): React.ReactElement => {
           totalAvailableCoins={totalAvailableCoins}
           promoCodeValidation={promoCodeValidationResult}
           setPopUpJoinBattle={setShowPopUpJoinBattle}
+          setShowPopUpRegistrationClosed={setShowPopUpRegistrationClosed}
         />
       )}
     </>

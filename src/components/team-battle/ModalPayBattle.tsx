@@ -23,6 +23,7 @@ interface Props {
   totalAvailableCoins: number;
   promoCodeValidation: any;
   setPopUpJoinBattle: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowPopUpRegistrationClosed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ModalPayBattle: React.FC<Props> = ({
@@ -32,17 +33,48 @@ const ModalPayBattle: React.FC<Props> = ({
   dataSubscription,
   totalAvailableCoins,
   promoCodeValidation,
-  setPopUpJoinBattle
+  setPopUpJoinBattle,
+  setShowPopUpRegistrationClosed
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const router = useRouter();
   const [useCoins, setUseCoins] = useState<boolean>(false);
 
+  const isStarted = (): boolean => {
+    const playTime = detailBattle?.elimination_start;
+    const timeStart = new Date(playTime).getTime();
+    const timeNow = Date.now();
+
+    return timeStart < timeNow;
+  };
+
+  const isRegistrationClosed = (): boolean => {
+    const eliminationTime = detailBattle?.elimination_end;
+    const timeRegistrationOpen = new Date(eliminationTime).getTime();
+    const timeNow = Date.now();
+
+    return timeRegistrationOpen < timeNow;
+  };
+
   const handleRedirectPayment = async (): Promise<void> => {
-    if (detailBattle?.admission_fee === 0) {
+    if (isRegistrationClosed()) {
       onClose();
-      setPopUpJoinBattle(true);
+      setShowPopUpRegistrationClosed(true);
+      return;
+    }
+
+    if (isStarted()) {
+      if (detailBattle?.admission_fee === 0) {
+        onClose();
+        setPopUpJoinBattle(true);
+      } else {
+        await router.push(
+          `/play/team-battle/${
+            detailBattle?.id
+          }/payment?useCoins=${useCoins.toString()}`
+        );
+      }
     }
   };
 

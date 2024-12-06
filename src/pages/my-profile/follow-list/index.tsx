@@ -187,7 +187,11 @@ const Follow: React.FC = () => {
                               {item.name}
                             </Typography>
                             <Typography className="font-normal font-poppins text-xs md:text-sm text-[#7C7C7C]">
-                              @{item.seeds_tag}
+                              {item.seeds_tag.length > 10
+                                ? // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                                  `@${item.seeds_tag.substring(0, 10)}...`
+                                : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                                  `@${item.seeds_tag}`}
                             </Typography>
                           </div>
                         </div>

@@ -1626,10 +1626,9 @@ export default {
       text4: 'Hubungi Kami'
     },
     section12: {
-      text1: 'Komunitas Kami',
-      text2:
-        'Kami berkomitmen untuk meningkatkan literasi finansial Generasi Z dan milenial di Asia Tenggara.',
-      text3: 'Program Mitra'
+      text1: 'Kemitraan Khusus',
+      text2: 'Kemitraan Lainnya',
+      text3: 'Program Kemitraan'
     }
   },
   playSimulation: {

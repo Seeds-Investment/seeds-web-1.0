@@ -144,7 +144,7 @@ const PaymentList: React.FC = (): JSX.Element => {
 
           const response = await promoValidate({
             promo_code: promoCodeValidationResult?.response?.promo_code,
-            spot_type: 'Paid Tournament',
+            spot_type: 'Paid Battle',
             item_price: admissionFee,
             item_id: detailBattle?.id,
             currency: userInfo?.preferredCurrency ?? 'IDR'

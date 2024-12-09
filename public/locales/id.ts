@@ -2004,7 +2004,9 @@ export default {
     payment: {
       paymentMethod: 'Metode Pembayaran',
       pendingPaidTournament: 'Menunggu Turnamen Dibayar',
+      pendingPaidTeamBattle: 'Menunggu Pertarungan Tim Dibayar',
       tournamentFee: 'Biaya Turnamen',
+      teamBattleFee: 'Biaya Pertarungan Tim',
       adminFee: 'Biaya Admin',
       serviceFee: 'Biaya Layanan',
       discountFee: 'Diskon',
@@ -2015,6 +2017,7 @@ export default {
       virtualNumber: 'Nomor Virtual Akun Anda',
       successful: 'Pembayaran Berhasil',
       pending: 'Menunggu Pembayaran',
+      pendingBattle: 'Menunggu Pembayaran',
       recurringSaved: 'Pembayaran anda telah tersimpan'
     },
     clock: {

@@ -2075,7 +2075,9 @@ export default {
     payment: {
       paymentMethod: 'Payment Method',
       pendingPaidTournament: 'Pending Paid Tournament',
+      pendingPaidTeamBattle: 'Pending Paid Team Battle',
       tournamentFee: 'Tournament Fee',
+      teamBattleFee: 'Team Battle Fee',
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',
       discountFee: 'Discount Fee',
@@ -2086,6 +2088,7 @@ export default {
       virtualNumber: 'Your Virtual Account Number',
       successful: 'Successful',
       pending: 'Pending Paid Tournament',
+      pendingBattle: 'Pending Paid Team Battle',
       recurringSaved: 'Your recurring has been saved!'
     },
     clock: {

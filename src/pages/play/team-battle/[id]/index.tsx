@@ -42,7 +42,6 @@ const MainTeamBattle = (): React.ReactElement => {
   const { id } = router.query;
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  // const languageCtx = useContext(LanguageContext);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [showTnc, setShowTnc] = useState<boolean>(false);
   const [showPeriod, setShowPeriod] = useState<boolean>(false);
@@ -107,6 +106,11 @@ const MainTeamBattle = (): React.ReactElement => {
   };
 
   const handleRedirectJoin = async (): Promise<void> => {
+    if (isRegistrationClosed()) {
+      setShowPopUpRegistrationClosed(true);
+      return;
+    }
+
     if (data?.is_paid === false && !data?.is_joined) {
       setIsModalPaymentOpen(true);
       return;
@@ -774,7 +778,6 @@ const MainTeamBattle = (): React.ReactElement => {
           totalAvailableCoins={totalAvailableCoins}
           promoCodeValidation={promoCodeValidationResult}
           setPopUpJoinBattle={setShowPopUpJoinBattle}
-          setShowPopUpRegistrationClosed={setShowPopUpRegistrationClosed}
         />
       )}
     </>

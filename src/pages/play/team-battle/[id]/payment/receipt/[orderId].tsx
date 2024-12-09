@@ -207,7 +207,7 @@ const Receipt: React.FC = () => {
                 orderDetail?.transactionStatus === 'SUCCEEDED' ||
                 orderDetail?.transactionStatus === 'SUCCESS'
                   ? ''
-                  : t('tournament.payment.pendingPaidTournament')}
+                  : t('tournament.payment.pendingPaidTeamBattle')}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
                 {orderDetail?.transactionStatus === 'SETTLEMENT' ||
@@ -257,13 +257,13 @@ const Receipt: React.FC = () => {
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
                 </div>
 
-                {/* Tournament Fee */}
+                {/* Team Battle Fee */}
                 {orderDetail?.currency !== undefined &&
                 orderDetail?.grossAmount !== undefined &&
                 orderDetail?.paymentMethod !== 'OTHER_QRIS' ? (
                   <div className="flex flex-row justify-between my-5">
                     <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                      {t('tournament.payment.tournamentFee')}
+                      {t('tournament.payment.teamBattleFee')}
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {`${orderDetail?.currency} ${formatCurrency(
@@ -288,7 +288,7 @@ const Receipt: React.FC = () => {
                 orderDetail?.paymentMethod === 'OTHER_QRIS' ? (
                   <div className="flex flex-row justify-between my-5">
                     <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                      {t('tournament.payment.tournamentFee')}
+                      {t('tournament.payment.teamBattleFee')}
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {`${orderDetail?.currency} ${formatCurrency(

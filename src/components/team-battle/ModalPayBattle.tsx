@@ -23,7 +23,6 @@ interface Props {
   totalAvailableCoins: number;
   promoCodeValidation: any;
   setPopUpJoinBattle: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowPopUpRegistrationClosed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ModalPayBattle: React.FC<Props> = ({
@@ -33,8 +32,7 @@ const ModalPayBattle: React.FC<Props> = ({
   dataSubscription,
   totalAvailableCoins,
   promoCodeValidation,
-  setPopUpJoinBattle,
-  setShowPopUpRegistrationClosed
+  setPopUpJoinBattle
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -49,21 +47,7 @@ const ModalPayBattle: React.FC<Props> = ({
     return timeStart < timeNow;
   };
 
-  const isRegistrationClosed = (): boolean => {
-    const eliminationTime = detailBattle?.elimination_end;
-    const timeRegistrationOpen = new Date(eliminationTime).getTime();
-    const timeNow = Date.now();
-
-    return timeRegistrationOpen < timeNow;
-  };
-
   const handleRedirectPayment = async (): Promise<void> => {
-    if (isRegistrationClosed()) {
-      onClose();
-      setShowPopUpRegistrationClosed(true);
-      return;
-    }
-
     if (isStarted()) {
       if (detailBattle?.admission_fee === 0) {
         onClose();

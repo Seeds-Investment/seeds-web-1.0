@@ -1,10 +1,10 @@
 import { getPlayAssetTrending } from '@/repository/play.repository';
-import { trendingMarket } from '@/utils/interfaces/market.interface';
+import type { trendingMarket } from '@/utils/interfaces/market.interface';
 import { Avatar, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const TopLosers = () => {
+const TopLosers = (): React.ReactElement => {
   const [topLoser, setTopLoser] = useState<trendingMarket[]>([]);
 
   const fetchTrendingAsset = async (): Promise<void> => {
@@ -15,7 +15,6 @@ const TopLosers = () => {
         sortBy: 'top_losers'
       });
       setTopLoser(response.data.data);
-      console.log(response);
     } catch (error) {
       toast.error(`error fetching data: `);
     }

@@ -1,10 +1,10 @@
 import { getPlayAssetTrending } from '@/repository/play.repository';
-import { trendingMarket } from '@/utils/interfaces/market.interface';
+import type { trendingMarket } from '@/utils/interfaces/market.interface';
 import { Avatar, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const MostTraded = () => {
+const MostTraded = (): React.ReactElement => {
   const [trendingAsset, setTrendingAsset] = useState<trendingMarket[]>([]);
 
   const fetchTrendingAsset = async (): Promise<void> => {
@@ -15,7 +15,6 @@ const MostTraded = () => {
         sortBy: 'most_traded'
       });
       setTrendingAsset(response.data.data);
-      console.log(response);
     } catch (error) {
       toast.error(`error fetching data: `);
     }
@@ -26,6 +25,30 @@ const MostTraded = () => {
   }, []);
 
   return (
+    // <>
+    //   <div
+    //     className="w-full flex flex-col gap-3" /*  cover tag atas -  wrap to row  */
+    //   >
+    //     <div className="grid grid-cols-3 grid-rows-1">
+    //       <Typography className="text-left">Asset</Typography>
+    //       <Typography className="text-center">Volume</Typography>
+    //       <Typography className="text-right">Prices</Typography>
+    //     </div>
+    //     {trendingAsset?.map((item, index) => (
+    //       <div key={index} className="grid grid-cols-3 grid-rows-1">
+    //         <div className="flex flex-row gap-3 justify-start">
+    //           <Avatar src={item.asset_icon} />
+    //           <div>
+    //             <Typography>{item.asset_ticker}</Typography>
+    //             <Typography>{item.asset_name}</Typography>
+    //           </div>
+    //         </div>
+    //         <Typography className="text-center">{item.volume}</Typography>
+    //         <Typography className="text-right">{item.asset_price}</Typography>
+    //       </div>
+    //     ))}
+    //   </div>
+    // </>
     <>
       <div
         className="flex flex-col gap-3" /*  cover tag atas -  wrap to row  */
@@ -45,7 +68,11 @@ const MostTraded = () => {
               </div>
             </div>
             <Typography className="text-center">{item.volume}</Typography>
-            <Typography className="text-right">{item.asset_price}</Typography>
+            <Typography className="text-right">
+              {Number(item.asset_price) % 1 === 0
+                ? Number(item.asset_price).toFixed(0)
+                : Number(item.asset_price).toFixed(2)}
+            </Typography>
           </div>
         ))}
       </div>

@@ -23,7 +23,6 @@ const Search = ({
         sortBy: 'most_traded'
       });
       setTrendingAsset(response.data.data);
-      console.log(response);
     } catch (err: any) {
       toast.error(`error fetching data: ${err}`);
     }

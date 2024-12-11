@@ -5,7 +5,6 @@ import {
   ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
 import { Avatar, Card, Typography } from '@material-tailwind/react';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -18,7 +17,6 @@ const initialParamsMarket = {
 const Trending = () => {
   const [trendingAsset, setTrendingAsset] = useState<trendingMarket[]>([]);
   const [isLoading, setIsloading] = useState<boolean>(false);
-  const router = useRouter();
 
   const fetchTrendingAsset = async (): Promise<void> => {
     try {
@@ -29,7 +27,6 @@ const Trending = () => {
       } else {
         setTrendingAsset([]);
       }
-      console.log(response);
     } catch (error) {
       toast.error(`error fetching data: `);
     } finally {

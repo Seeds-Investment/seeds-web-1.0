@@ -22,10 +22,11 @@ const dataTab: typeOfTab[] = [
   { name: 'Top Losers', value: 'top losers' }
 ];
 
-const MarketOption = () => {
-  const [activeTab, setActiveTab] = useState('most traded');
+const MarketOption = (): React.ReactElement => {
+  const [activeTab, setActiveTab] = useState('top gainers');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshCount, setRefreshCount] = useState(0);
+  const [data, setData] = useState(0);
 
   const handleTabChange = (tab: string): void => {
     setActiveTab(tab);
@@ -33,18 +34,35 @@ const MarketOption = () => {
 
   const handleRefresh = () => {
     setIsRefreshing(true);
-    console.log('Refresh clicked!');
     setTimeout(() => {
       setIsRefreshing(false);
       setRefreshCount(prev => prev + 1); // Increment refresh count
     }, 1000);
   };
 
+  // useEffect(() => {
+  //   const fetchTrendingAsset = async (): Promise<void> => {
+  //     try {
+  //       const response = await getPlayAssetTrending({
+  //         page: 1,
+  //         limit: 500,
+  //         sortBy: 'most_traded'
+  //       });
+  //       setData(response.data.data);
+  //     } catch (error) {
+  //       toast.error(`error fetching data: `);
+  //     }
+  //   };
+  //   if (refreshCount > 0) {
+  //     fetchTrendingAsset();
+  //   }
+  // }, [refreshCount]);
+
   return (
     <div className="w-full h-auto cursor-default flex flex-row">
       <Tabs value={activeTab}>
         <TabsHeader
-          className="w-full lg:w-3/5 text-center justify-center rounded-none bg-transparent p-0"
+          className="w-full lg:w-3/5 text-center justify-center rounded-none p-0"
           indicatorProps={{
             className: 'shadow-none rounded-none bg-transparent'
           }}

@@ -8,7 +8,7 @@ import Search from '../../components/market/Search.market.component';
 import Trending from '../../components/market/Trending.market.component';
 import MarketOption from '../../containers/market/MarketOption.market';
 
-const index = () => {
+const Index = (): React.ReactElement => {
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <PageGradient defaultGradient className="w-full h-full">
@@ -33,4 +33,4 @@ const index = () => {
   );
 };
 
-export default withAuth(index);
+export default withAuth(Index);

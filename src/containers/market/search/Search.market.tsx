@@ -1,14 +1,15 @@
 import { getPlayAssetTrending } from '@/repository/play.repository';
-import { trendingMarket } from '@/utils/interfaces/market.interface';
+import type { trendingMarket } from '@/utils/interfaces/market.interface';
 import { Typography } from '@material-tailwind/react';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 const SearchMarket = ({
   setMenuOpen
 }: {
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
+}): React.ReactElement => {
   const [trendingAsset, setTrendingAsset] = useState<trendingMarket[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
 

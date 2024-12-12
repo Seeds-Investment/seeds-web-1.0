@@ -13,12 +13,11 @@ export const stringToNumberCurrency = (value: string): number => {
 };
 
 export const standartCurrency = (value: any): string => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(value);
+  const hasCents = value % 1 !== 0;
+  return ` ${new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: hasCents ? 2 : 0,
+    maximumFractionDigits: hasCents ? 2 : 0
+  }).format(value)}`;
 };
 
 export const calculatePercentageDifference = (
@@ -76,24 +75,24 @@ export const formatNumber = (
   return formattedNumber.replace(/\.00$/, ''); // Remove decimal places if they are ".00"
 };
 
-export const formatAssetPrice = (price: number): number => {
-  if (price > 11) {
-    return Math.round(price * 100) / 100;
-  } else if (price < 11 && price > 1) {
-    return Math.round(price * 1000) / 1000;
-  } else if (price > 0.1 && price < 1) {
-    return Math.round(price * 10000) / 10000;
-  } else if (price < 0.1 && price > 0) {
-    return Math.round(price * 1000000) / 1000000;
-  } else if (price < -11) {
-    return Math.round(price * 100) / 100;
-  } else if (price > -11 && price < -1) {
-    return Math.round(price * 1000) / 1000;
-  } else if (price < -0.1 && price > -1) {
-    return Math.round(price * 10000) / 10000;
-  } else if (price > -0.1 && price < 0) {
-    return Math.round(price * 1000000) / 1000000;
+export const formatAssetPrice = (price: number): string => {
+  let roundedPrice: number;
+  
+  if (price > 11 || price < -11) {
+    roundedPrice = Math.round(price * 100) / 100;
+  } else if ((price < 11 && price > 1) || (price > -11 && price < -1)) {
+    roundedPrice = Math.round(price * 1000) / 1000;
+  } else if ((price > 0.1 && price < 1) || (price < -0.1 && price > -1)) {
+    roundedPrice = Math.round(price * 10000) / 10000;
+  } else if ((price > 0 && price < 0.1) || (price > -0.1 && price < 0)) {
+    roundedPrice = Math.round(price * 1000000) / 1000000;
   } else {
-    return price ?? 0;
+    roundedPrice = price ?? 0;
   }
+
+  const hasCents = roundedPrice % 1 !== 0;
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: hasCents ? 2 : 0,
+    maximumFractionDigits: hasCents ? 2 : 0
+  }).format(roundedPrice);
 };

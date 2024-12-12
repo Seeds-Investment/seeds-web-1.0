@@ -1,22 +1,24 @@
 'use client';
 import Wallet from '@/assets/my-profile/earning/wallet.svg';
 import message from '@/assets/profile/message.svg';
-import GoldPlan from '@/assets/seedsplan/seedsPlanGold.svg';
-import SilverPlan from '@/assets/seedsplan/seedsPlanSilver.svg';
+import GoldPlan from '@/assets/seedsplan/gold-plan.svg';
+import PlatinumPlan from '@/assets/seedsplan/platinum-plan.svg';
+import SilverPlan from '@/assets/seedsplan/silver-plan.svg';
 import ExpInfo from '@/components/ExpInfo';
 import { Share, Verified } from '@/constants/assets/icons';
-import { getEventDate } from '@/helpers/dateFormat';
-import { getSubscriptionStatus } from '@/repository/subscription.repository';
+import { getSubscriptionPlan, getSubscriptionStatus } from '@/repository/subscription.repository';
 import { updateBlockUser } from '@/repository/user.repository';
-import LanguageContext from '@/store/language/language-context';
 import { type Experience } from '@/utils/interfaces/earning.interfaces';
-import { type StatusSubscription } from '@/utils/interfaces/subscription.interface';
+import {
+  type DataPlanI,
+  type StatusSubscription
+} from '@/utils/interfaces/subscription.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
 import SubsSeedy from 'public/assets/subscription/subs-seedy.svg';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaChevronRight } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -43,8 +45,8 @@ const Profile = ({
   const [isBlock, setIsBlock] = useState<boolean>(profileData?.status_blocked);
   const [dataSubscription, setDataSubscription] =
     useState<StatusSubscription | null>(null);
+  const [dataPlan, setDataPlan] = useState<DataPlanI>();
   const router = useRouter();
-  const languageCtx = useContext(LanguageContext);
   const _handleReferalCode = async (): Promise<boolean> => {
     return await router.push({
       pathname: `/my-profile/referralCode`,
@@ -52,11 +54,15 @@ const Profile = ({
     });
   };
 
-  const getSubscriptionPlanStatus = async (): Promise<void> => {
+  const getSubscriptionPlanData = async (): Promise<void> => {
     try {
-      const response = await getSubscriptionStatus();
-      if (response !== undefined) {
-        setDataSubscription(response);
+      const [planList, planStatus] = await Promise.all([
+        getSubscriptionPlan(),
+        getSubscriptionStatus()
+      ])
+      if (planStatus !== undefined && planList !== undefined) {
+        setDataPlan(planList);
+        setDataSubscription(planStatus);
       }
     } catch (error) {
       console.error(`${error as string}`);
@@ -80,8 +86,16 @@ const Profile = ({
   };
 
   useEffect(() => {
-    void getSubscriptionPlanStatus();
+    void getSubscriptionPlanData();
   }, []);
+
+  const getActivePlan = (): string => {
+    const activeSubscriptionId =
+      dataSubscription?.active_subscription?.subscription_type_id;
+    return (
+      dataPlan?.data.find(item => item.id === activeSubscriptionId)?.name ?? ''
+    );
+  };
 
   return (
     <>
@@ -215,29 +229,34 @@ const Profile = ({
           >
             <div className="flex items-center justify-between gap-4">
               <div className="ml-6">
-                {dataSubscription === null && (
-                  <div className="absolute bg-gradient-to-b from-[#fdb458] to-[#fccc6e]/60  w-[50px] h-[50px] rounded-full"></div>
-                )}
-                <div
-                  className={`${
-                    dataSubscription === null ? 'relative left-1' : ''
-                  }`}
-                >
-                  <Image
-                    src={
-                      dataSubscription?.active_subscription
-                        ?.subscription_type_id === 'Silver'
-                        ? SilverPlan
-                        : dataSubscription?.active_subscription
-                            ?.subscription_type_id === 'Gold'
-                        ? GoldPlan
-                        : SubsSeedy
-                    }
-                    alt={'subscription-image'}
-                    width={100}
-                    height={100}
-                    className="w-[50px] h-50px]"
-                  />
+                <div className="relative">
+                  <div className="absolute bg-gradient-to-b from-[#FF620A66] to-[#FABE2C66] w-[50px] h-[50px] rounded-full"></div>
+                  <div
+                    className={`${
+                      dataSubscription !== null ? 'relative' : 'relative left-1'
+                    }`}
+                  >
+                    <Image
+                      src={
+                        getActivePlan() === 'Silver'
+                          ? SilverPlan
+                          : getActivePlan() === 'Gold'
+                          ? GoldPlan
+                          : getActivePlan() === 'Platinum'
+                          ? PlatinumPlan
+                          : SubsSeedy
+                      }
+                      alt={'subscription-image'}
+                      width={100}
+                      height={100}
+                      className="w-[50px] h-50px]"
+                    />
+                    {dataSubscription !== null && (
+                      <Typography className="absolute bottom-2 left-1/2 transform -translate-x-1/2 translate-y-1/2 text-[8px] text-[#3AC4A0] bg-[#BAFBD0] font-poppins px-[6px] py-[3px] rounded-full w-fit font-medium">
+                        {t('seedsPlan.text8')}
+                      </Typography>
+                    )}
+                  </div>
                 </div>
               </div>
               <Typography className="text-white font-semibold font-poppins text-sm capitalize">
@@ -249,40 +268,11 @@ const Profile = ({
                   }`
                 )}
                 {`${
-                  dataSubscription !== null
-                    ? ' : ' +
-                      String(
-                        dataSubscription?.active_subscription
-                          ?.subscription_type_id
-                      ).toLocaleLowerCase()
+                  dataSubscription !== null && dataPlan !== undefined
+                    ? ' : ' + getActivePlan()
                     : ''
                 }`}
               </Typography>
-              {dataSubscription !== null && (
-                <div className="bg-[#BAFBD0] border border-[#27A590] px-2 py-1 rounded-3xl">
-                  <Typography className="text-[#27A590] text-xs font-normal font-poppins">
-                    {dataSubscription?.incoming_subscription === null
-                      ? t('ProfilePage.active')
-                      : `${t('seedsPlan.text15')} ${
-                          languageCtx.language === 'ID'
-                            ? getEventDate(
-                                new Date(
-                                  dataSubscription?.incoming_subscription
-                                    ?.started_at ?? '2024-12-31T23:59:00Z'
-                                ),
-                                'id-ID'
-                              )
-                            : getEventDate(
-                                new Date(
-                                  dataSubscription?.incoming_subscription
-                                    ?.started_at ?? '2024-12-31T23:59:00Z'
-                                ),
-                                'en-US'
-                              )
-                        }`}
-                  </Typography>
-                </div>
-              )}
             </div>
             <div className="flex justify-center items-center h-[16px]">
               <FaChevronRight className="text-white" size={16} />
@@ -403,31 +393,34 @@ const Profile = ({
         className="xl:hidden w-full mt-2 bg-gradient-radial-subs shadow-subs-complete hover:shadow-subs-complete-hover flex justify-between items-center px-4 py-1 rounded-xl cursor-pointer font-poppins duration-300 border border-white"
       >
         <div className="flex items-center justify-between gap-4">
-          {dataSubscription === null && (
-            <div className="absolute bg-gradient-to-b from-[#fdb458] to-[#fccc6e]/60 w-[60px] h-[60px] rounded-full"></div>
-          )}
-          <div
-            className={`${dataSubscription === null ? 'relative left-1' : ''}`}
-          >
-            <Image
-              src={
-                dataSubscription?.active_subscription?.subscription_type_id ===
-                'Silver'
-                  ? SilverPlan
-                  : dataSubscription?.active_subscription
-                      ?.subscription_type_id === 'Gold'
-                  ? GoldPlan
-                  : SubsSeedy
-              }
-              alt={'subscription-image'}
-              width={120}
-              height={120}
+          <div className="relative">
+            <div className="absolute bg-gradient-to-b from-[#FF620A66] to-[#FABE2C66] w-[48px] h-[48px] rounded-full"></div>
+            <div
               className={`${
-                dataSubscription === null
-                  ? 'w-[60px] h-60px]'
-                  : 'w-[50px] h-50px]'
+                dataSubscription !== null ? 'relative' : 'relative left-1'
               }`}
-            />
+            >
+              <Image
+                src={
+                  getActivePlan() === 'Silver'
+                    ? SilverPlan
+                    : getActivePlan() === 'Gold'
+                    ? GoldPlan
+                    : getActivePlan() === 'Platinum'
+                    ? PlatinumPlan
+                    : SubsSeedy
+                }
+                alt="subscription-image"
+                width={120}
+                height={120}
+                className="w-[47px] h-[47px]"
+              />
+              {dataSubscription !== null && (
+                <Typography className="absolute bottom-2 left-1/2 transform -translate-x-1/2 translate-y-1/2 text-[8px] text-[#3AC4A0] bg-[#BAFBD0] font-poppins px-[6px] py-[3px] rounded-full w-fit font-medium">
+                  {t('seedsPlan.text8')}
+                </Typography>
+              )}
+            </div>
           </div>
           <div
             className={`flex ${
@@ -445,40 +438,11 @@ const Profile = ({
                 }`
               )}
               {`${
-                dataSubscription !== null
-                  ? ' : ' +
-                    String(
-                      dataSubscription?.active_subscription
-                        ?.subscription_type_id
-                    ).toLocaleLowerCase()
+                dataSubscription !== null && dataPlan !== undefined
+                  ? ' : ' + getActivePlan()
                   : ''
               }`}
             </Typography>
-            {dataSubscription !== null && (
-              <div className="bg-[#BAFBD0] border border-[#27A590] px-1 py-1 rounded-3xl">
-                <Typography className="text-[#27A590] text-[9px] font-normal font-poppins text-center">
-                  {dataSubscription?.incoming_subscription === null
-                    ? t('ProfilePage.active')
-                    : `${t('seedsPlan.text15')} ${
-                        languageCtx.language === 'ID'
-                          ? getEventDate(
-                              new Date(
-                                dataSubscription?.incoming_subscription
-                                  ?.started_at ?? '2024-12-31T23:59:00Z'
-                              ),
-                              'id-ID'
-                            )
-                          : getEventDate(
-                              new Date(
-                                dataSubscription?.incoming_subscription
-                                  ?.started_at ?? '2024-12-31T23:59:00Z'
-                              ),
-                              'en-US'
-                            )
-                      }`}
-                </Typography>
-              </div>
-            )}
           </div>
         </div>
         <div className="flex justify-center items-center h-[18px]">

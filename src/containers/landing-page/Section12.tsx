@@ -49,7 +49,7 @@ export default function Section12(): React.ReactElement {
                 className="w-full h-auto"
               />
             </div>
-            <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-tr from-[#9A76FE] from-10% to-[#4FE6AF] to-100% md:text-4xl lg:text-5xl">
+            <span className="mt-4 text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-tr from-[#9A76FE] from-10% to-[#4FE6AF] to-100% md:text-4xl lg:text-5xl">
               {t('landingV2.section12.text2')}
             </span>
             <Link

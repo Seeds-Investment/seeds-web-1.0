@@ -14,7 +14,6 @@ import { toast } from 'react-toastify';
 const CreateMessage: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [searchedUser, setSearchedUser] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useState<{
     search: string;
@@ -44,10 +43,9 @@ const CreateMessage: React.FC = () => {
 
   useEffect(() => {
     void fetchSearchUser();
-  }, [searchParams, searchedUser]);
+  }, [searchParams.search]);
 
   const handleTypeUser = (searchName: string): void => {
-    setSearchedUser(searchName);
     setSearchParams({
       ...searchParams,
       page: 1,

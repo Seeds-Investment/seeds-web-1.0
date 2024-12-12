@@ -46,19 +46,21 @@ const DeleteChatPopUp: React.FC<Props> = ({ onClose, onClick }) => {
           onClick={() => {
             void onClick();
           }}
-          className="bg-[#DD2525] mt-5 w-full hover:bg-red-700 rounded-full hover:scale-105 transition ease-out"
+          className="bg-[#DD2525] mt-5 w-full hover:bg-red-700 rounded-full hover:scale-105 transition ease-out cursor-pointer shadow"
         >
           <Typography className="text-white text-lg font-bold text-center p-2">
             {t('DeleteAccount.confirmButton')}
           </Typography>
         </div>
 
-        <Typography
+        <div
           onClick={onClose}
-          className="text-center cursor-pointer hover:scale-105 transition ease-out text-[#7555DA] text-lg font-bold"
+          className="w-full rounded-full hover:scale-105 transition ease-out shadow-sm hover:bg-[#e9e9e9] duration-300 border-[1px] border-[#e9e9e9]"
         >
-          {t('DeleteAccount.cancelButton')}
-        </Typography>
+          <Typography className="text-center cursor-pointer hover:scale-105 transition ease-out text-[#7555DA] text-lg font-bold p-2">
+            {t('DeleteAccount.cancelButton')}
+          </Typography>
+        </div>
       </div>
     </Modal>
   );

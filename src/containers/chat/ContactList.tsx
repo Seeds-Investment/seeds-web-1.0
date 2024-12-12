@@ -9,7 +9,6 @@ interface props {
   data: Chat[];
   handleFilterUnreadChange: () => void;
   handleListClick: () => void;
-
   isLoading: boolean;
 }
 
@@ -50,11 +49,10 @@ const ContactList: React.FC<props> = ({
         </div>
       </div>
       <div
-        onClick={handleListClick}
         className={`flex flex-col max-h-[40vh] p-4 overflow-x-hidden mt-4 w-full`}
       >
         {filteredChats?.map((el: Chat) => {
-          return <ChatList data={el} key={el.id} />;
+          return <ChatList data={el} key={el.id} handleListClick={handleListClick}/>;
         })}
       </div>
     </div>

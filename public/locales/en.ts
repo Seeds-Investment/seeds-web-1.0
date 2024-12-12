@@ -2588,6 +2588,7 @@ export default {
     personalEmptyState: 'No message here!',
     startChat: 'Start a chat!',
     communityEmptyState: 'No Community Chat',
+    requestEmptyState: 'No Chat Request',
     selectUsername:
       'You didn’t made any conversation yet, please select username.',
     chatPeople: 'Chat People',
@@ -2629,7 +2630,7 @@ export default {
     emptyChat: 'No messages here yet. Start a conversation now!',
     deleteChatTitle: 'Are you sure to delete this chat?',
     deleteChatSubtitle:
-      'If you click yes, your chat history can not be retrace after deletethe chat',
+      'If you click yes, your chat history can not be retrace after delete the chat',
     search: 'Search',
     mute: 'Mute Notification',
     deleteChat: 'Delete chat',

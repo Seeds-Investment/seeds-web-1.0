@@ -79,7 +79,6 @@ import {
   optionMic,
   popUpOption,
   readChatIcon,
-  seedyChatCommunty,
   sendChat
 } from 'public/assets/chat';
 import { ArrowBackwardIconWhite, XIcon } from 'public/assets/vector';
@@ -141,7 +140,6 @@ const ChatPages: React.FC = () => {
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
   const [isShowSeeMore, setIsShowSeeMore] = useState<boolean>(false);
   const [detailType, setDetailType] = useState<string>('media');
-  // const [hasMore, setHasMore] = useState(true);
   const [filter, setFilter] = useState<GetListChatParams>(initialFilter);
   const [otherUserData, setOtherUserData] = useState<IOtherUserProfile | null>(
     null
@@ -401,8 +399,9 @@ const ChatPages: React.FC = () => {
       toast('Oops! Error when try to delete chat');
     } finally {
       setIsDeletePopupOpen(false);
-      await fetchChat();
       await router.push('/chat');
+      await fetchListChat()
+      setIsChatActive(false);
     }
   };
 
@@ -1361,16 +1360,22 @@ const ChatPages: React.FC = () => {
                       handleListClick={handleListClick}
                       isLoading={isLoading}
                     />
-                    {chatList?.length === 0 && (
-                      <div className="flex flex-col items-center pt-10 pb-16">
-                        <Image src={noMessage} alt="Seedy No Chat" />
-                        <Typography className="font-poppins text-md text-[#BDBDBD] mt-[-24px]">
-                          {t('chat.personalEmptyState')}
-                        </Typography>
-                        <Typography className="font-poppins text-md text-[#BDBDBD]">
-                          {t('chat.startChat')}
-                        </Typography>
+                    {isLoading ? (
+                      <div className="flex items-center justify-center my-8">
+                        <div className="animate-spinner w-14 h-14 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
                       </div>
+                    ) : (
+                      chatList?.length === 0 && (
+                        <div className="flex flex-col items-center pt-10 pb-16">
+                          <Image src={noMessage} alt="Seedy No Chat" />
+                          <Typography className="font-poppins text-md text-[#BDBDBD] mt-[-24px]">
+                            {t('chat.personalEmptyState')}
+                          </Typography>
+                          <Typography className="font-poppins text-md text-[#BDBDBD]">
+                            {t('chat.startChat')}
+                          </Typography>
+                        </div>
+                      )
                     )}
                   </TabPanel>
                   <TabPanel value="COMMUNITY" className="py-0 pt-2 px-0">
@@ -1380,29 +1385,22 @@ const ChatPages: React.FC = () => {
                       handleListClick={handleListClick}
                       isLoading={isLoading}
                     />
-                    {chatList?.length === 0 && (
-                      <div className="flex flex-col items-center gap-4 py-10">
-                        <Image src={seedyChatCommunty} alt="Seedy No Chat" />
-                        <Typography className="font-poppins font-semibold text-xl text-[#3AC4A0]">
-                          {t('chat.communityEmptyState')}
-                        </Typography>
-                        <Typography className="font-poppins font-medium text-[#7C7C7C]">
-                          {t('chat.selectUsername')}
-                        </Typography>
-                        <Button
-                          variant="filled"
-                          className="rounded-full w-fit capitalize py-2 px-3 border bg-[#3AC4A0]"
-                          onClick={() => {
-                            handleDropdownOptionClick('New');
-                          }}
-                        >
-                          <div className="flex gap-1">
-                            <Typography className="font-semibold text-sm text-white font-poppins">
-                              {t('chat.createCommunity')}
-                            </Typography>
-                          </div>
-                        </Button>
+                    {isLoading ? (
+                      <div className="flex items-center justify-center my-8">
+                        <div className="animate-spinner w-14 h-14 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
                       </div>
+                    ) : (
+                      chatList?.length === 0 && (
+                        <div className="flex flex-col items-center pt-10 pb-16">
+                          <Image src={noMessage} alt="Seedy No Chat" />
+                          <Typography className="font-poppins text-md text-[#BDBDBD] mt-[-24px]">
+                            {t('chat.personalEmptyState')}
+                          </Typography>
+                          <Typography className="font-poppins text-md text-[#BDBDBD]">
+                            {t('chat.startChat')}
+                          </Typography>
+                        </div>
+                      )
                     )}
                   </TabPanel>
                   <TabPanel value="REQUEST" className="py-0 pt-2 px-0">
@@ -1412,6 +1410,20 @@ const ChatPages: React.FC = () => {
                       handleListClick={handleListClick}
                       isLoading={isLoading}
                     />
+                    {isLoading ? (
+                      <div className="flex items-center justify-center my-8">
+                        <div className="animate-spinner w-14 h-14 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+                      </div>
+                    ) : (
+                      chatList?.length === 0 && (
+                        <div className="flex flex-col items-center pt-10 pb-16">
+                          <Image src={noMessage} alt="Seedy No Chat" />
+                          <Typography className="font-poppins text-md text-[#BDBDBD] mt-[-24px]">
+                            {t('chat.requestEmptyState')}
+                          </Typography>
+                        </div>
+                      )
+                    )}
                   </TabPanel>
                 </TabsBody>
               </Tabs>
@@ -1493,6 +1505,7 @@ const ChatPages: React.FC = () => {
                           className="text-white cursor-pointer hover:scale-110 duration-150"
                           onClick={async () => {
                             await router.push('/chat');
+                            await fetchListChat();
                             setIsChatActive(false);
                           }}
                         />

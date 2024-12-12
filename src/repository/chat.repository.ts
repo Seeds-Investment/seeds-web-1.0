@@ -212,8 +212,6 @@ export const leaveGroupChat = async (
     toast('Access token not found');
   }
 
-  console.log(accessToken);
-
   const path = `${Endpoints.chat.leaveGroupChat.replace(':id', id)}?user_id=${
     params.user_id
   }`;
@@ -225,7 +223,7 @@ export const leaveGroupChat = async (
   });
 };
 
-export const deleteGroup = async (id: string): Promise<any> => {
+export const deleteGroup = async (id: string): Promise<void> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {
@@ -420,7 +418,7 @@ export const rejectRequest = async (data: string): Promise<void> => {
 export const updateGroup = async (
   id: string,
   data: UpdateGroupForm
-): Promise<any> => {
+): Promise<void> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {
@@ -439,7 +437,7 @@ export const updateGroup = async (
 export const addNewMember = async (
   id: string,
   users_id: string[]
-): Promise<any> => {
+): Promise<void> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {

@@ -2518,6 +2518,7 @@ export default {
     chat: 'Chat',
     personalEmptyState: 'Tidak ada percakapan',
     communityEmptyState: 'Tidak ada percakapan komunitas',
+    requestEmptyState: 'Tidak ada permintaan percakapan',
     selectUsername: 'Kamu belum membuat percakapan. Yuk, pilih nama pengguna.',
     chatPeople: 'Chat People',
     createCommunity: 'Create Community',

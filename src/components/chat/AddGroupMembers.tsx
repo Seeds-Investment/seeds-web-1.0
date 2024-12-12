@@ -63,7 +63,9 @@ const AddGroupMembers: React.FC<AddGroupMembersProps> = ({
   };
 
   useEffect(() => {
-    void fetchSearchUser();
+    if (searchParams.search !== '') {
+      void fetchSearchUser();
+    }
   }, [searchParams]);
 
   useEffect(() => {

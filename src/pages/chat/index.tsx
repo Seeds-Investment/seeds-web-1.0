@@ -772,24 +772,24 @@ const ChatPages: React.FC = () => {
       updated_at: ''
     });
 
-    useEffect(() => {
-      const fetchFileDetails = async (): Promise<void> => {
-        if (
-          fileMetadataCache[message] !== null &&
-          fileMetadataCache[message] !== undefined
-        ) {
-          setFileDetails(fileMetadataCache[message]);
-          return;
-        }
-        try {
-          const details = await processFileUrl(message);
-          dispatch(setFileMetadata({ url: message, metadata: details }));
-          setFileDetails(details);
-        } catch (error: any) {
-          toast.error('Error processing document:', error);
-        }
-      };
+    const fetchFileDetails = async (): Promise<void> => {
+      if (
+        fileMetadataCache[message] !== null &&
+        fileMetadataCache[message] !== undefined
+      ) {
+        setFileDetails(fileMetadataCache[message]);
+        return;
+      }
+      try {
+        const details = await processFileUrl(message);
+        dispatch(setFileMetadata({ url: message, metadata: details }));
+        setFileDetails(details);
+      } catch (error: any) {
+        toast.error('Error processing document:', error);
+      }
+    };
 
+    useEffect(() => {
       void fetchFileDetails();
     }, [message]);
 
@@ -814,7 +814,7 @@ const ChatPages: React.FC = () => {
         <div className="flex flex-col">
           <Typography className="font-normal text-sm font-poppins text-black text-nowrap">
             {fileDetails.name.length > 15
-              ? `${fileDetails.name.slice(0, 8)}...`
+              ? `${fileDetails.name.slice(0, 8) as string}...`
               : fileDetails.name}
           </Typography>
           <Typography className="font-normal text-xs font-poppins">
@@ -853,29 +853,29 @@ const ChatPages: React.FC = () => {
     }
   }, [roomId, isGroupChat]);
 
+  const fetchGroupChat = async (): Promise<void> => {
+    try {
+      if (messageList.length === 0) {
+        const message = await getChat({ group_id: roomId as string, limit });
+        setMessageList(message.data);
+      }
+      const getListChatGroup = await getListChat({
+        page: 1,
+        limit: 10,
+        type: 'COMMUNITY',
+        search: '',
+        unread: false
+      });
+      setChatList(getListChatGroup.data);
+    } catch (error: any) {
+      toast.error('Error fetching chat data:', error);
+    }
+  };
+
   useEffect(() => {
     if (isGroupChat === undefined) return;
     setActiveTab('COMMUNITY');
     setIsChatActive(true);
-
-    const fetchGroupChat = async (): Promise<void> => {
-      try {
-        if (messageList.length === 0) {
-          const message = await getChat({ group_id: roomId as string, limit });
-          setMessageList(message.data);
-        }
-        const getListChatGroup = await getListChat({
-          page: 1,
-          limit: 10,
-          type: 'COMMUNITY',
-          search: '',
-          unread: false
-        });
-        setChatList(getListChatGroup.data);
-      } catch (error: any) {
-        toast.error('Error fetching chat data:', error);
-      }
-    };
 
     const timeoutId = setTimeout(() => {
       void fetchGroupChat();

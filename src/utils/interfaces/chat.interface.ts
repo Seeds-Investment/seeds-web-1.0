@@ -26,9 +26,28 @@ export interface IChatBubble {
   created_at: string;
   accept_at: string;
   read_at: string;
-  reference: any;
+  reference: Reference | null;
   media_urls: string[];
   owner: Owner;
+}
+
+interface Reference {
+  id?: string;
+  user_id?: string;
+  circle_id?: string;
+  privacy?: string;
+  url?: string;
+  type?: string;
+  created_at?: string;
+  updated_at?: string;
+  expired_at?: string;
+  deleted_at?: string;
+  status_read?: boolean;
+  overlay_link?: string;
+  reference_link?: string;
+  data?: string;
+  slug?: string;
+  status_like?: boolean;
 }
 
 export interface Owner {

@@ -18,7 +18,8 @@ import {
   type MutePersonalChatParams,
   type PersonalChatMediaResponse,
   type PersonalChatNotesResponse,
-  type SendMessageParams
+  type SendMessageParams,
+  type UpdateGroupForm
 } from '@/utils/interfaces/chat.interface';
 import { toast } from 'react-toastify';
 
@@ -201,14 +202,35 @@ export const deleteGroupChat = async (id: string): Promise<void> => {
   });
 };
 
-export const leaveGroupChat = async (data: LeaveGroupParams): Promise<void> => {
+export const leaveGroupChat = async (
+  id: string,
+  params: LeaveGroupParams
+): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {
     toast('Access token not found');
   }
-  const path = Endpoints.chat.leaveGroupChat.replace(':id', data?.id as string);
-  await baseUrl.put(path, data, {
+
+  const path = `${Endpoints.chat.leaveGroupChat.replace(':id', id)}?user_id=${
+    params.user_id
+  }`;
+  return await baseUrl.put(path, params, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const deleteGroup = async (id: string): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = `${Endpoints.chat.groupDetail}/${id}`;
+  await baseUrl.delete(path, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`
@@ -315,11 +337,10 @@ export const getPersonalChatCommonGroups = async ({
   });
 };
 
-export const getGroupMember = async ({
-  id,
-  page = 1,
-  limit = 3
-}: GroupMemberParams): Promise<GroupMemberResponse> => {
+export const getGroupMember = async (
+  id: string,
+  params?: GroupMemberParams
+): Promise<GroupMemberResponse> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {
@@ -327,7 +348,7 @@ export const getGroupMember = async ({
   }
   const path = Endpoints.chat.groupMember.replace(':id', id);
   return await baseUrl.get(path, {
-    params: { page, limit, id },
+    params,
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`
@@ -392,4 +413,63 @@ export const rejectRequest = async (data: string): Promise<void> => {
       }
     }
   );
+};
+
+export const updateGroup = async (
+  id: string,
+  data: UpdateGroupForm
+): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+
+  const path = `${Endpoints.chat.groupDetail}/${id}`;
+  await baseUrl.put(path, data, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const addNewMember = async (
+  id: string,
+  users_id: string[]
+): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+
+  const path = `${Endpoints.chat.groupDetail}/${id}/add`;
+  await baseUrl.post(
+    path,
+    { users_id },
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    }
+  );
+};
+
+export const getStorageMetadata = async (id: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+    return;
+  }
+
+  const path = `v1/storage/metadata?url=${id}`;
+  return await baseUrl.get(path, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
 };

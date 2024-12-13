@@ -1,8 +1,12 @@
 import BgSeeds from '@/assets/seedsplan/BgSeeds.svg';
 import SeedsTrio from '@/assets/seedsplan/SeedsTrio.svg';
+import GoldPlan from '@/assets/seedsplan/gold-plan.svg';
+import PlatinumPlan from '@/assets/seedsplan/platinum-plan.svg';
+import SilverPlan from '@/assets/seedsplan/silver-plan.svg';
 import HowToUseSeedsplan from '@/components/seedsplan/howToUse';
 import TncSeedsplan from '@/components/seedsplan/tnc';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { getEventDate } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
@@ -10,6 +14,7 @@ import {
   getSubscriptionStatus,
   getSubscriptionVoucher
 } from '@/repository/subscription.repository';
+import LanguageContext from '@/store/language/language-context';
 import i18n from '@/utils/common/i18n';
 import {
   type DataPlanI,
@@ -17,21 +22,23 @@ import {
   type StatusSubscription
 } from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
-import { Typography } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaChevronRight } from 'react-icons/fa';
 import { FaClockRotateLeft } from 'react-icons/fa6';
 import { GoArrowLeft, GoInfinity } from 'react-icons/go';
 import { HiUserGroup } from 'react-icons/hi2';
 import { IoGameController } from 'react-icons/io5';
+import { PiSealCheck } from 'react-icons/pi';
 import { toast } from 'react-toastify';
 
 const SeedsPlan: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation();
+  const languageCtx = useContext(LanguageContext);
   const [dataPlan, setDataPlan] = useState<DataPlanI>();
   const [subscriptionStatus, setSubscriptionStatus] =
     useState<StatusSubscription | null>(null);
@@ -121,6 +128,35 @@ const SeedsPlan: React.FC = () => {
     }
   }, [filterPlan?.id]);
 
+  const getActivePlan = (): string => {
+    const activeSubscriptionId =
+      subscriptionStatus?.active_subscription?.subscription_type_id;
+    return (
+      dataPlan?.data.find(item => item.id === activeSubscriptionId)?.name ?? ''
+    );
+  };
+
+  const calculateDuration = (start: string, end: string): string => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    const diffInDays =
+      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
+
+    const months = Math.floor(diffInDays / 30);
+    const years = Math.floor(months / 12);
+
+    if (years === 1 && months % 12 === 0) {
+      return `1 ${t('seedsPlan.year')}`;
+    } else if (months === 1) {
+      return `1 ${t('seedsPlan.month')}`;
+    } else if (months > 1) {
+      return `${months} ${t('seedsPlan.months')}`;
+    }
+
+    return '';
+  };
+
   return (
     <>
       <PageGradient defaultGradient className="w-full">
@@ -168,8 +204,118 @@ const SeedsPlan: React.FC = () => {
         ) : (
           <div>
             {isActiveSubscription ? (
-              <div className="w-full h-full bg-white rounded-[18px] p-7">
-                <div></div>
+              <div className="w-full h-full bg-white rounded-[18px] md:p-7 p-3 mt-5 flex flex-col gap-4">
+                <div className="border border-[#FABE2C] rounded-xl flex justify-between md:p-5 p-3">
+                  <div className="flex flex-row md:gap-6 gap-3 items-center">
+                    <div className="flex items-center justify-center bg-gradient-to-b from-[#FF620A66] to-[#F9B54C00] md:w-[69px] md:h-[69px] w-[51px] h-[51px] rounded-full shadow-[inset_0px_5px_5px_#F1B85F,0px_3px_5px_rgba(249,181,76,0.2),0px_0px_15px_8px_rgba(255,98,10,0.2)]">
+                      <Image
+                        src={
+                          getActivePlan() === 'Silver'
+                            ? SilverPlan
+                            : getActivePlan() === 'Gold'
+                            ? GoldPlan
+                            : getActivePlan() === 'Platinum' && PlatinumPlan
+                        }
+                        alt={'subscription-image'}
+                        width={100}
+                        height={100}
+                        className="md:w-[65px] md:h-[65px] w-[48px] h-[48px] mr-1 mt-1"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <Typography className="font-poppins font-semibold md:text-base text-sm text-[#FABE2C]">
+                        {t('ProfilePage.yourPackage')} : {getActivePlan()}/
+                        {calculateDuration(
+                          subscriptionStatus?.active_subscription?.started_at ??
+                            '',
+                          subscriptionStatus?.active_subscription?.ended_at ??
+                            ''
+                        )}
+                      </Typography>
+                      <Typography className="font-poppins font-normal md:text-xs text-[9px] text-[#BDBDBD]">{`${t(
+                        'seedsPlan.text11'
+                      )} ${
+                        languageCtx.language === 'ID'
+                          ? getEventDate(
+                              new Date(
+                                subscriptionStatus?.active_subscription
+                                  ?.ended_at ?? '2024-12-31T23:59:00Z'
+                              ),
+                              'id-ID'
+                            )
+                          : getEventDate(
+                              new Date(
+                                subscriptionStatus?.active_subscription
+                                  ?.ended_at ?? '2024-12-31T23:59:00Z'
+                              ),
+                              'en-US'
+                            )
+                      }`}</Typography>
+                    </div>
+                  </div>
+                  <div>
+                    <PiSealCheck
+                      color="#3AC4A0"
+                      size={30}
+                      className="bg-[#DCFCE4] rounded-full size-[24px] md:size-[30px]"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <Typography className="font-poppins font-semibold text-xl text-[#262626]">
+                    {t('seedsPlan.benefit')}
+                  </Typography>
+                  <div>
+                    <ul>
+                      <li>
+                        Free Quiz for tickets priced at Rp10,000 or below Free
+                      </li>
+                      <li>
+                        Play Arena for tickets priced at Rp10,000 or below Free
+                      </li>
+                      <li>
+                        Premium Circle for tickets priced at Rp10,000 or below
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <div
+                    onClick={() => {
+                      setShowTnc(!showTnc);
+                    }}
+                    className="cursor-pointer flex items-center justify-between border-b border-[#E9E9E9] border-dotted pb-4"
+                  >
+                    <Typography className="font-poppins text-base font-normal">
+                      {t('seedsPlan.button2')}
+                    </Typography>
+                    <FaChevronRight color="#DADADA" size={20} />
+                  </div>
+                  <div className="flex items-center justify-between border-b border-[#E9E9E9] border-dotted pb-4">
+                    <Typography className="font-poppins text-base font-normal">
+                      {t('seedsPlan.button7')}
+                    </Typography>
+                    <FaChevronRight color="#DADADA" size={20} />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <Typography className="font-poppins font-semibold text-base text-[#262626] text-justify">
+                    {t('seedsPlan.text17')}
+                  </Typography>
+                  <Typography className="font-poppins font-medium italic text-sm text-justify text-[#B798FF]">
+                    {t('seedsPlan.text18')}
+                  </Typography>
+                </div>
+                <div className="flex justify-center items-center">
+                  <Button
+                    onClick={async () => {
+                      await router.push('/seedsplan/change-plan');
+                    }}
+                    className="font-poppins text-sm font-semibold capitalize bg-[#3AC4A0] border border-[#3AC4A0] text-white rounded-full md:w-[266px] w-full h-[42px] flex items-center justify-center"
+                  >
+                    {t('seedsPlan.button6')}
+                  </Button>
+                </div>
               </div>
             ) : (
               <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-0 md:mt-4 font-poppins">

@@ -2705,7 +2705,8 @@ export default {
     button3: 'Langganan Sekarang!',
     button4: 'Saya Mengerti',
     button5: 'Berhenti Langganan',
-    button6: 'Ubah Paket Berlangganan!',
+    button6: 'Ubah My SeedPlan',
+    button7: 'Pertanyaan yang Sering Diajukan',
     text1: 'Terbaik',
     text2: 'Biaya Langganan',
     text3: 'Diskon',
@@ -2722,9 +2723,14 @@ export default {
     text14: 'Gunakan Voucher!',
     text15: 'Paket baru Anda akan dimulai pada ',
     text16: 'Kedaluwarsa pada ',
+    text17:
+      'Ingin mengubah atau melanjutkan SeedsPlan Kamu untuk aktivitas berikutnya? Bayar sekarang dan kamu tidak perlu kuatir lagi nanti!',
+    text18:
+      'Paket berikutnya akan aktif secara otomatis setelah paket saat ini berakhir',
     month: 'Bulan',
     months: 'Bulan',
     year: 'Tahun',
+    benefit: 'Keuntungan',
     WalletForm: {
       title: 'Masukkan nomor {{wallet}}',
       phoneLabel: 'Nomor {{wallet}}',

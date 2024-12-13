@@ -2772,7 +2772,8 @@ export default {
     button3: 'Subscribe Now!',
     button4: 'I Understand',
     button5: 'Unsubscribe',
-    button6: 'Change Subscription Plan!',
+    button6: 'Change My SeedsPlan',
+    button7: 'Frequently Asked Question',
     text1: 'Best',
     text2: 'Subscription Fee',
     text3: 'Discount',
@@ -2789,9 +2790,14 @@ export default {
     text14: 'Use it Now!',
     text15: 'Your new plan will begin at ',
     text16: 'Expired on ',
+    text17:
+      'Want to change or continue your SeedsPlan for the next activation? Pay now, and you won’t have to worry about it later!',
+    text18:
+      '*Your next plan will activate automatically after your current plan expires.',
     month: 'Month',
     months: 'Months',
     year: 'Year',
+    benefit: 'Benefit',
     WalletForm: {
       title: 'Enter {{wallet}} Number',
       phoneLabel: '{{wallet}} Number',

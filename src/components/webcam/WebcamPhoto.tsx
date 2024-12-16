@@ -118,7 +118,7 @@ const WebcamPhoto: React.FC<WebcamPhotoProps> = ({
   const videoConstraints: MediaTrackConstraintSet = {
     facingMode,
     width: type === 'landscape' ? 940 : 440,
-    height: type === 'landscape' ? 440 : 650
+    height: type === 'landscape' ? 440 : 940
   };
 
   const toggleFacingMode = useCallback(() => {

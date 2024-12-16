@@ -811,7 +811,7 @@ const ChatPages: React.FC = () => {
         className="w-full flex items-center gap-2 cursor-pointer no-underline"
       >
         {fileTypeIcons[fileDetails.extension] ?? <BsFileEarmark size={24} />}
-        <div className="flex flex-col">
+        <div className="flex flex-col text-nowrap">
           <Typography className="font-normal text-sm font-poppins text-black text-nowrap">
             {fileDetails.name.length > 15
               ? `${fileDetails.name.slice(0, 8)}...`
@@ -2045,6 +2045,45 @@ const ChatPages: React.FC = () => {
                                           )}
                                         </Typography>
                                       </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            } else if (
+                              message?.media_urls?.length > 0 &&
+                              allowedExtensions.some(ext =>
+                                message?.media_urls[0]?.includes(ext)
+                              )
+                            ) {
+                              return (
+                                <div
+                                  className="flex ml-4 gap-2"
+                                  key={message.id}
+                                >
+                                  <Image
+                                    width={32}
+                                    height={32}
+                                    src={
+                                      message?.owner?.avatar ??
+                                      otherUserData?.avatar
+                                    }
+                                    alt="avatar"
+                                    className="rounded-full w-8 h-8"
+                                  />
+                                  <div
+                                    key={message.id}
+                                    className="flex items-center p-4 self-start max-w-60% rounded-lg mx-4 gap-2 bg-[#DCFCE4]"
+                                  >
+                                    <RenderDocumentInfo
+                                      message={message?.media_urls[0]}
+                                    />
+                                    <div className="w-full flex justify-end items-center gap-2">
+                                      <Typography className="text-xs text-[#7C7C7C]">
+                                        {getChatDate(
+                                          message?.created_at ??
+                                            '0001-01-01T00:00:00Z'
+                                        )}
+                                      </Typography>
                                     </div>
                                   </div>
                                 </div>

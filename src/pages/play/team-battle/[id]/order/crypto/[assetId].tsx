@@ -158,7 +158,7 @@ const BuyPage: React.FC = () => {
             (portfolio?.total_lot *
               (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                 ? lastPrice[prefCurrency as PreferredCurrencyI]
-                : lastPriceAsset ?? 0) *
+                : (lastPriceAsset as number)) *
               sellPercent) /
             100
           }`
@@ -174,7 +174,7 @@ const BuyPage: React.FC = () => {
             100 /
             (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
               ? lastPrice[prefCurrency as PreferredCurrencyI]
-              : lastPriceAsset ?? 0)
+              : (lastPriceAsset as number))
           ).toFixed(1)
         );
       }
@@ -188,7 +188,7 @@ const BuyPage: React.FC = () => {
         (portfolio?.total_lot *
           (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
             ? lastPrice[prefCurrency as PreferredCurrencyI]
-            : lastPriceAsset ?? 0) *
+            : (lastPriceAsset as number)) *
           sellPercent) /
         100
       }`
@@ -283,7 +283,7 @@ const BuyPage: React.FC = () => {
     if (assetAmount.length === 0 && amount.length === 0) {
       setIsDisable(true);
     } else if (
-      parseFloat(amount) > ballance.balance &&
+      parseFloat(amount) > ballance?.balance &&
       router.query?.transaction === 'buy'
     ) {
       setIsDisable(true);
@@ -295,7 +295,7 @@ const BuyPage: React.FC = () => {
     } else {
       setIsDisable(false);
     }
-  }, [assetAmount, amount, ballance.balance]);
+  }, [assetAmount, amount, ballance?.balance]);
 
   const fetchDetailAsset = async (currency: string): Promise<void> => {
     try {
@@ -354,7 +354,7 @@ const BuyPage: React.FC = () => {
                     parseInt(value) /
                     (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                       ? lastPrice[prefCurrency as PreferredCurrencyI]
-                      : lastPriceAsset ?? 0)
+                      : (lastPriceAsset as number))
                   }`
                 );
               } else {
@@ -363,7 +363,7 @@ const BuyPage: React.FC = () => {
                     parseFloat(value) *
                     (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                       ? lastPrice[prefCurrency as PreferredCurrencyI]
-                      : lastPriceAsset ?? 0)
+                      : (lastPriceAsset as number))
                   }`
                 );
               }
@@ -381,7 +381,7 @@ const BuyPage: React.FC = () => {
                       parseInt(value) /
                       (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                         ? lastPrice[prefCurrency as PreferredCurrencyI]
-                        : lastPriceAsset ?? 0)
+                        : (lastPriceAsset as number))
                     }`
                   );
                 } else {
@@ -390,7 +390,7 @@ const BuyPage: React.FC = () => {
                       parseFloat(value) *
                       (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                         ? lastPrice[prefCurrency as PreferredCurrencyI]
-                        : lastPriceAsset ?? 0)
+                        : (lastPriceAsset as number))
                     }`
                   );
                 }
@@ -531,7 +531,7 @@ const BuyPage: React.FC = () => {
               socketPrice:
                 lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                   ? lastPrice[prefCurrency as PreferredCurrencyI]
-                  : lastPriceAsset ?? 0
+                  : (lastPriceAsset as number)
             }}
             loading={isLoadingAsset}
           />
@@ -718,7 +718,7 @@ const BuyPage: React.FC = () => {
                 value={formatAssetPrice(
                   (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                     ? lastPrice[prefCurrency as PreferredCurrencyI]
-                    : lastPriceAsset ?? 0) * +lotSell
+                    : (lastPriceAsset as number)) * +lotSell
                 )}
                 readOnly
                 className="w-full border rounded-xl py-3 px-4 border-[#7C7C7C] text-base text-[#262626] focus:border-seeds-button-green font-poppins outline-none"
@@ -955,7 +955,7 @@ const BuyPage: React.FC = () => {
                                       ? lastPrice[
                                           prefCurrency as PreferredCurrencyI
                                         ]
-                                      : lastPriceAsset ?? 0)
+                                      : (lastPriceAsset as number))
                                 )
                               : 'No data available'}
                           </Typography>

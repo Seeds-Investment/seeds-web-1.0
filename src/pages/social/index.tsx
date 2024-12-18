@@ -145,6 +145,10 @@ const Social: React.FC = () => {
   };
 
   const handleChangeTab = (value: string): void => {
+    if (value === activeTab) {
+      return;
+    }
+
     setActiveTab(value);
     setDataPost([]);
     setHasMore(true);
@@ -422,25 +426,6 @@ const Social: React.FC = () => {
     }
   }, [filter.page, filter.sort_by, golId, filter.type]);
 
-  // const fetchDailyQuizStatus = async () => {
-  //   try {
-  //     const response = await getStatusDailyQuiz();
-  //     if (response.is_played === true) {
-  //       setDailyQuestionActive(false);
-  //     } else if (response.data !== undefined) {
-  //       setDailyQuestionActive(true);
-  //     }
-  //   } catch (error) {
-  //     if (axios.isAxiosError(error)) {
-  //       if (error.response?.data.message === "you haven't play today") {
-  //         setDailyQuestionActive(true);
-  //       }
-  //     } else {
-  //       toast.error('something when wrong');
-  //     }
-  //   }
-  // };
-
   const fetchDailyQuiz = async (): Promise<void> => {
     try {
       const response = await getDailyQuiz();
@@ -491,7 +476,7 @@ const Social: React.FC = () => {
             <PlusIcon
               width={50}
               height={50}
-              className="text-white"
+              className="text-white cursor-pointer"
               onClick={() => {
                 setIsOpenModalAdd(true);
               }}

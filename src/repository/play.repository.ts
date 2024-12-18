@@ -320,7 +320,8 @@ export const getPlayPortfolio = async (
 
 export const getPlayAssets = async (
   id: string,
-  assetId: string
+  assetId: string,
+  params?: { currency: string }
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -329,6 +330,7 @@ export const getPlayAssets = async (
       return await Promise.resolve('Access token not found');
     }
     return await playService(`/${id}/assets/${assetId}`, {
+      params,
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`

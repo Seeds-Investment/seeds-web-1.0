@@ -32,37 +32,6 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
   );
   const [open] = useState(false);
 
-  // const stripHtmlTags = (html: any): string => {
-  //   const tempElement = document.createElement('div');
-  //   tempElement.innerHTML = html;
-  //   return (tempElement.textContent ?? tempElement.innerText ?? '').toString();
-  // };
-
-  // const cleanedContent = stripHtmlTags(articleDetail?.content ?? '');
-
-  // function LimitString({
-  //   text,
-  //   limit
-  // }: {
-  //   text: string;
-  //   limit: number;
-  // }): JSX.Element {
-  //   const [showFullText] = useState(false);
-
-  //   const truncatedText = showFullText ? text : text.slice(0, limit);
-
-  //   return (
-  //     <div>
-  //       <p className="text-base font-normal text-[#7C7C7C] my-2">
-  //         {truncatedText}...
-  //       </p>
-  //       {!showFullText && text.length > limit && (
-  //         <button className="text-[#7555DA] text-base font-normal underline"></button>
-  //       )}
-  //     </div>
-  //   );
-  // }
-
   useEffect(() => {
     if (typeof articleId !== 'string') {
       const fetchArticleDetail = (): void => {
@@ -128,12 +97,6 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
       <div className="bg-[#FFF]  flex lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
         <div className="px-4 py-3 w-3/4">
           <div className="flex flex-row justify-between">
-            {/* <p className="text-xs font-normal text-[#8A8A8A]">
-              {formatDateToIndonesian(articleDetail?.publicationDate ?? '')}
-            </p>
-            <p className="text-xs font-normal text-[#7C7C7C]">
-              {formatDateToIndonesianAgo(articleDetail?.publicationDate ?? '')}
-            </p> */}
           </div>
           <Link
             href={`/homepage/news/${articleDetail?.id ?? 0}`}
@@ -141,12 +104,6 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
           >
             {articleDetail?.title}
           </Link>
-          {/* <Link
-            className="text-sm"
-            href={`/homepage/news/${articleDetail?.id ?? 0}`}
-          >
-            <LimitString text={cleanedContent} limit={100} />
-          </Link> */}
           <div className="flex flex-row justify-between bottom-2 w-full gap-4 right-5 absolute">
             <div className="flex flex-row ms-7 justify-between">
               <p className="text-xs font-normal text-[#8A8A8A]">

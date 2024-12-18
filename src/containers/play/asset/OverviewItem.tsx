@@ -1,4 +1,6 @@
+import { formatAssetPrice } from '@/helpers/currency';
 import { getAssetOverview } from '@/repository/market.repository';
+import { useAppSelector } from '@/store/redux/store';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -20,11 +22,13 @@ const OverviewItem: React.FC = () => {
   const { assetId } = router.query;
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<OverviewData>();
-
+  const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
   const fetchOverview = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const response = await getAssetOverview(assetId as string);
+      const response = await getAssetOverview(assetId as string, {
+        currency: preferredCurrency
+      });
       setData(response?.data);
     } catch (error: any) {
       toast(error, { type: 'error' });
@@ -44,12 +48,16 @@ const OverviewItem: React.FC = () => {
     <div className="py-4 flex flex-col gap-2 rounded-md p-4">
       <div className="flex w-full justify-between">
         <p className="font-bold text-black">Previous Close</p>
-        <p className="font-bold text-[#3AC4A0]">{data?.previous_close_price}</p>
+        <p className="font-bold text-[#3AC4A0]">
+          {formatAssetPrice(data?.previous_close_price ?? 0)}
+        </p>
       </div>
       <hr className="w-fukk border border-b border-[#BDBDBD]" />
       <div className="flex w-full justify-between">
         <p className="font-bold text-black">Open</p>
-        <p className="font-bold text-[#D89918]">{data?.open_price}</p>
+        <p className="font-bold text-[#D89918]">
+          {formatAssetPrice(data?.open_price ?? 0)}
+        </p>
       </div>
       <hr className="w-fukk border border-b border-[#BDBDBD]" />
       <div className="flex w-full justify-between">
@@ -59,7 +67,9 @@ const OverviewItem: React.FC = () => {
       <hr className="w-fukk border border-b border-[#BDBDBD]" />
       <div className="flex w-full justify-between">
         <p className="font-bold text-black">Average Price</p>
-        <p className="font-bold text-[#3AC4A0]">{data?.average_price}</p>
+        <p className="font-bold text-[#3AC4A0]">
+          {formatAssetPrice(data?.average_price ?? 0)}
+        </p>
       </div>
       <hr className="w-fukk border border-b border-[#BDBDBD]" />
       <div className="flex w-full justify-between">

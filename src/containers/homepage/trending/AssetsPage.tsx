@@ -7,14 +7,14 @@ import AssetTrendingCard from './AssetsTrendingCard';
 import AssetTrendingCardSkeleton from './skeleton/AssetsCardSkeleton';
 
 export interface AssetsInterface {
-  id: string;
-  quote: string;
-  currency: string;
-  image: string;
-  name: string;
-  price: number;
-  regularPercentage: number;
-  assetType: string;
+  asset_id: string;
+  asset_name: string;
+  asset_icon: string;
+  asset_ticker: string;
+  asset_exchange: string;
+  asset_type: string;
+  asset_price: number;
+  regular_percentage: number;
 }
 
 export default function AssetsPage({ userInfo }: any): React.ReactElement {
@@ -27,12 +27,10 @@ export default function AssetsPage({ userInfo }: any): React.ReactElement {
       const response = await getTrendingAssets({
         page: 1,
         limit: 3,
-        search: '',
-        sortBy: '',
-        currency: (userInfo?.preferredCurrency as string) ?? 'IDR'
+        sortBy: 'most_traded'
       });
       if (response.status === 200) {
-        setAssets(response.result);
+        setAssets(response.data.data);
       } else {
         console.error('Failed to fetch assets:', response);
       }

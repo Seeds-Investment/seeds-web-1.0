@@ -6,6 +6,7 @@ import IconNoData from '@/assets/play/tournament/noData.svg';
 import TournamentPagination from '@/components/TournmentPagination';
 import ModalTutorialTournament from '@/components/popup/ModalTutorialTournament';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import {
   getAllPlayCenter,
@@ -419,7 +420,13 @@ const Player = (): React.ReactElement => {
           <div className="w-full my-5 h-auto cursor-pointer">
             <Slider {...sliderSettings}>
               {bannerAsset?.map(asset => (
-                <div key={asset.id} className="w-full relative">
+                <div
+                  key={asset.id}
+                  className="w-full relative"
+                  onClick={() => {
+                    TrackerEvent({ event: 'SW_play_banner' });
+                  }}
+                >
                   <Image
                     className="object-cover w-full"
                     src={asset.banner}

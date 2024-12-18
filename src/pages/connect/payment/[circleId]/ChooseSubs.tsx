@@ -1,11 +1,11 @@
 import PromoCode from '@/components/promocode/promoCode';
 import Button from '@/components/ui/button/Button';
+import { standartCurrency } from '@/helpers/currency';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type RootState } from '@/store/premium-circle';
 import { setMonth, setPrice } from '@/store/premium-circle/premiumCircleSlice';
 import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
-import { formatCurrency } from '@/utils/common/currency';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 
 import { Typography } from '@material-tailwind/react';
@@ -145,7 +145,7 @@ const ChooseSubs: React.FC<props> = ({ dataPost, setPages }) => {
               <div className="flex flex-col pb-2">
                 <h1 className="pt-4 text-center font-poppins text-base font-semibold">
                   {userInfo?.preferredCurrency}{' '}
-                  {formatCurrency(dataPost?.premium_fee * numberMonth())}
+                  {standartCurrency((dataPost?.premium_fee ?? 0) * numberMonth())}
                 </h1>
                 <h1 className="pt-2 text-center font-poppins text-base font-light">
                   Get full access according to your subscription time

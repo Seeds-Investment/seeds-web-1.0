@@ -368,6 +368,7 @@ export interface AssetThumbnail {
   lastPrice: LastPrice;
 }
 
+<<<<<<< HEAD
 export interface Banners {
   id: string;
   name: string;
@@ -407,3 +408,31 @@ export interface TeamBattle {
   is_joined: boolean;
   play_center_type: string;
 }
+=======
+export interface ArticleDetail {
+  id: number;
+  title: string;
+  author: string;
+  author_id: string;
+  link: string;
+  videoUrl: string;
+  imageUrl: string;
+  content: string;
+  source: string;
+  language: string;
+  category: string;
+  publicationDate: string;
+  peoples: any;
+  circles: any;
+  assets: any;
+  status: string;
+  total_likes: number;
+  total_comments: number;
+  total_shares: number;
+  total_views: number;
+  is_liked: boolean;
+  meta_title: string;
+  meta_description: string;
+  updated_at: string;
+}
+>>>>>>> 8c254c6cebfb852f511d16f49489b440a9f05244

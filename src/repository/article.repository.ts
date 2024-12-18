@@ -47,7 +47,7 @@ export const getArticleHome = async (params: {
     return error.response;
   }
 };
-export const getArticleById = async (id: string): Promise<any> => {
+export const getArticleById = async (id: number): Promise<any> => {
   try {
     const response = await articleService.get(`/news/v1/${id}`);
     return { ...response, status: 200 };

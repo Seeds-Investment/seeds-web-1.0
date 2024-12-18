@@ -60,11 +60,9 @@ import type { IOtherUserProfile } from '@/utils/interfaces/user.interface';
 import {
   Avatar,
   Button,
-  Tab,
   TabPanel,
   Tabs,
   TabsBody,
-  TabsHeader,
   Typography
 } from '@material-tailwind/react';
 import moment from 'moment';
@@ -86,7 +84,6 @@ import {
   type ChangeEvent,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState
 } from 'react';
@@ -113,13 +110,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import defaultAvatar from '../../../public/assets/chat/default-avatar.svg';
-
-interface TabTypes {
-  id: number;
-  name: string;
-  value: 'PERSONAL' | 'COMMUNITY' | 'REQUEST';
-  handler: () => void;
-}
 
 const initialFilter: GetListChatParams = {
   page: 1,
@@ -159,6 +149,7 @@ const ChatPages: React.FC = () => {
   const [isModalRecordOpen, setIsModalRecordOpen] = useState<boolean>(false);
   const [messageList, setMessageList] = useState<IChatBubble[] | []>([]);
   const [message, setMessage] = useState<string>('');
+  const [chatRequest, setChatRequest] = useState<number>(0);
   const [searchText, setSearchText] = useState<string>('');
   const [limit, setLimit] = useState<number>(10);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -218,10 +209,16 @@ const ChatPages: React.FC = () => {
     };
   }, []);
 
-  const handleListClick = (): void => {
+  const handleListClick = (statusIsJoined: boolean): void => {
+    if (statusIsJoined) {
+      setActiveTab('COMMUNITY')
+    } else {
+      setActiveTab('PERSONAL')
+    }
     setIsDropdownOpen(false);
     setIsChatActive(true);
   };
+
   const handleMessageChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ): void => {
@@ -271,35 +268,6 @@ const ChatPages: React.FC = () => {
       unread: !filter.unread
     }));
   };
-  const dataTab = useMemo<TabTypes[]>(
-    () => [
-      {
-        id: 1,
-        name: t('chat.personal'),
-        value: 'PERSONAL',
-        handler: () => {
-          handleChangeTab(dataTab[0].value);
-        }
-      },
-      {
-        id: 2,
-        name: t('chat.community'),
-        value: 'COMMUNITY',
-        handler: () => {
-          handleChangeTab(dataTab[1].value);
-        }
-      },
-      {
-        id: 3,
-        name: t('chat.request'),
-        value: 'REQUEST',
-        handler: () => {
-          handleChangeTab(dataTab[2].value);
-        }
-      }
-    ],
-    [handleChangeTab, t]
-  );
 
   const handleToggleDropdown = (): void => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -333,8 +301,38 @@ const ChatPages: React.FC = () => {
   const fetchListChat = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const response = await getListChat(filter);
-      setChatList(response.data);
+      if (activeTab !== 'REQUEST') {
+
+        const response = await getListChat({
+          ...filter,
+          type: 'PERSONAL'
+        });
+        const getListChatGroup = await getListChat({
+          ...filter,
+          type: 'COMMUNITY'
+        });
+        const getListChatRequest = await getListChat({
+          ...filter,
+          unread: true,
+          type: 'REQUEST'
+
+        });
+
+        const newChatList = response.data;
+        const newChatGroupList = getListChatGroup.data;
+        const combinedChatList = [...newChatList, ...newChatGroupList];
+        combinedChatList.sort((a, b) => 
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+        setChatRequest(getListChatRequest?.data?.length ?? 0)
+        setChatList(combinedChatList);
+      } else {
+        const getListChatRequest = await getListChat({
+          ...filter,
+          type: 'REQUEST'
+        });
+        setChatList(getListChatRequest?.data);
+      }
     } catch (error: any) {
       toast(error, { type: 'error' });
     } finally {
@@ -1311,7 +1309,9 @@ const ChatPages: React.FC = () => {
                   height={24}
                   className="text-white cursor-pointer hover:scale-110 duration-150"
                   onClick={async () => {
-                    await router.push('/homepage');
+                    activeTab !== 'REQUEST'
+                      ? await router.push('/homepage')
+                      : handleChangeTab('PERSONAL')
                   }}
                 />
                 <Typography className="flex-1 text-center font-poppins font-semibold text-lg text-white">
@@ -1321,69 +1321,16 @@ const ChatPages: React.FC = () => {
             </div>
             <div className="flex flex-col mb-4 bg-white px-4 mt-[-20px] rounded-t-3xl">
               <Tabs value={activeTab}>
-                <TabsHeader
-                  className="w-full text-center justify-center rounded-none bg-transparent p-0 mt-3"
-                  indicatorProps={{
-                    className: 'shadow-none rounded-none bg-transparent'
-                  }}
-                >
-                  {dataTab.map((el: TabTypes) => {
-                    return (
-                      <Tab
-                        value={el.value}
-                        key={el.id}
-                        onClick={el.handler}
-                        className={`rounded-t-2xl text-center z-0 text-sm md:text-lg bg-transparent font-poppins py-3 ${
-                          activeTab === el.value
-                            ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-2 border-b-[#4FE6AF]'
-                            : 'text-[#7C7C7C] font-normal border-b-[#BDBDBD] border-b'
-                        }`}
-                      >
-                        <Typography
-                          className={
-                            activeTab === el.value
-                              ? 'text-sm font-semibold'
-                              : 'text-sm font-normal'
-                          }
-                        >
-                          {el.name}
-                        </Typography>
-                      </Tab>
-                    );
-                  })}
-                </TabsHeader>
                 <TabsBody>
-                  <TabPanel value="PERSONAL" className="py-0 pt-2 px-0">
+                  <TabPanel value="PERSONAL" className="py-0 pt-2 px-0 mt-2">
                     <ContactList
                       data={chatList}
                       handleFilterUnreadChange={handleFilterUnreadChange}
                       handleListClick={handleListClick}
+                      handleChangeTab={handleChangeTab}
+                      activeTab={activeTab}
                       isLoading={isLoading}
-                    />
-                    {isLoading ? (
-                      <div className="flex items-center justify-center my-8">
-                        <div className="animate-spinner w-14 h-14 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
-                      </div>
-                    ) : (
-                      chatList?.length === 0 && (
-                        <div className="flex flex-col items-center pt-10 pb-16">
-                          <Image src={noMessage} alt="Seedy No Chat" />
-                          <Typography className="font-poppins text-md text-[#BDBDBD] mt-[-24px]">
-                            {t('chat.personalEmptyState')}
-                          </Typography>
-                          <Typography className="font-poppins text-md text-[#BDBDBD]">
-                            {t('chat.startChat')}
-                          </Typography>
-                        </div>
-                      )
-                    )}
-                  </TabPanel>
-                  <TabPanel value="COMMUNITY" className="py-0 pt-2 px-0">
-                    <ContactList
-                      data={chatList}
-                      handleFilterUnreadChange={handleFilterUnreadChange}
-                      handleListClick={handleListClick}
-                      isLoading={isLoading}
+                      chatRequest={chatRequest}
                     />
                     {isLoading ? (
                       <div className="flex items-center justify-center my-8">
@@ -1408,6 +1355,8 @@ const ChatPages: React.FC = () => {
                       data={chatList}
                       handleFilterUnreadChange={handleFilterUnreadChange}
                       handleListClick={handleListClick}
+                      handleChangeTab={handleChangeTab}
+                      activeTab={activeTab}
                       isLoading={isLoading}
                     />
                     {isLoading ? (

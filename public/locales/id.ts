@@ -2516,6 +2516,7 @@ export default {
   },
   chat: {
     chat: 'Chat',
+    allMessages: 'Semua Pesan',
     personalEmptyState: 'Tidak ada percakapan',
     communityEmptyState: 'Tidak ada percakapan komunitas',
     requestEmptyState: 'Tidak ada permintaan percakapan',
@@ -2539,6 +2540,7 @@ export default {
     personal: 'Pribadi',
     community: 'Komunitas',
     request: 'Request',
+    chatRequest: 'Permintaan Percakapan',
     reject: 'Tolak',
     accept: 'Terima',
     newMessage: 'Pesan Baru',

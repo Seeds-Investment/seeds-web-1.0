@@ -167,7 +167,6 @@ const AssetDetailPage: React.FC = () => {
     try {
       if (typeof assetId === 'string') {
         const response = await getDetailAsset(assetId, { ...params, currency });
-        console.log(response);
         setData(response.marketAsset);
         setAssetType(response.marketAsset.assetType);
       }

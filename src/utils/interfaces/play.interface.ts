@@ -368,7 +368,6 @@ export interface AssetThumbnail {
   lastPrice: LastPrice;
 }
 
-<<<<<<< HEAD
 export interface Banners {
   id: string;
   name: string;
@@ -408,7 +407,6 @@ export interface TeamBattle {
   is_joined: boolean;
   play_center_type: string;
 }
-=======
 export interface ArticleDetail {
   id: number;
   title: string;
@@ -435,4 +433,3 @@ export interface ArticleDetail {
   meta_description: string;
   updated_at: string;
 }
->>>>>>> 8c254c6cebfb852f511d16f49489b440a9f05244

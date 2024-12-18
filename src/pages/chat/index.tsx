@@ -580,7 +580,9 @@ const ChatPages: React.FC = () => {
     const fileMediaEle = event.target;
     if (fileMedia?.type?.includes('video') === true) {
       const validation =
-        fileMedia?.type !== 'video/mp4' && fileMedia?.type !== 'video/mov';
+        fileMedia?.type !== 'video/mp4' &&
+        fileMedia?.type !== 'video/mov' &&
+        fileMedia?.type !== 'video/webm';
       const maxFileMediaSize = 20;
       const sizeFileOnMB: any = parseFloat(
         (fileMedia?.size / 1024 / 1024).toFixed(20)
@@ -613,12 +615,14 @@ const ChatPages: React.FC = () => {
       }
     }
     if (fileMedia?.type?.includes('image') === true) {
-      const validation =
-        fileMedia?.type !== 'image/jpg' &&
-        fileMedia?.type !== 'image/jpeg' &&
-        fileMedia?.type !== 'image/heic' &&
-        fileMedia?.type !== 'image/heif' &&
-        fileMedia?.type !== 'image/png';
+      const allowedTypes = [
+        'image/jpeg',
+        'image/heic',
+        'image/heif',
+        'image/svg+xml',
+        'image/png'
+      ];
+      const validation = !allowedTypes.includes(fileMedia?.type);
       const maxFileMediaSize = 5;
       const sizeFileOnMB: any = parseFloat(
         (fileMedia?.size / 1024 / 1024).toFixed(20)
@@ -1768,7 +1772,8 @@ const ChatPages: React.FC = () => {
                             if (
                               message.media_urls?.length > 0 &&
                               (message.media_urls[0]?.includes('mp4') ||
-                                message.media_urls[0]?.includes('mov'))
+                                message.media_urls[0]?.includes('mov') ||
+                                message.media_urls[0]?.includes('webm'))
                             ) {
                               return (
                                 <div
@@ -1867,7 +1872,7 @@ const ChatPages: React.FC = () => {
                                   className="flex flex-col p-2 self-end max-w-[60%] rounded-lg mx-4 bg-[#EDFCD3]"
                                 >
                                   {message?.media_urls?.length > 0 && (
-                                    <Image
+                                    <img
                                       className="max-w-[225px] max-h-[200px] object-cover rounded-3xl"
                                       src={message.media_urls[0]}
                                       alt="Image"
@@ -2006,7 +2011,8 @@ const ChatPages: React.FC = () => {
                             if (
                               message.media_urls?.length > 0 &&
                               (message.media_urls[0]?.includes('mp4') ||
-                                message.media_urls[0]?.includes('mov'))
+                                message.media_urls[0]?.includes('mov') ||
+                                message.media_urls[0]?.includes('webm'))
                             ) {
                               return (
                                 <div
@@ -2121,10 +2127,14 @@ const ChatPages: React.FC = () => {
                                   />
                                   <div
                                     key={message.id}
-                                    className="flex flex-col p-2 self-start max-w-[60%] rounded-lg bg-[#DCFCE4]"
+                                    className={`flex flex-col p-2 self-start max-w-[60%] rounded-lg ${
+                                      message?.media_urls[0]?.includes('.gif')
+                                        ? ''
+                                        : 'bg-[#DCFCE4]'
+                                    } `}
                                   >
                                     {message?.media_urls?.length > 0 && (
-                                      <Image
+                                      <img
                                         className="max-w-[225px] max-h-[200px] object-cover rounded-3xl"
                                         src={message.media_urls[0]}
                                         alt="Image"
@@ -2332,7 +2342,7 @@ const ChatPages: React.FC = () => {
                                         id="MediaUpload"
                                         onChange={handleSendImageMessage}
                                         className="hidden"
-                                        accept="image/jpg,image/jpeg,image/png,video/mp4,video/mov"
+                                        accept="image/jpg,image/jpeg,image/png,image/svg+xml,video/mp4,video/mov,video/webm"
                                       />
                                     </div>
                                     <Typography className="text-black font-poppins font-normal text-sm">

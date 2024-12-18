@@ -859,6 +859,7 @@ const ChatPages: React.FC = () => {
 
   const fetchGroupChat = async (): Promise<void> => {
     try {
+      setIsLoading(true);
       if (messageList.length === 0) {
         const message = await getChat({ group_id: roomId as string, limit });
         setMessageList(message.data);
@@ -873,6 +874,8 @@ const ChatPages: React.FC = () => {
       setChatList(getListChatGroup.data);
     } catch (error: any) {
       toast.error('Error fetching chat data:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -883,7 +886,7 @@ const ChatPages: React.FC = () => {
 
     const timeoutId = setTimeout(() => {
       void fetchGroupChat();
-    }, 1000);
+    }, 500);
 
     return () => {
       clearTimeout(timeoutId);
@@ -1498,152 +1501,168 @@ const ChatPages: React.FC = () => {
                       style={{
                         backgroundImage: "url('/assets/chat/bg-chat.svg')"
                       }}
-                      className="w-full bg-cover flex rounded-t-xl px-4 border-b border-solid justify-between items-center lg:h-[150px] h-[130px]"
+                      className={`w-full bg-cover flex rounded-t-xl px-4 border-b border-solid ${
+                        isLoading ? 'justify-center' : 'justify-between'
+                      } items-center lg:h-[150px] h-[130px]`}
                     >
-                      <div className="w-fit flex justify-between items-center mx-[18px]">
-                        <Image
-                          src={ArrowBackwardIconWhite}
-                          alt="icon"
-                          width={24}
-                          height={24}
-                          className="text-white cursor-pointer hover:scale-110 duration-150"
-                          onClick={async () => {
-                            await router.push('/chat');
-                            await fetchListChat();
-                            setIsChatActive(false);
-                          }}
-                        />
-                      </div>
-                      <div className="grid bg-[#DCFCE4] py-2 px-4 gap-2 items-center rounded-full grid-cols-[auto_1fr] place-items-center">
-                        <div className="relative">
-                          <Avatar
-                            onClick={async () => {
-                              activeTab === 'COMMUNITY'
-                                ? await router.push(
-                                    `/chat/group/${roomId as string}`
-                                  )
-                                : setIsShowDetail(true);
-                              if (activeTab === 'PERSONAL') {
-                                await fetchDetailPersonal();
-                              }
-                            }}
-                            src={
-                              activeTab === 'COMMUNITY'
-                                ? groupData?.avatar === ''
-                                  ? defaultAvatar.src
-                                  : groupData?.avatar
-                                : (otherUserData?.avatar as string)
-                            }
-                            className="block max-w-8 max-h-8 cursor-pointer"
-                            alt="avatar"
-                            width={24}
-                            height={24}
-                          />
-                          <div
-                            className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
-                              (otherUserData?.status_online as boolean)
-                                ? 'bg-[#3AC4A0]'
-                                : 'bg-transparent'
-                            }`}
-                          />
-                        </div>
-                        <div className="flex flex-col w-full h-fit">
-                          {activeTab === 'COMMUNITY' ? (
-                            <div>
-                              <Typography className="font-semibold text-xs text-[#3AC4A0] font-poppins">
-                                {groupData?.name}
-                              </Typography>
-                              <Typography className="font-normal text-[10px] text-[#3AC4A0] font-poppins">
-                                {`${groupData?.total_memberships as number} ${t(
-                                  'chat.members'
-                                )}`}
-                              </Typography>
-                            </div>
-                          ) : (
-                            <div
-                              className="flex flex-col gap-2 h-fit"
-                              onClick={() => {
-                                setIsShowDetail(true);
-                                void fetchDetailPersonal();
+                      {isLoading ? (
+                        <div className="animate-spinner w-8 h-8 border-8 border-seeds-green border-t-gray-200 rounded-full"></div>
+                      ) : (
+                        <>
+                          <div className="w-fit flex justify-between items-center mx-[18px]">
+                            <Image
+                              src={ArrowBackwardIconWhite}
+                              alt="icon"
+                              width={24}
+                              height={24}
+                              className="text-white cursor-pointer hover:scale-110 duration-150"
+                              onClick={async () => {
+                                await router.push('/chat');
+                                setIsChatActive(false);
                               }}
-                            >
-                              <Typography className="font-semibold text-sm text-[#3AC4A0] font-poppins">
-                                {otherUserData?.name}
-                              </Typography>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div
-                        className="relative flex items-center cursor-pointer"
-                        ref={dropdownRef}
-                      >
-                        <BsThreeDotsVertical
-                          className="cursor-pointer text-white"
-                          width={24}
-                          height={24}
-                          onClick={e => {
-                            // Menambahkan event.stopPropagation() untuk menghentikan propogasi klik
-                            e.stopPropagation();
-                            handleToggleDropdown();
-                          }}
-                        />
-                        {isDropdownOpen && (
-                          <div className="absolute z-10 right-2 top-8 flex flex-col bg-white border border-gray-300 rounded-md shadow-md w-[170px]">
-                            <div
-                              className="dropdown-option flex items-center p-2 gap-2 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => {
-                                handleDropdownOptionClick('Search');
-                              }}
-                            >
-                              <CiSearch size={24} className="text-[#201B1C" />
-                              <h1 className="text-sm font-poppins font-normal text-[#201B1C]">
-                                {t('chat.search')}
-                              </h1>
-                            </div>
-                            <div
-                              className="dropdown-option flex items-center p-2 gap-2 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => {
-                                handleDropdownOptionClick('Mute');
-                              }}
-                            >
-                              <CiBellOff size={24} className="text-[#201B1C]" />
-                              <h1 className="text-sm font-poppins font-normal text-[#201B1C]">
-                                {t('chat.mute')}
-                              </h1>
-                            </div>
-                            <div
-                              className="dropdown-option flex items-center p-2 gap-2 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => {
-                                handleDropdownOptionClick('Delete');
-                              }}
-                            >
-                              <CiTrash size={24} className="text-[#DD2525]" />
-                              <h1 className="text-sm font-normal font-poppins text-[#DD2525]">
-                                {t('chat.deleteChat')}
-                              </h1>
-                            </div>
-                            {activeTab === 'COMMUNITY' && (
-                              <div
-                                className="dropdown-option flex items-center p-2 gap-2 hover:bg-gray-100 cursor-pointer"
-                                onClick={() => {
-                                  handleDropdownOptionClick('Leave');
+                            />
+                          </div>
+                          <div className="grid bg-[#DCFCE4] py-2 px-4 gap-2 items-center rounded-full grid-cols-[auto_1fr] place-items-center">
+                            <div className="relative">
+                              <Avatar
+                                onClick={async () => {
+                                  activeTab === 'COMMUNITY'
+                                    ? await router.push(
+                                        `/chat/group/${roomId as string}`
+                                      )
+                                    : setIsShowDetail(true);
+                                  if (activeTab === 'PERSONAL') {
+                                    await fetchDetailPersonal();
+                                  }
                                 }}
-                              >
-                                <Image
-                                  src={LeaveButton}
-                                  width={24}
-                                  height={24}
-                                  alt="Leave"
-                                />
-                                <h1 className="text-sm font-normal font-poppins text-[#DD2525] whitespace-nowrap">
-                                  {t('chat.menuBar.leaveGroup')}
-                                </h1>
+                                src={
+                                  activeTab === 'COMMUNITY'
+                                    ? groupData?.avatar === ''
+                                      ? defaultAvatar.src
+                                      : groupData?.avatar
+                                    : (otherUserData?.avatar as string)
+                                }
+                                className="block max-w-8 max-h-8 cursor-pointer"
+                                alt="avatar"
+                                width={24}
+                                height={24}
+                              />
+                              <div
+                                className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
+                                  (otherUserData?.status_online as boolean)
+                                    ? 'bg-[#3AC4A0]'
+                                    : 'bg-transparent'
+                                }`}
+                              />
+                            </div>
+                            <div className="flex flex-col w-full h-fit">
+                              {activeTab === 'COMMUNITY' ? (
+                                <div>
+                                  <Typography className="font-semibold text-xs text-[#3AC4A0] font-poppins">
+                                    {groupData?.name}
+                                  </Typography>
+                                  <Typography className="font-normal text-[10px] text-[#3AC4A0] font-poppins">
+                                    {`${
+                                      groupData?.total_memberships as number
+                                    } ${t('chat.members')}`}
+                                  </Typography>
+                                </div>
+                              ) : (
+                                <div
+                                  className="flex flex-col gap-2 h-fit"
+                                  onClick={() => {
+                                    setIsShowDetail(true);
+                                    void fetchDetailPersonal();
+                                  }}
+                                >
+                                  <Typography className="font-semibold text-sm text-[#3AC4A0] font-poppins">
+                                    {otherUserData?.name}
+                                  </Typography>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div
+                            className="relative flex items-center cursor-pointer"
+                            ref={dropdownRef}
+                          >
+                            <BsThreeDotsVertical
+                              className="cursor-pointer text-white"
+                              width={24}
+                              height={24}
+                              onClick={e => {
+                                // Menambahkan event.stopPropagation() untuk menghentikan propogasi klik
+                                e.stopPropagation();
+                                handleToggleDropdown();
+                              }}
+                            />
+                            {isDropdownOpen && (
+                              <div className="absolute z-10 right-2 top-8 flex flex-col bg-white border border-gray-300 rounded-md shadow-md w-[170px]">
+                                <div
+                                  className="dropdown-option flex items-center p-2 gap-2 hover:bg-gray-100 cursor-pointer"
+                                  onClick={() => {
+                                    handleDropdownOptionClick('Search');
+                                  }}
+                                >
+                                  <CiSearch
+                                    size={24}
+                                    className="text-[#201B1C"
+                                  />
+                                  <h1 className="text-sm font-poppins font-normal text-[#201B1C]">
+                                    {t('chat.search')}
+                                  </h1>
+                                </div>
+                                <div
+                                  className="dropdown-option flex items-center p-2 gap-2 hover:bg-gray-100 cursor-pointer"
+                                  onClick={() => {
+                                    handleDropdownOptionClick('Mute');
+                                  }}
+                                >
+                                  <CiBellOff
+                                    size={24}
+                                    className="text-[#201B1C]"
+                                  />
+                                  <h1 className="text-sm font-poppins font-normal text-[#201B1C]">
+                                    {t('chat.mute')}
+                                  </h1>
+                                </div>
+                                <div
+                                  className="dropdown-option flex items-center p-2 gap-2 hover:bg-gray-100 cursor-pointer"
+                                  onClick={() => {
+                                    handleDropdownOptionClick('Delete');
+                                  }}
+                                >
+                                  <CiTrash
+                                    size={24}
+                                    className="text-[#DD2525]"
+                                  />
+                                  <h1 className="text-sm font-normal font-poppins text-[#DD2525]">
+                                    {t('chat.deleteChat')}
+                                  </h1>
+                                </div>
+                                {activeTab === 'COMMUNITY' && (
+                                  <div
+                                    className="dropdown-option flex items-center p-2 gap-2 hover:bg-gray-100 cursor-pointer"
+                                    onClick={() => {
+                                      handleDropdownOptionClick('Leave');
+                                    }}
+                                  >
+                                    <Image
+                                      src={LeaveButton}
+                                      width={24}
+                                      height={24}
+                                      alt="Leave"
+                                    />
+                                    <h1 className="text-sm font-normal font-poppins text-[#DD2525] whitespace-nowrap">
+                                      {t('chat.menuBar.leaveGroup')}
+                                    </h1>
+                                  </div>
+                                )}
                               </div>
                             )}
                           </div>
-                        )}
-                      </div>
+                        </>
+                      )}
                     </div>
                   )}
                   <div

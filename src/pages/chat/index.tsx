@@ -862,14 +862,6 @@ const ChatPages: React.FC = () => {
         const message = await getChat({ group_id: roomId as string, limit });
         setMessageList(message.data);
       }
-      const getListChatGroup = await getListChat({
-        page: 1,
-        limit: 10,
-        type: 'COMMUNITY',
-        search: '',
-        unread: false
-      });
-      setChatList(getListChatGroup.data);
     } catch (error: any) {
       toast.error('Error fetching chat data:', error);
     } finally {
@@ -1318,7 +1310,7 @@ const ChatPages: React.FC = () => {
                   onClick={async () => {
                     activeTab !== 'REQUEST'
                       ? await router.push('/homepage')
-                      : handleChangeTab('PERSONAL')
+                      : handleChangeTab('PERSONAL');
                   }}
                 />
                 <Typography className="flex-1 text-center font-poppins font-semibold text-lg text-white">

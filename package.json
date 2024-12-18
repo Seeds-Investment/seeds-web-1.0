@@ -16,8 +16,6 @@
   },
   "dependencies": {
     "@ant-design/react-slick": "^1.0.0",
-    "@ffmpeg/ffmpeg": "^0.12.10",
-    "@ffmpeg/util": "^0.12.1",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@material-tailwind/react": "^2.1.1",

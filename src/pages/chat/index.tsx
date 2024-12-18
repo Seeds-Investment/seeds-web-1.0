@@ -2127,11 +2127,7 @@ const ChatPages: React.FC = () => {
                                   />
                                   <div
                                     key={message.id}
-                                    className={`flex flex-col p-2 self-start max-w-[60%] rounded-lg ${
-                                      message?.media_urls[0]?.includes('.gif')
-                                        ? ''
-                                        : 'bg-[#DCFCE4]'
-                                    } `}
+                                    className="flex flex-col p-2 self-start max-w-[60%] rounded-lg bg-[#DCFCE4]"
                                   >
                                     {message?.media_urls?.length > 0 && (
                                       <img

@@ -1976,15 +1976,30 @@ const ChatPages: React.FC = () => {
                                     alt="avatar"
                                     className="rounded-full w-8 h-8"
                                   />
-                                  <audio controls>
-                                    <source
-                                      src={message.media_urls[0]}
-                                      type="audio/wav"
-                                      className="w-full"
-                                    />
-                                    Your browser does not support the audio
-                                    element.
-                                  </audio>
+                                  <div
+                                    key={message.id}
+                                    className="flex flex-col p-2 self-start max-w-[60%] rounded-lg bg-[#DCFCE4]"
+                                  >
+                                    <audio controls>
+                                      <source
+                                        src={message.media_urls[0]}
+                                        type="audio/wav"
+                                        className="w-full"
+                                      />
+                                      Your browser does not support the audio
+                                      element.
+                                    </audio>
+                                    <div className="mt-2">
+                                      <div className="w-full flex justify-end items-center gap-2">
+                                        <Typography className="text-xs text-[#7C7C7C]">
+                                          {getChatDate(
+                                            message?.created_at ??
+                                              '0001-01-01T00:00:00Z'
+                                          )}
+                                        </Typography>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                               );
                             }

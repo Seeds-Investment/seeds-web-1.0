@@ -1,9 +1,8 @@
 'use client';
-import { Typography } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { leaveGroup } from 'public/assets/chat';
-import { XIcon } from 'public/assets/vector';
 import { useTranslation } from 'react-i18next';
+import ConfirmSeedy from '../../../public/assets/chat/confirm-seedy.svg';
 import Modal from '../ui/modal/Modal';
 
 interface Props {
@@ -15,50 +14,40 @@ const CreateGroupPopUp: React.FC<Props> = ({ onClose, onClick }) => {
   const { t } = useTranslation();
 
   return (
-    <Modal onClose={onClose}>
-      <div className="flex justify-end">
+    <Modal
+      backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/75 flex justify-start items-start"
+      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[45%] md:left-[35%] md:right-[-35%] mt-[-12.35rem] w-full md:w-[30%] h-[435px] p-4 lg:rounded-2xl rounded-t-2xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
+    >
+      <div className="flex flex-col justify-center items-center py-3 gap-6">
         <Image
-          src={XIcon}
-          alt="X"
-          width={30}
-          height={30}
-          onClick={onClose}
-          className="hover:scale-110 transition ease-out cursor-pointer"
-        />
-      </div>
-      <div className="flex flex-col gap-3 justify-center  px-8 pt-2 items-center text-center">
-        <Image
-          src={leaveGroup.src}
-          alt="Create Group"
-          width={226}
+          src={ConfirmSeedy}
+          alt="ConfirmSeedy"
+          width={200}
           height={200}
-          className="w-auto h-auto aspect-auto"
+          className="w-[200px] h-[200px]"
         />
-        <Typography className="font-bold text-lg text-black">
-          {t('chat.createGroupPopUpText1')}
-        </Typography>
-        <Typography className="text-lg text-gray-500">
-          {t('chat.createGroupPopUpText2')}
-        </Typography>
-      </div>
-      <div className="flex flex-col gap-4">
-        <div
-          onClick={() => {
-            void onClick();
-          }}
-          className="bg-[#DD2525] mt-5 w-full hover:bg-red-700 rounded-full hover:scale-105 transition ease-out"
-        >
-          <Typography className="text-white text-lg font-bold text-center p-2">
-            {t('DeleteAccount.confirmButton')}
+        <div className="flex flex-col gap-2 items-center">
+          <Typography className="font-poppins font-semibold text-base">
+            {t('chat.createGroupPopUpText1')}
+          </Typography>
+          <Typography className="font-poppins font-normal text-sm text-[#7C7C7C]">
+            {t('chat.createGroupPopUpText2')}
           </Typography>
         </div>
-
-        <Typography
-          onClick={onClose}
-          className="text-center cursor-pointer hover:scale-105 transition ease-out text-[#7555DA] text-lg font-bold"
-        >
-          {t('DeleteAccount.cancelButton')}
-        </Typography>
+        <div className="flex flex-col gap-2 w-full">
+          <Button
+            onClick={onClick}
+            className="bg-seeds-button-green font-poppins font-semibold text-sm rounded-full shadow-md"
+          >
+            {t('chat.btnYes')}
+          </Button>
+          <Button
+            onClick={onClose}
+            className="bg-white text-seeds-green font-poppins font-semibold text-sm rounded-full shadow-md"
+          >
+            {t('chat.btnNo')}
+          </Button>
+        </div>
       </div>
     </Modal>
   );

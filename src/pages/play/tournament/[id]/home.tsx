@@ -572,7 +572,7 @@ const TournamentHome: React.FC = () => {
                           `/play/tournament/${id as string}/${data?.id}`
                         )
                       }
-                      className="flex justify-between items-center p-4 mt-4 cursor-pointer bg-white hover:bg-[#F7F7F7] duration-300 rounded-lg"
+                      className="flex justify-between items-center p-4 mt-4 cursor-pointer bg-white hover:bg-[#F7F7F7] duration-300 rounded-lg "
                     >
                       <div className="flex gap-4 text-sm md:text-base">
                         <img

@@ -289,17 +289,14 @@ export interface TopTournament {
   created_at: string;
   updated_at: string;
   updated_by: string;
-  sponsorship: {
-    name: string;
-    image_url: string;
-  };
+  sponsorship: SponsorCom[];
   featured_link: string;
   reward_url: string;
   promo_id: string;
   is_need_invitation_code: boolean;
   payment_method: string[];
   is_free_voucher_claimed: boolean;
-}
+  }
 export type MarketAssetI = AssetListI[];
 
 export interface AssetListI {

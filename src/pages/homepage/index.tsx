@@ -1,17 +1,19 @@
 import CCard from '@/components/CCard';
 import ChooseCurrencyPopup from '@/components/popup/ChooseCurrency';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import UserInfoPlaySimulation from '@/components/UserInfoPlaySimulation.index';
 import FeatureSection from '@/containers/homepage/FeatureSection';
-import Section5New from '@/containers/homepage/Section5New';
-import TopGainers from '@/containers/homepage/top-gainers/TopGainers.index';
+import Section1 from '@/containers/homepage/Section1';
+import Section2 from '@/containers/homepage/Section2';
+import Section3 from '@/containers/homepage/Section3';
+import Section4 from '@/containers/homepage/Section4';
+import Section5 from '@/containers/homepage/Section5';
+import TrendingSection from '@/containers/homepage/TrendingSection';
 import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import Section1New from './section1/index.section1';
 
 const Homepage: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
@@ -42,29 +44,30 @@ const Homepage: React.FC = () => {
   };
 
   return (
-    <PageGradient
-      defaultGradient
-      className="w-full bg-[#f8f8f8] md:bg-transparent"
-    >
-      <CCard className="w-full px-2 py-3 mb-5">
-        {userInfo !== undefined && (
-          <UserInfoPlaySimulation playerInfo={userInfo} />
-        )}
-      </CCard>
+    <PageGradient defaultGradient className="w-full">
       <ChooseCurrencyPopup handleOpen={handleOpen} open={popUpCurrency} />
-      <CCard className="p-3 mb-5 h-auto rounded-none shadow-none flex-col gap-2">
-        <Section1New />
+      <CCard className="p-3 mb-5">
+        <Section1 />
       </CCard>
       <CCard className="p-3 mb-5">
-        <FeatureSection />
+        {userInfo !== undefined && <Section2 userInfo={userInfo} />}
       </CCard>
       {!isGuest() && (
         <CCard className="px-3 py-5 mb-5">
-          <TopGainers />
+          <Section3 />
         </CCard>
       )}
       <CCard className="p-3 mb-5">
-        <Section5New />
+        <FeatureSection />
+      </CCard>
+      <CCard className="p-3 mb-5">
+        <Section4 />
+      </CCard>
+      <CCard className="p-3 mb-5">
+        <TrendingSection userInfo={userInfo} />
+      </CCard>
+      <CCard className="p-3 mb-5">
+        <Section5 />
       </CCard>
     </PageGradient>
   );

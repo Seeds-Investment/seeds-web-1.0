@@ -35,6 +35,7 @@ const LoginLayout: React.FC<props> = ({ children }) => {
           </header>
           <AppAds />
         </div>
+
         <div className="md:p-4 md:mx-11">{children}</div>
       </div>
     </div>

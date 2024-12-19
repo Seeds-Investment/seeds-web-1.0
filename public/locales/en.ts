@@ -1768,10 +1768,7 @@ export default {
       text14: 'See More',
       text15: 'Please Login to enter the arena simulation',
       text16: 'Login to enter arena simulation',
-      text17: 'Virtual cash is virtual money available for play game',
-      text18:
-        'Get update of your asset today! And playing our game to get more rewards.',
-      text19: 'Total Reward this month'
+      text17: 'Virtual cash is virtual money available for play game'
     },
     section3: {
       text1: 'Your all-in-one source for financial updates',
@@ -1779,14 +1776,7 @@ export default {
       text3: 'Last Month',
       text4: 'Current Rank',
       text5: 'Find and follow interesting profiles.',
-      text6: 'People List',
-      text7: 'Top Gainers'
-    },
-    section4: {
-      text1: 'assets with the highest returns at the moment'
-    },
-    section5: {
-      cardcircletext1: 'members'
+      text6: 'People List'
     }
   },
   chooseCurrency: {

@@ -6,6 +6,7 @@ import {
 } from '@/constants/assets/images';
 import { webCounter } from '@/repository/web.repository';
 import Image from 'next/image';
+import DiamanteLogo from 'public/assets/images/diamante.svg';
 import { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
@@ -135,9 +136,21 @@ const Section2: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col w-full items-center font-poppins mt-10">
-          <p className="text-3xl md:text-4xl text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
-            Our Partnership
-          </p>
+          <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-tr from-[#9A76FE] from-10% to-[#4FE6AF] to-100% md:text-4xl lg:text-5xl">
+            {t('landingV2.section12.text1')}
+          </span>
+          <div className="w-[260px] md:w-[350px] h-auto flex justify-center items-center my-4 lg:my-8">
+            <Image
+              src={DiamanteLogo}
+              alt={`DiamanteLogo`}
+              width={1440}
+              height={1000}
+              className="w-full h-auto"
+            />
+          </div>
+          <span className="my-4 text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-tr from-[#9A76FE] from-10% to-[#4FE6AF] to-100% md:text-4xl lg:text-5xl">
+            Other Partnership
+          </span>
           <div className="relative w-full h-[450px] md:h-[270px] lg:h-[350px] xl:h-[420px] overflow-hidden">
             <Slider {...settings}>
               {images?.length !== 0

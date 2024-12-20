@@ -2012,6 +2012,18 @@ export default {
       'Click the image or Claim Button to be redirected to the prize.',
     winnerAlertMessage8: 'Claim Prize Here'
   },
+  bnc: {
+    payment: 'Payment',
+    scanDescription: 'Scan on your bank account or payment app',
+    instructions: {
+      text1: 'Take a screenshoot QR Code',
+      text2: 'Open your bank account or payment app',
+      text3: 'Complete the transaction',
+      text4: "Click 'Done' button below"
+    },
+    done: 'Done',
+    seeQRCode: 'See QR Code'
+  },
   micrositeQuiz: {
     errorEmailIncorrect: 'Please input your email correctly',
     errorEmailAlready: 'Oops,  Your email already registered',

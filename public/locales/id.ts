@@ -1941,6 +1941,18 @@ export default {
       'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
     winnerAlertMessage8: 'Klaim Hadiah Disini'
   },
+  bnc: {
+    payment: 'Pembayaran',
+    scanDescription: 'Scan pada Aplikasi Bank atau Aplikasi Pembayaran Anda',
+    instructions: {
+      text1: 'Ambil gambar tangkapan layar dari Kode QR Anda',
+      text2: 'Buka aplikasi bank atau pembayaran anda',
+      text3: 'Selesaikan pembayaran',
+      text4: "Klik tombol 'Selesai' dibawah"
+    },
+    done: 'Selesai',
+    seeQRCode: 'Lihat Kode QR'
+  },
   micrositeQuiz: {
     errorEmailIncorrect: 'Tolong masukin emailmu yang benar',
     errorEmailAlready: 'Aduh, emailmu udah terdaftar nih',

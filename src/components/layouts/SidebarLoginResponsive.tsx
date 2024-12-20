@@ -37,6 +37,7 @@ const menu = isGuest()
   : [
       { title: 'Social', url: '/social', image: social },
       { title: 'Homepage', url: '/homepage', image: homepage },
+      { title: 'Market', url: '/market' },
       { title: 'Connect', url: '/connect', image: connect },
       { title: 'Play', url: '/play', image: play },
       { title: 'Setting', url: '/user-setting', image: setting },

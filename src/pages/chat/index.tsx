@@ -1442,15 +1442,15 @@ const ChatPages: React.FC = () => {
                       style={{
                         backgroundImage: "url('/assets/chat/bg-chat.svg')"
                       }}
-                      className={`w-full bg-cover flex rounded-t-xl px-4 border-b border-solid ${
+                      className={`w-full bg-cover flex rounded-t-xl border-b border-solid ${
                         isLoading ? 'justify-center' : 'justify-between'
                       } items-center lg:h-[150px] h-[130px]`}
                     >
                       {isLoading ? (
                         <div className="animate-spinner w-8 h-8 border-8 border-seeds-green border-t-gray-200 rounded-full"></div>
                       ) : (
-                        <>
-                          <div className="w-fit flex justify-between items-center mx-[18px]">
+                        <div className="w-full flex justify-between items-center mx-[18px]">
+                          <div className="w-fit flex justify-between items-center">
                             <Image
                               src={ArrowBackwardIconWhite}
                               alt="icon"
@@ -1602,7 +1602,7 @@ const ChatPages: React.FC = () => {
                               </div>
                             )}
                           </div>
-                        </>
+                        </div>
                       )}
                     </div>
                   )}

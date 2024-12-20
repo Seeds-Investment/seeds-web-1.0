@@ -2014,7 +2014,7 @@ export default {
   },
   bnc: {
     payment: 'Payment',
-    scanDescription: 'Scan on your bank account or payment app',
+    scanDescription: 'Scan on your Bank Account or Payment App',
     instructions: {
       text1: 'Take a screenshoot QR Code',
       text2: 'Open your bank account or payment app',
@@ -2022,7 +2022,12 @@ export default {
       text4: "Click 'Done' button below"
     },
     done: 'Done',
-    seeQRCode: 'See QR Code'
+    seeQRCode: 'See QR Code',
+    expired: {
+      text1: "Your QR Code has expired",
+      text2: "Please make the purchase again and ensure that your payment has been completed in time"
+    },
+    repeat: "Repeat Purchase"
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Please input your email correctly',

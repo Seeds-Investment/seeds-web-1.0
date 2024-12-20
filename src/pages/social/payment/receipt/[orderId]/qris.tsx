@@ -1,18 +1,16 @@
 import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import {
   getPaymentDetail
 } from '@/repository/payment.repository';
-import { getUserInfo } from '@/repository/profile.repository';
 import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 import Warning from 'public/assets/verif-failed.png';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { useDispatch } from 'react-redux';
@@ -48,7 +46,6 @@ const SuccessPaymentPageQR: React.FC = () => {
   const paymentUrl = router.query.paymentUrl as string;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
-  const [userInfo, setUserInfo] = useState();
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -61,25 +58,13 @@ const SuccessPaymentPageQR: React.FC = () => {
       setIsLoading(false);
     }
   };
-
+  
   useEffect(() => {
     void fetchOrderDetail();
-  }, [id, orderDetail?.howToPayApi]);
-
-  const getDetail = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const dataInfo = await getUserInfo();
-      setUserInfo(dataInfo);
-    } catch (error) {
-      toast(`ERROR fetch quiz ${error as string}`);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [orderDetail]);
+    dispatch(setPromoCodeValidationResult(0));
+  }, [id, orderDetail?.itemId, orderDetail?.howToPayApi]);
 
   useEffect(() => {
-    void getDetail();
     dispatch(setPromoCodeValidationResult(0));
   }, [id, orderDetail]);
 
@@ -124,7 +109,7 @@ const SuccessPaymentPageQR: React.FC = () => {
               const query = paymentUrl !== '' ? { paymentUrl } : undefined;
               await router.replace(
                 {
-                  pathname: `/play/payment/receipt/${id}`,
+                  pathname: `/social/payment/receipt/${id}`,
                   query
                 },
                 undefined,
@@ -207,32 +192,14 @@ const SuccessPaymentPageQR: React.FC = () => {
                   }
                 </div>
                 <Button
-                  disabled={(orderDetail?.transactionStatus !== 'SUCCESS') && (orderDetail?.transactionStatus !== 'SETTLEMENT')}
+                  disabled={
+                    (orderDetail?.transactionStatus !== 'SUCCESS') &&
+                    (orderDetail?.transactionStatus !== 'SETTLEMENT') &&
+                    (orderDetail?.transactionStatus !== 'SUCCEEDED')
+                  }
                   className="w-full md:w-[300px] text-sm font-semibold bg-seeds-button-green rounded-full capitalize"
-                  onClick={() => {
-                    const formattedText = (text: string): string => {
-                      return text
-                        .split('|')[1]
-                        .replaceAll(/[^a-zA-Z0-9_-]/g, '_');
-                    };
-                    TrackerEvent({
-                      event: 'SW_quiz_payment',
-                      userData: userInfo,
-                      paymentData: {
-                        ...orderDetail,
-                        itemName:
-                          formattedText(orderDetail?.itemName as string)
-                            .length > 50
-                            ? formattedText(
-                                orderDetail?.itemName as string
-                              ).substring(0, 50)
-                            : formattedText(orderDetail?.itemName as string),
-                        statusPayment: 'PAID'
-                      }
-                    });
-                    void router.replace(
-                      `/play/quiz/${orderDetail?.itemId as string}/start`
-                    );
+                  onClick={async() => {
+                    await router.push(`/social`);
                   }}
                 >
                   {t('bnc.done')}
@@ -244,9 +211,7 @@ const SuccessPaymentPageQR: React.FC = () => {
                 <Button
                   className="w-full md:w-[300px] text-sm font-semibold bg-seeds-button-green rounded-full capitalize mb-4"
                   onClick={async() => {
-                    await router.push(
-                      `/play/quiz/${orderDetail?.itemId}`
-                    );
+                    await router.push(`/social`);
                   }}
                 >
                   {t('bnc.repeat')}

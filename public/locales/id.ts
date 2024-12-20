@@ -1943,7 +1943,7 @@ export default {
   },
   bnc: {
     payment: 'Pembayaran',
-    scanDescription: 'Scan pada Aplikasi Bank atau Aplikasi Pembayaran Anda',
+    scanDescription: 'Pindai dengan Aplikasi Bank atau Aplikasi Pembayaran Anda',
     instructions: {
       text1: 'Ambil gambar tangkapan layar dari Kode QR Anda',
       text2: 'Buka aplikasi bank atau pembayaran anda',
@@ -1951,7 +1951,12 @@ export default {
       text4: "Klik tombol 'Selesai' dibawah"
     },
     done: 'Selesai',
-    seeQRCode: 'Lihat Kode QR'
+    seeQRCode: 'Lihat Kode QR',
+    expired: {
+      text1: 'Kode QR Anda telah kadaluarsa',
+      text2: 'Lakukan pembelian ulang dan pastikan pembayaran anda selesai tepat waktu'
+    },
+    repeat: 'Ulangi Pembelian'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Tolong masukin emailmu yang benar',

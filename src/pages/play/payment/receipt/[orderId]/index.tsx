@@ -435,11 +435,7 @@ const SuccessPaymentPage: React.FC = () => {
                   <Typography className="text-sm font-semibold text-[#262626] text-right truncate">
                     {orderDetail?.transactionId === ''
                       ? '-'
-                      : `${(orderDetail?.transactionId ?? '').slice(0, 20)}${
-                          (orderDetail?.transactionId ?? '').length > 20
-                            ? '...'
-                            : ''
-                        }`}
+                      : `${orderDetail?.transactionId ?? ''}`}
                   </Typography>
                 </div>
               </Card>

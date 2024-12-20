@@ -1,18 +1,18 @@
 import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import {
   getPaymentDetail
 } from '@/repository/payment.repository';
-import { getUserInfo } from '@/repository/profile.repository';
+import { getPlayById } from '@/repository/play.repository';
 import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 import Warning from 'public/assets/verif-failed.png';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { useDispatch } from 'react-redux';
@@ -48,7 +48,7 @@ const SuccessPaymentPageQR: React.FC = () => {
   const paymentUrl = router.query.paymentUrl as string;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
-  const [userInfo, setUserInfo] = useState();
+  const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -61,27 +61,38 @@ const SuccessPaymentPageQR: React.FC = () => {
       setIsLoading(false);
     }
   };
-
+  
   useEffect(() => {
+    if (orderDetail?.itemId !== undefined) {
+      void fetchTournamentData(orderDetail?.itemId);
+    }
     void fetchOrderDetail();
-  }, [id, orderDetail?.howToPayApi]);
-
-  const getDetail = useCallback(async () => {
+    dispatch(setPromoCodeValidationResult(0));
+  }, [id, orderDetail?.itemId, orderDetail?.howToPayApi]);
+  
+  const fetchTournamentData = async (itemId: string): Promise<void> => {
     try {
       setIsLoading(true);
-      const dataInfo = await getUserInfo();
-      setUserInfo(dataInfo);
+      const resp: IDetailTournament = await getPlayById(itemId);
+      setDetailTournament(resp);
     } catch (error) {
-      toast(`ERROR fetch quiz ${error as string}`);
+      toast(`Error fetch tournament ${error as string}`);
     } finally {
       setIsLoading(false);
     }
-  }, [orderDetail]);
+  };
 
   useEffect(() => {
-    void getDetail();
     dispatch(setPromoCodeValidationResult(0));
   }, [id, orderDetail]);
+
+  const isStarted = (): boolean => {
+    const playTime = detailTournament?.play_time ?? '2024-12-31T17:00:00Z';
+    const timeStart = new Date(playTime).getTime();
+    const timeNow = Date.now();
+
+    return timeStart < timeNow;
+  };
 
   const scanInstructions = [
     {
@@ -124,7 +135,7 @@ const SuccessPaymentPageQR: React.FC = () => {
               const query = paymentUrl !== '' ? { paymentUrl } : undefined;
               await router.replace(
                 {
-                  pathname: `/play/payment/receipt/${id}`,
+                  pathname: `/play/payment-tournament/receipt/${id}`,
                   query
                 },
                 undefined,
@@ -207,32 +218,32 @@ const SuccessPaymentPageQR: React.FC = () => {
                   }
                 </div>
                 <Button
-                  disabled={(orderDetail?.transactionStatus !== 'SUCCESS') && (orderDetail?.transactionStatus !== 'SETTLEMENT')}
+                  disabled={
+                    (orderDetail?.transactionStatus !== 'SUCCESS') &&
+                    (orderDetail?.transactionStatus !== 'SETTLEMENT') &&
+                    (orderDetail?.transactionStatus !== 'SUCCEEDED')
+                  }
                   className="w-full md:w-[300px] text-sm font-semibold bg-seeds-button-green rounded-full capitalize"
                   onClick={() => {
-                    const formattedText = (text: string): string => {
-                      return text
-                        .split('|')[1]
-                        .replaceAll(/[^a-zA-Z0-9_-]/g, '_');
-                    };
-                    TrackerEvent({
-                      event: 'SW_quiz_payment',
-                      userData: userInfo,
-                      paymentData: {
-                        ...orderDetail,
-                        itemName:
-                          formattedText(orderDetail?.itemName as string)
-                            .length > 50
-                            ? formattedText(
-                                orderDetail?.itemName as string
-                              ).substring(0, 50)
-                            : formattedText(orderDetail?.itemName as string),
-                        statusPayment: 'PAID'
+                    if (isStarted()) {
+                      if (
+                        orderDetail?.transactionStatus === 'SUCCESS' ||
+                        orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                        orderDetail?.transactionStatus === 'SUCCEEDED'
+                      ) {
+                        void router.replace(
+                          `/play/tournament/${orderDetail?.itemId}/home`
+                        );
+                      } else {
+                        void router.replace(
+                          `/play/tournament/${orderDetail?.itemId as string}`
+                        );
                       }
-                    });
-                    void router.replace(
-                      `/play/quiz/${orderDetail?.itemId as string}/start`
-                    );
+                    } else {
+                      void router.replace(
+                        `/play/tournament/${orderDetail?.itemId as string}`
+                      );
+                    }
                   }}
                 >
                   {t('bnc.done')}

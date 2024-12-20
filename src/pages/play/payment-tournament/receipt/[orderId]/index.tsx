@@ -77,6 +77,7 @@ const SuccessPaymentPage: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const id = router.query.orderId as string;
+  const paymentUrl = router.query.paymentUrl as string;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [eWalletList, setEWalletList] = useState([]);
@@ -144,7 +145,9 @@ const SuccessPaymentPage: React.FC = () => {
   }
 
   useEffect(() => {
-    void fetchTournamentData();
+    if (orderDetail?.itemId !== undefined) {
+      void fetchTournamentData(orderDetail?.itemId);
+    }
     void fetchOrderDetail();
     void fetchPaymentList();
     dispatch(setPromoCodeValidationResult(0));
@@ -154,7 +157,7 @@ const SuccessPaymentPage: React.FC = () => {
     ) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
-  }, [id, orderDetail?.howToPayApi]);
+  }, [id, orderDetail?.itemId, orderDetail?.howToPayApi]);
 
   const getSelectedPayment = (
     eWalletList: PaymentList[],
@@ -195,10 +198,10 @@ const SuccessPaymentPage: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
-  const fetchTournamentData = async (): Promise<void> => {
+  const fetchTournamentData = async (itemId: string): Promise<void> => {
     try {
       setLoading(true);
-      const resp: IDetailTournament = await getPlayById(id);
+      const resp: IDetailTournament = await getPlayById(itemId);
       setDetailTournament(resp);
     } catch (error) {
       toast(`Error fetch tournament ${error as string}`);
@@ -214,6 +217,21 @@ const SuccessPaymentPage: React.FC = () => {
 
     return timeStart < timeNow;
   };
+  
+  const handleViewQR = async(): Promise<void> => {
+    const query = paymentUrl !== '' ? { paymentUrl } : undefined;
+
+    await router.replace(
+      {
+        pathname: `/play/payment-tournament/receipt/${id}` + `${((orderDetail?.paymentMethod?.includes('BNC')) ?? false) ? '/qris' : ''}`,
+        query
+      },
+      undefined,
+      { shallow: true }
+    ).catch(error => {
+      toast(`${error as string}`);
+    });
+  }
 
   return (
     <div className="pt-10">
@@ -572,11 +590,7 @@ const SuccessPaymentPage: React.FC = () => {
                   <Typography className="text-sm font-semibold text-[#262626] truncate">
                     {orderDetail?.transactionId === ''
                       ? '-'
-                      : `${(orderDetail?.transactionId ?? '').slice(0, 20)}${
-                          (orderDetail?.transactionId ?? '').length > 20
-                            ? '...'
-                            : ''
-                        }`}
+                      : `${orderDetail?.transactionId ?? ''}`}
                   </Typography>
                 </div>
               </Card>
@@ -616,9 +630,15 @@ const SuccessPaymentPage: React.FC = () => {
                 </Card>
               )}
 
-              <div className="w-full flex items-center justify-center">
+              <div className="w-full flex flex-col items-center justify-center">
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
+                  onClick={async() => { void handleViewQR() }}
+                >
+                  {t('bnc.seeQRCode')}
+                </Button>
+                <Button
+                  className={`${((orderDetail?.paymentMethod?.includes('BNC')) ?? false) ? 'mt-4' : 'mt-10'} w-full text-sm font-semibold bg-seeds-button-green rounded-full capitalize`}
                   onClick={() => {
                     if (isStarted()) {
                       if (

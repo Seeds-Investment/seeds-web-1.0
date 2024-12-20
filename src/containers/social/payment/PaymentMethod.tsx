@@ -37,6 +37,8 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
   const router = useRouter();
   const [eWalletList, setEWalletList] = useState([]);
   const [qRisList, setQRisList] = useState([]);
+  const [ccList, setCcList] = useState([]);
+  const [virtualAccountList, setVirtualAccountList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [option, setOption] = useState<Payment>();
   const [openDialog, setOpenDialog] = useState(false);
@@ -60,6 +62,8 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
       const data = await getPaymentList();
       setEWalletList(data.type_ewallet);
       setQRisList(data.type_qris);
+      setCcList(data.type_cc);
+      setVirtualAccountList(data.type_va);
     } catch (error) {
       toast.error(`Error fetching Payment List: ${error as string}`);
     }
@@ -97,15 +101,23 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
         spot_type: 'Premium Content'
       });
 
-      if (response?.payment_url !== undefined && response?.payment_url !== '') {
-        window.open(response.payment_url as string, '_blank');
-      }
-
-      await router
-        .push(`/social/payment/receipt/${response.order_id as string}`)
-        .catch(error => {
-          toast.error(`${error as string}`);
+      if (response) {
+        if (response.payment_url !== '' && paymentMethod !== 'BNC_QRIS') {
+          window.open(response.payment_url as string, '_blank');
+        }
+        const query = response.payment_url !== '' ? { paymentUrl: response.payment_url } : undefined;
+        
+        await router.replace(
+          {
+            pathname: `/social/payment/receipt/${response.order_id as string}` + `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+            query
+          },
+          undefined,
+          { shallow: true }
+        ).catch(error => {
+          toast(`${error as string}`);
         });
+      }
     } catch (error) {
       toast.error(`${error as string}`);
     }
@@ -174,6 +186,18 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
           <PaymentOptions
             label={t('PlayPayment.eWalletLabel')}
             options={eWalletList}
+            onChange={setOption}
+            currentValue={option}
+          />
+          <PaymentOptions
+            label={t('PlayPayment.creditCardLabel')}
+            options={virtualAccountList}
+            onChange={setOption}
+            currentValue={option}
+          />
+          <PaymentOptions
+            label={t('PlayPayment.ccLabel')}
+            options={ccList}
             onChange={setOption}
             currentValue={option}
           />

@@ -136,22 +136,30 @@ const PaymentList: React.FC<props> = ({
 
       setQRisList(
         data?.type_qris?.filter((item: { payment_method: string }) =>
-          detailQuiz?.payment_method?.includes(item?.payment_method)
+          detailQuiz !== undefined
+            ? detailQuiz?.payment_method?.includes(item?.payment_method)
+            : item?.payment_method
         )
       );
       setEWalletList(
         data?.type_ewallet?.filter((item: { payment_method: string }) =>
-          detailQuiz?.payment_method?.includes(item?.payment_method)
+          detailQuiz !== undefined
+            ? detailQuiz?.payment_method?.includes(item?.payment_method)
+            : item?.payment_method
         )
       );
       setCcList(
         data?.type_cc?.filter((item: { payment_method: string }) =>
-          detailQuiz?.payment_method?.includes(item?.payment_method)
+          detailQuiz !== undefined
+            ? detailQuiz?.payment_method?.includes(item?.payment_method)
+            : item?.payment_method
         )
       );
       setVirtualAccountList(
         data?.type_va?.filter((item: { payment_method: string }) =>
-          detailQuiz?.payment_method?.includes(item?.payment_method)
+          detailQuiz !== undefined
+            ? detailQuiz?.payment_method?.includes(item?.payment_method)
+            : item?.payment_method
         )
       );
     } catch (error) {
@@ -300,20 +308,22 @@ const PaymentList: React.FC<props> = ({
             spot_type: 'Join Circle Premium'
           }
         });
-
         if (response.success === true) {
-          if (response.data.Response.payment_url !== undefined) {
+          if (response.data.Response.payment_url !== '' && paymentMethod !== 'BNC_QRIS') {
             window.open(response.data.Response.payment_url as string, '_blank');
           }
-          await router
-            .push(
-              `/connect/payment/receipt/${
-                response.data.Response.order_id as string
-              }`
-            )
-            .catch(error => {
-              toast(`${error as string}`);
-            });
+          const query = response.data.Response.payment_url !== '' ? { paymentUrl: response.data.Response.payment_url } : undefined;
+          
+          await router.replace(
+            {
+              pathname: `/connect/payment/receipt/${response.data.Response.order_id as string}` + `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+              query
+            },
+            undefined,
+            { shallow: true }
+          ).catch(error => {
+            toast(`${error as string}`);
+          });
         }
       }
     } catch (error) {

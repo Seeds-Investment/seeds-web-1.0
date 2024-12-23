@@ -56,31 +56,41 @@ const TopgainersAssetHomepage: React.FC<props> = ({ data, loading }) => {
                       {data.asset_type}
                     </Typography>
                   </div>
-                  <Typography className="font-semibold text-sm text-[#262626] overflow-hidden">
+                  <Typography className="font-semibold text-[rgb(38,38,38)] text-sm overflow-hidden">
                     {data.asset_price.toLocaleString('id-ID', {
-                      style: 'decimal',
+                      style: 'currency',
                       currency: 'IDR'
-                    })}
+                    }) ?? standartCurrency(data.asset_price)}
                   </Typography>
                   <div className="flex w-full gap-1">
                     <Image
                       src={
-                        data.regular_percentage <= data.asset_price
+                        data.regular_percentage > -0.1 &&
+                        data.regular_percentage >= 0
                           ? Bullish
                           : Bearish
                       }
                       alt={data.asset_name}
                     />
-                    <Typography className="text-[#66C425] text-[10px] font-poppins">
-                      {data.regular_percentage.toLocaleString('id-ID', {
-                        style: 'currency',
-                        currency: 'IDR'
-                      }) ?? standartCurrency(data.regular_percentage)}
-                    </Typography>
+                    {data.regular_percentage >= 0 &&
+                    data.regular_percentage > -0.1 ? (
+                      <Typography className="text-[#66C425] text-[10px] font-poppins">
+                        {standartCurrency(data.regular_percentage)}
+                      </Typography>
+                    ) : (
+                      <Typography className="text-[#DD2525] text-[10px] font-poppins">
+                        {standartCurrency(data.regular_percentage)}
+                      </Typography>
+                    )}
                   </div>
                   <div className="flex py-2 px-3 h-full">
                     <Image
-                      src={data.regular_percentage >= 0 ? GreenChart : RedChart}
+                      src={
+                        data.regular_percentage > -0.1 &&
+                        data.regular_percentage >= 0
+                          ? GreenChart
+                          : RedChart
+                      }
                       alt={data.asset_name}
                       width={300}
                       height={300}

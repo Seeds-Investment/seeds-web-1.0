@@ -4,7 +4,7 @@ import { Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import TopgainersAssetHomepage from './top-gainers-hooks/TopGainers.component';
+import TopgainersAssetHomepage from './top-gainers-hooks/TopGainers.Component';
 export interface topgainers {
   asset_id: string;
   asset_name: string;
@@ -14,6 +14,7 @@ export interface topgainers {
   asset_type: string;
   asset_price: number;
   regular_percentage: number;
+  volume: number;
 }
 
 export interface Metadata {
@@ -23,10 +24,11 @@ export interface Metadata {
   total_page: number;
 }
 
-export interface AssetTopGainers {
-  data: topgainers;
-  metadata: Metadata;
-}
+const topgainersparams = {
+  sortBY: 'top_gainers',
+  page: 1,
+  limit: 7
+};
 
 const TopGainers: React.FC = () => {
   const { t } = useTranslation();
@@ -37,11 +39,7 @@ const TopGainers: React.FC = () => {
     const fetchTopGainers = async (): Promise<void> => {
       try {
         setIsLoading(true);
-        const topResponse = await getPlayAssetTrending({
-          sortBY: 'top_gainers',
-          page: 1,
-          limit: 7
-        });
+        const topResponse = await getPlayAssetTrending({ ...topgainersparams });
         setTopGainers(topResponse.data.data);
       } catch (error) {
         toast.error(`failed to fetch data: ${error as string}`);

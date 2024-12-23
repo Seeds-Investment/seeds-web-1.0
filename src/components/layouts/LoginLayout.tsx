@@ -14,7 +14,7 @@ const LoginLayout: React.FC<props> = ({ children }) => {
   return (
     <div className="flex h-screen md:bg-[url('/assets/vector/quiz-bg.svg')] md:bg-cover md:bg-no-repeat">
       <aside
-        className={`w-1/5 h-screen py-6 social-sidebar fixed ${
+        className={`w-1/5 h-screen pt-6 social-sidebar fixed ${
           width !== undefined ? (width >= 768 ? '' : 'hidden') : ''
         }`}
       >

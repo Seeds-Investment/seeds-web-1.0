@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import CCard from '@/components/CCard';
 import Dialog from '@/components/ui/dialog/Dialog';
+import { userDefault } from '@/containers/play/payment/PaymentList';
 import PaymentOptions from '@/containers/play/payment/PaymentOptions';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -182,24 +183,28 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
             options={qRisList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
           <PaymentOptions
             label={t('PlayPayment.eWalletLabel')}
             options={eWalletList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
           <PaymentOptions
             label={t('PlayPayment.creditCardLabel')}
             options={virtualAccountList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
           <PaymentOptions
             label={t('PlayPayment.ccLabel')}
             options={ccList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
           <Button
             disabled={option?.id == null}

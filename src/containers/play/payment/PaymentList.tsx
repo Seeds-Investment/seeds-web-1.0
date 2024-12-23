@@ -44,7 +44,7 @@ interface props {
   useCoins?: boolean;
 }
 
-const userDefault: UserInfo = {
+export const userDefault: UserInfo = {
   avatar: '',
   badge: '',
   bio: '',
@@ -382,6 +382,7 @@ const PaymentList: React.FC<props> = ({
             options={qRisList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
         )}
         {eWalletList?.length > 0 && (
@@ -390,6 +391,7 @@ const PaymentList: React.FC<props> = ({
             options={eWalletList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
         )}
         {virtualAccountList?.length > 0 && (
@@ -398,6 +400,7 @@ const PaymentList: React.FC<props> = ({
             options={virtualAccountList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
         )}
         {ccList?.length > 0 && (
@@ -406,6 +409,7 @@ const PaymentList: React.FC<props> = ({
             options={ccList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
         )}
         <SubmitButton

@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import chat from 'public/assets/social/chat.svg';
 import connect from 'public/assets/social/connect.svg';
+import danamart from 'public/assets/social/danamart.svg';
 import homepage from 'public/assets/social/discover.svg';
 import ID from 'public/assets/social/flag/ID.png';
 import US from 'public/assets/social/flag/US.png';
@@ -17,8 +18,9 @@ import profile from 'public/assets/social/people.svg';
 import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
+import market from 'src/assets/market/market.svg';
 import Logo from '../ui/vector/Logo';
 
 interface props {
@@ -37,9 +39,10 @@ const menu = isGuest()
   : [
       { title: 'Social', url: '/social', image: social },
       { title: 'Homepage', url: '/homepage', image: homepage },
-      { title: 'Market', url: '/market' },
+      { title: 'Market', url: '/market', image: market },
       { title: 'Connect', url: '/connect', image: connect },
       { title: 'Play', url: '/play', image: play },
+      { title: 'Danamart', url: '/danamart', image: danamart },
       { title: 'Setting', url: '/user-setting', image: setting },
       {
         title: 'Notification',
@@ -59,6 +62,7 @@ const SidebarLoginResponsive: React.FC<props> = ({
   const [accessToken, setAccessToken] = useState('');
   const router = useRouter();
   const languageCtx = useContext(LanguageContext);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const isLinkActive = (href: string): string => {
     return router.asPath.startsWith(href) ? 'active' : '';
@@ -84,13 +88,32 @@ const SidebarLoginResponsive: React.FC<props> = ({
     });
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent): void => {
+      if (
+        menuRef.current != null &&
+        !menuRef.current.contains(event.target as Node)
+      ) {
+        handleOpen();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [handleOpen]);
+
   return (
-    <aside className="absolute z-40 right-0 w-2/3 h-[50rem] py-6 bg-white">
-      <div className="absolute -left-4 bg-white border-[#E9E9E9] border-2 w-fit px-2 py-1 rounded-xl">
+    <aside
+      ref={menuRef}
+      className="absolute z-40 right-0 w-2/3 h-[50rem] py-6 bg-white"
+    >
+      <div className="absolute -left-4 bg-white border-[#E9E9E9] border-2 w-fit px-2 py-1 rounded-xl cursor-pointer">
         <ChevronDoubleRightIcon width={20} height={20} onClick={handleOpen} />
       </div>
       <div className="flex flex-col items-center gap-3">
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-">
           <Link href={`/homepage`} className="mb-[30px] px-[60px]">
             <Logo
               width={width !== undefined && width <= 640 ? '62.22' : undefined}

@@ -6,14 +6,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import connect from 'public/assets/social/connect.svg';
+import danamart from 'public/assets/social/danamart.svg';
 import homepage from 'public/assets/social/discover.svg';
 import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useEffect, useState } from 'react';
-import market from 'src/assets/market/market.svg';
-// import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import market from 'src/assets/market/market.svg';
 import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
 
@@ -31,13 +31,10 @@ const SidebarLogin: React.FC = () => {
         { title: 'Market', url: '/market', image: market },
         { title: 'Connect', url: '/connect', image: connect },
         { title: 'Play', url: '/play', image: play },
+        { title: 'Danamart', url: '/danamart', image: danamart },
         { title: 'Setting', url: '/user-setting', image: setting }
-        // { title: 'Notification', url: '/setting', image: notification },
-        // { title: 'Chat', url: '/setting', image: chat }
-        // { title: 'Profile', url : '/setting', image: setting},
       ];
 
-  // const { t } = useTranslation();
   const [accessToken, setAccessToken] = useState('');
   const width = useWindowInnerWidth();
   const router = useRouter();
@@ -70,7 +67,7 @@ const SidebarLogin: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-3 h-full bg-white bg-opacity-50">
+    <div className="flex flex-col items-center gap-3 h-full pb-6 bg-white bg-opacity-50">
       {isLogoutModal && (
         <ModalLogout
           onClose={() => {

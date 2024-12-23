@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @next/next/no-img-element */
 import back_nav from '@/assets/circle-page/back_nav.svg';
 import more_vertical from '@/assets/more-option/more_vertical.svg';
@@ -213,7 +214,11 @@ const ChatPages: React.FC = () => {
     if (statusIsJoined) {
       setActiveTab('COMMUNITY')
     } else {
-      setActiveTab('PERSONAL')
+      if (activeTab !== 'REQUEST') {
+        setActiveTab('PERSONAL')
+      } else {
+        setActiveTab('REQUEST')
+      }
     }
     setIsDropdownOpen(false);
     setIsChatActive(true);
@@ -344,7 +349,7 @@ const ChatPages: React.FC = () => {
     async (isRefetch: boolean = true): Promise<void> => {
       try {
         setIsLoading(true);
-        if (activeTab === 'PERSONAL') {
+        if (activeTab === 'PERSONAL' || activeTab === 'REQUEST') {
           const response = await getChat({ user_id: roomId as string, limit });
           setMessageList(response.data);
           await readPersonalMessage(roomId as string);
@@ -408,6 +413,9 @@ const ChatPages: React.FC = () => {
       await acceptRequest(roomId as string);
     } catch (error: any) {
       toast('Oops! Error when try to accept request');
+    } finally {
+      setActiveTab('PERSONAL')
+      setIsChatActive(false)
     }
   };
 
@@ -416,6 +424,9 @@ const ChatPages: React.FC = () => {
       await rejectRequest(roomId as string);
     } catch (error: any) {
       toast('Oops! Error when try to reject request');
+    } finally {
+      setActiveTab('PERSONAL')
+      setIsChatActive(false)
     }
   };
 
@@ -429,13 +440,14 @@ const ChatPages: React.FC = () => {
       toast('Oops! Error when try to Leave Community');
     } finally {
       setIsDeletePopupOpen(false);
+      setIsLeavePopupOpen(false);
+      setIsChatActive(false)
     }
   };
 
   useEffect(() => {
     void fetchListChat();
-  }, [filter]);
-
+  }, [filter, isChatActive]);
   const fetchOtherUser = async (): Promise<void> => {
     try {
       const userData = await getOtherUser(roomId as string);
@@ -1324,6 +1336,7 @@ const ChatPages: React.FC = () => {
                   <TabPanel value="PERSONAL" className="py-0 pt-2 px-0 mt-2">
                     <ContactList
                       data={chatList}
+                      userId={dataUser?.id ?? ''}
                       handleFilterUnreadChange={handleFilterUnreadChange}
                       handleListClick={handleListClick}
                       handleChangeTab={handleChangeTab}
@@ -1352,6 +1365,7 @@ const ChatPages: React.FC = () => {
                   <TabPanel value="REQUEST" className="py-0 pt-2 px-0">
                     <ContactList
                       data={chatList}
+                      userId={dataUser?.id ?? ''}
                       handleFilterUnreadChange={handleFilterUnreadChange}
                       handleListClick={handleListClick}
                       handleChangeTab={handleChangeTab}

@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 interface props {
   data: Chat[];
+  userId: string;
   handleFilterUnreadChange: () => void;
   handleListClick: (status: boolean) => void;
   handleChangeTab: (value: 'PERSONAL' | 'COMMUNITY' | 'REQUEST') => void;
@@ -19,6 +20,7 @@ interface props {
 
 const ContactList: React.FC<props> = ({
   data,
+  userId,
   handleListClick,
   handleChangeTab,
   activeTab,
@@ -80,7 +82,7 @@ const ContactList: React.FC<props> = ({
         className={`flex flex-col max-h-[40vh] p-4 overflow-x-hidden mt-4 w-full`}
       >
         {filteredChats?.map((el: Chat) => {
-          return <ChatList data={el} key={el.id} handleListClick={() => { handleListClick(el?.status_joined); }}/>;
+          return <ChatList data={el} key={el.id} userId={userId} handleListClick={() => { handleListClick(el?.status_joined); }}/>;
         })}
       </div>
     </div>

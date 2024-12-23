@@ -2027,7 +2027,19 @@ export default {
       text1: "Your QR Code has expired",
       text2: "Please make the purchase again and ensure that your payment has been completed in time"
     },
-    repeat: "Repeat Purchase"
+    repeat: "Repeat Purchase",
+    completePayment: 'Complete the payment in',
+    clock: {
+      day: 'day',
+      days: 'days',
+      hour: 'hour',
+      hours: 'hours',
+      minute: 'minute',
+      minutes: 'minutes',
+      second: 'second',
+      seconds: 'seconds',
+      and: 'and'
+    },
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Please input your email correctly',

@@ -1,3 +1,4 @@
+import CountdownTimer from '@/components/payment/CountdownTimer';
 import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
@@ -36,6 +37,7 @@ interface ReceiptDetail {
   seeds_coin: number;
   promo_price?: number;
   is_promo_available?: boolean;
+  expired_at: string;
 }
 
 const SuccessPaymentPageQR: React.FC = () => {
@@ -174,6 +176,15 @@ const SuccessPaymentPageQR: React.FC = () => {
             {
               orderDetail?.transactionStatus !== 'EXPIRED' &&
               <>
+                <Typography className='font-poppins font-normal text-center mt-8'>
+                  {t('bnc.completePayment')}
+                </Typography>
+                {
+                  orderDetail !== undefined &&
+                    <CountdownTimer
+                      deadline={(orderDetail !== undefined) ? orderDetail?.expired_at : ''}
+                    />
+                }
                 <div className='flex flex-col justify-around items-start gap-2 my-8'>
                   {
                     scanInstructions?.map((instructions, index) => (

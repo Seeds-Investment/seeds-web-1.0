@@ -1956,7 +1956,19 @@ export default {
       text1: 'Kode QR Anda telah kadaluarsa',
       text2: 'Lakukan pembelian ulang dan pastikan pembayaran anda selesai tepat waktu'
     },
-    repeat: 'Ulangi Pembelian'
+    repeat: 'Ulangi Pembelian',
+    completePayment: 'Selesaikan pembayaran dalam',
+    clock: {
+      day: 'hari',
+      days: 'hari',
+      hour: 'jam',
+      hours: 'jam',
+      minute: 'menit',
+      minutes: 'menit',
+      second: 'detik',
+      seconds: 'detik',
+      and: 'dan'
+    },
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Tolong masukin emailmu yang benar',

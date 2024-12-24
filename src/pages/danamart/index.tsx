@@ -1,7 +1,35 @@
-import React from 'react';
+import ModalRegister from '@/components/danamart/ModalRegister';
+import { getUserInfo } from '@/repository/profile.repository';
+import { type UserInfo } from '@/utils/interfaces/user.interface';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const Danamart = (): React.ReactElement => {
-  return <div>Danamart</div>;
+  const [userData, setUserData] = useState<UserInfo>();
+
+  const [isOpenModalRegister, setIsOpenModalRegister] = useState(false);
+
+  const fetchUserInfo = async (): Promise<void> => {
+    try {
+      const res = await getUserInfo();
+      setUserData(res);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    void fetchUserInfo();
+    setIsOpenModalRegister(true);
+  }, []);
+
+  return (
+    <div>
+      {isOpenModalRegister && userData !== undefined && (
+        <ModalRegister userInfo={userData} />
+      )}
+    </div>
+  );
 };
 
 export default Danamart;

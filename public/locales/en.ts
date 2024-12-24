@@ -2789,5 +2789,34 @@ export default {
       notFound: `You don't have any {{data}} yet`,
       moreInfo: 'More Information'
     }
+  },
+  danamart: {
+    register: {
+      connectSeeds: 'Connect Seeds to Danamart',
+      automate:
+        'Automate your investment journey by linking Seeds to Danamart effortlessly.',
+      notLinked: 'Not Linked',
+      linked: 'Linked',
+      linkAccount: 'Link Phone Number or Email',
+      email: 'Email',
+      phoneNumber: 'Phone Number',
+      createAccountButton: 'Create Account Danamart',
+      createDesc:
+        'Create a new Danamart account and unlock your investment potential.',
+      no: 'No',
+      yes: 'Yes',
+      createPasswordTitle: 'Create password for Danamart account',
+      createPassword: 'Create Password',
+      pleaseCreatePassword: 'Please create password',
+      confirmPassword: 'Confirm Password',
+      pleaseConfirmPassword: 'Please confirm password',
+      passwordContain: 'Passwords must contain:',
+      numbers: 'Numbers',
+      lowercase: 'Lowercase letters',
+      specialCharacters: 'Special characters',
+      characters: '8 characters',
+      capitalLetters: 'Capital letters',
+      createAccount: 'Create Account'
+    }
   }
 };

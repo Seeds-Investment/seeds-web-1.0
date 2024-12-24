@@ -2721,5 +2721,33 @@ export default {
       notFound: `Kamu tidak memiliki {{data}}`,
       moreInfo: 'Informasi Lainnya'
     }
+  },
+  danamart: {
+    register: {
+      connectSeeds: 'Hubungkan Seeds dengan Danamart',
+      automate:
+        'Optimalkan perjalanan investasi anda secara mudah dengan menghubungkan Seeds ke Danamart.',
+      notLinked: 'Tidak Terhubung',
+      linked: 'Terhubung',
+      linkAccount: 'Hubungkan Nomor Telepon atau Email',
+      email: 'Email',
+      phoneNumber: 'Nomor Telepon',
+      createAccountButton: 'Buat Akun Danamart',
+      createDesc: 'Buat akun Danamart baru dan buka potensi investasi anda.',
+      no: 'Tidak',
+      yes: 'Ya',
+      createPasswordTitle: 'Buat Kata Sandi Untuk Akun Danamart',
+      createPassword: 'Buat Kata Sandi',
+      pleaseCreatePassword: 'Silakan buat kata sandi',
+      confirmPassword: 'Konfirmasi kata sandi',
+      pleaseConfirmPassword: 'Silahkan konfirmasi kata sandi',
+      passwordContain: 'Password harus mengandung:',
+      numbers: 'Angka',
+      lowercase: 'Huruf Kecil',
+      specialCharacters: 'Karakter Khusus',
+      characters: '8 Karakter',
+      capitalLetters: 'Huruf Kapital',
+      createAccount: 'Buat Akun'
+    }
   }
 };

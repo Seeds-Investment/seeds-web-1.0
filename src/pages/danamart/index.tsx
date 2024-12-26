@@ -1,4 +1,5 @@
 import ModalRegister from '@/components/danamart/ModalRegister';
+import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type UserInfo } from '@/utils/interfaces/user.interface';
 import React, { useEffect, useState } from 'react';
@@ -32,4 +33,4 @@ const Danamart = (): React.ReactElement => {
   );
 };
 
-export default Danamart;
+export default withAuth(Danamart);

@@ -2748,6 +2748,7 @@ export default {
       specialCharacters: 'Karakter Khusus',
       characters: '8 Karakter',
       capitalLetters: 'Huruf Kapital',
+      passNotMatch: 'Kata sandi tidak cocok',
       createAccount: 'Buat Akun'
     }
   }

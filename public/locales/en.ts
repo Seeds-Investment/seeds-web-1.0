@@ -2817,6 +2817,7 @@ export default {
       specialCharacters: 'Special characters',
       characters: '8 characters',
       capitalLetters: 'Capital letters',
+      passNotMatch: 'Password does not match',
       createAccount: 'Create Account'
     }
   }

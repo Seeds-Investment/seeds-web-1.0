@@ -2797,10 +2797,11 @@ export default {
         'Automate your investment journey by linking Seeds to Danamart effortlessly.',
       notLinked: 'Not Linked',
       linked: 'Linked',
-      linkAccount: 'Link Phone Number or Email',
+      linkAccount: 'Link Phone Number and Email',
       email: 'Email',
       phoneNumber: 'Phone Number',
-      createAccountButton: 'Create Account Danamart',
+      createAccountButton: 'Create Danamart Account',
+      createDanamartAccount: 'Create Account Danamart',
       createDesc:
         'Create a new Danamart account and unlock your investment potential.',
       no: 'No',

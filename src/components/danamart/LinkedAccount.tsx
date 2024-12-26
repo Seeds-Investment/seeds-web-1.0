@@ -11,19 +11,24 @@ interface Props {
   t: (key: string) => string;
   router: ReturnType<typeof useRouter>;
   userInfo: UserInfo;
-  setLinkedSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLinkedSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const LinkedAccount: React.FC<Props> = ({
   t,
   router,
   userInfo,
-  setLinkedSuccess
+  setIsLinkedSuccess
 }) => {
   return (
-    <div className="p-8 md:px-4 md:py-5 flex flex-col items-center gap-5">
+    <div className="px-4 py-5 md:p-8 flex flex-col items-center gap-5">
       <div className="w-full relative flex justify-center">
-        <div className="absolute right-0 cursor-pointer hover:scale-110 duration-150">
+        <div
+          onClick={async () => {
+            await router.push('/homepage');
+          }}
+          className="absolute right-0 cursor-pointer hover:scale-110 duration-150"
+        >
           <IoMdClose size={20} />
         </div>
         <Image
@@ -41,7 +46,7 @@ const LinkedAccount: React.FC<Props> = ({
           {t('danamart.register.automate')}
         </Typography>
       </div>
-      <div className="flex flex-col gap-6 px-4 py-5 w-full">
+      <div className="flex flex-col gap-3 md:gap-6 p-4 md:px-4 md:py-7 w-full">
         <div className="border border-[#e5e5e5] p-3 flex justify-between items-center gap-2 rounded-xl">
           <div className="flex items-center gap-2">
             <Image src={EmailIcon} alt="Email Icon" width={48} height={48} />
@@ -76,7 +81,7 @@ const LinkedAccount: React.FC<Props> = ({
               </Typography>
             </div>
           </div>
-          {userInfo?.email !== '' ? (
+          {userInfo?.phoneNumber !== '' ? (
             <IoMdCheckmark size={28} color="#27A590" />
           ) : (
             <IoMdClose size={28} color="#B91C1C" />
@@ -86,10 +91,10 @@ const LinkedAccount: React.FC<Props> = ({
       <Button
         onClick={async () => {
           userInfo?.email !== '' && userInfo?.phoneNumber !== ''
-            ? setLinkedSuccess(true)
+            ? setIsLinkedSuccess(true)
             : await router.push('/user-setting/account-security-center');
         }}
-        className="w-full bg-seeds-button-green text-white font-poppins font-semibold text-base capitalize rounded-full"
+        className="w-full h-[52px] bg-seeds-button-green text-white font-poppins font-semibold text-base capitalize rounded-full"
       >
         {userInfo?.email !== '' && userInfo?.phoneNumber !== ''
           ? t('danamart.register.createAccountButton')

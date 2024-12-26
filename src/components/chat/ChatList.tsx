@@ -28,7 +28,7 @@ const ChatList: React.FC<props> = ({
           : 'bg-white hover:bg-[#f7f7f7] duration-300 rounded-sm'
       }`}
       onClick={() => {
-        handleListClick()
+        handleListClick();
         void router.replace(`/chat?roomId=${data?.id}`);
       }}
     >
@@ -54,26 +54,31 @@ const ChatList: React.FC<props> = ({
         </div>
         <div className="w-full flex justify-between">
           <Typography className="font-normal text-sm text-[#7C7C7C] font-poppins max-w-[70%] max-h-[20px] text-ellipsis overflow-hidden">
-            {(data?.content_text ?? '') !== '' ? data?.content_text.slice(0, 30) : ''}
+            {(data?.content_text ?? '') !== ''
+              ? data?.content_text.slice(0, 30)
+              : ''}
           </Typography>
-          {data.total_unread > 0 && (
-            <div className="rounded-full bg-[#FF6565] w-[24px] h-[24px] flex justify-center items-center">
-              <Typography className="font-normal text-[10px] text-[#FFEBEB] font-poppins">
-                {data?.total_unread}
-              </Typography>
-            </div>
-          )}
-          {((data?.read_at !== '0001-01-01T00:00:00Z') && (data?.last_sender_id === userId)) && (
-            <div className="flex justify-center items-center w-[20px] h-auto">
-              <Image
-                src={readChatIcon}
-                alt="readChatIcon"
-                width={1000}
-                height={1000}
-                className="w-full h-auto"
-              />
-            </div>
-          )}
+          <div className="flex gap-2">
+            {data.total_unread > 0 && (
+              <div className="rounded-full bg-[#FF6565] w-[24px] h-[24px] flex justify-center items-center">
+                <Typography className="font-normal text-[10px] text-[#FFEBEB] font-poppins">
+                  {data?.total_unread}
+                </Typography>
+              </div>
+            )}
+            {data?.read_at !== '0001-01-01T00:00:00Z' &&
+              data?.last_sender_id === userId && (
+                <div className="flex justify-center items-center w-[20px] h-auto">
+                  <Image
+                    src={readChatIcon}
+                    alt="readChatIcon"
+                    width={1000}
+                    height={1000}
+                    className="w-full h-auto"
+                  />
+                </div>
+              )}
+          </div>
         </div>
       </div>
     </div>

@@ -48,6 +48,7 @@ const ModalRegister: React.FC<Props> = ({ userInfo }) => {
       {!isLinkedSuccess && isConfirmRegistration && (
         <CreateAccount
           userInfo={userInfo}
+          router={router}
           t={t}
           setIsLinkedSuccess={setIsLinkedSuccess}
           setConfirmRegistration={setIsConfirmRegistration}

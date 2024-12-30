@@ -2819,6 +2819,31 @@ export default {
       capitalLetters: 'Capital letters',
       passNotMatch: 'Password does not match',
       createAccount: 'Create Account'
+    },
+    dashboard: {
+      title: 'Dashboard',
+      description: 'Your gateway to track and grow investments.',
+      verifyPhone: "Don't forget to verify your phone number",
+      here: 'here',
+      cashInHand: 'Cash In-hand',
+      cashInHandDesc: 'Funds available for withdrawal or investment',
+      danaReward: 'Dana Reward',
+      danaRewardDesc: 'Promotional funds that can only be invested',
+      danaInterim: 'Dana Interim',
+      danaInterimDesc: 'Funds from interim dividends or referral commissions',
+      investableFunds: 'Investable Funds',
+      investableFundsDesc: 'Cash In-hand + Reward Fund + Interim Fund',
+      fundsSecurities: 'Funds in Securities',
+      fundsSecuritiesDesc: 'Funds invested in securities',
+      totalFunds: 'Total Funds',
+      totalFundsDesc: 'The overall total of funds held',
+      purchaseAllocationSecurities: 'Purchase allocation by securities',
+      shares: 'Shares',
+      bonds: 'Bonds',
+      purchaseAllocationBusiness: 'Purchase allocation by business sector',
+      growthStocks: 'Growth Stocks',
+      incomeStocks: 'Income Stocks',
+      alternatives: 'Alternatives'
     }
   }
 };

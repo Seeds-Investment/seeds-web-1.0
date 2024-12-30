@@ -2750,6 +2750,32 @@ export default {
       capitalLetters: 'Huruf Kapital',
       passNotMatch: 'Kata sandi tidak cocok',
       createAccount: 'Buat Akun'
+    },
+    dashboard: {
+      title: 'Dasbor',
+      description:
+        'Pintu gerbang anda untuk memantau dan mengembangkan investasi.',
+      verifyPhone: 'Jangan lupa untuk memverifikasi nomor telepon Anda',
+      here: 'di sini',
+      cashInHand: 'Uang Tunai',
+      cashInHandDesc: 'Dana yang tersedia untuk ditarik atau di investasikan',
+      danaReward: 'Imbalan Dana',
+      danaRewardDesc: 'Dana promosi yang hanya dapat diinvestasikan',
+      danaInterim: 'Dana Sementara',
+      danaInterimDesc: 'Dana hasil dividen interim atau komisi referral',
+      investableFunds: 'Dana Dapat Diinvestasikan',
+      investableFundsDesc: 'Uang Tunai + Imbalan Dana + Dana Sementara',
+      fundsSecurities: 'Dana dalam Efek',
+      fundsSecuritiesDesc: 'Dana yang diinvestasikan pada efek',
+      totalFunds: 'Total Keseluruhan Dana',
+      totalFundsDesc: 'Total keseluruhan dana yang dimiliki',
+      purchaseAllocationSecurities: 'Alokasi pembelian berdasarkan efek',
+      shares: 'Saham',
+      bonds: 'Obligasi',
+      purchaseAllocationBusiness: 'Alokasi pembelian berdasarkan sektor usaha',
+      growthStocks: 'Pertumbuhan Saham',
+      incomeStocks: 'Pendapatan Saham',
+      alternatives: 'Alternatif'
     }
   }
 };

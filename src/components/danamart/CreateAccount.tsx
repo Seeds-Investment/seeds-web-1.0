@@ -5,11 +5,13 @@ import { type RegistrationForm } from '@/utils/interfaces/danamart.interface';
 import { type UserInfo } from '@/utils/interfaces/user.interface';
 import { Button, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { type useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 
 interface Props {
   userInfo: UserInfo;
+  router: ReturnType<typeof useRouter>;
   t: (key: string) => string;
   setConfirmRegistration: React.Dispatch<React.SetStateAction<boolean>>;
   setIsLinkedSuccess: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,6 +19,7 @@ interface Props {
 
 const CreateAccount: React.FC<Props> = ({
   userInfo,
+  router,
   t,
   setConfirmRegistration,
   setIsLinkedSuccess
@@ -104,6 +107,7 @@ const CreateAccount: React.FC<Props> = ({
 
   const handleCreateAccount = async (): Promise<void> => {
     console.log(regisForm);
+    await router.push('/danamart/dashboard');
   };
 
   const isPasswordValid = Object.values(passwordValidation).every(Boolean);

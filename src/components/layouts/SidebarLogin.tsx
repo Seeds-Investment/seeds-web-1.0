@@ -12,6 +12,7 @@ import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useEffect, useState } from 'react';
+import { GoDotFill } from 'react-icons/go';
 import { toast } from 'react-toastify';
 import market from 'src/assets/market/market.svg';
 import ModalLogout from '../popup/ModalLogout';
@@ -31,13 +32,20 @@ const SidebarLogin: React.FC = () => {
         { title: 'Market', url: '/market', image: market },
         { title: 'Connect', url: '/connect', image: connect },
         { title: 'Play', url: '/play', image: play },
-        { title: 'Danamart', url: '/danamart', image: danamart },
+        {
+          title: 'Danamart',
+          url: '/danamart',
+          image: danamart,
+          hasSubmenu: true,
+          submenu: [{ title: 'Dashboard', url: '/danamart/dashboard' }]
+        },
         { title: 'Setting', url: '/user-setting', image: setting }
       ];
 
   const [accessToken, setAccessToken] = useState('');
   const width = useWindowInnerWidth();
   const router = useRouter();
+  const [isDanamartOpen, setIsDanamartOpen] = useState(false);
   const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
   const [showLogoutButton, setShowLogoutButton] = useState(false);
   const [userInfo, setUserInfo] = useState<any>([]);
@@ -85,20 +93,39 @@ const SidebarLogin: React.FC = () => {
       </Link>
       <ul className="flex flex-col items-start w-full social-sidebar-list flex-grow">
         {menu.map((data, idx) => (
-          <Link
-            onClick={() => {
-              TrackerEvent({
-                event: `SW_${data.title.toLowerCase()}_page`,
-                userData: userInfo
-              });
-            }}
-            className={isLinkActive(data.url)}
-            href={data.url}
-            key={idx}
-          >
-            <Image width={20} height={20} src={data.image} alt="" />
-            <h1>{data.title}</h1>
-          </Link>
+          <>
+            <Link
+              onClick={() => {
+                TrackerEvent({
+                  event: `SW_${data.title.toLowerCase()}_page`,
+                  userData: userInfo
+                });
+                if (data.hasSubmenu !== undefined && data.hasSubmenu !== null) {
+                  setIsDanamartOpen(prev => !prev);
+                }
+              }}
+              className={isLinkActive(data.url)}
+              href={data.hasSubmenu === undefined ? data.url : '#'}
+              key={idx}
+            >
+              <Image width={20} height={20} src={data.image} alt="" />
+              <h1>{data.title}</h1>
+            </Link>
+            {data.hasSubmenu !== undefined && isDanamartOpen && (
+              <ul>
+                {data.submenu?.map((sub, subIdx) => (
+                  <Link
+                    key={subIdx}
+                    className={`flex items-center ${isLinkActive(sub.url)}`}
+                    href={sub.url}
+                  >
+                    <GoDotFill size={20} />
+                    <h1>{sub.title}</h1>
+                  </Link>
+                ))}
+              </ul>
+            )}
+          </>
         ))}
       </ul>
       {isGuest() ? (

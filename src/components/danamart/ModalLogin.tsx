@@ -4,6 +4,7 @@ import { decryptResponse } from '@/helpers/cryptoDecrypt';
 import { login } from '@/repository/danamart/auth.repository';
 import { type UserInfo } from '@/utils/interfaces/user.interface';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
@@ -16,10 +17,8 @@ interface Props {
   setIsOpenModalLogin: (value: boolean) => void;
 }
 
-const ModalLogin: React.FC<Props> = ({
-  userInfo,
-  setIsOpenModalLogin
-}) => {
+const ModalLogin: React.FC<Props> = ({ userInfo, setIsOpenModalLogin }) => {
+  const router = useRouter();
   const [page, setPage] = useState<string>('login');
   const [error, setError] = useState<boolean>(false);
   const [errorPass, setErrorPass] = useState<boolean>(false);
@@ -27,7 +26,7 @@ const ModalLogin: React.FC<Props> = ({
   const [blankPass, setBlankPass] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  
+
   const handleChangePass = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setError(false);
     // setBlank(false);
@@ -40,20 +39,26 @@ const ModalLogin: React.FC<Props> = ({
     try {
       const response = await login({
         email: userInfo?.email ?? '',
-        password,
+        password
       });
 
       if (response?.status === 200) {
         const encryptedData = response?.data;
         const decryptedData = decryptResponse(encryptedData);
-        
+
         if (decryptedData) {
           const decryptedDataObject = JSON.parse(decryptedData);
-          localStorage.setItem('accessToken-danamart', decryptedDataObject.acsTknId)
-          setIsOpenModalLogin(false)
+          localStorage.setItem(
+            'accessToken-danamart',
+            decryptedDataObject.acsTknId
+          );
+          setIsOpenModalLogin(false);
+          await router.push('/danamart/dashboard');
         }
       } else {
-        toast.error('Wrong password. Check your password before filling the form!')
+        toast.error(
+          'Wrong password. Check your password before filling the form!'
+        );
       }
     } catch (error: any) {
       toast(`Error login: ${error as string}`);

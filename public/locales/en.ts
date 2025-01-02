@@ -2825,6 +2825,7 @@ export default {
       description: 'Your gateway to track and grow investments.',
       verifyPhone: "Don't forget to verify your phone number",
       here: 'here',
+      topUp: 'Top Up',
       cashInHand: 'Cash In-hand',
       cashInHandDesc: 'Funds available for withdrawal or investment',
       danaReward: 'Dana Reward',

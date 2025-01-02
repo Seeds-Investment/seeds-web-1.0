@@ -2757,6 +2757,7 @@ export default {
         'Pintu gerbang anda untuk memantau dan mengembangkan investasi.',
       verifyPhone: 'Jangan lupa untuk memverifikasi nomor telepon Anda',
       here: 'di sini',
+      topUp: 'Isi Ulang',
       cashInHand: 'Uang Tunai',
       cashInHandDesc: 'Dana yang tersedia untuk ditarik atau di investasikan',
       danaReward: 'Imbalan Dana',

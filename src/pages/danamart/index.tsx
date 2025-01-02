@@ -1,6 +1,6 @@
 import ModalLogin from '@/components/danamart/ModalLogin';
 import ModalRegister from '@/components/danamart/ModalRegister';
-import withAuth from '@/helpers/withAuth';
+import withAuthDanamart from '@/helpers/withAuthDanamart';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type UserInfo } from '@/utils/interfaces/user.interface';
 import { Button } from '@material-tailwind/react';
@@ -39,23 +39,32 @@ const Danamart = (): React.ReactElement => {
         <ModalRegister userInfo={userData} />
       )}
       {isOpenModalLogin && userData !== undefined && (
-        <ModalLogin userInfo={userData} setIsOpenModalLogin={setIsOpenModalLogin}/>
+        <ModalLogin
+          userInfo={userData}
+          setIsOpenModalLogin={setIsOpenModalLogin}
+        />
       )}
-      <div>
-        Danamart Page
-      </div>
-      {
-        localStorage.getItem('accessToken-danamart') !== null ?
-          <Button onClick={() => { localStorage.removeItem('accessToken-danamart'); window.location.reload() }}>
-            Logout
-          </Button>
-          :
-          <Button onClick={() => { setIsOpenModalLogin(true) }}>
-            Login
-          </Button>
-      }
+      <div>Danamart Page</div>
+      {localStorage.getItem('accessToken-danamart') !== null ? (
+        <Button
+          onClick={() => {
+            localStorage.removeItem('accessToken-danamart');
+            window.location.reload();
+          }}
+        >
+          Logout
+        </Button>
+      ) : (
+        <Button
+          onClick={() => {
+            setIsOpenModalLogin(true);
+          }}
+        >
+          Login
+        </Button>
+      )}
     </div>
   );
 };
 
-export default withAuth(Danamart);
+export default withAuthDanamart(Danamart);

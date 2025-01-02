@@ -2791,6 +2791,25 @@ export default {
     }
   },
   danamart: {
+    login: {
+      welcome: 'Welcome 🙌',
+      welcomeDescription: 'Please login to your account',
+      email: 'Email',
+      password: 'Password',
+      passwordPlaceholder: 'Please input your password',
+      emailPlaceholder: 'Please input your email',
+      validation: {
+        login: 'Your phone number or password is wrong',
+        blank: 'You must fill in this field',
+        password: 'Password must contain 8 digit with upper case and lower case'
+      },
+      forgotPassword: {
+        forgotPasswordText: 'Forgot Password?',
+        sendLink: 'Send Link',
+        backLogin: 'Back to Login'
+      },
+      loginButton: 'Login',
+    },
     register: {
       connectSeeds: 'Connect Seeds to Danamart',
       automate:

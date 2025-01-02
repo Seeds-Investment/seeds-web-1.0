@@ -156,7 +156,7 @@ export const CardSlideTournament: React.FC<props> = ({ data, loading }) => {
                       src={
                         item.banner !== undefined && item.banner !== ''
                           ? item.banner
-                          : 'https://dev-assets.seeds.finance/storage/cloud/5efa1141-9999-4341-958a-5ab97353ac42.png'
+                          : 'https://dev-assets.seeds.finance/storage/cloud/0ac00be5-98a3-40cf-b1c7-22d88a4affde.png'
                       }
                       alt={item.name}
                       width={600}

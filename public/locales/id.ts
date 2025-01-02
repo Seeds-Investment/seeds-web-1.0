@@ -2723,6 +2723,26 @@ export default {
     }
   },
   danamart: {
+    login: {
+      welcome: 'Selamat Datang 🙌',
+      welcomeDescription: 'Silakan masuk menggunakan akun kamu',
+      email: 'Email',
+      password: 'Password',
+      passwordPlaceholder: 'Yuk, masukan kata sandi kamu',
+      emailPlaceholder: 'Yuk, masukan email kamu',
+      validation: {
+        login: 'Nomor telepon atau kata sandimu salah',
+        blank: 'Kamu harus mengisi kolom ini',
+        password:
+          'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.'
+      },
+      forgotPassword: {
+        forgotPasswordText: 'Lupa Kata Sandi?',
+        sendLink: 'Kirim Link',
+        backLogin: 'Masuk Kembali'
+      },
+      loginButton: 'Masuk'
+    },
     register: {
       connectSeeds: 'Hubungkan Seeds dengan Danamart',
       automate:

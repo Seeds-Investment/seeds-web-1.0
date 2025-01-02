@@ -217,7 +217,7 @@ export const getPlayAssetTrending = async (params: any): Promise<any> => {
     if (accessToken === null || accessToken === '') {
       return await Promise.resolve('Access token not found');
     }
-    return await playService.get('asset/trending', {
+    return await playService.get('/asset/trending', {
       params,
       headers: {
         Accept: 'application/json',

@@ -12,6 +12,7 @@ import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useEffect, useState } from 'react';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { GoDotFill } from 'react-icons/go';
 import { toast } from 'react-toastify';
 import market from 'src/assets/market/market.svg';
@@ -94,36 +95,73 @@ const SidebarLogin: React.FC = () => {
       <ul className="flex flex-col items-start w-full social-sidebar-list flex-grow">
         {menu.map((data, idx) => (
           <>
-            <Link
-              onClick={() => {
-                TrackerEvent({
-                  event: `SW_${data.title.toLowerCase()}_page`,
-                  userData: userInfo
-                });
-                if (data.hasSubmenu !== undefined && data.hasSubmenu !== null) {
-                  setIsDanamartOpen(prev => !prev);
-                }
-              }}
-              className={isLinkActive(data.url)}
-              href={data.hasSubmenu === undefined ? data.url : '#'}
-              key={idx}
-            >
-              <Image width={20} height={20} src={data.image} alt="" />
-              <h1>{data.title}</h1>
-            </Link>
-            {data.hasSubmenu !== undefined && isDanamartOpen && (
-              <ul>
-                {data.submenu?.map((sub, subIdx) => (
-                  <Link
-                    key={subIdx}
-                    className={`flex items-center ${isLinkActive(sub.url)}`}
-                    href={sub.url}
-                  >
-                    <GoDotFill size={20} />
-                    <h1>{sub.title}</h1>
-                  </Link>
-                ))}
-              </ul>
+            {data.title === 'Danamart' &&
+            localStorage.getItem('accessToken-danamart') !== null ? (
+              <div key={idx} className="w-full flex flex-col gap-2">
+                <Link
+                  onClick={() => {
+                    TrackerEvent({
+                      event: `SW_${data.title.toLowerCase()}_page`,
+                      userData: userInfo
+                    });
+                    if (
+                      data.hasSubmenu !== undefined &&
+                      data.hasSubmenu !== null
+                    ) {
+                      setIsDanamartOpen(prev => !prev);
+                    }
+                  }}
+                  className={`flex justify-between items-center ${isLinkActive(
+                    data.url
+                  )}`}
+                  href={
+                    localStorage.getItem('accessToken-danamart') !== null
+                      ? '#'
+                      : data.url
+                  }
+                  key={idx}
+                >
+                  <div className="flex items-center gap-2">
+                    <Image width={20} height={20} src={data.image} alt="" />
+                    <h1>{data.title}</h1>
+                  </div>
+                  {localStorage.getItem('accessToken-danamart') !== null &&
+                    (isDanamartOpen ? (
+                      <FaChevronUp size={14} />
+                    ) : (
+                      <FaChevronDown size={14} />
+                    ))}
+                </Link>
+                {data.hasSubmenu !== undefined && isDanamartOpen && (
+                  <ul>
+                    {data.submenu?.map((sub, subIdx) => (
+                      <Link
+                        key={subIdx}
+                        className={`flex items-center ${isLinkActive(sub.url)}`}
+                        href={sub.url}
+                      >
+                        <GoDotFill size={20} />
+                        <h1>{sub.title}</h1>
+                      </Link>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ) : (
+              <Link
+                onClick={() => {
+                  TrackerEvent({
+                    event: `SW_${data.title.toLowerCase()}_page`,
+                    userData: userInfo
+                  });
+                }}
+                className={isLinkActive(data.url)}
+                href={data.url}
+                key={idx}
+              >
+                <Image width={20} height={20} src={data.image} alt="" />
+                <h1>{data.title}</h1>
+              </Link>
             )}
           </>
         ))}

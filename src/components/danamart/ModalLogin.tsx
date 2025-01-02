@@ -63,12 +63,14 @@ const ModalLogin: React.FC<Props> = ({
   return (
     <Modal
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/25 flex justify-start items-start"
-      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[50%] md:left-[35%] md:right-[-35%] mt-[-18rem] w-full h-fit md:w-[450px] p-4 md:rounded-3xl rounded-t-3xl bg-white"
+      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[50%] md:left-[35%] md:right-[-35%] mt-[-15rem] w-full h-fit md:w-[450px] p-4 md:rounded-3xl rounded-t-3xl bg-white"
     >
       <div className="p-8 md:px-4 md:py-5 flex flex-col items-center">
         <div className="w-full relative flex justify-center">
           <div
-            onClick={() => { setIsOpenModalLogin(false); }}
+            onClick={() => {
+              setIsOpenModalLogin(false);
+            }}
             className="absolute right-0 cursor-pointer hover:scale-110 duration-150"
           >
             <IoMdClose size={20} />
@@ -80,25 +82,20 @@ const ModalLogin: React.FC<Props> = ({
             height={80}
           />
         </div>
-        {
-          page === 'login' ?
-            <Login
-              handleChangePass={handleChangePass}
-              password={password}
-              errorPass={errorPass}
-              error={error}
-              blankPass={blankPass}
-              setPage={setPage}
-              email={userInfo?.email ?? ''}
-              handleLogin={handleLogin}
-            />
-            :
-            <ForgotPassword
-              email={email}
-              setEmail={setEmail}
-              setPage={setPage}
-            />
-        }
+        {page === 'login' ? (
+          <Login
+            handleChangePass={handleChangePass}
+            password={password}
+            errorPass={errorPass}
+            error={error}
+            blankPass={blankPass}
+            setPage={setPage}
+            email={userInfo?.email ?? ''}
+            handleLogin={handleLogin}
+          />
+        ) : (
+          <ForgotPassword email={email} setEmail={setEmail} setPage={setPage} />
+        )}
       </div>
     </Modal>
   );

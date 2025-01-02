@@ -1,7 +1,11 @@
 import DashboardCard from '@/components/danamart/DashboardCard';
 import SecuritiesChart from '@/components/danamart/SecuritiesChart';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { decryptResponse } from '@/helpers/cryptoDecrypt';
+import withAuthDanamart from '@/helpers/withAuthDanamart';
+import { getDashboardUser } from '@/repository/danamart/danamart.repository';
 import { Typography } from '@material-tailwind/react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   PiChartLineUp,
@@ -14,6 +18,26 @@ import {
 
 const Dashboard = (): React.ReactElement => {
   const { t } = useTranslation();
+
+  const fetchDashboardUser = async (): Promise<void> => {
+    try {
+      const response = await getDashboardUser();
+      if (response?.status === 200) {
+        const encryptedData = response?.data;
+        const decryptedData = decryptResponse(encryptedData);
+        if (decryptedData !== null) {
+          const parseDecryptedData = JSON.parse(decryptedData);
+          console.log(parseDecryptedData);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    void fetchDashboardUser();
+  }, []);
 
   const dashboardCardData: Array<{
     textButton?: string;
@@ -99,4 +123,4 @@ const Dashboard = (): React.ReactElement => {
   );
 };
 
-export default Dashboard;
+export default withAuthDanamart(Dashboard);

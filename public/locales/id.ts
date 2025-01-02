@@ -2734,7 +2734,9 @@ export default {
         login: 'Nomor telepon atau kata sandimu salah',
         blank: 'Kamu harus mengisi kolom ini',
         password:
-          'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.'
+          'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+        wrongPassword: 'Password salah. Cek password Anda sebelum mengisi form!',
+        recaptcha: 'ReCAPTCHA tidak tersedia! Pastikan Anda telah mengisi ReCAPTCHA.'
       },
       forgotPassword: {
         forgotPasswordText: 'Lupa Kata Sandi?',

@@ -2801,7 +2801,9 @@ export default {
       validation: {
         login: 'Your phone number or password is wrong',
         blank: 'You must fill in this field',
-        password: 'Password must contain 8 digit with upper case and lower case'
+        password: 'Password must contain 8 digit with upper case and lower case',
+        wrongPassword: 'Wrong password. Check your password before filling the form!',
+        recaptcha: 'ReCAPTCHA value is not available! Fill the ReCAPTCHA before logging in.'
       },
       forgotPassword: {
         forgotPasswordText: 'Forgot Password?',

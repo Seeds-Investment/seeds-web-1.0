@@ -20,6 +20,11 @@ const ForgotPassword: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
 
+  const emailValidation = (email: string): boolean => {
+    const regex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+    return regex.test(email);
+  };
+
   return (
     <Modal
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/25 flex justify-start items-start"
@@ -61,6 +66,7 @@ const ForgotPassword: React.FC<Props> = ({
           </div>
         </div>
         <Button
+          disabled={email === '' || !emailValidation(email)}
           className="w-full text-base font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
         >
           {t('danamart.login.forgotPassword.sendLink')}

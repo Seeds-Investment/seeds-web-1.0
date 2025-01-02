@@ -3,6 +3,7 @@ import axios from 'axios';
 interface IFormLogin {
   email: string;
   password: string;
+  captchaToken: string;
 }
 
 const authService = axios.create({

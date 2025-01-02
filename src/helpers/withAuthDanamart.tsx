@@ -4,7 +4,7 @@ import { getDashboardUser } from '@/repository/danamart/danamart.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { isGuest } from './guest';
@@ -16,8 +16,17 @@ const withAuthDanamart = (
     const { t } = useTranslation();
     const router = useRouter();
     const [isLoading, setLoading] = useState(true);
+    const hasCheckedAuth = useRef(false);
+    const [accessToken, setAccessToken] = useState<string | null>(null);
 
     useEffect(() => {
+      const token = localStorage.getItem('accessToken-danamart');
+      setAccessToken(token);
+    }, []);
+
+    useEffect(() => {
+      if (hasCheckedAuth.current) return;
+
       const checkAuth = async (): Promise<void> => {
         try {
           const response = await getUserInfo();
@@ -62,7 +71,8 @@ const withAuthDanamart = (
       };
 
       checkAuth().catch(() => {});
-    }, [router]);
+      hasCheckedAuth.current = true;
+    }, [router.pathname, accessToken]);
 
     if (isLoading) {
       return (

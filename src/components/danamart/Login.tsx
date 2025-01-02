@@ -1,6 +1,9 @@
+import useRecaptcha from '@/helpers/useRecaptcha';
 import { Button, Typography } from '@material-tailwind/react';
 import React from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import AuthEmail from './auth/AuthEmail';
 import AuthPassword from './auth/AuthPassword';
 
@@ -10,9 +13,9 @@ interface Props {
   error: boolean;
   errorPass: boolean;
   blankPass: boolean;
-  setPage: (value: string) => void;
   email: string;
-  handleLogin?: () => Promise<void>;
+  setPage: (value: string) => void;
+  handleLogin?: (recaptchaToken: string) => Promise<void>;
 }
 
 const Login: React.FC<Props> = ({
@@ -21,22 +24,21 @@ const Login: React.FC<Props> = ({
   error,
   errorPass,
   blankPass,
-  setPage,
   email,
+  setPage,
   handleLogin
 }) => {
+  const RECAPTCHA_V2_SITE_KEY = '6LcXDqwqAAAAAOPdJX5A62B34yvSsezZwiWNRaEg';
   const { t } = useTranslation();
-  
-  // const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
-  
-  // const onChange = (value: string | null): void => {
-  //   console.log("Captcha value:", value);
-  //   setRecaptchaValue(value);
-  // };
-    
-  // useEffect(() => {
-  //   console.log('recaptchaValue ', recaptchaValue)
-  // }, [recaptchaValue]);
+  const { capchaToken, recaptchaRef, handleRecaptcha } = useRecaptcha();
+
+  const handleLoginWithRecaptcha = async (): Promise<void> => {
+    if ((capchaToken !== null) && (capchaToken !== '') && typeof handleLogin === 'function') {
+      await handleLogin(capchaToken);
+    } else {
+      toast.error(t('danamart.login.validation.recaptcha'));
+    }
+  };
 
   return (
     <div className='w-full'>
@@ -57,9 +59,7 @@ const Login: React.FC<Props> = ({
             disabled={true}
             handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
               if (e.key === 'Enter') {
-                if (handleLogin !== undefined && handleLogin !== null) {
-                  await handleLogin();
-                }
+                await handleLoginWithRecaptcha();
               }
             }}
           />
@@ -74,9 +74,7 @@ const Login: React.FC<Props> = ({
             placeholder={t('danamart.login.passwordPlaceholder').toString()}
             handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
               if (e.key === 'Enter') {
-                if (handleLogin !== undefined && handleLogin !== null) {
-                  await handleLogin();
-                }
+                await handleLoginWithRecaptcha();
               }
             }}
           />
@@ -93,13 +91,14 @@ const Login: React.FC<Props> = ({
           </Typography>
         </div>
       </div>
-      {/* <div className="w-full">
+      <div className="w-full flex justify-center items-center">
         <ReCAPTCHA
-          sitekey="6Lfst6kqAAAAAMaM3dUS7qx_r5SpgBAwgMLTfxMy"
-          onChange={onChange}
+          ref={recaptchaRef}
+          sitekey={RECAPTCHA_V2_SITE_KEY}
+          onChange={handleRecaptcha}
         />
-      </div> */}
-      <div className="w-full">
+      </div>
+      <div className="w-full mt-4">
         <Typography
           onClick={() => { setPage('forgot'); }}
           className="font-poppins font-semibold text-base text-[#DA2D1F] text-right cursor-pointer"
@@ -107,16 +106,17 @@ const Login: React.FC<Props> = ({
           {t('danamart.login.forgotPassword.forgotPasswordText')}
         </Typography>
       </div>
-      <Button
-        onClick={async() => {
-          if (handleLogin !== undefined && handleLogin !== null) {
-            await handleLogin();
-          }
-        }}
-        className="w-full text-base font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
-      >
-        {t('danamart.login.loginButton')}
-      </Button>
+      <div className="w-full">
+        <Button
+          disabled={capchaToken === '' || password === ''}
+          onClick={async () => {
+            await handleLoginWithRecaptcha();
+          }}
+          className="w-full text-base font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
+        >
+          {t('danamart.login.loginButton')}
+        </Button>
+      </div>
     </div>
   );
 };

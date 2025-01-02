@@ -6,6 +6,7 @@ import { type UserInfo } from '@/utils/interfaces/user.interface';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import Modal from '../ui/modal/Modal';
@@ -17,29 +18,32 @@ interface Props {
   setIsOpenModalLogin: (value: boolean) => void;
 }
 
-const ModalLogin: React.FC<Props> = ({ userInfo, setIsOpenModalLogin }) => {
+const ModalLogin: React.FC<Props> = ({
+  userInfo,
+  setIsOpenModalLogin
+}) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [page, setPage] = useState<string>('login');
   const [error, setError] = useState<boolean>(false);
   const [errorPass, setErrorPass] = useState<boolean>(false);
-  // const [blank, setBlank] = useState<boolean>(false);
   const [blankPass, setBlankPass] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const handleChangePass = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setError(false);
-    // setBlank(false);
     setErrorPass(false);
     setBlankPass(false);
     setPassword(e.target.value);
   };
 
-  const handleLogin = async (): Promise<void> => {
+  const handleLogin = async (captchaToken: string): Promise<void> => {
     try {
       const response = await login({
         email: userInfo?.email ?? '',
-        password
+        password,
+        captchaToken
       });
 
       if (response?.status === 200) {
@@ -56,9 +60,7 @@ const ModalLogin: React.FC<Props> = ({ userInfo, setIsOpenModalLogin }) => {
           await router.push('/danamart/dashboard');
         }
       } else {
-        toast.error(
-          'Wrong password. Check your password before filling the form!'
-        );
+        toast.error(t('danamart.login.validation.wrongPassword'));
       }
     } catch (error: any) {
       toast(`Error login: ${error as string}`);
@@ -70,7 +72,7 @@ const ModalLogin: React.FC<Props> = ({ userInfo, setIsOpenModalLogin }) => {
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/25 flex justify-start items-start"
       modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[50%] md:left-[35%] md:right-[-35%] mt-[-15rem] w-full h-fit md:w-[450px] p-4 md:rounded-3xl rounded-t-3xl bg-white"
     >
-      <div className="p-8 md:px-4 md:py-5 flex flex-col items-center">
+      <div className="p-4 md:py-5 flex flex-col items-center">
         <div className="w-full relative flex justify-center">
           <div
             onClick={() => {

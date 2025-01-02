@@ -13,11 +13,11 @@ interface Props {
 const DashboardCard: React.FC<Props> = ({ data }) => {
   return (
     <div
-      className={`w-full md:w-[292px] h-[184px] md:h-[200px] rounded-lg shadow-md ${
+      className={`sm:w-full w-[292px] sm:h-[184px] h-[200px] rounded-lg shadow-md ${
         data.reverseBg === true ? 'bg-gradient-to-tr' : 'bg-gradient-to-bl'
       } from-[#4FE6AF]/20 via-white to-[#5263F980]/20`}
     >
-      <div className="flex flex-col gap-4 md:py-7 py-5 px-4">
+      <div className="flex flex-col gap-4 py-7 sm:py-5 sm:px-4">
         {data.textButton !== undefined ? (
           <button className="border border-[#3ac4a0] font-poppins font-semibold text-xs text-[#3ac4a0] hover:shadow-[0_0_5px_#3ac4a0] duration-150 cursor-pointer rounded-full py-1 px-4 flex items-center w-fit gap-1">
             {data.textButton}

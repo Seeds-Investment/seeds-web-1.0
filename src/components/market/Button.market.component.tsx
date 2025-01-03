@@ -1,9 +1,9 @@
 import { Button } from '@material-tailwind/react';
 import { useState } from 'react';
 
-const Buttonmarket = () => {
+const Buttonmarket = (): JSX.Element => {
   const [activeButton, setActiveButton] = useState('idStock');
-  const handleButtonClick = (buttonName: string) => {
+  const handleButtonClick = (buttonName: string): void => {
     setActiveButton(buttonName);
   };
 
@@ -15,7 +15,9 @@ const Buttonmarket = () => {
             ? 'bg-[#3AC4A0]'
             : 'bg-white border-2 border-[#BDBDBD] text-[#BDBDBD]'
         }`}
-        onClick={() => handleButtonClick('idStock')}
+        onClick={() => {
+          handleButtonClick('idStock');
+        }}
       >
         Id Stock
       </Button>
@@ -26,7 +28,9 @@ const Buttonmarket = () => {
             ? 'bg-[#3AC4A0]'
             : 'bg-white border-2 border-[#BDBDBD] text-[#BDBDBD]'
         }`}
-        onClick={() => handleButtonClick('usStock')}
+        onClick={() => {
+          handleButtonClick('usStock');
+        }}
       >
         Us Stock
       </Button>
@@ -37,7 +41,9 @@ const Buttonmarket = () => {
             ? 'bg-[#3AC4A0]'
             : 'bg-white border-2 border-[#BDBDBD] text-[#BDBDBD]'
         }`}
-        onClick={() => handleButtonClick('crypto')}
+        onClick={() => {
+          handleButtonClick('crypto');
+        }}
       >
         Crypto
       </Button>

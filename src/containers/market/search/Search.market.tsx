@@ -11,11 +11,10 @@ const SearchMarket = ({
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
 }): React.ReactElement => {
   const [trendingAsset, setTrendingAsset] = useState<trendingMarket[]>([]);
-  const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Filter assets based on search query
   const filteredAssets = trendingAsset.filter(asset =>
-    asset.asset_name.toLowerCase().includes(searchQuery.toLowerCase())
+    asset.asset_name.toLowerCase().includes('')
   );
 
   const fetchTrendingAsset = async (): Promise<void> => {

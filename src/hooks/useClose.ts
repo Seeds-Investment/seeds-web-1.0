@@ -5,17 +5,19 @@ interface UseCloseProps {
   fn: () => void;
 }
 
-const useClose = ({ ref, fn }: UseCloseProps) => {
+const useClose = ({ ref, fn }: UseCloseProps): void => {
   useEffect(() => {
-    if (!ref) return;
+    if (ref !== null) return;
 
-    function handleClick(event: MouseEvent) {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
+    function handleClick(event: MouseEvent): void {
+      if (ref.current != null && !ref.current.contains(event.target as Node)) {
         fn();
       }
     }
     window.addEventListener('click', handleClick);
-    return () => window.removeEventListener('click', handleClick);
+    return () => {
+      window.removeEventListener('click', handleClick);
+    };
   }, [ref]); // eslint-disable-line
 };
 

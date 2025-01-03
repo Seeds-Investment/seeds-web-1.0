@@ -1,10 +1,10 @@
 'use client';
 import Modal from '@/components/ui/modal/Modal';
-import { getDashboardUser } from '@/repository/danamart/danamart.repository';
+import { getProfileUser } from '@/repository/danamart/danamart.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { isGuest } from './guest';
@@ -15,8 +15,8 @@ const withAuthDanamart = (
   const WrapperComponent = (props: any): JSX.Element => {
     const { t } = useTranslation();
     const router = useRouter();
-    const [isLoading, setLoading] = useState(true);
-    const hasCheckedAuth = useRef(false);
+    const [isLoading, setLoading] = useState<boolean>(true);
+    const [isLoadingDanamart, setIsLoadingDanamart] = useState<boolean>(true);
     const [accessToken, setAccessToken] = useState<string | null>(null);
 
     useEffect(() => {
@@ -25,56 +25,49 @@ const withAuthDanamart = (
     }, []);
 
     useEffect(() => {
-      if (hasCheckedAuth.current) return;
-
-      const checkAuth = async (): Promise<void> => {
+      const checkAuthDanamart = async (): Promise<void> => {
         try {
-          const response = await getUserInfo();
-          const danamartToken = await getDashboardUser();
-
-          if (
-            router.pathname === '/danamart' &&
-            response !== undefined &&
-            danamartToken?.status === 200
-          ) {
+          const response = await getProfileUser();
+          if (response.status === 200 && router.pathname === '/danamart') {
             await router.push('/danamart/dashboard');
-          } else if (
-            response === 'Access token not found' &&
-            danamartToken === 'Access token Danamart not found' &&
-            !isGuest()
-          ) {
-            // Jika keduanya tidak ada
-            await router.push('/');
-          } else if (
-            response === 'Access token not found' &&
-            danamartToken?.status === 200
-          ) {
-            // Jika accessToken tidak ada, tapi accessToken Danamart ada
-            await router.push('/');
-          } else if (
-            response !== undefined &&
-            danamartToken === 'Access token Danamart not found'
-          ) {
-            // Jika accessToken ada, tapi accessToken Danamart tidak ada
+          } else if (response === 'Access token Danamart not found') {
             await router.push('/danamart');
           }
+        } catch (error) {
+          await router.push('/danamart');
+        } finally {
+          setIsLoadingDanamart(false);
+        }
+      };
+
+      const checkAuthSeeds = async (): Promise<void> => {
+        try {
+          const response = await getUserInfo();
+          if (response === 'Access token not found' && !isGuest()) {
+            const targetPath = !router.pathname.includes('/microsite-quiz')
+              ? '/'
+              : '/microsite-quiz';
+            await router.push(targetPath);
+          }
         } catch (error: any) {
+          const targetPath = !router.pathname.includes('/microsite-quiz')
+            ? '/'
+            : '/microsite-quiz';
+          await router.push(targetPath);
           if (error.response?.status === 401) {
             toast.error(t('landingPageV2.redirectError'));
-            await router.push('/');
-          } else {
-            await router.push('/');
           }
         } finally {
           setLoading(false);
         }
       };
 
-      checkAuth().catch(() => {});
-      hasCheckedAuth.current = true;
+      void (async () => {
+        await Promise.all([checkAuthDanamart(), checkAuthSeeds()]);
+      })();
     }, [router.pathname, accessToken]);
 
-    if (isLoading) {
+    if (isLoading && isLoadingDanamart) {
       return (
         <Modal onClose={() => {}}>
           <div className="flex flex-col justify-center items-center">

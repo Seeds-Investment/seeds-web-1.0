@@ -10,6 +10,26 @@ const danamartApi = axios.create({
   }
 });
 
+export const getProfileUser = async (): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.get('/pemodal/Dashboard/profil', {
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+      }
+    });
+
+    return response;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
 export const getDashboardUser = async (): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
@@ -25,6 +45,6 @@ export const getDashboardUser = async (): Promise<any> => {
     });
     return response;
   } catch (error: any) {
-    return error.response;
+    throw new Error(error.response.data.message);
   }
 };

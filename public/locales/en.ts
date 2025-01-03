@@ -2801,16 +2801,19 @@ export default {
       validation: {
         login: 'Your phone number or password is wrong',
         blank: 'You must fill in this field',
-        password: 'Password must contain 8 digit with upper case and lower case',
-        wrongPassword: 'Wrong password. Check your password before filling the form!',
-        recaptcha: 'ReCAPTCHA value is not available! Fill the ReCAPTCHA before logging in.'
+        password:
+          'Password must contain 8 digit with upper case and lower case',
+        wrongPassword:
+          'Wrong password. Check your password before filling the form!',
+        recaptcha:
+          'ReCAPTCHA value is not available! Fill the ReCAPTCHA before logging in.'
       },
       forgotPassword: {
         forgotPasswordText: 'Forgot Password?',
         sendLink: 'Send Link',
         backLogin: 'Back to Login'
       },
-      loginButton: 'Login',
+      loginButton: 'Login'
     },
     register: {
       connectSeeds: 'Connect Seeds to Danamart',
@@ -2865,7 +2868,8 @@ export default {
       purchaseAllocationBusiness: 'Purchase allocation by business sector',
       growthStocks: 'Growth Stocks',
       incomeStocks: 'Income Stocks',
-      alternatives: 'Alternatives'
+      alternatives: 'Alternatives',
+      errorGetUserDashboard: 'Failed to get dashboard data'
     }
   }
 };

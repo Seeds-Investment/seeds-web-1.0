@@ -2735,8 +2735,10 @@ export default {
         blank: 'Kamu harus mengisi kolom ini',
         password:
           'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
-        wrongPassword: 'Password salah. Cek password Anda sebelum mengisi form!',
-        recaptcha: 'ReCAPTCHA tidak tersedia! Pastikan Anda telah mengisi ReCAPTCHA.'
+        wrongPassword:
+          'Password salah. Cek password Anda sebelum mengisi form!',
+        recaptcha:
+          'ReCAPTCHA tidak tersedia! Pastikan Anda telah mengisi ReCAPTCHA.'
       },
       forgotPassword: {
         forgotPasswordText: 'Lupa Kata Sandi?',
@@ -2798,7 +2800,8 @@ export default {
       purchaseAllocationBusiness: 'Alokasi pembelian berdasarkan sektor usaha',
       growthStocks: 'Pertumbuhan Saham',
       incomeStocks: 'Pendapatan Saham',
-      alternatives: 'Alternatif'
+      alternatives: 'Alternatif',
+      errorGetUserDashboard: 'Gagal mendapatkan data dasbor'
     }
   }
 };

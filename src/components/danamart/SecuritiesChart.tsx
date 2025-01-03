@@ -85,10 +85,9 @@ const SecuritiesChart: React.FC<Props> = ({ t, shares, bonds }) => {
         {data.map((entry, index) => (
           <div key={index} className="flex gap-1 items-center">
             <div
-              className={`w-3 h-3 rounded-full bg-[${
-                COLORS[index % COLORS.length]
-              }]`}
-            ></div>
+              className={`w-3 h-3 rounded-full`}
+              style={{ backgroundColor: COLORS[index % COLORS.length] }}
+            />
             <Typography className="font-poppins font-normal text-xs">
               {entry.name.split(' ')[0]}
             </Typography>

@@ -25,18 +25,15 @@ const dataTab: typeOfTab[] = [
 const MarketOption = (): React.ReactElement => {
   const [activeTab, setActiveTab] = useState('top gainers');
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [refreshCount, setRefreshCount] = useState(0);
-  const [data, setData] = useState(0);
 
   const handleTabChange = (tab: string): void => {
     setActiveTab(tab);
   };
 
-  const handleRefresh = () => {
+  const handleRefresh = (): void => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      setRefreshCount(prev => prev + 1); // Increment refresh count
     }, 1000);
   };
 

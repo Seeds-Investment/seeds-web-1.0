@@ -2,7 +2,7 @@ import { type GroupMemberData } from '@/utils/interfaces/chat.interface';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Avatar, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { ArrowBackwardIconWhite } from 'public/assets/vector';
+import { ArrowBackwardIconWhite, XIcon } from 'public/assets/vector';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -21,12 +21,14 @@ const SearchGroupMembers: React.FC<SearchGroupMembersProps> = ({
   const searchRef = useRef<HTMLInputElement>(null);
   const [groupMembers, setGroupMembers] =
     useState<GroupMemberData[]>(filteredMember);
+  const [activeLetter, setActiveLetter] = useState<string>('');
 
   useEffect(() => {
     setGroupMembers(filteredMember);
   }, [filteredMember]);
 
   const handleSearch = (): void => {
+    setActiveLetter('');
     const keyword = searchRef.current?.value?.toLowerCase() ?? '';
 
     if (keyword === '') {
@@ -37,6 +39,14 @@ const SearchGroupMembers: React.FC<SearchGroupMembersProps> = ({
       );
       setGroupMembers(filtered ?? []);
     }
+  };
+
+  const handleFilterByAlphabet = (letter: string): void => {
+    setActiveLetter(letter);
+    const filtered = filteredMember.filter(member =>
+      member.user_name.toLowerCase().startsWith(letter.toLowerCase())
+    );
+    setGroupMembers(filtered);
   };
 
   return (
@@ -78,36 +88,70 @@ const SearchGroupMembers: React.FC<SearchGroupMembersProps> = ({
             <MagnifyingGlassIcon className="absolute right-6 top-1/2 transform -translate-y-1/2 w-5 h-5" />
           </div>
         </div>
-        <div className="flex flex-col gap-4 px-4 lg:h-[450px] h-[390px] overflow-y-auto team-battle-scroll">
-          {groupMembers
-            ?.sort((a, b) => {
-              if (a?.role === 'admin' && b?.role !== 'admin') return -1;
-              if (a?.role !== 'admin' && b?.role === 'admin') return 1;
-              return 0;
-            })
-            ?.map((item: GroupMemberData, index: number) => (
-              <div key={index}>
-                <div className="flex justify-between items-center px-4">
-                  <div className="flex items-center gap-5">
-                    <Avatar
-                      src={item?.user_avatar}
-                      alt="Avatar"
-                      width={48}
-                      height={48}
-                      className="w-12 h-12"
-                    />
-                    <Typography className="text-md font-semibold text-[#262626] font-poppins">
-                      {item?.user_name}
-                    </Typography>
+        <div className="flex justify-between">
+          <div className="w-full flex flex-col gap-4 px-4 lg:h-[450px] h-[390px] overflow-y-auto team-battle-scroll">
+            {groupMembers
+              ?.sort((a, b) => {
+                if (a?.role === 'admin' && b?.role !== 'admin') return -1;
+                if (a?.role !== 'admin' && b?.role === 'admin') return 1;
+                return a.user_name.localeCompare(b.user_name);
+              })
+              ?.map((item: GroupMemberData, index: number) => (
+                <div key={index} className="border-b pb-1">
+                  <div className="flex justify-between items-center px-4">
+                    <div className="flex items-center gap-5">
+                      <Avatar
+                        src={item?.user_avatar}
+                        alt="Avatar"
+                        width={48}
+                        height={48}
+                        className="w-12 h-12"
+                      />
+                      <Typography className="text-md font-semibold text-[#262626] font-poppins">
+                        {item?.user_name}
+                      </Typography>
+                    </div>
+                    {item?.role === 'admin' && (
+                      <Typography className="text-sm text-[#3AC4A0] font-normal font-poppins bg-[#EDFCD3] rounded-md p-2 w-fit">
+                        Admin
+                      </Typography>
+                    )}
                   </div>
-                  {item?.role === 'admin' && (
-                    <Typography className="text-sm text-[#3AC4A0] font-normal font-poppins bg-[#EDFCD3] rounded-md p-2 w-fit">
-                      Admin
-                    </Typography>
-                  )}
                 </div>
-              </div>
+              ))}
+          </div>
+          <div className="w-[5%] flex flex-col items-center justify-center mx-3">
+            {activeLetter !== '' && (
+              <Image
+                onClick={() => {
+                  setActiveLetter('');
+                  setGroupMembers(filteredMember);
+                }}
+                className="cursor-pointer hover:scale-110 duration-150 mb-2"
+                src={XIcon}
+                alt="clear"
+                width={20}
+                height={20}
+              />
+            )}
+            {Array.from({ length: 26 }, (_, i) =>
+              String.fromCharCode(65 + i)
+            ).map(letter => (
+              <Typography
+                key={letter}
+                onClick={() => {
+                  handleFilterByAlphabet(letter);
+                }}
+                className={`hover:text-[#262626] text-xs font-poppins font-semibold cursor-pointer ${
+                  activeLetter === letter
+                    ? 'text-[#262626]'
+                    : 'text-seeds-green'
+                }`}
+              >
+                {letter}
+              </Typography>
             ))}
+          </div>
         </div>
       </div>
     </div>

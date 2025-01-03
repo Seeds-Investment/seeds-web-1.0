@@ -17,6 +17,7 @@ export interface Chat {
   created_at: string;
   accept_at: string;
   read_at: string;
+  last_sender_id: string;
 }
 
 export interface IChatBubble {

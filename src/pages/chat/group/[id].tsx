@@ -58,7 +58,7 @@ const DetailGroup: React.FC = () => {
   const [isOpenSearchMembers, setIsOpenSearchMembers] =
     useState<boolean>(false);
   const [isOpenAddMembers, setIsOpenAddMembers] = useState<boolean>(false);
-  const [isShareModal, setIsShareModal] = useState<boolean>(false);
+  // const [isShareModal, setIsShareModal] = useState<boolean>(false);
 
   const fetchGroupDetail = async (): Promise<void> => {
     try {
@@ -224,7 +224,7 @@ const DetailGroup: React.FC = () => {
                     />
                   </div>
                 )}
-                <div
+{/*                 <div
                   onClick={() => {
                     setIsShareModal(prev => !prev);
                   }}
@@ -235,7 +235,7 @@ const DetailGroup: React.FC = () => {
                     size={24}
                     className="md:w-6 md:h-6 w-5 h-5"
                   />
-                </div>
+                </div> */}
                 <div
                   onClick={() => {
                     setIsOpenSearchMembers(prev => !prev);
@@ -336,14 +336,14 @@ const DetailGroup: React.FC = () => {
           onClick={handleLeaveGroup}
         />
       )}
-      {isShareModal && (
+{/*       {isShareModal && (
         <ModalShareGroup
           onClose={() => {
             setIsShareModal(false);
           }}
           groupId={id as string}
         />
-      )}
+      )} */}
       <SearchGroupMembers
         isOpenSearchMembers={isOpenSearchMembers}
         setIsOpenSearchMembers={setIsOpenSearchMembers}

@@ -36,8 +36,8 @@ const ModalCamera: React.FC<Props> = ({
   return (
     <Modal
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/75 flex justify-center items-center"
-      modalClasses={`z-50 fixed bottom-0 md:top-[10%] md:left-[18%] w-full md:w-[940px] h-full md:h-[500px] lg:rounded-2xl rounded-t-2xl shadow-lg bg-white ${
-        isMobile ? 'overflow-y-auto' : ''
+      modalClasses={`z-50 fixed bottom-0 md:top-[10%] md:left-[18%] lg:rounded-2xl shadow-lg bg-white ${
+        isMobile ? 'overflow-y-auto w-full h-full' : 'w-[940px] h-[500px]'
       }`}
     >
       <div className="flex items-center gap-3 md:p-4 p-2 border-b border-gray-200">

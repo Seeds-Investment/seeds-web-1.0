@@ -1,5 +1,3 @@
-import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile } from '@ffmpeg/util';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaExchangeAlt, FaStop } from 'react-icons/fa';
@@ -28,7 +26,6 @@ const WebcamVideo: React.FC<WebcamVideoProps> = ({
   isSending
 }) => {
   const { t } = useTranslation();
-  const ffmpeg = new FFmpeg();
   const webcamRef = useRef<Webcam | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
@@ -103,22 +100,6 @@ const WebcamVideo: React.FC<WebcamVideoProps> = ({
     }
   }, [recordedChunks]);
 
-  const convertWebMToMP4 = async (webmFile: File): Promise<File> => {
-    await ffmpeg.load();
-
-    const inputFile = await fetchFile(webmFile);
-    await ffmpeg.writeFile('input.webm', inputFile);
-
-    await ffmpeg.exec(['-i', 'input.webm', '-c:v', 'libx264', 'output.mp4']);
-
-    const mp4Data = await ffmpeg.readFile('output.mp4');
-
-    const file = new File([mp4Data], 'output.mp4', {
-      type: 'video/mp4'
-    });
-    return file;
-  };
-
   const handleSendVideo = useCallback(async () => {
     if (recordedChunks.length > 0) {
       setIsSending(true);
@@ -127,8 +108,7 @@ const WebcamVideo: React.FC<WebcamVideoProps> = ({
         const file = new File([blob], 'recorded-video.webm', {
           type: 'video/webm'
         });
-        const convertedFile = await convertWebMToMP4(file);
-        onCapture(convertedFile, inputText);
+        onCapture(file, inputText);
         setRecordedChunks([]);
       } catch (error) {
         toast.error('Oops! Error when try to send video');
@@ -140,8 +120,8 @@ const WebcamVideo: React.FC<WebcamVideoProps> = ({
 
   const videoConstraints: MediaTrackConstraintSet = {
     facingMode,
-    width: type === 'landscape' ? 940 : 440,
-    height: type === 'landscape' ? 440 : 650
+    width: type === 'landscape' ? 940 : window.innerWidth,
+    height: type === 'landscape' ? 440 : window.innerHeight
   };
 
   const audioConstraints: MediaTrackConstraints = {

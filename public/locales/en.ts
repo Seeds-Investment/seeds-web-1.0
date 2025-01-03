@@ -2595,6 +2595,7 @@ export default {
   },
   chat: {
     chat: 'Chat',
+    allMessages: 'All Messages',
     personalEmptyState: 'No message here!',
     startChat: 'Start a chat!',
     communityEmptyState: 'No Community Chat',
@@ -2620,6 +2621,7 @@ export default {
     personal: 'Personal',
     community: 'Community',
     request: 'Request',
+    chatRequest: 'Chat Request',
     reject: 'Reject',
     accept: 'Accept',
     newMessage: 'New Message',

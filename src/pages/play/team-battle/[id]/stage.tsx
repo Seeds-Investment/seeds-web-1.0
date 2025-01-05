@@ -30,8 +30,7 @@ import YellowSeedy from '../../../../../public/assets/team-battle/yellowseedy.sv
 
 const StageBattle: React.FC = () => {
   const { t } = useTranslation();
-  const [selectedCategory, setSelectedCategory] =
-    useState<string>('elimination');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedSponsor, setSelectedSponsor] = useState('');
   const [data, setData] = useState<TeamBattleDetail | null>(null);
   const [myRank, setMyRank] = useState<MyRankBattleI | null>(null);
@@ -41,7 +40,6 @@ const StageBattle: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isOpenPopUp, setIsOpenPopUp] = useState(false);
   const [categoryPopUp, setCategoryPopUp] = useState<string>('');
-  const [isDataReady, setIsDataReady] = useState(false);
 
   const categoryBattle = [
     { label: t('teamBattle.mainPage.elimination'), key: 'elimination' },
@@ -52,14 +50,6 @@ const StageBattle: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
   const today = moment();
-
-  const handleShowPopUpQualified = (): void => {
-    setIsOpenPopUp(prevState => !prevState);
-  };
-
-  const handleSelectedSponsor = (sponsor: string): void => {
-    setSelectedSponsor(prevSponsor => (prevSponsor === sponsor ? '' : sponsor));
-  };
 
   const handleGetDetailBattle = async (): Promise<void> => {
     try {
@@ -134,58 +124,86 @@ const StageBattle: React.FC = () => {
   };
 
   const determineCurrentCategory = (): void => {
-    if (data == null || myRank == null) return;
+    if (data !== null) {
+      const endDates: Record<string, moment.Moment> = {
+        final: moment(data.final_end),
+        semifinal: moment(data.semifinal_end),
+        elimination: moment(data.elimination_end),
+        registration: moment(data.registration_end)
+      };
 
-    const endDates = {
-      final: moment(data.final_end),
-      semifinal: moment(data.semifinal_end),
-      elimination: moment(data.elimination_end),
-      registration: moment(data.registration_end)
-    };
+      const currentMoment = moment();
 
-    const handlePopUp = (popUpType: string): void => {
-      setIsOpenPopUp(true);
-      setCategoryPopUp(popUpType);
-    };
-
-    const eliminationQualifiedKey = `eliminationQualified_${id as string}`;
-    const semifinalQualifiedKey = `semifinalQualified_${id as string}`;
-    const isEliminationQualifiedShown = getLocalStorageStatus(
-      eliminationQualifiedKey
-    );
-    const isSemifinalQualifiedShown = getLocalStorageStatus(
-      semifinalQualifiedKey
-    );
-
-    const currentMoment = moment();
-
-    if (currentMoment.isAfter(endDates.final)) {
-      setSelectedCategory('final');
-      if (data.is_joined && data.status === 'ENDED') {
-        const popUpType =
-          myRank?.rank === 0 || myRank?.rank > data?.prize.length
-            ? 'fail'
-            : 'win';
-        handlePopUp(popUpType);
+      if (currentMoment.isAfter(endDates.final)) {
+        setSelectedCategory('final');
+      } else if (
+        data.type === 'UNIKOM' &&
+        currentMoment.isAfter(endDates.semifinal)
+      ) {
+        setSelectedCategory('final');
+      } else if (currentMoment.isAfter(endDates.elimination)) {
+        setSelectedCategory(data.type === 'UNIKOM' ? 'semifinal' : 'final');
+      } else if (currentMoment.isAfter(endDates.registration)) {
+        setSelectedCategory('elimination');
       }
-    } else if (currentMoment.isAfter(endDates.semifinal)) {
-      setSelectedCategory('final');
-      if (data.is_joined && !isSemifinalQualifiedShown) {
-        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
-        if (!data.is_eliminated) {
-          setLocalStorageStatus(semifinalQualifiedKey, true);
+    }
+  };
+
+  const handlePopUpQualified = (): void => {
+    if (myRank !== null && data !== null) {
+      const endDates: Record<string, moment.Moment> = {
+        final: moment(data.final_end),
+        semifinal: moment(data.semifinal_end),
+        elimination: moment(data.elimination_end),
+        registration: moment(data.registration_end)
+      };
+
+      const currentMoment = moment();
+
+      const handlePopUp = (popUpType: string): void => {
+        setIsOpenPopUp(true);
+        setCategoryPopUp(popUpType);
+      };
+
+      const eliminationQualifiedKey = `eliminationQualified_${id as string}`;
+      const isEliminationQualifiedShown = getLocalStorageStatus(
+        eliminationQualifiedKey
+      );
+      const semifinalQualifiedKey = `semifinalQualified_${id as string}`;
+      const isSemifinalQualifiedShown = getLocalStorageStatus(
+        semifinalQualifiedKey
+      );
+
+      if (currentMoment.isAfter(endDates.final)) {
+        if (
+          data.is_joined &&
+          data.status === 'ENDED' &&
+          selectedCategory === 'final'
+        ) {
+          handlePopUp(
+            myRank.rank === 0 || myRank.rank > data.prize.length
+              ? 'fail'
+              : 'win'
+          );
+        }
+      } else if (
+        data.type === 'UNIKOM' &&
+        currentMoment.isAfter(endDates.semifinal)
+      ) {
+        if (data.is_joined && !isSemifinalQualifiedShown) {
+          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+          if (!data.is_eliminated) {
+            setLocalStorageStatus(semifinalQualifiedKey, true);
+          }
+        }
+      } else if (currentMoment.isAfter(endDates.elimination)) {
+        if (data.is_joined && !isEliminationQualifiedShown) {
+          handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+          if (!data.is_eliminated) {
+            setLocalStorageStatus(eliminationQualifiedKey, true);
+          }
         }
       }
-    } else if (currentMoment.isAfter(endDates.elimination)) {
-      setSelectedCategory('semifinal');
-      if (data.is_joined && !isEliminationQualifiedShown) {
-        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
-        if (!data.is_eliminated) {
-          setLocalStorageStatus(eliminationQualifiedKey, true);
-        }
-      }
-    } else if (currentMoment.isAfter(endDates.registration)) {
-      setSelectedCategory('elimination');
     }
   };
 
@@ -196,29 +214,22 @@ const StageBattle: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    if (data != null) {
+    if (data !== null && selectedCategory !== '') {
       handleDateChanging();
-      const fetchAdditionalData = async (): Promise<void> => {
-        await handleGetRank();
-        await fetchDataPerStage();
-      };
-
-      fetchAdditionalData()
-        .then(() => {
-          setIsDataReady(true);
-        })
-        .catch(error => {
-          toast.error(error.message);
-        });
+      void handleGetRank();
+      void fetchDataPerStage();
     }
   }, [data, selectedCategory]);
 
   useEffect(() => {
-    if (isDataReady && data != null) {
-      determineCurrentCategory();
-    }
-  }, [data, isDataReady]);
+    determineCurrentCategory();
+  }, [data]);
 
+  useEffect(() => {
+    if (data !== null && myRank !== null) {
+      handlePopUpQualified();
+    }
+  }, [data, myRank]);
 
   return (
     <>
@@ -336,7 +347,9 @@ const StageBattle: React.FC = () => {
                               <div
                                 key={i}
                                 onClick={() => {
-                                  handleSelectedSponsor(item.name);
+                                  setSelectedSponsor(prevSponsor =>
+                                    prevSponsor === item.name ? '' : item.name
+                                  );
                                 }}
                                 className="relative"
                               >
@@ -395,7 +408,9 @@ const StageBattle: React.FC = () => {
                               <div
                                 key={i}
                                 onClick={() => {
-                                  handleSelectedSponsor(item.name);
+                                  setSelectedSponsor(prevSponsor =>
+                                    prevSponsor === item.name ? '' : item.name
+                                  );
                                 }}
                                 className="relative"
                               >
@@ -649,7 +664,9 @@ const StageBattle: React.FC = () => {
       </div>
       <PopUpQualifiedStage
         isOpen={isOpenPopUp}
-        onClose={handleShowPopUpQualified}
+        onClose={() => {
+          setIsOpenPopUp(prevState => !prevState);
+        }}
         categoryPopUp={categoryPopUp}
         rank={myRank?.rank}
       />

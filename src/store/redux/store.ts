@@ -11,6 +11,7 @@ import successReceiptSlice from '../earnings/successReceiptSlice';
 import withdrawSlice from '../earnings/withdrawSlice';
 import bookingSlice from '../event/bookingSlice';
 import premiumCircleSlice from '../premium-circle/premiumCircleSlice';
+import fileMetadataSlice from './features/chat-documents';
 import expSlice from './features/exp';
 import { promoCodeSlice } from './features/promo-code';
 import soundSlice from './features/sound';
@@ -24,7 +25,8 @@ const reducers = combineReducers({
   withdraw: withdrawSlice,
   successReceipt: successReceiptSlice,
   booking: bookingSlice,
-  premiumCircle: premiumCircleSlice
+  premiumCircle: premiumCircleSlice,
+  chatDocuments: fileMetadataSlice
 });
 
 const persistConfig = {

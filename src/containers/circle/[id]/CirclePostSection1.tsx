@@ -2,6 +2,7 @@ import dot_menu from '@/assets/circle-page/3dot.svg';
 import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
 import Loading from '@/components/popup/Loading';
+import { standartCurrency } from '@/helpers/currency';
 import TrackerEvent from '@/helpers/GTM';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import {
@@ -229,7 +230,7 @@ const CirclePostSection1: React.FC<props> = ({
                       </h1>
                     </div>
                     <h1 className="font-poppins text-seeds-purple">
-                      {userInfo?.preferredCurrency} {dataCircle.premium_fee}
+                      {userInfo?.preferredCurrency} {standartCurrency(dataCircle.premium_fee ?? 0)}
                     </h1>
                   </div>
                 </div>

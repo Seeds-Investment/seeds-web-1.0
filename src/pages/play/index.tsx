@@ -168,8 +168,8 @@ const Player = (): React.ReactElement => {
         const res = await getEventList();
         setBannerAsset(res.playList);
         const resUserRank = await getUserRank(
-          userInfo?.preferredCurrency ?? 'season',
-          ''
+          userInfo?.preferredCurrency ?? 'IDR',
+          'season'
         );
         setUserRank(resUserRank.current_rank);
       } catch (error) {

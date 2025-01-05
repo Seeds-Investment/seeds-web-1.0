@@ -72,7 +72,7 @@ const CardPlay: React.FC<props> = ({ data }) => {
       >
         <Image
           src={
-            data.banner !== undefined
+            data.banner !== undefined && data.banner !== ''
               ? data.banner
               : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
           }

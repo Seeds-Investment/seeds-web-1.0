@@ -1,7 +1,9 @@
 import IconClock from '@/assets/play/tournament/clock.svg';
 import FollowButton from '@/components/FollowButton';
+import { getLastUpdated } from '@/helpers/dateFormat';
 import { getLeaderGlobal, getUserRank } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import LanguageContext from '@/store/language/language-context';
 import {
   Menu,
   MenuHandler,
@@ -10,7 +12,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leftLeader from '../../../../public/assets/images/leftLeader.svg';
@@ -75,6 +77,7 @@ interface TimeRemaining {
 const LeaderBoardGlobalPage = (): React.ReactElement => {
   const router = useRouter();
   const { t } = useTranslation();
+  const languageCtx = useContext(LanguageContext);
   const [activeTab, setActiveTab] = useState('season');
   const [leaderBoardGlobal, setLeaderBoardGlobal] = useState<
     LeaderBoardGlobal[]
@@ -112,7 +115,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
         filter
       );
       const resUserRank = await getUserRank(
-        userInfo?.preferredCurrency ?? '',
+        userInfo?.preferredCurrency ?? 'IDR',
         filter
       );
       setLeaderBoardGlobal(resGlobal.playCenterLeaderboards);
@@ -184,7 +187,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
 
   return (
     <>
-      <div className="w-full h-auto justify-center cursor-default bg-white font-poppins">
+      <div className="w-full h-auto justify-center cursor-default bg-white font-poppins rounded-t-2xl">
         <div className="relative font-poppins bg-gradient-to-r from-[#10A8AD] to-[#79F0B8] rounded-2xl pt-5">
           <Image
             src={leftLeader}
@@ -201,7 +204,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
             className="hidden md:block absolute right-[20px] top-[80px] w-[165px] z-10"
           />
           {activeTab !== 'all' && (
-            <div className="hidden md:flex bg-white text-[#3AC4A0] gap-1 text-xs ml-auto mr-2  justify-center text-center items-center border border-1 p-1 border-[#27A590] rounded-full w-[12%]">
+            <div className="hidden md:flex bg-white text-[#3AC4A0] gap-1 text-xs ml-auto justify-center text-center items-center border border-1 p-1 border-[#27A590] rounded-full w-fit px-2 absolute top-4 right-4">
               <Image alt="" src={IconClock} className="w-[14px] mr-1 my-auto" />
               {Object.entries(leaderboardTimeRemaining).map(
                 ([key, value], index) => (
@@ -213,7 +216,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
               )}
             </div>
           )}
-          <div className="flex justify-center text-center gap-2 lg:mt-[-20px]">
+          <div className="flex justify-center text-center gap-2">
             <h1 className="text-white text-lg font-semibold my-3">
               {t('playCenter.text2')}
             </h1>
@@ -269,26 +272,14 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
             </Menu>
           </div>
           <div className="justify-center text-center mt-2">
-            <h1 className="text-base font-normal text-white">
-              {activeTab === 'season'
-                ? `${t('playCenter.text9')} 01 ${new Date().toLocaleDateString(
-                    'id-ID',
-                    {
-                      month: 'long',
-                      year: 'numeric'
-                    }
-                  )} 00:00`
-                : `${t('playCenter.text9')} ${new Date().toLocaleDateString(
-                    'id-ID',
-                    {
-                      day: '2-digit',
-                      month: 'long',
-                      year: 'numeric'
-                    }
-                  )} 00:00`}
-            </h1>
+            <Typography className="text-base font-normal font-poppins text-white">
+              {t('tournament.leaderboard.lastUpdated')}
+              {languageCtx.language === 'ID'
+                ? getLastUpdated(new Date(), 'id-ID')
+                : getLastUpdated(new Date(), 'en-US')}
+            </Typography>
           </div>
-          <div className="flex flex-row bg-[#2b4740] justify-center mx-5 md:mx-auto text-center w-[300ox] md:w-[235px] rounded-full items-center px-1 gap-1 my-4">
+          <div className="flex flex-row bg-[#2b4740] justify-center mx-auto md:mx-auto text-center w-fit rounded-full items-center p-1 gap-1 my-4">
             <button
               className={`md:px-4 px-12 py-2 font-poppins shadow-lg rounded-full text-base font-semibold ${
                 activeTab === 'season'
@@ -317,7 +308,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
             </button>
           </div>
           {activeTab !== 'all' && (
-            <div className="md:hidden bg-white text-[#3AC4A0] flex gap-1 text-xs ml-5 border border-1 p-1 border-[#27A590] rounded-full w-[28%]">
+            <div className="md:hidden bg-white text-[#3AC4A0] flex gap-1 text-xs mx-auto border border-1 p-1 border-[#27A590] rounded-full w-fit px-2 mb-4">
               <Image alt="" src={IconClock} className="w-[14px] mr-1 my-auto" />
               {Object.entries(leaderboardTimeRemaining).map(
                 ([key, value], index) => (

@@ -37,7 +37,8 @@ module.exports = withMT({
         'ellipse-purple': "url('../src/assets/ellipse-purple.png')",
         'quiz-gradient': 'linear-gradient(88deg, #10A8AD 0%, #79F0B8 137.56%)',
         slashedBanner:
-          "url('/src/assets/play/tournament/bannerLeaderboard.png')"
+          "url('/src/assets/play/tournament/bannerLeaderboard.png')",
+        userInfoBackground: "url('../assets/userInfoBackground.svg')"
       },
       backgroundSize: {
         '50%': '50%',
@@ -66,7 +67,8 @@ module.exports = withMT({
         spinner: 'spinner 800ms ease-in-out infinite',
         'bounce-horizontal': 'bounce-horizontal 2000ms infinite',
         'bounce-reverse': 'bounce-reverse 2000ms infinite',
-        'shadow-move': 'shadow-move 3s infinite'
+        'shadow-move': 'shadow-move 3s infinite',
+        'shadow-voicenotes': 'shadow-voicenotes 1s infinite',
       },
       keyframes: {
         'slide-down': {
@@ -156,6 +158,10 @@ module.exports = withMT({
         'shadow-move': {
           '0%, 100%': { boxShadow: '0 0 15px 5px rgba(255, 255, 255, 1)' },
           '50%': { boxShadow: '0 0 30px 10px rgba(58, 196,160, 0.9)' }
+        },
+        'shadow-voicenotes': {
+          '0%, 100%': { boxShadow: '0 0 8px 1px rgba(255, 255, 255, 1)' },
+          '50%': { boxShadow: '0 0 15px 5px rgba(220, 252, 228, 1)' }
         }
       }
     }

@@ -211,6 +211,7 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
             handlePay={handlePay}
             dataPost={data}
             newPromoCodeDiscount={newPromoCodeDiscount}
+            userInfo={userInfo}
           />
         )}
       </Dialog>

@@ -1767,7 +1767,10 @@ export default {
       text14: 'See More',
       text15: 'Please Login to enter the arena simulation',
       text16: 'Login to enter arena simulation',
-      text17: 'Virtual cash is virtual money available for play game'
+      text17: 'Virtual cash is virtual money available for play game',
+      text18:
+        'Get update of your asset today! And playing our game to get more rewards.',
+      text19: 'Total Reward this month'
     },
     section3: {
       text1: 'Your all-in-one source for financial updates',
@@ -1775,7 +1778,14 @@ export default {
       text3: 'Last Month',
       text4: 'Current Rank',
       text5: 'Find and follow interesting profiles.',
-      text6: 'People List'
+      text6: 'People List',
+      text7: 'Top Gainers'
+    },
+    section4: {
+      text1: 'assets with the highest returns at the moment'
+    },
+    section5: {
+      cardcircletext1: 'members'
     }
   },
   chooseCurrency: {
@@ -2583,8 +2593,12 @@ export default {
     dataNotFound: 'Data Not Found'
   },
   chat: {
-    personalEmptyState: 'No Conversation',
+    chat: 'Chat',
+    allMessages: 'All Messages',
+    personalEmptyState: 'No message here!',
+    startChat: 'Start a chat!',
     communityEmptyState: 'No Community Chat',
+    requestEmptyState: 'No Chat Request',
     selectUsername:
       'You didn’t made any conversation yet, please select username.',
     chatPeople: 'Chat People',
@@ -2599,20 +2613,24 @@ export default {
     newChat: 'New Chat',
     willHelp: 'Seedy will help you 🙌',
     startConversation: 'Start a conversation now!',
-    textInputPlaceholder: 'Type message…',
+    textInputPlaceholder: 'Create Message…',
     seeMore: 'See more',
     links: 'Links',
     commonGroup: `Group's in common`,
     personal: 'Personal',
     community: 'Community',
     request: 'Request',
+    chatRequest: 'Chat Request',
     reject: 'Reject',
     accept: 'Accept',
+    newMessage: 'New Message',
+    newMessageDescription: 'Say hi and kick off the conversation!',
     newGroup: 'New Group',
+    newGroupDescription: "Let's chat  🎉 Start a new group!",
     groupName: 'Group Name',
     enterGroupName: 'Enter Group Name',
     description: 'Description',
-    enterGroupDescription: 'Enter Group Description',
+    groupDescription: 'Group Description',
     typeGroup: 'Type Group',
     public: 'Public',
     private: 'Private',
@@ -2623,7 +2641,7 @@ export default {
     emptyChat: 'No messages here yet. Start a conversation now!',
     deleteChatTitle: 'Are you sure to delete this chat?',
     deleteChatSubtitle:
-      'If you click yes, your chat history can not be retrace after deletethe chat',
+      'If you click yes, your chat history can not be retrace after delete the chat',
     search: 'Search',
     mute: 'Mute Notification',
     deleteChat: 'Delete chat',
@@ -2632,7 +2650,33 @@ export default {
     seen: 'Seen',
     muteNotificationTitle: 'Are you sure to mute notifications?',
     muteNotificationSubtitle:
-      'Other participants will not see that you muted this chat'
+      'Other participants will not see that you muted this chat',
+    setPhoto: 'Set Photo',
+    btnCreateGroup: 'Create Group Chat',
+    btnYes: 'Yes',
+    btnNo: 'No',
+    members: 'Members',
+    addGroupDescription: 'Add Group Description',
+    menuBar: {
+      changeGroupInfo: 'Change Group Info',
+      mutedNotif: 'Muted Notifications',
+      leaveGroup: 'Leave Group'
+    },
+    addNewMember: 'Add New Member',
+    searchMember: 'Search Member',
+    shareGroup: 'Invite via Link',
+    editGroup: 'Edit Group',
+    camera: 'Camera',
+    gallery: 'Gallery',
+    record: 'Record',
+    placeholderDesc: 'Type your group description here!',
+    modalCameraTitle: 'Take a photo',
+    modalRecordVideoTitle: 'Record a video',
+    successMute: 'Notification Muted',
+    retake: 'Retake',
+    usePhoto: 'Use Photo',
+    createMessagePlaceholder: 'Create Message ...',
+    maxFileAlert: 'The file size is too large, the maximum file size is'
   },
   play: {
     keystat: 'Key Stats'

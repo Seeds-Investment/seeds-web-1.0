@@ -2801,6 +2801,8 @@ export default {
       validation: {
         login: 'Your phone number or password is wrong',
         blank: 'You must fill in this field',
+        error: 'There is an error. Check your password or connection!',
+        serverError: 'A server error occurred. Kindly try again soon.',
         password:
           'Password must contain 8 digit with upper case and lower case',
         wrongPassword:

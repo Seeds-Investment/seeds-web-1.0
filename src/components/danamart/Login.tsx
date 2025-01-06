@@ -1,53 +1,60 @@
 import useRecaptcha from '@/helpers/useRecaptcha';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-tailwind/react';
 import React from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 import AuthEmail from './auth/AuthEmail';
 import AuthPassword from './auth/AuthPassword';
 
-interface Props {
-  handleChangePass: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  password: string;
-  error: boolean;
-  errorPass: boolean;
-  blankPass: boolean;
-  email: string;
-  setPage: (value: string) => void;
-  handleLogin?: (recaptchaToken: string) => Promise<void>;
+interface LoginProps {
+  initialEmail: string;
+  handleLogin: (email: string, password: string, captchaToken: string) => Promise<void>;
   isLoading: boolean;
+  setPage: (value: string) => void;
 }
 
-const Login: React.FC<Props> = ({
-  handleChangePass,
-  password,
-  error,
-  errorPass,
-  blankPass,
-  email,
-  setPage,
+interface LoginFormInputs {
+  email: string;
+  password: string;
+  capchaToken: string;
+}
+
+const Login: React.FC<LoginProps> = ({
+  initialEmail,
   handleLogin,
-  isLoading
+  isLoading,
+  setPage
 }) => {
-  const RECAPTCHA_V2_SITE_KEY = '6LcXDqwqAAAAAOPdJX5A62B34yvSsezZwiWNRaEg';
   const { t } = useTranslation();
+  const RECAPTCHA_V2_SITE_KEY = '6LcXDqwqAAAAAOPdJX5A62B34yvSsezZwiWNRaEg';
   const { capchaToken, recaptchaRef, handleRecaptcha } = useRecaptcha();
 
-  const handleLoginWithRecaptcha = async (): Promise<void> => {
-    if (
-      capchaToken !== null &&
-      capchaToken !== '' &&
-      typeof handleLogin === 'function'
-    ) {
-      await handleLogin(capchaToken);
-    } else {
-      toast.error(t('danamart.login.validation.recaptcha'));
-    }
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    watch
+  } = useForm<LoginFormInputs>({
+    defaultValues: { email: initialEmail, password: '' },
+    resolver: yupResolver(
+      Yup.object({
+        email: Yup.string().required(String(t('danamart.login.validation.blank'))),
+        password: Yup.string().required(String(t('danamart.login.validation.wrongPassword'))),
+        capchaToken: Yup.string().required(String(t('danamart.login.validation.recaptcha')))
+      })
+    )
+  });
+
+  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+    await handleLogin(data.email, data.password, capchaToken);
   };
 
   return (
-    <div className="w-full">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       <div className="flex flex-col gap-2 text-center my-4">
         <Typography className="font-poppins font-semibold text-xl text-[#262626]">
           {t('danamart.login.welcome')}
@@ -56,53 +63,51 @@ const Login: React.FC<Props> = ({
           {t('danamart.login.welcomeDescription')}
         </Typography>
       </div>
-      <div className="w-full flex flex-col gap-4">
-        <div className="w-full">
-          <AuthEmail
-            name="email"
-            value={email}
-            fillable={false}
-            disabled={true}
-            handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
-              if (e.key === 'Enter') {
-                await handleLoginWithRecaptcha();
-              }
-            }}
-          />
-        </div>
-        <div className="w-full">
-          <AuthPassword
-            handleChange={handleChangePass}
-            value={password}
-            error={errorPass}
-            name="password"
-            label={t('danamart.login.password').toString()}
-            placeholder={t('danamart.login.passwordPlaceholder').toString()}
-            handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
-              if (e.key === 'Enter') {
-                await handleLoginWithRecaptcha();
-              }
-            }}
-          />
-          <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-            {error && errorPass ? (
-              t('danamart.login.validation.login')
-            ) : errorPass && blankPass ? (
-              t('danamart.login.validation.blank')
-            ) : errorPass ? (
-              t('danamart.login.validation.password')
-            ) : (
-              <br />
-            )}
-          </Typography>
-        </div>
-      </div>
-      <div className="w-full flex justify-center items-center">
+
+      <AuthEmail
+        value={initialEmail}
+        {...register('email')}
+        fillable={false}
+        disabled={true}
+        handleSubmit={(e) => {
+          if (e.key === 'Enter') void handleSubmit(onSubmit)();
+        }}
+      />
+
+      <AuthPassword
+        value={watch('password')}
+        onChange={(e) => { setValue('password', e.target.value); }}
+        error={Boolean(errors.password)}
+        name="password"
+        label={t('danamart.login.password')}
+        placeholder={t('danamart.login.passwordPlaceholder')}
+        handleSubmit={(e) => {
+          if (e.key === 'Enter') void handleSubmit(onSubmit)();
+        }}
+        className={'mt-6'}
+      />
+      {((errors.password !== null) && (errors.password !== undefined)) && 
+        <p className="text-red-500">
+          {errors.password.message}
+        </p>
+      }
+
+      <div className="w-full flex flex-col justify-center items-center mt-4">
         <ReCAPTCHA
           ref={recaptchaRef}
           sitekey={RECAPTCHA_V2_SITE_KEY}
-          onChange={handleRecaptcha}
+          onChange={(token) => {
+            handleRecaptcha(token);
+            setValue('capchaToken', token !== null && token !== undefined ? token : '', {
+              shouldValidate: true,
+            });
+          }}
         />
+        {((errors.capchaToken !== null) && (errors.capchaToken !== undefined)) &&
+          <p className="text-red-500">
+            {errors.capchaToken.message}
+          </p>
+        }
       </div>
       <div className="w-full mt-4">
         <Typography
@@ -114,19 +119,15 @@ const Login: React.FC<Props> = ({
           {t('danamart.login.forgotPassword.forgotPasswordText')}
         </Typography>
       </div>
-      <div className="w-full">
-        <Button
-          loading={isLoading}
-          disabled={capchaToken === '' || password === '' || isLoading}
-          onClick={async () => {
-            await handleLoginWithRecaptcha();
-          }}
-          className="w-full text-base font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
-        >
-          {t('danamart.login.loginButton')}
-        </Button>
-      </div>
-    </div>
+
+      <Button
+        type="submit"
+        disabled={capchaToken === '' || watch('password') === '' || isLoading}
+        className="w-full text-base font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
+      >
+        {t('danamart.login.loginButton')}
+      </Button>
+    </form>
   );
 };
 

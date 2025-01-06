@@ -1,24 +1,21 @@
 import SeedsXDanamart from '@/assets/danamart/seeds-danamart.svg';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IoMdClose } from 'react-icons/io';
 import Modal from '../ui/modal/Modal';
 import AuthEmail from './auth/AuthEmail';
 
 interface Props {
-  email: string;
-  setEmail: (value: string) => void;
   setPage: (value: string) => void;
 }
 
 const ForgotPassword: React.FC<Props> = ({
-  email,
-  setEmail,
   setPage
 }) => {
   const { t } = useTranslation();
+  const [email, setEmail] = useState<string>('');
 
   const emailValidation = (email: string): boolean => {
     const regex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;

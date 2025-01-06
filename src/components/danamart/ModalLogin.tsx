@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import SeedsXDanamart from '@/assets/danamart/seeds-danamart.svg';
 import { decryptResponse } from '@/helpers/cryptoDecrypt';
 import { login } from '@/repository/danamart/auth.repository';
@@ -29,24 +28,12 @@ const ModalLogin: React.FC<Props> = ({
   const { t } = useTranslation();
   const router = useRouter();
   const [page, setPage] = useState<string>('login');
-  const [error, setError] = useState<boolean>(false);
-  const [errorPass, setErrorPass] = useState<boolean>(false);
-  const [blankPass, setBlankPass] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
 
-  const handleChangePass = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setError(false);
-    setErrorPass(false);
-    setBlankPass(false);
-    setPassword(e.target.value);
-  };
-
-  const handleLogin = async (captchaToken: string): Promise<void> => {
+  const handleLogin = async (email: string, password: string, captchaToken: string): Promise<void> => {
     try {
       setIsLoading(true);
       const response = await login({
-        email: userInfo?.email ?? '',
+        email,
         password,
         captchaToken
       });
@@ -55,7 +42,7 @@ const ModalLogin: React.FC<Props> = ({
         const encryptedData = response?.data;
         const decryptedData = decryptResponse(encryptedData);
 
-        if (decryptedData) {
+        if (decryptedData !== null) {
           const decryptedDataObject = JSON.parse(decryptedData);
           localStorage.setItem(
             'accessToken-danamart',
@@ -65,7 +52,19 @@ const ModalLogin: React.FC<Props> = ({
           setIsOpenModalLogin(false);
         }
       } else {
-        toast.error(t('danamart.login.validation.wrongPassword'));
+        const encryptedData = response?.data;
+        const decryptedData = decryptResponse(encryptedData);
+
+        if (decryptedData !== null) {
+          const decryptedDataObject = JSON.parse(decryptedData);
+          if ((decryptedDataObject?.freeze_time === null) && (decryptedDataObject?.attempt === null)) {
+            toast.error(t('danamart.login.validation.serverError'));
+          } else if ((decryptedDataObject?.freeze_time !== null) && (decryptedDataObject?.freeze_time !== null)) {
+            toast.error(t('danamart.login.validation.wrongPassword'));
+          } else {
+            toast.error(t('danamart.login.validation.error'));
+          }
+        }
       }
     } catch (error: any) {
       toast(`Error login: ${error as string}`);
@@ -100,18 +99,13 @@ const ModalLogin: React.FC<Props> = ({
         </div>
         {page === 'login' ? (
           <Login
-            handleChangePass={handleChangePass}
-            password={password}
-            errorPass={errorPass}
-            error={error}
-            blankPass={blankPass}
-            setPage={setPage}
-            email={userInfo?.email ?? ''}
+            initialEmail={userInfo?.email ?? ''}
             handleLogin={handleLogin}
             isLoading={isLoading}
+            setPage={setPage}
           />
         ) : (
-          <ForgotPassword email={email} setEmail={setEmail} setPage={setPage} />
+          <ForgotPassword setPage={setPage} />
         )}
       </div>
     </Modal>

@@ -2848,6 +2848,7 @@ export default {
       title: 'Dashboard',
       description: 'Your gateway to track and grow investments.',
       verifyPhone: "Don't forget to verify your phone number",
+      verifyForm: "Don't forget to complete your personal data",
       here: 'here',
       topUp: 'Top Up',
       cashInHand: 'Cash In-hand',
@@ -2869,7 +2870,8 @@ export default {
       growthStocks: 'Growth Stocks',
       incomeStocks: 'Income Stocks',
       alternatives: 'Alternatives',
-      errorGetUserDashboard: 'Failed to get dashboard data'
+      errorGetUserDashboard: 'Failed to get dashboard data',
+      errorGetUserProfile: 'Failed to get user profile'
     }
   }
 };

@@ -2780,6 +2780,7 @@ export default {
       description:
         'Pintu gerbang anda untuk memantau dan mengembangkan investasi.',
       verifyPhone: 'Jangan lupa untuk memverifikasi nomor telepon Anda',
+      verifyForm: 'Jangan lupa lengkapi data diri kamu',
       here: 'di sini',
       topUp: 'Isi Ulang',
       cashInHand: 'Uang Tunai',
@@ -2801,7 +2802,8 @@ export default {
       growthStocks: 'Pertumbuhan Saham',
       incomeStocks: 'Pendapatan Saham',
       alternatives: 'Alternatif',
-      errorGetUserDashboard: 'Gagal mendapatkan data dasbor'
+      errorGetUserDashboard: 'Gagal mendapatkan data dasbor',
+      errorGetUserProfile: 'Gagal mendapatkan data profile pengguna'
     }
   }
 };

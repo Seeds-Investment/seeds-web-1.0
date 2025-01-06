@@ -7,6 +7,7 @@ interface Props {
     icon: React.ReactNode;
     title: string;
     desc: string;
+    value: string;
   };
 }
 
@@ -34,7 +35,7 @@ const DashboardCard: React.FC<Props> = ({ data }) => {
           </Typography>
           <div className="flex flex-col gap-1">
             <Typography className="font-poppins font-semibold text-base text-[#262626]">
-              Rp. 0
+              {data.value}
             </Typography>
             <Typography className="font-poppins font-normal text-sm text-[#7C7C7C] line-clamp-2">
               {data.desc}

@@ -10,8 +10,10 @@ import { toast } from 'react-toastify';
 const Danamart = (): React.ReactElement => {
   const [userData, setUserData] = useState<UserInfo>();
 
-  const [isOpenModalRegister, setIsOpenModalRegister] = useState(false);
-  const [isOpenModalLogin, setIsOpenModalLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isOpenModalRegister, setIsOpenModalRegister] =
+    useState<boolean>(false);
+  const [isOpenModalLogin, setIsOpenModalLogin] = useState<boolean>(false);
 
   const fetchUserInfo = async (): Promise<void> => {
     try {
@@ -42,6 +44,8 @@ const Danamart = (): React.ReactElement => {
         <ModalLogin
           userInfo={userData}
           setIsOpenModalLogin={setIsOpenModalLogin}
+          setIsLoading={setIsLoading}
+          isLoading={isLoading}
         />
       )}
       <div>Danamart Page</div>

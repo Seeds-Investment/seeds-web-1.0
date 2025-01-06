@@ -16,6 +16,7 @@ interface Props {
   email: string;
   setPage: (value: string) => void;
   handleLogin?: (recaptchaToken: string) => Promise<void>;
+  isLoading: boolean;
 }
 
 const Login: React.FC<Props> = ({
@@ -26,14 +27,19 @@ const Login: React.FC<Props> = ({
   blankPass,
   email,
   setPage,
-  handleLogin
+  handleLogin,
+  isLoading
 }) => {
   const RECAPTCHA_V2_SITE_KEY = '6LcXDqwqAAAAAOPdJX5A62B34yvSsezZwiWNRaEg';
   const { t } = useTranslation();
   const { capchaToken, recaptchaRef, handleRecaptcha } = useRecaptcha();
 
   const handleLoginWithRecaptcha = async (): Promise<void> => {
-    if ((capchaToken !== null) && (capchaToken !== '') && typeof handleLogin === 'function') {
+    if (
+      capchaToken !== null &&
+      capchaToken !== '' &&
+      typeof handleLogin === 'function'
+    ) {
       await handleLogin(capchaToken);
     } else {
       toast.error(t('danamart.login.validation.recaptcha'));
@@ -41,7 +47,7 @@ const Login: React.FC<Props> = ({
   };
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <div className="flex flex-col gap-2 text-center my-4">
         <Typography className="font-poppins font-semibold text-xl text-[#262626]">
           {t('danamart.login.welcome')}
@@ -50,7 +56,7 @@ const Login: React.FC<Props> = ({
           {t('danamart.login.welcomeDescription')}
         </Typography>
       </div>
-      <div className='w-full flex flex-col gap-4'>
+      <div className="w-full flex flex-col gap-4">
         <div className="w-full">
           <AuthEmail
             name="email"
@@ -100,7 +106,9 @@ const Login: React.FC<Props> = ({
       </div>
       <div className="w-full mt-4">
         <Typography
-          onClick={() => { setPage('forgot'); }}
+          onClick={() => {
+            setPage('forgot');
+          }}
           className="font-poppins font-semibold text-base text-[#DA2D1F] text-right cursor-pointer"
         >
           {t('danamart.login.forgotPassword.forgotPasswordText')}
@@ -108,7 +116,8 @@ const Login: React.FC<Props> = ({
       </div>
       <div className="w-full">
         <Button
-          disabled={capchaToken === '' || password === ''}
+          loading={isLoading}
+          disabled={capchaToken === '' || password === '' || isLoading}
           onClick={async () => {
             await handleLoginWithRecaptcha();
           }}

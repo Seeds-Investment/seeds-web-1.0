@@ -16,11 +16,15 @@ import Login from './Login';
 interface Props {
   userInfo: UserInfo;
   setIsOpenModalLogin: (value: boolean) => void;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading: boolean;
 }
 
 const ModalLogin: React.FC<Props> = ({
   userInfo,
-  setIsOpenModalLogin
+  setIsOpenModalLogin,
+  setIsLoading,
+  isLoading
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -40,6 +44,7 @@ const ModalLogin: React.FC<Props> = ({
 
   const handleLogin = async (captchaToken: string): Promise<void> => {
     try {
+      setIsLoading(true);
       const response = await login({
         email: userInfo?.email ?? '',
         password,
@@ -56,14 +61,16 @@ const ModalLogin: React.FC<Props> = ({
             'accessToken-danamart',
             decryptedDataObject.acsTknId
           );
-          setIsOpenModalLogin(false);
           await router.push('/danamart/dashboard');
+          setIsOpenModalLogin(false);
         }
       } else {
         toast.error(t('danamart.login.validation.wrongPassword'));
       }
     } catch (error: any) {
       toast(`Error login: ${error as string}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -74,14 +81,16 @@ const ModalLogin: React.FC<Props> = ({
     >
       <div className="p-4 md:py-5 flex flex-col items-center">
         <div className="w-full relative flex justify-center">
-          <div
-            onClick={() => {
-              setIsOpenModalLogin(false);
-            }}
-            className="absolute right-0 cursor-pointer hover:scale-110 duration-150"
-          >
-            <IoMdClose size={20} />
-          </div>
+          {!isLoading && (
+            <div
+              onClick={() => {
+                setIsOpenModalLogin(false);
+              }}
+              className="absolute right-0 cursor-pointer hover:scale-110 duration-150"
+            >
+              <IoMdClose size={20} />
+            </div>
+          )}
           <Image
             src={SeedsXDanamart}
             alt="SeedsXDanamart Logo"
@@ -99,6 +108,7 @@ const ModalLogin: React.FC<Props> = ({
             setPage={setPage}
             email={userInfo?.email ?? ''}
             handleLogin={handleLogin}
+            isLoading={isLoading}
           />
         ) : (
           <ForgotPassword email={email} setEmail={setEmail} setPage={setPage} />

@@ -212,7 +212,7 @@ const Section5New: React.FC = () => {
                         </Typography>
                       )
                     ) : (
-                      <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
+                      <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center ">
                         Loading...
                       </Typography>
                     )}

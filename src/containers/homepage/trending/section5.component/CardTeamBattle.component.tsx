@@ -1,4 +1,4 @@
-import category from '@/assets/homepage/Category.svg';
+import category from '@/assets/homepage/category.svg';
 import fee from '@/assets/homepage/fee.svg';
 import nodata from '@/assets/homepage/nodata.svg';
 import share from '@/assets/homepage/share.svg';

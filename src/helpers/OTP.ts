@@ -37,7 +37,8 @@ export const handleOTP = async (
   router: NextRouter,
   dispatch: AppDispatch,
   setSelect: React.Dispatch<React.SetStateAction<number>>,
-  setOTPForm: React.Dispatch<React.SetStateAction<OTPDataI>>
+  setOTPForm: React.Dispatch<React.SetStateAction<OTPDataI>>,
+  stateOTP?: string | undefined
 ): Promise<void> => {
   const isQuery = Object.keys(router.query).length > 0;
 
@@ -81,12 +82,15 @@ export const handleOTP = async (
   };
 
   // Core logic after OTP
-  if (localStorage.getItem('accessToken') !== null) {
+  if ((localStorage.getItem('accessToken') !== null) && (stateOTP === undefined)) {
     await editVerifyOtp(verifyOTP);
     if (window.location.pathname === '/auth/change-phone-number') {
       router.back();
     }
-  } else if (guest === 'guest-login') {
+  } else if ((localStorage.getItem('accessToken') !== null) && (stateOTP === 'danamart')) {
+    await verifyOtp(verifyOTP);
+    setSelect(2);
+  }  else if (guest === 'guest-login') {
     const response = await quickLogin(guestLoginOTP);
     AuthLocalStorage(response);
     await handleTracker();

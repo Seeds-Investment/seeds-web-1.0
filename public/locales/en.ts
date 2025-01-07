@@ -2803,19 +2803,61 @@ export default {
         blank: 'You must fill in this field',
         error: 'There is an error. Check your password or connection!',
         serverError: 'A server error occurred. Kindly try again soon.',
-        password:
-          'Password must contain 8 digit with upper case and lower case',
-        wrongPassword:
-          'Wrong password. Check your password before filling the form!',
-        recaptcha:
-          'ReCAPTCHA value is not available! Fill the ReCAPTCHA before logging in.'
-      },
-      forgotPassword: {
-        forgotPasswordText: 'Forgot Password?',
-        sendLink: 'Send Link',
-        backLogin: 'Back to Login'
+        password: 'Password must contain 8 digit with upper case and lower case',
+        wrongPassword: 'Wrong password. Check your password before filling the form!',
+        recaptcha: 'ReCAPTCHA value is not available! Fill the ReCAPTCHA before logging in.'
       },
       loginButton: 'Login'
+    },
+    forgotPassword: {
+      forgotPasswordTitle: 'Forget Password 🔑',
+      forgotPasswordDescription: "Enter your phone number, and we’ll send you an OTP to reset your password.",
+      forgotPasswordText: 'Forgot Password?',
+      sendLink: 'Send Link',
+      backLogin: 'Back to Login',
+      next: 'Next',
+      authOTP: {
+        title1: 'Input OTP Code',
+        title2: 'We have sent the OTP code via ',
+        title3: ' to',
+        resend: 'Resend OTP Code',
+        otherMethod1: `Didn't get the code? `,
+        otherMethod3: 'Try',
+        otherMethod4: ' sending it by',
+        validation: 'Incorrect OTP. Please Try again.',
+        blank: 'You must fill in this field',
+      },
+      createNewPassword: {
+        title1: 'Create New Password',
+        title2: 'Let’s create a secure password'
+      },
+      authForgotPass: {
+        title1: 'Input Phone Number',
+        title2: 'To get OTP Code',
+        title3: 'Create New Password',
+        title4: 'Let’s create a secure password',
+        validation: {
+          number: 'Oops, your phone number not registered',
+          password: 'Oops, password must be 8 characters long and have both uppercase and lowercase letters.',
+          match: 'Oops, password doesn’t match',
+          blank: 'You must fill in this field',
+        },
+        newPassword: {
+          label: 'Create a New Password',
+          placeholder: 'Please create your password'
+        },
+        matchPassword: {
+          label: 'Confirm New Password',
+          placeholder: 'Please confirm your password'
+        },
+        information: 'Password must be 8 characters long and have both uppercase and lowercase letters.',
+        modal: {
+          title1: 'Success',
+          title2: 'The new password has been successfully created.',
+          title3: 'Please check your email',
+          close: 'Close'
+        }
+      },
     },
     register: {
       connectSeeds: 'Connect Seeds to Danamart',

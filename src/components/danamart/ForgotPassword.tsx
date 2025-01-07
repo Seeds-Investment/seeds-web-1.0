@@ -1,26 +1,59 @@
-import SeedsXDanamart from '@/assets/danamart/seeds-danamart.svg';
-import { Button, Typography } from '@material-tailwind/react';
-import Image from 'next/image';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { IoMdClose } from 'react-icons/io';
+import SeedySMSOTP from '@/assets/danamart/SeedySMSOTP.png';
+import SeedyWAOTP from '@/assets/danamart/SeedyWAOTP.png';
+import countries from '@/constants/countries.json';
+import React, { useEffect, useState } from 'react';
 import Modal from '../ui/modal/Modal';
-import AuthEmail from './auth/AuthEmail';
+import AuthForgotPassNew from './auth/AuthForgotPassNew';
+import AuthForgotPassNumber from './auth/AuthForgotPassNumber';
+import AuthModalPass from './auth/AuthModalPass';
+import AuthOTP from './auth/AuthOTP';
 
 interface Props {
   setPage: (value: string) => void;
+  userEmail: string;
 }
 
 const ForgotPassword: React.FC<Props> = ({
-  setPage
+  setPage,
+  userEmail
 }) => {
-  const { t } = useTranslation();
-  const [email, setEmail] = useState<string>('');
+  const [open, setOpen] = useState<boolean>(false);
+  const [select, setSelect] = useState(0);
+  const [method, setMethod] = useState('sms');
+  const [countdown, setCountdown] = useState(0);
+  const [country, setCountry] = useState<number>(101);
+  const [formData, setFormData] = useState({
+    phoneNumber: '',
+    password: '',
+    oldPassword: ''
+  });
+  const [formDataNewPassword, setFormDataNewPassword] = useState({
+    email: userEmail,
+    password: ''
+  });
+  const [formOTPData, setFormOTPData] = useState({
+    phoneNumber: '',
+    method,
+    otp: ''
+  });
 
-  const emailValidation = (email: string): boolean => {
-    const regex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-    return regex.test(email);
+  const handleOpen = (): void => {
+    setOpen(!open);
   };
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (countdown > 0) {
+        setCountdown(countdown - 1);
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [countdown]);
 
   return (
     <Modal
@@ -28,52 +61,46 @@ const ForgotPassword: React.FC<Props> = ({
       modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[50%] md:left-[35%] md:right-[-35%] mt-[-18rem] w-full h-fit md:w-[450px] p-4 md:rounded-3xl rounded-t-3xl bg-white"
     >
       <div className="p-8 md:px-4 md:py-5 flex flex-col items-center">
-        <div className="w-full relative flex justify-center">
-          <div className="absolute right-0 cursor-pointer hover:scale-110 duration-150">
-            <IoMdClose size={20} />
-          </div>
-          <Image
-            src={SeedsXDanamart}
-            alt="SeedsXDanamart Logo"
-            width={168}
-            height={80}
-          />
-        </div>
-        <div className="flex flex-col gap-2 text-center my-4">
-          <Typography className="font-poppins font-semibold text-xl text-[#262626]">
-            {t('danamart.login.welcome')}
-          </Typography>
-          <Typography className="font-poppins font-light text-base text-[#7c7c7c]">
-            {t('danamart.login.welcomeDescription')}
-          </Typography>
-        </div>
-        <div className='w-full flex flex-col gap-4 my-4'>
-          <div className="w-full">
-            <AuthEmail
-              name="email"
-              value={email}
-              fillable={true}
-              setEmail={(e) => { setEmail(e.target.value); }}
-              handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
-                if (e.key === 'Enter') {
-                  // handle function
-                }
-              }}
-            />
-          </div>
-        </div>
-        <Button
-          disabled={email === '' || !emailValidation(email)}
-          className="w-full text-base font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
-        >
-          {t('danamart.login.forgotPassword.sendLink')}
-        </Button>
-        <Button
-          onClick={() => { setPage('login'); }}
-          className="w-full text-base font-semibold bg-white text-seeds-button-green border border-seeds-button-green mt-4 rounded-full capitalize"
-        >
-          {t('danamart.login.forgotPassword.backLogin')}
-        </Button>
+        <AuthForgotPassNumber
+          setPage={setPage}
+          setSelect={setSelect}
+          className={select === 0 ? 'flex flex-col' : 'hidden'}
+          formData={formData}
+          setFormData={setFormData}
+          setCountdown={setCountdown}
+          countries={countries}
+          method={method}
+          country={country}
+          setCountry={setCountry}
+          otpForm={formOTPData}
+          setOTPForm={setFormOTPData}
+        />
+        <AuthOTP
+          setPage={setPage}
+          select={select}
+          method={method}
+          setMethod={setMethod}
+          countdown={countdown}
+          setCountdown={setCountdown}
+          setSelect={setSelect}
+          image={method === 'whatsapp' ? SeedyWAOTP : SeedySMSOTP}
+          otpForm={formOTPData}
+          setOTPForm={setFormOTPData}
+          country={country}
+        />
+        <AuthForgotPassNew
+          setPage={setPage}
+          setSelect={setSelect}
+          className={select === 2 ? 'flex flex-col' : 'hidden'}
+          handleOpen={handleOpen}
+          formDataNewPassword={formDataNewPassword}
+          setFormDataNewPassword={setFormDataNewPassword}
+        />
+        <AuthModalPass
+          setPage={setPage}
+          handleOpen={handleOpen}
+          open={open}
+        />
       </div>
     </Modal>
   );

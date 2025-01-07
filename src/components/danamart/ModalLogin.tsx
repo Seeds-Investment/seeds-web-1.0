@@ -80,7 +80,7 @@ const ModalLogin: React.FC<Props> = ({
     >
       <div className="p-4 md:py-5 flex flex-col items-center">
         <div className="w-full relative flex justify-center">
-          {!isLoading && (
+          {((!isLoading) && (page !== 'login')) && (
             <div
               onClick={() => {
                 setIsOpenModalLogin(false);
@@ -99,13 +99,16 @@ const ModalLogin: React.FC<Props> = ({
         </div>
         {page === 'login' ? (
           <Login
-            initialEmail={userInfo?.email ?? ''}
+            userEmail={userInfo?.email ?? ''}
             handleLogin={handleLogin}
             isLoading={isLoading}
             setPage={setPage}
           />
         ) : (
-          <ForgotPassword setPage={setPage} />
+          <ForgotPassword
+            setPage={setPage}
+            userEmail={userInfo?.email ?? ''}
+          />
         )}
       </div>
     </Modal>

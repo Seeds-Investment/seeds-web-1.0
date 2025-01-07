@@ -10,7 +10,7 @@ import AuthEmail from './auth/AuthEmail';
 import AuthPassword from './auth/AuthPassword';
 
 interface LoginProps {
-  initialEmail: string;
+  userEmail: string;
   handleLogin: (email: string, password: string, captchaToken: string) => Promise<void>;
   isLoading: boolean;
   setPage: (value: string) => void;
@@ -23,7 +23,7 @@ interface LoginFormInputs {
 }
 
 const Login: React.FC<LoginProps> = ({
-  initialEmail,
+  userEmail,
   handleLogin,
   isLoading,
   setPage
@@ -39,7 +39,7 @@ const Login: React.FC<LoginProps> = ({
     formState: { errors },
     watch
   } = useForm<LoginFormInputs>({
-    defaultValues: { email: initialEmail, password: '' },
+    defaultValues: { email: userEmail, password: '' },
     resolver: yupResolver(
       Yup.object({
         email: Yup.string().required(String(t('danamart.login.validation.blank'))),
@@ -65,7 +65,7 @@ const Login: React.FC<LoginProps> = ({
       </div>
 
       <AuthEmail
-        value={initialEmail}
+        value={userEmail}
         {...register('email')}
         fillable={false}
         disabled={true}
@@ -116,7 +116,7 @@ const Login: React.FC<LoginProps> = ({
           }}
           className="font-poppins font-semibold text-base text-[#DA2D1F] text-right cursor-pointer"
         >
-          {t('danamart.login.forgotPassword.forgotPasswordText')}
+          {t('danamart.forgotPassword.forgotPasswordText')}
         </Typography>
       </div>
 

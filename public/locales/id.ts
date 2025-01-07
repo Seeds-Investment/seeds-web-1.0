@@ -2735,19 +2735,61 @@ export default {
         blank: 'Kamu harus mengisi kolom ini',
         error: 'Terjadi kesalahan. Cek kata sandi Anda atau koneksi Anda!',
         serverError: 'Terjadi kesalahan pada server. Mohon coba sesaat lagi.',
-        password:
-          'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
-        wrongPassword:
-          'Password salah. Cek password Anda sebelum mengisi form!',
-        recaptcha:
-          'ReCAPTCHA tidak tersedia! Pastikan Anda telah mengisi ReCAPTCHA.'
-      },
-      forgotPassword: {
-        forgotPasswordText: 'Lupa Kata Sandi?',
-        sendLink: 'Kirim Link',
-        backLogin: 'Masuk Kembali'
+        password: 'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+        wrongPassword: 'Password salah. Cek password Anda sebelum mengisi form!',
+        recaptcha: 'ReCAPTCHA tidak tersedia! Pastikan Anda telah mengisi ReCAPTCHA.'
       },
       loginButton: 'Masuk'
+    },
+    forgotPassword: {
+      forgotPasswordTitle: 'Lupa Kata Sandi 🔑',
+      forgotPasswordDescription: 'Masukkan email kamu dan kami akan mengirimkan link untuk mengatur ulang password kamu.',
+      forgotPasswordText: 'Lupa Kata Sandi?',
+      sendLink: 'Kirim Link',
+      backLogin: 'Masuk Kembali',
+      next: 'Selanjutnya',
+      authOTP: {
+        title1: 'Yuk, Masukan Kode OTP',
+        title2: 'Kode-nya kami kirim ke ',
+        title3: '',
+        resend: 'Kirim ulang kode OTP',
+        otherMethod1: 'Belum dapet kodenya? ',
+        otherMethod3: 'Coba',
+        otherMethod4: ' lewat',
+        validation: 'Yah, OTPmu salah, yuk coba lagi',
+        blank: 'Kamu haru mengisi kolom ini!',
+      },
+      createNewPassword: {
+        title1: 'Buat Kata Sandi Baru',
+        title2: 'Yuk, buat kata sandi yang baru!'
+      },
+      authForgotPass: {
+        title1: 'Masukkan Nomor Telepon',
+        title2: 'Untuk dapat kode OTP',
+        title3: 'Buat Kata Sandi Baru',
+        title4: 'Yuk, buat kata sandi yang aman',
+        validation: {
+          number: 'Ups, nomor telepon kamu tidak terdaftar',
+          password: 'Ups, kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+          match: 'Ups, kata sandi tidak cocok',
+          blank: 'Kamu haru mengisi kolom ini!',
+        },
+        newPassword: {
+          label: 'Buat Kata Sandi Baru',
+          placeholder: 'Tolong buat kata sandimu'
+        },
+        matchPassword: {
+          label: 'Konfirmasi Kata Sandi Baru',
+          placeholder: 'Tolong konfirmasi kata sandimu'
+        },
+        information: 'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+        modal: {
+          title1: 'Berhasil',
+          title2: 'Kata sandi yang baru berhasil dibuat',
+          title3: 'Tolong cek emailmu',
+          close: 'Tutup'
+        }
+      }
     },
     register: {
       connectSeeds: 'Hubungkan Seeds dengan Danamart',

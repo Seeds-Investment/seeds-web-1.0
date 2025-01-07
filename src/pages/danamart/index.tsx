@@ -3,7 +3,6 @@ import ModalRegister from '@/components/danamart/ModalRegister';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type UserInfo } from '@/utils/interfaces/user.interface';
-import { Button } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -47,25 +46,6 @@ const Danamart = (): React.ReactElement => {
           setIsLoading={setIsLoading}
           isLoading={isLoading}
         />
-      )}
-      <div>Danamart Page</div>
-      {localStorage.getItem('accessToken-danamart') !== null ? (
-        <Button
-          onClick={() => {
-            localStorage.removeItem('accessToken-danamart');
-            window.location.reload();
-          }}
-        >
-          Logout
-        </Button>
-      ) : (
-        <Button
-          onClick={() => {
-            setIsOpenModalLogin(true);
-          }}
-        >
-          Login
-        </Button>
       )}
     </div>
   );

@@ -80,7 +80,7 @@ const ModalLogin: React.FC<Props> = ({
     >
       <div className="p-4 md:py-5 flex flex-col items-center">
         <div className="w-full relative flex justify-center">
-          {((!isLoading) && (page !== 'login')) && (
+          {!isLoading && (
             <div
               onClick={() => {
                 setIsOpenModalLogin(false);

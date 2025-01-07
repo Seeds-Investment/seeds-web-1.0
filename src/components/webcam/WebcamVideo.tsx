@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import Webcam from 'react-webcam';
 
 interface WebcamVideoProps {
-  type: string;
+  type: boolean;
   onCapture: (video: File, text?: string) => void;
   isInputMessage?: boolean;
   setIsSending: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +19,7 @@ const FACING_MODE_USER = 'user';
 const FACING_MODE_ENVIRONMENT = 'environment';
 
 const WebcamVideo: React.FC<WebcamVideoProps> = ({
-  type = 'landscape',
+  type,
   onCapture,
   isInputMessage,
   setIsSending,
@@ -120,8 +120,8 @@ const WebcamVideo: React.FC<WebcamVideoProps> = ({
 
   const videoConstraints: MediaTrackConstraintSet = {
     facingMode,
-    width: type === 'landscape' ? 940 : window.innerWidth,
-    height: type === 'landscape' ? 440 : window.innerHeight
+    width: !type ? 940 : window.innerWidth,
+    height: !type ? 440 : window.innerHeight
   };
 
   const audioConstraints: MediaTrackConstraints = {
@@ -173,6 +173,8 @@ const WebcamVideo: React.FC<WebcamVideoProps> = ({
                     ? 'md:rounded-none'
                     : 'md:rounded-b-2xl'
                 } rounded-none`}
+                width={!type ? 940 : window.innerWidth}
+                height={!type ? 440 : window.innerHeight}
               />
               <button
                 onClick={() => {

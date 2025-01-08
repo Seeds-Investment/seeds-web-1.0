@@ -22,9 +22,17 @@ const ModalRecordVideo: React.FC<Props> = ({
   const [isSending, setIsSending] = useState<boolean>(false);
 
   useEffect(() => {
-    if (screen.orientation.type === 'portrait-primary') {
-      setIsMobile(true);
-    }
+    const updateIsMobile = (): void => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    updateIsMobile();
+
+    window.addEventListener('resize', updateIsMobile);
+
+    return () => {
+      window.removeEventListener('resize', updateIsMobile);
+    };
   }, []);
 
   const handleWebcamCapture = (video: File, text?: string): void => {
@@ -56,7 +64,7 @@ const ModalRecordVideo: React.FC<Props> = ({
       )}
       <WebcamVideo
         onCapture={handleWebcamCapture}
-        type={isMobile ? 'portrait' : 'landscape'}
+        type={isMobile}
         isInputMessage={isInputMessage}
         setIsSending={setIsSending}
         isSending={isSending}

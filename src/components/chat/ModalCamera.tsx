@@ -23,9 +23,17 @@ const ModalCamera: React.FC<Props> = ({
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
-    if (screen.orientation.type === 'portrait-primary') {
-      setIsMobile(true);
-    }
+    const updateIsMobile = (): void => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    updateIsMobile();
+
+    window.addEventListener('resize', updateIsMobile);
+
+    return () => {
+      window.removeEventListener('resize', updateIsMobile);
+    };
   }, []);
 
   const handleWebcamCapture = (image: File, text?: string): void => {
@@ -54,7 +62,7 @@ const ModalCamera: React.FC<Props> = ({
         </Typography>
       </div>
       <WebcamPhoto
-        type={isMobile ? 'portrait' : 'landscape'}
+        type={isMobile}
         onCapture={handleWebcamCapture}
         isCropShapeRound={isCropShapeRound}
         isInputMessage={isInputMessage}

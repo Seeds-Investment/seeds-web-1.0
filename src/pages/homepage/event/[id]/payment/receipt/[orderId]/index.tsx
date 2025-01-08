@@ -10,7 +10,7 @@ import {
   getPaymentList
 } from '@/repository/payment.repository';
 import { formatCurrency } from '@/utils/common/currency';
-import { Card, Typography } from '@material-tailwind/react';
+import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Pending } from 'public/assets/circle';
@@ -74,6 +74,7 @@ const SuccessPaymentPage: React.FC = () => {
   const router = useRouter();
   const id = router.query.id as string;
   const orderId = router.query.orderId as string;
+  const paymentUrl = router.query.paymentUrl as string;
   const [isLoadingOrder, setIsLoadingOrder] = useState<boolean>(false);
   const [isLoadingPayment, setIsLoadingPayment] = useState<boolean>(false);
   const [isLoadingHowToPay, setIsLoadingHowToPay] = useState<boolean>(false);
@@ -208,6 +209,21 @@ const SuccessPaymentPage: React.FC = () => {
   const toggleDropdown = (): void => {
     setIsOpen(!isOpen);
   };
+  
+    const handleViewQR = async(): Promise<void> => {
+      const query = paymentUrl !== '' ? { paymentUrl } : undefined;
+  
+      await router.replace(
+        {
+          pathname: `/homepage/event/${id}/payment/receipt/${orderId}` + `${((orderDetail?.paymentMethod?.includes('BNC')) ?? false) ? '/qris' : ''}`,
+          query
+        },
+        undefined,
+        { shallow: true }
+      ).catch(error => {
+        toast(`${error as string}`);
+      });
+    }
 
   return (
     <div className="pt-10">
@@ -237,7 +253,11 @@ const SuccessPaymentPage: React.FC = () => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {orderDetail?.transactionStatus !== 'SETTLEMENT' ? (
+                {
+                  orderDetail?.transactionStatus !== 'SUCCESS' &&
+                  orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                  orderDetail?.transactionStatus !== 'SUCCEEDED'
+                ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -258,18 +278,24 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus === 'SETTLEMENT' ||
-                orderDetail?.transactionStatus === 'SUCCEEDED'
-                  ? ''
-                  : t('seedsEvent.payment.receipt.pending')}
+                {
+                  orderDetail?.transactionStatus === 'SUCCESS' ||
+                  orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                  orderDetail?.transactionStatus === 'SUCCEEDED'
+                    ? ''
+                    : t('seedsEvent.payment.receipt.pending')
+                }
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {orderDetail?.transactionStatus === 'SETTLEMENT' ||
-                orderDetail?.transactionStatus === 'SUCCEEDED'
-                  ? t('seedsEvent.payment.receipt.successful')
-                  : `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
-                      orderDetail?.grossAmount ?? 0
-                    )}`}
+                {
+                  orderDetail?.transactionStatus === 'SUCCESS' ||
+                  orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                  orderDetail?.transactionStatus === 'SUCCEEDED'
+                    ? t('seedsEvent.payment.receipt.successful')
+                    : `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                        orderDetail?.grossAmount ?? 0
+                      )}`
+                }
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
                 {orderDetail?.transactionStatus === 'SETTLEMENT' &&
@@ -595,19 +621,29 @@ const SuccessPaymentPage: React.FC = () => {
                   />
                 </div>
                 <Typography className="font-poppins text-sm text-[#3C49D6]">
-                  {orderDetail?.transactionStatus === 'SETTLEMENT' ||
-                  orderDetail?.transactionStatus === 'SUCCEEDED'
-                    ? t('seedsEvent.payment.receipt.messageComplete')
-                    : t('seedsEvent.payment.receipt.messageUncomplete')}
+                  {
+                    orderDetail?.transactionStatus === 'SUCCESS' ||
+                    orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                    orderDetail?.transactionStatus === 'SUCCEEDED'
+                      ? t('seedsEvent.payment.receipt.messageComplete')
+                      : t('seedsEvent.payment.receipt.messageUncomplete')
+                  }
                 </Typography>
               </div>
 
               {/* Navigation Button */}
-              <div className="w-full flex flex-col gap-4 items-center justify-center">
-                <button
-                  className="w-full font-semibold text-white bg-seeds-button-green rounded-full py-2 capitalize"
-                  onClick={() => {
+              <div className="w-full flex flex-col items-center justify-center">
+                <Button
+                  className="w-full text-sm font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
+                  onClick={async() => { void handleViewQR() }}
+                >
+                  {t('bnc.seeQRCode')}
+                </Button>
+                <Button
+                  className={`${((orderDetail?.paymentMethod?.includes('BNC')) ?? false) ? 'mt-4' : 'mt-10'} w-full text-sm font-semibold bg-seeds-button-green rounded-full capitalize`}
+                  onClick={async() => {
                     if (
+                      orderDetail?.transactionStatus === 'SUCCESS' ||
                       orderDetail?.transactionStatus === 'SETTLEMENT' ||
                       orderDetail?.transactionStatus === 'SUCCEEDED'
                     ) {
@@ -615,21 +651,27 @@ const SuccessPaymentPage: React.FC = () => {
                         `/homepage/event/${id}/${orderId}/booking-success-details`
                       );
                     } else {
-                      void router
-                        .replace(
-                          `/homepage/event/${id}/payment/receipt/${orderId}`
-                        )
-                        .then(() => {
-                          router.reload();
-                        });
+                      const query = paymentUrl !== '' ? { paymentUrl } : undefined;
+                      await router.replace(
+                        {
+                          pathname: `/homepage/event/${id}/payment/receipt/${orderId}`,
+                          query
+                        },
+                        undefined,
+                        { shallow: true }
+                      ).catch(error => {
+                        toast(`${error as string}`);
+                      });
                     }
                   }}
                 >
-                  {orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                  {
+                  orderDetail?.transactionStatus === 'SUCCESS' ||
+                  orderDetail?.transactionStatus === 'SETTLEMENT' ||
                   orderDetail?.transactionStatus === 'SUCCEEDED'
                     ? t('seedsEvent.payment.receipt.seeTicket')
                     : t('seedsEvent.payment.receipt.refreshPage')}
-                </button>
+                </Button>
               </div>
             </Card>
           </div>

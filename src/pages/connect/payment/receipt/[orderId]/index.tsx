@@ -57,6 +57,7 @@ const SuccessPaymentPage: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const id = router.query.orderId as string;
+  const paymentUrl = router.query.paymentUrl as string;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [eWalletList, setEWalletList] = useState([]);
@@ -151,6 +152,21 @@ const SuccessPaymentPage: React.FC = () => {
   const toggleDropdown = (): void => {
     setIsOpen(!isOpen);
   };
+    
+  const handleViewQR = async(): Promise<void> => {
+    const query = paymentUrl !== '' ? { paymentUrl } : undefined;
+
+    await router.replace(
+      {
+        pathname: `/connect/payment/receipt/${id}` + `${((orderDetail?.paymentMethod?.includes('BNC')) ?? false) ? '/qris' : ''}`,
+        query
+      },
+      undefined,
+      { shallow: true }
+    ).catch(error => {
+      toast(`${error as string}`);
+    });
+  }
 
   return (
     <div className="pt-10">
@@ -398,9 +414,15 @@ const SuccessPaymentPage: React.FC = () => {
                 </Card>
               )}
 
-              <div className="w-full flex items-center justify-center">
+              <div className="w-full flex flex-col items-center justify-center">
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
+                  onClick={async() => { void handleViewQR() }}
+                >
+                  {t('bnc.seeQRCode')}
+                </Button>
+                <Button
+                  className={`${((orderDetail?.paymentMethod?.includes('BNC')) ?? false) ? 'mt-4' : 'mt-10'} w-full text-sm font-semibold bg-seeds-button-green rounded-full capitalize`}
                   onClick={() => {
                     void router.push(
                       `/connect/post/${orderDetail?.itemId as string}`

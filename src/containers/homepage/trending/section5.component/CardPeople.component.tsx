@@ -44,7 +44,7 @@ const CustomPaginationPeopleCard: React.FC<custompaginationpeople> = ({
               />
             );
           })
-        : ''}
+        : null}
     </div>
   );
 };

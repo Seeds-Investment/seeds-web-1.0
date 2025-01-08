@@ -4,7 +4,7 @@ class SocketService {
   private socket: Socket | null = null;
 
   connect(id: string): void {
-    this.socket = io('wss://app.seeds.finance', {
+    this.socket = io('wss://seeds-dev-gcp.seeds.finance/socket.io', {
       transports: ['websocket'],
       query: { uuid: id }
     });

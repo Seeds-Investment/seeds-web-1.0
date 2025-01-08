@@ -1706,7 +1706,13 @@ export default {
       text15: 'Masuk untuk menuju arena bermain',
       text16: 'Masuk untuk menuju permainan',
       text17:
-        'Dana Virtual adalah dana virtual yang tersedia untuk Simulasi permainan saham'
+        'Dana Virtual adalah dana virtual yang tersedia untuk Simulasi permainan saham',
+      text18:
+        'Dapatkan pembaruan aset Anda hari ini! Dan mainkan permainan kami untuk mendapatkan lebih banyak hadiah.',
+      text19: 'Total Hadiah Bulan Ini'
+    },
+    section4: {
+      text1: 'asset dengan keuntungan tertinggi saat ini'
     },
     section3: {
       text1: 'Sumber semua utama berita keuangan terbaru',
@@ -1714,7 +1720,11 @@ export default {
       text3: 'Bulan Lalu',
       text4: 'Peringkatmu Saat Ini',
       text5: 'Cari dan ikuti profil yang menarik.',
-      text6: 'Daftar Profile'
+      text6: 'Daftar Profile',
+      text7: 'Keuntungan Tertinggi'
+    },
+    section5: {
+      cardcircletext1: 'anggota'
     }
   },
   chooseCurrency: {
@@ -2525,8 +2535,11 @@ export default {
     dataNotFound: 'Data Tidak Ditemukan'
   },
   chat: {
+    chat: 'Chat',
+    allMessages: 'Semua Pesan',
     personalEmptyState: 'Tidak ada percakapan',
     communityEmptyState: 'Tidak ada percakapan komunitas',
+    requestEmptyState: 'Tidak ada permintaan percakapan',
     selectUsername: 'Kamu belum membuat percakapan. Yuk, pilih nama pengguna.',
     chatPeople: 'Chat People',
     createCommunity: 'Create Community',
@@ -2540,20 +2553,24 @@ export default {
     newChat: 'Percakapan Baru',
     willHelp: 'Seeds akan membantu kamu 🙌',
     startConversation: 'Mulai percakapan sekarang!',
-    textInputPlaceholder: 'Ketik Pesan…',
+    textInputPlaceholder: 'Buat Pesan…',
     seeMore: 'Lihat Lebih Banyak',
     links: 'Tautan',
     commonGroup: `Grup yang sama`,
     personal: 'Pribadi',
     community: 'Komunitas',
     request: 'Request',
+    chatRequest: 'Permintaan Percakapan',
     reject: 'Tolak',
     accept: 'Terima',
+    newMessage: 'Pesan Baru',
+    newMessageDescription: 'Katakan halo dan mulai percakapan!',
     newGroup: 'Grup Baru',
+    newGroupDescription: 'Ayo berkirim pesan 🎉 Buat grup baru!',
     groupName: 'Nama Grup',
     enterGroupName: 'Masukan nama grup',
     description: 'Deskripsi',
-    enterGroupDescription: 'Masukan deskripsi grup',
+    groupDescription: 'Deskripsi Grup',
     typeGroup: 'Tipe Grup',
     public: 'Publik',
     private: 'Pribadi',
@@ -2573,7 +2590,33 @@ export default {
     seen: 'Dilihat',
     muteNotificationTitle: 'Yakin mau membisukan notifikasi ini?',
     muteNotificationSubtitle:
-      'Peserta lain tidak akan tau jika kamu membisukan chat ini'
+      'Peserta lain tidak akan tau jika kamu membisukan chat ini',
+    setPhoto: 'Atur Gambar',
+    btnCreateGroup: 'Buat Obrolan Grup',
+    btnYes: 'Ya',
+    btnNo: 'Tidak',
+    members: 'Anggota',
+    addGroupDescription: 'Tambahkan Deskripsi Grup',
+    menuBar: {
+      changeGroupInfo: 'Change Group Info',
+      mutedNotif: 'Muted Notifications',
+      leaveGroup: 'Leave Group'
+    },
+    addNewMember: 'Tambahkan Anggota Baru',
+    searchMember: 'Cari Anggota',
+    shareGroup: 'Undang melalui Link',
+    editGroup: 'Edit Grup',
+    camera: 'Kamera',
+    gallery: 'Galeri',
+    record: 'Rekam',
+    placeholderDesc: 'Ketik deskripsi grup Anda di sini!',
+    modalCameraTitle: 'Ambil Foto',
+    modalRecordVideoTitle: 'Rekam Video',
+    successMute: 'Notifikasi Dibisukan',
+    retake: 'Ulangi',
+    usePhoto: 'Gunakan',
+    createMessagePlaceholder: 'Buat Pesan ...',
+    maxFileAlert: 'Ukuran file terlalu besar, ukuran file maksimal'
   },
   play: {
     keystat: 'Key Stats'

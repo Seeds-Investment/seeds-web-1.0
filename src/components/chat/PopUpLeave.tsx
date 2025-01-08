@@ -1,112 +1,49 @@
 'use client';
-import { Textarea, Typography } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { leaveGroup } from 'public/assets/chat';
-import { XIcon } from 'public/assets/vector';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import ConfirmSeedy from '../../../public/assets/chat/confirm-seedy.svg';
 import Modal from '../ui/modal/Modal';
 
 interface Props {
   onClose: () => void;
-  onClick: (message: string) => Promise<void>;
+  onClick: () => Promise<void>;
 }
 
 const LeaveCommunityPopUp: React.FC<Props> = ({ onClose, onClick }) => {
   const { t } = useTranslation();
-  const [step, setStep] = useState<number>(1);
-  const [problemValue, setProblemValue] = useState<string>('');
 
   return (
-    <Modal onClose={onClose}>
-      {step === 1 ? (
-        <>
-          <div className="flex justify-end">
-            <Image
-              src={XIcon}
-              alt="X"
-              width={30}
-              height={30}
-              onClick={onClose}
-              className="hover:scale-110 transition ease-out cursor-pointer"
-            />
-          </div>
-          <div className="flex flex-col gap-3 justify-center  px-8 pt-2 items-center text-center">
-            <Image
-              src={leaveGroup.src}
-              alt="Leave Group"
-              width={225}
-              height={200}
-              className="w-auto h-auto aspect-auto"
-            />
-            <Typography className="font-bold text-lg text-black">
-              {t('chat.popUpLeave.Title')}
-            </Typography>
-            <Typography className="text-lg text-gray-500">
-              {t('chat.popUpLeave.Description')}
-            </Typography>
-          </div>
-          <div className="flex flex-col gap-4">
-            <div
-              onClick={() => {
-                setStep(2);
-              }}
-              className="bg-[#DD2525] mt-5 w-full hover:bg-red-700 rounded-full hover:scale-105 transition ease-out"
-            >
-              <Typography className="text-white text-lg font-bold text-center p-2">
-                {t('DeleteAccount.confirmButton')}
-              </Typography>
-            </div>
-
-            <Typography
-              onClick={onClose}
-              className="text-center cursor-pointer hover:scale-105 transition ease-out text-[#7555DA] text-lg font-bold"
-            >
-              {t('DeleteAccount.cancelButton')}
-            </Typography>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="flex justify-between">
-            <Typography className="font-bold text-lg text-black">
-              {t('chat.popUpLeave.helpUs')}
-            </Typography>
-            <Image
-              src={XIcon}
-              alt="X"
-              width={30}
-              height={30}
-              onClick={() => {
-                onClose();
-                setStep(1);
-              }}
-              className="hover:scale-110 transition ease-out cursor-pointer"
-            />
-          </div>
-          <div className="w-full border-b border-[#E9E9E9] my-4" />
-          <Textarea
-            value={problemValue}
-            onChange={e => {
-              setProblemValue(e.target.value);
-            }}
-            variant="outlined"
-            color="gray"
-            label={t('chat.elaborate') ?? ''}
-          />
-          <div
-            onClick={() => {
-              void onClick(problemValue);
-              setStep(1);
-            }}
-            className="bg-[#DD2525] mt-5 w-full hover:bg-red-700 rounded-full hover:scale-105 transition ease-out"
+    <Modal
+      onClose={onClose}
+      backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/75 flex justify-start items-start"
+      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[50%] md:left-[20%] md:right-[-20%] xl:left-[35%] xl:right-[-35%] mt-[-14.35rem] w-full md:w-[375px] h-[440px] lg:rounded-2xl rounded-t-2xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
+    >
+      <div className="flex flex-col items-center py-6 px-4 gap-6">
+        <Image src={ConfirmSeedy} width={200} height={200} alt="SeedyAsk" />
+        <div className="flex flex-col items-center gap-2">
+          <Typography className="font-poppins font-semibold text-base">
+            {t('chat.popUpLeave.Title')}
+          </Typography>
+          <Typography className="text-[#7C7C7C] font-poppins text-sm font-normal">
+            {t('chat.popUpLeave.Description')}
+          </Typography>
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <Button
+            onClick={onClick}
+            className="bg-seeds-button-green font-poppins font-semibold text-sm rounded-full"
           >
-            <Typography className="text-white text-lg font-bold text-center p-2">
-              {t('chat.popUpLeave.continue')}
-            </Typography>
-          </div>
-        </>
-      )}
+            {t('chat.btnYes')}
+          </Button>
+          <Button
+            onClick={onClose}
+            className="bg-white text-seeds-green font-poppins font-semibold text-sm rounded-full"
+          >
+            {t('chat.btnNo')}
+          </Button>
+        </div>
+      </div>
     </Modal>
   );
 };

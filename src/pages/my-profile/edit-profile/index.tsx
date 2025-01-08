@@ -8,6 +8,8 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import countries from '@/constants/countries.json';
 import { postCloud } from '@/repository/cloud.repository';
 import { editUserInfo, getUserInfo } from '@/repository/profile.repository';
+import { fetchUserData, updateUser } from '@/store/redux/features/user';
+import { useAppDispatch } from '@/store/redux/store';
 import { Button, Card, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -41,6 +43,8 @@ const EditProfile: React.FC = () => {
     birthDate: '',
     phone: ''
   });
+  const dispatch = useAppDispatch();
+
   const getCountry = (phone: string): CountryCodeInfo | undefined =>
     countries.find(code => {
       const dialCode = code?.dialCode.replace('+', '');
@@ -99,6 +103,8 @@ const EditProfile: React.FC = () => {
         birthDate: new Date(birthDate).toISOString()
       };
       await editUserInfo(updatedForm);
+      await dispatch(updateUser(updatedForm));
+      await dispatch(fetchUserData());
       await router.push('/my-profile');
     } catch (error: any) {
       console.error(error.response.data.message);
@@ -106,7 +112,7 @@ const EditProfile: React.FC = () => {
   };
 
   const handleBack = async (): Promise<void> => {
-    router.back();
+    await router.push('/my-profile');
   };
 
   useEffect(() => {

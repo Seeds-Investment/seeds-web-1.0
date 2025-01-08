@@ -495,7 +495,7 @@ const post = async (url: string, payload: any, headers = {}): Promise<any> => {
   });
 };
 
-export const UseUploadMedia = async (media: any): Promise<any> => {
+export const UseUploadMedia = async (media: File): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {

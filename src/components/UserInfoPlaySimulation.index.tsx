@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { IoIosInformation } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import goldHome from '../../public/assets/images/goldHome.svg';
+import userInfoBackGround from '../assets/userInfoBackground.svg';
 
 interface UserDetails {
   play_id: string;
@@ -109,9 +110,16 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
   }, []);
 
   return (
-    <div className="flex flex-col w-full md:h-72 h-80 bg-userInfoBackground bg-full justify-around">
+    <div className="flex flex-col w-full h-64 relative justify-around">
+      <Image
+        src={userInfoBackGround}
+        alt={userInfoBackGround}
+        width={300}
+        height={300}
+        className="w-full h-full object-cover"
+      />
       {isGuest() || (
-        <div className="flex flex-col gap-3 px-2 py-3">
+        <div className="flex flex-col gap-3 px-2 py-3 absolute bottom-0 w-full">
           <Typography className="capitalize text-[#FFFFFF] text-3xl font-semibold">
             {`Hi, ${userInfo?.name as string}!✌`}
           </Typography>

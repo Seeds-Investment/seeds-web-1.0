@@ -19,6 +19,7 @@ import i18n from '@/utils/common/i18n';
 import {
   type DataPlanI,
   type DataVoucherI,
+  type MappedPlan,
   type StatusSubscription
 } from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -46,8 +47,9 @@ const SeedsPlan: React.FC = () => {
     undefined
   );
   const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [allMappedPlan, setAllMappedPlan] = useState<MappedPlan[]>([]);
 
-  const [packagePlan, setPackagePlan] = useState<string>('Silver');
+  const [packagePlan, setPackagePlan] = useState<string>('SILVER');
   const [periodPlan, setPeriodPlan] = useState<number>(1);
 
   const [isActiveSubscription, setIsActiveSubscription] =
@@ -57,9 +59,9 @@ const SeedsPlan: React.FC = () => {
   const [showHowToUse, setHowToUse] = useState<boolean>(false);
 
   const packagePlanList = [
-    { name: 'Silver', badge: null },
-    { name: 'Gold', badge: null },
-    { name: 'Platinum', badge: t('seedsPlan.text9') }
+    { name: 'SILVER', badge: null },
+    { name: 'GOLD', badge: null },
+    { name: 'PLATINUM', badge: t('seedsPlan.text9') }
   ];
 
   const seedsPlanPeriod = [
@@ -116,9 +118,31 @@ const SeedsPlan: React.FC = () => {
     }
   }, [subscriptionStatus]);
 
-  const filterPlan = dataPlan?.data?.find(item => item?.name === packagePlan);
+  useEffect(() => {
+    if (dataPlan !== undefined) {
+      const mappedPlan = [
+        {
+          name: 'SILVER',
+          data: [...dataPlan.data.SILVER.map(item => item)]
+        },
+        {
+          name: 'GOLD',
+          data: [...dataPlan.data.GOLD.map(item => item)]
+        },
+        {
+          name: 'PLATINUM',
+          data: [...dataPlan.data.PLATINUM.map(item => item)]
+        }
+      ];
+      setAllMappedPlan(mappedPlan);
+      setPeriodPlan(mappedPlan[0].data[0].duration_in_months);
+    }
+  }, [dataPlan]);
+
+  const filterListPlan = allMappedPlan?.find(item => item.name === packagePlan)?.data;
+
   const filterTnc =
-    filterPlan?.tnc?.[i18n.language === 'id' ? 'id' : 'en'] !== ''
+    filterPlan?.map()tnc?.[i18n.language === 'id' ? 'id' : 'en'] !== ''
       ? filterPlan?.tnc[i18n.language === 'id' ? 'id' : 'en']
       : '-';
 
@@ -210,11 +234,11 @@ const SeedsPlan: React.FC = () => {
                     <div className="flex items-center justify-center bg-gradient-to-b from-[#FF620A66] to-[#F9B54C00] md:w-[69px] md:h-[69px] w-[51px] h-[51px] rounded-full shadow-[inset_0px_5px_5px_#F1B85F,0px_3px_5px_rgba(249,181,76,0.2),0px_0px_15px_8px_rgba(255,98,10,0.2)]">
                       <Image
                         src={
-                          getActivePlan() === 'Silver'
+                          getActivePlan() === 'SILVER'
                             ? SilverPlan
-                            : getActivePlan() === 'Gold'
+                            : getActivePlan() === 'GOLD'
                             ? GoldPlan
-                            : getActivePlan() === 'Platinum' && PlatinumPlan
+                            : getActivePlan() === 'PLATINUM' && PlatinumPlan
                         }
                         alt={'subscription-image'}
                         width={100}
@@ -346,20 +370,20 @@ const SeedsPlan: React.FC = () => {
                     </div>
                   </div>
                   <div className="mt-4w-full flex flex-row gap-3 mb-4">
-                    {seedsPlanPeriod?.map((item, index) => {
+                    {filterPlan?.map((item, index) => {
                       return (
                         <button
                           key={index}
                           className={`px-3 py-2 rounded-lg w-3/12 font-poppins text-xs ${
-                            periodPlan === item.period
+                            periodPlan === item.duration_in_months
                               ? 'bg-[#3ac4a0] text-white font-semibold'
                               : 'bg-transparent text-white border border-white font-normal'
                           }`}
                           onClick={() => {
-                            setPeriodPlan(item.period);
+                            setPeriodPlan(item.duration_in_months);
                           }}
                         >
-                          {item.label}
+                          {item.duration_in_months}
                         </button>
                       );
                     })}

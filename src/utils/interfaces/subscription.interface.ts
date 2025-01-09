@@ -1,4 +1,4 @@
-export interface TermConditions {
+export interface Tnc {
   en: string;
   id: string;
 }
@@ -6,19 +6,30 @@ export interface TermConditions {
 export interface PlanI {
   id: string;
   name: string;
-  tnc: TermConditions;
+  tnc: Tnc;
   price: number;
+  is_promo: boolean;
+  price_after_promo: number;
   duration_in_months: number;
   is_subscribe: boolean;
   created_at: string;
   updated_at: string;
-  is_promo: boolean;
-  price_after_promo: number;
+}
+
+export interface ListPlan {
+  GOLD: PlanI[];
+  PLATINUM: PlanI[];
+  SILVER: PlanI[];
 }
 
 export interface DataPlanI {
-  data: PlanI[];
+  data: ListPlan;
   total: number;
+}
+
+export interface MappedPlan {
+  name: string;
+  data: PlanI[];
 }
 
 export interface VoucherI {
@@ -158,4 +169,3 @@ export interface PaymentStatus {
   vaNumber: string;
   howToPayApi: string;
 }
-

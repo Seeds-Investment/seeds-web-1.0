@@ -11,6 +11,7 @@ import { updateBlockUser } from '@/repository/user.repository';
 import { type Experience } from '@/utils/interfaces/earning.interfaces';
 import {
   type DataPlanI,
+  type PlanI,
   type StatusSubscription
 } from '@/utils/interfaces/subscription.interface';
 import { Button, Typography } from '@material-tailwind/react';
@@ -46,6 +47,7 @@ const Profile = ({
   const [dataSubscription, setDataSubscription] =
     useState<StatusSubscription | null>(null);
   const [dataPlan, setDataPlan] = useState<DataPlanI>();
+  const [mappedPlan, setMappedPlan] = useState<PlanI[]>([]);
   const router = useRouter();
   const _handleReferalCode = async (): Promise<boolean> => {
     return await router.push({
@@ -59,7 +61,7 @@ const Profile = ({
       const [planList, planStatus] = await Promise.all([
         getSubscriptionPlan(),
         getSubscriptionStatus()
-      ])
+      ]);
       if (planStatus !== undefined && planList !== undefined) {
         setDataPlan(planList);
         setDataSubscription(planStatus);
@@ -89,11 +91,22 @@ const Profile = ({
     void getSubscriptionPlanData();
   }, []);
 
+  useEffect(() => {
+    if (dataPlan !== undefined) {
+      const listPlan: PlanI[] = [
+        ...dataPlan.data.GOLD.map(item => item),
+        ...dataPlan.data.PLATINUM.map(item => item),
+        ...dataPlan.data.SILVER.map(item => item)
+      ];
+      setMappedPlan(listPlan);
+    }
+  }, [dataPlan]);
+
   const getActivePlan = (): string => {
     const activeSubscriptionId =
       dataSubscription?.active_subscription?.subscription_type_id;
     return (
-      dataPlan?.data.find(item => item.id === activeSubscriptionId)?.name ?? ''
+      mappedPlan?.find(item => item.id === activeSubscriptionId)?.name ?? ''
     );
   };
 
@@ -238,11 +251,11 @@ const Profile = ({
                   >
                     <Image
                       src={
-                        getActivePlan() === 'Silver'
+                        getActivePlan() === 'SILVER'
                           ? SilverPlan
-                          : getActivePlan() === 'Gold'
+                          : getActivePlan() === 'GOLD'
                           ? GoldPlan
-                          : getActivePlan() === 'Platinum'
+                          : getActivePlan() === 'PLATINUM'
                           ? PlatinumPlan
                           : SubsSeedy
                       }
@@ -402,11 +415,11 @@ const Profile = ({
             >
               <Image
                 src={
-                  getActivePlan() === 'Silver'
+                  getActivePlan() === 'SILVER'
                     ? SilverPlan
-                    : getActivePlan() === 'Gold'
+                    : getActivePlan() === 'GOLD'
                     ? GoldPlan
-                    : getActivePlan() === 'Platinum'
+                    : getActivePlan() === 'PLATINUM'
                     ? PlatinumPlan
                     : SubsSeedy
                 }

@@ -67,12 +67,12 @@ const QuizDetail = (): React.ReactElement => {
 
   const getSubscriptionPlanStatus = async (): Promise<void> => {
     try {
-      const response = await getSubscriptionStatus();
+      const response: StatusSubscription = await getSubscriptionStatus();
       if (response !== undefined) {
         setDataSubscription(response);
       }
     } catch (error) {
-      console.error(`${error as string}`);
+      toast.error(`${error as string}`);
     }
   };
 

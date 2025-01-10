@@ -64,7 +64,7 @@ const MainTeamBattle = (): React.ReactElement => {
 
   const getSubscriptionPlanStatus = async (): Promise<void> => {
     try {
-      const response = await getSubscriptionStatus();
+      const response: StatusSubscription = await getSubscriptionStatus();
       if (response !== undefined) {
         setDataSubscription(response);
       }

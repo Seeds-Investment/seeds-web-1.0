@@ -2677,7 +2677,11 @@ export default {
     retake: 'Retake',
     usePhoto: 'Use Photo',
     createMessagePlaceholder: 'Create Message ...',
-    maxFileAlert: 'The file size is too large, the maximum file size is'
+    invalidFileType:
+      'Only pdf, doc, docx, xls, xlsx, ppt, pptx files are allowed',
+    maxFileAlert: 'The file size is too large, the maximum file size is',
+    errorSendVideo: 'Only mp4, mov, webm, files are allowed',
+    errorSendImage: 'Only png, jpg, jpeg, svg, heic, heif files are allowed'
   },
   play: {
     keystat: 'Key Stats'

@@ -2606,7 +2606,11 @@ export default {
     retake: 'Ulangi',
     usePhoto: 'Gunakan',
     createMessagePlaceholder: 'Buat Pesan ...',
-    maxFileAlert: 'Ukuran file terlalu besar, ukuran file maksimal'
+    invalidFileType:
+      'Hanya file pdf, doc, docx, xls, xlsx, ppt, pptx yang diizinkan',
+    maxFileAlert: 'Ukuran file terlalu besar, ukuran file maksimal',
+    errorSendVideo: 'Hanya mp4, mov, webm, files yang diizinkan',
+    errorSendImage: 'Hanya png, jpg, jpeg, svg, heic, heif files yang diizinkan'
   },
   play: {
     keystat: 'Key Stats'

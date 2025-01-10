@@ -27,7 +27,7 @@ export interface DataPlanI {
   total: number;
 }
 
-export interface MappedPlan {
+export interface PlanByTier {
   name: string;
   data: PlanI[];
 }

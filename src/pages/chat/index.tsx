@@ -638,32 +638,34 @@ const ChatPages: React.FC = () => {
     }
   };
 
-  const handleSendImageMessage = async (event: any): Promise<any> => {
-    const fileMedia = event.target.files[0];
-    const fileMediaEle = event.target;
-    if (fileMedia?.type?.includes('video') === true) {
+  const handleSendImageMessage = async (
+    event: ChangeEvent<HTMLInputElement>
+  ): Promise<any> => {
+    const fileMedia = event.target.files?.[0];
+
+    if (fileMedia == null) return;
+
+    if (fileMedia?.type?.includes('video')) {
       const validation =
         fileMedia?.type !== 'video/mp4' &&
         fileMedia?.type !== 'video/mov' &&
         fileMedia?.type !== 'video/webm';
-      const maxFileMediaSize = 20;
-      const sizeFileOnMB: any = parseFloat(
-        (fileMedia?.size / 1024 / 1024).toFixed(20)
-      );
+      const maxFileMediaSize = 20 * 1024 * 1024;
 
       if (validation) {
-        fileMediaEle.value = null;
         toast(`${t('chat.errorSendVideo')}`);
         return;
       }
 
-      if (sizeFileOnMB > maxFileMediaSize) {
-        fileMediaEle.value = null;
+      if (fileMedia?.size > maxFileMediaSize) {
         toast(`${t('chat.maxFileAlert')}`);
         return;
       }
 
       const mediaUrl = (await postMedia(fileMedia)) as string;
+      if (mediaUrl === '' || mediaUrl === undefined || mediaUrl === null)
+        return;
+
       const data =
         activeTab === 'COMMUNITY'
           ? { media_urls: [mediaUrl], group_id: roomId as string }
@@ -675,7 +677,7 @@ const ChatPages: React.FC = () => {
         toast(error, { type: 'error' });
       }
     }
-    if (fileMedia?.type?.includes('image') === true) {
+    if (fileMedia?.type?.includes('image')) {
       const allowedTypes = [
         'image/jpeg',
         'image/heic',
@@ -684,24 +686,22 @@ const ChatPages: React.FC = () => {
         'image/png'
       ];
       const validation = !allowedTypes.includes(fileMedia?.type);
-      const maxFileMediaSize = 5;
-      const sizeFileOnMB: any = parseFloat(
-        (fileMedia?.size / 1024 / 1024).toFixed(20)
-      );
+      const maxFileMediaSize = 5 * 1024 * 1024;
 
       if (validation) {
-        fileMediaEle.value = null;
         toast(`${t('chat.errorSendImage')}`);
         return;
       }
 
-      if (sizeFileOnMB > maxFileMediaSize) {
-        fileMediaEle.value = null;
+      if (fileMedia?.size > maxFileMediaSize) {
         toast.error(`${t('chat.maxFileAlert')}`);
         return;
       }
 
       const mediaUrl = (await postMedia(fileMedia)) as string;
+      if (mediaUrl === '' || mediaUrl === undefined || mediaUrl === null)
+        return;
+
       const data =
         activeTab === 'COMMUNITY'
           ? { media_urls: [mediaUrl], group_id: roomId as string }
@@ -735,25 +735,25 @@ const ChatPages: React.FC = () => {
     }
 
     const mediaUrl = (await postMedia(file)) as string;
-    if (mediaUrl !== '') {
-      const data =
-        activeTab === 'COMMUNITY'
-          ? {
-              media_urls: [mediaUrl],
-              content_text: text as string,
-              group_id: roomId as string
-            }
-          : {
-              media_urls: [mediaUrl],
-              content_text: text as string,
-              user_id: roomId as string
-            };
-      try {
-        await sendPersonalMessage(data);
-        void fetchChat();
-      } catch (error: any) {
-        toast(error, { type: 'error' });
-      }
+    if (mediaUrl === '' || mediaUrl === undefined || mediaUrl === null) return;
+
+    const data =
+      activeTab === 'COMMUNITY'
+        ? {
+            media_urls: [mediaUrl],
+            content_text: text as string,
+            group_id: roomId as string
+          }
+        : {
+            media_urls: [mediaUrl],
+            content_text: text as string,
+            user_id: roomId as string
+          };
+    try {
+      await sendPersonalMessage(data);
+      void fetchChat();
+    } catch (error: any) {
+      toast(error, { type: 'error' });
     }
   };
 
@@ -763,9 +763,7 @@ const ChatPages: React.FC = () => {
     const fileMedia = event.target.files?.[0];
     setIsShowPopUpOption(!isShowPopUpOption);
 
-    if (fileMedia == null) {
-      return;
-    }
+    if (fileMedia == null) return;
 
     const fileExtension = fileMedia.name.split('.').pop()?.toLowerCase();
     if (
@@ -787,17 +785,17 @@ const ChatPages: React.FC = () => {
     }
 
     const mediaUrl = (await postMedia(fileMedia)) as string;
-    if (mediaUrl !== '') {
-      const data =
-        activeTab === 'COMMUNITY'
-          ? { media_urls: [mediaUrl], group_id: roomId as string }
-          : { media_urls: [mediaUrl], user_id: roomId as string };
-      try {
-        await sendPersonalMessage(data);
-        void fetchChat();
-      } catch (error: any) {
-        toast(error, { type: 'error' });
-      }
+    if (mediaUrl === '' || mediaUrl === undefined || mediaUrl === null) return;
+
+    const data =
+      activeTab === 'COMMUNITY'
+        ? { media_urls: [mediaUrl], group_id: roomId as string }
+        : { media_urls: [mediaUrl], user_id: roomId as string };
+    try {
+      await sendPersonalMessage(data);
+      void fetchChat();
+    } catch (error: any) {
+      toast(error, { type: 'error' });
     }
   };
 

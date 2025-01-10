@@ -400,7 +400,7 @@ export const rejectRequest = async (data: string): Promise<void> => {
   if (accessToken === null || accessToken === '') {
     toast('Access token not found');
   }
-  const path = Endpoints.chat.acceptRequest;
+  const path = Endpoints.chat.rejectRequest;
   await baseUrl.patch(
     path,
     {

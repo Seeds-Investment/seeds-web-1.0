@@ -2196,37 +2196,37 @@ const ChatPages: React.FC = () => {
                         })}
                       </div>
                     )}
-                    {activeTab === 'REQUEST' && (
-                      <div className="absolute bottom-4 w-full gap-4 px-8 flex">
-                        <Button
-                          variant="outlined"
-                          className="rounded-full w-1/2 capitalize py-2 border border-[#DD2525]"
-                          onClick={() => {
-                            void rejectRequestChat();
-                          }}
-                        >
-                          <div className="flex justify-center">
-                            <Typography className="font-semibold text-sm text-[#DD2525] font-poppins">
-                              {t('chat.reject')}
-                            </Typography>
-                          </div>
-                        </Button>
-                        <Button
-                          variant="filled"
-                          className="rounded-full w-1/2 capitalize py-2 border border-[#3AC4A0] bg-[#3AC4A0]"
-                          onClick={() => {
-                            void acceptRequestChat();
-                          }}
-                        >
-                          <div className="flex justify-center">
-                            <Typography className="font-semibold text-sm text-white font-poppins">
-                              {t('chat.accept')}
-                            </Typography>
-                          </div>
-                        </Button>
-                      </div>
-                    )}
                   </div>
+                  {activeTab === 'REQUEST' && (
+                    <div className="absolute bottom-[70px] w-full gap-4 px-8 flex bg-white py-4">
+                      <Button
+                        variant="outlined"
+                        className="rounded-full w-1/2 capitalize py-2 border border-[#DD2525]"
+                        onClick={() => {
+                          void rejectRequestChat();
+                        }}
+                      >
+                        <div className="flex justify-center">
+                          <Typography className="font-semibold text-sm text-[#DD2525] font-poppins">
+                            {t('chat.reject')}
+                          </Typography>
+                        </div>
+                      </Button>
+                      <Button
+                        variant="filled"
+                        className="rounded-full w-1/2 capitalize py-2 border border-[#3AC4A0] bg-[#3AC4A0]"
+                        onClick={() => {
+                          void acceptRequestChat();
+                        }}
+                      >
+                        <div className="flex justify-center">
+                          <Typography className="font-semibold text-sm text-white font-poppins">
+                            {t('chat.accept')}
+                          </Typography>
+                        </div>
+                      </Button>
+                    </div>
+                  )}
                   <div className="bg-white px-4 py-2 rounded-b-xl">
                     {isVoiceRecording ? (
                       <div className="flex items-center gap-3">

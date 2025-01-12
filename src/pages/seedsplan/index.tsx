@@ -309,7 +309,12 @@ const SeedsPlan: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-4">
-                  <div className="cursor-pointer flex items-center justify-between border-b border-[#E9E9E9] border-dotted pb-4">
+                  <div
+                    onClick={() => {
+                      setHowToUse(!showHowToUse);
+                    }}
+                    className="cursor-pointer flex items-center justify-between border-b border-[#E9E9E9] border-dotted pb-4"
+                  >
                     <Typography className="font-poppins text-base font-normal">
                       {t('seedsPlan.button2')}
                     </Typography>
@@ -439,12 +444,18 @@ const SeedsPlan: React.FC = () => {
                           />
                         </div>
                         <div className="col-span-1 flex justify-center items-center border-s-2 border-dashed text-[#7C7C7C]">
-                          <GoInfinity
-                            size={30}
-                            color="#D89918"
-                            strokeWidth={1}
-                            className="w-10"
-                          />
+                          {item?.quantity === -1 ? (
+                            <GoInfinity
+                              size={30}
+                              color="#D89918"
+                              strokeWidth={1}
+                              className="w-10"
+                            />
+                          ) : (
+                            <Typography className="font-semibold font-poppins text-md">
+                              {item?.quantity}
+                            </Typography>
+                          )}
                         </div>
                       </div>
                     ))}

@@ -13,6 +13,7 @@ import {
   type UserProfile
 } from '@/utils/interfaces/danamart.interface';
 import { Typography } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -27,7 +28,7 @@ import { toast } from 'react-toastify';
 
 const Dashboard = (): React.ReactElement => {
   const { t } = useTranslation();
-
+  const router = useRouter();
   const [dashboardData, setDashboardData] = useState<UserDashboard>();
   const [userProfileData, setUserProfileData] = useState<UserProfile>();
 
@@ -85,7 +86,10 @@ const Dashboard = (): React.ReactElement => {
 
     return message !== '' ? (
       <div className="w-full bg-[#DA2D1F33] px-4 py-3">
-        <Typography className="text-[#DA2D1F] font-poppins font-normal text-sm">
+        <Typography
+          onClick={async() => await router.push('/danamart/dashboard/verify')}
+          className="text-[#DA2D1F] font-poppins font-normal text-sm"
+        >
           {message} {''}
           <span className="text-[#36b996] underline cursor-pointer">
             {t('danamart.dashboard.here')}

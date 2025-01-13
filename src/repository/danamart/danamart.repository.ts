@@ -1,3 +1,5 @@
+import baseAxios from '@/utils/common/axios';
+import { type RegisterLog } from '@/utils/interfaces/danamart.interface';
 import axios from 'axios';
 
 const danamartApi = axios.create({
@@ -9,6 +11,50 @@ const danamartApi = axios.create({
     'Content-Type': 'application/json'
   }
 });
+
+const danamartService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/user/v1/`
+);
+
+export const getAccountInformation = async (): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await danamartService.get('danamart-information', {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const registerLog = async (data: RegisterLog): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await danamartService.post('danamart/register-log', data, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
 
 export const getProfileUser = async (): Promise<any> => {
   try {

@@ -2,12 +2,25 @@ export interface RegistrationForm {
   namaDepan: string;
   namaBlkng: string;
   email: string;
-  tipePermodal: string;
+  tipePemodal: string;
   nohp: string;
   password: string;
   repassword: string;
   kode_referral: string;
   notifikasi: string;
+}
+
+export interface RegisterLog {
+  email: string;
+  phone_number: string;
+  type: string;
+}
+
+export interface RegisterRes {
+  userId: string;
+  nama: string;
+  message: string;
+  redirect: string;
 }
 
 export interface UserDashboard {

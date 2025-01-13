@@ -139,11 +139,26 @@ const SeedsPlan: React.FC = () => {
   )?.data;
 
   useEffect(() => {
-    const selected = filteredPlanByTier?.find(
-      item => item.duration_in_months === periodPlan
-    );
-    setSelectedPeriodPlan(selected);
-  }, [periodPlan, filteredPlanByTier]);
+    if (isActiveSubscription && subscriptionStatus !== null) {
+      const activeSubscriptionId =
+        subscriptionStatus?.active_subscription?.subscription_type_id;
+      const selected = allAvailablePlans?.find(
+        item => item.id === activeSubscriptionId
+      );
+      setSelectedPeriodPlan(selected);
+    } else {
+      const selected = filteredPlanByTier?.find(
+        item => item.duration_in_months === periodPlan
+      );
+      setSelectedPeriodPlan(selected);
+    }
+  }, [
+    periodPlan,
+    filteredPlanByTier,
+    isActiveSubscription,
+    subscriptionStatus,
+    allAvailablePlans
+  ]);
 
   const filteredTnc =
     selectedPeriodPlan?.tnc?.[i18n.language === 'id' ? 'id' : 'en'] !== ''
@@ -151,10 +166,10 @@ const SeedsPlan: React.FC = () => {
       : '-';
 
   useEffect(() => {
-    if (filteredPlanByTier !== undefined) {
-      void getVoucherList(filteredPlanByTier[0].id);
+    if (selectedPeriodPlan !== undefined) {
+      void getVoucherList(selectedPeriodPlan.id);
     }
-  }, [filteredPlanByTier]);
+  }, [selectedPeriodPlan]);
 
   const getActivePlan = (): string => {
     const activeSubscriptionId =
@@ -163,27 +178,6 @@ const SeedsPlan: React.FC = () => {
       allAvailablePlans.find(item => item.id === activeSubscriptionId)?.name ??
       ''
     );
-  };
-
-  const calculateDuration = (start: string, end: string): string => {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-
-    const diffInDays =
-      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
-
-    const months = Math.floor(diffInDays / 30);
-    const years = Math.floor(months / 12);
-
-    if (years === 1 && months % 12 === 0) {
-      return `1 ${t('seedsPlan.year')}`;
-    } else if (months === 1) {
-      return `1 ${t('seedsPlan.month')}`;
-    } else if (months > 1) {
-      return `${months} ${t('seedsPlan.months')}`;
-    }
-
-    return '';
   };
 
   return (
@@ -253,13 +247,15 @@ const SeedsPlan: React.FC = () => {
                     </div>
                     <div className="flex flex-col gap-2">
                       <Typography className="font-poppins font-semibold md:text-base text-sm text-[#FABE2C]">
-                        {t('ProfilePage.yourPackage')} : {getActivePlan()}/
-                        {calculateDuration(
-                          subscriptionStatus?.active_subscription?.started_at ??
-                            '',
-                          subscriptionStatus?.active_subscription?.ended_at ??
-                            ''
-                        )}
+                        {t('ProfilePage.yourPackage')} : {getActivePlan()}/{' '}
+                        {selectedPeriodPlan?.duration_in_months === 12
+                          ? 1
+                          : selectedPeriodPlan?.duration_in_months}{' '}
+                        {selectedPeriodPlan?.duration_in_months === 1
+                          ? t('seedsPlan.month')
+                          : selectedPeriodPlan?.duration_in_months === 12
+                          ? t('seedsPlan.year')
+                          : t('seedsPlan.months')}
                       </Typography>
                       <Typography className="font-poppins font-normal md:text-xs text-[9px] text-[#BDBDBD]">{`${t(
                         'seedsPlan.text11'
@@ -294,17 +290,28 @@ const SeedsPlan: React.FC = () => {
                   <Typography className="font-poppins font-semibold text-xl text-[#262626]">
                     {t('seedsPlan.benefit')}
                   </Typography>
-                  <div>
+                  <div className="max-h-[220px] overflow-y-auto tnc-seedsplan-custom-scroll">
                     <ul>
-                      <li>
-                        Free Quiz for tickets priced at Rp10,000 or below Free
-                      </li>
-                      <li>
-                        Play Arena for tickets priced at Rp10,000 or below Free
-                      </li>
-                      <li>
-                        Premium Circle for tickets priced at Rp10,000 or below
-                      </li>
+                      {dataVoucher?.data
+                        ?.sort((a, b) =>
+                          a.voucher_type.localeCompare(b.voucher_type)
+                        )
+                        ?.map(voucher => (
+                          <li key={voucher?.id}>
+                            {voucher.name_promo_code} - {voucher.voucher_type}{' '}
+                            {voucher.discount_amount > 0
+                              ? `Discount ${voucher.discount_amount.toLocaleString(
+                                  'id-ID',
+                                  {
+                                    currency:
+                                      userInfo?.preferredCurrency ?? 'IDR',
+                                    style: 'currency',
+                                    maximumFractionDigits: 0
+                                  }
+                                )}`
+                              : `Discount ${voucher.discount_percentage}%`}
+                          </li>
+                        ))}
                     </ul>
                   </div>
                 </div>
@@ -402,9 +409,9 @@ const SeedsPlan: React.FC = () => {
                               : item.duration_in_months}{' '}
                             {item.duration_in_months === 1
                               ? `${t('seedsPlan.month')}`
-                              : item.duration_in_months < 12
-                              ? `${t('seedsPlan.months')}`
-                              : `${t('seedsPlan.year')}`}
+                              : item.duration_in_months === 12
+                              ? `${t('seedsPlan.year')} `
+                              : `${t('seedsPlan.months')}`}
                           </button>
                         );
                       })}

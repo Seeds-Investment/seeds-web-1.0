@@ -1,13 +1,20 @@
 import CreatePassword from '@/assets/danamart/create-password-seedy.svg';
 import Eye from '@/assets/my-profile/editProfile/Eye.svg';
 import EyeSlash from '@/assets/my-profile/editProfile/EyeSlash.svg';
-import { type RegistrationForm } from '@/utils/interfaces/danamart.interface';
+import { decryptResponse } from '@/helpers/cryptoDecrypt';
+import { register } from '@/repository/danamart/auth.repository';
+import { registerLog } from '@/repository/danamart/danamart.repository';
+import {
+  type RegisterRes,
+  type RegistrationForm
+} from '@/utils/interfaces/danamart.interface';
 import { type UserInfo } from '@/utils/interfaces/user.interface';
 import { Button, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { type useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
+import { toast } from 'react-toastify';
 
 interface Props {
   userInfo: UserInfo;
@@ -28,7 +35,7 @@ const CreateAccount: React.FC<Props> = ({
     namaDepan: '',
     namaBlkng: '',
     email: '',
-    tipePermodal: 'individu',
+    tipePemodal: 'individu',
     nohp: '',
     password: '',
     repassword: '',
@@ -50,6 +57,8 @@ const CreateAccount: React.FC<Props> = ({
     password: false,
     repassword: false
   });
+
+  const [registerRes, setRegisterRes] = useState<RegisterRes>();
 
   useEffect(() => {
     if (userInfo !== undefined) {
@@ -106,9 +115,39 @@ const CreateAccount: React.FC<Props> = ({
   };
 
   const handleCreateAccount = async (): Promise<void> => {
-    console.log(regisForm);
-    await router.push('/danamart/dashboard');
+    try {
+      const response = await register(regisForm);
+      if (response?.status === 200) {
+        const decryptedData = JSON.parse(
+          decryptResponse(response.data) !== null
+            ? decryptResponse(response.data)
+            : response
+        );
+        setRegisterRes(decryptedData);
+      }
+    } catch (error: any) {
+      toast.error('Error creating account');
+    }
   };
+
+  const createRegisterLog = async (): Promise<void> => {
+    try {
+      const response = await registerLog({
+        email: regisForm.email,
+        phone_number: regisForm.nohp,
+        type: 'individu'
+      });
+      toast.success(`Register ${response?.message as string}`);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (registerRes !== undefined) {
+      void createRegisterLog();
+    }
+  }, [registerRes]);
 
   const isPasswordValid = Object.values(passwordValidation).every(Boolean);
 

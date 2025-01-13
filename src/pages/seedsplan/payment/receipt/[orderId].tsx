@@ -2,7 +2,6 @@ import Loading from '@/components/popup/Loading';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { CeklisCircle } from '@/constants/assets/icons';
-import { type PlanListI } from '@/containers/subscription/payment/PaymentList';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
@@ -12,7 +11,10 @@ import {
 } from '@/repository/payment.repository';
 import { getSubscriptionPlan } from '@/repository/subscription.repository';
 import { formatCurrency } from '@/utils/common/currency';
-import { type PlanI } from '@/utils/interfaces/subscription.interface';
+import {
+  type DataPlanI,
+  type PlanI
+} from '@/utils/interfaces/subscription.interface';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -67,7 +69,7 @@ interface QrisDetail {
 
 interface OrderDetail {
   paymentMethod: string;
-};
+}
 
 const SuccessPaymentPage: React.FC = () => {
   const width = useWindowInnerWidth();
@@ -82,7 +84,7 @@ const SuccessPaymentPage: React.FC = () => {
   const [qRisList, setQRisList] = useState<QrisDetail[]>([]);
   const [vaList, setVaList] = useState<QrisDetail[]>([]);
   const [dataPlan, setDataPlan] = useState<PlanI>();
-  
+
   const fetchOrderDetail = async (): Promise<void> => {
     try {
       setIsLoading(true);
@@ -101,7 +103,7 @@ const SuccessPaymentPage: React.FC = () => {
       const data = await getPaymentList();
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
-      setVaList(data.type_va)
+      setVaList(data.type_va);
     } catch (error) {
       toast.error(`Error fetching payment list: ${error as string}`);
     } finally {
@@ -176,15 +178,16 @@ const SuccessPaymentPage: React.FC = () => {
 
   const getPlanList = async (): Promise<void> => {
     try {
-      const response: PlanListI = await getSubscriptionPlan();
-      const id = orderDetail?.itemId ?? ''
-      const selectedPlan = response.data.find(plan => plan.id === id);
+      const response: DataPlanI = await getSubscriptionPlan();
+      const id = orderDetail?.itemId ?? '';
+      const { SILVER, GOLD, PLATINUM } = response.data;
+      const mappedPlan = [...SILVER, ...GOLD, ...PLATINUM];
+      const selectedPlan = mappedPlan.find(plan => plan.id === id);
       if (selectedPlan !== null) {
         setDataPlan(selectedPlan);
       } else {
-        toast.error("Invalid plan package");
+        toast.error('Invalid plan package');
       }
-
     } catch (error) {
       toast((error as Error).message, { type: 'error' });
     }
@@ -197,11 +200,14 @@ const SuccessPaymentPage: React.FC = () => {
   useEffect(() => {
     void fetchOrderDetail();
     void fetchPaymentList();
-    if ((orderDetail?.howToPayApi !== undefined) && (orderDetail?.howToPayApi !== '')) {
+    if (
+      orderDetail?.howToPayApi !== undefined &&
+      orderDetail?.howToPayApi !== ''
+    ) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [id, orderDetail?.howToPayApi]);
-  
+
   return (
     <div className="pt-10">
       {isLoading && <Loading />}
@@ -230,10 +236,9 @@ const SuccessPaymentPage: React.FC = () => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {(
-                  orderDetail?.transactionStatus !== 'SETTLEMENT' &&
-                  orderDetail?.transactionStatus !== 'SUCCESS' &&
-                  orderDetail?.transactionStatus !== 'SUCCEEDED') ? (
+                {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                orderDetail?.transactionStatus !== 'SUCCESS' &&
+                orderDetail?.transactionStatus !== 'SUCCEEDED' ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -254,26 +259,23 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {(
-                  orderDetail?.transactionStatus !== 'SETTLEMENT' &&
-                  orderDetail?.transactionStatus !== 'SUCCESS' &&
-                  orderDetail?.transactionStatus !== 'SUCCEEDED')
+                {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                orderDetail?.transactionStatus !== 'SUCCESS' &&
+                orderDetail?.transactionStatus !== 'SUCCEEDED'
                   ? t('seedsPlan.payment.pendingPaidSubscription')
                   : t('seedsPlan.payment.paymentSuccessful')}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {(
-                  orderDetail?.transactionStatus !== 'SETTLEMENT' &&
-                  orderDetail?.transactionStatus !== 'SUCCESS' &&
-                  orderDetail?.transactionStatus !== 'SUCCEEDED')
+                {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                orderDetail?.transactionStatus !== 'SUCCESS' &&
+                orderDetail?.transactionStatus !== 'SUCCEEDED'
                   ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`
                   : t('seedsPlan.payment.paymentSuccessful')}
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
-                {(
-                  orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                {(orderDetail?.transactionStatus === 'SETTLEMENT' ||
                   orderDetail?.transactionStatus === 'SUCCESS' ||
                   orderDetail?.transactionStatus === 'SUCCEEDED') &&
                   t('seedsPlan.payment.recurringSaved')}
@@ -320,7 +322,7 @@ const SuccessPaymentPage: React.FC = () => {
                     {orderDetail?.currency !== undefined &&
                     orderDetail.grossAmount !== undefined
                       ? `${orderDetail.currency} ${formatCurrency(
-                          ((dataPlan?.is_promo) ?? false)
+                          dataPlan?.is_promo ?? false
                             ? dataPlan?.price_after_promo ?? 0
                             : dataPlan?.price ?? 0
                         )}`
@@ -452,15 +454,15 @@ const SuccessPaymentPage: React.FC = () => {
 
                 {/* Discount Coins */}
                 <div>
-                  {orderDetail?.currency !== undefined &&
-                  dataPlan !== undefined
+                  {orderDetail?.currency !== undefined && dataPlan !== undefined
                     ? (dataPlan?.is_promo
-                      ? (dataPlan?.price_after_promo ?? 0)
-                      : (dataPlan?.price ?? 0))
-                        + paymentSelected[0]?.admin_fee
-                        + paymentSelected[0]?.service_fee
-                        - orderDetail.grossAmount
-                        - paymentSelected[0]?.promo_price > 0 && (
+                        ? dataPlan?.price_after_promo ?? 0
+                        : dataPlan?.price ?? 0) +
+                        paymentSelected[0]?.admin_fee +
+                        paymentSelected[0]?.service_fee -
+                        orderDetail.grossAmount -
+                        paymentSelected[0]?.promo_price >
+                        0 && (
                         <div className="flex flex-row justify-between mb-5">
                           <Typography className="text-sm font-semibold text-[#BDBDBD]">
                             {t('seedsPlan.payment.discountCoins')}
@@ -468,11 +470,11 @@ const SuccessPaymentPage: React.FC = () => {
                           <Typography className="text-sm font-semibold text-[#262626] text-right">
                             {`- ${orderDetail.currency} ${formatCurrency(
                               (dataPlan?.is_promo
-                                ? (dataPlan?.price_after_promo ?? 0)
-                                : (dataPlan?.price ?? 0))
-                                  + paymentSelected[0]?.admin_fee
-                                  + paymentSelected[0]?.service_fee
-                                  - orderDetail.grossAmount
+                                ? dataPlan?.price_after_promo ?? 0
+                                : dataPlan?.price ?? 0) +
+                                paymentSelected[0]?.admin_fee +
+                                paymentSelected[0]?.service_fee -
+                                orderDetail.grossAmount
                             )}`}
                           </Typography>
                         </div>
@@ -487,28 +489,29 @@ const SuccessPaymentPage: React.FC = () => {
                   orderDetail?.paymentMethod === 'OTHER_QRIS' &&
                   qRisList !== undefined
                     ? (dataPlan?.is_promo
-                      ? (dataPlan?.price_after_promo ?? 0)
-                      : (dataPlan?.price ?? 0))
-                        + qRisList[0]?.admin_fee
-                        + qRisList[0]?.service_fee
-                        - orderDetail.grossAmount
-                        - qRisList[0]?.promo_price > 0 && (
-                          <div className="flex flex-row justify-between mb-5">
-                            <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                              {t('seedsPlan.payment.discountCoins')}
-                            </Typography>
-                            <Typography className="text-sm font-semibold text-[#262626] text-right">
-                              {`- ${orderDetail.currency} ${formatCurrency(
-                                (dataPlan?.is_promo
-                                  ? (dataPlan?.price_after_promo ?? 0)
-                                  : (dataPlan?.price ?? 0))
-                                    + qRisList[0]?.admin_fee
-                                    + qRisList[0]?.service_fee
-                                    - orderDetail.grossAmount
-                              )}`}
-                            </Typography>
-                          </div>
-                        )
+                        ? dataPlan?.price_after_promo ?? 0
+                        : dataPlan?.price ?? 0) +
+                        qRisList[0]?.admin_fee +
+                        qRisList[0]?.service_fee -
+                        orderDetail.grossAmount -
+                        qRisList[0]?.promo_price >
+                        0 && (
+                        <div className="flex flex-row justify-between mb-5">
+                          <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                            {t('seedsPlan.payment.discountCoins')}
+                          </Typography>
+                          <Typography className="text-sm font-semibold text-[#262626] text-right">
+                            {`- ${orderDetail.currency} ${formatCurrency(
+                              (dataPlan?.is_promo
+                                ? dataPlan?.price_after_promo ?? 0
+                                : dataPlan?.price ?? 0) +
+                                qRisList[0]?.admin_fee +
+                                qRisList[0]?.service_fee -
+                                orderDetail.grossAmount
+                            )}`}
+                          </Typography>
+                        </div>
+                      )
                     : ''}
                 </div>
                 <hr />
@@ -530,11 +533,9 @@ const SuccessPaymentPage: React.FC = () => {
                     {t('seedsPlan.payment.idTransaction')}
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626] text-right">
-                    {
-                      (orderDetail?.transactionId ?? '') === ''
-                        ? '-'
-                        : orderDetail?.transactionId
-                    }
+                    {(orderDetail?.transactionId ?? '') === ''
+                      ? '-'
+                      : orderDetail?.transactionId}
                   </Typography>
                 </div>
               </Card>
@@ -578,9 +579,7 @@ const SuccessPaymentPage: React.FC = () => {
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
                   onClick={() => {
-                    void router.replace(
-                      `/seedsplan`
-                    );
+                    void router.replace(`/seedsplan`);
                   }}
                 >
                   {t('seedsPlan.payment.close')}

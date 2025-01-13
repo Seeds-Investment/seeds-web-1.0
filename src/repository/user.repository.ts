@@ -147,3 +147,27 @@ export const updatePreferredCurrency = async (
     }
   );
 };
+
+export const getListVerifiedUser = async (params: {
+  page: number;
+  limit: number;
+}): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    const response = await authService.get('/verified', {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+
+    return response;
+  } catch (error) {
+    console.error(`Error fetching user verified list :`, error);
+  }
+};

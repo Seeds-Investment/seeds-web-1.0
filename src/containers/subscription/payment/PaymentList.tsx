@@ -9,7 +9,7 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getSubscriptionPlan, joinSubscription } from '@/repository/subscription.repository';
-import { type PaymentStatus, type PlanI } from '@/utils/interfaces/subscription.interface';
+import { type DataPlanI, type PaymentStatus, type PlanI } from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -35,30 +35,11 @@ export interface Payment {
   minimum_withdrawal: number
 }
 
-export interface SubscriptionPlan {
-  id: string;
-  name: string;
-  tnc: {
-    en: string;
-    id: string;
-  };
-  price: number;
-  is_promo: boolean;
-  price_after_promo: number;
-  duration_in_months: number;
-  is_subscribe: boolean;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface PlanListI {
-  data: SubscriptionPlan[];
-  total: number;
-}
-
 const PaymentList: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
+  // Gunakan ini untuk menentukan plan yang dipilih berdasarkan period tertentu
+  const selectedPeriodPlan = router.query.plan_id;
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [qRisList, setQRisList] = useState([]);
@@ -81,7 +62,7 @@ const PaymentList: React.FC = (): JSX.Element => {
     is_promo_available: false,
     is_priority: false,
     minimum_withdrawal: 0
-}
+  };
 
   const fetchPaymentList = async (): Promise<void> => {
     try {
@@ -100,13 +81,18 @@ const PaymentList: React.FC = (): JSX.Element => {
 
   const getPlanList = async (): Promise<void> => {
     try {
-      const response: PlanListI = await getSubscriptionPlan();
-      const type = router.query.type as string
-      const selectedPlan = response.data.find(plan => plan.name === type);
+      const response: DataPlanI = await getSubscriptionPlan();
+      const {SILVER, GOLD, PLATINUM} = response.data
+      const mappedPlan = [
+        ...SILVER,
+        ...GOLD,
+        ...PLATINUM
+      ]
+      const selectedPlan = mappedPlan.find(plan => plan.id === selectedPeriodPlan)
       if (selectedPlan) {
         setDataPlan(selectedPlan);
       } else {
-        toast.error("Invalid plan package");
+        toast.error('Invalid plan package');
       }
 
       const dataInfo = await getUserInfo();
@@ -143,23 +129,20 @@ const PaymentList: React.FC = (): JSX.Element => {
   ): Promise<void> => {
     try {
       setLoading(true);
-      if (
-        type === 'ewallet' &&
-        (phoneNumber === '')
-      ) {
+      if (type === 'ewallet' && phoneNumber === '') {
         toast.error('Please fill the phone number');
       }
       const response = await joinSubscription({
         subscription_type_id: dataPlan?.id ?? '',
-        language: "en",
+        language: 'en',
         payment_gateway: paymentGateway,
         payment_method: paymentMethod,
-        promo_code: "",
+        promo_code: '',
         is_use_coins: false,
-        success_url: "",
-        cancel_url: ""
+        success_url: '',
+        cancel_url: ''
       });
-      
+
       if (response) {
         if (response?.payment_url !== '') {
           window.open(response?.payment_url as string, '_blank');
@@ -181,13 +164,21 @@ const PaymentList: React.FC = (): JSX.Element => {
     let _admissionFee = 0;
     let _adminFee = 0;
     let _totalFee = 0;
-    
-    _admissionFee = dataPlan?.is_promo ? (dataPlan?.price_after_promo ?? 0) : (dataPlan?.price ?? 0)
+
+    _admissionFee = dataPlan?.is_promo
+      ? dataPlan?.price_after_promo ?? 0
+      : dataPlan?.price ?? 0;
     _adminFee = 0;
     _totalFee = _admissionFee + _adminFee;
 
     if (option?.payment_type === 'qris') {
-      void handlePay(option?.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee, '');
+      void handlePay(
+        option?.payment_type,
+        'MIDTRANS',
+        'OTHER_QRIS',
+        _totalFee,
+        ''
+      );
     } else {
       setOpenDialog(true);
     }
@@ -243,33 +234,31 @@ const PaymentList: React.FC = (): JSX.Element => {
           setOpenDialog(false);
         }}
       >
-        {option?.payment_type === 'ewallet' &&
+        {option?.payment_type === 'ewallet' && (
           <>
-            {
-              (dataPlan !== undefined && userInfo !== undefined) &&
-                <WalletForm
-                  payment={option}
-                  handlePay={handlePay}
-                  userInfo={userInfo}
-                  dataPlan={dataPlan}
-                />
-            }
+            {dataPlan !== undefined && userInfo !== undefined && (
+              <WalletForm
+                payment={option}
+                handlePay={handlePay}
+                userInfo={userInfo}
+                dataPlan={dataPlan}
+              />
+            )}
           </>
-        }
-        {option?.payment_type === 'va' &&
+        )}
+        {option?.payment_type === 'va' && (
           <>
-            {
-              (dataPlan !== undefined && userInfo !== undefined) &&
-                <VirtualAccountGuide
-                  payment={option}
-                  handlePay={handlePay}
-                  userInfo={userInfo}
-                  dataPlan={dataPlan}
-                  paymentStatus={paymentStatus}
-                />
-            }
+            {dataPlan !== undefined && userInfo !== undefined && (
+              <VirtualAccountGuide
+                payment={option}
+                handlePay={handlePay}
+                userInfo={userInfo}
+                dataPlan={dataPlan}
+                paymentStatus={paymentStatus}
+              />
+            )}
           </>
-        }
+        )}
       </Dialog>
     </PageGradient>
   );

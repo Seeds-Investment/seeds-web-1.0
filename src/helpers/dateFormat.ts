@@ -196,3 +196,7 @@ export const getBattlePeriod = (date: Date): string => {
 export const getBattleStageDate = (date: string): string => {
   return moment(date).format('D MMM YYYY HH:mm');
 };
+
+export const getChatDate = (date: string): string => {
+  return moment(date).format('hh:mm A');
+};

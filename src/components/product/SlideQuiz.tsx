@@ -100,7 +100,7 @@ export const SlideQuiz: React.FC = () => {
 
   /* ----- Handle classname Swiper ----- */
   const classNameSwiper =
-    'sm:flex-col sm:!w-full sm:!justify-end !flex !flex-col w-full !items-center !justify-center';
+    '!flex !flex-col w-full !items-center !justify-center';
   const coverFlowEffectSwiper = {
     rotate: 0,
     slideShadows: false,
@@ -127,7 +127,7 @@ export const SlideQuiz: React.FC = () => {
   };
 
   return (
-    <div className="flex lg:flex gap-5 lg:w-full w-full">
+    <div className="flex lg:flex gap-5 w-full">
       <Swiper
         centeredSlides={true}
         loop={true}
@@ -145,83 +145,81 @@ export const SlideQuiz: React.FC = () => {
         {quizData?.length !== 0
           ? quizData?.map((item: TopQuiz, index: number) => {
               return (
-                <SwiperSlide key={index} className="w-full lg:w-1/3 md:w-1/2">
-                  <div className="flex w-full items-start gap-5 justify-center lg:w-full">
-                    <Card className="flex flex-col items-center lg:w-[440px] lg:h-[260px] w-[400px] h-[250px]">
-                      <CardHeader /* --------to store Banner image-------- */
-                        floated={false}
-                        shadow={false}
-                        color="transparent"
-                        className="m-0 w-full h-full object-cover rounded-none rounded-t-[18px]"
-                      >
-                        <img
-                          src={item.banner.image_url}
-                          alt={item.name}
-                          className="object-cover w-full h-full "
-                        />
-                      </CardHeader>
-                      <CardBody /* -------to store details of the quiz------- */
-                        className="p-1 lg:w-full lg:h-[125px] w-full h-[125px] bg-gradient-to-r from-[#106B6E] to-[#96F7C1]"
-                      >
-                        <div className="p-2 flex flex-row  justify-between items-center">
-                          <Typography className="text-white font-bold lg:text-xl text-[17px]">
-                            {item.name}
-                          </Typography>
-                          <button>
-                            <Image src={shareButton} alt="share" />
-                          </button>
-                        </div>
-                        <div className="border-dashed border border-separate-500"></div>
-                        <div className="lg:w-full w-full p-1 flex flex-row justify-between items-end">
-                          <div className="flex gap-3 text-white ">
-                            <div className="flex flex-col items-start justify-start">
-                              <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
-                                {`${t('quiz.entryFee')}`}
-                              </Typography>
-                              <Typography className="font-bold text-[15px] lg:text-lg">
-                                {item.admission_fee === 0
-                                  ? t('quiz.free')
-                                  : item.admission_fee.toLocaleString('id-ID', {
-                                      style: 'currency',
-                                      currency: 'IDR'
-                                    })}
-                              </Typography>
-                            </div>
-                            <div className="flex flex-col items-start">
-                              <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
-                                {`${t('quiz.duration')}`}
-                              </Typography>
-                              <Typography className="text-[15px] lg:text-lg font-bold">
-                                {durationInDays(item.started_at, item.ended_at)}{' '}
-                                {`${t('tournament.tournamentCard.days')}`}
-                              </Typography>
-                            </div>
-                            <div className="flex flex-col items-start">
-                              <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
-                                {`${t('quiz.players')}`}
-                              </Typography>
-                              <Typography className=" text-[15px] lg:text-lg font-bold">
-                                {item.participants}
-                              </Typography>
-                            </div>
+                <SwiperSlide key={index}>
+                  <Card className="flex flex-col items-center md:w-96 border h-auto">
+                    <CardHeader
+                      floated={false}
+                      shadow={false}
+                      color="transparent"
+                      className="m-0 w-full h-36 object-cover rounded-none rounded-t-[18px] p-0"
+                    >
+                      <Image
+                        src={item.banner.image_url}
+                        alt={item.name}
+                        className="object-cover w-full h-full"
+                        width={300}
+                        height={300}
+                      />
+                    </CardHeader>
+                    <CardBody className="p-1 h-auto w-full flex flex-col bg-gradient-to-r from-[#106B6E] to-[#96F7C1] gap-1">
+                      <div className="p-2 flex flex-row  justify-between items-center">
+                        <Typography className="text-white font-bold lg:text-xl text-[17px]">
+                          {item.name}
+                        </Typography>
+                        <button>
+                          <Image src={shareButton} alt="share" />
+                        </button>
+                      </div>
+                      <div className="border-dashed border border-separate-500"></div>
+                      <div className="lg:w-full w-full p-1 flex flex-row justify-between items-end">
+                        <div className="flex gap-3 text-white ">
+                          <div className="flex flex-col items-start justify-start">
+                            <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
+                              {`${t('quiz.entryFee')}`}
+                            </Typography>
+                            <Typography className="font-bold text-[15px] lg:text-lg">
+                              {item.admission_fee === 0
+                                ? t('quiz.free')
+                                : item.admission_fee.toLocaleString('id-ID', {
+                                    style: 'currency',
+                                    currency: 'IDR'
+                                  })}
+                            </Typography>
                           </div>
-                          <Button
-                            onClick={async () =>
-                              await router.push(
-                                `${
-                                  process.env.NEXT_PUBLIC_DOMAIN ??
-                                  'https://user-dev-gcp.seeds.finance'
-                                }/play/quiz/${item.id}`
-                              )
-                            }
-                            className="w-[65px] h-[25px] lg:w-[100px] lg:h-[40px] bg-white rounded-full text-[#3AC4A0] capitalize flex items-center justify-center"
-                          >
-                            {`${t('quiz.play')}`}
-                          </Button>
+                          <div className="flex flex-col items-start">
+                            <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
+                              {`${t('quiz.duration')}`}
+                            </Typography>
+                            <Typography className="text-[15px] lg:text-lg font-bold">
+                              {durationInDays(item.started_at, item.ended_at)}{' '}
+                              {`${t('tournament.tournamentCard.days')}`}
+                            </Typography>
+                          </div>
+                          <div className="flex flex-col items-start">
+                            <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
+                              {`${t('quiz.players')}`}
+                            </Typography>
+                            <Typography className=" text-[15px] lg:text-lg font-bold">
+                              {item.participants}
+                            </Typography>
+                          </div>
                         </div>
-                      </CardBody>
-                    </Card>
-                  </div>
+                        <Button
+                          onClick={async () =>
+                            await router.push(
+                              `${
+                                process.env.NEXT_PUBLIC_DOMAIN ??
+                                'https://user-dev-gcp.seeds.finance'
+                              }/play/quiz/${item.id}`
+                            )
+                          }
+                          className="flex justify-center items-center bg-white rounded-full text-[#3AC4A0] capitalize h-4"
+                        >
+                          {`${t('quiz.play')}`}
+                        </Button>
+                      </div>
+                    </CardBody>
+                  </Card>
                 </SwiperSlide>
               );
             })

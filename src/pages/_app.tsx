@@ -59,6 +59,7 @@ function App({
 
   const loginLayouts =
     router.pathname.startsWith('/homepage') ||
+    router.pathname.startsWith('/market') ||
     router.pathname.startsWith('/social') ||
     router.pathname.startsWith('/connect') ||
     router.pathname.startsWith('/play') ||

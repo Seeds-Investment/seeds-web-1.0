@@ -1,12 +1,12 @@
 import PromoCode from '@/components/promocode/promoCode';
 import Button from '@/components/ui/button/Button';
+import { standartCurrency } from '@/helpers/currency';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getSubscriptionStatus } from '@/repository/subscription.repository';
 import { type RootState } from '@/store/premium-circle';
 import { setMonth, setPrice } from '@/store/premium-circle/premiumCircleSlice';
 import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
-import { formatCurrency } from '@/utils/common/currency';
 import { type StatusSubscription } from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
@@ -210,7 +210,7 @@ const ChooseSubs: React.FC<props> = ({ dataPost, setPages }) => {
           <div className="flex flex-col py-6 px-5 gap-2">
             <Typography className="text-center font-poppins text-base font-semibold">
               {userInfo?.preferredCurrency}{' '}
-              {formatCurrency(dataPost?.premium_fee * numberMonth())}
+              {standartCurrency((dataPost?.premium_fee ?? 0) * numberMonth())}
             </Typography>
             <Typography className="text-center font-poppins text-sm font-normal">
               {t('circle.payment.getFullAccess')}

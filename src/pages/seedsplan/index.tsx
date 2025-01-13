@@ -19,6 +19,8 @@ import i18n from '@/utils/common/i18n';
 import {
   type DataPlanI,
   type DataVoucherI,
+  type PlanByTier,
+  type PlanI,
   type StatusSubscription
 } from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -39,7 +41,7 @@ const SeedsPlan: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
-  const [dataPlan, setDataPlan] = useState<DataPlanI>();
+
   const [subscriptionStatus, setSubscriptionStatus] =
     useState<StatusSubscription | null>(null);
   const [dataVoucher, setDataVoucher] = useState<DataVoucherI | undefined>(
@@ -47,7 +49,12 @@ const SeedsPlan: React.FC = () => {
   );
   const [userInfo, setUserInfo] = useState<UserInfo>();
 
-  const [packagePlan, setPackagePlan] = useState<string>('Silver');
+  const [dataPlan, setDataPlan] = useState<DataPlanI>();
+  const [mappedPlansByTier, setMappedPlansByTier] = useState<PlanByTier[]>([]);
+  const [allAvailablePlans, setAllAvailablePlans] = useState<PlanI[]>([]);
+  const [selectedPeriodPlan, setSelectedPeriodPlan] = useState<PlanI>();
+
+  const [packagePlan, setPackagePlan] = useState<string>('SILVER');
   const [periodPlan, setPeriodPlan] = useState<number>(1);
 
   const [isActiveSubscription, setIsActiveSubscription] =
@@ -57,16 +64,9 @@ const SeedsPlan: React.FC = () => {
   const [showHowToUse, setHowToUse] = useState<boolean>(false);
 
   const packagePlanList = [
-    { name: 'Silver', badge: null },
-    { name: 'Gold', badge: null },
-    { name: 'Platinum', badge: t('seedsPlan.text9') }
-  ];
-
-  const seedsPlanPeriod = [
-    { label: `1 ${t('seedsPlan.month')}`, period: 1, type: 'month' },
-    { label: `3 ${t('seedsPlan.months')}`, period: 3, type: 'month' },
-    { label: `6 ${t('seedsPlan.months')}`, period: 6, type: 'month' },
-    { label: `1 ${t('seedsPlan.year')}`, period: 12, type: 'year' }
+    { name: 'SILVER', badge: null },
+    { name: 'GOLD', badge: null },
+    { name: 'PLATINUM', badge: t('seedsPlan.text9') }
   ];
 
   const getPlanList = async (): Promise<void> => {
@@ -116,45 +116,68 @@ const SeedsPlan: React.FC = () => {
     }
   }, [subscriptionStatus]);
 
-  const filterPlan = dataPlan?.data?.find(item => item?.name === packagePlan);
-  const filterTnc =
-    filterPlan?.tnc?.[i18n.language === 'id' ? 'id' : 'en'] !== ''
-      ? filterPlan?.tnc[i18n.language === 'id' ? 'id' : 'en']
+  useEffect(() => {
+    if (dataPlan !== undefined) {
+      const { SILVER, GOLD, PLATINUM } = dataPlan.data;
+      const mappedPlan = [
+        { name: 'SILVER', data: [...SILVER] },
+        { name: 'GOLD', data: [...GOLD] },
+        { name: 'PLATINUM', data: [...PLATINUM] }
+      ];
+
+      setMappedPlansByTier(mappedPlan);
+      setAllAvailablePlans([...SILVER, ...GOLD, ...PLATINUM]);
+      setPeriodPlan(
+        SILVER.find(item => item.duration_in_months === 1)
+          ?.duration_in_months ?? 1
+      );
+    }
+  }, [dataPlan]);
+
+  const filteredPlanByTier = mappedPlansByTier?.find(
+    item => item.name === packagePlan
+  )?.data;
+
+  useEffect(() => {
+    if (isActiveSubscription && subscriptionStatus !== null) {
+      const activeSubscriptionId =
+        subscriptionStatus?.active_subscription?.subscription_type_id;
+      const selected = allAvailablePlans?.find(
+        item => item.id === activeSubscriptionId
+      );
+      setSelectedPeriodPlan(selected);
+    } else {
+      const selected = filteredPlanByTier?.find(
+        item => item.duration_in_months === periodPlan
+      );
+      setSelectedPeriodPlan(selected);
+    }
+  }, [
+    periodPlan,
+    filteredPlanByTier,
+    isActiveSubscription,
+    subscriptionStatus,
+    allAvailablePlans
+  ]);
+
+  const filteredTnc =
+    selectedPeriodPlan?.tnc?.[i18n.language === 'id' ? 'id' : 'en'] !== ''
+      ? selectedPeriodPlan?.tnc[i18n.language === 'id' ? 'id' : 'en']
       : '-';
 
   useEffect(() => {
-    if (filterPlan !== undefined) {
-      void getVoucherList(filterPlan?.id);
+    if (selectedPeriodPlan !== undefined) {
+      void getVoucherList(selectedPeriodPlan.id);
     }
-  }, [filterPlan?.id]);
+  }, [selectedPeriodPlan]);
 
   const getActivePlan = (): string => {
     const activeSubscriptionId =
       subscriptionStatus?.active_subscription?.subscription_type_id;
     return (
-      dataPlan?.data.find(item => item.id === activeSubscriptionId)?.name ?? ''
+      allAvailablePlans.find(item => item.id === activeSubscriptionId)?.name ??
+      ''
     );
-  };
-
-  const calculateDuration = (start: string, end: string): string => {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-
-    const diffInDays =
-      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
-
-    const months = Math.floor(diffInDays / 30);
-    const years = Math.floor(months / 12);
-
-    if (years === 1 && months % 12 === 0) {
-      return `1 ${t('seedsPlan.year')}`;
-    } else if (months === 1) {
-      return `1 ${t('seedsPlan.month')}`;
-    } else if (months > 1) {
-      return `${months} ${t('seedsPlan.months')}`;
-    }
-
-    return '';
   };
 
   return (
@@ -210,11 +233,11 @@ const SeedsPlan: React.FC = () => {
                     <div className="flex items-center justify-center bg-gradient-to-b from-[#FF620A66] to-[#F9B54C00] md:w-[69px] md:h-[69px] w-[51px] h-[51px] rounded-full shadow-[inset_0px_5px_5px_#F1B85F,0px_3px_5px_rgba(249,181,76,0.2),0px_0px_15px_8px_rgba(255,98,10,0.2)]">
                       <Image
                         src={
-                          getActivePlan() === 'Silver'
+                          getActivePlan() === 'SILVER'
                             ? SilverPlan
-                            : getActivePlan() === 'Gold'
+                            : getActivePlan() === 'GOLD'
                             ? GoldPlan
-                            : getActivePlan() === 'Platinum' && PlatinumPlan
+                            : getActivePlan() === 'PLATINUM' && PlatinumPlan
                         }
                         alt={'subscription-image'}
                         width={100}
@@ -224,13 +247,15 @@ const SeedsPlan: React.FC = () => {
                     </div>
                     <div className="flex flex-col gap-2">
                       <Typography className="font-poppins font-semibold md:text-base text-sm text-[#FABE2C]">
-                        {t('ProfilePage.yourPackage')} : {getActivePlan()}/
-                        {calculateDuration(
-                          subscriptionStatus?.active_subscription?.started_at ??
-                            '',
-                          subscriptionStatus?.active_subscription?.ended_at ??
-                            ''
-                        )}
+                        {t('ProfilePage.yourPackage')} : {getActivePlan()}/{' '}
+                        {selectedPeriodPlan?.duration_in_months === 12
+                          ? 1
+                          : selectedPeriodPlan?.duration_in_months}{' '}
+                        {selectedPeriodPlan?.duration_in_months === 1
+                          ? t('seedsPlan.month')
+                          : selectedPeriodPlan?.duration_in_months === 12
+                          ? t('seedsPlan.year')
+                          : t('seedsPlan.months')}
                       </Typography>
                       <Typography className="font-poppins font-normal md:text-xs text-[9px] text-[#BDBDBD]">{`${t(
                         'seedsPlan.text11'
@@ -265,24 +290,35 @@ const SeedsPlan: React.FC = () => {
                   <Typography className="font-poppins font-semibold text-xl text-[#262626]">
                     {t('seedsPlan.benefit')}
                   </Typography>
-                  <div>
+                  <div className="max-h-[220px] overflow-y-auto tnc-seedsplan-custom-scroll">
                     <ul>
-                      <li>
-                        Free Quiz for tickets priced at Rp10,000 or below Free
-                      </li>
-                      <li>
-                        Play Arena for tickets priced at Rp10,000 or below Free
-                      </li>
-                      <li>
-                        Premium Circle for tickets priced at Rp10,000 or below
-                      </li>
+                      {dataVoucher?.data
+                        ?.sort((a, b) =>
+                          a.voucher_type.localeCompare(b.voucher_type)
+                        )
+                        ?.map(voucher => (
+                          <li key={voucher?.id}>
+                            {voucher.name_promo_code} - {voucher.voucher_type}{' '}
+                            {voucher.discount_amount > 0
+                              ? `Discount ${voucher.discount_amount.toLocaleString(
+                                  'id-ID',
+                                  {
+                                    currency:
+                                      userInfo?.preferredCurrency ?? 'IDR',
+                                    style: 'currency',
+                                    maximumFractionDigits: 0
+                                  }
+                                )}`
+                              : `Discount ${voucher.discount_percentage}%`}
+                          </li>
+                        ))}
                     </ul>
                   </div>
                 </div>
                 <div className="flex flex-col gap-4">
                   <div
                     onClick={() => {
-                      setShowTnc(!showTnc);
+                      setHowToUse(!showHowToUse);
                     }}
                     className="cursor-pointer flex items-center justify-between border-b border-[#E9E9E9] border-dotted pb-4"
                   >
@@ -291,7 +327,12 @@ const SeedsPlan: React.FC = () => {
                     </Typography>
                     <FaChevronRight color="#DADADA" size={20} />
                   </div>
-                  <div className="flex items-center justify-between border-b border-[#E9E9E9] border-dotted pb-4">
+                  <div
+                    onClick={() => {
+                      setShowTnc(!showTnc);
+                    }}
+                    className="cursor-pointer flex items-center justify-between border-b border-[#E9E9E9] border-dotted pb-4"
+                  >
                     <Typography className="font-poppins text-base font-normal">
                       {t('seedsPlan.button7')}
                     </Typography>
@@ -346,23 +387,34 @@ const SeedsPlan: React.FC = () => {
                     </div>
                   </div>
                   <div className="mt-4w-full flex flex-row gap-3 mb-4">
-                    {seedsPlanPeriod?.map((item, index) => {
-                      return (
-                        <button
-                          key={index}
-                          className={`px-3 py-2 rounded-lg w-3/12 font-poppins text-xs ${
-                            periodPlan === item.period
-                              ? 'bg-[#3ac4a0] text-white font-semibold'
-                              : 'bg-transparent text-white border border-white font-normal'
-                          }`}
-                          onClick={() => {
-                            setPeriodPlan(item.period);
-                          }}
-                        >
-                          {item.label}
-                        </button>
-                      );
-                    })}
+                    {filteredPlanByTier
+                      ?.sort(
+                        (a, b) => a.duration_in_months - b.duration_in_months
+                      )
+                      ?.map((item, index) => {
+                        return (
+                          <button
+                            key={index}
+                            className={`px-3 py-2 rounded-lg w-3/12 font-poppins text-xs ${
+                              periodPlan === item.duration_in_months
+                                ? 'bg-[#3ac4a0] text-white font-semibold'
+                                : 'bg-transparent text-white border border-white font-normal'
+                            }`}
+                            onClick={() => {
+                              setPeriodPlan(item.duration_in_months);
+                            }}
+                          >
+                            {item.duration_in_months === 12
+                              ? 1
+                              : item.duration_in_months}{' '}
+                            {item.duration_in_months === 1
+                              ? `${t('seedsPlan.month')}`
+                              : item.duration_in_months === 12
+                              ? `${t('seedsPlan.year')} `
+                              : `${t('seedsPlan.months')}`}
+                          </button>
+                        );
+                      })}
                   </div>
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
                     {dataVoucher?.data?.map((item, index) => (
@@ -399,12 +451,18 @@ const SeedsPlan: React.FC = () => {
                           />
                         </div>
                         <div className="col-span-1 flex justify-center items-center border-s-2 border-dashed text-[#7C7C7C]">
-                          <GoInfinity
-                            size={30}
-                            color="#D89918"
-                            strokeWidth={1}
-                            className="w-10"
-                          />
+                          {item?.quantity === -1 ? (
+                            <GoInfinity
+                              size={30}
+                              color="#D89918"
+                              strokeWidth={1}
+                              className="w-10"
+                            />
+                          ) : (
+                            <Typography className="font-semibold font-poppins text-md">
+                              {item?.quantity}
+                            </Typography>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -436,13 +494,13 @@ const SeedsPlan: React.FC = () => {
                     </div>
                   </div>
                   <div className="mt-10 pt-5 border-t-2 border-[#EDE3FE]">
-                    {filterPlan !== undefined && (
+                    {selectedPeriodPlan !== undefined && (
                       <div className="flex flex-col gap-2">
                         <div className="text-[#7C7C7C] text-sm">
                           {t('seedsPlan.text2')}
                           <span
                             className={`ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs ${
-                              filterPlan?.is_promo ? '' : 'hidden'
+                              selectedPeriodPlan?.is_promo ? '' : 'hidden'
                             }`}
                           >
                             {t('seedsPlan.text3')}
@@ -452,10 +510,12 @@ const SeedsPlan: React.FC = () => {
                           <div>
                             <span
                               className={
-                                filterPlan?.is_promo ? 'line-through' : ''
+                                selectedPeriodPlan?.is_promo
+                                  ? 'line-through'
+                                  : ''
                               }
                             >
-                              {(filterPlan?.price * periodPlan)?.toLocaleString(
+                              {selectedPeriodPlan?.price?.toLocaleString(
                                 'id-ID',
                                 {
                                   currency:
@@ -465,31 +525,35 @@ const SeedsPlan: React.FC = () => {
                                 }
                               )}
                             </span>
-                            /{periodPlan === 12 ? 1 : periodPlan}{' '}
-                            {periodPlan === 1
+                            /
+                            {selectedPeriodPlan?.duration_in_months === 12
+                              ? 1
+                              : selectedPeriodPlan?.duration_in_months}{' '}
+                            {selectedPeriodPlan.duration_in_months === 1
                               ? t('seedsPlan.month')
-                              : periodPlan === 12
+                              : selectedPeriodPlan.duration_in_months === 12
                               ? t('seedsPlan.year')
                               : t('seedsPlan.months')}
                           </div>
                           <div
                             className={`${
-                              filterPlan?.is_promo ? 'block' : 'hidden'
+                              selectedPeriodPlan?.is_promo ? 'block' : 'hidden'
                             }`}
                           >
-                            {(
-                              filterPlan?.price_after_promo * periodPlan
-                            )?.toLocaleString('id-ID', {
-                              currency: userInfo?.preferredCurrency ?? 'IDR',
-                              style: 'currency',
-                              maximumFractionDigits: 0
-                            })}
+                            {selectedPeriodPlan?.price_after_promo?.toLocaleString(
+                              'id-ID',
+                              {
+                                currency: userInfo?.preferredCurrency ?? 'IDR',
+                                style: 'currency',
+                                maximumFractionDigits: 0
+                              }
+                            )}
                           </div>
                         </div>
                         <button
                           onClick={async () =>
                             await router.push(
-                              `/seedsplan/payment?type=${packagePlan}`
+                              `/seedsplan/payment?plan_id=${selectedPeriodPlan?.id}`
                             )
                           }
                           className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300 my-2"
@@ -510,7 +574,7 @@ const SeedsPlan: React.FC = () => {
         onClose={() => {
           setShowTnc(!showTnc);
         }}
-        tnc={filterTnc as string}
+        tnc={filteredTnc as string}
       />
       <HowToUseSeedsplan
         isOpen={showHowToUse}

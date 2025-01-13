@@ -2,6 +2,7 @@ import Loading from '@/components/popup/Loading';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { CeklisCircle } from '@/constants/assets/icons';
+import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
@@ -10,7 +11,6 @@ import {
   getPaymentList
 } from '@/repository/payment.repository';
 import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
-import { formatCurrency } from '@/utils/common/currency';
 import { type QrisDetail } from '@/utils/interfaces/social.interfaces';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -197,7 +197,7 @@ const SuccessPaymentPage: React.FC = () => {
               <Typography className="text-2xl font-semibold text-white text-center">
                 {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
                 orderDetail?.transactionStatus !== 'SUCCESS'
-                  ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                  ? `${orderDetail?.currency ?? 'IDR'} ${standartCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`
                   : t('social.payment.paymentSuccessful')}
@@ -245,9 +245,9 @@ const SuccessPaymentPage: React.FC = () => {
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
                     {t('social.payment.socialFee')}
                   </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
+                  <Typography className="text-sm font-semibold text-[#262626] text-right">
                     {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
+                      `${orderDetail.currency} ${standartCurrency(
                         (orderDetail?.grossAmount ?? 0) === 0
                           ? 0
                           : (orderDetail?.grossAmount ?? 0) +
@@ -267,9 +267,9 @@ const SuccessPaymentPage: React.FC = () => {
                     <Typography className="text-sm font-semibold text-[#BDBDBD]">
                       {t('social.payment.adminFee')}
                     </Typography>
-                    <Typography className="text-sm font-semibold text-[#262626]">
+                    <Typography className="text-sm font-semibold text-[#262626] text-right">
                       {orderDetail?.currency !== undefined &&
-                        `${orderDetail.currency} ${formatCurrency(
+                        `${orderDetail.currency} ${standartCurrency(
                           paymentSelectedEWallet.length > 0
                             ? paymentSelectedEWallet[0]?.admin_fee ?? 0
                             : 0
@@ -284,9 +284,9 @@ const SuccessPaymentPage: React.FC = () => {
                     <Typography className="text-sm font-semibold text-[#BDBDBD]">
                       {t('social.payment.serviceFee')}
                     </Typography>
-                    <Typography className="text-sm font-semibold text-[#262626]">
+                    <Typography className="text-sm font-semibold text-[#262626] text-right">
                       {orderDetail?.currency !== undefined &&
-                        `${orderDetail.currency} ${formatCurrency(
+                        `${orderDetail.currency} ${standartCurrency(
                           paymentSelectedEWallet.length > 0
                             ? paymentSelectedEWallet[0]?.service_fee ?? 0
                             : 0
@@ -304,9 +304,9 @@ const SuccessPaymentPage: React.FC = () => {
                           <Typography className="text-sm font-semibold text-[#BDBDBD]">
                             {t('social.payment.discountFee')}
                           </Typography>
-                          <Typography className="text-sm font-semibold text-[#262626]">
+                          <Typography className="text-sm font-semibold text-[#262626] text-right">
                             {orderDetail?.currency !== undefined
-                              ? `- ${orderDetail.currency} ${formatCurrency(
+                              ? `- ${orderDetail.currency} ${standartCurrency(
                                   paymentSelectedEWallet.length > 0
                                     ? paymentSelectedEWallet[0]?.promo_price ??
                                         0
@@ -325,9 +325,9 @@ const SuccessPaymentPage: React.FC = () => {
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
                     {t('social.payment.totalAmount')}
                   </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
+                  <Typography className="text-sm font-semibold text-[#262626] text-right">
                     {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
+                      `${orderDetail.currency} ${standartCurrency(
                         orderDetail?.grossAmount ?? 0
                       )}`}
                   </Typography>
@@ -338,7 +338,7 @@ const SuccessPaymentPage: React.FC = () => {
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
                     {t('social.payment.idTransaction')}
                   </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
+                  <Typography className="text-sm font-semibold text-[#262626] text-right">
                     {(orderDetail?.transactionId ?? '') === ''
                       ? '-'
                       : orderDetail?.transactionId}

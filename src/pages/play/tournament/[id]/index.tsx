@@ -72,12 +72,12 @@ const TournamentDetail: React.FC = () => {
 
   const getSubscriptionPlanStatus = async (): Promise<void> => {
     try {
-      const response = await getSubscriptionStatus();
+      const response: StatusSubscription = await getSubscriptionStatus();
       if (response !== undefined) {
-        setDataSubscription(response);
+      setDataSubscription(response);
       }
     } catch (error) {
-      console.error(`${error as string}`);
+      toast.error(`${error as string}`);
     }
   };
 
@@ -226,15 +226,17 @@ const TournamentDetail: React.FC = () => {
     if (id !== null && id !== undefined) {
       if (accessToken === null) {
         getDetail();
-        getSubscriptionPlanStatus();
       } else {
         getDetailWithAuth();
+        getSubscriptionPlanStatus();
       }
     }
     if (userInfo?.preferredCurrency !== undefined) {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);
+  
+
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     const textToCopy = `${detailTournament?.play_id}`;
@@ -698,12 +700,9 @@ const TournamentDetail: React.FC = () => {
               <Typography className="font-semibold text-xl font-poppins">
                 {detailTournament?.admission_fee === 0
                   ? t('tournament.free')
-                  : (
+                  : `${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
                       promoCodeValidationResult?.response?.final_price ?? 0
-                    ).toLocaleString('id-ID', {
-                      currency: userInfo?.preferredCurrency ?? 'IDR',
-                      style: 'currency'
-                    })}
+                    )}`}
               </Typography>
             )}
           <div className="flex flex-row items-center justify-between mt-2.5">

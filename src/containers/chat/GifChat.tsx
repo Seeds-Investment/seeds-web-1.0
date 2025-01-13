@@ -95,8 +95,8 @@ const GifChat: React.FC<props> = ({ onClose, sendGif }) => {
             name="searchGif"
             value={search.searchGif}
             onChange={handleFormChange}
-            className="h-10 pl-12 focus:outline-none placeholder:text-neutral-soft rounded-full w-[350px] border border-neutral-ultrasoft"
-            placeholder="Memes Stock"
+            className="h-10 pl-4 focus:outline-none placeholder:text-neutral-soft rounded-full w-[350px] border border-neutral-ultrasoft"
+            placeholder="Search here..."
           />
         </form>
         <div className="flex justify-center flex-col absolute right-8 top-2">

@@ -316,7 +316,7 @@ const BuyPage: React.FC = () => {
     } else {
       setIsDisable(false);
     }
-  }, [assetAmount, amount, ballance.balance]);
+  }, [assetAmount, amount, ballance?.balance]);
 
   const fetchDetailAsset = async (currency: string): Promise<void> => {
     try {

@@ -17,29 +17,65 @@ export interface Chat {
   created_at: string;
   accept_at: string;
   read_at: string;
+  last_sender_id: string;
 }
 
 export interface IChatBubble {
   id: string;
   content_text: string;
-  media_urls: string[];
+  created_by: string;
   created_at: string;
   accept_at: string;
   read_at: string;
-  created_by: string;
-  reference_type?: string;
-  reference: IChatReference;
+  reference: Reference | null;
+  media_urls: string[];
+  owner: Owner;
 }
 
-export interface IChatReference {
-  user_id: string;
-  url: string;
-  expired_at: IChatTime;
+interface Reference {
+  id?: string;
+  user_id?: string;
+  circle_id?: string;
+  privacy?: string;
+  url?: string;
+  type?: string;
+  created_at?: string;
+  updated_at?: string;
+  expired_at?: string;
+  deleted_at?: string;
+  status_read?: boolean;
+  overlay_link?: string;
+  reference_link?: string;
+  data?: string;
+  slug?: string;
+  status_like?: boolean;
 }
 
-export interface IChatTime {
-  nanos: number;
-  seconds: number;
+export interface Owner {
+  id: string;
+  phoneNumber: string;
+  email: string;
+  birthDate: string;
+  name: string;
+  seedsTag: string;
+  refCode: string;
+  avatar: string;
+  role: string;
+  verified: boolean;
+  email_verification: boolean;
+  bio: string;
+  badge: string;
+  preferredLanguage: string;
+  preferredCurrency: string;
+  last_login_at: string;
+  followers: number;
+  following: number;
+  isFollowed: boolean;
+  isBlocked: boolean;
+  community: string;
+  userRole: string;
+  city: string;
+  ReferralPoint: number;
 }
 
 export interface IGroupChatDetail {
@@ -48,9 +84,9 @@ export interface IGroupChatDetail {
   name: string;
   description: string;
   privacy: string;
-  hashtags: string[];
-  memberships: Record<string, unknown>;
-  created_by: string;
+  hashtags: string[] | null;
+  memberships: string[];
+  deleted_by: string;
   created_at: string;
   updated_at: string;
   total_memberships: number;
@@ -118,9 +154,8 @@ export interface MuteGroupChatParams {
 }
 
 export interface LeaveGroupParams {
-  id?: string;
   user_id: string;
-  message_text: string;
+  message_text?: string;
 }
 
 export interface GetChatNotesParams {
@@ -183,9 +218,9 @@ export interface PersonalChatMediaData {
 }
 export interface Metadata {
   total: number;
-  current_page: number;
+  currentPage: number;
   limit: number;
-  total_page: number;
+  totalPage: number;
 }
 
 export interface CommonGroupResponse {
@@ -220,9 +255,9 @@ export interface TopMember {
 }
 
 export interface GroupMemberParams {
-  id: string;
-  page: number;
-  limit: number;
+  page?: number;
+  limit?: number;
+  search?: string;
 }
 
 export interface GroupMemberResponse {
@@ -536,16 +571,17 @@ export interface Pagination {
 
 export interface CreateGroupForm {
   name: string;
-  desc: string;
-  hashtag: string[];
+  description?: string;
+  avatar?: string;
+  memberships: string[];
 }
 
 export interface CreateGroupParams {
-  avatar: string;
+  avatar?: string;
   name: string;
-  description: string;
-  privacy: string;
-  hashtag: string[];
+  description?: string;
+  privacy?: string;
+  hashtag?: string[];
   memberships: string[];
 }
 
@@ -561,4 +597,23 @@ export interface CreateGroupResponse {
   updated_at: string;
   total_memberships: number;
   total_online: number;
+}
+
+export interface UpdateGroupForm {
+  avatar: string;
+  name: string;
+  description: string;
+  privacy: string;
+  hashtags: string[] | null;
+}
+
+export interface MetadataFileInfo {
+  id: string;
+  name: string;
+  size: number;
+  extension: string;
+  type: string;
+  url: string;
+  created_at: string;
+  updated_at: string;
 }

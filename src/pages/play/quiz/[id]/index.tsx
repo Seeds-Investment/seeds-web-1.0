@@ -5,6 +5,7 @@
 import ModalQuizWinnerAlert from '@/components/popup/ModalQuizWinnerAlert';
 import ModalShareQuiz from '@/components/popup/ModalShareQuiz';
 import PromoCode from '@/components/promocode/promoCode';
+import { standartCurrency } from '@/helpers/currency';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
@@ -66,12 +67,12 @@ const QuizDetail = (): React.ReactElement => {
 
   const getSubscriptionPlanStatus = async (): Promise<void> => {
     try {
-      const response = await getSubscriptionStatus();
+      const response: StatusSubscription = await getSubscriptionStatus();
       if (response !== undefined) {
         setDataSubscription(response);
       }
     } catch (error) {
-      console.error(`${error as string}`);
+      toast.error(`${error as string}`);
     }
   };
 
@@ -441,22 +442,18 @@ const QuizDetail = (): React.ReactElement => {
           >
             {detailQuiz?.admission_fee === 0
               ? t('quiz.free')
-              : detailQuiz?.admission_fee?.toLocaleString('id-ID', {
-                  currency: userInfo?.preferredCurrency ?? 'IDR',
-                  style: 'currency'
-                })}
+              : `${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
+                  detailQuiz?.admission_fee ?? 0
+                )}`}
           </div>
           {promoCodeValidationResult !== 0 &&
             localStorage.getItem('accessToken') !== null && (
               <div className="font-semibold text-xl">
                 {detailQuiz?.admission_fee === 0
                   ? t('quiz.free')
-                  : (
+                  : `${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
                       promoCodeValidationResult?.response?.final_price ?? 0
-                    ).toLocaleString('id-ID', {
-                      currency: userInfo?.preferredCurrency ?? 'IDR',
-                      style: 'currency'
-                    })}
+                    )}`}
               </div>
             )}
           <div className="flex flex-row items-center justify-between mt-2.5">

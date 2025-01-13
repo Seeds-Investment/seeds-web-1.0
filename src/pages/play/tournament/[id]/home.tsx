@@ -289,7 +289,7 @@ const TournamentHome: React.FC = () => {
     } else {
       return 'COMMODITIES';
     }
-  }
+  };
 
   useEffect(() => {
     if (userInfo !== undefined && detailTournament !== undefined) {

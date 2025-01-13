@@ -1,6 +1,7 @@
 import ModalLogin from '@/components/danamart/ModalLogin';
 import ModalRegister from '@/components/danamart/ModalRegister';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
+import { getAccountInformation } from '@/repository/danamart/danamart.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type UserInfo } from '@/utils/interfaces/user.interface';
 import { Button } from '@material-tailwind/react';
@@ -9,6 +10,10 @@ import { toast } from 'react-toastify';
 
 const Danamart = (): React.ReactElement => {
   const [userData, setUserData] = useState<UserInfo>();
+  const [userDanamartInformation, setUserDanamartInformation] = useState<{
+    email: string;
+    phone_number: string;
+  }>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpenModalRegister, setIsOpenModalRegister] =
@@ -24,8 +29,19 @@ const Danamart = (): React.ReactElement => {
     }
   };
 
+  const fetchAccountStatus = async (): Promise<void> => {
+    try {
+      const response: { email: string; phone_number: string } =
+        await getAccountInformation();
+      setUserDanamartInformation(response);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     void fetchUserInfo();
+    void fetchAccountStatus();
     setIsOpenModalRegister(false);
 
     if (localStorage.getItem('accessToken-danamart') !== null) {

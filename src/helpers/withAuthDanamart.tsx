@@ -34,6 +34,7 @@ const withAuthDanamart = (
             await router.push('/danamart');
           }
         } catch (error) {
+          localStorage.removeItem('accessToken-danamart');
           await router.push('/danamart');
         } finally {
           setIsLoadingDanamart(false);

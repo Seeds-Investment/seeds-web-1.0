@@ -2812,7 +2812,7 @@ export default {
     button1: 'Terms & Conditions',
     button2: 'How to Use Voucher',
     howToUse:
-      'Open the Seeds Finance app. Select the Quiz and Play Tournament in the "Play" section or select "Circle" and "Premium Post" in the "Social" section according to your choice. On the payment page, select payment method and voucher (including the Seeds Unlimited voucher you purchased). If the voucher is already active, you will be able to participate in variety of premium discount for free, depending on the type of voucher you purchased. Yay! Now you can join and enjoy multiple savings',
+      'Open the Seeds Finance app. Select the Quiz, Play Tournament, and Team Battle in the "Play" section or select "Circle" and "Premium Post" in the "Social" section according to your choice. On the payment page, select payment method and voucher (including the Seeds Unlimited voucher you purchased). If the voucher is already active, you will be able to participate in variety of premium discount for free, depending on the type of voucher you purchased. Yay! Now you can join and enjoy multiple savings',
     button3: 'Subscribe Now!',
     button4: 'I Understand',
     button5: 'Unsubscribe',

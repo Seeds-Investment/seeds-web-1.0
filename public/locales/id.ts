@@ -2744,7 +2744,7 @@ export default {
     button1: 'Ketentuan & Kebijakan',
     button2: 'Cara Menggunakan Voucher',
     howToUse:
-      'Buka aplikasi Seeds Finance. Pilih Kuis dan Mainkan Turnamen di bagian "Play" atau pilih "Circle" dan "Premium" di bagian "Social" sesuai pilihan Anda. Pada halaman pembayaran, pilih metode pembayaran dan voucher ( termasuk voucher Seeds Unlimited yang Anda beli). Jika voucher sudah aktif, anda bisa mengikuti berbagai diskon premium secara gratis, tergantung jenis voucher yang anda beli. Yay! Sekarang anda dapat bergabung dan menikmati banyak penghematan',
+      'Buka aplikasi Seeds Finance. Pilih Kuis, Mainkan Turnamen, dan Pertarungan Tim di bagian "Play" atau pilih "Circle" dan "Premium" di bagian "Social" sesuai pilihan Anda. Pada halaman pembayaran, pilih metode pembayaran dan voucher ( termasuk voucher Seeds Unlimited yang Anda beli). Jika voucher sudah aktif, anda bisa mengikuti berbagai diskon premium secara gratis, tergantung jenis voucher yang anda beli. Yay! Sekarang anda dapat bergabung dan menikmati banyak penghematan',
     button3: 'Langganan Sekarang!',
     button4: 'Saya Mengerti',
     button5: 'Berhenti Langganan',

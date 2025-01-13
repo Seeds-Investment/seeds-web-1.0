@@ -2735,15 +2735,19 @@ export default {
         blank: 'Kamu harus mengisi kolom ini',
         error: 'Terjadi kesalahan. Cek kata sandi Anda atau koneksi Anda!',
         serverError: 'Terjadi kesalahan pada server. Mohon coba sesaat lagi.',
-        password: 'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
-        wrongPassword: 'Password salah. Cek password Anda sebelum mengisi form!',
-        recaptcha: 'ReCAPTCHA tidak tersedia! Pastikan Anda telah mengisi ReCAPTCHA.'
+        password:
+          'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+        wrongPassword:
+          'Password salah. Cek password Anda sebelum mengisi form!',
+        recaptcha:
+          'ReCAPTCHA tidak tersedia! Pastikan Anda telah mengisi ReCAPTCHA.'
       },
       loginButton: 'Masuk'
     },
     forgotPassword: {
       forgotPasswordTitle: 'Lupa Kata Sandi 🔑',
-      forgotPasswordDescription: 'Masukkan email kamu dan kami akan mengirimkan link untuk mengatur ulang password kamu.',
+      forgotPasswordDescription:
+        'Masukkan email kamu dan kami akan mengirimkan link untuk mengatur ulang password kamu.',
       forgotPasswordText: 'Lupa Kata Sandi?',
       sendLink: 'Kirim Link',
       backLogin: 'Masuk Kembali',
@@ -2757,7 +2761,7 @@ export default {
         otherMethod3: 'Coba',
         otherMethod4: ' lewat',
         validation: 'Yah, OTPmu salah, yuk coba lagi',
-        blank: 'Kamu haru mengisi kolom ini!',
+        blank: 'Kamu haru mengisi kolom ini!'
       },
       createNewPassword: {
         title1: 'Buat Kata Sandi Baru',
@@ -2770,9 +2774,10 @@ export default {
         title4: 'Yuk, buat kata sandi yang aman',
         validation: {
           number: 'Ups, nomor telepon kamu tidak terdaftar',
-          password: 'Ups, kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+          password:
+            'Ups, kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
           match: 'Ups, kata sandi tidak cocok',
-          blank: 'Kamu haru mengisi kolom ini!',
+          blank: 'Kamu haru mengisi kolom ini!'
         },
         newPassword: {
           label: 'Buat Kata Sandi Baru',
@@ -2782,7 +2787,8 @@ export default {
           label: 'Konfirmasi Kata Sandi Baru',
           placeholder: 'Tolong konfirmasi kata sandimu'
         },
-        information: 'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+        information:
+          'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
         modal: {
           title1: 'Berhasil',
           title2: 'Kata sandi yang baru berhasil dibuat',
@@ -2848,6 +2854,12 @@ export default {
       alternatives: 'Alternatif',
       errorGetUserDashboard: 'Gagal mendapatkan data dasbor',
       errorGetUserProfile: 'Gagal mendapatkan data profile pengguna'
+    },
+    verification: {
+      photoIdCardTittle: 'Foto Kartu Identitas',
+      accountInformationTittle: 'Informasi Akun',
+      financialInformationTittle: 'Informasi Keuangan',
+      photoSelfieTitle: 'Foto Diri'
     }
   }
 };

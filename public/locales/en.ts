@@ -2803,15 +2803,19 @@ export default {
         blank: 'You must fill in this field',
         error: 'There is an error. Check your password or connection!',
         serverError: 'A server error occurred. Kindly try again soon.',
-        password: 'Password must contain 8 digit with upper case and lower case',
-        wrongPassword: 'Wrong password. Check your password before filling the form!',
-        recaptcha: 'ReCAPTCHA value is not available! Fill the ReCAPTCHA before logging in.'
+        password:
+          'Password must contain 8 digit with upper case and lower case',
+        wrongPassword:
+          'Wrong password. Check your password before filling the form!',
+        recaptcha:
+          'ReCAPTCHA value is not available! Fill the ReCAPTCHA before logging in.'
       },
       loginButton: 'Login'
     },
     forgotPassword: {
       forgotPasswordTitle: 'Forget Password 🔑',
-      forgotPasswordDescription: "Enter your phone number, and we’ll send you an OTP to reset your password.",
+      forgotPasswordDescription:
+        'Enter your phone number, and we’ll send you an OTP to reset your password.',
       forgotPasswordText: 'Forgot Password?',
       sendLink: 'Send Link',
       backLogin: 'Back to Login',
@@ -2825,7 +2829,7 @@ export default {
         otherMethod3: 'Try',
         otherMethod4: ' sending it by',
         validation: 'Incorrect OTP. Please Try again.',
-        blank: 'You must fill in this field',
+        blank: 'You must fill in this field'
       },
       createNewPassword: {
         title1: 'Create New Password',
@@ -2838,9 +2842,10 @@ export default {
         title4: 'Let’s create a secure password',
         validation: {
           number: 'Oops, your phone number not registered',
-          password: 'Oops, password must be 8 characters long and have both uppercase and lowercase letters.',
+          password:
+            'Oops, password must be 8 characters long and have both uppercase and lowercase letters.',
           match: 'Oops, password doesn’t match',
-          blank: 'You must fill in this field',
+          blank: 'You must fill in this field'
         },
         newPassword: {
           label: 'Create a New Password',
@@ -2850,14 +2855,15 @@ export default {
           label: 'Confirm New Password',
           placeholder: 'Please confirm your password'
         },
-        information: 'Password must be 8 characters long and have both uppercase and lowercase letters.',
+        information:
+          'Password must be 8 characters long and have both uppercase and lowercase letters.',
         modal: {
           title1: 'Success',
           title2: 'The new password has been successfully created.',
           title3: 'Please check your email',
           close: 'Close'
         }
-      },
+      }
     },
     register: {
       connectSeeds: 'Connect Seeds to Danamart',
@@ -2916,6 +2922,12 @@ export default {
       alternatives: 'Alternatives',
       errorGetUserDashboard: 'Failed to get dashboard data',
       errorGetUserProfile: 'Failed to get user profile'
+    },
+    verification: {
+      photoIdCardTittle: 'Photo ID Card',
+      accountInformationTittle: 'Account Information',
+      financialInformationTittle: 'Financial Information',
+      photoSelfieTitle: 'Photo Selfie'
     }
   }
 };

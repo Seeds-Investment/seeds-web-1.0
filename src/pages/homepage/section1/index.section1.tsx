@@ -19,7 +19,7 @@ const Section1New: React.FC = () => {
       try {
         setIsLoading(true);
         const bannerResponse = await getBanner({ ...initialParamsBanner });
-        setBanner(bannerResponse.data);
+        setBanner(bannerResponse.data !== null ? bannerResponse.data : []);
       } catch (error) {
         toast.error(`error fetching data:${error as string}`);
       } finally {
@@ -31,7 +31,7 @@ const Section1New: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  if (isLoading) {
+  if (isLoading !== null) {
     <div className="flex items-center justify-center">
       <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
         Loading...

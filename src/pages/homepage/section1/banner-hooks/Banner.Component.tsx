@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { type Swiper as SwiperType } from 'swiper';
-import { Autoplay, Pagination } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 interface BannerLoad {
@@ -19,30 +19,29 @@ interface props {
   onClick: (index: number) => void;
 }
 
-
-  const CustomPagination: React.FC<props> = ({
-    activeIndex,
-    totalSlides,
-    onClick
-  }) => {
-    return (
-      <div className="flex w-full items-center justify-center gap-3 hover:cursor-pointer md:hidden ">
-        {Array.from({ length: totalSlides }).map((_, index: number) => (
-          <div
-            key={index}
-            onClick={() => {
-              onClick(index);
-            }}
-            className={
-              activeIndex !== index
-                ? 'rounded-[75px] h-2 w-2 bg-[#E9E9E9]'
-                : 'rounded-[75px] w-10 h-2 bg-[#3AC4A0]'
-            }
-          />
-        ))}
-      </div>
-    );
-  };
+const CustomPagination: React.FC<props> = ({
+  activeIndex,
+  totalSlides,
+  onClick
+}) => {
+  return (
+    <div className="flex w-full items-center justify-center gap-3 hover:cursor-pointer md:hidden ">
+      {Array.from({ length: totalSlides }).map((_, index: number) => (
+        <div
+          key={index}
+          onClick={() => {
+            onClick(index);
+          }}
+          className={
+            activeIndex !== index
+              ? 'rounded-[75px] h-2 w-2 bg-[#E9E9E9]'
+              : 'rounded-[75px] w-10 h-2 bg-[#3AC4A0]'
+          }
+        />
+      ))}
+    </div>
+  );
+};
 
 const BannerComponent: React.FC<BannerLoad> = ({
   BannerList,
@@ -66,6 +65,10 @@ const BannerComponent: React.FC<BannerLoad> = ({
         setActiveIndex(swiperInstance.realIndex);
       });
     }
+
+    if (swiperInstance !== null) {
+      swiperInstance.autoplay.start();
+    }
   }, [swiperInstance]);
 
   const handlePaginationClicked = (index: number): void => {
@@ -81,13 +84,17 @@ const BannerComponent: React.FC<BannerLoad> = ({
         className={`${className}flex w-full h-auto`}
         centeredSlides={true}
         slidesPerView={3}
-        modules={[Autoplay, Pagination]}
+        modules={[Autoplay]}
         spaceBetween={15}
-        autoplay={{ delay: 1000 }}
+        autoplay={{ delay: 1000, disableOnInteraction: false }}
+        speed={1000}
         loop={true}
         breakpoints={breakPoints}
-        onSwiper={setSwiperInstance}
+        onSwiper={swiper => {
+          setSwiperInstance(swiper);
+        }}
         keyboard={{ enabled: true }}
+        enabled={true}
       >
         {BannerList.length !== 0
           ? BannerList.map(item => {

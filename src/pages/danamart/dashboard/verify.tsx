@@ -1,5 +1,6 @@
 import FinancialInformation from '@/components/danamart/verify/FinancialInformation';
 import PhotoIdCard from '@/components/danamart/verify/photo-id-card';
+import PhotoSelfie from '@/components/danamart/verify/PhotoSelfie';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
 import { Typography } from '@material-tailwind/react';
@@ -24,7 +25,7 @@ const Verify = (): React.ReactElement => {
 
   return (
     <PageGradient defaultGradient className="w-full">
-      <div className="flex flex-col md:gap-8 gap-5 bg-white md:py-6 md:px-5 py-5 px-4 rounded-2xl">
+      <div className="w-full flex flex-col md:gap-8 gap-5 bg-white md:py-10 md:px-6 py-5 px-4 rounded-2xl">
         <div className="w-full flex justify-start items-center gap-4">
           <Image
             src={ArrowTaillessLeft}
@@ -52,8 +53,19 @@ const Verify = (): React.ReactElement => {
           ))}
         </div>
         {step === 1 && <PhotoIdCard step={step} setStep={setStep} />}
-        {step === 2 && <div>2</div>}
-        {step === 3 && <FinancialInformation />}
+        {step === 2 && (
+          <div
+            onClick={() => {
+              setStep(3);
+            }}
+          >
+            2
+          </div>
+        )}
+        {step === 3 && (
+          <FinancialInformation step={step} setStep={setStep} t={t} />
+        )}
+        {step === 4 && <PhotoSelfie step={step} setStep={setStep} t={t} />}
       </div>
     </PageGradient>
   );

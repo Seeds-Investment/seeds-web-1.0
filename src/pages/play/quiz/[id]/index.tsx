@@ -68,12 +68,10 @@ const QuizDetail = (): React.ReactElement => {
   const getSubscriptionPlanStatus = async (): Promise<void> => {
     try {
       const response: StatusSubscription = await getSubscriptionStatus();
-      if (response !== undefined) {
+      if (response) {
         setDataSubscription(response);
       }
-    } catch (error) {
-      toast.error(`${error as string}`);
-    }
+    } catch {}
   };
 
   const handleGetSeedsCoin = async (): Promise<void> => {

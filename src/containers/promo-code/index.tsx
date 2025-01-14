@@ -492,6 +492,14 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
           dispatch(setPromoCodeValidationResult({ id, response }));
         }
         toast.success(t('promo.applied'));
+      } else if ((response.total_discount === undefined) && (response.final_price !== undefined)) {
+        setPromoCode(promoCode);
+        if (spotType === 'Premium Circle') {
+          dispatch(setPromoCodeValidationResult({ circleId, response }));
+        } else {
+          dispatch(setPromoCodeValidationResult({ id, response }));
+        }
+        toast.success(t('promo.applied'));
       } else {
         toast.error('Error Promo Code:', response.message);
       }

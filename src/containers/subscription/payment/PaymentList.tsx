@@ -45,6 +45,8 @@ const PaymentList: React.FC = (): JSX.Element => {
   const [qRisList, setQRisList] = useState([]);
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
+  const [virtualAccountList, setVirtualAccountList] = useState([]);
+  const [ccList, setCcList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [dataPlan, setDataPlan] = useState<PlanI>();
   const [paymentStatus] = useState<PaymentStatus>();
@@ -72,6 +74,8 @@ const PaymentList: React.FC = (): JSX.Element => {
       );
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
+      setVirtualAccountList(data.type_va);
+      setCcList(data.type_cc);
     } catch (error: any) {
       toast(`Error fetching Payment List: ${error.message as string}`);
     } finally {
@@ -201,6 +205,18 @@ const PaymentList: React.FC = (): JSX.Element => {
         <PaymentOptions
           label={t('PlayPayment.eWalletLabel')}
           options={eWalletList}
+          onChange={setOption}
+          currentValue={option ?? defaultOption}
+        />
+        <PaymentOptions
+          label={t('PlayPayment.virtualAccountLabel')}
+          options={virtualAccountList}
+          onChange={setOption}
+          currentValue={option ?? defaultOption}
+        />
+        <PaymentOptions
+          label={t('PlayPayment.creditCardLabel')}
+          options={ccList}
           onChange={setOption}
           currentValue={option ?? defaultOption}
         />

@@ -5,9 +5,14 @@ import { IoCloseSharp } from 'react-icons/io5';
 interface HowToUseProps {
   isOpen: boolean;
   onClose: () => void;
+  howToUse: string;
 }
 
-const HowToUseSeedsplan: React.FC<HowToUseProps> = ({ isOpen, onClose }) => {
+const HowToUseSeedsplan: React.FC<HowToUseProps> = ({
+  isOpen,
+  onClose,
+  howToUse
+}) => {
   const { t } = useTranslation();
   if (!isOpen) return null;
 
@@ -26,13 +31,17 @@ const HowToUseSeedsplan: React.FC<HowToUseProps> = ({ isOpen, onClose }) => {
             </button>
           </div>
           <div className="overflow-y-auto h-60 pe-2 tnc-seedsplan-custom-scroll">
-            <ol className="flex flex-col gap-2">
+            <div
+              className="text-justify"
+              dangerouslySetInnerHTML={{ __html: howToUse }}
+            />
+            {/* <ol className="flex flex-col gap-2">
               {t('seedsPlan.howToUse')
                 .split('.')
                 .map((item, i) => {
                   return <li key={i}>{item}</li>;
                 })}
-            </ol>
+            </ol> */}
           </div>
           <div className="py-4 flex flex-col gap-3 items-center">
             <button

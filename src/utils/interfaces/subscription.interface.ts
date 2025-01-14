@@ -3,10 +3,16 @@ export interface Tnc {
   id: string;
 }
 
+export interface HowToUse {
+  en: string;
+  id: string;
+}
+
 export interface PlanI {
   id: string;
   name: string;
   tnc: Tnc;
+  how_to_use: HowToUse;
   price: number;
   is_promo: boolean;
   price_after_promo: number;

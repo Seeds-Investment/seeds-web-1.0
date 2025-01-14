@@ -164,6 +164,12 @@ const SeedsPlan: React.FC = () => {
     selectedPeriodPlan?.tnc?.[i18n.language === 'id' ? 'id' : 'en'] !== ''
       ? selectedPeriodPlan?.tnc[i18n.language === 'id' ? 'id' : 'en']
       : '-';
+  
+  const filteredHowToUse =
+    selectedPeriodPlan?.how_to_use?.[i18n.language === 'id' ? 'id' : 'en'] !==
+    ''
+      ? selectedPeriodPlan?.how_to_use[i18n.language === 'id' ? 'id' : 'en']
+      : '-';
 
   useEffect(() => {
     if (selectedPeriodPlan !== undefined) {
@@ -581,6 +587,7 @@ const SeedsPlan: React.FC = () => {
         onClose={() => {
           setHowToUse(!showHowToUse);
         }}
+        howToUse={filteredHowToUse as string}
       />
     </>
   );

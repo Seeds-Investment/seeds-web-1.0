@@ -1,9 +1,10 @@
+import hystory from '@/assets/seedsplan/hystory.svg';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getTransactionHistory } from '@/repository/subscription.repository';
 import { type UserInfo } from '@/utils/interfaces/earning.interfaces';
 import { type TransactionHistoryRes } from '@/utils/interfaces/subscription.interface';
-import { Typography } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -49,7 +50,7 @@ const HistoryTransaction: React.FC = () => {
             }}
             className="cursor-pointer absolute left-0"
           />
-          <Typography className="font-semibold text-xl">
+          <Typography className="font-semibold text-xl text-left">
             {t('subscription.transactionHistory')}
           </Typography>
         </div>
@@ -110,10 +111,26 @@ const HistoryTransaction: React.FC = () => {
             </div>
           ))
         ) : (
-          <div className="p-3 my-2 bg-[#F9F9F9] rounded-xl">
-            <Typography className="text-[#a5a5a5] font-poppins">
+          <div className="p-3 my-2 bg-[#F9F9F9] rounded-xl items-center text-center justify-center">
+            <Image
+              src={hystory}
+              width={500}
+              height={500}
+              alt="seedsplan"
+              className="w-[223px] h-[223px] mx-auto pt-12"
+            />
+            <Typography className="text-[#262626] font-poppins font-semibold text-xl text-center">
               Transaction history is empty
             </Typography>
+            <Typography className="text-[#7C7C7C] font-poppins text-lg mt-1 text-center">
+              You haven’t made any transaction yet. Start your first transaction
+              now!
+            </Typography>
+            <Button
+              className={`w-[345px] lg:h-[42px] h-[42px] mx-auto mt-8 justify-center rounded-full text-white text-sm font-semibold font-poppins bg-[#3AC4A0]`}
+            >
+              back
+            </Button>
           </div>
         )}
       </div>

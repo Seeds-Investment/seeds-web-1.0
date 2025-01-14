@@ -2927,7 +2927,26 @@ export default {
       photoIdCardTittle: 'Photo ID Card',
       accountInformationTittle: 'Account Information',
       financialInformationTittle: 'Financial Information',
-      photoSelfieTitle: 'Photo Selfie'
+      photoSelfieTittle: 'Photo Selfie',
+      financial: {
+        income: 'Income',
+        incomeSource: 'Income Source',
+        select: 'Select',
+        incomePerMonth: 'Income per month',
+        validateInputForm:
+          'I declare that the income data that I fill in is true and accurate in accordance with my current financial condition.',
+        bankInformation: 'Bank Information',
+        nameOfAccount: 'Name of Account Owner',
+        accountNumber: 'Account Number',
+        accountNumberPlaceHolder: 'Account Number',
+        bankName: 'Bank Name',
+        sidInformation: 'SID Information',
+        doYouAlready: 'Do you already have a securities account?',
+        beneficialInformation: 'Beneficial Owner Information',
+        isThereBeneficial: 'Is there a beneficial owner?'
+      },
+      buttonSave: 'Save',
+      buttonPrevious: 'Previous'
     }
   }
 };

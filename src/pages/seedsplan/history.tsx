@@ -51,7 +51,7 @@ const HistoryTransaction: React.FC = () => {
             className="cursor-pointer absolute left-0"
           />
           <Typography className="font-semibold text-xl text-left">
-            {t('subscription.transactionHistory')}
+            {t('seedsPlan.history.transactionHistory')}
           </Typography>
         </div>
         {dataTransaction?.data !== null ? (
@@ -120,16 +120,15 @@ const HistoryTransaction: React.FC = () => {
               className="w-[223px] h-[223px] mx-auto pt-12"
             />
             <Typography className="text-[#262626] font-poppins font-semibold text-xl text-center">
-              Transaction history is empty
+              {t('seedsPlan.history.transactionHistoryEmpty')}
             </Typography>
             <Typography className="text-[#7C7C7C] font-poppins text-lg mt-1 text-center">
-              You haven’t made any transaction yet. Start your first transaction
-              now!
+              {t('seedsPlan.history.noTransaction')}
             </Typography>
             <Button
               className={`w-[345px] lg:h-[42px] h-[42px] mx-auto mt-8 justify-center rounded-full text-white text-sm font-semibold font-poppins bg-[#3AC4A0]`}
             >
-              back
+              {t('seedsPlan.history.back')}
             </Button>
           </div>
         )}

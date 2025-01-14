@@ -2886,9 +2886,13 @@ export default {
         ' You can make the switch instantly, and your new plan automatically applied once your current plan expires',
       button1: 'Later',
       button2: 'Next'
+    },
+    history: {
+      transactionHistory: 'Transaction History',
+      transactionHistoryEmpty: 'Transaction History Is Empty',
+      noTransaction:
+        'You haven’t made any transaction yet. Start your first transaction now!',
+      back: 'Back'
     }
-  },
-  subscription: {
-    transactionHistory: 'Transaction History'
   }
 };

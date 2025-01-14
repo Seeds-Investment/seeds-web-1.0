@@ -2819,9 +2819,13 @@ export default {
         'Anda dapat beralih secara instan, dan paket baru Anda akan otomatis diterapkan setelah paket Anda yang saat ini berakhir.',
       button1: 'Nanti',
       button2: 'Berikutnya'
+    },
+    history: {
+      transactionHistory: 'Riwayat Transaksimu',
+      transactionHistoryEmpty: 'Riwayat Transaksimu Kosong',
+      noTransaction:
+        'Kamu belum melakukan transaksi apapun, nih. Yuk, mulai transaksi pertamamu sekarang!',
+      back: 'Kembali'
     }
-  },
-  subscription: {
-    transactionHistory: 'Riwayat Transaksi'
   }
 };

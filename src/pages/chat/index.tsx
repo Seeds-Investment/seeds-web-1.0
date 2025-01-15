@@ -1190,7 +1190,8 @@ const ChatPages: React.FC = () => {
                       }
                       if (
                         item.media_url.includes('mp4') ||
-                        item.media_url.includes('mov')
+                        item.media_url.includes('mov') ||
+                        item.media_urls.includes('webm')
                       ) {
                         return (
                           <div key={item.id} className="w-1/3 h-42 rounded-md">

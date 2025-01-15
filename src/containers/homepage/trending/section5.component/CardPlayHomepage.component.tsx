@@ -167,7 +167,7 @@ const CardPlayHomepage: React.FC = () => {
                 value={value}
                 className="flex justify-center p-0 my-4"
               >
-                {content}
+                {!isLoading && content}
               </TabPanel>
             ))}
           </TabsBody>

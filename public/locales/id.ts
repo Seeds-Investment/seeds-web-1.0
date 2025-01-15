@@ -2750,6 +2750,7 @@ export default {
     button5: 'Berhenti Langganan',
     button6: 'Ubah My SeedPlan',
     button7: 'Pertanyaan yang Sering Diajukan',
+    button8: 'Gunakan Sekarang',
     text1: 'Terbaik',
     text2: 'Biaya Langganan',
     text3: 'Diskon',

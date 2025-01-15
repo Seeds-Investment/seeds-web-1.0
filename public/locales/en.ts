@@ -2818,6 +2818,7 @@ export default {
     button5: 'Unsubscribe',
     button6: 'Change My SeedsPlan',
     button7: 'Frequently Asked Question',
+    button8: 'Use It Now',
     text1: 'Best',
     text2: 'Subscription Fee',
     text3: 'Discount',

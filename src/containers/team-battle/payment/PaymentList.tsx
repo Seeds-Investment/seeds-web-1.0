@@ -199,6 +199,7 @@ const PaymentList: React.FC = (): JSX.Element => {
           await router
             .replace(
               `/play/team-battle/${id as string}/payment/receipt/${
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 response.order_id
               }`
             )

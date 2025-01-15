@@ -45,9 +45,7 @@ const ChooseSubs: React.FC<props> = ({ dataPost, setPages }) => {
       if (response !== undefined) {
         setDataSubscription(response);
       }
-    } catch (error) {
-      console.error(`${error as string}`);
-    }
+    } catch {}
   };
 
   useEffect(() => {

@@ -142,7 +142,8 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
     likes: 0,
     location_name: '',
     name: '',
-    updated_at: ''
+    updated_at: '',
+    reward: ''
   };
 
   const fetchPaymentList = async (): Promise<void> => {

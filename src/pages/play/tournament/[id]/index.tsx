@@ -76,9 +76,7 @@ const TournamentDetail: React.FC = () => {
       if (response !== undefined) {
       setDataSubscription(response);
       }
-    } catch (error) {
-      toast.error(`${error as string}`);
-    }
+    } catch {}
   };
 
   const handleGetSeedsCoin = async (): Promise<void> => {

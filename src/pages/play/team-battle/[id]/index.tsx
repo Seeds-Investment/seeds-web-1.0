@@ -68,9 +68,7 @@ const MainTeamBattle = (): React.ReactElement => {
       if (response !== undefined) {
         setDataSubscription(response);
       }
-    } catch (error) {
-      console.error(`${error as string}`);
-    }
+    } catch {}
   };
 
   const handleGetSeedsCoin = async (): Promise<void> => {

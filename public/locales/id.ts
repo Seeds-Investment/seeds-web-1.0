@@ -941,7 +941,10 @@ export default {
       'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
     limitPurchaseMessage:
       'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
-    limitDailyMessage: 'Kuota kode promo sudah mencapai limit'
+    limitDailyMessage: 'Kuota kode promo sudah mencapai limit',
+    specificFeature: 'Kode promo hanya untuk produk tertentu',
+    specificReferral: 'Kode promo hanya untuk kode referal tertentu',
+    invalidPromo: 'Kode promo tidak valid'
   },
   temporary: {
     welcome: {

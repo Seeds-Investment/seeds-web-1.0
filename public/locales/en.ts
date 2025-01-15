@@ -1021,7 +1021,10 @@ export default {
     notFound: 'Promo code not found. Make sure you entered a valid promo code.',
     limitPurchaseMessage:
       'You need to reach the minimum transaction before using the promo!',
-    limitDailyMessage: 'The promo code quota is already exceeding today’s limit'
+    limitDailyMessage: 'The promo code quota is already exceeding today’s limit',
+    specificFeature: 'Promo code only for specific feature',
+    specificReferral: 'Promo code only for specific referral code',
+    invalidPromo: 'Promo code is invalid'
   },
   temporary: {
     welcome: {

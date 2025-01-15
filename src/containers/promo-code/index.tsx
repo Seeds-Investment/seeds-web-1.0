@@ -355,7 +355,7 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
         spotType
       );
 
-      if (Array.isArray(activePromoCodesResponse?.data)) {
+      if (Array.isArray(activePromoCodesResponse?.data) && Array.isArray(availableVoucherPlanResponse?.data)) {
         setActivePromoCodes(prevPromoCodes => [
           ...prevPromoCodes,
           ...activePromoCodesResponse?.data,
@@ -519,6 +519,12 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
           } else if (errorMessage.includes('already exceeding today’s limit')) {
             setIsExceedingLimit(true);
             toast.error(t('promo.limitDailyMessage'));
+          } else if (errorMessage.includes('promo code only for specific feature')) {
+            toast.error(t('promo.specificFeature'));
+          } else if (errorMessage.includes('promo code only for specific refferral code')) {
+            toast.error(t('promo.specificReferral'));
+          } else {
+            toast.error(t('promo.invalidPromo'));
           }
         } else {
           toast.error(`${error?.response?.data?.message as string}`);
@@ -582,6 +588,8 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
     }
     return '';
   };
+
+  const uniquePromoCodes = new Set<string>();
 
   return (
     <div
@@ -649,6 +657,10 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
         activePromoCodes?.length !== 0 ? (
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4 xl:mt-8 font-poppins">
             {activePromoCodes?.map((item, index) => {
+              if (uniquePromoCodes.has(item?.id)) {
+                return null;
+              }
+              uniquePromoCodes.add(item?.id);
               const isPromoSelected = item?.promo_code === promoCode;
               const isPaidTournament = spotType === 'Paid Tournament';
               const isPaidQuiz = spotType === 'Paid Quiz';
@@ -753,7 +765,7 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
                           className={`flex flex-col justify-center p-4 w-full h-full border-l border-dashed ${borderColor}`}
                         >
                           <div className="font-semibold text-base md:text-xl">
-                            {item?.name_promo_code}
+                            {item?.promo_code}
                           </div>
                           <div className="text-sm text-black">
                             {item?.min_transaction > 0

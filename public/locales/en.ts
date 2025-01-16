@@ -2945,6 +2945,20 @@ export default {
         beneficialInformation: 'Beneficial Owner Information',
         isThereBeneficial: 'Is there a beneficial owner?'
       },
+      photoSelfie: {
+        previewSelfie: 'Preview Photo Selfie',
+        camera: 'Camera',
+        retake: 'Retake',
+        cancel: 'Cancel',
+        continue: 'Continue',
+        requirements: 'Selfie photo upload requirements',
+        requirements1: 'Take photos directly using the camera.',
+        requirements2:
+          'Make sure your face is visible with sufficient lighting.',
+        requirements3:
+          'The facial area is clearly visible without using accessories such as glasses, masks, hats, etc.',
+        requirements4: 'No need to hold e-KTP or other objects.'
+      },
       buttonSave: 'Save',
       buttonPrevious: 'Previous'
     }

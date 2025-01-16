@@ -2877,6 +2877,20 @@ export default {
         beneficialInformation: 'Informasi Beneficial Owner',
         isThereBeneficial: 'Apakah Terdapat Pemilik Manfaat (Beneficial Owner)?'
       },
+      photoSelfie: {
+        previewSelfie: 'Pratinjau Foto Selfie',
+        camera: 'Kamera',
+        retake: 'Ambil Ulang',
+        continue: 'Lanjutkan',
+        cancel: 'Batalkan',
+        requirements: 'Ketentuan mengunggah Foto Selfie',
+        requirements1: 'Mengambil foto langsung menggunakan kamera.',
+        requirements2:
+          'Pastikan wajah kamu terlihat dengan pencahayaan yang cukup.',
+        requirements3:
+          'Area wajah terlihat jelas tanpa menggunakan aksesori seperti kacamata, masker, topi, dan lain-lain.',
+        requirements4: 'Tidak perlu memegang e-KTP atau benda lainnya.'
+      },
       buttonSave: 'Simpan',
       buttonPrevious: 'Sebelumnya'
     }

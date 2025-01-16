@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import GoldPlan from 'public/assets/subscription/gold-plan.svg';
 import SilverPlan from 'public/assets/subscription/silver-plan.svg';
 import { ArrowBackwardIcon } from 'public/assets/vector';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -23,20 +23,21 @@ const HistoryTransaction: React.FC = () => {
     useState<TransactionHistoryRes>();
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const transactionHistory = await getTransactionHistory();
-        setDataTransaction(transactionHistory);
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast(`Error fetching data user: ${error as string}`);
-      }
-    };
     fetchData()
       .then()
       .catch(() => {});
   }, []);
+
+  const fetchData = useCallback(async (): Promise<void> => {
+    try {
+      const transactionHistory = await getTransactionHistory();
+      setDataTransaction(transactionHistory);
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast(`Error fetching data user: ${error as string}`);
+    }
+  }, [])
 
   return (
     <PageGradient defaultGradient className="w-full">

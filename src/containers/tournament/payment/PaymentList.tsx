@@ -195,26 +195,26 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   }, [detailTournament]);
 
   useEffect(() => {
-    const validatePromo = async (): Promise<void> => {
-      if (promoCodeValidationResult) {
-        if (detailTournament) {
-          const admissionFee = Number(detailTournament?.admission_fee ?? 0);
-
-          const response = await promoValidate({
-            promo_code: promoCodeValidationResult?.response?.promo_code,
-            spot_type: 'Paid Tournament',
-            item_price: admissionFee,
-            item_id: detailTournament?.id,
-            currency: userInfo?.preferredCurrency ?? 'IDR'
-          });
-
-          setNewPromoCodeDiscount(response?.total_discount);
-        }
-      }
-    };
-
     void validatePromo();
   }, [detailTournament]);
+  
+  const validatePromo = useCallback(async (): Promise<void> => {
+    if (promoCodeValidationResult) {
+      if (detailTournament) {
+        const admissionFee = Number(detailTournament?.admission_fee ?? 0);
+
+        const response = await promoValidate({
+          promo_code: promoCodeValidationResult?.response?.promo_code,
+          spot_type: 'Paid Tournament',
+          item_price: admissionFee,
+          item_id: detailTournament?.id,
+          currency: userInfo?.preferredCurrency ?? 'IDR'
+        });
+
+        setNewPromoCodeDiscount(response?.total_discount);
+      }
+    }
+  }, [promoCodeValidationResult, detailTournament, promoValidate, userInfo, setNewPromoCodeDiscount]);
 
   const getDetail = useCallback(async () => {
     try {

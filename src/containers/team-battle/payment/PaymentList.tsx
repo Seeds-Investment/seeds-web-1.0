@@ -22,7 +22,7 @@ import {
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -134,29 +134,29 @@ const PaymentList: React.FC = (): JSX.Element => {
   }, [userInfo, detailBattle]);
 
   useEffect(() => {
-    const validatePromo = async (): Promise<void> => {
-      if (
-        promoCodeValidationResult !== undefined &&
-        promoCodeValidationResult !== 0
-      ) {
-        if (detailBattle != null) {
-          const admissionFee = Number(detailBattle?.admission_fee ?? 0);
-
-          const response = await promoValidate({
-            promo_code: promoCodeValidationResult?.response?.promo_code,
-            spot_type: 'Paid Battle',
-            item_price: admissionFee,
-            item_id: detailBattle?.id,
-            currency: userInfo?.preferredCurrency ?? 'IDR'
-          });
-
-          setNewPromoCodeDiscount(response?.total_discount);
-        }
-      }
-    };
-
     void validatePromo();
   }, [detailBattle]);
+  
+  const validatePromo = useCallback(async (): Promise<void> => {
+    if (
+      promoCodeValidationResult !== undefined &&
+      promoCodeValidationResult !== 0
+    ) {
+      if (detailBattle != null) {
+        const admissionFee = Number(detailBattle?.admission_fee ?? 0);
+
+        const response = await promoValidate({
+          promo_code: promoCodeValidationResult?.response?.promo_code,
+          spot_type: 'Paid Battle',
+          item_price: admissionFee,
+          item_id: detailBattle?.id,
+          currency: userInfo?.preferredCurrency ?? 'IDR'
+        });
+
+        setNewPromoCodeDiscount(response?.total_discount);
+      }
+    }
+  }, [promoCodeValidationResult, detailBattle, promoValidate, userInfo, setNewPromoCodeDiscount]);
 
   const handlePayBattle = async (
     type: string,

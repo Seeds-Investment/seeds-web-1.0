@@ -20,7 +20,12 @@ import CardPeople from './trending/section5.component/CardPeople.component';
 import CardPlayHomepage from './trending/section5.component/CardPlayHomepage.component';
 import CardSeedsPedia from './trending/section5.component/CardSeedsPedia.component';
 
-const categories = [
+interface categorie {
+  label: string;
+  value: string;
+}
+
+const categories: categorie[] = [
   {
     label: 'SeedsPedia',
     value: 'seedspedia'

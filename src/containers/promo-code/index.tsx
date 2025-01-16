@@ -765,7 +765,7 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
                           className={`flex flex-col justify-center p-4 w-full h-full border-l border-dashed ${borderColor}`}
                         >
                           <div className="font-semibold text-base md:text-xl">
-                            {item?.promo_code}
+                            {item?.name_promo_code}
                           </div>
                           <div className="text-sm text-black">
                             {item?.min_transaction > 0

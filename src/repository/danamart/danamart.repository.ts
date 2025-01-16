@@ -2,6 +2,44 @@ import baseAxios from '@/utils/common/axios';
 import { type RegisterLog } from '@/utils/interfaces/danamart.interface';
 import axios from 'axios';
 
+export interface UpdateUserInfoForm {
+  pernyataantrigger: string;
+  pernyataan: number;
+  dm_penmit_01010: string;
+  dm_penmit_01003: string;
+  dm_penmit_01006: string;
+  dm_penmit_01007: string;
+  dm_penmit_01015: string;
+  dm_penmit_01027: string;
+  dm_penmit_01026: string;
+  namaPasangan: string;
+  dm_penmit_01029: string;
+  dm_penmit_01039: string;
+  dm_penmit_01040: string;
+  alamat_tmpt_kerja: string;
+  telepon_tmpt_kerja: string;
+  dm_penmit_01032: string;
+  dm_penmit_01019rt: string;
+  dm_penmit_01019rw: string;
+  dm_penmit_01037: string;
+  dm_penmit_01036: string;
+  dm_penmit_01034: string;
+  dm_penmit_01033: string;
+  dm_penmit_01017: string;
+  masa_berlaku: string;
+  dm_penmit_01018: string;
+  dm_penmit_01022: string;
+  dm_penmit_01041: string;
+  dm_penmit_01042: string;
+  dm_pen_08002: string;
+  dm_pen_08009: string;
+  pernyataan_npwp: number;
+  dm_penmit_01012: string;
+  dm_penmit_01045: string;
+  dm_penmit_01013_exist: string;
+  dm_penmit_01008: string;
+}
+
 const danamartApi = axios.create({
   baseURL:
     process.env.NEXT_PUBLIC_DANAMART_API_URL ??
@@ -90,6 +128,18 @@ export const getDashboardUser = async (): Promise<any> => {
       }
     });
     return response;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const updateUserInfo = async (formData: UpdateUserInfoForm): Promise<any> => {
+  try {
+    const response = await danamartApi.post(
+      `/pemodal/form_informasi_pribadi/updateForm`,
+      formData
+    );
+    return response.data;
   } catch (error: any) {
     throw new Error(error.response.data.message);
   }

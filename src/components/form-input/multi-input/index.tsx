@@ -56,8 +56,8 @@ const CommonInput = <T extends FieldValues>(props: MultiProps<T>): JSX.Element |
         fontWeight: "400",
         fontFamily: "Poppins, sans-serif",
         fontSize: "16px",
-        lineHeight: "24px",
-        color: "#201B1C",
+        lineHeight: "48px",
+        color: "#201B1C"
       }}
       id={`${props.registerName}-label`}
       placeholder={props.placeholder}

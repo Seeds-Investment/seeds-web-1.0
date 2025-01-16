@@ -1,0 +1,222 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import { type MultiProps, type Option } from "@/utils/interfaces/multi-input.interface";
+import CurrencyInput from "react-currency-input-field";
+import { FileInput } from "react-daisyui";
+import { Controller, type FieldValues } from "react-hook-form";
+import CInput from "../input";
+import Select from "../select";
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+const getNestedValue = (obj: any, path: string) => {
+  return path.split(".").reduce((o, i) => (o ? o[i] : undefined), obj);
+};
+
+export default function MInput<T extends FieldValues>(props: MultiProps<T>): JSX.Element {
+  const { label, registerName, errors, extraElement } = props;
+
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      {(label !== null) && (
+        <label
+          className={`font-semibold font-poppins text-base text-[#262626] ${
+            props.type === "radio" || props.type === "checkbox"
+              ? ""
+              : "cursor-pointer"
+          }`}
+          htmlFor={`${registerName}-label`}
+        >
+          {label}
+        </label>
+      )}
+      <CommonInput {...props} />
+      <NumberInput {...props} />
+      <CheckboxInput {...props} />
+      <RadioInput {...props} />
+      <ImageInput {...props} />
+      <DropdownInput {...props} />
+      {extraElement}
+      {errors != null && (Boolean(getNestedValue(errors, registerName))) && (
+        <p className="font-poppins font-normal text-sm text-[#EF5350] text-right">
+          {getNestedValue(errors, registerName)?.message}
+        </p>
+      )}
+    </div>
+  );
+}
+
+// List of component input
+
+const CommonInput = <T extends FieldValues>(props: MultiProps<T>): JSX.Element | null => {
+  return props.type === "text" || props.type === "datetime-local" || props.type === "email" ? (
+    <CInput
+      type={props.type}
+      maxLength={props.maxLength}
+      disabled={props.disabled}
+      style={{
+        fontWeight: "400",
+        fontFamily: "Poppins, sans-serif",
+        fontSize: "16px",
+        lineHeight: "48px",
+        color: "#201B1C"
+      }}
+      id={`${props.registerName}-label`}
+      placeholder={props.placeholder}
+      className={props.className}
+      {...props.register(props.registerName)}
+    />
+  ) : null;
+};
+
+const NumberInput = <T extends FieldValues>(props: MultiProps<T>): JSX.Element | null => {
+  if (props.type !== "number") return null;
+  const { locale = "id-ID" } = props;
+  return (
+    <Controller
+      control={props.control}
+      name={props.registerName}
+      render={({ field: { value, onChange } }) => (
+        <CurrencyInput
+          id={`${props.registerName}-label`}
+          className="w-full font-poppins font-normal text-base text-[#201B1C] border border-[#BDBDBD] rounded-lg px-4 py-[11px] disabled:cursor-not-allowed"
+          intlConfig={{ locale }}
+          decimalsLimit={(props.decimalsLimit !== null) ? props.decimalsLimit : 0}
+          disableAbbreviations
+          prefix={props.prefix}
+          suffix={props.suffix}
+          placeholder={props.placeholder}
+          disabled={props.disabled}
+          value={
+            props.watch(props.registerName)
+              ? props.max && value > props.max
+                ? props.max
+                : value
+              : ""
+          }
+          onValueChange={(val) => { onChange(val); }}
+          max={props.max}
+        />
+      )}
+    />
+  );
+};
+
+const CheckboxInput = <T extends FieldValues>(props: MultiProps<T>): JSX.Element | null => {
+  return props.type === "checkbox" ? (
+    <div className="flex items-center gap-3">
+      <input
+        type={props.type}
+        className={`w-5 h-5 shrink-0 appearance-none rounded-md border-2 checked:border-none checked:bg-[#3AC4A0] disabled:checked:!bg-[#727272] relative after:checked:content-[' '] after:checked:absolute after:checked:w-2 after:checked:h-3 after:checked:border after:checked:border-white after:checked:border-t-0 after:checked:border-e-[3px] after:checked:border-b-[3px] after:checked:border-s-0 after:checked:rotate-45 after:checked:top-0.5 after:checked:left-1/2 after:checked:-translate-x-1/2 cursor-pointer peer ${
+          (props.disabled ?? false) ? "cursor-not-allowed" : "cursor-pointer"
+        }`}
+        disabled={props.disabled}
+        id={`${props.registerName}-${props.labelCheckbox}-label-checkbox`}
+        value={typeof props.value === "object"
+          ? JSON.stringify(props.value)
+          : props.value}
+        {...props.register(props.registerName)}
+      />
+      <label
+        className={`font-normal font-poppins text-base w-auto ${
+          (props.disabled ?? false)
+            ? "text-[#727272] cursor-not-allowed"
+            : "peer-checked:text-[#3AC4A0] text-[#262626] cursor-pointer"
+        }`}
+        htmlFor={`${props.registerName}-${props.labelCheckbox}-label-checkbox`}
+      >
+        {props.labelCheckbox}
+      </label>
+    </div>
+  ) : null;
+};
+
+const RadioInput = <T extends FieldValues>(props: MultiProps<T>): JSX.Element | null => {
+  return props.type === "radio" ? (
+    <div className="flex gap-7 flex-wrap">
+      {props.data.map((item, index) => (
+        <label
+          className="flex items-center gap-5"
+          key={index}
+          htmlFor={`${props.registerName}-${item.label}-label`}
+        >
+          <input
+            type={props.type}
+            className={`w-3 h-3 appearance-none checked:bg-[#3AC4A0] outline outline-2 outline-offset-2 checked:outline-[#3AC4A0] disabled:checked:outline-[#727272] disabled:checked:!bg-[#727272] outline-[#DADADA] rounded-full peer ${
+              (props.disabled ?? false) ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
+            disabled={props.disabled}
+            id={`${props.registerName}-${item.label}-label`}
+            value={typeof item.value === "object"
+              ? JSON.stringify(item.value)
+              : item.value}
+            {...props.register(props.registerName)}
+          />
+          <p
+            className={`font-normal font-poppins text-base ${
+              (props.disabled ?? false)
+                ? "text-[#727272] cursor-not-allowed"
+                : "peer-checked:text-[#3AC4A0] text-[#262626] cursor-pointer"
+            }`}
+          >
+            {item.label}
+          </p>
+        </label>
+      ))}
+    </div>
+  ) : null;
+};
+
+const ImageInput = <T extends FieldValues>(props: MultiProps<T>): JSX.Element | null => {
+  return props.type === "image" ? (
+    <>
+      <div className="w-full border-[#BDBDBD] border rounded-lg flex flex-col text-center items-center justify-center p-10 gap-3">
+        {(props.imageURLPreview !== null) ? (
+          <img
+            className="flex mx-auto w-[500px] h-[166px] object-contain"
+            src={props.imageURLPreview}
+            alt="imageURLPreview"
+            onClick={() => {
+              if ((props.isCrop ?? false) && (props.handleOpen !== null) && (props.handleOpen !== undefined)) {
+                props.handleOpen();
+              }
+            }}
+          />
+        ) : props.dataImage !== undefined ? (
+          <img
+            className="flex mx-auto w-[500px] h-[166px] object-contain"
+            src={props.dataImage}
+            alt=""
+          />
+        ) : (
+          <div className="text-seeds">Choose your image here</div>
+        )}
+        <FileInput
+          {...props.register(props.registerName)}
+          size="sm"
+          accept="image/*"
+          className="w-full sm:w-fit"
+        />
+      </div>
+    </>
+  ) : null;
+};
+
+const DropdownInput = <T extends FieldValues>(props: MultiProps<T>): JSX.Element | null => {
+  return props.type === "dropdown" && props.control != null && props.options != null && props.options.length > 0 ? (
+    <div className="flex flex-wrap">
+      <Controller
+        control={props.control}
+        name={props.registerName}
+        render={({ field: { value, onChange } }) => (
+          <Select
+            value={value}
+            options={props.options ?? []}
+            onChange={(e: Option) => { onChange(e.value); }}
+            disabled={props.disabled}
+            rounded={props.rounded}
+            fullWidth={props.fullWidth}
+          />
+        )}
+      />
+    </div>
+  ) : null;
+};

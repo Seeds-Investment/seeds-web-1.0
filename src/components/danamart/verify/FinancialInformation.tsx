@@ -1,165 +1,144 @@
-import { Button, Switch, Typography } from '@material-tailwind/react';
-import { useState } from 'react';
+import MInput from '@/components/form-input/multi-input';
+import { answer } from '@/components/form-input/multi-input/data/dropdown-data';
+import useUpdateUserInfoForm from '@/hooks/danamart/useUpdateUserInfoForm';
+import { Button, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import { WarningGreenIcon } from 'public/assets/vector';
+import React from 'react';
 
-interface Props {
+interface FinancialInformationProps {
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  t: (key: string) => string;
 }
 
-const FinancialInformation: React.FC<Props> = ({ step, setStep, t }) => {
-  const [income, setIncome] = useState<string>('');
-
-  const formatRupiah = (value: string): string => {
-    const numericValue = value.replace(/\D/g, '');
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    })
-      .format(Number(numericValue))
-      .replace('IDR', '')
-      .trim();
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const rawValue = e.target.value;
-    const formattedValue = formatRupiah(rawValue);
-    setIncome(formattedValue);
-  };
-
+const FinancialInformation: React.FC<FinancialInformationProps> = ({ 
+  step, 
+  setStep
+}) => {
+  const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    handleSubmit,
+    register,
+    errors,
+    control
+  } = useUpdateUserInfoForm();
   return (
-    <div className="w-full flex flex-col md:gap-6 gap-5">
-      <Typography className="font-poppins font-semibold md:text-xl text-base text-[#3ac4a0]">
-        {t('danamart.verification.financial.income')}
-      </Typography>
-      <div className="flex md:flex-nowrap flex-wrap items-center md:gap-6 gap-5">
-        <div className="flex flex-col gap-2 w-full">
-          <label className="font-poppins text-base font-semibold text-[#262626]">
-            {t('danamart.verification.financial.incomeSource')}
-          </label>
-          <select
-            defaultValue={''}
-            placeholder={t('danamart.verification.financial.select')}
-            className="rounded-full border border-[#7c7c7c] py-[10px] px-3 cursor-pointer"
-          >
-            <option value="" disabled>
-              {t('danamart.verification.financial.select')}
-            </option>
-          </select>
-        </div>
-        <div className="flex flex-col gap-2 w-full">
-          <label className="font-poppins text-base font-semibold text-[#262626]">
-            {t('danamart.verification.financial.incomePerMonth')}
-          </label>
-          <input
-            type="text"
-            className="py-2 border-b-2 border-b-[#7c7c7c] outline-none"
-            placeholder="Rp"
-            value={income}
-            onChange={handleInputChange}
-          />
-        </div>
-      </div>
-      <div className="flex md:flex-nowrap flex-wrap items-center gap-4">
-        <Switch size={40} className="checked:bg-[#3AC4A0] text-justify" />
-        <Typography className="font-poppins font-normal text-sm text-[#7c7c7c]">
-          {t('danamart.verification.financial.validateInputForm')}
+    <div className="w-full flex flex-col rounded-lg">
+      <div className="w-full flex justify-start items-center gap-2">
+        <Typography className="font-poppins font-semibold text-xl text-seeds-button-green">
+          Pendapatan
         </Typography>
+        <Image
+          src={WarningGreenIcon}
+          alt="WarningGreenIcon"
+          width={20}
+          height={20}
+        />
       </div>
-      <Typography className="font-poppins font-semibold md:text-xl text-base text-[#3ac4a0]">
-        {t('danamart.verification.financial.bankInformation')}
+      <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+        <MInput
+          label="Sumber Penghasilan"
+          registerName="name_promo_code"
+          register={register}
+          type="text"
+          errors={errors}
+          placeholder="Please input income source"
+          className='rounded-lg px-3 border border-[#BDBDBD]'
+        />
+        <MInput
+          label="Penghasilan Per Bulan"
+          registerName="name_promo_code"
+          register={register}
+          type="text"
+          errors={errors}
+          placeholder="Please input your monthly income"
+          className='rounded-lg px-3 border border-[#BDBDBD]'
+        />
+      </div>
+      <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+        <MInput
+          labelCheckbox="Saya menyatakan bahwa data penghasilan yang saya isikan ini adalah benar dan akurat sesuai dengan kondisi keuangan saya saat ini."
+          type="checkbox"
+          value="E-CERTIFICATE"
+          registerName="reward"
+          register={register}
+          errors={errors}
+        />
+      </div>
+      <Typography className="font-poppins font-semibold text-xl text-seeds-button-green my-4">
+        Informasi Bank
       </Typography>
-      <div className="flex md:flex-nowrap flex-wrap items-center md:gap-6 gap-5">
-        <div className="flex flex-col gap-2 w-full">
-          <label className="font-poppins text-base font-semibold text-[#262626]">
-            {t('danamart.verification.financial.nameOfAccount')}
-          </label>
-          <input
-            type="text"
-            className="py-2 border-b-2 border-b-[#7c7c7c] outline-none"
-            placeholder={t('danamart.verification.financial.nameOfAccount')}
-          />
-        </div>
-        <div className="flex flex-col gap-2 w-full">
-          <label className="font-poppins text-base font-semibold text-[#262626]">
-            {t('danamart.verification.financial.accountNumber')}
-          </label>
-          <input
-            type="text"
-            className="py-2 border-b-2 border-b-[#7c7c7c] outline-none"
-            placeholder={t(
-              'danamart.verification.financial.accountNumberPlaceHolder'
-            )}
-          />
-        </div>
-        <div className="flex flex-col gap-2 w-full">
-          <label className="font-poppins text-base font-semibold text-[#262626]">
-            {t('danamart.verification.financial.bankName')}
-          </label>
-          <select
-            defaultValue={''}
-            placeholder={t('danamart.verification.financial.select')}
-            className="rounded-full border border-[#7c7c7c] py-[10px] px-3 cursor-pointer"
-          >
-            <option value="" disabled>
-              {t('danamart.verification.financial.select')}
-            </option>
-          </select>
-        </div>
+      <div className='w-full flex flex-col md:flex-row gap-2'>
+        <MInput
+          label="Nama Pemilik Rekening"
+          registerName="name_promo_code"
+          register={register}
+          type="text"
+          errors={errors}
+          placeholder="Please input event name"
+          className='rounded-lg px-3 border border-[#BDBDBD]'
+        />
+        <MInput
+          label="No. Rekening"
+          registerName="name_promo_code"
+          register={register}
+          type="datetime-local"
+          errors={errors}
+          placeholder="Please input your full name"
+          className='rounded-lg px-3 border border-[#BDBDBD]'
+        />
+        <MInput
+          label="Nama Bank"
+          registerName="location_name"
+          register={register}
+          type="datetime-local"
+          errors={errors}
+          placeholder="Please input your full name"
+          className='rounded-lg px-3 border border-[#BDBDBD]'
+        />
       </div>
-      <Typography className="font-poppins font-semibold md:text-xl text-base text-[#3ac4a0]">
-        {t('danamart.verification.financial.sidInformation')}
+      <div className="w-full flex justify-start items-center gap-2 my-4">
+        <Typography className="font-poppins font-semibold text-xl text-seeds-button-green">
+          Informasi SID
+        </Typography>
+        <Image
+          src={WarningGreenIcon}
+          alt="WarningGreenIcon"
+          width={20}
+          height={20}
+        />
+      </div>
+      <MInput
+        label="Apakah sudah memiliki rekening efek?*"
+        registerName="location_name"
+        type="dropdown"
+        control={control}
+        errors={errors}
+        options={answer}
+        rounded={false}
+        fullWidth={true}
+      />
+      <Typography className="font-poppins font-semibold text-xl text-seeds-button-green my-4">
+        Informasi Beneficial Owner
       </Typography>
-      <div className="flex flex-col gap-2 w-full">
-        <label className="font-poppins text-base font-semibold text-[#262626]">
-          {t('danamart.verification.financial.doYouAlready')}
-        </label>
-        <select
-          defaultValue={''}
-          placeholder={t('danamart.verification.financial.select')}
-          className="rounded-full border border-[#7c7c7c] py-[10px] px-3 cursor-pointer"
-        >
-          <option value="" disabled>
-            {t('danamart.verification.financial.select')}
-          </option>
-        </select>
-      </div>
-      <Typography className="font-poppins font-semibold md:text-xl text-base text-[#3ac4a0]">
-        {t('danamart.verification.financial.beneficialInformation')}
-      </Typography>
-      <div className="flex flex-col gap-2 w-full">
-        <label className="font-poppins text-base font-semibold text-[#262626]">
-          {t('danamart.verification.financial.isThereBeneficial')}
-        </label>
-        <select
-          defaultValue={''}
-          placeholder={t('danamart.verification.financial.select')}
-          className="rounded-full border border-[#7c7c7c] py-[10px] px-3 cursor-pointer"
-        >
-          <option value="" disabled>
-            {t('danamart.verification.financial.select')}
-          </option>
-        </select>
-      </div>
-      <div className="flex items-center justify-end gap-6">
-        <Button
-          onClick={() => {
-            setStep(step - 1);
-          }}
-          className="bg-seeds-button-green capitalize font-poppins font-semibold text-sm rounded-full w-[155px] h-[36px] flex justify-center items-center"
-        >
-          {t('danamart.verification.buttonPrevious')}
-        </Button>
-        <Button
-          onClick={() => {
-            setStep(step + 1);
-          }}
-          className="bg-seeds-button-green capitalize font-poppins font-semibold text-sm rounded-full w-[155px] h-[36px] flex justify-center items-center"
-        >
-          {t('danamart.verification.buttonSave')}
-        </Button>
-      </div>
+      <MInput
+        label="Apakah Terdapat Pemilik Manfaat (Beneficial Owner)?"
+        registerName="location_name"
+        type="dropdown"
+        control={control}
+        errors={errors}
+        options={answer}
+        rounded={false}
+        fullWidth={true}
+      />
+      <Button
+        className="w-full text-base font-semibold bg-seeds-button-green mt-6 rounded-full capitalize"
+        onClick={async () => {
+          setStep((prevStep) => prevStep + 1);
+        }}
+      >
+        Save
+      </Button>
     </div>
   );
 };

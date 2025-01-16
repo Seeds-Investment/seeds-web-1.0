@@ -1,5 +1,6 @@
+import AccountInformation from '@/components/danamart/verify/AccountInformation';
 import FinancialInformation from '@/components/danamart/verify/FinancialInformation';
-import PhotoIdCard from '@/components/danamart/verify/photo-id-card';
+import PhotoIdCard from '@/components/danamart/verify/PhotoIdCard';
 import PhotoSelfie from '@/components/danamart/verify/PhotoSelfie';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
@@ -11,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 const Verify = (): React.ReactElement => {
   const { t } = useTranslation();
-  const [step, setStep] = useState<number>(3);
+  const [step, setStep] = useState<number>(2);
 
   const titles: Record<number, string> = {
     1: t('danamart.verification.photoIdCardTittle'),
@@ -53,18 +54,8 @@ const Verify = (): React.ReactElement => {
           ))}
         </div>
         {step === 1 && <PhotoIdCard step={step} setStep={setStep} />}
-        {step === 2 && (
-          <div
-            onClick={() => {
-              setStep(3);
-            }}
-          >
-            2
-          </div>
-        )}
-        {step === 3 && (
-          <FinancialInformation step={step} setStep={setStep} t={t} />
-        )}
+        {step === 2 && <AccountInformation step={step} setStep={setStep} />}
+        {step === 3 && <FinancialInformation step={step} setStep={setStep} />}
         {step === 4 && <PhotoSelfie step={step} setStep={setStep} t={t} />}
       </div>
     </PageGradient>

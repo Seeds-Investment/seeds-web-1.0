@@ -18,6 +18,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isIdForever, setIsIdForever] = useState<boolean>(true);
   const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     handleSubmit,
     register,
     errors,
@@ -407,7 +408,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
       <Button
         className="w-full text-base font-semibold bg-seeds-button-green mt-6 rounded-full capitalize"
         onClick={async () => {
-          handleSubmit();
+          setStep((prevStep) => prevStep + 1);
         }}
       >
         Save

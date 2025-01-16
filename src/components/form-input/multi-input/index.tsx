@@ -105,7 +105,7 @@ const CheckboxInput = <T extends FieldValues>(props: MultiProps<T>): JSX.Element
     <div className="flex items-center gap-3">
       <input
         type={props.type}
-        className={`w-5 h-5 appearance-none rounded-md border-2 checked:border-none checked:bg-[#3AC4A0] disabled:checked:!bg-[#727272] relative after:checked:content-[' '] after:checked:absolute after:checked:w-2 after:checked:h-3 after:checked:border after:checked:border-white after:checked:border-t-0 after:checked:border-e-[3px] after:checked:border-b-[3px] after:checked:border-s-0 after:checked:rotate-45 after:checked:top-0.5 after:checked:left-1/2 after:checked:-translate-x-1/2 cursor-pointer peer ${
+        className={`w-5 h-5 shrink-0 appearance-none rounded-md border-2 checked:border-none checked:bg-[#3AC4A0] disabled:checked:!bg-[#727272] relative after:checked:content-[' '] after:checked:absolute after:checked:w-2 after:checked:h-3 after:checked:border after:checked:border-white after:checked:border-t-0 after:checked:border-e-[3px] after:checked:border-b-[3px] after:checked:border-s-0 after:checked:rotate-45 after:checked:top-0.5 after:checked:left-1/2 after:checked:-translate-x-1/2 cursor-pointer peer ${
           (props.disabled ?? false) ? "cursor-not-allowed" : "cursor-pointer"
         }`}
         disabled={props.disabled}
@@ -116,7 +116,7 @@ const CheckboxInput = <T extends FieldValues>(props: MultiProps<T>): JSX.Element
         {...props.register(props.registerName)}
       />
       <label
-        className={`font-normal font-poppins text-base ${
+        className={`font-normal font-poppins text-base w-auto ${
           (props.disabled ?? false)
             ? "text-[#727272] cursor-not-allowed"
             : "peer-checked:text-[#3AC4A0] text-[#262626] cursor-pointer"

@@ -1,6 +1,7 @@
 import IconNoData from '@/assets/play/tournament/noData.svg';
 import Seedy from '@/assets/promo/seedy.svg';
 import SeedyBNW from '@/assets/promo/seedy_bnw.svg';
+import SeedyPlan from '@/assets/promo/seedy_plan.svg';
 import { standartCurrency } from '@/helpers/currency';
 import { getDetailCircle } from '@/repository/circleDetail.repository';
 import { getPlayById } from '@/repository/play.repository';
@@ -11,12 +12,15 @@ import {
 } from '@/repository/promo.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import { getDetailPostSocial } from '@/repository/social.respository';
+import { getAvailableVoucherPlan } from '@/repository/subscription.repository';
+import { getBattleDetail } from '@/repository/team-battle.repository';
 import { type RootState } from '@/store/premium-circle';
 import {
   selectPromoCodeValidationResult,
   setPromoCodeValidationResult
 } from '@/store/redux/features/promo-code';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
+import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
 import {
   type IDetailTournament,
   type UserInfo
@@ -58,6 +62,7 @@ interface IPromoCode {
   start_date: string;
   tnc: string;
   type: string;
+  user_id: string;
 }
 
 interface IDetailPost {
@@ -143,6 +148,7 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
   const [dataCircle, setDataCircle] = useState<CircleData>();
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
+  const [detailBattle, setDetailBattle] = useState<TeamBattleDetail>();
   const [choosenIndex, setChoosenIndex] = useState<number>();
   const [isExceedingLimit, setIsExceedingLimit] = useState<boolean>(false);
 
@@ -150,6 +156,7 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
   const [quizFee, setQuizFee] = useState<number>();
   const [circleFee, setCircleFee] = useState<number>();
   const [postFee, setPostFee] = useState<number>();
+  const [battleFee, setBattleFee] = useState<number>();
 
   const [metadata, setMetadata] = useState<Metadata>();
 
@@ -264,6 +271,9 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
       } else if (spotType === 'Premium Content' && typeof id === 'string') {
         await fetchDetailPost();
         setPostFee(detailPost?.premium_fee);
+      } else if (spotType === 'Paid Battle' && typeof id === 'string') {
+        await fetchDetailBattle();
+        setBattleFee(detailBattle?.admission_fee);
       }
     };
 
@@ -299,6 +309,12 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
   }, [detailPost]);
 
   useEffect(() => {
+    if (detailBattle?.admission_fee !== undefined) {
+      setBattleFee(detailBattle.admission_fee);
+    }
+  }, [detailBattle]);
+
+  useEffect(() => {
     if (spotType === 'Paid Tournament' && tournamentFee !== undefined) {
       void fetchPromoData(id as string, tournamentFee);
     } else if (spotType === 'Paid Quiz' && quizFee !== undefined) {
@@ -307,8 +323,10 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
       void fetchPromoData(circleId as string, circleFee);
     } else if (spotType === 'Premium Content' && postFee !== undefined) {
       void fetchPromoData(circleId as string, postFee);
+    } else if (spotType === 'Paid Battle' && battleFee !== undefined) {
+      void fetchPromoData(id as string, battleFee);
     }
-  }, [tournamentFee, quizFee, circleFee, postFee, promoParams]);
+  }, [tournamentFee, quizFee, circleFee, postFee, promoParams, battleFee]);
   const fetchData = async (): Promise<void> => {
     try {
       const dataInfo = await getUserInfo();
@@ -331,21 +349,27 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
         fetchId,
         totalTransaction
       );
-      if (Array.isArray(activePromoCodesResponse?.data)) {
-        if (activePromoCodesResponse?.data !== null) {
-          setActivePromoCodes(prevPromoCodes => [
-            ...prevPromoCodes,
-            ...activePromoCodesResponse?.data
-          ]);
-        }
+      const availableVoucherPlanResponse = await getAvailableVoucherPlan(
+        promoParams.page,
+        promoParams.limit,
+        spotType
+      );
+
+      if (Array.isArray(activePromoCodesResponse?.data) && Array.isArray(availableVoucherPlanResponse?.data)) {
+        setActivePromoCodes(prevPromoCodes => [
+          ...prevPromoCodes,
+          ...activePromoCodesResponse?.data,
+          ...(availableVoucherPlanResponse?.data ?? [])
+        ]);
       } else {
         setMetadata(undefined);
       }
+
       setIsIncrease(false);
       setMetadata(activePromoCodesResponse?.metadata);
     } catch (error) {
       setIsIncrease(false);
-      toast.error('Error fetching promo codes:');
+      toast.error('Error fetching promo codes and voucher plans');
     } finally {
       setIsIncrease(false);
       setLoading(false);
@@ -396,6 +420,15 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
     }
   };
 
+  const fetchDetailBattle = useCallback(async () => {
+    try {
+      const resp: TeamBattleDetail = await getBattleDetail(id as string);
+      setDetailBattle(resp);
+    } catch (error) {
+      toast(`Error fetch battle: ${error as string}`);
+    }
+  }, [id]);
+
   const handlePromoCodeSelection = async (
     promoCode: string,
     index?: number
@@ -437,6 +470,14 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
           item_id: detailPost?.id,
           currency: userInfo?.preferredCurrency ?? 'IDR'
         });
+      } else if (spotType === 'Paid Battle') {
+        response = await promoValidate({
+          promo_code: promoCode,
+          spot_type: spotType,
+          item_price: detailBattle?.admission_fee,
+          item_id: detailBattle?.id,
+          currency: userInfo?.preferredCurrency ?? 'IDR'
+        });
       }
 
       if (promoCodeValidationResult?.response?.promo_code === promoCode) {
@@ -444,6 +485,14 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
         toast.success(t(`promo.unApplied`));
         dispatch(setPromoCodeValidationResult(0));
       } else if (response.total_discount !== undefined) {
+        setPromoCode(promoCode);
+        if (spotType === 'Premium Circle') {
+          dispatch(setPromoCodeValidationResult({ circleId, response }));
+        } else {
+          dispatch(setPromoCodeValidationResult({ id, response }));
+        }
+        toast.success(t('promo.applied'));
+      } else if ((response.total_discount === undefined) && (response.final_price !== undefined)) {
         setPromoCode(promoCode);
         if (spotType === 'Premium Circle') {
           dispatch(setPromoCodeValidationResult({ circleId, response }));
@@ -470,6 +519,12 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
           } else if (errorMessage.includes('already exceeding today’s limit')) {
             setIsExceedingLimit(true);
             toast.error(t('promo.limitDailyMessage'));
+          } else if (errorMessage.includes('promo code only for specific feature')) {
+            toast.error(t('promo.specificFeature'));
+          } else if (errorMessage.includes('promo code only for specific refferral code')) {
+            toast.error(t('promo.specificReferral'));
+          } else {
+            toast.error(t('promo.invalidPromo'));
           }
         } else {
           toast.error(`${error?.response?.data?.message as string}`);
@@ -528,9 +583,13 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
       return `/connect/payment/${circleId as string}`;
     } else if (spotType === 'Premium Content') {
       return `/social/payment/${id}`;
+    } else if (spotType === 'Paid Battle') {
+      return `/play/team-battle/${id}`;
     }
     return '';
   };
+
+  const uniquePromoCodes = new Set<string>();
 
   return (
     <div
@@ -598,11 +657,16 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
         activePromoCodes?.length !== 0 ? (
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4 xl:mt-8 font-poppins">
             {activePromoCodes?.map((item, index) => {
+              if (uniquePromoCodes.has(item?.id)) {
+                return null;
+              }
+              uniquePromoCodes.add(item?.id);
               const isPromoSelected = item?.promo_code === promoCode;
               const isPaidTournament = spotType === 'Paid Tournament';
               const isPaidQuiz = spotType === 'Paid Quiz';
               const isPremiumCircle = spotType === 'Premium Circle';
               const isPremiumContent = spotType === 'Premium Content';
+              const isPaidBattle = spotType === 'Paid Battle';
 
               const minTransaction = item?.min_transaction ?? 0;
               const admissionFee = isPaidTournament
@@ -613,23 +677,45 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
                 ? dataCircle?.premium_fee ?? 0
                 : isPremiumContent
                 ? detailPost?.premium_fee ?? 0
+                : isPaidBattle
+                ? detailBattle?.admission_fee ?? 0
                 : 0;
 
+              const hasUserId =
+                typeof item?.user_id === 'string' &&
+                item?.user_id.trim() !== '';
               const itemUnavailable =
                 admissionFee < minTransaction || !(item?.is_eligible ?? false);
+
+              // Background color
               const bgColor = isPromoSelected
                 ? 'bg-gradient-to-r from-[#BDFFE5] to-white border-[#27A590]'
+                : hasUserId
+                ? 'bg-white border-[#27A590]'
                 : itemUnavailable
                 ? 'bg-white border-[#BDBDBD]'
                 : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]';
 
-              const imgSrc = itemUnavailable ? SeedyBNW : Seedy;
+              // Image source
+              const imgSrc = hasUserId
+                ? SeedyPlan
+                : itemUnavailable
+                ? SeedyBNW
+                : Seedy;
+
+              // Sidebar background color
               const sideBarBgColor = isPromoSelected
+                ? 'bg-[#27A590]'
+                : hasUserId
                 ? 'bg-[#27A590]'
                 : itemUnavailable
                 ? 'bg-[#BDBDBD]'
                 : 'bg-[#D89918]';
+
+              // Border color
               const borderColor = isPromoSelected
+                ? 'border-[#27A590]'
+                : hasUserId
                 ? 'border-[#27A590]'
                 : itemUnavailable
                 ? 'border-[#BDBDBD]'
@@ -699,18 +785,19 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
                         </div>
                         <div
                           className={`${
-                            isPromoSelected ? 'bg-[#27A590]' : 'bg-[#FDBA22]'
+                            hasUserId
+                              ? 'bg-[#27A590]'
+                              : isPromoSelected
+                              ? 'bg-[#27A590]'
+                              : 'bg-[#FDBA22]'
                           } absolute right-[-10px] bottom-[10px] text-white text-sm md:text-base lg:text-sm px-4 rounded-full`}
                         >
-                          {item?.max_redeem === 0 ? (
+                          {(item?.quantity === 0) || (item?.quantity === -1) ? (
                             <div className="text-[35px] flex justify-center items-center">
                               &#8734;
                             </div>
                           ) : (
-                            `${
-                              (item?.max_redeem ?? 0) -
-                              (item?.promo_redeemed ?? 0)
-                            }x`
+                            `${item?.quantity}x`
                           )}
                         </div>
                       </div>

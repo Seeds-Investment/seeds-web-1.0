@@ -3,16 +3,21 @@ import Button from '@/components/ui/button/Button';
 import { standartCurrency } from '@/helpers/currency';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import { getUserInfo } from '@/repository/profile.repository';
+import { getSubscriptionStatus } from '@/repository/subscription.repository';
 import { type RootState } from '@/store/premium-circle';
 import { setMonth, setPrice } from '@/store/premium-circle/premiumCircleSlice';
 import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { type StatusSubscription } from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
-
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { PaymentSVG } from 'public/assets/circle';
+import SubsSeedy from 'public/assets/subscription/subs-seedy.svg';
 import VoucherInvalid from 'public/assets/vector/voucher-invalid.svg';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaChevronRight } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -22,6 +27,8 @@ interface props {
 }
 
 const ChooseSubs: React.FC<props> = ({ dataPost, setPages }) => {
+  const { t } = useTranslation();
+  const router = useRouter();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const dispatch = useDispatch();
   const monthSubscription = ['1 month', '3 month', '6 month', '12 month'];
@@ -29,11 +36,23 @@ const ChooseSubs: React.FC<props> = ({ dataPost, setPages }) => {
   const { premiumCircleMonth } = useSelector(
     (state: RootState) => state?.premiumCircle ?? {}
   );
+  const [dataSubscription, setDataSubscription] =
+    useState<StatusSubscription | null>(null);
+
+  const getSubscriptionPlanStatus = async (): Promise<void> => {
+    try {
+      const response = await getSubscriptionStatus();
+      if (response !== undefined) {
+        setDataSubscription(response);
+      }
+    } catch {}
+  };
 
   useEffect(() => {
     fetchData()
       .then()
       .catch(() => {});
+    void getSubscriptionPlanStatus();
   }, []);
 
   const fetchData = async (): Promise<void> => {
@@ -76,115 +95,125 @@ const ChooseSubs: React.FC<props> = ({ dataPost, setPages }) => {
   };
 
   return (
-    <>
-      <div className="flex justify-center pt-4">
-        <h1 className="font-poppins font-semibold text-lg">Fee Membership</h1>
-      </div>
-      <div className="flex justify-center">
-        <div className="flex justify-center absolute pl-4 pt-2">
-          <Image src={PaymentSVG} alt="image" className="w-[230px] h-[230px]" />
+    <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-4">
+        <Image src={PaymentSVG} alt="image" className="w-[192px] h-[192px]" />
+        <div className="flex flex-col items-center gap-1">
+          <Typography className="font-poppins max-w-[300px] font-semibold text-xl text-center line-clamp-2">
+            {t('circle.payment.getAccessToUnlock')}
+          </Typography>
+          <Typography className="font-poppins max-w-[340px] font-light text-sm text-center">
+            {t('circle.payment.enjoyUnlimitedAccess')}
+          </Typography>
         </div>
       </div>
-      <div className="flex justify-center pt-[250px]">
-        <h1 className="font-poppins max-w-[212px] font-semibold text-xl text-center">
-          Get Access to unlock your membership
-        </h1>
-      </div>
-      <div className="flex justify-center">
-        <h1 className="font-poppins max-w-[340px] font-light text-sm text-center">
-          Unlimited access to premium content from various experts.
-        </h1>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div className="flex justify-center pt-4">
-          <div className="grid grid-cols-2 gap-4">
-            {dataPost?.type === 'lifetime' ? (
-              <></>
-            ) : (
-              monthSubscription.map((el, i) => (
-                <label className="cursor-default" key={i}>
-                  <input
-                    type="radio"
-                    className="peer sr-only"
-                    name="type"
-                    onChange={handleInputChange}
-                    value={el}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        {dataSubscription === null && (
+          <div
+            onClick={async () => await router.push('/seedsplan')}
+            className="w-full bg-gradient-radial-subs shadow-subs-complete hover:shadow-subs-complete-hover flex justify-between items-center px-2 md:py-2 py-1 gap-2 rounded-xl cursor-pointer font-poppins duration-300 border border-white mt-4 mb-3"
+          >
+            <div className="flex items-center justify-between gap-2">
+              <div>
+                <div className="absolute bg-gradient-to-b from-[#fdb458] to-[#fccc6e]/60 md:w-[35px] md:h-[35px] w-[50px] h-[50px] rounded-full"></div>
+                <div className={'relative left-1'}>
+                  <Image
+                    src={SubsSeedy}
+                    alt={'subscription-image'}
+                    width={100}
+                    height={100}
+                    className="md:w-[35px] md:h-[35px] w-[50px] h-[50px]"
                   />
-                  <div
-                    className={`w-[150px] z-50 rounded-full ring-1 p-2 ${
-                      el !== premiumCircleMonth
-                        ? 'text-black cursor-pointer bg-white hover:text-white ring-neutral-soft transition-all hover:shadow  hover:ring-white hover:bg-neutral-soft hover:ring-offset-1'
-                        : 'text-white cursor-not-allowed ring-white bg-seeds-green ring-offset-1'
-                    }`}
-                  >
-                    <div className="flex gap-2">
-                      <div className="flex justify-center w-full gap-5 ">
-                        <div className="flex flex-col justify-start">
-                          <p className="text-sm font-light font-poppins">
-                            {el}
-                          </p>
-                        </div>
+                </div>
+              </div>
+              <Typography className="text-white font-semibold font-poppins text-sm capitalize">
+                {t('ProfilePage.subscriptionButton')}
+              </Typography>
+            </div>
+            <div className="flex justify-center items-center h-[16px]">
+              <FaChevronRight className="text-white" size={16} />
+            </div>
+          </div>
+        )}
+
+        {dataPost?.type === 'subscription' && premiumCircleMonth === '' ? (
+          <div className="w-full ">
+            <div className="border-[#BDBDBD] bg-white flex justify-start items-center border rounded-lg py-2 px-4 gap-2">
+              <div className="w-[30px] h-[30px] flex justify-center items-center">
+                <Image
+                  src={VoucherInvalid}
+                  alt="Voucher"
+                  width={100}
+                  height={100}
+                  className="object-contain h-full w-full"
+                />
+              </div>
+              <Typography className="text-[#BDBDBD] font-poppins flex justify-center items-center font-semibold">
+                Voucher & Promo
+              </Typography>
+            </div>
+          </div>
+        ) : (
+          <div className="w-full ">
+            {userInfo !== undefined && (dataPost?.premium_fee ?? 0) > 0 && (
+              <PromoCode
+                userInfo={userInfo}
+                id={dataPost?.id as string}
+                spotType={'Premium Circle'}
+              />
+            )}
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 gap-4 place-items-center">
+          {dataPost?.type === 'lifetime' ? (
+            <></>
+          ) : (
+            monthSubscription.map((el, i) => (
+              <label className="cursor-default" key={i}>
+                <input
+                  type="radio"
+                  className="peer sr-only"
+                  name="type"
+                  onChange={handleInputChange}
+                  value={el}
+                />
+                <div
+                  className={`w-[150px] z-50 rounded-full ring-1 p-2 ${
+                    el !== premiumCircleMonth
+                      ? 'text-black cursor-pointer bg-white hover:text-white ring-neutral-soft transition-all hover:shadow  hover:ring-white hover:bg-neutral-soft hover:ring-offset-1'
+                      : 'text-white cursor-not-allowed ring-white bg-seeds-green ring-offset-1'
+                  }`}
+                >
+                  <div className="flex gap-2">
+                    <div className="flex justify-center w-full gap-5 ">
+                      <div className="flex flex-col justify-start">
+                        <p className="text-sm font-light font-poppins">{el}</p>
                       </div>
                     </div>
                   </div>
-                </label>
-              ))
-            )}
-          </div>
-        </div>
-        <div className="flex justify-center">
-          <div className="w-[350px] mt-2 rounded-2xl border border-seeds-purple">
-            <div className="bg-seeds-purple w-full p-2 rounded-t-xl pl-2 text-white">
-              <h1 className="font-poppins text-xs font-medium">
-                {dataPost?.type === 'lifetime'
-                  ? 'Lifetime Access'
-                  : 'Subscription'}
-              </h1>
-            </div>
-            <div className="flex justify-center">
-              <div className="flex flex-col pb-2">
-                <h1 className="pt-4 text-center font-poppins text-base font-semibold">
-                  {userInfo?.preferredCurrency}{' '}
-                  {standartCurrency((dataPost?.premium_fee ?? 0) * numberMonth())}
-                </h1>
-                <h1 className="pt-2 text-center font-poppins text-base font-light">
-                  Get full access according to your subscription time
-                </h1>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Promo Code */}
-        <div className="w-full flex justify-center items-center mt-6">
-          {dataPost?.type === 'subscription' && premiumCircleMonth === '' ? (
-            <div className="w-full max-w-[350px] px-4">
-              <div className="border-[#BDBDBD] bg-white flex justify-start items-center border rounded-lg py-2 px-4 gap-2">
-                <div className="w-[30px] h-[30px] flex justify-center items-center">
-                  <Image
-                    src={VoucherInvalid}
-                    alt="Voucher"
-                    width={100}
-                    height={100}
-                    className="object-contain h-full w-full"
-                  />
                 </div>
-                <Typography className="text-[#BDBDBD] font-poppins flex justify-center items-center font-semibold">
-                  Voucher & Promo
-                </Typography>
-              </div>
-            </div>
-          ) : (
-            <div className="w-full max-w-[350px] px-4">
-              {userInfo !== undefined && (dataPost?.premium_fee ?? 0) > 0 && (
-                <PromoCode
-                  userInfo={userInfo}
-                  id={dataPost?.id as string}
-                  spotType={'Premium Circle'}
-                />
-              )}
-            </div>
+              </label>
+            ))
           )}
+        </div>
+        <div className="w-[350px] rounded-2xl border border-seeds-purple">
+          <div className="bg-seeds-purple w-full p-2 rounded-t-xl pl-2 text-white">
+            <h1 className="font-poppins text-xs font-medium">
+              {dataPost?.type === 'lifetime'
+                ? 'Lifetime Access'
+                : 'Subscription'}
+            </h1>
+          </div>
+          <div className="flex flex-col py-6 px-5 gap-2">
+            <Typography className="text-center font-poppins text-base font-semibold">
+              {userInfo?.preferredCurrency}{' '}
+              {standartCurrency((dataPost?.premium_fee ?? 0) * numberMonth())}
+            </Typography>
+            <Typography className="text-center font-poppins text-sm font-normal">
+              {t('circle.payment.getFullAccess')}
+            </Typography>
+          </div>
         </div>
 
         <div className="flex justify-center mt-6">
@@ -203,7 +232,7 @@ const ChooseSubs: React.FC<props> = ({ dataPost, setPages }) => {
           />
         </div>
       </form>
-    </>
+    </div>
   );
 };
 export default ChooseSubs;

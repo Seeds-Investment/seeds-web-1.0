@@ -151,6 +151,10 @@ export const getEventDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
     : moment(date).format('MMMM DD, YYYY - HH:mm');
 };
 
+export const getShortEventDate = (date: Date): string => {
+  return moment(date).format('DD-MM-YYYY. HH:mm');
+};
+
 export const getEventDetailsDate = (
   date: Date,
   locale: 'id-ID' | 'en-US'

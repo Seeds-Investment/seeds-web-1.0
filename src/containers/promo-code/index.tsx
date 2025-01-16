@@ -792,7 +792,7 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
                               : 'bg-[#FDBA22]'
                           } absolute right-[-10px] bottom-[10px] text-white text-sm md:text-base lg:text-sm px-4 rounded-full`}
                         >
-                          {item?.quantity === 0 ? (
+                          {(item?.quantity === 0) || (item?.quantity === -1) ? (
                             <div className="text-[35px] flex justify-center items-center">
                               &#8734;
                             </div>

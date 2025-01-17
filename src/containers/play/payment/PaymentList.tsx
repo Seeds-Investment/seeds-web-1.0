@@ -136,22 +136,30 @@ const PaymentList: React.FC<props> = ({
 
       setQRisList(
         data?.type_qris?.filter((item: { payment_method: string }) =>
-          detailQuiz?.payment_method?.includes(item?.payment_method)
+          detailQuiz !== undefined
+            ? detailQuiz?.payment_method?.includes(item?.payment_method)
+            : item?.payment_method
         )
       );
       setEWalletList(
         data?.type_ewallet?.filter((item: { payment_method: string }) =>
-          detailQuiz?.payment_method?.includes(item?.payment_method)
+          detailQuiz !== undefined
+            ? detailQuiz?.payment_method?.includes(item?.payment_method)
+            : item?.payment_method
         )
       );
       setCcList(
         data?.type_cc?.filter((item: { payment_method: string }) =>
-          detailQuiz?.payment_method?.includes(item?.payment_method)
+          detailQuiz !== undefined
+            ? detailQuiz?.payment_method?.includes(item?.payment_method)
+            : item?.payment_method
         )
       );
       setVirtualAccountList(
         data?.type_va?.filter((item: { payment_method: string }) =>
-          detailQuiz?.payment_method?.includes(item?.payment_method)
+          detailQuiz !== undefined
+            ? detailQuiz?.payment_method?.includes(item?.payment_method)
+            : item?.payment_method
         )
       );
     } catch (error) {

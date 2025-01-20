@@ -197,11 +197,6 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="number"
           registerName="telepon_tmpt_kerja"
           placeholder={t(`${pathTranslation}.text23`)}
-          extraElement={
-            <p className="font-poppins font-light text-sm italic opacity-30">
-              max 12 characters
-            </p>
-          }
           errors={errors}
           control={control}
           watch={watch}
@@ -383,11 +378,6 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="number"
           registerName="dm_penmit_01042"
           placeholder={t(`${pathTranslation}.text51`)}
-          extraElement={
-            <p className="font-poppins font-light text-sm italic opacity-30">
-              max 12 characters
-            </p>
-          }
           errors={errors}
           control={control}
           watch={watch}

@@ -2975,7 +2975,40 @@ export default {
         }
       },
       financialInformationTittle: 'Informasi Keuangan',
-      photoSelfieTitle: 'Foto Diri'
+      photoSelfieTittle: 'Foto Diri',
+      financial: {
+        income: 'Pendapatan',
+        incomeSource: 'Sumber Penghasilan',
+        select: 'Pilih',
+        incomePerMonth: 'Penghasilan per bulan',
+        validateInputForm:
+          'Saya menyatakan bahwa data penghasilan yang saya isikan ini adalah benar dan akurat sesuai dengan kondisi keuangan saya saat ini.',
+        bankInformation: 'Informasi Bank',
+        nameOfAccount: 'Nama Pemilik Rekening',
+        accountNumber: 'No. Rekening',
+        accountNumberPlaceHolder: 'Nomor Rekening',
+        bankName: 'Nama Bank',
+        sidInformation: 'Informasi SID',
+        doYouAlready: 'Apakah sudah memiliki rekening efek?',
+        beneficialInformation: 'Informasi Beneficial Owner',
+        isThereBeneficial: 'Apakah Terdapat Pemilik Manfaat (Beneficial Owner)?'
+      },
+      photoSelfie: {
+        previewSelfie: 'Pratinjau Foto Selfie',
+        camera: 'Kamera',
+        retake: 'Ambil Ulang',
+        continue: 'Lanjutkan',
+        cancel: 'Batalkan',
+        requirements: 'Ketentuan mengunggah Foto Selfie',
+        requirements1: 'Mengambil foto langsung menggunakan kamera.',
+        requirements2:
+          'Pastikan wajah kamu terlihat dengan pencahayaan yang cukup.',
+        requirements3:
+          'Area wajah terlihat jelas tanpa menggunakan aksesori seperti kacamata, masker, topi, dan lain-lain.',
+        requirements4: 'Tidak perlu memegang e-KTP atau benda lainnya.'
+      },
+      buttonSave: 'Simpan',
+      buttonPrevious: 'Sebelumnya'
     }
   }
 };

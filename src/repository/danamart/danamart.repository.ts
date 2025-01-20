@@ -129,13 +129,60 @@ export const getDashboardUser = async (): Promise<any> => {
         Authorization: `Bearer ${accessTokenDanamart ?? ''}`
       }
     });
-    return response;
+    return { ...response, status: 200 };
   } catch (error: any) {
     throw new Error(error.response.data.message);
   }
 };
 
-export const updateUserInfo = async (formData: UpdateUserInfoForm): Promise<any> => {
+export const getPhotoSelfieData = async (): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.get('/pemodal/form_foto_selfie', {
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+      }
+    });
+    return { ...response.data, status: 200 };
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const updatePhotoSelfie = async (imageEncoded: string): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const formData = new FormData();
+    formData.append('image_from_web_cam', imageEncoded);
+
+    const response = await danamartApi.post(
+      '/pemodal/form_foto_selfie',
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart ?? ''}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+    return response;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+export const updateUserInfo = async (
+  formData: UpdateUserInfoForm
+): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 

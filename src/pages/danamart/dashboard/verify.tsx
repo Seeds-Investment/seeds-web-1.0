@@ -1,6 +1,7 @@
 import AccountInformation from '@/components/danamart/verify/AccountInformation';
 import FinancialInformation from '@/components/danamart/verify/FinancialInformation';
 import PhotoIdCard from '@/components/danamart/verify/PhotoIdCard';
+import PhotoSelfie from '@/components/danamart/verify/PhotoSelfie';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
 import { Typography } from '@material-tailwind/react';
@@ -11,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 const Verify = (): React.ReactElement => {
   const { t } = useTranslation();
-  const [step, setStep] = useState<number>(2);
+  const [step, setStep] = useState<number>(1);
 
   const titles: Record<number, string> = {
     1: t('danamart.verification.photoIdCardTittle'),
@@ -25,7 +26,7 @@ const Verify = (): React.ReactElement => {
 
   return (
     <PageGradient defaultGradient className="w-full">
-      <div className="flex flex-col md:gap-8 gap-5 bg-white md:py-6 md:px-5 py-5 px-4 rounded-2xl">
+      <div className="w-full flex flex-col md:gap-8 gap-5 bg-white md:py-10 md:px-6 py-5 px-4 rounded-2xl">
         <div className="w-full flex justify-start items-center gap-4">
           <Image
             src={ArrowTaillessLeft}
@@ -54,7 +55,10 @@ const Verify = (): React.ReactElement => {
         </div>
         {step === 1 && <PhotoIdCard step={step} setStep={setStep} />}
         {step === 2 && <AccountInformation step={step} setStep={setStep} t={t}/>}
-        {step === 3 && <FinancialInformation />}
+        {step === 3 && (
+          <FinancialInformation step={step} setStep={setStep} t={t} />
+        )}
+        {step === 4 && <PhotoSelfie step={step} setStep={setStep} t={t} />}
       </div>
     </PageGradient>
   );

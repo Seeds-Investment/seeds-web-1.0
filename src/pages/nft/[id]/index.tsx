@@ -29,25 +29,26 @@ type NFT = {
 
 const NFTDetail: React.FC = () => {
   const router = useRouter();
-  const { id } = router.query; // Get dynamic ID from URL
+  const { id } = router.query;
   const [nftDetail, setNftDetail] = useState<NFT | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [detail, setDetail] = useState<boolean>(false);
-  const [transaction, setTransaction] = useState<boolean>(false);
 
   const API_BASE_URL = 'https://seeds-dev-gcp.seeds.finance';
 
-  // Fetch NFT details based on ID
   useEffect(() => {
     if (!id) return;
 
     const fetchNFTDetail = async () => {
       setIsLoading(true);
       try {
+        console.log('Fetching NFT with ID:', id);
         const response = await fetch(`${API_BASE_URL}/nft/${id}`);
-        if (!response.ok) throw new Error('Failed to fetch NFT details');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch NFT: ${response.status}`);
+        }
         const data = await response.json();
-        setNftDetail(data.data[0]); // Use the first object in "data"
+        console.log('Data from API:', data);
+        setNftDetail(data); // Parsing langsung
       } catch (error) {
         console.error('Error fetching NFT details:', error);
       } finally {
@@ -63,17 +64,17 @@ const NFTDetail: React.FC = () => {
   }
 
   if (!nftDetail) {
-    return <p>NFT not found</p>;
+    return (
+      <p className="text-red-500 text-center mt-10">
+        NFT not found. Please check the ID and try again.
+      </p>
+    );
   }
 
   return (
     <Card className="flex flex-col md:gap-4 p-0 md:p-5">
       <Image
-        src={
-          nftDetail.image_url.startsWith('http')
-            ? nftDetail.image_url
-            : `https://${nftDetail.image_url}`
-        }
+        src={nftDetail.image_url}
         alt={nftDetail.name}
         className="w-full object-cover aspect-[16/9] md:rounded-2xl"
         width={600}
@@ -87,14 +88,14 @@ const NFTDetail: React.FC = () => {
           <div className="flex flex-col gap-3.5">
             <div className="flex gap-1.5 items-center">
               <Image
-                src={nftDetail.creator?.avatar || '/default-avatar.png'}
+                src={nftDetail.creator?.avatar}
                 alt="Creator Avatar"
                 className="w-5 h-5 rounded-full"
                 width={32}
                 height={32}
               />
               <p className="font-poppins font-semibold text-sm md:text-base text-[#3AC4A0]">
-                {nftDetail.creator?.wallet_address || 'Unknown Creator'}
+                {nftDetail.creator?.wallet_address}
               </p>
             </div>
             <div className="flex flex-col gap-2">
@@ -102,7 +103,7 @@ const NFTDetail: React.FC = () => {
                 {nftDetail.name}
               </p>
               <p className="font-poppins font-normal text-xs md:text-sm text-neutral-soft">
-                Owned By {nftDetail.owner?.wallet_address || 'Unknown Owner'}
+                Owned By {nftDetail.owner?.wallet_address}
               </p>
               <p className="bg-[#3AC4A0] py-0.5 px-6 font-poppins font-normal text-[10px] leading-4 md:text-xs text-[#1A857D] w-fit rounded">
                 {nftDetail.price} DIAM
@@ -113,53 +114,6 @@ const NFTDetail: React.FC = () => {
             {nftDetail.description}
           </p>
         </div>
-        <Accordion
-          open={detail}
-          icon={
-            <FiChevronRight
-              className={`${
-                detail ? 'rotate-90' : '-rotate-90 md:rotate-0'
-              } transition-all`}
-              size={24}
-            />
-          }
-          className="py-2.5 ps-3.5 pe-5 bg-[#F3F4F8] border border-[#E9E9E9] rounded-lg"
-        >
-          <AccordionHeader
-            onClick={() => {
-              setDetail(!detail);
-            }}
-            className="p-0 font-semibold text-lg text-neutral-medium font-poppins border-none"
-          >
-            Token Detail
-          </AccordionHeader>
-          <AccordionBody className="flex flex-col gap-2.5 md:gap-4 py-4 md:py-5">
-            <div className="flex justify-between items-center">
-              <p className="text-neutral-medium text-xs md:text-sm font-normal font-poppins">
-                NFT Address
-              </p>
-              <u className="rounded px-3 md:px-7 bg-[#4FE6AF] text-[#1A857D] font-poppins font-normal text-[10px] leading-4">
-                {nftDetail.id}
-              </u>
-            </div>
-            <div className="flex justify-between items-center">
-              <p className="text-neutral-medium text-xs md:text-sm font-normal font-poppins">
-                Creator Address
-              </p>
-              <u className="rounded px-3 md:px-7 bg-[#4FE6AF] text-[#1A857D] font-poppins font-normal text-[10px] leading-4">
-                {nftDetail.creator?.wallet_address || 'Unknown'}
-              </u>
-            </div>
-            <div className="flex justify-between items-center">
-              <p className="text-neutral-medium text-xs md:text-sm font-normal font-poppins">
-                Owner Address
-              </p>
-              <u className="rounded px-3 md:px-7 bg-[#4FE6AF] text-[#1A857D] font-poppins font-normal text-[10px] leading-4">
-                {nftDetail.owner?.wallet_address || 'Unknown'}
-              </u>
-            </div>
-          </AccordionBody>
-        </Accordion>
       </div>
     </Card>
   );

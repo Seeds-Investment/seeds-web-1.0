@@ -3,16 +3,17 @@ import { type RegisterLog } from '@/utils/interfaces/danamart.interface';
 import axios from 'axios';
 
 export interface UpdateUserInfoForm {
-  pernyataantrigger: string;
-  pernyataan: number;
+  // pernyataantrigger: string;
+  pernyataan: string;
   dm_penmit_01010: string;
   dm_penmit_01003: string;
+  dm_penmit_01038: string;
   dm_penmit_01006: string;
   dm_penmit_01007: string;
   dm_penmit_01015: string;
   dm_penmit_01027: string;
   dm_penmit_01026: string;
-  namaPasangan: string;
+  // namaPasangan: string;
   dm_penmit_01029: string;
   dm_penmit_01039: string;
   dm_penmit_01040: string;
@@ -23,20 +24,21 @@ export interface UpdateUserInfoForm {
   dm_penmit_01019rw: string;
   dm_penmit_01037: string;
   dm_penmit_01036: string;
+  dm_penmit_01035: string;
   dm_penmit_01034: string;
   dm_penmit_01033: string;
   dm_penmit_01017: string;
-  masa_berlaku: string;
-  dm_penmit_01018: string;
+  // masa_berlaku: string;
+  // dm_penmit_01018: string;
   dm_penmit_01022: string;
   dm_penmit_01041: string;
   dm_penmit_01042: string;
   dm_pen_08002: string;
   dm_pen_08009: string;
-  pernyataan_npwp: number;
-  dm_penmit_01012: string;
-  dm_penmit_01045: string;
-  dm_penmit_01013_exist: string;
+  pernyataan_npwp: string;
+  // dm_penmit_01012: string;
+  // dm_penmit_01045: string;
+  // dm_penmit_01013_exist: string;
   dm_penmit_01008: string;
 }
 
@@ -135,9 +137,19 @@ export const getDashboardUser = async (): Promise<any> => {
 
 export const updateUserInfo = async (formData: UpdateUserInfoForm): Promise<any> => {
   try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
     const response = await danamartApi.post(
       `/pemodal/form_informasi_pribadi/updateForm`,
-      formData
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`
+        }
+      }
     );
     return response.data;
   } catch (error: any) {

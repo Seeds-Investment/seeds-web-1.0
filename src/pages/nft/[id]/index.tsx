@@ -82,7 +82,7 @@ const NFTDetail: React.FC = () => {
       />
       <div className="flex flex-col gap-2 md:gap-4 p-3 md:p-0">
         <Button className="bg-[#3AC4A0] p-2.5 font-poppins font-semibold text-sm rounded-full">
-          GET
+          BUY
         </Button>
         <div className="flex flex-col gap-3 bg-[#F3F4F8] border border-[#E9E9E9] rounded-lg py-2 px-3.5">
           <div className="flex flex-col gap-3.5">

@@ -15,6 +15,7 @@ import {
   validateInvitationCode
 } from '@/repository/quiz.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
+import { getSubscriptionStatus } from '@/repository/subscription.repository';
 import LanguageContext from '@/store/language/language-context';
 import {
   selectPromoCodeValidationResult,
@@ -22,14 +23,17 @@ import {
 } from '@/store/redux/features/promo-code';
 import i18n from '@/utils/common/i18n';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
+import { type StatusSubscription } from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { ShareIcon } from '@heroicons/react/24/outline';
-import { Switch } from '@material-tailwind/react';
+import { Switch, Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import SubsSeedy from 'public/assets/subscription/subs-seedy.svg';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FaChevronRight } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
@@ -58,6 +62,17 @@ const QuizDetail = (): React.ReactElement => {
   );
   const [useCoins, setUseCoins] = useState<boolean>(false);
   const [totalAvailableCoins, setTotalAvailableCoins] = useState<number>(0);
+  const [dataSubscription, setDataSubscription] =
+    useState<StatusSubscription | null>(null);
+
+  const getSubscriptionPlanStatus = async (): Promise<void> => {
+    try {
+      const response: StatusSubscription = await getSubscriptionStatus();
+      if (response) {
+        setDataSubscription(response);
+      }
+    } catch {}
+  };
 
   const handleGetSeedsCoin = async (): Promise<void> => {
     try {
@@ -149,6 +164,7 @@ const QuizDetail = (): React.ReactElement => {
   useEffect(() => {
     if (id) {
       getDetail(userInfo?.preferredCurrency ?? '');
+      getSubscriptionPlanStatus();
     }
     if (userInfo?.preferredCurrency !== undefined) {
       handleGetSeedsCoin();
@@ -359,6 +375,33 @@ const QuizDetail = (): React.ReactElement => {
               <ShareIcon width={24} height={24} />
             </button>
           </div>
+          {dataSubscription === null && (
+            <div
+              onClick={async () => await router.push('/seedsplan')}
+              className="w-full bg-gradient-radial-subs shadow-subs-complete hover:shadow-subs-complete-hover flex justify-between items-center px-2 md:py-2 py-1 gap-2 rounded-xl cursor-pointer font-poppins duration-300 border border-white my-2"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <div className="absolute bg-gradient-to-b from-[#fdb458] to-[#fccc6e]/60 md:w-[35px] md:h-[35px] w-[50px] h-[50px] rounded-full"></div>
+                  <div className={'relative left-1'}>
+                    <Image
+                      src={SubsSeedy}
+                      alt={'subscription-image'}
+                      width={100}
+                      height={100}
+                      className="md:w-[35px] md:h-[35px] w-[50px] h-[50px]"
+                    />
+                  </div>
+                </div>
+                <Typography className="text-white font-semibold font-poppins text-sm capitalize">
+                  {t('ProfilePage.subscriptionButton')}
+                </Typography>
+              </div>
+              <div className="flex justify-center items-center h-[16px]">
+                <FaChevronRight className="text-white" size={16} />
+              </div>
+            </div>
+          )}
           <div className="my-4">
             {userInfo !== undefined && (detailQuiz?.admission_fee ?? 0) > 0 && (
               <PromoCode

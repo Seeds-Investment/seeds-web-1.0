@@ -337,3 +337,55 @@ export const getBattleDataPerStage = async (
     await Promise.resolve();
   }
 };
+
+export const payBattle = async ({
+  battleId,
+  paymentGateway,
+  paymentMethod,
+  phoneNumber,
+  promoCode,
+  isUseCoins,
+  successUrl,
+  cancelUrl
+}: {
+  battleId: string;
+  paymentGateway: string;
+  paymentMethod: string;
+  phoneNumber: string;
+  promoCode: string;
+  isUseCoins: boolean;
+  successUrl?: string;
+  cancelUrl?: string;
+}): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+
+    const response = await teamBattleService.post(
+      '/pay',
+      {
+        battle_id: battleId,
+        payment_gateway: paymentGateway,
+        payment_method: paymentMethod,
+        phone_number: phoneNumber,
+        promo_code: promoCode,
+        is_use_coins: isUseCoins,
+        success_url: successUrl,
+        cancel_url: cancelUrl
+      },
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+
+    return response;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};

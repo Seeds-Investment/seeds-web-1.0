@@ -56,7 +56,8 @@ const BannerComponent: React.FC<BannerLoad> = ({
     320: { slidesPerView: 1 },
     480: { slidesPerView: 2 },
     720: { slidesPerView: 3 },
-    1080: { slidesPerView: 3 }
+    1080: { slidesPerView: 3 },
+    2466: { slidesPerView: 4 }
   };
 
   useEffect(() => {
@@ -102,16 +103,22 @@ const BannerComponent: React.FC<BannerLoad> = ({
                 <div key={item.id} className="flex flex-col gap-3">
                   <SwiperSlide>
                     <Card shadow={false}>
-                      <CardBody className="p-0 m-0">
+                      <CardBody className="p-0 m-0 w-full">
                         <Image
                           onClick={async () => {
                             await router.push(item.external_url);
                           }}
-                          src={item.image_url}
+                          src={
+                            item.image_url === null &&
+                            item.image_url === undefined &&
+                            item.image_url === ''
+                              ? 'https://dev-assets.seeds.finance/storage/cloud/5efa1141-9999-4341-958a-5ab97353ac42.png'
+                              : item.image_url
+                          }
                           alt={item.name}
                           width={300}
                           height={300}
-                          className="shadow-none border-none rounded-[10px] w-full h-36"
+                          className="shadow-none border-none rounded-[10px] w-full md:h-40 h-36"
                         />
                       </CardBody>
                     </Card>

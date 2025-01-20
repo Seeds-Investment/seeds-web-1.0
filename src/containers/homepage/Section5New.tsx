@@ -165,10 +165,10 @@ const Section5New: React.FC = () => {
   return (
     <div className="w-full h-auto cursor-default">
       <Tabs value={multiTab}>
-        <TabsHeader className="w-full justify-around bg-white md:gap-6 gap-2 overflow-x-auto">
+        <TabsHeader className="w-full flex justify-around bg-white md:gap-6 gap-2 py-2 overflow-x-auto">
           {categories.map((item, idx: number) => (
             <Button
-              className={`w-full flex justify-center items-center md:w-44 h-fit px-10 ${
+              className={`w-full flex justify-center items-center md:w-96 h-fit px-10 ${
                 activeButton !== idx
                   ? 'border border-[#BDBDBD] hover:bg-white'
                   : 'border bg-[#3AC4A0] hover:bg-[3AC4A0]'

@@ -178,6 +178,7 @@ export const updatePhotoSelfie = async (imageEncoded: string): Promise<any> => {
     throw new Error(error.response.data.message);
   }
 };
+
 export const updateUserInfo = async (
   formData: UpdateUserInfoForm
 ): Promise<any> => {

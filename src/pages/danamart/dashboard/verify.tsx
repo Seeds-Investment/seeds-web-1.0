@@ -16,7 +16,7 @@ const Verify = (): React.ReactElement => {
 
   const titles: Record<number, string> = {
     1: t('danamart.verification.photoIdCardTittle'),
-    2: t('danamart.verification.accountInformationTittle'),
+    2: t('danamart.verification.accountInformation.accountInformationTitle'),
     3: t('danamart.verification.financialInformationTittle'),
     4: t('danamart.verification.photoSelfieTittle')
   };
@@ -54,7 +54,7 @@ const Verify = (): React.ReactElement => {
           ))}
         </div>
         {step === 1 && <PhotoIdCard step={step} setStep={setStep} />}
-        {step === 2 && <AccountInformation step={step} setStep={setStep} />}
+        {step === 2 && <AccountInformation step={step} setStep={setStep} t={t}/>}
         {step === 3 && (
           <FinancialInformation step={step} setStep={setStep} t={t} />
         )}

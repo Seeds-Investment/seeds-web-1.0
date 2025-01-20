@@ -1,5 +1,8 @@
 import MInput from '@/components/form-input/multi-input';
-import { answer } from '@/components/form-input/multi-input/data/dropdown-data';
+import {
+  answer,
+  income
+} from '@/components/form-input/multi-input/data/dropdown-data';
 import useUpdateUserInfoForm from '@/hooks/danamart/useUpdateUserInfoForm';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -45,7 +48,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
           type="dropdown"
           errors={errors}
           rounded={true}
-          options={answer}
+          options={income}
           fullWidth={true}
           control={control}
         />

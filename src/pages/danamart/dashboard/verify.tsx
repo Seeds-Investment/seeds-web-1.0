@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 const Verify = (): React.ReactElement => {
   const { t } = useTranslation();
-  const [step, setStep] = useState<number>(1);
+  const [step, setStep] = useState<number>(3);
 
   const titles: Record<number, string> = {
     1: t('danamart.verification.photoIdCardTittle'),

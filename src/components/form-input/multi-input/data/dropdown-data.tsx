@@ -112,3 +112,26 @@ export const marriage = [
     value: "Cerai Mati",
   }
 ];
+
+export const income = [
+  {
+    key: 1,
+    label: 'Gaji',
+    value: 'Gaji'
+  },
+  {
+    key: 2,
+    label: 'Keuntungan',
+    value: 'Keuntungan'
+  },
+  {
+    key: 3,
+    label: 'Suami / Orang Tua',
+    value: 'Suami / Orang Tua'
+  },
+  {
+    key: 4,
+    label: 'Lainnya',
+    value: 'Lainnya'
+  }
+];

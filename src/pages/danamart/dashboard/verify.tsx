@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 const Verify = (): React.ReactElement => {
   const { t } = useTranslation();
-  const [step, setStep] = useState<number>(2);
+  const [step, setStep] = useState<number>(1);
 
   const titles: Record<number, string> = {
     1: t('danamart.verification.photoIdCardTittle'),
@@ -55,7 +55,9 @@ const Verify = (): React.ReactElement => {
         </div>
         {step === 1 && <PhotoIdCard step={step} setStep={setStep} />}
         {step === 2 && <AccountInformation step={step} setStep={setStep} />}
-        {step === 3 && <FinancialInformation step={step} setStep={setStep} />}
+        {step === 3 && (
+          <FinancialInformation step={step} setStep={setStep} t={t} />
+        )}
         {step === 4 && <PhotoSelfie step={step} setStep={setStep} t={t} />}
       </div>
     </PageGradient>

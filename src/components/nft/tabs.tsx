@@ -17,18 +17,25 @@ type NFT = {
   description: string;
   image_url: string;
   price: number;
+  owner: {
+    wallet_address: string;
+    avatar: string;
+  };
+  creator: {
+    wallet_address: string;
+    avatar: string;
+  };
 };
 
 const NFTTabs: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('collection');
-  const [nftData, setNftData] = useState<NFT[]>([]); // Inisialisasi sebagai array kosong
+  const [nftData, setNftData] = useState<NFT[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const API_BASE_URL = 'https://seeds-dev-gcp.seeds.finance';
 
-  // Fetch NFTs dari API
   const fetchNFTs = async (): Promise<void> => {
     setIsLoading(true);
     try {
@@ -37,16 +44,15 @@ const NFTTabs: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
       );
       if (!response.ok) throw new Error('Failed to fetch NFTs');
       const data = await response.json();
-      setNftData(data.data || []); // Selalu set array kosong jika data tidak ada
+      setNftData(data.data || []);
     } catch (error: any) {
       setErrorMessage(error.message || 'Failed to load NFTs');
-      setNftData([]); // Kosongkan data jika terjadi error
+      setNftData([]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Panggil API saat searchQuery berubah
   useEffect(() => {
     fetchNFTs();
   }, [searchQuery]);
@@ -61,7 +67,7 @@ const NFTTabs: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
             <p>Loading NFTs...</p>
           ) : errorMessage ? (
             <p className="text-red-500">{errorMessage}</p>
-          ) : nftData.length > 0 ? ( // Pastikan length hanya dipanggil jika nftData adalah array
+          ) : nftData.length > 0 ? (
             nftData.map((nft) => (
               <Card key={nft.id}>
                 <Image
@@ -91,6 +97,44 @@ const NFTTabs: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
             <p className="text-gray-500 text-center col-span-3">
               NFT not found.
             </p>
+          )}
+        </div>
+      ),
+    },
+    {
+      label: 'Account',
+      value: 'account',
+      desc: (
+        <div className="flex flex-col gap-4">
+          {isLoading ? (
+            <p>Loading Account Data...</p>
+          ) : errorMessage ? (
+            <p className="text-red-500">{errorMessage}</p>
+          ) : nftData.length > 0 ? (
+            nftData.map((nft) => (
+              <div
+                key={nft.creator.wallet_address}
+                className="flex gap-3 items-center p-4 border rounded-md"
+              >
+                <Image
+                  src={nft.creator.avatar}
+                  alt="Creator Avatar"
+                  className="rounded-full"
+                  width={48}
+                  height={48}
+                />
+                <div className="flex flex-col">
+                  <p className="font-semibold text-[#262626]">
+                    {nft.creator.wallet_address}
+                  </p>
+                  <p className="text-sm text-[#7C7C7C]">
+                    Creator of {nft.name}
+                  </p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500 text-center">Account not found.</p>
           )}
         </div>
       ),

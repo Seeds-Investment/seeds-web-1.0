@@ -68,7 +68,7 @@ module.exports = withMT({
         'bounce-horizontal': 'bounce-horizontal 2000ms infinite',
         'bounce-reverse': 'bounce-reverse 2000ms infinite',
         'shadow-move': 'shadow-move 3s infinite',
-        'shadow-voicenotes': 'shadow-voicenotes 1s infinite',
+        'shadow-voicenotes': 'shadow-voicenotes 1s infinite'
       },
       keyframes: {
         'slide-down': {
@@ -166,5 +166,8 @@ module.exports = withMT({
       }
     }
   },
-  plugins: [require('tailwindcss-textshadow')]
+  plugins: [require('tailwindcss-textshadow'), require('daisyui')],
+  daisyui: {
+    themes: ['light']
+  }
 });

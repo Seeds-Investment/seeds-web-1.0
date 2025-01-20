@@ -13,6 +13,7 @@ const NFTDashboard: React.FC = () => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>(''); // State untuk query search
 
   const handleConnectWallet = async () => {
     if (walletAddress) {
@@ -28,7 +29,7 @@ const NFTDashboard: React.FC = () => {
       if (result.success) {
         const publicKey = result.publicKey;
         setWalletAddress(publicKey);
-        localStorage.setItem('walletAddress', publicKey); 
+        localStorage.setItem('walletAddress', publicKey);
       } else {
         setErrorMessage(`Failed to connect: ${result.error}`);
       }
@@ -39,6 +40,7 @@ const NFTDashboard: React.FC = () => {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     const storedWalletAddress = localStorage.getItem('walletAddress');
     if (storedWalletAddress) {
@@ -66,6 +68,8 @@ const NFTDashboard: React.FC = () => {
             <input
               className="bg-[#F9F9F9] border border-[#E9E9E9] w-full rounded-xl h-10 md:ps-16 ps-3 md:pe-3 pe-8 py-3 outline-none font-poppins placeholder:font-normal placeholder:text-xs placeholder:text-[#BDBDBD]"
               placeholder="Search NFT"
+              value={searchQuery} // Bind dengan state
+              onChange={(e) => setSearchQuery(e.target.value)} // Update state
             />
           </div>
         </div>
@@ -91,7 +95,7 @@ const NFTDashboard: React.FC = () => {
         {errorMessage && (
           <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
         )}
-        <NFTTabs />
+        <NFTTabs searchQuery={searchQuery} /> {/* Kirim query ke NFTTabs */}
       </Card>
     </section>
   );

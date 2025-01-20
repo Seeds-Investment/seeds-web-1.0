@@ -1,6 +1,9 @@
 import CameraIcon from '@/assets/danamart/camera.svg';
 import SeedyDetective from '@/assets/danamart/seedy-detective.svg';
-import { getPhotoSelfieData } from '@/repository/danamart/danamart.repository';
+import {
+  getPhotoSelfieData,
+  updatePhotoSelfie
+} from '@/repository/danamart/danamart.repository';
 import { type AccountVerification } from '@/utils/interfaces/danamart.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -39,9 +42,23 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
 
   const saveData = async (): Promise<void> => {
     try {
-      console.log(imageData);
+      const response = await updatePhotoSelfie(imageData);
+      setPhotoSelfieData(response);
     } catch (error) {
       toast(error as string);
+    }
+  };
+
+  const isButtonDisabled = (): boolean => {
+    if (photoSelfieData !== undefined && photoSelfieData !== null) {
+      return (
+        (photoSelfieData.info_1 !== '1' &&
+          photoSelfieData.info_2 !== '1' &&
+          photoSelfieData.info_3 !== '1') ||
+        !isUsePhoto
+      );
+    } else {
+      return true;
     }
   };
 
@@ -124,15 +141,17 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
             {t('danamart.verification.photoSelfie.retake')}
           </Button>
         )}
-        <Button
-          disabled={!isUsePhoto}
-          onClick={saveData}
-          className={`${
-            isUsePhoto ? 'bg-seeds-button-green' : 'bg-[#BDBDBD]'
-          } capitalize font-poppins font-semibold text-sm rounded-full w-[155px] h-[36px] flex justify-center items-center`}
-        >
-          {t('danamart.verification.buttonSave')}
-        </Button>
+        {photoSelfieData?.info_4 !== '1' && (
+          <Button
+            disabled={isButtonDisabled()}
+            onClick={saveData}
+            className={`${
+              isButtonDisabled() ? 'bg-[#BDBDBD]' : 'bg-seeds-button-green'
+            } capitalize font-poppins font-semibold text-sm rounded-full w-[155px] h-[36px] flex justify-center items-center`}
+          >
+            {t('danamart.verification.buttonSave')}
+          </Button>
+        )}
       </div>
     </div>
   );

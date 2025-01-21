@@ -9,6 +9,8 @@ interface Props {
   isUsePhoto: boolean;
   setIsUsePhoto: React.Dispatch<React.SetStateAction<boolean>>;
   setImageData: React.Dispatch<React.SetStateAction<string>>;
+  height: number;
+  width: number;
 }
 
 const CameraSelfie: React.FC<Props> = ({
@@ -16,7 +18,9 @@ const CameraSelfie: React.FC<Props> = ({
   setIsCameraActive,
   isUsePhoto,
   setIsUsePhoto,
-  setImageData
+  setImageData,
+  height,
+  width,
 }) => {
   const webcamRef = useRef<Webcam | null>(null);
   const [captureImage, setCaptureImage] = useState<string | null>(null);
@@ -49,8 +53,8 @@ const CameraSelfie: React.FC<Props> = ({
           <Image
             alt="Capture Image"
             src={captureImage}
-            width={208}
-            height={312}
+            width={width}
+            height={height}
           />
           {!isUsePhoto && (
             <div className="flex items-center gap-3">
@@ -79,7 +83,7 @@ const CameraSelfie: React.FC<Props> = ({
               screenshotFormat="image/jpeg"
               audio={false}
               screenshotQuality={1}
-              videoConstraints={{ facingMode: 'user', width: 208, height: 312 }}
+              videoConstraints={{ facingMode: 'user', width, height }}
             />
             <div
               onClick={capture}

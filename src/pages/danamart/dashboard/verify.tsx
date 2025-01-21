@@ -15,14 +15,14 @@ const Verify = (): React.ReactElement => {
   const [step, setStep] = useState<number>(1);
 
   const titles: Record<number, string> = {
-    1: t('danamart.verification.photoIdCardTittle'),
+    1: t('danamart.verification.photoIdCardTitle.title'),
     2: t('danamart.verification.accountInformation.accountInformationTitle'),
     3: t('danamart.verification.financialInformationTittle'),
     4: t('danamart.verification.photoSelfieTittle')
   };
 
   const getBarClass = (currentStep: number): string =>
-    currentStep <= step ? 'bg-seeds-button-green' : 'bg-[#E9E9E9]';
+    currentStep <= step ? 'bg-seeds-button-green' : 'bg-[#E9E9E9] hover:bg-seeds-button-green duration-300';
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -49,12 +49,13 @@ const Verify = (): React.ReactElement => {
           {[1, 2, 3, 4].map(currentStep => (
             <div
               key={currentStep}
-              className={`h-[6px] w-full ${getBarClass(currentStep)}`}
+              className={`h-[6px] w-full ${getBarClass(currentStep)} cursor-pointer`}
+              onClick={() => { setStep(currentStep); }}
             />
           ))}
         </div>
-        {step === 1 && <PhotoIdCard step={step} setStep={setStep} />}
-        {step === 2 && <AccountInformation step={step} setStep={setStep} t={t}/>}
+        {step === 1 && <PhotoIdCard step={step} setStep={setStep} t={t} />}
+        {step === 2 && <AccountInformation step={step} setStep={setStep} t={t} />}
         {step === 3 && (
           <FinancialInformation step={step} setStep={setStep} t={t} />
         )}

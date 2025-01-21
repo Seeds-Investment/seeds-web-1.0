@@ -86,6 +86,8 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
                 isUsePhoto={isUsePhoto}
                 setIsUsePhoto={setIsUsePhoto}
                 setImageData={setImageData}
+                height={312}
+                width={208}
               />
             ) : (
               <>

@@ -31,10 +31,13 @@ const TopLosers = (): React.ReactElement => {
         <div className="grid grid-cols-3 grid-rows-1">
           <Typography className="text-left">Asset</Typography>
           <Typography className="text-center">Volume</Typography>
-          <Typography className="text-right">Prices</Typography>
+          <Typography className="text-right">Price</Typography>
         </div>
         {topLoser?.map((item, index) => (
-          <div key={index} className="grid grid-cols-3 grid-rows-1">
+          <div
+            key={index}
+            className="w-full grid grid-cols-3 grid-rows-1 border-b border-[#E9E9E9] bg-blue py-2"
+          >
             <div className="flex flex-row gap-3 justify-start">
               <Avatar src={item.asset_icon} />
               <div>

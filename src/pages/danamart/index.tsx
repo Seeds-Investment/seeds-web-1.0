@@ -42,14 +42,24 @@ const Danamart = (): React.ReactElement => {
   useEffect(() => {
     void fetchUserInfo();
     void fetchAccountStatus();
-    setIsOpenModalRegister(false);
-
-    if (localStorage.getItem('accessToken-danamart') !== null) {
-      setIsOpenModalLogin(false);
-    } else {
-      setIsOpenModalLogin(true);
-    }
   }, []);
+
+  useEffect(() => {
+    if (userDanamartInformation !== undefined) {
+      if (
+        userDanamartInformation.email === '' &&
+        userDanamartInformation.phone_number === ''
+      ) {
+        setIsOpenModalRegister(true);
+      } else if (
+        (userDanamartInformation.email !== '' &&
+          userDanamartInformation.phone_number !== '') ||
+        localStorage.getItem('accessToken-danamart') !== null
+      ) {
+        setIsOpenModalLogin(true);
+      }
+    }
+  }, [userDanamartInformation]);
 
   return (
     <div>

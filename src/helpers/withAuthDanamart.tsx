@@ -68,7 +68,7 @@ const withAuthDanamart = (
       })();
     }, [router.pathname, accessToken]);
 
-    if (isLoading && isLoadingDanamart) {
+    if (isLoading || isLoadingDanamart) {
       return (
         <Modal onClose={() => {}}>
           <div className="flex flex-col justify-center items-center">

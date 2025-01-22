@@ -3,6 +3,7 @@ import {
   type MultiProps,
   type Option
 } from '@/utils/interfaces/multi-input.interface';
+import { type ChangeEvent } from 'react';
 import CurrencyInput from 'react-currency-input-field';
 import { FileInput, Toggle } from 'react-daisyui';
 import { Controller, type FieldValues } from 'react-hook-form';
@@ -59,6 +60,7 @@ const CommonInput = <T extends FieldValues>(
     props.type === 'datetime-local' ||
     props.type === 'email' ? (
     <CInput
+      onInput={props.onInput}
       type={props.type}
       maxLength={props.maxLength}
       disabled={props.disabled}
@@ -270,8 +272,11 @@ const SwitchToggle = <T extends FieldValues>(
       render={({ field: { value, onChange } }) => (
         <Toggle
           checked={Boolean(value)}
-          onChange={checked => {
-            onChange(checked);
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            if (props.onSwitchToggle) {
+              props.onSwitchToggle(e.target.checked);
+            }
+            onChange(e.target.checked);
           }}
           disabled={props.disabled}
           className={`

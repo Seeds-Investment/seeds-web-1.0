@@ -32,6 +32,7 @@ interface CommonIProps<T extends FieldValues> extends CommonProps<T> {
   maxLength?: number;
   placeholder?: string;
   className?: string;
+  onInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface NumberIProps<T extends FieldValues> extends CommonProps<T> {
@@ -87,6 +88,7 @@ interface SwitchToggleProps<T extends FieldValues> extends CommonProps<T> {
   registerName: Path<T>;
   type: 'switch';
   disabled?: boolean;
+  onSwitchToggle?: (checked: boolean) => void;
 }
 
 export type MultiProps<T extends FieldValues> =

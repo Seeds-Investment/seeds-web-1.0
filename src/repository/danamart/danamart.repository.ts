@@ -7,7 +7,6 @@ export interface UpdateUserInfoForm {
   pernyataan: string;
   dm_penmit_01010: string;
   dm_penmit_01003: string;
-  dm_penmit_01038: string;
   dm_penmit_01006: string;
   dm_penmit_01007: string;
   dm_penmit_01015: string;
@@ -24,14 +23,13 @@ export interface UpdateUserInfoForm {
   dm_penmit_01019rw: string;
   dm_penmit_01037: string;
   dm_penmit_01036: string;
-  dm_penmit_01035: string;
   dm_penmit_01034: string;
   dm_penmit_01033: string;
   dm_penmit_01017: string;
   // masa_berlaku: string;
   // dm_penmit_01018: string;
-  dm_penmit_01022: string;
-  dm_penmit_01041: string;
+  // dm_penmit_01022: string;
+  // dm_penmit_01041: string;
   dm_penmit_01042: string;
   dm_pen_08002: string;
   dm_pen_08009: string;
@@ -129,52 +127,6 @@ export const getDashboardUser = async (): Promise<any> => {
         Authorization: `Bearer ${accessTokenDanamart ?? ''}`
       }
     });
-    return { ...response, status: 200 };
-  } catch (error: any) {
-    throw new Error(error.response.data.message);
-  }
-};
-
-export const getPhotoSelfieData = async (): Promise<any> => {
-  try {
-    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
-
-    if (accessTokenDanamart === null || accessTokenDanamart === '') {
-      return await Promise.resolve('Access token Danamart not found');
-    }
-
-    const response = await danamartApi.get('/pemodal/form_foto_selfie', {
-      headers: {
-        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
-      }
-    });
-    return { ...response.data, status: 200 };
-  } catch (error: any) {
-    throw new Error(error.response.data.message);
-  }
-};
-
-export const updatePhotoSelfie = async (imageEncoded: string): Promise<any> => {
-  try {
-    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
-
-    if (accessTokenDanamart === null || accessTokenDanamart === '') {
-      return await Promise.resolve('Access token Danamart not found');
-    }
-
-    const formData = new FormData();
-    formData.append('image_from_web_cam', imageEncoded);
-
-    const response = await danamartApi.post(
-      '/pemodal/form_foto_selfie',
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${accessTokenDanamart ?? ''}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    );
     return response;
   } catch (error: any) {
     throw new Error(error.response.data.message);
@@ -200,6 +152,58 @@ export const updateUserInfo = async (
       }
     );
     return response.data;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const getPhotoIdCard = async (): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.get('/pemodal/form_foto_ktp', {
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+      }
+    });
+    return { ...response.data, status: 200 };
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const updatePhotoIdCard = async (imageEncoded: string): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const platform = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)
+      ? 'Mobile'
+      : 'Desktop';
+
+    const formData = new FormData();
+    formData.append('platform', platform);
+    formData.append('typeSubmit', 'updateOcr');
+    formData.append('dm_penmit_01011', imageEncoded);
+
+    const response = await danamartApi.post(
+      '/pemodal/form_foto_ktp/updateOcr',
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart ?? ''}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+    return response;
   } catch (error: any) {
     throw new Error(error.response.data.message);
   }

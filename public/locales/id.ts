@@ -2856,7 +2856,23 @@ export default {
       errorGetUserProfile: 'Gagal mendapatkan data profile pengguna'
     },
     verification: {
-      photoIdCardTittle: 'Foto Kartu Identitas',
+      photoIdCardTitle: {
+        title: 'Foto Kartu Identitas',
+        camera: 'Kamera',
+        upload: 'Unggah',
+        retake: 'Ambil Ulang',
+        uploadTitle: 'Unggah Kartu Identitas Anda',
+        uploadDescription: 'Untuk mengonfirmasi identitas Anda, harap unggah foto digital atau ambil foto.',
+        uploadRequirement: {
+          title: 'Ketentuan mengunggah KTP',
+          text1: 'Mengambil foto KTP langsung melalui kamera atau upload foto KTP.',
+          text2: 'File yang diunggah harus dalam format JPG/JPEG dan maksimal 4 MB.',
+          text3: 'KTP tidak rusak seperti retak atau patah.',
+          text4: 'Ambil foto KTP dengan posisi Landscape',
+          text5: 'Pastikan foto e-KTP jelas, tidak buram, pencahayaan cukup terang, dan tidak terpotong.',
+        },
+        successMessage: 'Data foto KTP berhasil diperbarui.',
+      },
       accountInformation: {
         accountInformationTitle: 'Informasi Akun',
         occupation: 'Pekerjaan',
@@ -2924,6 +2940,8 @@ export default {
         text58: 'Masukan tanggal terbit NPWP',
         text59: 'Simpan',
         text60: 'Seumur Hidup',
+        text61: 'File NPWP',
+        text62: 'Masukan file atau foto NPWP',
         dropdown: {
           yes: 'Ya',
           no: 'Tidak',

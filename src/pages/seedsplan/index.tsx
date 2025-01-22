@@ -3,6 +3,7 @@ import SeedsTrio from '@/assets/seedsplan/SeedsTrio.svg';
 import GoldPlan from '@/assets/seedsplan/gold-plan.svg';
 import PlatinumPlan from '@/assets/seedsplan/platinum-plan.svg';
 import SilverPlan from '@/assets/seedsplan/silver-plan.svg';
+import ConfirmationUnsubscribe from '@/components/seedsplan/confirmation-unsubscribe';
 import HowToUseSeedsplan from '@/components/seedsplan/howToUse';
 import TncSeedsplan from '@/components/seedsplan/tnc';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -12,7 +13,8 @@ import { getUserInfo } from '@/repository/profile.repository';
 import {
   getSubscriptionPlan,
   getSubscriptionStatus,
-  getSubscriptionVoucher
+  getSubscriptionVoucher,
+  stopSubscription
 } from '@/repository/subscription.repository';
 import LanguageContext from '@/store/language/language-context';
 import i18n from '@/utils/common/i18n';
@@ -62,6 +64,7 @@ const SeedsPlan: React.FC = () => {
   const [showTnc, setShowTnc] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [showHowToUse, setHowToUse] = useState<boolean>(false);
+  const [isOpenStopPlan, setIsOpenStopPlan] = useState<boolean>(false);
 
   const packagePlanList = [
     { name: 'SILVER', badge: null },
@@ -164,7 +167,7 @@ const SeedsPlan: React.FC = () => {
     selectedPeriodPlan?.tnc?.[i18n.language === 'id' ? 'id' : 'en'] !== ''
       ? selectedPeriodPlan?.tnc[i18n.language === 'id' ? 'id' : 'en']
       : '-';
-  
+
   const filteredHowToUse =
     selectedPeriodPlan?.how_to_use?.[i18n.language === 'id' ? 'id' : 'en'] !==
     ''
@@ -184,6 +187,19 @@ const SeedsPlan: React.FC = () => {
       allAvailablePlans.find(item => item.id === activeSubscriptionId)?.name ??
       ''
     );
+  };
+
+  const handleStopPlan = async (): Promise<void> => {
+    try {
+      const response = await stopSubscription();
+      if (response.status === 'Subscription stopped') {
+        setIsOpenStopPlan(false);
+        toast.success('Subscription Plan Successfully Stopped');
+        router.reload();
+      }
+    } catch (error) {
+      toast.error('Error while stopping seeds plan');
+    }
   };
 
   return (
@@ -353,12 +369,20 @@ const SeedsPlan: React.FC = () => {
                     {t('seedsPlan.text18')}
                   </Typography>
                 </div>
-                <div className="flex justify-center items-center">
+                <div className="flex flex-wrap-reverse md:flex-nowrap justify-center items-center md:gap-7 gap-4">
+                  <Button
+                    onClick={() => {
+                      setIsOpenStopPlan(true);
+                    }}
+                    className="font-poppins text-sm font-semibold capitalize bg-white border border-[#FF4A2B] text-[#FF4A2B] rounded-full md:w-[342px] w-full h-[42px] flex items-center justify-center"
+                  >
+                    {t('seedsPlan.button9')}
+                  </Button>
                   <Button
                     onClick={async () => {
                       await router.push('/seedsplan/change-plan');
                     }}
-                    className="font-poppins text-sm font-semibold capitalize bg-[#3AC4A0] border border-[#3AC4A0] text-white rounded-full md:w-[266px] w-full h-[42px] flex items-center justify-center"
+                    className="font-poppins text-sm font-semibold capitalize bg-[#3AC4A0] border border-[#3AC4A0] text-white rounded-full md:w-[342px] w-full h-[42px] flex items-center justify-center"
                   >
                     {t('seedsPlan.button6')}
                   </Button>
@@ -589,6 +613,15 @@ const SeedsPlan: React.FC = () => {
         }}
         howToUse={filteredHowToUse as string}
       />
+      {isOpenStopPlan && (
+        <ConfirmationUnsubscribe
+          onClose={() => {
+            setIsOpenStopPlan(false);
+          }}
+          t={t}
+          handleStopSubscription={handleStopPlan}
+        />
+      )}
     </>
   );
 };

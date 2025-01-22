@@ -3003,7 +3003,7 @@ export default {
             text3: 'Protestant',
             text4: 'Hindu',
             text5: 'Buddhist',
-            text6: 'Confucianism',
+            text6: 'Confucianism'
           },
           education: {
             text1: 'Doctorate (Strata III)',
@@ -3012,25 +3012,25 @@ export default {
             text4: 'Diploma III / Academy',
             text5: 'High School / Equivalent (SLTA)',
             text6: 'Junior High School / Equivalent (SLTP)',
-            text7: 'Elementary School / Equivalent (SD)',
+            text7: 'Elementary School / Equivalent (SD)'
           },
           marriage: {
             text1: 'Single',
             text2: 'Married',
             text3: 'Divorced (Living)',
-            text4: 'Widowed (Deceased)',
+            text4: 'Widowed (Deceased)'
           },
           workingLength: {
             text1: 'Year',
             text2: 'Years',
-            text3: 'More than',
+            text3: 'More than'
           },
           plan: {
             text1: 'Savings Fund',
             text2: 'Retirement Fund',
             text3: 'Emergency Fund',
             text4: 'Business Capital',
-            text5: 'Others',
+            text5: 'Others'
           },
           information: {
             text1: 'Social Media',
@@ -3038,17 +3038,17 @@ export default {
             text3: 'Friends',
             text4: 'Family',
             text5: 'Danamart Website',
-            text6: 'Others',
-          },
+            text6: 'Others'
+          }
         }
       },
       financialInformationTittle: 'Financial Information',
-      photoSelfieTittle: 'Photo Selfie',
       financial: {
         income: 'Income',
         incomeSource: 'Income Source',
         select: 'Select',
         incomePerMonth: 'Income per month',
+        areYouAgree: 'Are you agree?',
         validateInputForm:
           'I declare that the income data that I fill in is true and accurate in accordance with my current financial condition.',
         bankInformation: 'Bank Information',
@@ -3061,6 +3061,7 @@ export default {
         beneficialInformation: 'Beneficial Owner Information',
         isThereBeneficial: 'Is there a beneficial owner?'
       },
+      photoSelfieTittle: 'Photo Selfie',
       photoSelfie: {
         previewSelfie: 'Preview Photo Selfie',
         camera: 'Camera',

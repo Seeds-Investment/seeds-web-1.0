@@ -2935,7 +2935,7 @@ export default {
             text3: 'Protestan',
             text4: 'Hindu',
             text5: 'Budha',
-            text6: 'Konghucu',
+            text6: 'Konghucu'
           },
           education: {
             text1: 'Strata III',
@@ -2944,25 +2944,25 @@ export default {
             text4: 'Diploma III / Akademi',
             text5: 'SLTA / Sederajat',
             text6: 'SLTP / Sederajat',
-            text7: 'SD / Sederajat',
+            text7: 'SD / Sederajat'
           },
           marriage: {
             text1: 'Belum Kawin',
             text2: 'Kawin',
             text3: 'Cerai Hidup',
-            text4: 'Cerai Mati',
+            text4: 'Cerai Mati'
           },
           workingLength: {
             text1: 'Tahun',
             text2: 'Tahun',
-            text3: 'Lebih dari',
+            text3: 'Lebih dari'
           },
           plan: {
             text1: 'Dana Tabungan',
             text2: 'Dana Pensiun',
             text3: 'Dana Darurat',
             text4: 'Modal Usaha',
-            text5: 'Lainnya',
+            text5: 'Lainnya'
           },
           information: {
             text1: 'Media Sosial',
@@ -2970,17 +2970,17 @@ export default {
             text3: 'Teman',
             text4: 'Keluarga',
             text5: 'Website Danamart',
-            text6: 'Lainnya',
-          },
+            text6: 'Lainnya'
+          }
         }
       },
       financialInformationTittle: 'Informasi Keuangan',
-      photoSelfieTittle: 'Foto Diri',
       financial: {
         income: 'Pendapatan',
         incomeSource: 'Sumber Penghasilan',
         select: 'Pilih',
         incomePerMonth: 'Penghasilan per bulan',
+        areYouAgree: 'Apakah Anda menyetujui?',
         validateInputForm:
           'Saya menyatakan bahwa data penghasilan yang saya isikan ini adalah benar dan akurat sesuai dengan kondisi keuangan saya saat ini.',
         bankInformation: 'Informasi Bank',
@@ -2993,6 +2993,7 @@ export default {
         beneficialInformation: 'Informasi Beneficial Owner',
         isThereBeneficial: 'Apakah Terdapat Pemilik Manfaat (Beneficial Owner)?'
       },
+      photoSelfieTittle: 'Foto Diri',
       photoSelfie: {
         previewSelfie: 'Pratinjau Foto Selfie',
         camera: 'Kamera',

@@ -16,8 +16,8 @@ const useUpdateFinancialInfo = (): any => {
     dm_penmit_07002: yup
       .string()
       .matches(/^\d+$/, 'Only numbers are allowed')
-      .min(10, 'Bank account number must be at least 10 digits')
-      .max(16, 'Bank account number must not exceed 16 digits')
+      .min(8, 'Bank account number must be at least 10 digits')
+      .max(18, 'Bank account number must not exceed 16 digits')
       .required('This field is required'),
     dm_penmit_07003: yup.string().required('This field is required'),
     pernyataan: yup.string().required('This field is required'),
@@ -38,6 +38,16 @@ const useUpdateFinancialInfo = (): any => {
           .test('fileSize', 'File is required', value => {
             return value instanceof File;
           })
+          .test(
+            'fileType',
+            'Only image files are allowed (jpg, jpeg)',
+            value => {
+              if (value instanceof File) {
+                return ['image/jpeg', 'image/jpg'].includes(value.type);
+              }
+              return true;
+            }
+          )
           .test('fileSize', 'File size exceeds 4MB', value => {
             if (value instanceof File) {
               return value.size <= 4 * 1024 * 1024;
@@ -47,7 +57,191 @@ const useUpdateFinancialInfo = (): any => {
           .required('This field is required'),
       otherwise: schema => schema.notRequired()
     }),
-    bo_confirm: yup.string().required('This field is required')
+    bo_confirm: yup.string().required('This field is required'),
+    bo_nama: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_jns_kelamin: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_no_identitas: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_file_identitas: yup.mixed<string | File>().when('bo_confirm', {
+      is: 'Y',
+      then: schema =>
+        schema
+          .test('fileSize', 'File is required', value => {
+            return value instanceof File;
+          })
+          .test(
+            'fileType',
+            'Only image files are allowed (jpg, jpeg)',
+            value => {
+              if (value instanceof File) {
+                return ['image/jpeg', 'image/jpg'].includes(value.type);
+              }
+              return true;
+            }
+          )
+          .test('fileSize', 'File size exceeds 4MB', value => {
+            if (value instanceof File) {
+              return value.size <= 4 * 1024 * 1024;
+            }
+            return true;
+          })
+          .required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_alamat: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_tmp_lahir: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_tgl_lahir: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_kewarganegaraan: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_pekerjaan: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_alamat_pekerjaan: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_no_telp_pekerjaan: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_nama_ibu: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_sumber_dana: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_hasil_perbulan: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_tujuan_invest: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_hub_bo: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_status_perkawinan_bo: yup.string().when('bo_confirm', {
+      is: 'Y',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_relation_nama: yup.string().when('bo_status_perkawinan_bo', {
+      is: 'married',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_relation_jns_kelamin: yup.string().when('bo_status_perkawinan_bo', {
+      is: 'married',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_relation_no_ktp: yup.string().when('bo_status_perkawinan_bo', {
+      is: 'married',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_relation_file_ktp: yup
+      .mixed<string | File>()
+      .when('bo_status_perkawinan_bo', {
+        is: 'married',
+        then: schema =>
+          schema
+            .test('fileSize', 'File is required', value => {
+              return value instanceof File;
+            })
+            .test(
+              'fileType',
+              'Only image files are allowed (jpg, jpeg)',
+              value => {
+                if (value instanceof File) {
+                  return ['image/jpeg', 'image/jpg'].includes(value.type);
+                }
+                return true;
+              }
+            )
+            .test('fileSize', 'File size exceeds 4MB', value => {
+              if (value instanceof File) {
+                return value.size <= 4 * 1024 * 1024;
+              }
+              return true;
+            })
+            .required('This field is required'),
+        otherwise: schema => schema.notRequired()
+      }),
+    bo_relation_alamat: yup.string().when('bo_status_perkawinan_bo', {
+      is: 'married',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_relation_tempat_lahir: yup.string().when('bo_status_perkawinan_bo', {
+      is: 'married',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_relation_tgl_lahir: yup.string().when('bo_status_perkawinan_bo', {
+      is: 'married',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_relation_warga: yup.string().when('bo_status_perkawinan_bo', {
+      is: 'married',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_relation_pekerjaan: yup.string().when('bo_status_perkawinan_bo', {
+      is: 'married',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_relation_alamat_kerja: yup.string().when('bo_status_perkawinan_bo', {
+      is: 'married',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    bo_relation_no_telp_kerja: yup.string().when('bo_status_perkawinan_bo', {
+      is: 'married',
+      then: schema => schema.required('This field is required'),
+      otherwise: schema => schema.notRequired()
+    })
   });
 
   const defaultValues = {

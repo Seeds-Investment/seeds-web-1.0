@@ -73,6 +73,7 @@ interface ImageIProps<T extends FieldValues> extends CommonProps<T> {
   handleOpen?: () => void;
   register: UseFormRegister<T>;
   extraClasses?: string;
+  fileType?: string;
 }
 
 interface DropdownProps<T extends FieldValues> extends CommonProps<T> {

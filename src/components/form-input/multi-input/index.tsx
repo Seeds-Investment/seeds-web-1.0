@@ -228,7 +228,7 @@ const ImageInput = <T extends FieldValues>(
           <FileInput
             {...props.register(props.registerName)}
             size="sm"
-            accept="image/*"
+            accept={props.fileType ? props.fileType : 'image/*'}
             className="w-full sm:w-fit"
           />
         </div>
@@ -236,7 +236,7 @@ const ImageInput = <T extends FieldValues>(
         <FileInput
           {...props.register(props.registerName)}
           size="sm"
-          accept="image/*"
+          accept={props.fileType ? props.fileType : 'image/*'}
           className={`${
             props.extraClasses ? props.extraClasses : 'w-full sm:w-fit'
           }`}

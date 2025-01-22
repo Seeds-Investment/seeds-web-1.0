@@ -5,6 +5,7 @@ import {
   useGender,
   useIncome,
   useInvestmentGoals,
+  useJobList,
   useMarriageStatus
 } from '@/components/form-input/multi-input/data/dropdown-data';
 import useUpdateFinancialInfo from '@/hooks/danamart/useUpdateFinancialInfo';
@@ -37,6 +38,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
   const income = useIncome();
   const marriageStatus = useMarriageStatus();
   const investmentGoals = useInvestmentGoals();
+  const jobList = useJobList();
 
   const { control, errors, handleSubmit, register, watch, onSubmit, setValue } =
     useUpdateFinancialInfo();
@@ -226,6 +228,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
             type="image"
             register={register}
             usePreview={false}
+            fileType=".jpg,.jpeg"
             extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
           />
         </div>
@@ -285,6 +288,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
               type="image"
               register={register}
               usePreview={false}
+              fileType=".jpg,.jpeg"
               extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
             />
             <MInput
@@ -330,7 +334,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
               type="dropdown"
               control={control}
               errors={errors}
-              options={gender}
+              options={jobList}
               rounded={true}
               fullWidth={true}
             />
@@ -470,6 +474,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
                   type="image"
                   register={register}
                   usePreview={false}
+                  fileType=".jpg,.jpeg"
                   extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
                 />
                 <MInput
@@ -515,7 +520,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
                   type="dropdown"
                   control={control}
                   errors={errors}
-                  options={gender}
+                  options={jobList}
                   rounded={true}
                   fullWidth={true}
                 />

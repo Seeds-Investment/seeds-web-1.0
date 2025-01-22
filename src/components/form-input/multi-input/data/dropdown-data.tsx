@@ -420,3 +420,111 @@ export const useInvestmentGoals = (): ILabel[] => {
     }
   ];
 };
+
+export const useJobList = (): ILabel[] => {
+  const { t } = useTranslation();
+  const path = 'danamart.verification.financial.jobList';
+
+  return [
+    {
+      key: 1,
+      label: t(`${path}.governmentEmployee`),
+      value: 'GOVERNMENT_EMPLOYEE'
+    },
+    {
+      key: 2,
+      label: t(`${path}.privateSectorEmployee`),
+      value: 'PRIVATE_SECTOR_EMPLOYEE'
+    },
+    {
+      key: 3,
+      label: t(`${path}.stateOwnedEnterpriseEmployee`),
+      value: 'STATE_OWNED_ENTERPRISE_EMPLOYEE'
+    },
+    {
+      key: 4,
+      label: t(`${path}.nationalMilitaryOrPoliceOfficer`),
+      value: 'NATIONAL_MILITARY_OR_POLICE_OFFICER'
+    },
+    {
+      key: 5,
+      label: t(`${path}.businessOwner`),
+      value: 'BUSINESS_OWNER'
+    },
+    {
+      key: 6,
+      label: t(`${path}.trader`),
+      value: 'TRADER'
+    },
+    {
+      key: 7,
+      label: t(`${path}.farmerOrFisherman`),
+      value: 'FARMER_OR_FISHERMAN'
+    },
+    {
+      key: 8,
+      label: t(`${path}.student`),
+      value: 'STUDENT'
+    },
+    {
+      key: 9,
+      label: t(`${path}.housewife`),
+      value: 'HOUSEWIFE'
+    },
+    {
+      key: 10,
+      label: t(`${path}.unemployed`),
+      value: 'UNEMPLOYED'
+    },
+    {
+      key: 11,
+      label: t(`${path}.employee`),
+      value: 'EMPLOYEE'
+    },
+    {
+      key: 12,
+      label: t(`${path}.entrepreneur`),
+      value: 'ENTREPRENEUR'
+    },
+    {
+      key: 13,
+      label: t(`${path}.stateOfficial`),
+      value: 'STATE_OFFICIAL'
+    },
+    {
+      key: 14,
+      label: t(`${path}.accountant`),
+      value: 'ACCOUNTANT'
+    },
+    {
+      key: 15,
+      label: t(`${path}.lawyerOrNotary`),
+      value: 'LAWYER_OR_NOTARY'
+    },
+    {
+      key: 16,
+      label: t(`${path}.profession`),
+      value: 'PROFESSION'
+    },
+    {
+      key: 17,
+      label: t(`${path}.retiree`),
+      value: 'RETIREE'
+    },
+    {
+      key: 18,
+      label: t(`${path}.privateLecturerOrTeacher`),
+      value: 'PRIVATE_LECTURER_OR_TEACHER'
+    },
+    {
+      key: 19,
+      label: t(`${path}.publicLecturerOrTeacher`),
+      value: 'PUBLIC_LECTURER_OR_TEACHER'
+    },
+    {
+      key: 20,
+      label: t(`${path}.doctor`),
+      value: 'DOCTOR'
+    }
+  ];
+};

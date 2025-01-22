@@ -3045,6 +3045,12 @@ export default {
       financialInformationTittle: 'Financial Information',
       financial: {
         income: 'Income',
+        listIncome: {
+          salary: 'Salary',
+          profit: 'Profit',
+          husbandOrParent: 'Husband / Parent',
+          other: 'Other'
+        },
         incomeSource: 'Income Source',
         select: 'Select',
         incomePerMonth: 'Income per month',
@@ -3058,8 +3064,27 @@ export default {
         bankName: 'Bank Name',
         sidInformation: 'SID Information',
         doYouAlready: 'Do you already have a securities account?',
+        noSID: 'SID Number',
+        monthYearRegis: 'Month Year Registration',
+        accessCard: 'Access Card File (JPG Format Max 4MB)',
         beneficialInformation: 'Beneficial Owner Information',
-        isThereBeneficial: 'Is there a beneficial owner?'
+        isThereBeneficial: 'Is there a beneficial owner?',
+        fullName: 'Full Name',
+        gender: 'Gender',
+        identityNumber: 'Identity Number',
+        fileIdentity: 'Identity File (JPG Format Max 4MB)',
+        address: 'Address',
+        birthPlace: 'Place of Birth',
+        birthDate: 'Date of Birth',
+        citizenship: 'Citizenship',
+        job: 'Occupation',
+        jobAddress: 'Job Address',
+        jobPhoneNumber: 'Job Phone Number',
+        biologicalMotherName: 'Maiden Name of Biological Mother',
+        sourceOfFunds: 'Source of Funds',
+        investmentGoals: 'Investment Goals',
+        relationshipWithBeneficial: 'Relationship with Beneficial Owner',
+        marriedStatus: 'Beneficial Owner Married Status'
       },
       photoSelfieTittle: 'Photo Selfie',
       photoSelfie: {

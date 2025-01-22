@@ -204,3 +204,44 @@ export const updateUserInfo = async (
     throw new Error(error.response.data.message);
   }
 };
+
+export const getFinancialInformationData = async (): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.get('/pemodal/form_informasi_keuangan', {
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+      }
+    });
+    return { ...response.data, status: 200 };
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const updateFinancialInformation = async (data: any): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+    const response = await danamartApi.post(
+      `/pemodal/form_informasi_keuangan/updateFormKeuangan`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};

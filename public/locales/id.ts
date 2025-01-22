@@ -2977,6 +2977,12 @@ export default {
       financialInformationTittle: 'Informasi Keuangan',
       financial: {
         income: 'Pendapatan',
+        listIncome: {
+          salary: 'Gaji',
+          profit: 'Keuntungan',
+          husbandOrParent: 'Suami / Orang Tua',
+          other: 'Lainnya'
+        },
         incomeSource: 'Sumber Penghasilan',
         select: 'Pilih',
         incomePerMonth: 'Penghasilan per bulan',
@@ -2990,8 +2996,28 @@ export default {
         bankName: 'Nama Bank',
         sidInformation: 'Informasi SID',
         doYouAlready: 'Apakah sudah memiliki rekening efek?',
+        noSID: 'Nomor SID',
+        monthYearRegis: 'Bulan Tahun Registrasi',
+        accessCard: 'File Kartu Akses (JPG Format Max 4MB)',
         beneficialInformation: 'Informasi Beneficial Owner',
-        isThereBeneficial: 'Apakah Terdapat Pemilik Manfaat (Beneficial Owner)?'
+        isThereBeneficial:
+          'Apakah Terdapat Pemilik Manfaat (Beneficial Owner)?',
+        fullName: 'Nama Lengkap',
+        gender: 'Jenis Kelamin',
+        identityNumber: 'Nomor Identitas',
+        fileIdentity: 'File Identitas (JPG Format Max 4MB)',
+        address: 'Alamat',
+        birthPlace: 'Tempat Lahir',
+        birthDate: 'Tanggal Lahir',
+        citizenship: 'Kewarganegaraan',
+        job: 'Pekerjaan',
+        jobAddress: 'Alamat Pekerjaan',
+        jobPhoneNumber: 'Nomor Telepon Pekerjaan',
+        biologicalMotherName: 'Nama Gadis Ibu Kandung',
+        sourceOfFunds: 'Sumber Dana',
+        investmentGoals: 'Tujuan Investasi',
+        relationshipWithBeneficial: 'Hubungan dengan Beneficial Owner',
+        marriedStatus: 'Status Perkawinan Beneficial Owner'
       },
       photoSelfieTittle: 'Foto Diri',
       photoSelfie: {

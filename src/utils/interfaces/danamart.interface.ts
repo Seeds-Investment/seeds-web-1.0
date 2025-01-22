@@ -330,3 +330,17 @@ export interface Dana {
   maks_pendanaan: any;
   status: string;
 }
+
+export interface FinancialInfoForm {
+  dm_pen_06001: string;
+  dm_pen_06002: string;
+  cek_pendapatan_baru: boolean;
+  dm_penmit_07001: string;
+  dm_penmit_07002: string;
+  dm_penmit_07003: string;
+  pernyataan: string;
+  dm_penmit_07008?: string;
+  dm_penmit_07009?: string;
+  dm_penmit_07010?: string | File;
+  bo_confirm: string;
+}

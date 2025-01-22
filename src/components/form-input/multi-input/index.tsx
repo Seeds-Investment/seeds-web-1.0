@@ -58,6 +58,7 @@ const CommonInput = <T extends FieldValues>(
 ): JSX.Element | null => {
   return props.type === 'text' ||
     props.type === 'datetime-local' ||
+    props.type === 'date' ||
     props.type === 'email' ? (
     <CInput
       onInput={props.onInput}
@@ -198,38 +199,49 @@ const ImageInput = <T extends FieldValues>(
 ): JSX.Element | null => {
   return props.type === 'image' ? (
     <>
-      <div className="w-full border-[#BDBDBD] border rounded-lg flex flex-col text-center items-center justify-center p-10 gap-3">
-        {props.imageURLPreview !== null ? (
-          <img
-            className="flex mx-auto w-[500px] h-[166px] object-contain"
-            src={props.imageURLPreview}
-            alt="imageURLPreview"
-            onClick={() => {
-              if (
-                (props.isCrop ?? false) &&
-                props.handleOpen !== null &&
-                props.handleOpen !== undefined
-              ) {
-                props.handleOpen();
-              }
-            }}
+      {props.usePreview ? (
+        <div className="w-full border-[#BDBDBD] border rounded-lg flex flex-col text-center items-center justify-center p-10 gap-3">
+          {props.imageURLPreview !== null ? (
+            <img
+              className="flex mx-auto w-[500px] h-[166px] object-contain"
+              src={props.imageURLPreview}
+              alt="imageURLPreview"
+              onClick={() => {
+                if (
+                  (props.isCrop ?? false) &&
+                  props.handleOpen !== null &&
+                  props.handleOpen !== undefined
+                ) {
+                  props.handleOpen();
+                }
+              }}
+            />
+          ) : props.dataImage !== undefined ? (
+            <img
+              className="flex mx-auto w-[500px] h-[166px] object-contain"
+              src={props.dataImage}
+              alt=""
+            />
+          ) : (
+            <div className="text-seeds">Choose your image here</div>
+          )}
+          <FileInput
+            {...props.register(props.registerName)}
+            size="sm"
+            accept="image/*"
+            className="w-full sm:w-fit"
           />
-        ) : props.dataImage !== undefined ? (
-          <img
-            className="flex mx-auto w-[500px] h-[166px] object-contain"
-            src={props.dataImage}
-            alt=""
-          />
-        ) : (
-          <div className="text-seeds">Choose your image here</div>
-        )}
+        </div>
+      ) : (
         <FileInput
           {...props.register(props.registerName)}
           size="sm"
           accept="image/*"
-          className="w-full sm:w-fit"
+          className={`${
+            props.extraClasses ? props.extraClasses : 'w-full sm:w-fit'
+          }`}
         />
-      </div>
+      )}
     </>
   ) : null;
 };

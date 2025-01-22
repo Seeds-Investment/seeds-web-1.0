@@ -26,7 +26,7 @@ interface CommonProps<T extends FieldValues> {
 }
 
 interface CommonIProps<T extends FieldValues> extends CommonProps<T> {
-  type: 'text' | 'datetime-local' | 'email';
+  type: 'text' | 'datetime-local' | 'date' | 'email';
   register: UseFormRegister<T>;
   disabled?: boolean;
   maxLength?: number;
@@ -66,16 +66,19 @@ interface RadioIProps<T extends FieldValues> extends CommonProps<T> {
 
 interface ImageIProps<T extends FieldValues> extends CommonProps<T> {
   type: 'image';
-  imageURLPreview: string | undefined;
+  imageURLPreview?: string | undefined;
+  usePreview: boolean;
   dataImage?: string;
   isCrop?: boolean;
   handleOpen?: () => void;
   register: UseFormRegister<T>;
+  extraClasses?: string;
 }
 
 interface DropdownProps<T extends FieldValues> extends CommonProps<T> {
   type: 'dropdown';
   registerName: Path<T>;
+  watch?: UseFormWatch<T>;
   control?: Control<T, any>;
   options?: Option[];
   disabled?: boolean;

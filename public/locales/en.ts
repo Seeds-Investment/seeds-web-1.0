@@ -2930,16 +2930,20 @@ export default {
         upload: 'Upload',
         retake: 'Retake',
         uploadTitle: 'Upload your ID Card',
-        uploadDescription: 'To confirm you are, please upload digital photo or take a photo.',
+        uploadDescription:
+          'To confirm you are, please upload digital photo or take a photo.',
         uploadRequirement: {
           title: 'ID Card Upload Requirements',
-          text1: 'Take a photo of the ID card directly through the camera or upload a photo of the ID card.',
-          text2: 'The uploaded file must be in JPG/JPEG format and a maximum of 4 MB.',
+          text1:
+            'Take a photo of the ID card directly through the camera or upload a photo of the ID card.',
+          text2:
+            'The uploaded file must be in JPG/JPEG format and a maximum of 4 MB.',
           text3: 'The ID card must not be damaged such as cracks or breaks.',
           text4: 'Take a photo of the ID card in Landscape position.',
-          text5: 'Ensure the e-ID card photo is clear, not blurry, with sufficient lighting, and not cropped.',
+          text5:
+            'Ensure the e-ID card photo is clear, not blurry, with sufficient lighting, and not cropped.'
         },
-        successMessage: 'ID Card photo updated successfully.',
+        successMessage: 'ID Card photo updated successfully.'
       },
       accountInformation: {
         accountInformationTitle: 'Account Information',
@@ -3101,6 +3105,13 @@ export default {
         biologicalMotherName: 'Maiden Name of Biological Mother',
         sourceOfFunds: 'Source of Funds',
         investmentGoals: 'Investment Goals',
+        investmentGoalsList: {
+          longTermInvest: 'Long Term Investment',
+          shortTermInvest: 'Short Term Investment',
+          speculation: 'Speculation',
+          income: 'Income',
+          other: 'Other'
+        },
         relationshipWithBeneficial: 'Relationship with Beneficial Owner',
         marriageStatus: 'Beneficial Owner Married Status',
         marriageStatusList: {

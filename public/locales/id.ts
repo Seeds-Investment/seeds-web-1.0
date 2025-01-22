@@ -2862,16 +2862,20 @@ export default {
         upload: 'Unggah',
         retake: 'Ambil Ulang',
         uploadTitle: 'Unggah Kartu Identitas Anda',
-        uploadDescription: 'Untuk mengonfirmasi identitas Anda, harap unggah foto digital atau ambil foto.',
+        uploadDescription:
+          'Untuk mengonfirmasi identitas Anda, harap unggah foto digital atau ambil foto.',
         uploadRequirement: {
           title: 'Ketentuan mengunggah KTP',
-          text1: 'Mengambil foto KTP langsung melalui kamera atau upload foto KTP.',
-          text2: 'File yang diunggah harus dalam format JPG/JPEG dan maksimal 4 MB.',
+          text1:
+            'Mengambil foto KTP langsung melalui kamera atau upload foto KTP.',
+          text2:
+            'File yang diunggah harus dalam format JPG/JPEG dan maksimal 4 MB.',
           text3: 'KTP tidak rusak seperti retak atau patah.',
           text4: 'Ambil foto KTP dengan posisi Landscape',
-          text5: 'Pastikan foto e-KTP jelas, tidak buram, pencahayaan cukup terang, dan tidak terpotong.',
+          text5:
+            'Pastikan foto e-KTP jelas, tidak buram, pencahayaan cukup terang, dan tidak terpotong.'
         },
-        successMessage: 'Data foto KTP berhasil diperbarui.',
+        successMessage: 'Data foto KTP berhasil diperbarui.'
       },
       accountInformation: {
         accountInformationTitle: 'Informasi Akun',
@@ -3034,6 +3038,13 @@ export default {
         biologicalMotherName: 'Nama Gadis Ibu Kandung',
         sourceOfFunds: 'Sumber Dana',
         investmentGoals: 'Tujuan Investasi',
+        investmentGoalsList: {
+          longTermInvest: 'Investasi Jangka Panjang',
+          shortTermInvest: 'Investasi Jangka Pendek',
+          speculation: 'Spekulasi',
+          income: 'Pendapatan',
+          other: 'Lainnya'
+        },
         relationshipWithBeneficial: 'Hubungan dengan Beneficial Owner',
         marriageStatus: 'Status Perkawinan Beneficial Owner',
         marriageStatusList: {

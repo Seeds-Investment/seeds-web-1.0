@@ -387,3 +387,36 @@ export const useMarriageStatus = (): ILabel[] => {
     }
   ];
 }; 
+
+export const useInvestmentGoals = (): ILabel[] => {
+  const { t } = useTranslation();
+  const path = 'danamart.verification.financial.investmentGoalsList';
+
+  return [
+    {
+      key: 1,
+      label: t(`${path}.longTermInvest`),
+      value: 'Investasi Jangka Panjang'
+    },
+    {
+      key: 2,
+      label: t(`${path}.shortTermInvest`),
+      value: 'Investasi Jangka Pendek'
+    },
+    {
+      key: 3,
+      label: t(`${path}.speculation`),
+      value: 'Spekulasi'
+    },
+    {
+      key: 4,
+      label: t(`${path}.income`),
+      value: 'Pendapatan'
+    },
+    {
+      key: 5,
+      label: t(`${path}.other`),
+      value: 'Lainnya'
+    }
+  ];
+};

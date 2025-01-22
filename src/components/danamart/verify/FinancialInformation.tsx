@@ -4,6 +4,7 @@ import {
   useConfirmShares,
   useGender,
   useIncome,
+  useInvestmentGoals,
   useMarriageStatus
 } from '@/components/form-input/multi-input/data/dropdown-data';
 import useUpdateFinancialInfo from '@/hooks/danamart/useUpdateFinancialInfo';
@@ -35,6 +36,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
   const gender = useGender();
   const income = useIncome();
   const marriageStatus = useMarriageStatus();
+  const investmentGoals = useInvestmentGoals();
 
   const { control, errors, handleSubmit, register, watch, onSubmit, setValue } =
     useUpdateFinancialInfo();
@@ -392,7 +394,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
               type="dropdown"
               errors={errors}
               rounded={true}
-              options={income}
+              options={investmentGoals}
               fullWidth={true}
               control={control}
             />

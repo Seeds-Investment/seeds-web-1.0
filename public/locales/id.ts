@@ -3017,7 +3017,13 @@ export default {
         sourceOfFunds: 'Sumber Dana',
         investmentGoals: 'Tujuan Investasi',
         relationshipWithBeneficial: 'Hubungan dengan Beneficial Owner',
-        marriedStatus: 'Status Perkawinan Beneficial Owner'
+        marriageStatus: 'Status Perkawinan Beneficial Owner',
+        marriageStatusList: {
+          single: 'Belum Menikah',
+          married: 'Menikah'
+        },
+        partnerFullname: 'Nama Lengkap Pasangan',
+        ktpNumber: 'No KTP'
       },
       photoSelfieTittle: 'Foto Diri',
       photoSelfie: {

@@ -3084,7 +3084,13 @@ export default {
         sourceOfFunds: 'Source of Funds',
         investmentGoals: 'Investment Goals',
         relationshipWithBeneficial: 'Relationship with Beneficial Owner',
-        marriedStatus: 'Beneficial Owner Married Status'
+        marriageStatus: 'Beneficial Owner Married Status',
+        marriageStatusList: {
+          single: 'Single',
+          married: 'Married'
+        },
+        partnerFullname: 'Partner Full Name',
+        ktpNumber: 'KTP Number'
       },
       photoSelfieTittle: 'Photo Selfie',
       photoSelfie: {

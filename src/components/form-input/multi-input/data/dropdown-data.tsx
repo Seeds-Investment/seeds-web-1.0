@@ -369,3 +369,21 @@ export const useIncome = (): ILabel[] => {
     }
   ];
 }; 
+
+export const useMarriageStatus = (): ILabel[] => {
+  const { t } = useTranslation();
+  const path = 'danamart.verification.financial.marriageStatusList';
+
+  return [
+    {
+      key: 1,
+      label: t(`${path}.single`),
+      value: 'single'
+    },
+    {
+      key: 2,
+      label: t(`${path}.married`),
+      value: 'married'
+    }
+  ];
+}; 

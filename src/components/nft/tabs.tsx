@@ -128,6 +128,9 @@ const NFTTabs = (): JSX.Element => {
         className={`${
           activeTab === 'collection' ? 'flex' : 'hidden'
         } justify-center items-center gap-2 fixed bottom-10 right-10 md:right-16 z-50 normal-case font-poppins font-semibold text-lg rounded-full bg-[#3AC4A0] md:px-8 p-5 md:py-3.5 text-white cursor-pointer active:scale-95 transition-all`}
+        onClick={async () => {
+          await router.push('/nft/create');
+        }}
       >
         <FiPlus className="w-5 md:w-8 h-5 md:h-8" />
         <p className="hidden md:block">Upload NFT</p>

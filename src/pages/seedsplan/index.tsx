@@ -365,9 +365,9 @@ const SeedsPlan: React.FC = () => {
                     {t('seedsPlan.text17')}
                   </Typography>
                 </div>
-                {/* Uncomment This Section for Adding Stop Plan */}
-                {/* <div className="flex flex-wrap-reverse md:flex-nowrap justify-center items-center md:gap-7 gap-4"> */}
-                {/* <Button
+                <div className="flex flex-wrap-reverse md:flex-nowrap justify-center items-center md:gap-7 gap-4">
+                  {/* Uncomment This Section for Adding Stop Plan */}
+                  {/* <Button
                     onClick={() => {
                       setIsOpenStopPlan(true);
                     }}
@@ -375,15 +375,15 @@ const SeedsPlan: React.FC = () => {
                   >
                     {t('seedsPlan.button9')}
                   </Button> */}
-                <Button
-                  onClick={async () => {
-                    await router.push('/seedsplan/change-plan');
-                  }}
-                  className="font-poppins text-sm font-semibold capitalize bg-[#3AC4A0] border border-[#3AC4A0] text-white rounded-full md:w-[342px] w-full h-[42px] flex items-center justify-center"
-                >
-                  {t('seedsPlan.button6')}
-                </Button>
-                {/* </div> */}
+                  <Button
+                    onClick={async () => {
+                      await router.push('/seedsplan/change-plan');
+                    }}
+                    className="font-poppins text-sm font-semibold capitalize bg-[#3AC4A0] border border-[#3AC4A0] text-white rounded-full md:w-[342px] w-full h-[42px] flex items-center justify-center"
+                  >
+                    {t('seedsPlan.button6')}
+                  </Button>
+                </div>
               </div>
             ) : (
               <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-0 md:mt-4 font-poppins">

@@ -2987,12 +2987,64 @@ export default {
             text5: 'Lainnya'
           },
           information: {
-            text1: 'Media Sosial',
-            text2: 'Iklan',
-            text3: 'Teman',
-            text4: 'Keluarga',
-            text5: 'Website Danamart',
-            text6: 'Lainnya'
+            text1: 'Search Engine',
+            text2: 'Instagram',
+            text3: 'Facebook',
+            text4: 'Tiktok',
+            text5: 'Youtube',
+            text6: 'Referral',
+            text7: 'Event',
+            text8: 'Berita',
+            text9: 'Radio',
+            text10: 'Lainnya'
+          },
+          jobDetailList: {
+            text1: 'Alas Kaki',
+            text2: 'Asuransi',
+            text3: 'Bank',
+            text4: 'Elektronik dan Komponennya',
+            text5: 'Energi',
+            text6: 'Garmen, Tekstil',
+            text7: 'Iklan, Percetakan dan Media',
+            text8: 'Institusi Keuangan',
+            text9: 'Jalan Tol, Bandara dan Pelabuhan',
+            text10: 'Kabel',
+            text11: 'Kayu',
+            text12: 'Keramik, Kaca atau Porselain',
+            text13: 'Kertas',
+            text14: 'Kimia',
+            text15: 'Konstruksi Bangunan',
+            text16: 'Konstruksi Non-Bangunan',
+            text17: 'Kosmetik dan Rumah Tangga',
+            text18: 'Layanan Komputer',
+            text19: 'Makanan dan Minuman',
+            text20: 'Mesin dan Alat Berat',
+            text21: 'Obat-obatan',
+            text22: 'Otomotif dan Komponennya',
+            text23: 'Pakan Ternak',
+            text24: 'Pariwisata, Hotel dan Restauran',
+            text25: 'Pendidikan',
+            text26: 'Peralatan Rumah Tangga',
+            text27: 'Perikanan',
+            text28: 'Perkebunan',
+            text29: 'Pertambangan Batu/Pasir',
+            text30: 'Pertambangan Batubara',
+            text31: 'Pertambangan Gas Alam',
+            text32: 'Pertambangan Logam dan Mineral',
+            text33: 'Perumahan dan Property',
+            text34: 'Perusahaan Grosir',
+            text35: 'Perusahaan Investasi',
+            text36: 'Perusahaan Retail',
+            text37: 'Perusahaan Sekuritas',
+            text38: 'Plastik dan Kemasan',
+            text39: 'Produk Logam',
+            text40: 'Pusat Kesehatan',
+            text41: 'Semen',
+            text42: 'Tanaman',
+            text43: 'Telekomunikasi',
+            text44: 'Tembakau',
+            text45: 'Transportasi',
+            text46: 'Lainnya'
           }
         }
       },
@@ -3092,7 +3144,8 @@ export default {
         requirements4: 'Tidak perlu memegang e-KTP atau benda lainnya.'
       },
       buttonSave: 'Simpan',
-      buttonPrevious: 'Sebelumnya'
+      buttonPrevious: 'Sebelumnya',
+      buttonNext: 'Selanjutnya'
     }
   }
 };

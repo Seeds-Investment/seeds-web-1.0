@@ -11,6 +11,8 @@ interface Props {
   setImageData: React.Dispatch<React.SetStateAction<string>>;
   height: number;
   width: number;
+  useConfirm: boolean;
+  setIsWebcamReady?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CameraSelfie: React.FC<Props> = ({
@@ -21,6 +23,8 @@ const CameraSelfie: React.FC<Props> = ({
   setImageData,
   height,
   width,
+  useConfirm,
+  setIsWebcamReady
 }) => {
   const webcamRef = useRef<Webcam | null>(null);
   const [captureImage, setCaptureImage] = useState<string | null>(null);
@@ -44,6 +48,9 @@ const CameraSelfie: React.FC<Props> = ({
   const usePhoto = (): void => {
     setImageData(captureImage ?? '');
     setIsUsePhoto(true);
+    if (setIsWebcamReady !== undefined) {
+      setIsWebcamReady(false);
+    }
   };
 
   return (
@@ -78,13 +85,34 @@ const CameraSelfie: React.FC<Props> = ({
       ) : (
         <>
           <div className="relative">
-            <Webcam
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              audio={false}
-              screenshotQuality={1}
-              videoConstraints={{ facingMode: 'user', width, height }}
-            />
+            {
+              useConfirm ?
+                <Webcam
+                  ref={webcamRef}
+                  screenshotFormat="image/jpeg"
+                  audio={false}
+                  screenshotQuality={1}
+                  videoConstraints={{ facingMode: 'user', width, height }}
+                  onUserMedia={() => {
+                    if (setIsWebcamReady !== undefined) {
+                      setIsWebcamReady(true);
+                    }
+                  }}
+                  onUserMediaError={() => {
+                    if (setIsWebcamReady !== undefined) {
+                      setIsWebcamReady(false);
+                    }
+                  }}
+                />
+                :
+                <Webcam
+                  ref={webcamRef}
+                  screenshotFormat="image/jpeg"
+                  audio={false}
+                  screenshotQuality={1}
+                  videoConstraints={{ facingMode: 'user', width, height }}
+                />
+            }
             <div
               onClick={capture}
               className="absolute bottom-3 left-1/2 transform -translate-x-1/2 cursor-pointer hover:scale-105 duration-150"
@@ -97,6 +125,9 @@ const CameraSelfie: React.FC<Props> = ({
           <Button
             onClick={() => {
               setIsCameraActive(false);
+              if (setIsWebcamReady !== undefined) {
+                setIsWebcamReady(false);
+              }
             }}
             className="flex items-center justify-center bg-white border border-seeds-button-green text-seeds-green capitalize text-sm font-poppins font-semibold rounded-full w-[155px] h-[36px]"
           >

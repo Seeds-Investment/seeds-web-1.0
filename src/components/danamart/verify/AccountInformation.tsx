@@ -1,5 +1,5 @@
 import MInput from '@/components/form-input/multi-input';
-import { useDanamartInformation, useDeclarationsNPWP, useDeclarationsStatement, useGender, useInvestingPlan, useLastEducation, useMarriage, useReligion, useWorkingLength } from '@/components/form-input/multi-input/data/dropdown-data';
+import { useDanamartInformation, useDeclarationsNPWP, useDeclarationsStatement, useGender, useInvestmentGoals, useJobDetailList, useJobList, useLastEducation, useMarriageStatus, useReligion, useWorkingLength } from '@/components/form-input/multi-input/data/dropdown-data';
 import useUpdateUserInfoForm, { type UserInfoFormData } from '@/hooks/danamart/useUpdateUserInfoForm';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -17,9 +17,6 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
   setStep,
   t
 }) => {
-  const [isIdPermanent, setIsIdPermanent] = useState<boolean>(true);
-  const pathTranslation = 'danamart.verification.accountInformation'
-
   const {
     handleSubmit,
     onSubmit,
@@ -28,6 +25,11 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
     control,
     watch
   } = useUpdateUserInfoForm();
+
+  // const imageURL = watch("image_url");
+  const [isIdPermanent, setIsIdPermanent] = useState<boolean>(true);
+  const pathTranslation = 'danamart.verification.accountInformation'
+  // const [imageURLPreview] = useFilePreview(imageURL as FileList);
 
   return (
     <div className="w-full flex flex-col rounded-lg">
@@ -130,13 +132,13 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="dropdown"
           control={control}
           errors={errors}
-          options={useMarriage()}
+          options={useMarriageStatus()}
           rounded={false}
           fullWidth={true}
         />
       </div>
       {
-        (watch("dm_penmit_01026") === "Kawin") &&
+        (watch("dm_penmit_01026") === "married") &&
           <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
             <MInput
               label={t(`${pathTranslation}.text13`)}
@@ -156,20 +158,22 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
         <MInput
           label={t(`${pathTranslation}.text15`)}
           registerName="dm_penmit_01029"
-          register={register}
-          type="text"
+          type="dropdown"
+          control={control}
           errors={errors}
-          placeholder={t(`${pathTranslation}.text16`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          options={useJobList()}
+          rounded={false}
+          fullWidth={true}
         />
         <MInput
           label={t(`${pathTranslation}.text17`)}
           registerName="dm_penmit_01039"
-          register={register}
-          type="text"
+          type="dropdown"
+          control={control}
           errors={errors}
-          placeholder={t(`${pathTranslation}.text18`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          options={useJobDetailList()}
+          rounded={false}
+          fullWidth={true}
         />
         <MInput
           label={t(`${pathTranslation}.text19`)}
@@ -220,7 +224,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           register={register}
           type="text"
           errors={errors}
-          placeholder={t(`${pathTranslation}.text24`)}
+          placeholder={t(`${pathTranslation}.text25`)}
           className='rounded-lg px-3 border border-[#BDBDBD]'
         />
       </div>
@@ -388,7 +392,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="dropdown"
           control={control}
           errors={errors}
-          options={useInvestingPlan()}
+          options={useInvestmentGoals()}
           rounded={false}
           fullWidth={true}
         />
@@ -417,6 +421,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
       </div>
       {
         (watch("pernyataan_npwp") === '0') &&
+        <div>
           <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
             <MInput
               label={t(`${pathTranslation}.text55`)}
@@ -437,13 +442,24 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
               className='rounded-lg px-3 border border-[#BDBDBD]'
             />
           </div>
+          {/* <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+            <MInput
+              label={t(`${pathTranslation}.text61`)}
+              registerName="dm_penmit_01013"
+              type="image"
+              register={register}
+              errors={errors}
+              imageURLPreview={imageURLPreview}
+            />
+          </div> */}
+        </div>
       }
       <Button
         className="w-full text-base font-semibold bg-seeds-button-green mt-6 rounded-full capitalize"
         onClick={() => {
           handleSubmit((data: UserInfoFormData) => {
             onSubmit(data).then(() => {
-              setStep(step + 1);
+              // setStep(step + 1);
             })
           })();
         }}

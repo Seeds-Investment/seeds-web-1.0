@@ -356,7 +356,7 @@ const SeedsPlan: React.FC = () => {
                     className="cursor-pointer flex items-center justify-between border-b border-[#E9E9E9] border-dotted pb-4"
                   >
                     <Typography className="font-poppins text-base font-normal">
-                      {t('seedsPlan.button7')}
+                      {t('seedsPlan.button1')}
                     </Typography>
                     <FaChevronRight color="#DADADA" size={20} />
                   </div>
@@ -364,9 +364,6 @@ const SeedsPlan: React.FC = () => {
                 <div className="flex flex-col gap-4">
                   <Typography className="font-poppins font-semibold text-base text-[#262626] text-justify">
                     {t('seedsPlan.text17')}
-                  </Typography>
-                  <Typography className="font-poppins font-medium italic text-sm text-justify text-[#B798FF]">
-                    {t('seedsPlan.text18')}
                   </Typography>
                 </div>
                 <div className="flex flex-wrap-reverse md:flex-nowrap justify-center items-center md:gap-7 gap-4">

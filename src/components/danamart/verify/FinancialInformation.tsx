@@ -10,7 +10,7 @@ import {
 } from '@/components/form-input/multi-input/data/dropdown-data';
 import useUpdateFinancialInfo from '@/hooks/danamart/useUpdateFinancialInfo';
 import { getFinancialInformationData } from '@/repository/danamart/danamart.repository';
-import { type AccountVerification } from '@/utils/interfaces/danamart.interface';
+import { type AccountVerification, type FinancialInfoForm } from '@/utils/interfaces/danamart.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { WarningGreenIcon } from 'public/assets/vector';
@@ -229,6 +229,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
             register={register}
             usePreview={false}
             fileType=".jpg,.jpeg"
+            errors={errors}
             extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
           />
         </div>
@@ -289,6 +290,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
               register={register}
               usePreview={false}
               fileType=".jpg,.jpeg"
+              errors={errors}
               extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
             />
             <MInput
@@ -556,9 +558,11 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
         <Button
           className="w-[155.5px] h-[36px] px-4 py-2 text-sm font-semibold bg-seeds-button-green rounded-full capitalize mt-2"
           onClick={() => {
-            // handleSubmit(onSubmit);
+            handleSubmit((data: FinancialInfoForm) => {
+              onSubmit(data)
+            })();
             const allValues = watch();
-            console.log(allValues);
+            console.log('log button', allValues);
           }}
         >
           Save

@@ -334,19 +334,19 @@ export interface Dana {
 export interface FinancialInfoForm {
   dm_pen_06001: string;
   dm_pen_06002: string;
-  cek_pendapatan_baru: boolean;
+  cek_pendapatan_baru: boolean | string;
   dm_penmit_07001: string;
   dm_penmit_07002: string;
   dm_penmit_07003: string;
   pernyataan: string;
   dm_penmit_07008?: string;
   dm_penmit_07009?: string;
-  dm_penmit_07010?: string | File;
+  dm_penmit_07010?: File | null;
   bo_confirm: string;
   bo_nama?: string;
   bo_jns_kelamin?: string;
   bo_no_identitas?: string;
-  bo_file_identitas?: string | File;
+  bo_file_identitas?: File | null;
   bo_alamat?: string;
   bo_tmp_lahir?: string;
   bo_tgl_lahir?: string;
@@ -363,7 +363,7 @@ export interface FinancialInfoForm {
   bo_relation_nama?: string;
   bo_relation_jns_kelamin?: string;
   bo_relation_no_ktp?: string;
-  bo_relation_file_ktp?: string | File;
+  bo_relation_file_ktp?: File | null;
   bo_relation_alamat?: string;
   bo_relation_tempat_lahir?: string;
   bo_relation_tgl_lahir?: string;

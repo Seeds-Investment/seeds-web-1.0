@@ -173,7 +173,7 @@ export const CardSlideTournament: React.FC<props> = ({
                         </div>
                         <div className="flex w-full justify-center py-0">
                           <Card
-                            className="rounded-[15px] bg-[#F5F5F5] border-none w-full md:gap-0 gap-2 flex flex-row"
+                            className="rounded-[15px] bg-[#F5F5F5] border-none md:gap-0 gap-2 w-full flex flex-row"
                             shadow={false}
                           >
                             <div className="flex flex-col w-full items-center justify-center">

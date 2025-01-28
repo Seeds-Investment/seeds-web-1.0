@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { updateUserInfo } from "@/repository/danamart/danamart.repository";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -41,119 +42,194 @@ export interface UserInfoFormData {
   // dm_penmit_01012: string;
   // dm_penmit_01045: string;
   // dm_penmit_01013_exist: string;
+  // dm_penmit_01013: string;
   dm_penmit_01008: string;
 }
 
+
 const schema = yup.object().shape({
   pernyataan: yup.string().required("This field is required"),
-  // 1 = ada, 2 = tidak ada
-
   dm_penmit_01010: yup.string().required("This field is required"),
-  // Nomor KTP
-  
   dm_penmit_01003: yup.string().required("This field is required"),
-  // Nama Lengkap
-  
   dm_penmit_01038: yup.string().required("This field is required"),
-  // Jenis Kelamin
-
   dm_penmit_01006: yup.string().required("This field is required"),
-  // Tempat lahir
-
   dm_penmit_01007: yup.string().required("This field is required"),
-  // Tanggal lahir
-  
   dm_penmit_01015: yup.string().required("This field is required"),
-  // Agama
-  
   dm_penmit_01027: yup.string().required("This field is required"),
-  // Pendidikan terakhir
-  
+  // dm_penmit_01026: yup.string().required("This field is required"),
+  // namaPasangan: yup.string().when("dm_penmit_01026", (dm_penmit_01026: any[string], schema) => {
+  //   if (dm_penmit_01026 === "Kawin") {
+  //     return yup.string().required("This field is required");
+  //   }
+  //   return schema.notRequired();
+  // }),
   dm_penmit_01026: yup.string().required("This field is required"),
-  // Status Pernikahan
-  
-  // namaPasangan: yup.string().required("This field is required"),
-  // Nama Pasangan
-  
+  namaPasangan: yup.string().when("dm_penmit_01026", {
+    is: "married",
+    then: schema => schema.required('This field is required'),
+    otherwise: schema => schema.notRequired()
+  }),
   dm_penmit_01029: yup.string().required("This field is required"),
-  // Pekerjaan
-  
   dm_penmit_01039: yup.string().required("This field is required"),
-  // Bidang Pekerjaan
-  
   dm_penmit_01040: yup.string().required("This field is required"),
-  // Lama bekerja
-  
   alamat_tmpt_kerja: yup.string().required("This field is required"),
-  // Alamat kantor
-  
   telepon_tmpt_kerja: yup.string().required("This field is required"),
-  // Telepon kantor
-  
   dm_penmit_01032: yup.string().required("This field is required"),
-  // Alamat domisili
-  
   dm_penmit_01019rt: yup.string().required("This field is required"),
-  // RT
-  
   dm_penmit_01019rw: yup.string().required("This field is required"),
-  // RW
-  
   dm_penmit_01037: yup.string().required("This field is required"),
-  // Kelurahan
-  
   dm_penmit_01036: yup.string().required("This field is required"),
-  // Kecamatan
-
   dm_penmit_01035: yup.string().required("This field is required"),
-  // Kabupaten / Kota
-
   dm_penmit_01034: yup.string().required("This field is required"),
-  // Provinsi
-
   dm_penmit_01033: yup.string().required("This field is required"),
-  // Kode Pos
-
   dm_penmit_01017: yup.string().required("This field is required"),
-  // Kota Penerbit KTP
-
-  // masa_berlaku: yup.string(),
-  // KTP: on / off
-
-  // dm_penmit_01018: yup.string().required("This field is required"),
-  // Masa Berlaku KTP
-
   dm_penmit_01022: yup.string().required("This field is required"),
-  // Nama Ibu Kandung
-
   dm_penmit_01041: yup.string().required("This field is required"),
-  // Nama Ahli Waris
-
   dm_penmit_01042: yup.string().required("This field is required"),
-  // Nomor Telepon
-
   dm_pen_08002: yup.string().required("This field is required"),
-  // Tujuan Investasi
-
   dm_pen_08009: yup.string().required("This field is required"),
-  // Sumber Informasi Danamart
-
+  // pernyataan_npwp: yup.string().required("This field is required"),
+  // dm_penmit_01012: yup.string().when("pernyataan_npwp", (pernyataan_npwp: any[string], schema) => {
+  //   if (pernyataan_npwp === "1") {
+  //     return schema.required("This field is required");
+  //   }
+  //   return schema.notRequired();
+  // }),
+  // dm_penmit_01045: yup.string().when("pernyataan_npwp", ([pernyataan_npwp]: any[string], schema) => {
+  //   if (pernyataan_npwp === "1") {
+  //     return schema.required("This field is required");
+  //   }
+  //   return schema.notRequired();
+  // }),
   pernyataan_npwp: yup.string().required("This field is required"),
-  // 0 atau 1
-
-  // dm_penmit_01012: yup.string().required("This field is required"),
-  // 
-
-  // dm_penmit_01045: yup.string().required("This field is required"),
-  // 
-
-  // dm_penmit_01013_exist: yup.string().required("This field is required"),
-  // File NPWP
-
+  dm_penmit_01012: yup.string().when("pernyataan_npwp", {
+    is: "0",
+    then: schema => schema.required('This field is required'),
+    otherwise: schema => schema.notRequired()
+  }),
+  dm_penmit_01045: yup.string().when("pernyataan_npwp", {
+    is: "0",
+    then: schema => schema.required('This field is required'),
+    otherwise: schema => schema.notRequired()
+  }),
+  // namaPasangan: yup.string().when("dm_penmit_01026", {
+  //   is: "married",
+  //   then: schema => schema.required('This field is required'),
+  //   otherwise: schema => schema.notRequired()
+  // }),
   dm_penmit_01008: yup.string().required("This field is required"),
-  // Kearganegaraan
-
+  // dm_penmit_01013: yup.string().required("This field is required"),
 });
+
+// const schema = yup.object().shape({
+//   pernyataan: yup.string().required("This field is required"),
+//   // 1 = ada, 2 = tidak ada
+
+//   dm_penmit_01010: yup.string().required("This field is required"),
+//   // Nomor KTP
+  
+//   dm_penmit_01003: yup.string().required("This field is required"),
+//   // Nama Lengkap
+  
+//   dm_penmit_01038: yup.string().required("This field is required"),
+//   // Jenis Kelamin
+
+//   dm_penmit_01006: yup.string().required("This field is required"),
+//   // Tempat lahir
+
+//   dm_penmit_01007: yup.string().required("This field is required"),
+//   // Tanggal lahir
+  
+//   dm_penmit_01015: yup.string().required("This field is required"),
+//   // Agama
+  
+//   dm_penmit_01027: yup.string().required("This field is required"),
+//   // Pendidikan terakhir
+  
+//   dm_penmit_01026: yup.string().required("This field is required"),
+//   // Status Pernikahan
+  
+//   // namaPasangan: yup.string().required("This field is required"),
+//   // Nama Pasangan
+  
+//   dm_penmit_01029: yup.string().required("This field is required"),
+//   // Pekerjaan
+  
+//   dm_penmit_01039: yup.string().required("This field is required"),
+//   // Bidang Pekerjaan
+  
+//   dm_penmit_01040: yup.string().required("This field is required"),
+//   // Lama bekerja
+  
+//   alamat_tmpt_kerja: yup.string().required("This field is required"),
+//   // Alamat kantor
+  
+//   telepon_tmpt_kerja: yup.string().required("This field is required"),
+//   // Telepon kantor
+  
+//   dm_penmit_01032: yup.string().required("This field is required"),
+//   // Alamat domisili
+  
+//   dm_penmit_01019rt: yup.string().required("This field is required"),
+//   // RT
+  
+//   dm_penmit_01019rw: yup.string().required("This field is required"),
+//   // RW
+  
+//   dm_penmit_01037: yup.string().required("This field is required"),
+//   // Kelurahan
+  
+//   dm_penmit_01036: yup.string().required("This field is required"),
+//   // Kecamatan
+
+//   dm_penmit_01035: yup.string().required("This field is required"),
+//   // Kabupaten / Kota
+
+//   dm_penmit_01034: yup.string().required("This field is required"),
+//   // Provinsi
+
+//   dm_penmit_01033: yup.string().required("This field is required"),
+//   // Kode Pos
+
+//   dm_penmit_01017: yup.string().required("This field is required"),
+//   // Kota Penerbit KTP
+
+//   // masa_berlaku: yup.string(),
+//   // KTP: on / off
+
+//   // dm_penmit_01018: yup.string().required("This field is required"),
+//   // Masa Berlaku KTP
+
+//   dm_penmit_01022: yup.string().required("This field is required"),
+//   // Nama Ibu Kandung
+
+//   dm_penmit_01041: yup.string().required("This field is required"),
+//   // Nama Ahli Waris
+
+//   dm_penmit_01042: yup.string().required("This field is required"),
+//   // Nomor Telepon
+
+//   dm_pen_08002: yup.string().required("This field is required"),
+//   // Tujuan Investasi
+
+//   dm_pen_08009: yup.string().required("This field is required"),
+//   // Sumber Informasi Danamart
+
+//   pernyataan_npwp: yup.string().required("This field is required"),
+//   // 0 atau 1
+
+//   // dm_penmit_01012: yup.string().required("This field is required"),
+//   // 
+
+//   // dm_penmit_01045: yup.string().required("This field is required"),
+//   // 
+
+//   // dm_penmit_01013_exist: yup.string().required("This field is required"),
+//   // File NPWP
+
+//   dm_penmit_01008: yup.string().required("This field is required"),
+//   // Kearganegaraan
+// });
 
 	const defaultValues = {
     pernyataan: "",
@@ -165,7 +241,7 @@ const schema = yup.object().shape({
     dm_penmit_01015: "",
     dm_penmit_01027: "",
     dm_penmit_01026: "",
-    namaPasangan: "",
+    // namaPasangan: "",
     dm_penmit_01029: "",
     dm_penmit_01039: "",
     dm_penmit_01040: "",
@@ -188,9 +264,10 @@ const schema = yup.object().shape({
     dm_pen_08002: "",
     dm_pen_08009: "",
     pernyataan_npwp: "",
-    dm_penmit_01012: "",
-    dm_penmit_01045: "",
-    dm_penmit_01013_exist: "",
+    // dm_penmit_01012: "",
+    // dm_penmit_01045: "",
+    // dm_penmit_01013_exist: "",
+    // dm_penmit_01013: "",
     dm_penmit_01008: "",
 	}
 
@@ -210,15 +287,38 @@ const useUpdateUserInfoForm = (): any => {
 		defaultValues
   });
 
-  const onSubmit = async (data: UserInfoFormData): Promise<void> => {
+  // const onSubmit = async (data: UserInfoFormData): Promise<void> => {
+  // try {
+  //   const payload = { ...data };
+
+  //   // Handle image upload
+  //   if ((data.dm_penmit_01013.length > 0) && (data.dm_penmit_01013[0].length > 0)) {
+  //     const imageUrl = await uploadFile(data.dm_penmit_01013[0] as unknown as File);
+  //     payload.dm_penmit_01013 = imageUrl;
+  //   } else {
+  //     payload.dm_penmit_01013 = "";
+  //   }
+
+  //   await updateUserInfo(payload);
+  //   toast.success("User information updated successfully");
+  //   // reset();
+  //   } catch (error) {
+  //     toast.error("Failed to update user information");
+  //   }
+  // };
+
+    const onSubmit = async (data: UserInfoFormData): Promise<void> => {
     try {
+      console.log('data ', data)
       await updateUserInfo(data);
       toast.success("User information updated successfully");
-      reset();
+      // reset();
     } catch (error) {
+      console.error(error);
       toast.error("Failed to update user information");
     }
   };
+
 
   return {
     handleSubmit,

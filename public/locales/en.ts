@@ -3055,12 +3055,64 @@ export default {
             text5: 'Others'
           },
           information: {
-            text1: 'Social Media',
-            text2: 'Advertisement',
-            text3: 'Friends',
-            text4: 'Family',
-            text5: 'Danamart Website',
-            text6: 'Others'
+            text1: 'Search Engine',
+            text2: 'Instagram',
+            text3: 'Facebook',
+            text4: 'Tiktok',
+            text5: 'Youtube',
+            text6: 'Referral',
+            text7: 'Event',
+            text8: 'News',
+            text9: 'Radio',
+            text10: 'Others'
+          },
+          jobDetailList: {
+            text1: 'Footwear',
+            text2: 'Insurance',
+            text3: 'Bank',
+            text4: 'Electronics and Components',
+            text5: 'Energy',
+            text6: 'Garments, Textiles',
+            text7: 'Advertising, Printing, and Media',
+            text8: 'Financial Institutions',
+            text9: 'Toll Roads, Airports, and Ports',
+            text10: 'Cables',
+            text11: 'Wood',
+            text12: 'Ceramics, Glass, or Porcelain',
+            text13: 'Paper',
+            text14: 'Chemicals',
+            text15: 'Building Construction',
+            text16: 'Non-Building Construction',
+            text17: 'Cosmetics and Household',
+            text18: 'Computer Services',
+            text19: 'Food and Beverages',
+            text20: 'Machinery and Heavy Equipment',
+            text21: 'Pharmaceuticals',
+            text22: 'Automotive and Components',
+            text23: 'Animal Feed',
+            text24: 'Tourism, Hotels, and Restaurants',
+            text25: 'Education',
+            text26: 'Household Appliances',
+            text27: 'Fisheries',
+            text28: 'Plantations',
+            text29: 'Stone/Sand Mining',
+            text30: 'Coal Mining',
+            text31: 'Natural Gas Mining',
+            text32: 'Metal and Mineral Mining',
+            text33: 'Housing and Property',
+            text34: 'Wholesale Companies',
+            text35: 'Investment Companies',
+            text36: 'Retail Companies',
+            text37: 'Securities Companies',
+            text38: 'Plastics and Packaging',
+            text39: 'Metal Products',
+            text40: 'Healthcare Centers',
+            text41: 'Cement',
+            text42: 'Plants',
+            text43: 'Telecommunications',
+            text44: 'Tobacco',
+            text45: 'Transportation',
+            text46: 'Others'
           }
         }
       },
@@ -3159,7 +3211,8 @@ export default {
         requirements4: 'No need to hold e-KTP or other objects.'
       },
       buttonSave: 'Save',
-      buttonPrevious: 'Previous'
+      buttonPrevious: 'Previous',
+      buttonNext: 'Next'
     }
   }
 };

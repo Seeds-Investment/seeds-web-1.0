@@ -1,12 +1,12 @@
 import CameraIcon from '@/assets/danamart/camera.svg';
 import SeedyDetective from '@/assets/danamart/seedy-detective.svg';
 import UploadIcon from '@/assets/danamart/upload.svg';
-import { updatePhotoIdCard } from '@/repository/danamart/danamart.repository';
+import { getPhotoIdCard, updatePhotoIdCard } from '@/repository/danamart/danamart.repository';
 import { type AccountVerification } from '@/utils/interfaces/danamart.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { WarningGreenIcon } from 'public/assets/vector';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import CameraSelfie from './CameraSelfie';
 
@@ -19,14 +19,46 @@ interface PhotoIdCardProps {
 const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
   const [photoIdCardData, setPhotoIdCardData] = useState<AccountVerification>();
   const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
+  const [isIdCardUploaded, setIsIdCardUploaded] = useState<boolean>(false);
   const [isUsePhoto, setIsUsePhoto] = useState<boolean>(false);
   const [imageData, setImageData] = useState<string>('');
   const [uploadType, setUploadType] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isWebcamReady, setIsWebcamReady] = useState<boolean>(false);
   const pathTranslation = 'danamart.verification.photoIdCardTitle'
+  
+  useEffect(() => {
+    if (step === 1) {
+      void fetchDataPhotoIdCard();
+    }
+  }, [step]);
+  
+  useEffect(() => {
+    if (photoIdCardData?.penmit?.dm_penmit_01011 !== '') {
+      setIsIdCardUploaded(true)
+    } else {
+      setIsIdCardUploaded(false)
+    }
+  }, [photoIdCardData?.penmit]);
+
+  const fetchDataPhotoIdCard = async (): Promise<void> => {
+    try {
+      setIsLoading(true)
+      const response = await getPhotoIdCard();
+      setPhotoIdCardData(response);
+    } catch (error) {
+      toast.error(`Error fetching data Photo Selfie`);
+    } finally {
+      setIsLoading(false)
+    }
+  };
   
   const saveData = async (): Promise<void> => {
     try {
-      const response = await updatePhotoIdCard(imageData);
+      const response = await updatePhotoIdCard(
+        isIdCardUploaded ? 'updateOcr' : 'simpan', 
+        imageData
+      );
       setPhotoIdCardData(response);
       if (response?.status === 200) {
         toast.success(t(`${pathTranslation}.successMessage`));
@@ -36,6 +68,10 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
       toast.error(error as string);
     }
   };
+
+  const handleNextPage = (): void => {
+    setStep(step + 1);
+  }
 
   return (
     <div className="w-full flex flex-col rounded-lg">
@@ -55,8 +91,10 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
                 isUsePhoto={isUsePhoto}
                 setIsUsePhoto={setIsUsePhoto}
                 setImageData={setImageData}
-                height={208}
-                width={312}
+                height={300}
+                width={476}
+                useConfirm={true}
+                setIsWebcamReady={setIsWebcamReady}
               />
             ) : (
               <>
@@ -72,64 +110,89 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
                     </div>
                   )
                   :
-                  <Image
-                    src={SeedyDetective}
-                    alt="SeedyDetective"
-                    width={160}
-                    height={160}
-                  />
+                  (
+                    isLoading ?
+                      <div className="w-full flex justify-center h-fit my-8">
+                        <div className="h-[60px]">
+                          <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+                        </div>
+                      </div>
+                      :
+                      isIdCardUploaded ?
+                        <Image
+                          src={
+                            ((photoIdCardData?.penmit?.dm_penmit_01011) !== undefined)
+                              ? `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${photoIdCardData?.penmit?.dm_penmit_01011}`
+                              : SeedyDetective  
+                          }
+                          alt="SeedyDetective"
+                          width={1000}
+                          height={1000}
+                          className='h-auto w-full'
+                        />
+                        :
+                        <Image
+                          src={SeedyDetective}
+                          alt="SeedyDetective"
+                          width={160}
+                          height={160}
+                        />
+                  )
                 }
               </>
             )}
-            <div className="flex gap-4 mt-2">
-              <Button
-                onClick={() => {
-                  setIsCameraActive(false);
-                  setUploadType('file')
-                  setImageData('')
-                }}
-                className="flex justify-center items-center gap-2 border-[1px] border-seeds-button-green capitalize font-poppins font-semibold text-sm text-seeds-button-green w-full h-[40px] bg-white rounded-full"
-              >
-                <Image src={UploadIcon} alt="UploadIcon" width={18} height={18} />
-                <Typography>
-                  <label htmlFor="fileUpload" className="cursor-pointer">
-                    {t(`${pathTranslation}.upload`)}
-                  </label>
-                </Typography>
-                <input
-                  type="file"
-                  id="fileUpload"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={async (e) => {
-                    const file = e.target.files?.[0];
-                    if (file != null) {
-                      const reader = new FileReader();
-                      reader.onload = () => {
-                        const base64String = reader.result as string;
-                        setImageData(base64String);
-                        setIsUsePhoto(true);
-                      };
-                      reader.readAsDataURL(file);
-                    } else {
-                      toast.error(t('No file selected'));
-                    }
-                  }}
-                />
-              </Button>
-              <Button className="flex justify-center items-center gap-2 border-[1px] border-seeds-button-green capitalize font-poppins font-semibold text-sm text-seeds-button-green w-full h-[40px] bg-white rounded-full">
-                <Image src={CameraIcon} alt="CameraIcon" width={18} height={18} />
-                <Typography
-                  onClick={() => {
-                    setIsCameraActive(true);
-                    setUploadType('camera')
-                    setIsUsePhoto(false)
-                  }}
-                >
-                  {t(`${pathTranslation}.camera`)}
-                </Typography>
-              </Button>
-            </div>
+            {
+              !isWebcamReady &&
+                <div className="flex gap-4 mt-2">
+                  <Button
+                    onClick={() => {
+                      setIsCameraActive(false);
+                      setUploadType('file')
+                      setImageData('')
+                    }}
+                    className="flex justify-center items-center gap-2 border-[1px] border-seeds-button-green capitalize font-poppins font-semibold text-sm text-seeds-button-green w-full h-[40px] bg-white rounded-full"
+                  >
+                    <Image src={UploadIcon} alt="UploadIcon" width={18} height={18} />
+                    <Typography>
+                      <label htmlFor="fileUpload" className="cursor-pointer">
+                        {t(`${pathTranslation}.upload`)}
+                      </label>
+                    </Typography>
+                    <input
+                      type="file"
+                      id="fileUpload"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (file != null) {
+                          const reader = new FileReader();
+                          reader.onload = () => {
+                            const base64String = reader.result as string;
+                            setImageData(base64String);
+                            setIsUsePhoto(true);
+                          };
+                          reader.readAsDataURL(file);
+                        } else {
+                          toast.error(t('No file selected'));
+                        }
+                      }}
+                    />
+                  </Button>
+                  <Button className="flex justify-center items-center gap-2 border-[1px] border-seeds-button-green capitalize font-poppins font-semibold text-sm text-seeds-button-green w-full h-[40px] bg-white rounded-full">
+                    <Image src={CameraIcon} alt="CameraIcon" width={18} height={18} />
+                    <Typography
+                      onClick={() => {
+                        setIsCameraActive(true);
+                        setUploadType('camera')
+                        setIsUsePhoto(false)
+                      }}
+                    >
+                      {t(`${pathTranslation}.camera`)}
+                    </Typography>
+                  </Button>
+                </div>
+            }
           </div>
         </div>
       </div>
@@ -167,12 +230,35 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
             {t(`${pathTranslation}.retake`)}
           </Button>
         )}
+        {(imageData !== '' && isUsePhoto && uploadType === 'file') && (
+          <Button
+            onClick={() => {
+              setImageData('');
+            }}
+            className="bg-seeds-button-green capitalize font-poppins font-semibold text-sm rounded-full w-[155px] h-[36px] flex justify-center items-center"
+          >
+            {t(`${pathTranslation}.retake`)}
+          </Button>
+        )}
         {photoIdCardData?.info_4 !== '1' && (
           <Button
-            onClick={saveData}
+            disabled={isLoading}
+            onClick={async() => {
+              if (isIdCardUploaded && !isUsePhoto) {
+                handleNextPage();
+              } else {
+                await saveData();
+              }
+            }}
             className="rounded-full px-4 py-2 w-[155px] h-[36px] bg-seeds-button-green"
           >
-            {t('danamart.verification.buttonSave')}
+            {
+              isIdCardUploaded
+                ? imageData !== '' 
+                  ? t('danamart.verification.buttonSave') 
+                  : t('danamart.verification.buttonNext')
+                : t('danamart.verification.buttonSave')
+            }
           </Button>
         )}
       </div>

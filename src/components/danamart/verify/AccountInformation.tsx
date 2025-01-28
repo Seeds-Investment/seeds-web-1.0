@@ -554,7 +554,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
         onClick={() => {
           handleSubmit((data: UserInfoFormData) => {
             onSubmit(data).then(() => {
-              // setStep(step + 1);
+              setStep(step + 1);
               isUploading(!uploading)
             })
           })();

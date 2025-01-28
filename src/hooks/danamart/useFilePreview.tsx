@@ -5,13 +5,13 @@ const useFilePreview = (file?: FileList): [string | undefined] => {
 
   useEffect(() => {
     if ((file?.[0]) != null) {
-      const newUrl = URL.createObjectURL(file[0]);
+      const newUrl = URL?.createObjectURL(file[0]);
 
       if (newUrl !== imgSrc) {
         setImgSrc(newUrl);
       }
     }
-  }, [file, imgSrc]);
+  }, [file]);
 
   return [imgSrc];
 }

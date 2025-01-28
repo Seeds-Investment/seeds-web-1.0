@@ -1,10 +1,15 @@
 import MInput from '@/components/form-input/multi-input';
 import { useDanamartInformation, useDeclarationsNPWP, useDeclarationsStatement, useGender, useInvestmentGoals, useJobDetailList, useJobList, useLastEducation, useMarriageStatus, useReligion, useWorkingLength } from '@/components/form-input/multi-input/data/dropdown-data';
+import useBase64ToFileList from '@/hooks/danamart/useBase64ToFile';
+import useFilePreview from '@/hooks/danamart/useFilePreview';
 import useUpdateUserInfoForm, { type UserInfoFormData } from '@/hooks/danamart/useUpdateUserInfoForm';
+import { getUserInformation } from '@/repository/danamart/danamart.repository';
+import { type AccountVerification } from '@/utils/interfaces/danamart.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { WarningGreenIcon } from 'public/assets/vector';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface AccountInformationProps {
   step: number;
@@ -23,13 +28,90 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
     register,
     errors,
     control,
-    watch
+    watch,
+    setValue
   } = useUpdateUserInfoForm();
 
-  // const imageURL = watch("image_url");
-  const [isIdPermanent, setIsIdPermanent] = useState<boolean>(true);
+  const permanentId = watch("masa_berlaku");
+  const imageURL = watch("dm_penmit_01013");
   const pathTranslation = 'danamart.verification.accountInformation'
-  // const [imageURLPreview] = useFilePreview(imageURL as FileList);
+  const [userInformation, setUserInformation] = useState<AccountVerification>();
+  const [fileList, base64ToFileList] = useBase64ToFileList();
+  const [imageURLPreview] = useFilePreview((fileList != null) ? fileList : undefined);
+  const [uploading, isUploading] = useState<boolean>(false);
+  
+  useEffect(() => {
+    base64ToFileList(imageURL)
+  }, [imageURL]);
+
+  const handleSwitchChange = (): void => {
+    if (permanentId === true) {
+      setValue('masa_berlaku', false);
+    } else {
+      setValue('masa_berlaku', true);
+      setValue('dm_penmit_01018', '2099-01-01');
+    }
+  };
+    
+  useEffect(() => {
+    setValue('pernyataan', userInformation?.penmit?.pernyataan)
+    setValue('dm_penmit_01010', userInformation?.penmit?.dm_penmit_01010)
+    setValue('dm_penmit_01003', userInformation?.penmit?.dm_penmit_01003)
+    setValue('dm_penmit_01038', userInformation?.penmit?.dm_penmit_01038)
+    setValue('dm_penmit_01006', userInformation?.penmit?.dm_penmit_01006)
+    setValue('dm_penmit_01007', userInformation?.penmit?.dm_penmit_01007)
+    setValue('dm_penmit_01015', userInformation?.penmit?.dm_penmit_01015)
+    setValue('dm_penmit_01027', userInformation?.penmit?.dm_penmit_01027)
+    setValue('dm_penmit_01026', userInformation?.penmit?.dm_penmit_01026)
+    setValue('nama_pasangan', userInformation?.penmit?.nama_pasangan)
+    setValue('dm_penmit_01029', userInformation?.penmit?.dm_penmit_01029)
+    setValue('dm_penmit_01039', userInformation?.penmit?.dm_penmit_01039)
+    setValue('dm_penmit_01040', userInformation?.penmit?.dm_penmit_01040)
+    setValue('alamat_tmpt_kerja', userInformation?.penmit?.alamat_tmpt_kerja)
+    setValue('telepon_tmpt_kerja', userInformation?.penmit?.telepon_tmpt_kerja)
+    setValue('dm_penmit_01032', userInformation?.penmit?.dm_penmit_01032)
+    setValue('dm_penmit_01019rt', userInformation?.penmit?.dm_penmit_01019?.substring(0,3))
+    setValue('dm_penmit_01019rw', userInformation?.penmit?.dm_penmit_01019?.substring(4,7))
+    setValue('dm_penmit_01037', userInformation?.penmit?.dm_penmit_01037)
+    setValue('dm_penmit_01036', userInformation?.penmit?.dm_penmit_01036)
+    setValue('dm_penmit_01035', userInformation?.penmit?.dm_penmit_01035)
+    setValue('dm_penmit_01034', userInformation?.penmit?.dm_penmit_01034)
+    setValue('dm_penmit_01033', userInformation?.penmit?.dm_penmit_01033)
+    setValue('dm_penmit_01017', userInformation?.penmit?.dm_penmit_01017)
+    setValue('dm_penmit_01008', userInformation?.penmit?.dm_penmit_01008)
+    if (userInformation?.penmit?.dm_penmit_01018 === '2099-01-01') {
+      setValue('masa_berlaku', true)
+      setValue('dm_penmit_01018', userInformation?.penmit?.dm_penmit_01018)
+    } else {
+      setValue('masa_berlaku', false)
+    }
+    setValue('dm_penmit_01022', userInformation?.penmit?.dm_penmit_01022)
+    setValue('dm_penmit_01041', userInformation?.penmit?.dm_penmit_01041)
+    setValue('dm_penmit_01042', userInformation?.penmit?.dm_penmit_01042)
+    setValue('dm_pen_08002', userInformation?.resiko?.dm_pen_08002)
+    setValue('dm_pen_08009', userInformation?.resiko?.dm_pen_08009)
+    setValue('pernyataan_npwp', userInformation?.penmit?.pernyataan_npwp)
+    if (userInformation?.penmit?.pernyataan_npwp === '0') {
+      setValue('dm_penmit_01012', userInformation?.penmit?.dm_penmit_01012)
+      setValue('dm_penmit_01045', userInformation?.penmit?.dm_penmit_01045)
+      setValue('dm_penmit_01013', userInformation?.penmit?.dm_penmit_01013)
+    }
+  }, [userInformation]);
+    
+  useEffect(() => {
+    if (step === 2) {
+      void fetchDataUserInformation();
+    }
+  }, [step, uploading]);
+  
+  const fetchDataUserInformation = async (): Promise<void> => {
+    try {
+      const response = await getUserInformation();
+      setUserInformation(response);
+    } catch (error) {
+      toast.error(`Error fetching data Photo Selfie`);
+    }
+  };
 
   return (
     <div className="w-full flex flex-col rounded-lg">
@@ -60,11 +142,11 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
         <MInput
           label={t(`${pathTranslation}.text2`)}
           registerName="dm_penmit_01010"
-          register={register}
-          type="text"
+          type="long-number"
           errors={errors}
           placeholder={t(`${pathTranslation}.text3`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          control={control}
+          watch={watch}
         />
         <MInput
           label={t(`${pathTranslation}.text4`)}
@@ -100,7 +182,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           label={t(`${pathTranslation}.text9`)}
           registerName="dm_penmit_01007"
           register={register}
-          type="datetime-local"
+          type="date"
           errors={errors}
           className='rounded-lg px-3 border border-[#BDBDBD]'
         />
@@ -198,10 +280,10 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
         />
         <MInput
           label={t(`${pathTranslation}.text22`)}
-          type="number"
           registerName="telepon_tmpt_kerja"
-          placeholder={t(`${pathTranslation}.text23`)}
+          type="long-number"
           errors={errors}
+          placeholder={t(`${pathTranslation}.text23`)}
           control={control}
           watch={watch}
         />
@@ -232,20 +314,22 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
         <MInput
           label={t(`${pathTranslation}.text26`)}
           registerName="dm_penmit_01019rt"
-          register={register}
-          type="text"
+          type="long-number"
           errors={errors}
           placeholder={t(`${pathTranslation}.text27`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          control={control}
+          watch={watch}
+          maxLength={3}
         />
         <MInput
           label={t(`${pathTranslation}.text28`)}
           registerName="dm_penmit_01019rw"
-          register={register}
-          type="text"
+          type="long-number"
           errors={errors}
           placeholder={t(`${pathTranslation}.text29`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          control={control}
+          watch={watch}
+          maxLength={3}
         />
         <MInput
           label={t(`${pathTranslation}.text30`)}
@@ -256,6 +340,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           placeholder={t(`${pathTranslation}.text31`)}
           className='rounded-lg px-3 border border-[#BDBDBD]'
         />
+        
       </div>
       <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
         <MInput
@@ -327,27 +412,28 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
             height={20}
           />
         </div>
-        <div className='w-full flex justify-start items-center gap-2'>
-          <input
-            id="checkboxAll"
-            type="checkbox"
-            className="w-5 h-5 shrink-0 appearance-none rounded-md border-2 checked:border-none checked:bg-[#3AC4A0] disabled:checked:!bg-[#727272] relative after:checked:content-[' '] after:checked:absolute after:checked:w-2 after:checked:h-3 after:checked:border after:checked:border-white after:checked:border-t-0 after:checked:border-e-[3px] after:checked:border-b-[3px] after:checked:border-s-0 after:checked:rotate-45 after:checked:top-0.5 after:checked:left-1/2 after:checked:-translate-x-1/2 cursor-pointer peer"
-            checked={isIdPermanent}
-            onChange={() => { setIsIdPermanent(!isIdPermanent); }}
-          />
-          <Typography
-            onClick={() => { setIsIdPermanent(!isIdPermanent); }}
-            className='font-poppins text-sm font-medium cursor-pointer'>{t(`${pathTranslation}.text60`)}
+        <div className='w-full flex justify-start items-end gap-2'>
+          <div className="w-auto">
+            <MInput
+              type="switch"
+              registerName="masa_berlaku"
+              control={control}
+              errors={errors}
+              onSwitchToggle={handleSwitchChange}
+            />
+          </div>
+          <Typography className='w-full flex justify-start items-center font-poppins font-semibold'>
+            {t(`${pathTranslation}.text60`)}
           </Typography>
         </div>
         {
-          !isIdPermanent &&
+          (permanentId === false) &&
             <MInput
               label={t(`${pathTranslation}.text45`)}
               registerName="dm_penmit_01018"
               register={register}
-              disabled={isIdPermanent}
-              type="datetime-local"
+              disabled={permanentId}
+              type="date"
               errors={errors}
               className='rounded-lg px-3 border border-[#BDBDBD]'
             />
@@ -379,10 +465,10 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
       <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
         <MInput
           label={t(`${pathTranslation}.text50`)}
-          type="number"
           registerName="dm_penmit_01042"
-          placeholder={t(`${pathTranslation}.text51`)}
+          type="long-number"
           errors={errors}
+          placeholder={t(`${pathTranslation}.text51`)}
           control={control}
           watch={watch}
         />
@@ -436,30 +522,40 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
               label={t(`${pathTranslation}.text57`)}
               registerName="dm_penmit_01045"
               register={register}
-              type="datetime-local"
+              type="date"
               errors={errors}
               placeholder={t(`${pathTranslation}.text58`)}
               className='rounded-lg px-3 border border-[#BDBDBD]'
             />
           </div>
-          {/* <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+          <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
             <MInput
               label={t(`${pathTranslation}.text61`)}
               registerName="dm_penmit_01013"
-              type="image"
+              type="image64"
               register={register}
               errors={errors}
-              imageURLPreview={imageURLPreview}
+              imageURLPreview={
+                imageURL === ''
+                ? imageURLPreview
+                : userInformation?.penmit?.dm_penmit_01013 !== undefined
+                  ? `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${userInformation?.penmit?.dm_penmit_01013}`
+                  : imageURLPreview
+              }
+              usePreview={true}
+              setValue={setValue}
             />
-          </div> */}
+          </div>
         </div>
       }
       <Button
         className="w-full text-base font-semibold bg-seeds-button-green mt-6 rounded-full capitalize"
+        disabled={watch("pernyataan") !== '1'}
         onClick={() => {
           handleSubmit((data: UserInfoFormData) => {
             onSubmit(data).then(() => {
               // setStep(step + 1);
+              isUploading(!uploading)
             })
           })();
         }}

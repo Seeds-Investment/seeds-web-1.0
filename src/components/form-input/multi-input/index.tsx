@@ -6,7 +6,8 @@ import {
 import { type ChangeEvent } from 'react';
 import CurrencyInput from 'react-currency-input-field';
 import { FileInput, Toggle } from 'react-daisyui';
-import { Controller, type FieldValues } from 'react-hook-form';
+import { Controller, type FieldValues, type Path, type PathValue } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import CInput from '../input';
 import Select from '../select';
 
@@ -36,11 +37,13 @@ export default function MInput<T extends FieldValues>(
       )}
       <CommonInput {...props} />
       <NumberInput {...props} />
+      <LongNumberInput {...props} />
       <CheckboxInput {...props} />
       <RadioInput {...props} />
       <ImageInput {...props} />
       <DropdownInput {...props} />
       <SwitchToggle {...props} />
+      <ImageBase64Input {...props} />
       {extraElement}
       {errors != null && Boolean(getNestedValue(errors, registerName)) && (
         <p className="font-poppins font-normal text-sm text-[#EF5350] text-right">
@@ -115,6 +118,36 @@ const NumberInput = <T extends FieldValues>(
             onChange(val);
           }}
           max={props.max}
+        />
+      )}
+    />
+  );
+};
+
+const LongNumberInput = <T extends FieldValues>(
+  props: MultiProps<T>
+): JSX.Element | null => {
+  if (props.type !== 'long-number') return null;
+
+  return (
+    <Controller
+      control={props.control}
+      name={props.registerName}
+      render={({ field: { value, onChange } }) => (
+        <input
+          id={`${props.registerName}-label`}
+          type="text"
+          value={value || ''}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (/^\d{0,16}$/.test(val)) {
+              onChange(val);
+            }
+          }}
+          maxLength={props.maxLength ?? 16}
+          placeholder={props.placeholder ?? 'Enter a 16-digit number'}
+          disabled={props.disabled}
+          className={`w-full py-[11px] font-normal text-base text-[#201B1C] border border-[#BDBDBD] rounded-lg px-3 font-poppins ${props.extraClasses ?? ''}`}
         />
       )}
     />
@@ -202,10 +235,11 @@ const ImageInput = <T extends FieldValues>(
       {props.usePreview ? (
         <div className="w-full border-[#BDBDBD] border rounded-lg flex flex-col text-center items-center justify-center p-10 gap-3">
           {props.imageURLPreview !== null ? (
+            props.imageURLPreview ?
             <img
-              className="flex mx-auto w-[500px] h-[166px] object-contain"
+              className='flex mx-auto w-[500px] h-[166px] object-contain'
               src={props.imageURLPreview}
-              alt="imageURLPreview"
+              alt=""
               onClick={() => {
                 if (
                   (props.isCrop ?? false) &&
@@ -216,6 +250,8 @@ const ImageInput = <T extends FieldValues>(
                 }
               }}
             />
+            :
+            <div className="text-seeds">Choose your image here</div>
           ) : props.dataImage !== undefined ? (
             <img
               className="flex mx-auto w-[500px] h-[166px] object-contain"
@@ -229,7 +265,7 @@ const ImageInput = <T extends FieldValues>(
             {...props.register(props.registerName)}
             size="sm"
             accept={props.fileType ? props.fileType : 'image/*'}
-            className="w-full sm:w-fit"
+            className="w-full sm:w-fit cursor-pointer border border-[#E2E2E2]"
           />
         </div>
       ) : (
@@ -244,6 +280,71 @@ const ImageInput = <T extends FieldValues>(
       )}
     </>
   ) : null;
+};
+
+const ImageBase64Input = <T extends FieldValues>(props: MultiProps<T>): JSX.Element | null => {
+  
+  // Type narrowing: Check if props.type is 'image64'
+  if (props.type !== 'image64') {
+    return null;
+  }
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const base64String = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => { resolve(reader.result as string); };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+
+        // Use setValue to update the form value (with type assertion)
+        props.setValue?.(props.registerName, base64String as PathValue<T, Path<T>>);
+
+        // Call additional handler if provided
+        props.onFileChange?.(base64String);
+      } catch (error) {
+        toast.error('Failed to process the file');
+      }
+    } else {
+      toast.error('No file selected');
+    }
+  };
+
+  return (
+    <>
+      {props.usePreview ? (
+        <div className="w-full border-[#BDBDBD] border rounded-lg flex flex-col text-center items-center justify-center p-10 gap-3">
+          {props.imageURLPreview ? (
+            <img
+              className="flex mx-auto w-[500px] h-[166px] object-contain"
+              src={props.imageURLPreview}
+              alt=""
+            />
+          ) : (
+            <div className="text-seeds">Choose your image here</div>
+          )}
+          <input
+            type="file"
+            accept={props.fileType ?? 'image/*'}
+            className="w-full sm:w-fit cursor-pointer border border-[#E2E2E2]"
+            onChange={handleFileChange}
+          />
+        </div>
+      ) : (
+        <input
+          type="file"
+          accept={props.fileType ?? 'image/*'}
+          className={`${
+            props.extraClasses ? props.extraClasses : 'w-full sm:w-fit'
+          }`}
+          onChange={handleFileChange}
+        />
+      )}
+    </>
+  );
 };
 
 const DropdownInput = <T extends FieldValues>(

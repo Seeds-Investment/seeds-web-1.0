@@ -4,6 +4,7 @@ import {
   type FieldValues,
   type Path,
   type UseFormRegister,
+  type UseFormSetValue,
   type UseFormWatch
 } from 'react-hook-form';
 
@@ -95,11 +96,37 @@ interface SwitchToggleProps<T extends FieldValues> extends CommonProps<T> {
   onSwitchToggle?: (checked: boolean) => void;
 }
 
+interface LongNumberIProps<T extends FieldValues> extends CommonProps<T> {
+  type: 'long-number';
+  watch: UseFormWatch<T>;
+  control: Control<T, any>;
+  disabled?: boolean;
+  placeholder?: string;
+  maxLength?: number;
+  extraClasses?: string;
+}
+
+interface Image64IProps<T extends FieldValues> extends CommonProps<T> {
+  type: 'image64';
+  imageURLPreview?: string | undefined;
+  usePreview: boolean;
+  dataImage?: string;
+  isCrop?: boolean;
+  handleOpen?: () => void;
+  register: UseFormRegister<T>;
+  extraClasses?: string;
+  fileType?: string;
+  setValue?: UseFormSetValue<T>;
+  onFileChange?: (base64String: string) => void
+}
+
 export type MultiProps<T extends FieldValues> =
   | CommonIProps<T>
   | NumberIProps<T>
+  | LongNumberIProps<T>
   | CheckboxIProps<T>
   | RadioIProps<T>
   | ImageIProps<T>
   | DropdownProps<T>
+  | Image64IProps<T>
   | SwitchToggleProps<T>;

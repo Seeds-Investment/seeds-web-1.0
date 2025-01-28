@@ -3046,6 +3046,12 @@ export default {
             text45: 'Transportasi',
             text46: 'Lainnya'
           }
+        },
+        validationForm: {
+          text1: 'Kolom ini wajib diisi',
+          text2: 'Harus berisi 16 digit angka',
+          text3: 'Harus berisi 15-16 digit angka',
+          text4: 'Harus berisi 3 digit angka',
         }
       },
       financialInformationTittle: 'Informasi Keuangan',

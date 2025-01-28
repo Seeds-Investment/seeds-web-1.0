@@ -3,6 +3,7 @@
 import { updateUserInformation } from "@/repository/danamart/danamart.repository";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import useFileToBase64 from "./useFileToBase64";
@@ -17,6 +18,7 @@ export interface UserInfoFormData {
   dm_penmit_01015: string;
   dm_penmit_01027: string;
   dm_penmit_01026: string;
+  namaPasangan?: string;
   dm_penmit_01029: string;
   dm_penmit_01039: string;
   dm_penmit_01040: string;
@@ -43,67 +45,79 @@ export interface UserInfoFormData {
   dm_penmit_01008: string;
 }
 
-const schema = yup.object().shape({
-  pernyataan: yup.string().required("This field is required"),
-  dm_penmit_01010: yup
-    .string()
-    .matches(/^\d{1,16}$/, "Must be up to 16 digits long")
-    .required("This field is required"),
-  dm_penmit_01003: yup.string().required("This field is required"),
-  dm_penmit_01038: yup.string().required("This field is required"),
-  dm_penmit_01006: yup.string().required("This field is required"),
-  dm_penmit_01007: yup.string().required("This field is required"),
-  dm_penmit_01015: yup.string().required("This field is required"),
-  dm_penmit_01027: yup.string().required("This field is required"),
-  dm_penmit_01026: yup.string().required("This field is required"),
-  nama_pasangan: yup.string().when("dm_penmit_01026", {
-    is: "married",
-    then: schema => schema.required('This field is required'),
-    otherwise: schema => schema.notRequired()
-  }),
-  dm_penmit_01029: yup.string().required("This field is required"),
-  dm_penmit_01039: yup.string().required("This field is required"),
-  dm_penmit_01040: yup.string().required("This field is required"),
-  alamat_tmpt_kerja: yup.string().required("This field is required"),
-  telepon_tmpt_kerja: yup.string().required("This field is required"),
-  dm_penmit_01032: yup.string().required("This field is required"),
-  dm_penmit_01019rt: yup.string().required("This field is required"),
-  dm_penmit_01019rw: yup.string().required("This field is required"),
-  dm_penmit_01037: yup.string().required("This field is required"),
-  dm_penmit_01036: yup.string().required("This field is required"),
-  dm_penmit_01035: yup.string().required("This field is required"),
-  dm_penmit_01034: yup.string().required("This field is required"),
-  dm_penmit_01033: yup.string().required("This field is required"),
-  dm_penmit_01017: yup.string().required("This field is required"),
-  masa_berlaku: yup.boolean().required("This field is required"),
-  dm_penmit_01018: yup.string().when("masa_berlaku", {
-    is: false,
-    then: schema => schema.required('This field is required'),
-    otherwise: schema => schema.notRequired()
-  }),
-  dm_penmit_01022: yup.string().required("This field is required"),
-  dm_penmit_01041: yup.string().required("This field is required"),
-  dm_penmit_01042: yup.string().required("This field is required"),
-  dm_pen_08002: yup.string().required("This field is required"),
-  dm_pen_08009: yup.string().required("This field is required"),
-  pernyataan_npwp: yup.string().required("This field is required"),
-  dm_penmit_01012: yup.string().when("pernyataan_npwp", {
-    is: "0",
-    then: schema => schema.required('This field is required'),
-    otherwise: schema => schema.notRequired()
-  }),
-  dm_penmit_01045: yup.string().when("pernyataan_npwp", {
-    is: "0",
-    then: schema => schema.required('This field is required'),
-    otherwise: schema => schema.notRequired()
-  }),
-  dm_penmit_01013: yup.string().when("pernyataan_npwp", {
-    is: "0",
-    then: schema => schema.required('This field is required'),
-    otherwise: schema => schema.notRequired()
-  }),
-  dm_penmit_01008: yup.string().required("This field is required"),
-});
+const useUpdateUserInfoForm = (): any => {
+  const { t } = useTranslation();
+  const pathTranslation = 'danamart.verification.accountInformation.validationForm';
+
+  const schema = yup.object().shape({
+    pernyataan: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01010: yup
+      .string()
+      .matches(/^\d{16}$/, t(`${pathTranslation}.text2`) ?? 'Must be exactly 16 digits long')
+      .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01003: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01038: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01006: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01007: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01015: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01027: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01026: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    namaPasangan: yup.string().when("dm_penmit_01026", {
+      is: "married",
+      then: schema => schema.required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    dm_penmit_01029: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01039: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01040: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    alamat_tmpt_kerja: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    telepon_tmpt_kerja: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01032: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01019rt: yup
+      .string()
+      .matches(/^\d{3}$/, t(`${pathTranslation}.text4`) ?? 'Must be exactly 3 digits long')
+      .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01019rw: yup
+      .string()
+      .matches(/^\d{3}$/, t(`${pathTranslation}.text4`) ?? 'Must be exactly 3 digits long')
+      .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01037: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01036: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01035: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01034: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01033: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01017: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    masa_berlaku: yup.boolean().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01018: yup.string().when("masa_berlaku", {
+      is: false,
+      then: schema => schema.required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    dm_penmit_01022: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01041: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01042: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_pen_08002: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_pen_08009: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    pernyataan_npwp: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01012: yup.string().when("pernyataan_npwp", {
+      is: "0",
+      then: schema => schema
+        .matches(/^\d{15,16}$/, t(`${pathTranslation}.text3`) ?? 'This field is required')
+        .required(t(`${pathTranslation}.text3`) ?? 'This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    dm_penmit_01045: yup.string().when("pernyataan_npwp", {
+      is: "0",
+      then: schema => schema.required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    dm_penmit_01013: yup.string().when("pernyataan_npwp", {
+      is: "0",
+      then: schema => schema.required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+      otherwise: schema => schema.notRequired()
+    }),
+    dm_penmit_01008: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+  });
 
 	const defaultValues: UserInfoFormData  = {
     pernyataan: "",
@@ -115,6 +129,7 @@ const schema = yup.object().shape({
     dm_penmit_01015: "",
     dm_penmit_01027: "",
     dm_penmit_01026: "",
+    namaPasangan: "",
     dm_penmit_01029: "",
     dm_penmit_01039: "",
     dm_penmit_01040: "",
@@ -140,7 +155,6 @@ const schema = yup.object().shape({
     dm_penmit_01008: "",
 	}
 
-const useUpdateUserInfoForm = (): any => {
   const {
     handleSubmit,
     register,
@@ -170,7 +184,7 @@ const useUpdateUserInfoForm = (): any => {
         const base64 = await convertFileToBase64(file);
         data.dm_penmit_01013 = base64;
       }
-
+console.log('payload ', data)
       await updateUserInformation(data);
       toast.success("User information updated successfully");
     } catch (error) {

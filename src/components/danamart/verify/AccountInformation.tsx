@@ -34,15 +34,12 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
 
   const permanentId = watch("masa_berlaku");
   const imageURL = watch("dm_penmit_01013");
+  const isMarried = watch("dm_penmit_01026");
   const pathTranslation = 'danamart.verification.accountInformation'
   const [userInformation, setUserInformation] = useState<AccountVerification>();
   const [fileList, base64ToFileList] = useBase64ToFileList();
   const [imageURLPreview] = useFilePreview((fileList != null) ? fileList : undefined);
   const [uploading, isUploading] = useState<boolean>(false);
-  
-  useEffect(() => {
-    base64ToFileList(imageURL)
-  }, [imageURL]);
 
   const handleSwitchChange = (): void => {
     if (permanentId === true) {
@@ -52,7 +49,32 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
       setValue('dm_penmit_01018', '2099-01-01');
     }
   };
+  
+  const fetchDataUserInformation = async (): Promise<void> => {
+    try {
+      const response = await getUserInformation();
+      setUserInformation(response);
+    } catch (error) {
+      toast.error(`Error fetching data Photo Selfie`);
+    }
+  };
     
+  useEffect(() => {
+    if (step === 2) {
+      void fetchDataUserInformation();
+    }
+  }, [step, uploading]);
+  
+  useEffect(() => {
+    base64ToFileList(imageURL)
+  }, [imageURL]);
+  
+  useEffect(() => {
+    if (isMarried === 'single') {
+      setValue('namaPasangan', '')
+    }
+  }, [isMarried]);
+  
   useEffect(() => {
     setValue('pernyataan', userInformation?.penmit?.pernyataan)
     setValue('dm_penmit_01010', userInformation?.penmit?.dm_penmit_01010)
@@ -63,7 +85,9 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
     setValue('dm_penmit_01015', userInformation?.penmit?.dm_penmit_01015)
     setValue('dm_penmit_01027', userInformation?.penmit?.dm_penmit_01027)
     setValue('dm_penmit_01026', userInformation?.penmit?.dm_penmit_01026)
-    setValue('nama_pasangan', userInformation?.penmit?.nama_pasangan)
+    if (userInformation?.penmit?.dm_penmit_01026 !== '') {
+      setValue('namaPasangan', userInformation?.penmit?.nama_pasangan)
+    }
     setValue('dm_penmit_01029', userInformation?.penmit?.dm_penmit_01029)
     setValue('dm_penmit_01039', userInformation?.penmit?.dm_penmit_01039)
     setValue('dm_penmit_01040', userInformation?.penmit?.dm_penmit_01040)
@@ -97,21 +121,6 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
       setValue('dm_penmit_01013', userInformation?.penmit?.dm_penmit_01013)
     }
   }, [userInformation]);
-    
-  useEffect(() => {
-    if (step === 2) {
-      void fetchDataUserInformation();
-    }
-  }, [step, uploading]);
-  
-  const fetchDataUserInformation = async (): Promise<void> => {
-    try {
-      const response = await getUserInformation();
-      setUserInformation(response);
-    } catch (error) {
-      toast.error(`Error fetching data Photo Selfie`);
-    }
-  };
 
   return (
     <div className="w-full flex flex-col rounded-lg">
@@ -554,7 +563,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
         onClick={() => {
           handleSubmit((data: UserInfoFormData) => {
             onSubmit(data).then(() => {
-              setStep(step + 1);
+              // setStep(step + 1);
               isUploading(!uploading)
             })
           })();

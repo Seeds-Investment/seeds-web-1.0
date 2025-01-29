@@ -148,6 +148,7 @@ export interface AccountVerification {
   pemodal: Pemodal;
   penmit: Penmit;
   bank?: Bank;
+  resiko?: Resiko;
   bList?: BList[];
   dana?: Dana;
   info_1: string;
@@ -159,6 +160,7 @@ export interface AccountVerification {
   info_7?: string;
   info_8?: string;
   dom_code?: string;
+  status?: number;
 }
 
 export interface Pemodal {
@@ -373,4 +375,51 @@ export interface FinancialInfoForm {
   bo_relation_no_telp_kerja?: string;
   dm_pen_06005?: string;
   app?: string;
+}
+
+export interface Resiko {
+  informasi_profil_resiko_id: string
+  user_pendana_id: string
+  dm_pen_08001: string
+  dm_pen_08002: string
+  dm_pen_08003: string
+  dm_pen_08004: string
+  dm_pen_08005: string
+  dm_pen_08006: string
+  dm_pen_08007: string
+  dm_pen_08008: string
+  dm_pen_08009: string
+}
+
+export interface UpdateUserInfoForm {
+  pernyataan: string;
+  dm_penmit_01010: string;
+  dm_penmit_01003: string;
+  dm_penmit_01006: string;
+  dm_penmit_01007: string;
+  dm_penmit_01015: string;
+  dm_penmit_01027: string;
+  dm_penmit_01026: string;
+  namaPasangan?: string;
+  dm_penmit_01029: string;
+  dm_penmit_01039: string;
+  dm_penmit_01040: string;
+  alamat_tmpt_kerja: string;
+  telepon_tmpt_kerja: string;
+  dm_penmit_01032: string;
+  dm_penmit_01019rt: string;
+  dm_penmit_01019rw: string;
+  dm_penmit_01037: string;
+  dm_penmit_01036: string;
+  dm_penmit_01034: string;
+  dm_penmit_01033: string;
+  dm_penmit_01017: string;
+  masa_berlaku: boolean;
+  dm_penmit_01018?: string;
+  dm_penmit_01042: string;
+  dm_pen_08002: string;
+  dm_pen_08009: string;
+  pernyataan_npwp: string;
+  dm_penmit_01013?: string;
+  dm_penmit_01008: string;
 }

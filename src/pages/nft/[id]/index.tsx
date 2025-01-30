@@ -7,8 +7,8 @@ import {
   Card
 } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import logo from 'public/assets/logo-seeds.png';
+import React, { useState } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 
 interface Render {
@@ -26,23 +26,6 @@ interface Column {
   fieldId: string;
   label: string;
   render?: (value: Render) => React.ReactElement | string;
-}
-
-interface NFT {
-  id: string;
-  name: string;
-  description: string;
-  metadata_cid: string;
-  image_url: string;
-  price: number;
-  owner: {
-    wallet_address: string;
-    avatar: string;
-  };
-  creator: {
-    wallet_address: string;
-    avatar: string;
-  };
 }
 
 const NFTDetail: React.FC = () => {
@@ -126,54 +109,12 @@ const NFTDetail: React.FC = () => {
       date: '11/11/2024'
     }
   ];
-  const router = useRouter();
-  const { id } = router.query;
-  const [nftDetail, setNftDetail] = useState<NFT | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const fetchNFTDetail = async (): Promise<void> => {
-    setIsLoading(true);
-    try {
-      console.log('Fetching NFT with ID:', id);
-      const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
-        }/nft/${id as string}`
-      );
-      if (!response.ok) {
-        throw new Error(`Failed to fetch NFT: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Data from API:', data);
-      setNftDetail(data);
-    } catch (error) {
-      console.error('Error fetching NFT details:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    void fetchNFTDetail();
-  }, [id]);
-
-  if (isLoading) {
-    return <p>Loading NFT details...</p>;
-  }
-
-  if (nftDetail == null) {
-    return (
-      <p className="text-red-500 text-center mt-10">
-        NFT not found. Please check the ID and try again.
-      </p>
-    );
-  }
   return (
     <>
       <Card className="flex flex-col md:gap-4 p-0 md:p-5">
         <Image
-          src={nftDetail.image_url}
-          alt={nftDetail.name}
+          src={logo}
+          alt="seeds-logo"
           className="w-full object-cover aspect-[16/9] md:rounded-2xl"
         />
         <div className="flex flex-col gap-2 md:gap-4 p-3 md:p-0">
@@ -187,28 +128,30 @@ const NFTDetail: React.FC = () => {
             <div className="flex flex-col gap-3.5">
               <div className="flex gap-1.5 items-center">
                 <Image
-                  src={nftDetail.creator.avatar}
+                  src={logo}
                   alt="pic-profile"
                   className="w-5 h-5 bg-green-500 rounded-full"
                 />
                 <p className="font-poppins font-semibold text-sm md:text-base text-[#3AC4A0]">
-                  {nftDetail.creator?.wallet_address}
+                  Name
                 </p>
               </div>
               <div className="flex flex-col gap-2">
                 <p className="font-semibold font-poppins text-base md:text-lg text-neutral-medium">
-                  {nftDetail.name}
+                  Nft Title
                 </p>
                 <p className="font-poppins font-normal text-xs md:text-sm text-neutral-soft">
-                  Owned By {nftDetail.owner?.wallet_address}
+                  Owned By Name
                 </p>
                 <p className="bg-[#3AC4A0] py-0.5 px-6 font-poppins font-normal text-[10px] leading-4 md:text-xs text-[#1A857D] w-fit rounded">
-                  {nftDetail.price} DIAM
+                  100 DIAM
                 </p>
               </div>
             </div>
             <p className="font-poppins font-normal text-[10px] leading-4 md:text-xs text-neutral-medium text-justify">
-              {nftDetail.description}
+              Ilustrasi monkey funky sedang unjuk gigi tapi berhati peri dan
+              bergaya anak pantai., Ilustrasi monkey funky sedang unjuk gigi
+              tapi berhati peri dan bergaya anak pantai.
             </p>
           </div>
           <Accordion

@@ -41,7 +41,7 @@ export const calculatePercentageDifference = (
     };
   } else if (percentageDifference < 0) {
     result = {
-      value: Math.abs(percentageDifference).toFixed(2),
+      value: percentageDifference.toFixed(2),
       isUpTrend: false,
       isDownTrend: true
     };

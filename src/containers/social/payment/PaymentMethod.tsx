@@ -138,12 +138,21 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
 
   const handleOpenDialog = (value: boolean): void => {
     if (option?.payment_type === 'qris') {
-      void handlePay(
-        option?.payment_type,
-        'MIDTRANS',
-        'OTHER_QRIS',
-        data.premium_fee
-      );
+      if (option?.payment_gateway === 'BNC') {
+        void handlePay(
+          option?.payment_type,
+          'BNC',
+          'BNC_QRIS',
+          data.premium_fee
+        );
+      } else {
+        void handlePay(
+          option?.payment_type,
+          'MIDTRANS',
+          'OTHER_QRIS',
+          data.premium_fee
+        );
+      }
     } else {
       setOpenDialog(value);
     }

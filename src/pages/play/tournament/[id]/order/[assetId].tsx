@@ -232,7 +232,9 @@ const BuyPage: React.FC = () => {
 
   const fetchPlayPortfolio = async (): Promise<void> => {
     try {
-      const response = await getPlayAssets(id as string, assetId as string);
+      const response = await getPlayAssets(id as string, assetId as string, {
+        currency: userInfo?.preferredCurrency as string
+      });
       setPortfolio(response.data);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);

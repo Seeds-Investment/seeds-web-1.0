@@ -63,6 +63,7 @@ function App({
     router.pathname.startsWith('/social') ||
     router.pathname.startsWith('/connect') ||
     router.pathname.startsWith('/play') ||
+    router.pathname.startsWith('/nft') ||
     router.pathname.startsWith('/academy') ||
     router.pathname.startsWith('/seedsplan') ||
     router.pathname.startsWith('/user-setting') ||

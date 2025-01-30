@@ -74,7 +74,9 @@ const AssetDetailPage: React.FC = () => {
   const lastPrice = useGetLastPrice(data?.seedsTicker);
   const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {
-      const response = await getPlayAssets(id as string, assetId as string);
+      const response = await getPlayAssets(id as string, assetId as string, {
+        currency: userInfo?.preferredCurrency as string
+      });
       if (typeof response === 'object') {
         setPortfolio(response.data);
       }

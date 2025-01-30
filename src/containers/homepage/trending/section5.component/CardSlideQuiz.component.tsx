@@ -1,6 +1,5 @@
 import nodata from '@/assets/homepage/nodata.svg';
 import shareButton from '@/assets/shareButton.svg';
-import { standartCurrency } from '@/helpers/currency';
 import type { TopQuiz } from '@/utils/interfaces/quiz.interfaces';
 import {
   Button,
@@ -81,9 +80,9 @@ export const CardSlideQuiz: React.FC<props> = ({ data, loading = true }) => {
   /* -----Handle responsive breakpoint swiper----- */
   const responsiveBreakpointsSwiper = {
     320: { slidesPerView: 1, centeredSlides: true },
-    640: { slidesPerView: 2, centeredSlides: true },
-    720: { slidesPerView: 2, centeredSlides: true },
-    1080: { slidesPerView: 3 }
+    480: { slidesPerView: 2, centeredSlides: true },
+    640: { slidesPerView: 3, centeredSlides: true },
+    1080: { slidePerView: 3, centeredSlides: true }
   };
 
   const durationInDays = (startedAt: string, endedAt: string): number => {
@@ -133,44 +132,45 @@ export const CardSlideQuiz: React.FC<props> = ({ data, loading = true }) => {
                         height={50}
                       />
                     </CardHeader>
-                    <CardBody className="py-2 px-2 w-full flex flex-col bg-gradient-to-r from-[#106B6E] to-[#96F7C1] gap-1">
+                    <CardBody className="py-2 px-3 w-full flex flex-col bg-gradient-to-r from-[#106B6E] to-[#96F7C1] gap-1">
                       <div className="p-2 flex flex-row  justify-between items-center">
                         <Typography className="text-white font-poppins font-semibold md:text-sm text-[11px]">
-                          {item.name >= item.name[50]
-                            ? `${item.name.slice(0, 30)}...`
-                            : item.name}
+                          {item.name}
                         </Typography>
                         <button>
                           <Image src={shareButton} alt="share" />
                         </button>
                       </div>
                       <div className="border-dashed border border-separate-500"></div>
-                      <div className="lg:w-full w-full flex flex-row justify-between items-end">
-                        <div className="w-full flex flex-row justify-around gap-3 text-white">
-                          <div className="flex flex-col items-start">
-                            <Typography className="text-[#E9E9E9] text-[12px] lg:text-[15px]">
+                      <div className="lg:w-full w-full p-1 flex flex-row justify-between items-end">
+                        <div className="flex gap-3 text-white ">
+                          <div className="flex flex-col items-start justify-start">
+                            <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
                               {`${t('quiz.entryFee')}`}
                             </Typography>
-                            <Typography className="font-bold text-[12px] lg:text-[15px]">
+                            <Typography className="font-bold text-[15px] lg:text-lg">
                               {item.admission_fee === 0
                                 ? t('quiz.free')
-                                : standartCurrency(item.admission_fee)}
+                                : item.admission_fee.toLocaleString('id-ID', {
+                                    style: 'currency',
+                                    currency: 'IDR'
+                                  })}
                             </Typography>
                           </div>
                           <div className="flex flex-col items-start">
-                            <Typography className="text-[#E9E9E9] text-[12px] lg:text-[15px]">
+                            <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
                               {`${t('quiz.duration')}`}
                             </Typography>
-                            <Typography className="text-[12px] lg:text-[15px] font-bold">
+                            <Typography className="text-[15px] lg:text-lg font-bold">
                               {durationInDays(item.started_at, item.ended_at)}{' '}
                               {`${t('tournament.tournamentCard.days')}`}
                             </Typography>
                           </div>
                           <div className="flex flex-col items-start">
-                            <Typography className="text-[#E9E9E9] text-[12px] lg:text-[15px]">
+                            <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
                               {`${t('quiz.players')}`}
                             </Typography>
-                            <Typography className=" text-[12px] lg:text-[15px] font-bold">
+                            <Typography className=" text-[15px] lg:text-lg font-bold">
                               {item.participants}
                             </Typography>
                           </div>

@@ -1,6 +1,9 @@
 import {
   Button,
   Card,
+  Dialog,
+  DialogBody,
+  DialogHeader,
   Tab,
   TabPanel,
   Tabs,
@@ -11,12 +14,41 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import logo from 'public/assets/logo-seeds.png';
 import React from 'react';
-import { FiPlus } from 'react-icons/fi';
+import { FiPlus, FiX } from 'react-icons/fi';
 import { TbArrowsSort } from 'react-icons/tb';
 
 const NFTTabs = (): JSX.Element => {
   const router = useRouter();
   const [activeTab, setActiveTab] = React.useState('collection');
+  const [open, setOpen] = React.useState(false);
+  const [price, setPrice] = React.useState(0);
+  const handleOpen = (): void => {
+    setOpen(!open);
+  };
+
+  const PriceButton = ({
+    value,
+    text
+  }: {
+    value: number;
+    text: string;
+  }): JSX.Element => {
+    return (
+      <Button
+        className={`${
+          value === price
+            ? 'bg-[#DCFCE4] border border-[#3AC4A0] text-[#3AC4A0]'
+            : 'bg-[#F9F9F9] border border-[#E9E9E9] text-neutral-medium'
+        } font-normal font-poppins text-xs py-3 px-0`}
+        onClick={() => {
+          setPrice(value);
+        }}
+      >
+        {text}
+      </Button>
+    );
+  };
+
   const data = [
     {
       label: 'Collection',
@@ -89,6 +121,40 @@ const NFTTabs = (): JSX.Element => {
   ];
   return (
     <div>
+      <Dialog
+        open={open}
+        handler={handleOpen}
+        size="sm"
+        className="px-4 py-5 flex flex-col gap-4"
+      >
+        <DialogHeader className="p-0 flex justify-between items-center">
+          <p className="font-semibold font-poppins text-neutral-medium text-base">
+            Filter
+          </p>
+          <FiX
+            className="text-neutral-medium cursor-pointer"
+            size={16}
+            onClick={handleOpen}
+          />
+        </DialogHeader>
+        <DialogBody className="flex flex-col gap-4 p-0">
+          <div className="bg-[#F9F9F9] rounded-lg grid grid-cols-2 p-4 gap-6">
+            <input
+              className="bg-white h-[52px] rounded-xl font-normal font-poppins placeholder:text-[#BDBDBD] text-base text-center text-neutral-medium"
+              placeholder="Lowest"
+            />
+            <input
+              className="bg-white h-[52px] rounded-xl font-normal font-poppins placeholder:text-[#BDBDBD] text-base text-center text-neutral-medium"
+              placeholder="Highest"
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            <PriceButton value={50} text="50-100 DIAM" />
+            <PriceButton value={100} text="100-150 DIAM" />
+            <PriceButton value={200} text="200-250 DIAM" />
+          </div>
+        </DialogBody>
+      </Dialog>
       <Tabs value={activeTab}>
         <TabsHeader
           className="rounded-none bg-transparent p-0 flex gap-6"
@@ -111,7 +177,10 @@ const NFTTabs = (): JSX.Element => {
               {label}
             </Tab>
           ))}
-          <div className="bg-white border border-[#BDBDBD] flex items-center gap-1 normal-case font-normal text-neutral-soft text-xs px-2 py-1 md:py-2.5 md:px-4 cursor-pointer rounded-lg h-fit active:scale-95 transition-all">
+          <div
+            className="bg-white border border-[#BDBDBD] flex items-center gap-1 normal-case font-normal text-neutral-soft text-xs px-2 py-1 md:py-2.5 md:px-4 cursor-pointer rounded-lg h-fit active:scale-95 transition-all"
+            onClick={handleOpen}
+          >
             <TbArrowsSort />
             <p>Price</p>
           </div>

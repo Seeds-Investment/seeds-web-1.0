@@ -8,6 +8,7 @@ import {
   useJobList,
   useMarriageStatus
 } from '@/components/form-input/multi-input/data/dropdown-data';
+import Loading from '@/components/popup/Loading';
 import useUpdateFinancialInfo from '@/hooks/danamart/useUpdateFinancialInfo';
 import { getFinancialInformationData } from '@/repository/danamart/danamart.repository';
 import {
@@ -43,8 +44,16 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
   const investmentGoals = useInvestmentGoals();
   const jobList = useJobList();
 
-  const { control, errors, handleSubmit, register, watch, onSubmit, setValue } =
-    useUpdateFinancialInfo();
+  const {
+    control,
+    errors,
+    handleSubmit,
+    register,
+    watch,
+    onSubmit,
+    setValue,
+    isLoading
+  } = useUpdateFinancialInfo();
 
   const fetchDataFinancial = async (): Promise<void> => {
     try {
@@ -561,6 +570,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
           )}
         </>
       )}
+      {(isLoading as boolean) && <Loading />}
       <div className="flex items-center justify-end">
         {financialInformationData?.info_3 !== '1' ? (
           <Button

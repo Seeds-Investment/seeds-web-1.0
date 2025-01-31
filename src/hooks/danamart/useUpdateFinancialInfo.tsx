@@ -4,6 +4,7 @@ import {
   type FinancialInfoFormPayload
 } from '@/utils/interfaces/danamart.interface';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
@@ -297,8 +298,11 @@ const useUpdateFinancialInfo = (): any => {
     defaultValues
   });
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const onSubmit = async (data: FinancialInfoForm): Promise<void> => {
     try {
+      setIsLoading(true);
       const {
         validateSalary,
         fileKartuAkses,
@@ -322,6 +326,8 @@ const useUpdateFinancialInfo = (): any => {
       }
     } catch (error) {
       toast.error('Failed to update financial information');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -333,7 +339,8 @@ const useUpdateFinancialInfo = (): any => {
     watch,
     reset,
     setValue,
-    onSubmit
+    onSubmit,
+    isLoading
   };
 };
 

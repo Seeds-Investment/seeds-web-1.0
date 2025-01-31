@@ -336,18 +336,21 @@ export interface Dana {
 export interface FinancialInfoForm {
   dm_pen_06001: string;
   dm_pen_06002: string;
-  cek_pendapatan_baru: boolean | string;
+  validateSalary: boolean;
+  cek_pendapatan_baru?: string;
   dm_penmit_07001: string;
   dm_penmit_07002: string;
   dm_penmit_07003: string;
   pernyataan: string;
   dm_penmit_07008?: string;
   dm_penmit_07009?: string;
+  fileKartuAkses?: FileList | null;
   dm_penmit_07010?: File | null;
   bo_confirm: string;
   bo_nama?: string;
   bo_jns_kelamin?: string;
   bo_no_identitas?: string;
+  fileIdentitas?: FileList | null;
   bo_file_identitas?: File | null;
   bo_alamat?: string;
   bo_tmp_lahir?: string;
@@ -365,6 +368,7 @@ export interface FinancialInfoForm {
   bo_relation_nama?: string;
   bo_relation_jns_kelamin?: string;
   bo_relation_no_ktp?: string;
+  fileKtp?: FileList | null;
   bo_relation_file_ktp?: File | null;
   bo_relation_alamat?: string;
   bo_relation_tempat_lahir?: string;
@@ -376,6 +380,11 @@ export interface FinancialInfoForm {
   dm_pen_06005?: string;
   app?: string;
 }
+
+export type FinancialInfoFormPayload = Omit<
+  FinancialInfoForm,
+  'validateSalary' | 'fileKartuAkses' | 'fileIdentitas' | 'fileKtp'
+>;
 
 export interface Resiko {
   informasi_profil_resiko_id: string

@@ -99,7 +99,6 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
                   height={160}
                 />
                 <Button
-                  disabled={isButtonDisabled()}
                   onClick={() => {
                     setIsCameraActive(true);
                   }}

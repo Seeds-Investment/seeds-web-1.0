@@ -139,7 +139,7 @@ export const updatePhotoSelfie = async (imageEncoded: string): Promise<any> => {
     formData.append('image_from_web_cam', imageEncoded);
 
     const response = await danamartApi.post(
-      '/pemodal/form_foto_selfie',
+      '/pemodal/form_foto_selfie/updateForm',
       formData,
       {
         headers: {

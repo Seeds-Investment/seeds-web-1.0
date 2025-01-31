@@ -10,7 +10,10 @@ import {
 } from '@/components/form-input/multi-input/data/dropdown-data';
 import useUpdateFinancialInfo from '@/hooks/danamart/useUpdateFinancialInfo';
 import { getFinancialInformationData } from '@/repository/danamart/danamart.repository';
-import { type AccountVerification, type FinancialInfoForm } from '@/utils/interfaces/danamart.interface';
+import {
+  type AccountVerification,
+  type FinancialInfoForm
+} from '@/utils/interfaces/danamart.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { WarningGreenIcon } from 'public/assets/vector';
@@ -31,8 +34,8 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
 }) => {
   const [financialInformationData, setFinancialInformationData] =
     useState<AccountVerification>();
-  const [isSwitchActive, setIsSwitchActive] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [isSwitchActive, setIsSwitchActive] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const gender = useGender();
   const income = useIncome();
@@ -63,7 +66,8 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
       setShowModal(true);
     } else {
       setIsSwitchActive(false);
-      setValue('cek_pendapatan_baru', false);
+      setValue('validateSalary', false);
+      setValue('cek_pendapatan_baru', '0');
     }
   };
 
@@ -71,10 +75,12 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
     setShowModal(false);
     if (isConfirmed) {
       setIsSwitchActive(true);
-      setValue('cek_pendapatan_baru', true);
+      setValue('validateSalary', true);
+      setValue('cek_pendapatan_baru', '1');
     } else {
       setIsSwitchActive(false);
-      setValue('cek_pendapatan_baru', false);
+      setValue('validateSalary', false);
+      setValue('cek_pendapatan_baru', '0');
     }
   };
 
@@ -117,7 +123,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
         <div className="w-auto">
           <MInput
             type="switch"
-            registerName="cek_pendapatan_baru"
+            registerName="validateSalary"
             control={control}
             errors={errors}
             onSwitchToggle={handleSwitchChange}
@@ -224,7 +230,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
           />
           <MInput
             label={t('danamart.verification.financial.accessCard')}
-            registerName="dm_penmit_07010"
+            registerName="fileKartuAkses"
             type="image"
             register={register}
             usePreview={false}
@@ -285,7 +291,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
           <div className="w-full flex flex-wrap md:flex-nowrap gap-2">
             <MInput
               label={t('danamart.verification.financial.fileIdentity')}
-              registerName="bo_file_identitas"
+              registerName="fileIdentitas"
               type="image"
               register={register}
               usePreview={false}
@@ -353,7 +359,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
             />
             <MInput
               label={t('danamart.verification.financial.jobPhoneNumber')}
-              registerName="bo_no_tlp_pekerjaan"
+              registerName="bo_no_telp_pekerjaan"
               type="text"
               register={register}
               errors={errors}
@@ -472,9 +478,10 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
               <div className="w-full flex flex-wrap md:flex-nowrap gap-2">
                 <MInput
                   label={t('danamart.verification.financial.fileIdentity')}
-                  registerName="bo_relation_file_ktp"
+                  registerName="fileKtp"
                   type="image"
                   register={register}
+                  errors={errors}
                   usePreview={false}
                   fileType=".jpg,.jpeg"
                   extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
@@ -539,7 +546,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
                 />
                 <MInput
                   label={t('danamart.verification.financial.jobPhoneNumber')}
-                  registerName="bo_relation_no_tlp_kerja"
+                  registerName="bo_relation_no_telp_kerja"
                   type="text"
                   register={register}
                   errors={errors}
@@ -555,18 +562,27 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
         </>
       )}
       <div className="flex items-center justify-end">
-        <Button
-          className="w-[155.5px] h-[36px] px-4 py-2 text-sm font-semibold bg-seeds-button-green rounded-full capitalize mt-2"
-          onClick={() => {
-            handleSubmit((data: FinancialInfoForm) => {
-              onSubmit(data)
-            })();
-            const allValues = watch();
-            console.log('log button', allValues);
-          }}
-        >
-          Save
-        </Button>
+        {financialInformationData?.info_3 !== '1' ? (
+          <Button
+            className="w-[155.5px] h-[36px] px-4 py-2 text-sm font-semibold bg-seeds-button-green rounded-full capitalize mt-2"
+            onClick={() => {
+              handleSubmit((data: FinancialInfoForm) => {
+                onSubmit(data);
+              })();
+            }}
+          >
+            {t('danamart.verification.buttonSave')}
+          </Button>
+        ) : (
+          <Button
+            className="w-[155.5px] h-[36px] px-4 py-2 text-sm font-semibold bg-seeds-button-green rounded-full capitalize mt-2"
+            onClick={() => {
+              setStep(step + 1);
+            }}
+          >
+            {t('danamart.verification.buttonNext')}
+          </Button>
+        )}
       </div>
       {showModal && (
         <ModalConfirmationForm

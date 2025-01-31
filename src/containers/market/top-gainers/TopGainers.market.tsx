@@ -30,12 +30,15 @@ const TopGainers = (): React.ReactElement => {
         className="flex flex-col gap-3" /*  cover tag atas -  wrap to row  */
       >
         <div className="grid grid-cols-3 grid-rows-1">
-          <Typography className="text-left">Asset</Typography>
-          <Typography className="text-center">Volume</Typography>
-          <Typography className="text-right">Prices</Typography>
+          <Typography className="text-left text-[#BDBDBD]">Asset</Typography>
+          <Typography className="text-center text-[#BDBDBD]">Volume</Typography>
+          <Typography className="text-right text-[#BDBDBD]">Price</Typography>
         </div>
         {topGainer?.map((item, index) => (
-          <div key={index} className="grid grid-cols-3 grid-rows-1">
+          <div
+            key={index}
+            className="grid grid-cols-3 grid-rows-1 border-b border-[#E9E9E9] py-2"
+          >
             <div className="flex flex-row gap-3 justify-start">
               <Avatar src={item.asset_icon} />
               <div>

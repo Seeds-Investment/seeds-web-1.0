@@ -37,26 +37,8 @@ const MarketOption = (): React.ReactElement => {
     }, 1000);
   };
 
-  // useEffect(() => {
-  //   const fetchTrendingAsset = async (): Promise<void> => {
-  //     try {
-  //       const response = await getPlayAssetTrending({
-  //         page: 1,
-  //         limit: 500,
-  //         sortBy: 'most_traded'
-  //       });
-  //       setData(response.data.data);
-  //     } catch (error) {
-  //       toast.error(`error fetching data: `);
-  //     }
-  //   };
-  //   if (refreshCount > 0) {
-  //     fetchTrendingAsset();
-  //   }
-  // }, [refreshCount]);
-
   return (
-    <div className="w-full h-auto cursor-default flex flex-row">
+    <div className="w-full h-auto cursor-default">
       <Tabs value={activeTab}>
         <TabsHeader
           className="w-full lg:w-3/5 text-center justify-center rounded-none p-0"
@@ -91,14 +73,14 @@ const MarketOption = (): React.ReactElement => {
             <Image src={refreshLogo} alt="refresh" width={65} height={65} />
           </button>
         </TabsHeader>
-        <TabsBody>
-          <TabPanel value={'most traded'}>
+        <TabsBody className="w-full">
+          <TabPanel value={'most traded'} className="w-full">
             <MostTraded />
           </TabPanel>
-          <TabPanel value={'top gainers'}>
+          <TabPanel value={'top gainers'} className="w-full">
             <TopGainers />
           </TabPanel>
-          <TabPanel value={'top losers'}>
+          <TabPanel value={'top losers'} className="w-full">
             <TopLosers />
           </TabPanel>
         </TabsBody>

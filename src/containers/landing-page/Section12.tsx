@@ -1,6 +1,7 @@
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import DiamanteLogo from 'public/assets/images/diamante.svg';
 import { useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
@@ -19,40 +20,6 @@ export default function Section12(): React.ReactElement {
     const bottom = entry?.boundingClientRect.bottom ?? 0;
     setBottom(bottom);
   }, [entry]);
-
-  // const settings: Settings = {
-  //   centerMode: true,
-  //   slidesToShow: 1,
-  //   speed: 15000,
-  //   slidesToScroll: 3,
-  //   autoplay: true,
-  //   autoplaySpeed: 500,
-  //   infinite: true,
-  //   dots: false,
-  //   responsive: [
-  //     {
-  //       breakpoint: 1024,
-  //       settings: {
-  //         dots: false,
-  //         slidesToShow: 1
-  //       }
-  //     },
-  //     {
-  //       breakpoint: 768,
-  //       settings: {
-  //         dots: false,
-  //         slidesToShow: 1
-  //       }
-  //     },
-  //     {
-  //       breakpoint: 480,
-  //       settings: {
-  //         dots: false,
-  //         slidesToShow: 1
-  //       }
-  //     }
-  //   ]
-  // };
 
   return (
     <section
@@ -73,9 +40,18 @@ export default function Section12(): React.ReactElement {
             <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-tr from-[#9A76FE] from-10% to-[#4FE6AF] to-100% md:text-4xl lg:text-5xl">
               {t('landingV2.section12.text1')}
             </span>
-            <p className="text-md w-full lg:w-[70%] lg:text-2xl font-normal text-[#262626]">
+            <div className="w-[260px] md:w-[350px] h-auto flex justify-center items-center lg:my-4">
+              <Image
+                src={DiamanteLogo}
+                alt={`DiamanteLogo`}
+                width={1440}
+                height={1000}
+                className="w-full h-auto"
+              />
+            </div>
+            <span className="mt-4 text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-tr from-[#9A76FE] from-10% to-[#4FE6AF] to-100% md:text-4xl lg:text-5xl">
               {t('landingV2.section12.text2')}
-            </p>
+            </span>
             <Link
               href={
                 'https://docs.google.com/forms/d/1-RI9IYyaO-5aPfS4BsTd2umTewQbh_kXVthWbys2Qdk/viewform?edit_requested=true'
@@ -84,7 +60,7 @@ export default function Section12(): React.ReactElement {
               className="cursor-pointer"
             >
               <Button
-                className="lg:my-4 px-14 lg:px-10 bg-[#7555DA] rounded-full"
+                className="lg:my-4 px-8 md:px-14 lg:px-10 bg-[#7555DA] rounded-full"
                 onClick={() => {}}
               >
                 <p className="text-lg font-semibold capitalize">

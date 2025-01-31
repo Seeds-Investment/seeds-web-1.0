@@ -5,6 +5,8 @@ import withAuth from '@/helpers/withAuth';
 import { getMarketCurrency } from '@/repository/market.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { updatePreferredCurrency } from '@/repository/user.repository';
+import { fetchUserData } from '@/store/redux/features/user';
+import { useAppDispatch } from '@/store/redux/store';
 import {
   Button,
   Menu,
@@ -27,11 +29,13 @@ const ChangeCurrency: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<any>();
   const [listCurrency, setListCurrency] = useState<CurrencyDTO[]>([]);
+  const dispatch = useAppDispatch();
   const [currency, setCurrency] = useState<string>('');
   const submitPreferredCurrency = async (): Promise<void> => {
     try {
       setIsLoading(true);
       await updatePreferredCurrency(currency);
+      await dispatch(fetchUserData());
       await router.push('/user-setting');
     } catch (error) {
       console.log(error);

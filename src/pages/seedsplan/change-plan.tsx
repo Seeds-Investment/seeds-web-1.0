@@ -39,7 +39,7 @@ const ChangePlan: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
 
   const [dataPlan, setDataPlan] = useState<DataPlanI>();
-
+  const [idPlan, setIdPlan] = useState<string>('');
   const [mappedPlansByTier, setMappedPlansByTier] = useState<PlanByTier[]>([]);
   const [allAvailablePlans, setAllAvailablePlans] = useState<PlanI[]>([]);
   const [selectedPeriodPlan, setSelectedPeriodPlan] = useState<PlanI>();
@@ -124,7 +124,6 @@ const ChangePlan: React.FC = () => {
   const filteredPlanByTier = mappedPlansByTier?.find(
     item => item.name === packagePlan
   )?.data;
-
   useEffect(() => {
     const selected = filteredPlanByTier?.find(
       item => item.name === packagePlan
@@ -239,6 +238,7 @@ const ChangePlan: React.FC = () => {
                           }`}
                           onClick={() => {
                             setPeriodPlan(item.duration_in_months);
+                            setIdPlan(item.id);
                           }}
                         >
                           {item.duration_in_months === 12
@@ -393,7 +393,9 @@ const ChangePlan: React.FC = () => {
                             await router.push('/play');
                           } else {
                             await router.push(
-                              `/seedsplan/payment?plan_id=${selectedPeriodPlan?.id}`
+                              `/seedsplan/payment?plan_id=${
+                                idPlan ?? selectedPeriodPlan?.id
+                              }`
                             );
                           }
                         }}

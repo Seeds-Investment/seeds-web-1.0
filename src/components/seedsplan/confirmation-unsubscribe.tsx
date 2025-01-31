@@ -2,20 +2,20 @@ import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import SeedyAlert from '../../assets/seedsplan/seedy-alert.svg';
 import Modal from '../ui/modal/Modal';
 
 interface TncProps {
-  t: (key: string) => string;
   onClose: () => void;
   handleStopSubscription: () => void;
 }
 
 const ConfirmationUnsubscribe: React.FC<TncProps> = ({
-  t,
   onClose,
   handleStopSubscription
 }) => {
+  const { t } = useTranslation();
   return (
     <Modal
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/75 flex justify-start items-start"

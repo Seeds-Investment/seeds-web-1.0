@@ -62,7 +62,6 @@ const SeedsPlan: React.FC = () => {
   const [showTnc, setShowTnc] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [showHowToUse, setHowToUse] = useState<boolean>(false);
-  // const [isOpenStopPlan, setIsOpenStopPlan] = useState<boolean>(false);
 
   const packagePlanList = [
     { name: 'SILVER', badge: null },
@@ -186,20 +185,6 @@ const SeedsPlan: React.FC = () => {
       ''
     );
   };
-
-  // Uncomment to stop seeds plan
-  // const handleStopPlan = async (): Promise<void> => {
-  //   try {
-  //     const response = await stopSubscription();
-  //     if (response.status === 'Subscription stopped') {
-  //       setIsOpenStopPlan(false);
-  //       toast.success('Subscription Plan Successfully Stopped');
-  //       router.reload();
-  //     }
-  //   } catch (error) {
-  //     toast.error('Error while stopping seeds plan');
-  //   }
-  // };
 
   return (
     <>
@@ -366,15 +351,6 @@ const SeedsPlan: React.FC = () => {
                   </Typography>
                 </div>
                 <div className="flex flex-wrap-reverse md:flex-nowrap justify-center items-center md:gap-7 gap-4">
-                  {/* Uncomment This Section for Adding Stop Plan */}
-                  {/* <Button
-                    onClick={() => {
-                      setIsOpenStopPlan(true);
-                    }}
-                    className="font-poppins text-sm font-semibold capitalize bg-white border border-[#FF4A2B] text-[#FF4A2B] rounded-full md:w-[342px] w-full h-[42px] flex items-center justify-center"
-                  >
-                    {t('seedsPlan.button9')}
-                  </Button> */}
                   <Button
                     onClick={async () => {
                       await router.push('/seedsplan/change-plan');
@@ -610,16 +586,6 @@ const SeedsPlan: React.FC = () => {
         }}
         howToUse={filteredHowToUse as string}
       />
-      {/* Uncommend this component to activate modal stop plan */}
-      {/* {isOpenStopPlan && (
-        <ConfirmationUnsubscribe
-          onClose={() => {
-            setIsOpenStopPlan(false);
-          }}
-          t={t}
-          handleStopSubscription={handleStopPlan}
-        />
-      )} */}
     </>
   );
 };

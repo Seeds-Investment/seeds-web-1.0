@@ -1,5 +1,9 @@
 import baseAxios from '@/utils/common/axios';
-import { type RegisterLog, type UpdateUserInfoForm } from '@/utils/interfaces/danamart.interface';
+import {
+  type FinancialInfoFormPayload,
+  type RegisterLog,
+  type UpdateUserInfoForm
+} from '@/utils/interfaces/danamart.interface';
 import axios from 'axios';
 
 const danamartApi = axios.create({
@@ -212,7 +216,10 @@ export const getPhotoIdCard = async (): Promise<any> => {
   }
 };
 
-export const updatePhotoIdCard = async (type: string, imageEncoded: string): Promise<any> => {
+export const updatePhotoIdCard = async (
+  type: string,
+  imageEncoded: string
+): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -264,19 +271,33 @@ export const getFinancialInformationData = async (): Promise<any> => {
   }
 };
 
-export const updateFinancialInformation = async (data: any): Promise<any> => {
+export const updateFinancialInformation = async (
+  data: FinancialInfoFormPayload
+): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
     if (accessTokenDanamart === null || accessTokenDanamart === '') {
       return await Promise.resolve('Access token Danamart not found');
     }
+
+    const formData = new FormData();
+
+    Object.entries(data).forEach(([key, value]) => {
+      if (value instanceof File) {
+        formData.append(key, value);
+      } else {
+        formData.append(key, String(value));
+      }
+    });
+
     const response = await danamartApi.post(
       `/pemodal/form_informasi_keuangan/updateFormKeuangan`,
-      data,
+      formData,
       {
         headers: {
-          Authorization: `Bearer ${accessTokenDanamart}`
+          Authorization: `Bearer ${accessTokenDanamart}`,
+          'Content-Type': 'multipart/form-data'
         }
       }
     );

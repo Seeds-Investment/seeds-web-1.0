@@ -39,7 +39,6 @@ const ChangePlan: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
 
   const [dataPlan, setDataPlan] = useState<DataPlanI>();
-  const [idPlan, setIdPlan] = useState<string>('');
   const [mappedPlansByTier, setMappedPlansByTier] = useState<PlanByTier[]>([]);
   const [allAvailablePlans, setAllAvailablePlans] = useState<PlanI[]>([]);
   const [selectedPeriodPlan, setSelectedPeriodPlan] = useState<PlanI>();
@@ -85,7 +84,7 @@ const ChangePlan: React.FC = () => {
         setSubscriptionStatus(response);
       }
     } catch (error) {
-      console.error(`Error fetching data: ${error as string}`);
+      toast.error(`Error fetching data: ${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -238,7 +237,6 @@ const ChangePlan: React.FC = () => {
                           }`}
                           onClick={() => {
                             setPeriodPlan(item.duration_in_months);
-                            setIdPlan(item.id);
                           }}
                         >
                           {item.duration_in_months === 12
@@ -394,7 +392,7 @@ const ChangePlan: React.FC = () => {
                           } else {
                             await router.push(
                               `/seedsplan/payment?plan_id=${
-                                idPlan ?? selectedPeriodPlan?.id
+                                selectedPeriodPlan?.id
                               }`
                             );
                           }

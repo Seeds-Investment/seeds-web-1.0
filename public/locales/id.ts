@@ -3152,6 +3152,11 @@ export default {
       buttonSave: 'Simpan',
       buttonPrevious: 'Sebelumnya',
       buttonNext: 'Selanjutnya'
+    },
+    offers: {
+      sidebar: {
+        text1: 'Penawaran'
+      }
     }
   }
 };

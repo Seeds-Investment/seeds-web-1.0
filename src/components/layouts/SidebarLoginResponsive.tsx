@@ -19,6 +19,9 @@ import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { GoDotFill } from 'react-icons/go';
 import { toast } from 'react-toastify';
 import market from 'src/assets/market/market.svg';
 import Logo from '../ui/vector/Logo';
@@ -28,30 +31,6 @@ interface props {
   handleOpen: () => void;
   handleLogout: () => void;
 }
-
-const menu = isGuest()
-  ? [
-      { title: 'Social', url: '/social', image: social },
-      { title: 'Homepage', url: '/homepage', image: homepage },
-      { title: 'Connect', url: '/connect', image: connect },
-      { title: 'Play', url: '/play', image: play }
-    ]
-  : [
-      { title: 'Social', url: '/social', image: social },
-      { title: 'Homepage', url: '/homepage', image: homepage },
-      { title: 'Market', url: '/market', image: market },
-      { title: 'Connect', url: '/connect', image: connect },
-      { title: 'Play', url: '/play', image: play },
-      { title: 'Danamart', url: '/danamart', image: danamart },
-      { title: 'Setting', url: '/user-setting', image: setting },
-      {
-        title: 'Notification',
-        url: '/social/notification',
-        image: notification
-      },
-      { title: 'Chat', url: '/chat', image: chat },
-      { title: 'Profile', url: '/my-profile', image: profile }
-    ];
 
 const SidebarLoginResponsive: React.FC<props> = ({
   open,
@@ -63,6 +42,41 @@ const SidebarLoginResponsive: React.FC<props> = ({
   const router = useRouter();
   const languageCtx = useContext(LanguageContext);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [isDanamartOpen, setIsDanamartOpen] = useState<boolean>(false);
+
+  const { t } = useTranslation();
+  const menu = isGuest()
+    ? [
+        { title: 'Social', url: '/social', image: social },
+        { title: 'Homepage', url: '/homepage', image: homepage },
+        { title: 'Connect', url: '/connect', image: connect },
+        { title: 'Play', url: '/play', image: play }
+      ]
+    : [
+        { title: 'Social', url: '/social', image: social },
+        { title: 'Homepage', url: '/homepage', image: homepage },
+        { title: 'Market', url: '/market', image: market },
+        { title: 'Connect', url: '/connect', image: connect },
+        { title: 'Play', url: '/play', image: play },
+        {
+          title: 'Danamart',
+          url: '/danamart',
+          image: danamart,
+          hasSubmenu: true,
+          submenu: [
+            { title: 'Dashboard', url: '/danamart/dashboard' },
+            { title: t('danamart.offers.sidebar.text1'), url: '/danamart/penawaran' },
+          ]
+        },
+        { title: 'Setting', url: '/user-setting', image: setting },
+        {
+          title: 'Notification',
+          url: '/social/notification',
+          image: notification
+        },
+        { title: 'Chat', url: '/chat', image: chat },
+        { title: 'Profile', url: '/my-profile', image: profile }
+      ];
 
   const isLinkActive = (href: string): string => {
     return router.asPath.startsWith(href) ? 'active' : '';
@@ -107,7 +121,7 @@ const SidebarLoginResponsive: React.FC<props> = ({
   return (
     <aside
       ref={menuRef}
-      className="absolute z-40 right-0 w-2/3 h-[50rem] py-6 bg-white"
+      className="absolute z-40 right-0 w-2/3 h-fit py-6 bg-white"
     >
       <div className="absolute -left-4 bg-white border-[#E9E9E9] border-2 w-fit px-2 py-1 rounded-xl cursor-pointer">
         <ChevronDoubleRightIcon width={20} height={20} onClick={handleOpen} />
@@ -130,16 +144,67 @@ const SidebarLoginResponsive: React.FC<props> = ({
                 }
               })
               .map((data, idx) => (
-                <Link
-                  className={isLinkActive(data.url)}
-                  href={data.url}
-                  key={idx}
-                  onClick={handleOpen}
-                >
-                  <Image width={20} height={20} src={data.image} alt="" />
-                  <h1>{data.title}</h1>
-                </Link>
-              ))}
+                <>
+                  {data.title === 'Danamart' &&
+                  localStorage.getItem('accessToken-danamart') !== null ? (
+                    <div key={idx} className="w-full flex flex-col gap-2">
+                      <Link
+                        onClick={() => {
+                          if (
+                            data.hasSubmenu !== undefined &&
+                            data.hasSubmenu !== null
+                          ) {
+                            setIsDanamartOpen(prev => !prev);
+                          }
+                        }}
+                        className={`flex justify-between items-center ${isLinkActive(
+                          data.url
+                        )}`}
+                        href={
+                          localStorage.getItem('accessToken-danamart') !== null
+                            ? '#'
+                            : data.url
+                        }
+                        key={idx}
+                      >
+                        <div className="flex items-center gap-2">
+                          <Image width={20} height={20} src={data.image} alt="" />
+                          <h1>{data.title}</h1>
+                        </div>
+                        {localStorage.getItem('accessToken-danamart') !== null &&
+                          (isDanamartOpen ? (
+                            <FaChevronUp size={14} />
+                          ) : (
+                            <FaChevronDown size={14} />
+                          ))}
+                      </Link>
+                      {data.hasSubmenu !== undefined && isDanamartOpen && (
+                        <ul>
+                          {data.submenu?.map((sub, subIdx) => (
+                            <Link
+                              key={subIdx}
+                              className={`flex items-center ${isLinkActive(sub.url)}`}
+                              href={sub.url}
+                            >
+                              <GoDotFill size={20} />
+                              <h1>{sub.title}</h1>
+                            </Link>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      className={isLinkActive(data.url)}
+                      href={data.url}
+                      key={idx}
+                    >
+                      <Image width={20} height={20} src={data.image} alt="" />
+                      <h1>{data.title}</h1>
+                    </Link>
+                  )}
+                </>
+            ))}
             <div className="flex flex-row">
               <section className="flex flex-row gap-2 rounded-full backdrop-blur-[10px] py-2 px-4">
                 <button

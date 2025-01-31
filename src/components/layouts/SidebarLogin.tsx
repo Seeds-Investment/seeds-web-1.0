@@ -12,6 +12,7 @@ import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { GoDotFill } from 'react-icons/go';
 import { toast } from 'react-toastify';
@@ -20,6 +21,7 @@ import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
 
 const SidebarLogin: React.FC = () => {
+  const { t } = useTranslation();
   const menu = isGuest()
     ? [
         { title: 'Social', url: '/social', image: social },
@@ -38,7 +40,10 @@ const SidebarLogin: React.FC = () => {
           url: '/danamart',
           image: danamart,
           hasSubmenu: true,
-          submenu: [{ title: 'Dashboard', url: '/danamart/dashboard' }]
+          submenu: [
+            { title: 'Dashboard', url: '/danamart/dashboard' },
+            { title: t('danamart.offers.sidebar.text1'), url: '/danamart/penawaran' },
+          ]
         },
         { title: 'Setting', url: '/user-setting', image: setting }
       ];

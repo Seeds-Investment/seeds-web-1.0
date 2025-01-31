@@ -3219,6 +3219,11 @@ export default {
       buttonSave: 'Save',
       buttonPrevious: 'Previous',
       buttonNext: 'Next'
+    },
+    offers: {
+      sidebar: {
+        text1: 'Offers'
+      }
     }
   }
 };

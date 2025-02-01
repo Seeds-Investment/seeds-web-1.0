@@ -2753,6 +2753,8 @@ export default {
     button6: 'Ubah My SeedPlan',
     button7: 'Pertanyaan yang Sering Diajukan',
     button8: 'Gunakan Sekarang',
+    button9: 'Berhenti Berlangganan Seeds Plan',
+    stopPlanDesc: 'Anda akan kehilangan semua manfaat Anda setelah pembatalan.',
     text1: 'Terbaik',
     text2: 'Biaya Langganan',
     text3: 'Diskon',
@@ -2829,6 +2831,8 @@ export default {
       noTransaction:
         'Kamu belum melakukan transaksi apapun, nih. Yuk, mulai transaksi pertamamu sekarang!',
       back: 'Kembali'
-    }
+    },
+    yes: 'Ya',
+    no: 'Tidak'
   }
 };

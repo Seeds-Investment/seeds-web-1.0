@@ -42,10 +42,8 @@ const ChangePlan: React.FC = () => {
   const [mappedPlansByTier, setMappedPlansByTier] = useState<PlanByTier[]>([]);
   const [allAvailablePlans, setAllAvailablePlans] = useState<PlanI[]>([]);
   const [selectedPeriodPlan, setSelectedPeriodPlan] = useState<PlanI>();
-
   const [packagePlan, setPackagePlan] = useState<string>('SILVER');
   const [periodPlan, setPeriodPlan] = useState<number>(1);
-
   const [isActiveSubscription, setIsActiveSubscription] =
     useState<boolean>(false);
   const [showTnc, setShowTnc] = useState<boolean>(false);
@@ -86,7 +84,7 @@ const ChangePlan: React.FC = () => {
         setSubscriptionStatus(response);
       }
     } catch (error) {
-      console.error(`Error fetching data: ${error as string}`);
+      toast.error(`Error fetching data: ${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -113,7 +111,6 @@ const ChangePlan: React.FC = () => {
         { name: 'GOLD', data: [...GOLD] },
         { name: 'PLATINUM', data: [...PLATINUM] }
       ];
-
       setMappedPlansByTier(mappedPlan);
       setAllAvailablePlans([...SILVER, ...GOLD, ...PLATINUM]);
       setPeriodPlan(
@@ -126,21 +123,11 @@ const ChangePlan: React.FC = () => {
   const filteredPlanByTier = mappedPlansByTier?.find(
     item => item.name === packagePlan
   )?.data;
-
   useEffect(() => {
-    if (isActiveSubscription && subscriptionStatus !== null) {
-      const activeSubscriptionId =
-        subscriptionStatus?.active_subscription?.subscription_type_id;
-      const selected = allAvailablePlans?.find(
-        item => item.id === activeSubscriptionId
-      );
-      setSelectedPeriodPlan(selected);
-    } else {
-      const selected = filteredPlanByTier?.find(
-        item => item.duration_in_months === periodPlan
-      );
-      setSelectedPeriodPlan(selected);
-    }
+    const selected = filteredPlanByTier?.find(
+      item => item.name === packagePlan
+    );
+    setSelectedPeriodPlan(selected);
   }, [
     periodPlan,
     filteredPlanByTier,
@@ -174,6 +161,14 @@ const ChangePlan: React.FC = () => {
       ''
     );
   };
+  const getPeriodPlan = (): number => {
+    const activeSubscriptionId =
+      subscriptionStatus?.active_subscription?.subscription_type_id;
+    return (
+      allAvailablePlans.find(item => item.id === activeSubscriptionId)
+        ?.duration_in_months ?? 1
+    );
+  };
 
   return (
     <>
@@ -198,7 +193,7 @@ const ChangePlan: React.FC = () => {
                     strokeWidth={0.75}
                   />
                   <div className="text-xl md:text-2xl font-bold text-center mx-auto">
-                    MySeeds Plan
+                    My Seeds Plan
                   </div>
                 </div>
                 <div className="md:mt-4 flex flex-row gap-2 items-center mb-4 w-full">
@@ -389,17 +384,23 @@ const ChangePlan: React.FC = () => {
                       </div>
                       <button
                         onClick={async () => {
-                          if (getActivePlan() === packagePlan) {
+                          if (
+                            getActivePlan() === packagePlan &&
+                            periodPlan === getPeriodPlan()
+                          ) {
                             await router.push('/play');
                           } else {
                             await router.push(
-                              `/seedsplan/payment?plan_id=${selectedPeriodPlan?.id}`
+                              `/seedsplan/payment?plan_id=${
+                                selectedPeriodPlan?.id
+                              }`
                             );
                           }
                         }}
                         className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300 my-2"
                       >
-                        {getActivePlan() === packagePlan
+                        {getActivePlan() === packagePlan &&
+                        periodPlan === getPeriodPlan()
                           ? t('seedsPlan.button8')
                           : t('seedsPlan.button6')}
                       </button>

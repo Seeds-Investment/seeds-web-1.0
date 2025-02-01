@@ -355,7 +355,10 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
         spotType
       );
 
-      if (Array.isArray(activePromoCodesResponse?.data) && Array.isArray(availableVoucherPlanResponse?.data)) {
+      if (
+        Array.isArray(activePromoCodesResponse?.data) &&
+        Array.isArray(availableVoucherPlanResponse?.data)
+      ) {
         setActivePromoCodes(prevPromoCodes => [
           ...prevPromoCodes,
           ...activePromoCodesResponse?.data,
@@ -492,7 +495,10 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
           dispatch(setPromoCodeValidationResult({ id, response }));
         }
         toast.success(t('promo.applied'));
-      } else if ((response.total_discount === undefined) && (response.final_price !== undefined)) {
+      } else if (
+        response.total_discount === undefined &&
+        response.final_price !== undefined
+      ) {
         setPromoCode(promoCode);
         if (spotType === 'Premium Circle') {
           dispatch(setPromoCodeValidationResult({ circleId, response }));
@@ -519,9 +525,13 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
           } else if (errorMessage.includes('already exceeding today’s limit')) {
             setIsExceedingLimit(true);
             toast.error(t('promo.limitDailyMessage'));
-          } else if (errorMessage.includes('promo code only for specific feature')) {
+          } else if (
+            errorMessage.includes('promo code only for specific feature')
+          ) {
             toast.error(t('promo.specificFeature'));
-          } else if (errorMessage.includes('promo code only for specific refferral code')) {
+          } else if (
+            errorMessage.includes('promo code only for specific refferral code')
+          ) {
             toast.error(t('promo.specificReferral'));
           } else {
             toast.error(t('promo.invalidPromo'));
@@ -792,7 +802,7 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
                               : 'bg-[#FDBA22]'
                           } absolute right-[-10px] bottom-[10px] text-white text-sm md:text-base lg:text-sm px-4 rounded-full`}
                         >
-                          {(item?.quantity === 0) || (item?.quantity === -1) ? (
+                          {item?.quantity === 0 || item?.quantity === -1 ? (
                             <div className="text-[35px] flex justify-center items-center">
                               &#8734;
                             </div>
@@ -848,7 +858,7 @@ const PromoCode: React.FC<PromoProps> = ({ spotType }) => {
           promoCode === '' || promoCode === undefined
             ? 'bg-[#BDBDBD]'
             : 'bg-seeds-button-green cursor-pointer'
-        } flex w-full rounded-full justify-center items-center text-white text-lg py-4 mt-8`}
+        } flex w-full rounded-full justify-center items-center text-white text-lg py-4 mt-8 sticky bottom-2 z-10`}
       >
         Use Promo
       </button>

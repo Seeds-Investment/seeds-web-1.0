@@ -195,7 +195,7 @@ const PaymentList: React.FC = (): JSX.Element => {
       <Typography className="w-full max-w-[600px] text-left px-8 md:text-center text-neutral-500 text-lg font-semibold mb-3">
         {t('PlayPayment.title')}
       </Typography>
-      <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
+      <div className="bg-white max-w-[600px] w-full h-fit flex flex-col items-center p-8 rounded-xl">
         <PaymentOptions
           label="QRIS"
           options={qRisList}

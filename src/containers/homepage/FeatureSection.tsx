@@ -1,6 +1,6 @@
 import Connect from '@/assets/event/connect.svg';
 import Event from '@/assets/event/event.svg';
-import MyEarningWallet from '@/assets/event/my-earningwallet.svg';
+import MyEarningWallet from '@/assets/event/myearningwalletbg.svg';
 import OpenTrading from '@/assets/event/openTradingAccount.svg';
 import Referral from '@/assets/event/referral.svg';
 import withAuth from '@/helpers/withAuth';

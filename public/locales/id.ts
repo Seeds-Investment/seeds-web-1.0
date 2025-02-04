@@ -3051,7 +3051,7 @@ export default {
           text1: 'Kolom ini wajib diisi',
           text2: 'Harus berisi 16 digit angka',
           text3: 'Harus berisi 15-16 digit angka',
-          text4: 'Harus berisi 3 digit angka',
+          text4: 'Harus berisi 3 digit angka'
         }
       },
       financialInformationTittle: 'Informasi Keuangan',
@@ -3156,6 +3156,13 @@ export default {
     offers: {
       sidebar: {
         text1: 'Penawaran'
+      },
+      detail: {
+        offer: 'Penawaran',
+        minimumInvest: 'Minimal Investasi',
+        securitiesCode: 'Kode Efek',
+        location: 'Lokasi',
+        intendFund: 'Tujuan Penggunaan Dana'
       }
     }
   }

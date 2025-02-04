@@ -26,7 +26,9 @@ const nextConfig = {
       'pict.sindonews.net',
       'images.unsplash.com',
       'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com',
-      'dev.danamart.id'
+      'dev.danamart.id',
+      'internal.danamart.id',
+      's3.ap-southeast-1.wasabisys.com'
     ],
     remotePatterns: [
       {
@@ -79,7 +81,9 @@ const nextConfig = {
       'i.pravatar.cc',
       'images.unsplash.com',
       'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com',
-      'dev.danamart.id'
+      'dev.danamart.id',
+      'internal.danamart.id',
+      's3.ap-southeast-1.wasabisys.com'
     ],
     remotePatterns: [
       {

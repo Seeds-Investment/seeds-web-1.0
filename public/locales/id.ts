@@ -3157,6 +3157,59 @@ export default {
       sidebar: {
         text1: 'Penawaran'
       },
+      dashboard: {
+        text1: 'Penawaran',
+        text2:
+          'Penawaran investasi eksklusif—kembangkan kekayaan Anda sekarang!',
+        filter: {
+          text1: 'Jenis Efek',
+          text2: 'Semua',
+          text3: 'Saham',
+          text4: 'Obligasi',
+          text5: 'Status Penawaran',
+          text6: 'Semua',
+          text7: 'Listing',
+          text8: 'Prelisting',
+          text9: 'Filter',
+          text10: 'Semua',
+          text11: 'Jumlah Penawaran Terbesar',
+          text12: 'Jumlah Penawaran Terkecil',
+          text13: 'Jangka Waktu Terlama',
+          text14: 'Jangka Waktu Tercepat',
+          text15: 'Imbal Hasil Terbesar',
+          text16: 'Imbal Hasil Terkecil'
+        },
+        offerCard: {
+          text1: 'Pemodal',
+          text2: 'Jenis efek',
+          text3: 'Pembiayaan',
+          text4: 'Kupon',
+          text5: 'Tenor',
+          text6: 'Lihat Detail',
+          text7: 'Bagikan',
+          text8:
+            'Peluang investasi dari proyek yang <strong>telah selesai dikerjakan</strong> sehingga memiliki <strong>risiko lebih rendah</strong>.',
+          text9:
+            'Peluang investasi dari proyek yang <strong>sedang berjalan</strong> sehingga memiliki <strong>risiko lebih tinggi</strong>.',
+          text10: 'Selengkapnya'
+        },
+        prelisting:
+          'Tahapan sebelum listing, yaitu di mana kamu hanya bisa melihat penawaran yang tersedia di platform Danamart, tetapi <strong>masih belum bisa membeli</strong> penawaran efek tersebut. Tujuannya agar kamu mempelajari terlebih dahulu sebelum memutuskan pembelian/investasi pada penawaran efek yang tersedia. Tahapan prelisting ini berlangsung selama <strong>2 hari</strong>, sebelum berlanjut ke tahap listing.',
+        listing:
+          'Tahapan di mana selain bisa melihat informasi penawaran, kamu <strong>sudah bisa membeli</strong> penawaran efek yang tersedia di platform Danamart. Tahapan listing ini berlangsung selama <strong>30 hari</strong>, sejak berakhirnya masa prelisting.',
+        shareOffer: {
+          text1: 'Tautan penawaran telah disalin!',
+          text2: 'Bagikan Penawaran Ini',
+          text3: 'Bagikan Tautan'
+        },
+        detailOffer: {
+          text1: 'Minimal Investasi',
+          text2: 'Kode Efek',
+          text3: 'Lokasi',
+          text4: 'Tujuan Penggunaan Dana',
+          text5: 'Lihat Penawaran →'
+        }
+      },
       detail: {
         offer: 'Penawaran',
         minimumInvest: 'Minimal Investasi',

@@ -364,3 +364,10 @@ li {
   scrollbar-width: thin;
   scrollbar-color: #7555da #ffffff;
 }
+
+  .custom-danamart-slider .slick-slide {
+    margin: 0 4px;
+  }
+  .custom-danamart-slider .slick-list {
+    margin: 0 -4px;
+  }

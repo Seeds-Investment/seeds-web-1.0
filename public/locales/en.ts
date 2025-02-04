@@ -1021,7 +1021,8 @@ export default {
     notFound: 'Promo code not found. Make sure you entered a valid promo code.',
     limitPurchaseMessage:
       'You need to reach the minimum transaction before using the promo!',
-    limitDailyMessage: 'The promo code quota is already exceeding today’s limit',
+    limitDailyMessage:
+      'The promo code quota is already exceeding today’s limit',
     specificFeature: 'Promo code only for specific feature',
     specificReferral: 'Promo code only for specific referral code',
     invalidPromo: 'Promo code is invalid'
@@ -2821,6 +2822,8 @@ export default {
     button6: 'Change My SeedsPlan',
     button7: 'Frequently Asked Question',
     button8: 'Use It Now',
+    button9: 'Stop Seeds Plan',
+    stopPlanDesc: 'You will lose all of your benefits after cancellation.',
     text1: 'Best',
     text2: 'Subscription Fee',
     text3: 'Discount',
@@ -2896,6 +2899,8 @@ export default {
       noTransaction:
         'You haven’t made any transaction yet. Start your first transaction now!',
       back: 'Back'
-    }
+    },
+    yes: 'Yes',
+    no: 'No'
   }
 };

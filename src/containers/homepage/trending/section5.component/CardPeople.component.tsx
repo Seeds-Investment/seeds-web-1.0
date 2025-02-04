@@ -105,7 +105,7 @@ const CardPeople: React.FC<props> = ({ data }) => {
               <CardBody className="flex flex-col py-3 px-2 justify-evenly">
                 <div className="flex">
                   <Typography className="font-poppins font-semibold text-xs text-[#262626]">
-                    {data.name}
+                    {`${data.name.slice(0, 10)}...`}
                   </Typography>
                 </div>
                 <div className="flex flex-col gap-1">

@@ -1,83 +1,60 @@
-import UnsubscribeWarning from '@/assets/seedsplan/unsubscribe-warning.svg';
-import { type TFunction } from 'i18next';
+import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { XIcon } from 'public/assets/vector';
 import React from 'react';
-import { IoCloseSharp } from 'react-icons/io5';
+import { useTranslation } from 'react-i18next';
+import SeedyAlert from '../../assets/seedsplan/seedy-alert.svg';
+import Modal from '../ui/modal/Modal';
 
 interface TncProps {
-  translation: TFunction;
-  voucherAmount: number;
-  isOpen: boolean;
   onClose: () => void;
   handleStopSubscription: () => void;
 }
 
 const ConfirmationUnsubscribe: React.FC<TncProps> = ({
-  translation,
-  voucherAmount, 
-  isOpen, 
   onClose,
   handleStopSubscription
 }) => {
-  if (!isOpen) return null;
+  const { t } = useTranslation();
   return (
-    <>
-      <div className="fixed inset-0 bg-black opacity-50 z-40" />
-      <div className="fixed inset-0 flex items-end justify-center md:items-center z-50">
-        <div className="bg-white rounded-t-2xl md:rounded-2xl overflow-hidden w-full md:w-3/4 lg:w-1/2 border-2">
-          <div className="flex justify-between p-4">
-            <div className="font-semibold text-xl">{translation('seedsPlan.modalUnsubscribe.text1')}</div>
-            <button
-              onClick={onClose}
-              className="transform scale-100 hover:scale-110 transition-transform duration-300"
-            >
-              <IoCloseSharp size={30} />
-            </button>
-          </div>
-          <div className='px-4 pb-4'>
-            {translation('seedsPlan.modalUnsubscribe.text2')}
-          </div>
-          <div className='mx-4 p-4 pb-4 bg-[#E0E0E099] rounded-xl'>
-            <div className='w-full flex justify-start items-center gap-2'>
-              <div className='w-[24px] h-[24px]'>
-                <Image
-                  src={UnsubscribeWarning}
-                  width={500}
-                  height={500}
-                  alt="seedsplan"
-                  className="w-full h-full"
-                />
-              </div>
-              <div className='text-[#C1282A] font-semibold'>
-                {translation('seedsPlan.modalUnsubscribe.text3')}
-              </div>
-            </div>
-            <div className='pl-4 mt-4'>
-              <div>
-                {translation('seedsPlan.modalUnsubscribe.text4')}
-                {voucherAmount}
-                {voucherAmount > 1 ? translation('seedsPlan.modalUnsubscribe.text6') : translation('seedsPlan.modalUnsubscribe.text5')}
-                {translation('seedsPlan.modalUnsubscribe.text7')}
-              </div>
-            </div>
-          </div>
-          <div className='flex justify-center items-center flex-col my-4 gap-4 mx-4'>
-            <div
-              onClick={handleStopSubscription}
-              className='w-full md:w-[90%] text-[#262626] border border-[#3AC4A0] font-semibold text-center rounded-full py-2 cursor-pointer transform scale-100 hover:scale-105 transition-transform duration-300'
-            >
-              {translation('seedsPlan.modalUnsubscribe.text8')}
-            </div>
-            <div
-              onClick={onClose}
-              className='w-full md:w-[90%] text-[#262626] bg-[#3AC4A0] border border-[#3AC4A0] font-semibold text-center rounded-full py-2 cursor-pointer transform scale-100 hover:scale-105 transition-transform duration-300'
-            >
-              {translation('seedsPlan.modalUnsubscribe.text9')}
-            </div>
-          </div>
+    <Modal
+      backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/75 flex justify-start items-start"
+      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[50%] md:left-[35%] md:right-[-35%] mt-[-14.35rem] w-full md:w-[376px] h-[390px] lg:rounded-2xl rounded-t-2xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
+    >
+      <div className="flex flex-col items-center gap-5 p-6 relative">
+        <Image
+          className="cursor-pointer hover:scale-105 absolute right-6"
+          onClick={onClose}
+          src={XIcon}
+          alt="X-Icon"
+          width={20}
+          height={20}
+        />
+        <Image src={SeedyAlert} alt={'Seedy-Alert'} width={160} height={181} />
+        <div className="flex flex-col items-center text-center">
+          <Typography className="font-poppins font-semibold text-base text-[#262626]">
+            {`${t('seedsPlan.button9')}?`}
+          </Typography>
+          <Typography className="font-poppins font-normal text-sm text-[#262626]">
+            {t('seedsPlan.stopPlanDesc')}
+          </Typography>
+        </div>
+        <div className="flex items-center gap-3">
+          <Button
+            onClick={onClose}
+            className="md:w-[165px] w-full h-[42px] rounded-full bg-[#DD2525] text-white font-poppins font-semibold text-sm"
+          >
+            {t('seedsPlan.no')}
+          </Button>
+          <Button
+            onClick={handleStopSubscription}
+            className="md:w-[165px] w-full h-[42px] rounded-full bg-[#3AC4A0] text-white font-poppins font-semibold text-sm"
+          >
+            {t('seedsPlan.yes')}
+          </Button>
         </div>
       </div>
-    </>
+    </Modal>
   );
 };
 

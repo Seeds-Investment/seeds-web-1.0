@@ -432,3 +432,124 @@ export interface UpdateUserInfoForm {
   dm_penmit_01013?: string;
   dm_penmit_01008: string;
 }
+
+export interface DetailProspektus {
+  StatusCode: string;
+  Status: string;
+  message: string;
+  Data: Data;
+}
+
+export interface Data {
+  gambarSektorUsaha: string;
+  gambarProspektus: string[];
+  idPinjaman: string;
+  StatusListing: string;
+  durasi: string;
+  days: Days;
+  jenisEfek: string;
+  jmlDana: string;
+  jmlMinDana: string;
+  TPD: string;
+  JangkaWaktu: string;
+  Jaminan: string;
+  JenisPenawaran: string;
+  userpeminjamid: string;
+  ProgresPersen: string;
+  ProgresBar: string;
+  groupWa: string;
+  cekOmbak: string;
+  NamaPenerbit: string;
+  Sosmed: Sosmed;
+  TimelinePenawaran: TimelinePenawaran;
+  BeliEfek: BeliEfek;
+  Overview: Overview;
+  investorCorner: any[];
+  investorCornerSum: number;
+  investorCornerCount: number;
+  investorCornerMin: number;
+  investorCornerMax: number;
+  investorCornerAvg: number;
+  KabarTerbaru: KabarTerbaru[];
+  Prospektus: string;
+  Kupon: string;
+}
+
+export interface Days {
+  prelistingDays: string;
+  listingDays: string;
+  endPrelisting: string;
+  endListing: string;
+}
+
+export interface Sosmed {
+  facebook: string;
+  instagram: string;
+  linkedin: string;
+}
+
+export interface TimelinePenawaran {
+  Status: string;
+  statusProspektus: string;
+  ListStatus: string;
+  status_sla: string;
+  tglTimeline: string | undefined[];
+  beforeTimeline: string[];
+}
+
+export interface BeliEfek {
+  PinjamanId: string;
+  UserPinjamanId: string;
+}
+
+export interface Overview {
+  informasiPenerbit: string;
+  Proyek: Proyek;
+  Bisnis: Bisnis;
+  Keuangan: Keuangan;
+  PenanggungJawab: PenanggungJawab;
+}
+
+export interface Proyek {
+  NilaiProyek: string;
+  ProyeksiImbalHasilProyek: string;
+  JenisPengerjaanProyek: string;
+  UraianMengenaiProyek: string;
+}
+
+export interface Bisnis {
+  namaPerusahaan: string;
+  AlamatPerusahaan: string;
+  'Lama Perusahaan Berdiri': string;
+  SektorUsaha: string;
+  JumlahDirektur: string;
+  JumlahKomisaris: string;
+  JumlahPemegangSaham: string;
+  JumlahKaryawan: string;
+}
+
+export interface Keuangan {
+  Penjualan: string;
+  LabaUsaha: string;
+  LabaBersih: string;
+  AsetLancar: string;
+  AsetTetap: string;
+  HutangLancar: string;
+  HutangJangkaPanjang: string;
+  Ekuitas: string;
+}
+
+export interface PenanggungJawab {
+  NamaLengkap: string;
+  'Jenis Kelamin': string;
+  Umur: string;
+  'Pendidikan Terakhir': string;
+  Alamat: string;
+  Jabatan: string;
+}
+
+export interface KabarTerbaru {
+  name: string;
+  datetime: string;
+  info_update: string;
+}

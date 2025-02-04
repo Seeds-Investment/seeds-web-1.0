@@ -2810,7 +2810,9 @@ export default {
         text2: ' berlaku hingga ',
         text3: ' Paket yang baru ',
         text4: ' akan berlaku mulai ',
-        text5: ' pukul '
+        text5: ' pukul ',
+        text6: 'bulan',
+        text7: 'bulan'
       },
     },
     modalUnsubscribe: {

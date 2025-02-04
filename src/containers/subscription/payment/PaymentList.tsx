@@ -289,21 +289,21 @@ const PaymentList: React.FC = (): JSX.Element => {
       >
         {option?.payment_type === 'ewallet' && (
           <>
-            {dataPlan !== undefined && userInfo !== undefined && subscriptionPlan?.name !== undefined && (
+            {dataPlan !== undefined && userInfo !== undefined && subscriptionPlan !== undefined && (
               <WalletForm
                 payment={option}
                 handlePay={handlePay}
                 userInfo={userInfo}
                 dataPlan={dataPlan}
                 subscriptionStatus={subscriptionStatus}
-                subscriptionType={subscriptionPlan?.name}
+                incomingSubscription={subscriptionPlan}
               />
             )}
           </>
         )}
         {option?.payment_type === 'va' && (
           <>
-            {dataPlan !== undefined && userInfo !== undefined && subscriptionPlan?.name !== undefined && (
+            {dataPlan !== undefined && userInfo !== undefined && subscriptionPlan !== undefined && (
               <VirtualAccountGuide
                 payment={option}
                 handlePay={handlePay}
@@ -311,7 +311,7 @@ const PaymentList: React.FC = (): JSX.Element => {
                 dataPlan={dataPlan}
                 paymentStatus={paymentStatus}
                 subscriptionStatus={subscriptionStatus}
-                subscriptionType={subscriptionPlan?.name}
+                incomingSubscription={subscriptionPlan}
               />
             )}
           </>

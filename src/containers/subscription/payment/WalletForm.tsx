@@ -25,7 +25,7 @@ interface WalletFormProps {
   dataPlan: PlanI;
   userInfo: UserInfo;
   subscriptionStatus: StatusSubscription | null;
-  subscriptionType: string;
+  incomingSubscription: PlanI;
 }
 
 const WalletForm = ({
@@ -34,7 +34,7 @@ const WalletForm = ({
   dataPlan,
   userInfo,
   subscriptionStatus,
-  subscriptionType
+  incomingSubscription
 }: WalletFormProps): JSX.Element => {
   const translationId = 'seedsPlan.WalletForm';
   const { t } = useTranslation();
@@ -178,8 +178,14 @@ const WalletForm = ({
             <Typography className='text-[#261679] font-poppins text-md'>
               {t('seedsPlan.payment.information.text1')} (
                 <strong>
-                  {subscriptionStatus?.active_subscription?.subscription_type.charAt(0).toUpperCase() + 
-                  subscriptionStatus?.active_subscription?.subscription_type.slice(1).toLowerCase()}
+                  {`
+                    ${subscriptionStatus?.active_subscription?.subscription_type.charAt(0).toUpperCase() + 
+                    subscriptionStatus?.active_subscription?.subscription_type.slice(1).toLowerCase()}
+                    ${subscriptionStatus?.active_subscription?.duration}
+                    ${subscriptionStatus?.active_subscription?.duration > 1
+                      ? t('seedsPlan.payment.information.text7')
+                      : t('seedsPlan.payment.information.text6')}
+                  `}
                 </strong>
               ) 
               {t('seedsPlan.payment.information.text2')}
@@ -196,8 +202,14 @@ const WalletForm = ({
               {getChatClock(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z')}.
               {t('seedsPlan.payment.information.text3')} (
                 <strong>
-                  {subscriptionType?.charAt(0).toUpperCase() + 
-                  subscriptionType?.slice(1).toLowerCase()}
+                  {`
+                    ${incomingSubscription?.name?.charAt(0).toUpperCase() + 
+                    incomingSubscription?.name.slice(1).toLowerCase()}
+                    ${incomingSubscription?.duration_in_months}
+                    ${incomingSubscription?.duration_in_months > 1
+                      ? t('seedsPlan.payment.information.text7')
+                      : t('seedsPlan.payment.information.text6')}
+                  `}
                 </strong>
               )  
               {t('seedsPlan.payment.information.text4')}

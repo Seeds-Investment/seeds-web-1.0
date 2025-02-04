@@ -2877,9 +2877,11 @@ export default {
       information: {
         text1: 'Your current plan',
         text2: ' is valid until ',
-        text3: ' The plan to be changed',
+        text3: ' The incoming plan',
         text4: ' will take effect on ',
-        text5: ' at '
+        text5: ' at ',
+        text6: 'month',
+        text7: 'months'
       },
     },
     modalUnsubscribe: {

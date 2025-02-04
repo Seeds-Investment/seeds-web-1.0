@@ -3215,7 +3215,18 @@ export default {
         minimumInvest: 'Minimal Investasi',
         securitiesCode: 'Kode Efek',
         location: 'Lokasi',
-        intendFund: 'Tujuan Penggunaan Dana'
+        intendFund: 'Tujuan Penggunaan Dana',
+        financier: 'Pemodal',
+        buy: 'Beli',
+        report: 'Laporkan',
+        securitiesType: 'Jenis Efek',
+        intendedUseOfFunds: 'Tujuan Penggunaan Dana',
+        offeredAmount: 'Jumlah Dana Penawaran',
+        minimumInvestmentAmount: 'Jumlah Minimum Dana',
+        coupon: 'Kupon',
+        tenor: 'Tenor',
+        guarantee: 'Jaminan',
+        offerType: 'Jenis Penawaran'
       }
     }
   }

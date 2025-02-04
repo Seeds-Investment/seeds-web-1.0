@@ -3281,7 +3281,18 @@ export default {
         minimumInvest: 'Minimum Investment',
         securitiesCode: 'Securities Code',
         location: 'Location',
-        intendFund: 'Intended Use of Funds'
+        intendFund: 'Intended Use of Funds',
+        financier: 'Financier',
+        buy: 'Buy',
+        report: 'Report',
+        securitiesType: 'Type of Securities',
+        intendedUseOfFunds: 'Intended Use of Funds',
+        offeredAmount: 'Offered Amount',
+        minimumInvestmentAmount: 'Minimum Investment Amount',
+        coupon: 'Coupon',
+        tenor: 'Tenor',
+        guarantee: 'Guarantee',
+        offerType: 'Offer Type'
       }
     }
   }

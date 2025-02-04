@@ -200,3 +200,18 @@ export const getBattleStageDate = (date: string): string => {
 export const getChatDate = (date: string): string => {
   return moment(date).format('hh:mm A');
 };
+
+export const getSubscriptionDate = (
+  date: Date,
+  locale: 'id-ID' | 'en-US'
+): string => {
+  moment.locale(locale);
+
+  return locale === 'id-ID'
+    ? moment(date).format('DD MMMM YYYY')
+    : moment(date).format('MMMM DD, YYYY');
+};
+
+export const getChatClock = (date: string): string => {
+  return moment(date).format('HH:mm');
+};

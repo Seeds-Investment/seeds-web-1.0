@@ -1,7 +1,7 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
-import { type PlanI, type UserInfo } from '@/utils/interfaces/subscription.interface';
+import { type PlanI, type StatusSubscription, type UserInfo } from '@/utils/interfaces/subscription.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +22,8 @@ interface VirtualAccountGuideProps {
   ) => Promise<void>;
   paymentStatus: PaymentStatus | undefined;
   userInfo: UserInfo;
+  subscriptionStatus: StatusSubscription | null;
+  subscriptionType: string;
 }
 
 export interface PaymentStatus {
@@ -46,7 +48,9 @@ const VirtualAccountGuide = ({
   dataPlan,
   handlePay,
   userInfo,
-  paymentStatus
+  paymentStatus,
+  subscriptionStatus,
+  subscriptionType
 }: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
   const accountNumber = paymentStatus != null ? paymentStatus.vaNumber : '';

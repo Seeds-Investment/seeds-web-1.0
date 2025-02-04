@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable-next-line @typescript-eslint/restrict-plus-operands */
@@ -8,8 +9,8 @@ import Dialog from '@/components/ui/dialog/Dialog';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { getSubscriptionPlan, joinSubscription } from '@/repository/subscription.repository';
-import { type DataPlanI, type PaymentStatus, type PlanI } from '@/utils/interfaces/subscription.interface';
+import { getSubscriptionPlan, getSubscriptionPlanById, getSubscriptionStatus, joinSubscription } from '@/repository/subscription.repository';
+import { type DataPlanI, type PaymentStatus, type PlanI, type StatusSubscription } from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -38,6 +39,7 @@ export interface Payment {
 const PaymentList: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
+  const planId = router.query.plan_id;
   // Gunakan ini untuk menentukan plan yang dipilih berdasarkan period tertentu
   const selectedPeriodPlan = router.query.plan_id;
   const [loading, setLoading] = useState(true);
@@ -50,6 +52,8 @@ const PaymentList: React.FC = (): JSX.Element => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [dataPlan, setDataPlan] = useState<PlanI>();
   const [paymentStatus] = useState<PaymentStatus>();
+  const [subscriptionStatus, setSubscriptionStatus] = useState<StatusSubscription | null>(null);
+  const [subscriptionPlan, setSubscriptionPlan] = useState<PlanI>();
 
   const defaultOption = {
     id: '',
@@ -114,11 +118,44 @@ const PaymentList: React.FC = (): JSX.Element => {
       toast(`ERROR fetch user info ${error as string}`);
     }
   };
+  
+  const getStatus = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const response = await getSubscriptionStatus();
+      if (response !== undefined) {
+        setSubscriptionStatus(response);
+      }
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const getSubscriptionDetail = async (planId: string): Promise<void> => {
+    try {
+      setLoading(true);
+      const response = await getSubscriptionPlanById(planId);
+      setSubscriptionPlan(response)
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     void fetchData();
     void getPlanList();
+    void getStatus();
   }, []);
+
+  useEffect(() => {
+    if (planId !== undefined && planId !== null) {
+      void getSubscriptionDetail(`${planId}`);
+    }
+  }, [planId]);
 
   useEffect(() => {
     void fetchPaymentList();
@@ -252,25 +289,29 @@ const PaymentList: React.FC = (): JSX.Element => {
       >
         {option?.payment_type === 'ewallet' && (
           <>
-            {dataPlan !== undefined && userInfo !== undefined && (
+            {dataPlan !== undefined && userInfo !== undefined && subscriptionPlan?.name !== undefined && (
               <WalletForm
                 payment={option}
                 handlePay={handlePay}
                 userInfo={userInfo}
                 dataPlan={dataPlan}
+                subscriptionStatus={subscriptionStatus}
+                subscriptionType={subscriptionPlan?.name}
               />
             )}
           </>
         )}
         {option?.payment_type === 'va' && (
           <>
-            {dataPlan !== undefined && userInfo !== undefined && (
+            {dataPlan !== undefined && userInfo !== undefined && subscriptionPlan?.name !== undefined && (
               <VirtualAccountGuide
                 payment={option}
                 handlePay={handlePay}
                 userInfo={userInfo}
                 dataPlan={dataPlan}
                 paymentStatus={paymentStatus}
+                subscriptionStatus={subscriptionStatus}
+                subscriptionType={subscriptionPlan?.name}
               />
             )}
           </>

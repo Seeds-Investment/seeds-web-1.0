@@ -2804,7 +2804,14 @@ export default {
       idTransaction: 'ID Transaksi',
       close: 'Tutup',
       paymentSuccessful: 'Berhasil',
-      recurringSaved: 'Pembayaran anda telah tersimpan'
+      recurringSaved: 'Pembayaran anda telah tersimpan',
+      information: {
+        text1: 'Paket Anda saat ini',
+        text2: ' berlaku hingga ',
+        text3: ' Paket yang baru ',
+        text4: ' akan berlaku mulai ',
+        text5: ' pukul '
+      },
     },
     modalUnsubscribe: {
       text1: 'Apakah Anda yakin untuk berhenti berlangganan?',

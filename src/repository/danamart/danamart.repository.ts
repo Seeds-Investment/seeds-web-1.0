@@ -306,3 +306,26 @@ export const updateFinancialInformation = async (
     throw new Error(error.response.data.message);
   }
 };
+
+export const getDetailProspektus = async (id: string): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.get(
+      `/pemodal/Prospektus?pinjamanId=${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+        }
+      }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};

@@ -3223,6 +3223,54 @@ export default {
     offers: {
       sidebar: {
         text1: 'Offers'
+      },
+      dashboard: {
+        text1: 'Offers',
+        text2: 'Exclusive investment offers—grow your wealth now!',
+        filter: {
+          text1: 'Types of Securities',
+          text2: 'All',
+          text3: 'Stocks',
+          text4: 'Bonds',
+          text5: 'Offer Status',
+          text6: 'All',
+          text7: 'Listing',
+          text8: 'Prelisting',
+          text9: 'Filters',
+          text10: 'All',
+          text11: 'Largest Offer Amount',
+          text12: 'Smallest Offer Amount',
+          text13: 'Longest Term',
+          text14: 'Shortest Term',
+          text15: 'Highest Yield',
+          text16: 'Lowest Yield',
+        },
+        offerCard: {
+          text1: 'Investor',
+          text2: 'Type of Security',
+          text3: 'Financing',
+          text4: 'Coupon',
+          text5: 'Tenor',
+          text6: 'View Details',
+          text7: 'Share',
+          text8: 'Investment opportunity from <strong>completed projects</strong>, resulting in <strong>lower risk</strong>.',
+          text9: 'Investment opportunity from <strong>ongoing projects</strong>, resulting in <strong>higher risk</strong>.',
+          text10: 'Learn More'
+        },
+        prelisting: 'The prelisting phase is where you can only view the offers available on the Danamart platform, but <strong>you are not yet able to purchase</strong> these securities. The purpose is for you to study the offers first before making an investment or purchase decision. This prelisting phase lasts for <strong>2 days</strong> before proceeding to the listing phase.',
+        listing: 'The listing phase is where, in addition to viewing offer information, you <strong>are now able to purchase</strong> the available securities on the Danamart platform. This listing phase lasts for <strong>30 days</strong> after the prelisting period ends.',
+        shareOffer: {
+          text1: 'Offer link copied!',
+          text2: 'Share This Offer',
+          text3: 'Share Link',
+        },
+        detailOffer: {
+          text1: 'Minimum Investment',
+          text2: 'Security Code',
+          text3: 'Location',
+          text4: 'Purpose of Fund Usage',
+          text5: 'View Offer →',
+        }
       }
     }
   }

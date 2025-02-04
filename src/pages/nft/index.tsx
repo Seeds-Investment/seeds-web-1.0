@@ -1,14 +1,20 @@
 import NFTTabs from '@/components/nft/tabs';
 import withAuth from '@/helpers/withAuth';
-import { Button, Card } from '@material-tailwind/react';
+import { Button, Card, Dialog, DialogBody } from '@material-tailwind/react';
 import Image from 'next/image';
 import logo from 'public/assets/logo-seeds.png';
+import checklist from 'public/assets/nft/checklist.svg';
 import diam from 'public/assets/vector/diam.svg';
-import React from 'react';
+import React, { useState } from 'react';
 import { FaClockRotateLeft } from 'react-icons/fa6';
 import { FiChevronRight, FiSearch } from 'react-icons/fi';
 
 const NFTDashboard: React.FC = () => {
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleOpen = (): void => {
+    setOpen(!open);
+  };
   return (
     <section className="flex flex-col gap-2 md:gap-4">
       <Card className="md:p-5 rounded-none md:rounded-xl">
@@ -34,7 +40,10 @@ const NFTDashboard: React.FC = () => {
         </div>
       </Card>
       <Card className="flex flex-col gap-9 md:p-5 rounded-none md:rounded-xl">
-        <Button className="flex justify-between items-center bg-[#94CCBD] border border-[#4FE6AF] px-4 py-1.5 md:px-7 md:py-2 rounded-[10px]">
+        <Button
+          className="flex justify-between items-center bg-[#94CCBD] border border-[#4FE6AF] px-4 py-1.5 md:px-7 md:py-2 rounded-[10px]"
+          onClick={handleOpen}
+        >
           <div className="flex items-center gap-5">
             <Image src={diam} alt="diam-logo" />
             <p className="font-poppins font-semibold text-white text-sm">
@@ -45,6 +54,23 @@ const NFTDashboard: React.FC = () => {
         </Button>
         <NFTTabs />
       </Card>
+      <Dialog handler={handleOpen} open={open} className="p-2.5" size="sm">
+        <DialogBody className="flex flex-col gap-4 p-0 justify-center items-center">
+          <Image src={checklist} alt="checklist" />
+          <div className="flex flex-col gap-3.5 items-center justify-center">
+            <p className="font-poppins font-semibold text-sm text-black">
+              Success full connect DIAM wallet !
+            </p>
+            <hr className="text-[#BDBDBD] w-full" />
+            <p
+              className="font-poppins font-semibold text-sm text-[#7555DA] cursor-pointer"
+              onClick={handleOpen}
+            >
+              OK
+            </p>
+          </div>
+        </DialogBody>
+      </Dialog>
     </section>
   );
 };

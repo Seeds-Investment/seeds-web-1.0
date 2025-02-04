@@ -7,9 +7,10 @@ import {
   Card
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import logo from 'public/assets/logo-seeds.png';
 import React, { useState } from 'react';
-import { FiChevronRight } from 'react-icons/fi';
+import { FiArrowLeft, FiChevronRight } from 'react-icons/fi';
 
 interface Render {
   fromImage: string;
@@ -29,14 +30,24 @@ interface Column {
 }
 
 const NFTDetail: React.FC = () => {
+  const router = useRouter();
   const [open, setOpen] = useState<{ open: boolean; state: number }>({
     open: false,
     state: 0
   });
   const [detail, setDetail] = useState<boolean>(false);
   const [transaction, setTransaction] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [wallet, setWallet] = useState<boolean>(true);
+  const [sale, setSale] = useState<boolean>(true);
+
   const handleOpen = (): void => {
     setOpen({ open: !open.open, state: 0 });
+  };
+
+  const handleSale = (): void => {
+    setSale(!sale);
+    handleOpen();
   };
   const handleChange = (state: number): void => {
     setOpen(prev => ({ ...prev, state }));
@@ -112,6 +123,17 @@ const NFTDetail: React.FC = () => {
   return (
     <>
       <Card className="flex flex-col md:gap-4 p-0 md:p-5">
+        <div className="flex justify-between items-center py-5 px-4 md:hidden font-semibold text-base text-neutral-medium font-poppins">
+          <FiArrowLeft
+            size={24}
+            onClick={() => {
+              router.back();
+            }}
+            className="cursor-pointer"
+          />
+          <p>Detail NFT</p>
+          <div className="w-6 aspect-square" />
+        </div>
         <Image
           src={logo}
           alt="seeds-logo"
@@ -119,23 +141,37 @@ const NFTDetail: React.FC = () => {
         />
         <div className="flex flex-col gap-2 md:gap-4 p-3 md:p-0">
           <Button
-            className="bg-[#3AC4A0] p-2.5 font-poppins font-semibold text-sm rounded-full"
+            className="bg-[#3AC4A0] p-2.5 font-poppins font-semibold text-sm rounded-full normal-case"
             onClick={handleOpen}
           >
-            GET
+            {wallet ? `${sale ? 'Cancel' : 'List for'} Sale` : 'GET'}
           </Button>
           <div className="flex flex-col gap-3 bg-[#F3F4F8] border border-[#E9E9E9] rounded-lg py-2 px-3.5">
             <div className="flex flex-col gap-3.5">
-              <div className="flex gap-1.5 items-center">
-                <Image
-                  src={logo}
-                  alt="pic-profile"
-                  className="w-5 h-5 bg-green-500 rounded-full"
-                />
-                <p className="font-poppins font-semibold text-sm md:text-base text-[#3AC4A0]">
-                  Name
-                </p>
+              <div className="flex gap-3 items-center">
+                <div className="flex gap-1.5 items-center">
+                  <Image
+                    src={logo}
+                    alt="pic-profile"
+                    className="w-5 h-5 bg-green-500 rounded-full"
+                  />
+                  <p className="font-poppins font-semibold text-sm md:text-base text-[#3AC4A0]">
+                    Name
+                  </p>
+                </div>
+                {wallet && (
+                  <p
+                    className={`${
+                      sale
+                        ? 'bg-[#FFE9D4] text-[#B81516]'
+                        : 'bg-[#E9E9E9] text-neutral-soft'
+                    } rounded-full py-1 w-20 text-center font-semibold font-poppins text-xs`}
+                  >
+                    {sale ? 'On Sale' : 'Not Listed'}
+                  </p>
+                )}
               </div>
+
               <div className="flex flex-col gap-2">
                 <p className="font-semibold font-poppins text-base md:text-lg text-neutral-medium">
                   Nft Title
@@ -269,6 +305,9 @@ const NFTDetail: React.FC = () => {
       </Card>
       <NFTDialog
         open={open}
+        handleSale={handleSale}
+        wallet={wallet}
+        sale={sale}
         handleOpen={handleOpen}
         handleChange={handleChange}
       />

@@ -2873,7 +2873,16 @@ export default {
       idTransaction: 'ID Transaction',
       close: 'Close',
       paymentSuccessful: 'Successful',
-      recurringSaved: 'Your recurring has been saved!'
+      recurringSaved: 'Your recurring has been saved!',
+      information: {
+        text1: 'Your current plan',
+        text2: ' is valid until ',
+        text3: ' The incoming plan',
+        text4: ' will take effect on ',
+        text5: ' at ',
+        text6: 'month',
+        text7: 'months'
+      },
     },
     modalUnsubscribe: {
       text1: 'Are You Sure to Unsubscribe?',

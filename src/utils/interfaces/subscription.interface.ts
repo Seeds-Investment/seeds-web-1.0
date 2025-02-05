@@ -75,14 +75,16 @@ export interface StatusSubscription {
 }
 
 export interface DetailStatusSubscription {
-  id: string;
-  subscription_type_id: string;
-  user_id: string;
-  price: number;
-  started_at: string;
-  ended_at: string;
-  created_at: string;
-  updated_at: string;
+  id: string
+  subscription_type_id: string
+  subscription_type: string
+  user_id: string
+  price: number
+  duration: number
+  started_at: string
+  ended_at: string
+  created_at: string
+  updated_at: string
 }
 
 export interface TransactionHistory {

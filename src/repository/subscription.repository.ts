@@ -23,6 +23,21 @@ export const getSubscriptionPlan = async (): Promise<any> => {
   }
 };
 
+export const getSubscriptionPlanById = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await subscriptionService.get(`/subscription/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};
+
 export const getSubscriptionVoucher = async (id: string): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');

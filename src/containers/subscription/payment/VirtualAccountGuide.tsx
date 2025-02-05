@@ -1,9 +1,12 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
+import { getChatClock, getSubscriptionDate } from '@/helpers/dateFormat';
+import LanguageContext from '@/store/language/language-context';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
-import { type PlanI, type UserInfo } from '@/utils/interfaces/subscription.interface';
+import { type PlanI, type StatusSubscription, type UserInfo } from '@/utils/interfaces/subscription.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { type Payment } from './PaymentList';
@@ -22,6 +25,8 @@ interface VirtualAccountGuideProps {
   ) => Promise<void>;
   paymentStatus: PaymentStatus | undefined;
   userInfo: UserInfo;
+  subscriptionStatus: StatusSubscription | null;
+  incomingSubscription: PlanI;
 }
 
 export interface PaymentStatus {
@@ -46,7 +51,9 @@ const VirtualAccountGuide = ({
   dataPlan,
   handlePay,
   userInfo,
-  paymentStatus
+  paymentStatus,
+  subscriptionStatus,
+  incomingSubscription
 }: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
   const accountNumber = paymentStatus != null ? paymentStatus.vaNumber : '';
@@ -77,6 +84,7 @@ const VirtualAccountGuide = ({
   const translationsId = 'PlayPayment.VirtualAccountGuide';
   const translationId = 'PlayPayment.WalletForm';
   const bankName = payment?.payment_method?.split('_')[0];
+  const languageCtx = useContext(LanguageContext);
 
   return (
     <div className="max-h-[70vh]">
@@ -155,6 +163,62 @@ const VirtualAccountGuide = ({
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right">
         {`IDR ${totalFee}`}
       </Typography>
+      <Divider />
+      {
+        subscriptionStatus !== null &&
+          <div className='bg-[#DADADA] rounded-lg p-4'>
+            <Typography className='text-[#261679] font-poppins text-md'>
+              {t('seedsPlan.payment.information.text1')} (
+                <strong>
+                  {`
+                    ${subscriptionStatus?.active_subscription?.subscription_type.charAt(0).toUpperCase() + 
+                    subscriptionStatus?.active_subscription?.subscription_type.slice(1).toLowerCase()}
+                    ${subscriptionStatus?.active_subscription?.duration}
+                    ${subscriptionStatus?.active_subscription?.duration > 1
+                      ? t('seedsPlan.payment.information.text7')
+                      : t('seedsPlan.payment.information.text6')}
+                  `}
+                </strong>
+              ) 
+              {t('seedsPlan.payment.information.text2')}
+              {languageCtx.language === 'ID'
+                ? getSubscriptionDate(
+                    new Date(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z'),
+                    'id-ID'
+                  )
+                : getSubscriptionDate(
+                    new Date(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z'),
+                    'en-US'
+                  )}
+              {t('seedsPlan.payment.information.text5')}
+              {getChatClock(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z')}.
+              {t('seedsPlan.payment.information.text3')} (
+                <strong>
+                  {`
+                    ${incomingSubscription?.name?.charAt(0).toUpperCase() + 
+                    incomingSubscription?.name.slice(1).toLowerCase()}
+                    ${incomingSubscription?.duration_in_months}
+                    ${incomingSubscription?.duration_in_months > 1
+                      ? t('seedsPlan.payment.information.text7')
+                      : t('seedsPlan.payment.information.text6')}
+                  `}
+                </strong>
+              )  
+              {t('seedsPlan.payment.information.text4')}
+              {languageCtx.language === 'ID'
+                ? getSubscriptionDate(
+                    new Date(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z'),
+                    'id-ID'
+                  )
+                : getSubscriptionDate(
+                    new Date(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z'),
+                    'en-US'
+                  )}
+              {t('seedsPlan.payment.information.text5')}
+              {getChatClock(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z')}.
+            </Typography>
+          </div>
+      }
       <Divider />
       <Typography className="text-[#DD2525] font-normal text-sm mb-6">
         {t(`${translationsId}.note`)}

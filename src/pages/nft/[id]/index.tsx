@@ -38,8 +38,8 @@ const NFTDetail: React.FC = () => {
   const [detail, setDetail] = useState<boolean>(false);
   const [transaction, setTransaction] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [wallet, setWallet] = useState<boolean>(true);
-  const [sale, setSale] = useState<boolean>(true);
+  const [wallet, setWallet] = useState<boolean>(false);
+  const [sale, setSale] = useState<boolean>(false);
 
   const handleOpen = (): void => {
     setOpen({ open: !open.open, state: 0 });

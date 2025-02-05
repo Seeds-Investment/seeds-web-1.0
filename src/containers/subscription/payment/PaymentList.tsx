@@ -121,16 +121,11 @@ const PaymentList: React.FC = (): JSX.Element => {
   
   const getStatus = async (): Promise<void> => {
     try {
-      setLoading(true);
       const response = await getSubscriptionStatus();
       if (response !== undefined) {
         setSubscriptionStatus(response);
       }
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    } finally {
-      setLoading(false);
-    }
+    } catch (error) {}
   };
   
   const getSubscriptionDetail = async (planId: string): Promise<void> => {

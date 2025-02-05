@@ -49,7 +49,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
               {images.length} page
             </h1>
           </div>
-          <div className="flex justify-center h-full w-full">
+          <div className="relative flex justify-center h-full w-full">
             {images[currentIndex].split('.')[
               images[currentIndex].split('.').length - 1
             ] !== 'mp4' ? (

@@ -2814,6 +2814,7 @@ export default {
         text6: 'bulan',
         text7: 'bulan'
       },
+      warningIncoming: 'Anda sudah memiliki langganan aktif atau langganan yang akan datang!'
     },
     modalUnsubscribe: {
       text1: 'Apakah Anda yakin untuk berhenti berlangganan?',

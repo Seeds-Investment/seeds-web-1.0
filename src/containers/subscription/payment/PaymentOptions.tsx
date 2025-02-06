@@ -1,6 +1,7 @@
 'use client';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
-import { type Payment } from './PaymentList';
+import { userDefault, type Payment } from './PaymentList';
 import PaymentOption, { type CurrentValueI } from './PaymentOption';
 
 interface IPaymentOptions {
@@ -8,13 +9,15 @@ interface IPaymentOptions {
   label: string;
   options: Payment[];
   onChange: (paymentOption: Payment) => void;
+  userInfo: UserInfo;
 }
 
 const PaymentOptions = ({
   currentValue,
   label,
   options,
-  onChange
+  onChange,
+  userInfo
 }: IPaymentOptions): JSX.Element => (
   <div className="w-full mb-6">
     <Typography className="text-[#7C7C7C] text-sm font-semibold text-left mb-4">
@@ -27,6 +30,7 @@ const PaymentOptions = ({
           option={option}
           onChange={onChange}
           currentValue={currentValue}
+          userInfo={userInfo ?? userDefault}
         />
       ))}
     </div>

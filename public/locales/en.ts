@@ -2883,6 +2883,7 @@ export default {
         text6: 'month',
         text7: 'months'
       },
+      warningIncoming: 'You already have an active or incoming plan.'
     },
     modalUnsubscribe: {
       text1: 'Are You Sure to Unsubscribe?',

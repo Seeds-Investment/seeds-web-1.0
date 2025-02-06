@@ -101,7 +101,7 @@ export const joinSubscription = async (
       }
     });
   } catch (error: any) {
-    toast(error.message, { type: 'error' });
+    await Promise.reject(error);
   }
 };
 

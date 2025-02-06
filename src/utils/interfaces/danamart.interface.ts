@@ -504,7 +504,8 @@ export interface BeliEfek {
 
 export interface Overview {
   informasiPenerbit: string;
-  Proyek: Proyek;
+  Proyek?: Proyek;
+  Proyeksi?: Proyeksi;
   Bisnis: Bisnis;
   Keuangan: Keuangan;
   PenanggungJawab: PenanggungJawab;
@@ -515,6 +516,11 @@ export interface Proyek {
   ProyeksiImbalHasilProyek: string;
   JenisPengerjaanProyek: string;
   UraianMengenaiProyek: string;
+}
+
+export interface Proyeksi {
+  ProyeksiPenjualanPerBulan: string
+  ProyeksiPenjualanPerTahun: string
 }
 
 export interface Bisnis {

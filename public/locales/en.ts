@@ -3307,6 +3307,78 @@ export default {
           text11: 'Refund',
           text12: 'Offer Revoked',
           text13: 'Offering Progress',
+          popup: {
+            title: 'Offering Progress',
+            text1: '<strong>Working Day</strong> is a day when a person is expected to work and perform activities according to the established work schedule. A working day only includes Monday to Friday, while Saturday, Sunday, and national holidays are considered as holidays.',
+            text2: '<strong>Calendar Day</strong> is a day consisting of 24 hours and is used to calculate the duration of time in the calendar system. A calendar day is counted from midnight to the following midnight. In the calendar, each month has 28-31 days, except for February, which has 28 or 29 days every four years during a leap year.'
+          }
+        },
+        tab: {
+          title: {
+            text1: 'Overview',
+            text2: 'Investor Corner',
+            text3: 'News Update',
+            text4: 'Discuss',
+            text5: 'Factsheet',
+            text6: 'Report',
+          },
+          overview: {
+            title: 'Issuer Information',
+            proyek: {
+              title: 'Project',
+              text1: 'Project Value',
+              text2: 'Project Margin Projection',
+              text3: 'Project Type',
+              text4: 'Project Description',
+            },
+            bisnis: {
+              title: 'Business',
+              text1: 'Company',
+              text2: 'Company Address',
+              text3: 'Years in Operation',
+              text4: 'Business Sector',
+              text5: 'Number of Directors',
+              text6: 'Number of Commissioners',
+              text7: 'Number of Shareholders',
+              text8: 'Number of Employees',
+            },
+            keuangan: {
+              title: 'Finance',
+              text1: 'Sales',
+              text2: 'Operating Profit',
+              text3: 'Net Profit',
+              text4: 'Current Assets',
+              text5: 'Fixed Assets',
+              text6: 'Current Liabilities',
+              text7: 'Long-Term Liabilities',
+              text8: 'Equity',
+            },
+            penanggungJawab: {
+              title: 'Person in Charge',
+              text1: 'Full Name',
+              text2: 'Gender',
+              text3: 'Age (Years)',
+              text4: 'Last Education',
+              text5: 'Address',
+              text6: 'Position',
+            },
+            proyeksi: {
+              title: 'Projection',
+              text1: 'Monthly Sales Projection',
+              text2: 'Annual Sales Projection',
+            }
+          },
+          investorCorner: {
+            text1: 'Number of Investors',
+            text2: 'Largest Funding Amount',
+            text3: 'Smallest Funding Amount',
+            text4: 'Average Funding Amount',
+          },
+          discuss: {
+            text1: 'Join WhatsApp Group',
+            text2: 'Write comments...',
+            text3: 'Send',
+          }
         }
       }
     }

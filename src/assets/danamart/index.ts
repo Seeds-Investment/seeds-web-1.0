@@ -18,4 +18,21 @@ export { default as ProgressPrelistingGreen } from './progres-prelisting-green.s
 export { default as ProgressPrelistingGrey } from './progres-prelisting-grey.svg';
 export { default as ProgressSigningGreen } from './progres-signing-green.svg';
 export { default as ProgressSigningGrey } from './progres-signing-grey.svg';
+export { default as TabDiscussGray } from './tab-discuss-gray.svg';
+export { default as TabDiscussGreen } from './tab-discuss-green.svg';
+export { default as TabDiscussGroup } from './tab-discuss-group.svg';
+export { default as TabFactsheetGray } from './tab-factsheet-gray.svg';
+export { default as TabFactsheetGreen } from './tab-factsheet-green.svg';
+export { default as TabInvestorAverage } from './tab-investor-average-funding.svg';
+export { default as TabInvestorBiggest } from './tab-investor-biggest-funding.svg';
+export { default as TabInvestorFewest } from './tab-investor-fewest-funding.svg';
+export { default as TabInvestorGray } from './tab-investor-gray.svg';
+export { default as TabInvestorGreen } from './tab-investor-green.svg';
+export { default as TabInvestorTotal } from './tab-investor-total.svg';
+export { default as TabNewsGray } from './tab-news-gray.svg';
+export { default as TabNewsGreen } from './tab-news-green.svg';
+export { default as TabOverviewGray } from './tab-overview-gray.svg';
+export { default as TabOverviewGreen } from './tab-overview-green.svg';
+export { default as TabReportGray } from './tab-report-gray.svg';
+export { default as TabReportGreen } from './tab-report-green.svg';
 

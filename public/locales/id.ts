@@ -3241,6 +3241,78 @@ export default {
           text11: 'Pengembalian Dana',
           text12: 'Penawaran Dibatalkan',
           text13: 'Progres Penawaran',
+          popup: {
+            title: 'Progress Penawaran',
+            text1: '<strong>Hari Kerja</strong> adalah hari dimana seseorang diharapkan untuk bekerja dan beraktivitas sesuai dengan jadwal kerja yang telah ditetapkan. Hari kerja hanya mencakup hari Senin hingga Jumat, sedangkan hari Sabtu dan Minggu dan libur nasional dianggap sebagai hari libur.',
+            text2: '<strong>Hari Kalender</strong> adalah hari yang terdiri dari 24 jam dan digunakan untuk menghitung durasi waktu dalam sistem penanggalan. Hari kalender dihitung mulai dari tengah malam hingga tengah malah berikutnya. Dalam kalender, setiap bulan memiliki 28-31 hari, kecuali bulan Februari yang memiliki 28 atau 29 hari dalam setiap empat tahun pada tahun kabisat.'
+          }
+        },
+        tab: {
+          title: {
+            text1: 'Overview',
+            text2: 'Investor Corner',
+            text3: 'News Update',
+            text4: 'Discuss',
+            text5: 'Factsheet',
+            text6: 'Report',
+          },
+          overview: {
+            title: 'Informasi Penerbit',
+            proyek: {
+              title: 'Proyek',
+              text1: 'Nilai Proyek',
+              text2: 'Proyeksi Margin Proyek',
+              text3: 'Jenis Pengerjaan Proyek',
+              text4: 'Uraian Pengerjaan Proyek',
+            },
+            bisnis: {
+              title: 'Bisnis',
+              text1: 'Perusahaan',
+              text2: 'Alamat Perusahaan',
+              text3: 'Lama Perusahaan Berdiri',
+              text4: 'Sektor Usaha',
+              text5: 'Jumlah Direktur',
+              text6: 'Jumlah Komisaris',
+              text7: 'Jumlah Pemegang Saham',
+              text8: 'Jumlah Karyawan',
+            },
+            keuangan: {
+              title: 'Keuangan',
+              text1: 'Penjualan',
+              text2: 'Laba Usaha',
+              text3: 'Laba Bersih',
+              text4: 'Aset Lancar',
+              text5: 'Aset Tetap',
+              text6: 'Hutang Lancar',
+              text7: 'Hutang Jangka Panjang',
+              text8: 'Ekuitas',
+            },
+            penanggungJawab: {
+              title: 'Penanggung Jawab',
+              text1: 'Nama Lengkap',
+              text2: 'Jenis Kelamin',
+              text3: 'Umur (Tahun)',
+              text4: 'Pendidikan Terakhir',
+              text5: 'Alamat',
+              text6: 'Jabatan',
+            },
+            proyeksi: {
+              title: 'Proyeksi',
+              text1: 'Proyeksi Penjualan Per Bulan',
+              text2: 'Proyeksi Penjualan Per Tahun',
+            }
+          },
+          investorCorner: {
+            text1: 'Jumlah Investor',
+            text2: 'Jumlah Pendanaan Terbesar',
+            text3: 'Jumlah Pendanaan Terkecil',
+            text4: 'Jumlah Rata-Rata Pendanaan',
+          },
+          discuss: {
+            text1: 'Gabung Grup WhatsApp',
+            text2: 'Tulis komentar...',
+            text3: 'Kirim',
+          }
         }
       }
     }

@@ -184,7 +184,7 @@ const useUpdateUserInfoForm = (): any => {
         const base64 = await convertFileToBase64(file);
         data.dm_penmit_01013 = base64;
       }
-console.log('payload ', data)
+      
       await updateUserInformation(data);
       toast.success("User information updated successfully");
     } catch (error) {

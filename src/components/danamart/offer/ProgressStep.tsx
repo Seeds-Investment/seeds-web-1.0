@@ -6,13 +6,16 @@ import { Typography } from "@material-tailwind/react";
 import Image from 'next/image';
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FiAlertOctagon } from "react-icons/fi";
 
 interface Props {
   timelinePenawaran: TimelinePenawaran;
+  setIsShowModalProgress: (value: boolean) => void;
 }
 
 const ProgressStep: React.FC<Props> = ({
-  timelinePenawaran
+  timelinePenawaran,
+  setIsShowModalProgress
 }) => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.offers.detail.progress'
@@ -64,10 +67,17 @@ const ProgressStep: React.FC<Props> = ({
   }, [timelinePenawaran])
 
   return (
-    <div className="bg-white rounded-lg flex flex-col mb-8 gap-4">
-      <Typography className="font-poppins text-xl font-semibold text-[#262626]">
-        {t(`${pathTranslation}.text13`)}
-      </Typography>
+    <div className="flex flex-col gap-4 mt-6 mb:mt-8 mb-2">
+      <div className="w-full flex justify-start items-center gap-2">
+        <Typography className="font-poppins text-xl font-semibold text-[#262626]">
+          {t(`${pathTranslation}.text13`)}
+        </Typography>
+        <FiAlertOctagon
+          size={24}
+          onClick={() => { setIsShowModalProgress(true) }}
+          className="text-seeds-button-green cursor-pointer"
+        />
+      </div>
       <div className="w-full h-[150px] xl:h-[110px] overflow-x-auto">
         <div className="relative w-[700px] lg:w-full border-t-2 border-[#BDBDBD] mt-8">
           <div className="w-[700px] lg:w-full absolute top-[-25px] flex justify-between">

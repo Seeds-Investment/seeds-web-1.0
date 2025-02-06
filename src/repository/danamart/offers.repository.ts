@@ -63,3 +63,23 @@ export const getOffersList = async (
     throw new Error(error.response.data.message);
   }
 };
+
+export const postDiscussion = async (formData: FormData): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (!accessTokenDanamart) {
+      return Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.post(`/pemodal/Prospektus/postDiskusi`, formData, {
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};

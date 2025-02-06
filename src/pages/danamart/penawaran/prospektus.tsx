@@ -1,3 +1,5 @@
+import DetailTab from '@/components/danamart/offer/DetailTab';
+import ModalProgressOffer from '@/components/danamart/offer/ModalProgressOffer';
 import ProgressStep from '@/components/danamart/offer/ProgressStep';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
@@ -32,7 +34,7 @@ const Prospektus = (): React.ReactElement => {
   const [detailProspektus, setDetailProspektus] = useState<DetailProspektus>();
   const [offerData, setOfferData] = useState<OfferData>();
   const [prospektusOffer, setProspektusOffer] = useState<OfferList>();
-
+  const [isShowModalProgress, setIsShowModalProgress] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const thumbnailRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -116,8 +118,8 @@ const Prospektus = (): React.ReactElement => {
   return (
     <PageGradient defaultGradient className="w-full">
       {!isLoading && detailProspektus != null && prospektusOffer != null ? (
-        <div className="w-full bg-white flex flex-col md:gap-8 gap-6 px-5 py-8">
-          <Typography className="font-poppins md:text-3xl text-lg font-semibold text-[#262626]">
+        <div className="w-full bg-white flex flex-col px-5 py-8">
+          <Typography className="font-poppins md:text-3xl text-lg font-semibold text-[#262626] mt-6 mb:mt-8">
             {t('danamart.offers.detail.offer')} {prospektusId}
           </Typography>
           <div className="flex md:flex-col flex-col-reverse shadow-md rounded-lg p-6 md:gap-4 gap-2">
@@ -149,7 +151,7 @@ const Prospektus = (): React.ReactElement => {
               </div>
             ))}
           </div>
-          <div className="bg-white shadow-md rounded-lg flex md:flex-row flex-col md:gap-8 gap-6 p-5">
+          <div className="bg-white shadow-md rounded-lg flex md:flex-row flex-col md:gap-8 gap-6 p-5 mt-6 mb:mt-8">
             <div className="flex flex-col gap-4">
               <div className="flex justify-end items-center gap-4 md:hidden">
                 <a
@@ -424,7 +426,14 @@ const Prospektus = (): React.ReactElement => {
               </div>
             </div>
           </div>
-          <ProgressStep timelinePenawaran={detailProspektus?.Data?.TimelinePenawaran}/>
+
+          {/* Progress Penawaran */}
+          <ProgressStep
+            setIsShowModalProgress={setIsShowModalProgress}
+            timelinePenawaran={detailProspektus?.Data?.TimelinePenawaran}
+          />
+          <hr/>
+          <DetailTab detailProspektus={detailProspektus}/>
         </div>
       )
       :
@@ -434,6 +443,12 @@ const Prospektus = (): React.ReactElement => {
           </div>
         </div>
       }
+      {isShowModalProgress && (
+        <ModalProgressOffer
+          setIsShowModalProgress={setIsShowModalProgress}
+          isShowModalProgress={isShowModalProgress}
+        />
+      )}
     </PageGradient>
   );
 };

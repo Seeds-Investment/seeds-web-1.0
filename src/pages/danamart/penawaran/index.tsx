@@ -38,10 +38,7 @@ const PrevArrow = (props: ArrowProps): React.ReactElement => {
       className={`${
         className ?? ''
       } rounded-full absolute left-[-50px] top-1/2 transform -translate-y-1/2 cursor-pointer shadow-lg`}
-      style={{
-        left: 10,
-        background: '#4FE6AF'
-      }}
+      style={{ position: 'absolute', left: 10, background: '#4FE6AF' }}
       onClick={onClick}
     />
   );

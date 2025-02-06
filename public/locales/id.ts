@@ -2775,6 +2775,7 @@ export default {
       'Ingin mengubah atau melanjutkan SeedsPlan Kamu untuk aktivitas berikutnya? Bayar sekarang dan kamu tidak perlu kuatir lagi nanti!',
     text18:
       'Paket berikutnya akan aktif secara otomatis setelah paket saat ini berakhir',
+    text19: 'Kamu telah berlangganan 2 paket SeedsPlan. Kamu harus menunggu paket pertama habis sebelum berlangganan lagi.',
     month: 'Bulan',
     months: 'Bulan',
     year: 'Tahun',

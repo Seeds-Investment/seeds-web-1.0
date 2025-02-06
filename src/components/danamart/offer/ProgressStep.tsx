@@ -86,7 +86,7 @@ const ProgressStep: React.FC<Props> = ({
                 onMouseEnter={() => { setHoveredIndex(index); }}
                 onMouseLeave={() => { setHoveredIndex(null); }}
               >
-                {hoveredIndex === index && (
+                {hoveredIndex === index && timelinePenawaran?.beforeTimeline[index] !== '-' && (
                   <div className="absolute top-[40px] bg-white border border-gray-300 rounded-md px-2 py-1 shadow-lg z-10 text-center">
                     <Typography className="font-poppins text-sm">
                       {languageCtx.language === 'ID'

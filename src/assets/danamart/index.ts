@@ -4,4 +4,18 @@ export { default as CardCoins } from './card-coins.svg';
 export { default as CardTag } from './card-tag.svg';
 export { default as CardUser } from './card-user.svg';
 export { default as Clock } from './clock.svg';
+export { default as ProgressBusinessGreen } from './progres-business-green.svg';
+export { default as ProgressBusinessGrey } from './progres-business-grey.svg';
+export { default as ProgressDistributionGreen } from './progres-distribution-green.svg';
+export { default as ProgressDistributionGrey } from './progres-distribution-grey.svg';
+export { default as ProgressHandingCashGreen } from './progres-handing-cash-green.svg';
+export { default as ProgressHandingCashGrey } from './progres-handing-cash-grey.svg';
+export { default as ProgressHandingSecurityGreen } from './progres-handing-security-green.svg';
+export { default as ProgressHandingSecurityGrey } from './progres-handing-security-grey.svg';
+export { default as ProgressListingGreen } from './progres-listing-green.svg';
+export { default as ProgressListingGrey } from './progres-listing-grey.svg';
+export { default as ProgressPrelistingGreen } from './progres-prelisting-green.svg';
+export { default as ProgressPrelistingGrey } from './progres-prelisting-grey.svg';
+export { default as ProgressSigningGreen } from './progres-signing-green.svg';
+export { default as ProgressSigningGrey } from './progres-signing-grey.svg';
 

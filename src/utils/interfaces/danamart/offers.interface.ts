@@ -78,3 +78,12 @@ export interface Days2 {
   prelistingDays: string
   listingDays: string
 }
+
+export interface TimelinePenawaran {
+  Status: string
+  statusProspektus: string
+  ListStatus: string
+  status_sla: string
+  tglTimeline: string | undefined[]
+  beforeTimeline: string[]
+}

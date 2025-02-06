@@ -1,3 +1,4 @@
+import ProgressStep from '@/components/danamart/offer/ProgressStep';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
 import { getDetailProspektus } from '@/repository/danamart/danamart.repository';
@@ -114,7 +115,7 @@ const Prospektus = (): React.ReactElement => {
 
   return (
     <PageGradient defaultGradient className="w-full">
-      {!isLoading && detailProspektus != null && prospektusOffer != null && (
+      {!isLoading && detailProspektus != null && prospektusOffer != null ? (
         <div className="w-full bg-white flex flex-col md:gap-8 gap-6 px-5 py-8">
           <Typography className="font-poppins md:text-3xl text-lg font-semibold text-[#262626]">
             {t('danamart.offers.detail.offer')} {prospektusId}
@@ -423,8 +424,16 @@ const Prospektus = (): React.ReactElement => {
               </div>
             </div>
           </div>
+          <ProgressStep timelinePenawaran={detailProspektus?.Data?.TimelinePenawaran}/>
         </div>
-      )}
+      )
+      :
+        <div className="w-full flex justify-center h-fit mt-16">
+          <div className="h-[60px]">
+            <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+          </div>
+        </div>
+      }
     </PageGradient>
   );
 };

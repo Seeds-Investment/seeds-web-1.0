@@ -3292,7 +3292,22 @@ export default {
         coupon: 'Coupon',
         tenor: 'Tenor',
         guarantee: 'Guarantee',
-        offerType: 'Offer Type'
+        offerType: 'Offer Type',
+        progress: {
+          text1: 'Pre-Listing',
+          text2: 'Listing',
+          text3: 'Funding Completed',
+          text4: 'Securities Handover',
+          text5: 'Agreement Signing',
+          text6: 'Fund Disbursement',
+          text7: 'Securities Distribution',
+          text8: 'Purchase Completed',
+          text9: 'Business Ongoing',
+          text10: 'Offer Canceled',
+          text11: 'Refund',
+          text12: 'Offer Revoked',
+          text13: 'Offering Progress',
+        }
       }
     }
   }

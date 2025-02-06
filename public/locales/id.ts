@@ -3226,7 +3226,22 @@ export default {
         coupon: 'Kupon',
         tenor: 'Tenor',
         guarantee: 'Jaminan',
-        offerType: 'Jenis Penawaran'
+        offerType: 'Jenis Penawaran',
+        progress: {
+          text1: 'Pre-Listing',
+          text2: 'Listing',
+          text3: 'Pendanaan Selesai',
+          text4: 'Penyerahan Efek',
+          text5: 'Tanda Tangan Perjanjian',
+          text6: 'Penyerahan Dana',
+          text7: 'Pendistribusian Efek',
+          text8: 'Pembelian Selesai',
+          text9: 'Bisnis Berjalan',
+          text10: 'Penawaran Batal',
+          text11: 'Pengembalian Dana',
+          text12: 'Penawaran Dibatalkan',
+          text13: 'Progres Penawaran',
+        }
       }
     }
   }

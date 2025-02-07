@@ -35,7 +35,8 @@ const initialUserInfo = {
   phone: '',
   preferredLanguage: '',
   verified: false,
-  _pin: ''
+  _pin: '',
+  preferredCurrency: ''
 };
 
 interface UserInfo {
@@ -51,6 +52,7 @@ interface UserInfo {
   preferredLanguage: string;
   _pin: string;
   verified: boolean;
+  preferredCurrency: string;
 }
 
 interface Filter {

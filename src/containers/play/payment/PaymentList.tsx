@@ -44,7 +44,7 @@ interface props {
   useCoins?: boolean;
 }
 
-const userDefault: UserInfo = {
+export const userDefault: UserInfo = {
   avatar: '',
   badge: '',
   bio: '',
@@ -274,14 +274,21 @@ const PaymentList: React.FC<props> = ({
         }
 
         if (response) {
-          if (response.payment_url !== '') {
+          if (response.payment_url !== '' && paymentMethod !== 'BNC_QRIS') {
             window.open(response.payment_url as string, '_blank');
           }
-          await router
-            .replace(`/play/payment/receipt/${response.order_id as string}`)
-            .catch(error => {
-              toast(`${error as string}`);
-            });
+          const query = response.payment_url !== '' ? { paymentUrl: response.payment_url } : undefined;
+          
+          await router.replace(
+            {
+              pathname: `/play/payment/receipt/${response.order_id as string}` + `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+              query
+            },
+            undefined,
+            { shallow: true }
+          ).catch(error => {
+            toast(`${error as string}`);
+          });
         }
       } else {
         const response = await joinCirclePost({
@@ -301,20 +308,22 @@ const PaymentList: React.FC<props> = ({
             spot_type: 'Join Circle Premium'
           }
         });
-
         if (response.success === true) {
-          if (response.data.Response.payment_url !== undefined) {
+          if (response.data.Response.payment_url !== '' && paymentMethod !== 'BNC_QRIS') {
             window.open(response.data.Response.payment_url as string, '_blank');
           }
-          await router
-            .push(
-              `/connect/payment/receipt/${
-                response.data.Response.order_id as string
-              }`
-            )
-            .catch(error => {
-              toast(`${error as string}`);
-            });
+          const query = response.data.Response.payment_url !== '' ? { paymentUrl: response.data.Response.payment_url } : undefined;
+          
+          await router.replace(
+            {
+              pathname: `/connect/payment/receipt/${response.data.Response.order_id as string}` + `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+              query
+            },
+            undefined,
+            { shallow: true }
+          ).catch(error => {
+            toast(`${error as string}`);
+          });
         }
       }
     } catch (error) {
@@ -373,6 +382,7 @@ const PaymentList: React.FC<props> = ({
             options={qRisList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
         )}
         {eWalletList?.length > 0 && (
@@ -381,6 +391,7 @@ const PaymentList: React.FC<props> = ({
             options={eWalletList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
         )}
         {virtualAccountList?.length > 0 && (
@@ -389,6 +400,7 @@ const PaymentList: React.FC<props> = ({
             options={virtualAccountList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
         )}
         {ccList?.length > 0 && (
@@ -397,6 +409,7 @@ const PaymentList: React.FC<props> = ({
             options={ccList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
         )}
         <SubmitButton

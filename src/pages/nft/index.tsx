@@ -15,6 +15,7 @@ const NFTDashboard: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>(''); // State untuk query search
 
+    // Modifikasi: Gunakan sessionStorage вместо localStorage
   const handleConnectWallet = async () => {
     if (walletAddress) {
       alert(`Already connected to wallet: ${walletAddress}`);
@@ -29,7 +30,7 @@ const NFTDashboard: React.FC = () => {
       if (result.success) {
         const publicKey = result.publicKey;
         setWalletAddress(publicKey);
-        localStorage.setItem('walletAddress', publicKey);
+        sessionStorage.setItem('walletSession', publicKey); // Gunakan sessionStorage
       } else {
         setErrorMessage(`Failed to connect: ${result.error}`);
       }
@@ -42,10 +43,22 @@ const NFTDashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    const storedWalletAddress = localStorage.getItem('walletAddress');
-    if (storedWalletAddress) {
-      setWalletAddress(storedWalletAddress);
+    // Modifikasi: Cek session storage saat komponen mount
+    const sessionWallet = sessionStorage.getItem('walletSession');
+    if (sessionWallet) {
+      setWalletAddress(sessionWallet);
     }
+
+    // Modifikasi: Tambahkan event listener untuk sesi berakhir
+    const handleBeforeUnload = () => {
+      sessionStorage.removeItem('walletSession');
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
   }, []);
 
   return (

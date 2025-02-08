@@ -33,25 +33,32 @@ const NFTTabs: React.FC<{ searchQuery: string }> = ({ searchQuery }) => {
   const [nftData, setNftData] = useState<NFT[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
   const API_BASE_URL = 'https://seeds-dev-gcp.seeds.finance';
 
-  const fetchNFTs = async (): Promise<void> => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/nft/all?search=${searchQuery}`
-      );
-      if (!response.ok) throw new Error('Failed to fetch NFTs');
-      const data = await response.json();
-      setNftData(data.data || []);
-    } catch (error: any) {
-      setErrorMessage(error.message || 'Failed to load NFTs');
-      setNftData([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+const fetchNFTs = async (): Promise<void> => {
+  setIsLoading(true);
+  try {
+    const response = await fetch(`${API_BASE_URL}/nft/all?search=${searchQuery}`);
+    if (!response.ok) throw new Error('Failed to fetch NFTs');
+    const data = await response.json();
+
+    // Validasi URL gambar
+    const validatedData = data.data.map((nft: NFT) => ({
+      ...nft,
+      image_url: nft.image_url.startsWith('http')
+        ? nft.image_url
+        : 'https://blockchainmagazine.com/wp-content/uploads/Will-AI-Kill-The-Value-Of-NFT-artists-Or-Will-AI-Be-The-Saviour-Of-NFT-World-1.jpg', // Debuging
+    }));
+
+    setNftData(validatedData); // Simpan data yang telah divalidasi
+  } catch (error: any) {
+    setErrorMessage(error.message || 'Failed to load NFTs');
+    setNftData([]); // Kosongkan data jika terjadi error
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchNFTs();

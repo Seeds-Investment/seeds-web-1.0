@@ -28,6 +28,7 @@ const nextConfig = {
       'i.pravatar.cc',
       'dipssy.com',
       'zengo.com',
+      "blockchainmagazine.com",
     ],
     remotePatterns: [
       {

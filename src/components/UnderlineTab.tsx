@@ -10,6 +10,7 @@ import { isGuest } from '@/helpers/guest';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   Avatar,
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -21,10 +22,26 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import logo from 'public/assets/logo-seeds.png';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
+
+const API_BASE_URL = process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
+
+type NFT = {
+  id: string;
+  name: string;
+  description: string;
+  image_url: string;
+  price: number;
+  creator: {
+    wallet_address: string;
+    avatar: string;
+  };
+};
+
 interface DataItem {
   label: string;
   value: string;
@@ -59,6 +76,24 @@ interface MyStyle extends React.CSSProperties {
   '--image-url': string;
 }
 
+const fetchUserId = async (): Promise<string | null> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) throw new Error('Access token tidak ditemukan');
+
+    const response = await fetch(`${API_BASE_URL}/user/v1/`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (!response.ok) throw new Error('Gagal mengambil User ID');
+    const data = await response.json();
+    return data.id;
+  } catch (error: any) {
+    console.error('Error fetching User ID:', error.message);
+    return null;
+  }
+};
+
 const UnderLineTab = ({
   profileData,
   circleData,
@@ -67,10 +102,64 @@ const UnderLineTab = ({
   setData,
   handleSubmitBlockUser
 }: Params): JSX.Element => {
-  const [myInfo, setMyInfo] = useState();
+  const [myInfo, setMyInfo] = useState<any>();
   const { t } = useTranslation();
-  const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>('post');
+  const [nftData, setNftData] = useState<NFT[]>([]);
+  const [isLoadingNFT, setIsLoadingNFT] = useState(true);
+  const router = useRouter();
+  const [errorMessageNFT, setErrorMessageNFT] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchNFTs = async () => {
+      if (activeTab === 'nft') {
+        setIsLoadingNFT(true);
+        setErrorMessageNFT(null);
+        try {
+          const userId = await fetchUserId();
+          if (!userId) throw new Error('User tidak valid');
+
+          const response = await fetch(
+            `${API_BASE_URL}/nft/user/${userId}?page=1&limit=20&sort=created_desc`
+          );
+
+          if (!response.ok) throw new Error('Gagal memuat NFT');
+          const data = await response.json();
+
+          const processedData = data.data.map((nft: NFT) => ({
+            ...nft,
+            image_url: nft.image_url.startsWith('http') ? nft.image_url : logo.src,
+            creator: {
+              ...nft.creator,
+              avatar: nft.creator.avatar || logo.src,
+            }
+          }));
+
+          setNftData(processedData);
+        } catch (error: any) {
+          setErrorMessageNFT(error.message);
+        } finally {
+          setIsLoadingNFT(false);
+        }
+      }
+    };
+
+    fetchNFTs();
+  }, [activeTab]);
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const myData = await getUserInfo();
+        setMyInfo(myData);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const data: DataItem[] = [
     {
       label: 'Post',
@@ -330,9 +419,71 @@ const UnderLineTab = ({
           </div>
         </div>
       )
+    },
+    {
+      label: 'NFT',
+      value: 'nft',
+      content: (
+        <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 w-full p-4">
+          {isLoadingNFT ? (
+            <div className="col-span-3 text-center">Memuat NFT...</div>
+          ) : errorMessageNFT ? (
+            <div className="col-span-3 text-red-500 text-center">
+              {errorMessageNFT}
+            </div>
+          ) : nftData.length > 0 ? (
+            nftData.map((nft) => (
+              <Card key={nft.id} className="animate-fade-in">
+                <Image
+                  src={nft.image_url}
+                  alt={nft.name}
+                  className="h-48 w-full object-cover"
+                  quality={100}
+                  width={400}
+                  height={200}
+                />
+                <div className="flex flex-col gap-2 md:gap-3.5 justify-evenly p-2 md:p-3.5 bg-[#F3F4F8] font-semibold text-xs font-poppins h-full">
+                  <div>
+                    <div className="flex flex-col-reverse md:flex-col">
+                      <p className="text-[#262626]">{nft.name}</p>
+                      <div className="flex gap-1 items-center">
+                        <Image
+                          src={nft.creator.avatar}
+                          alt="creator"
+                          className="rounded-full w-4 h-4"
+                          width={16}
+                          height={16}
+                        />
+                        <p className="text-[#3AC4A0] text-xs">
+                          {nft.creator.wallet_address.slice(0, 6)}...
+                          {nft.creator.wallet_address.slice(-4)}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] leading-4 font-light text-[#262626] mt-1">
+                      {nft.price} DIAM
+                    </p>
+                  </div>
+                  <Button
+                    onClick={() => window.location.href = `/nft/${nft.id}`}
+                    className="p-1 md:p-1.5 text-[10px] leading-4 font-light text-white bg-[#3AC4A0] rounded-full w-full hover:bg-[#2fa385] transition-colors"
+                  >
+                    DETAIL
+                  </Button>
+                </div>
+              </Card>
+            ))
+          ) : (
+            <div className="col-span-3 text-center text-gray-500">
+              Belum ada NFT
+            </div>
+          )}
+        </div>
+      )
     }
   ];
-  useEffect(() => {
+
+ useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const myData = await getUserInfo();

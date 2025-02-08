@@ -1,6 +1,6 @@
 import Connect from '@/assets/event/connect.svg';
 import Event from '@/assets/event/event.svg';
-import HelpCenter from '@/assets/event/helpcenter.svg';
+import MyEarningWallet from '@/assets/event/myearningwalletbg.svg';
 import OpenTrading from '@/assets/event/openTradingAccount.svg';
 import Referral from '@/assets/event/referral.svg';
 import withAuth from '@/helpers/withAuth';
@@ -31,10 +31,9 @@ const features = [
     event: 'under construction'
   },
   {
-    images: HelpCenter,
-    title: 'Help Center',
-    event:
-      'https://api.whatsapp.com/send/?phone=%2B628118883519&text=Hello%21+This+is+my+predefined+message.&type=phone_number&app_absent=0'
+    images: MyEarningWallet,
+    title: 'My Earning',
+    event: '/my-profile/my-earnings'
   }
 ];
 

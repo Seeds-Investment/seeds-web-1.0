@@ -164,7 +164,7 @@ const SeedsPlan: React.FC = () => {
     selectedPeriodPlan?.tnc?.[i18n.language === 'id' ? 'id' : 'en'] !== ''
       ? selectedPeriodPlan?.tnc[i18n.language === 'id' ? 'id' : 'en']
       : '-';
-  
+
   const filteredHowToUse =
     selectedPeriodPlan?.how_to_use?.[i18n.language === 'id' ? 'id' : 'en'] !==
     ''
@@ -340,7 +340,7 @@ const SeedsPlan: React.FC = () => {
                     className="cursor-pointer flex items-center justify-between border-b border-[#E9E9E9] border-dotted pb-4"
                   >
                     <Typography className="font-poppins text-base font-normal">
-                      {t('seedsPlan.button7')}
+                      {t('seedsPlan.button1')}
                     </Typography>
                     <FaChevronRight color="#DADADA" size={20} />
                   </div>
@@ -349,16 +349,13 @@ const SeedsPlan: React.FC = () => {
                   <Typography className="font-poppins font-semibold text-base text-[#262626] text-justify">
                     {t('seedsPlan.text17')}
                   </Typography>
-                  <Typography className="font-poppins font-medium italic text-sm text-justify text-[#B798FF]">
-                    {t('seedsPlan.text18')}
-                  </Typography>
                 </div>
-                <div className="flex justify-center items-center">
+                <div className="flex flex-wrap-reverse md:flex-nowrap justify-center items-center md:gap-7 gap-4">
                   <Button
                     onClick={async () => {
                       await router.push('/seedsplan/change-plan');
                     }}
-                    className="font-poppins text-sm font-semibold capitalize bg-[#3AC4A0] border border-[#3AC4A0] text-white rounded-full md:w-[266px] w-full h-[42px] flex items-center justify-center"
+                    className="font-poppins text-sm font-semibold capitalize bg-[#3AC4A0] border border-[#3AC4A0] text-white rounded-full md:w-[342px] w-full h-[42px] flex items-center justify-center"
                   >
                     {t('seedsPlan.button6')}
                   </Button>

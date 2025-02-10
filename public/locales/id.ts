@@ -1961,6 +1961,35 @@ export default {
       'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
     winnerAlertMessage8: 'Klaim Hadiah Disini'
   },
+  bnc: {
+    payment: 'Pembayaran',
+    scanDescription: 'Pindai dengan Aplikasi Bank atau Aplikasi Pembayaran Anda',
+    instructions: {
+      text1: 'Ambil gambar tangkapan layar dari Kode QR Anda',
+      text2: 'Buka aplikasi bank atau pembayaran anda',
+      text3: 'Selesaikan pembayaran',
+      text4: "Klik tombol 'Selesai' dibawah"
+    },
+    done: 'Selesai',
+    seeQRCode: 'Lihat Kode QR',
+    expired: {
+      text1: 'Kode QR Anda telah kadaluarsa',
+      text2: 'Lakukan pembelian ulang dan pastikan pembayaran anda selesai tepat waktu'
+    },
+    repeat: 'Ulangi Pembelian',
+    completePayment: 'Selesaikan pembayaran dalam',
+    clock: {
+      day: 'hari',
+      days: 'hari',
+      hour: 'jam',
+      hours: 'jam',
+      minute: 'menit',
+      minutes: 'menit',
+      second: 'detik',
+      seconds: 'detik',
+      and: 'dan'
+    },
+  },
   micrositeQuiz: {
     errorEmailIncorrect: 'Tolong masukin emailmu yang benar',
     errorEmailAlready: 'Aduh, emailmu udah terdaftar nih',

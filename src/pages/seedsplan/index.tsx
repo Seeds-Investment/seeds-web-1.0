@@ -350,11 +350,18 @@ const SeedsPlan: React.FC = () => {
                     {t('seedsPlan.text17')}
                   </Typography>
                 </div>
+                {
+                  subscriptionStatus?.incoming_subscription !== null &&
+                    <Typography className="font-poppins italic text-base text-[#A99CD1] text-justify">
+                      {t('seedsPlan.text19')}
+                    </Typography>
+                }
                 <div className="flex flex-wrap-reverse md:flex-nowrap justify-center items-center md:gap-7 gap-4">
                   <Button
                     onClick={async () => {
                       await router.push('/seedsplan/change-plan');
                     }}
+                    disabled={subscriptionStatus?.incoming_subscription !== null}
                     className="font-poppins text-sm font-semibold capitalize bg-[#3AC4A0] border border-[#3AC4A0] text-white rounded-full md:w-[342px] w-full h-[42px] flex items-center justify-center"
                   >
                     {t('seedsPlan.button6')}

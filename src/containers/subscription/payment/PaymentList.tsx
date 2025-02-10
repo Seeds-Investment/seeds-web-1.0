@@ -36,6 +36,49 @@ export interface Payment {
   minimum_withdrawal: number
 }
 
+export const userDefault: UserInfo = {
+  avatar: '',
+  badge: '',
+  bio: '',
+  birthDate: '',
+  claims: {
+    aud: [],
+    avatar: '',
+    birthDate: '',
+    email: '',
+    exp: 0,
+    iat: 0,
+    iss: '',
+    nbf: '',
+    phoneNumber: '',
+    preferredCurrency: '',
+    preferredLanguage: '',
+    refCode: '',
+    role: '',
+    seedsTag: '',
+    sub: ''
+  },
+  currentExp: 0,
+  email: '',
+  email_verification: '',
+  followers: 0,
+  following: 0,
+  id: '',
+  isPasswordExists: false,
+  label: '',
+  name: '',
+  phoneNumber: '',
+  pin: false,
+  posts: 0,
+  preferredCurrency: '',
+  preferredLanguage: '',
+  refCode: '',
+  refCodeUsage: 0,
+  region: '',
+  seedsTag: '',
+  verified: false
+};
+
 const PaymentList: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -121,16 +164,11 @@ const PaymentList: React.FC = (): JSX.Element => {
   
   const getStatus = async (): Promise<void> => {
     try {
-      setLoading(true);
       const response = await getSubscriptionStatus();
       if (response !== undefined) {
         setSubscriptionStatus(response);
       }
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    } finally {
-      setLoading(false);
-    }
+    } catch (error) {}
   };
   
   const getSubscriptionDetail = async (planId: string): Promise<void> => {
@@ -170,9 +208,12 @@ const PaymentList: React.FC = (): JSX.Element => {
   ): Promise<void> => {
     try {
       setLoading(true);
+      
       if (type === 'ewallet' && phoneNumber === '') {
         toast.error('Please fill the phone number');
+        return;
       }
+
       const response = await joinSubscription({
         subscription_type_id: dataPlan?.id ?? '',
         language: 'en',
@@ -185,17 +226,21 @@ const PaymentList: React.FC = (): JSX.Element => {
       });
 
       if (response) {
-        if (response?.payment_url !== '') {
-          window.open(response?.payment_url as string, '_blank');
+        if (response?.payment_url) {
+          window.open(response.payment_url as string, '_blank');
         }
-        await router
-          .replace(`/seedsplan/payment/receipt/${response.order_id as string}`)
+        await router.replace(`/seedsplan/payment/receipt/${response.order_id as string}`)
           .catch(error => {
             toast.error(`${error as string}`);
           });
       }
-    } catch (error) {
-      toast.error(`${error as string}`);
+    } catch (error: any) {
+      if (error?.response?.data?.message === 'you already have incoming plan') {
+        setOpenDialog(false);
+        toast.error(t('seedsPlan.payment.warningIncoming'));
+      } else {
+        toast.error(`Payment failed: ${error?.message ?? error}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -238,24 +283,28 @@ const PaymentList: React.FC = (): JSX.Element => {
           options={qRisList}
           onChange={setOption}
           currentValue={option ?? defaultOption}
+          userInfo={userInfo ?? userDefault}
         />
         <PaymentOptions
           label={t('PlayPayment.eWalletLabel')}
           options={eWalletList}
           onChange={setOption}
           currentValue={option ?? defaultOption}
+          userInfo={userInfo ?? userDefault}
         />
         <PaymentOptions
           label={t('PlayPayment.virtualAccountLabel')}
           options={virtualAccountList}
           onChange={setOption}
           currentValue={option ?? defaultOption}
+          userInfo={userInfo ?? userDefault}
         />
         <PaymentOptions
           label={t('PlayPayment.creditCardLabel')}
           options={ccList}
           onChange={setOption}
           currentValue={option ?? defaultOption}
+          userInfo={userInfo ?? userDefault}
         />
         <SubmitButton
           disabled={option?.id == null}

@@ -25,7 +25,9 @@ const nextConfig = {
       'res.cloudinary.com',
       'pict.sindonews.net',
       'images.unsplash.com',
-      'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com'
+      'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com',
+      'sit-marketing-img.bankneo.co.id',
+      'marketing-img.bankneo.co.id'
     ],
     remotePatterns: [
       {
@@ -77,7 +79,9 @@ const nextConfig = {
       'cdn06.pramborsfm.com',
       'i.pravatar.cc',
       'images.unsplash.com',
-      'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com'
+      'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com',
+      'sit-marketing-img.bankneo.co.id',
+      'marketing-img.bankneo.co.id'
     ],
     remotePatterns: [
       {

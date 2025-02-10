@@ -6,6 +6,7 @@ import SubmitButton from '@/components/SubmitButton';
 import Loading from '@/components/popup/Loading';
 import Dialog from '@/components/ui/dialog/Dialog';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { userDefault } from '@/containers/play/payment/PaymentList';
 import { bookEvent, getEventById } from '@/repository/discover.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getPaymentById } from '@/repository/play.repository';
@@ -13,6 +14,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { type RootState } from '@/store/event';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type EventList } from '@/utils/interfaces/event.interface';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -22,19 +24,6 @@ import { toast } from 'react-toastify';
 import PaymentOptions from './PaymentOptions';
 import VirtualAccountGuide from './VirtualAccountGuide';
 import WalletForm from './WalletForm';
-
-export interface UserData {
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  phoneNumber: string;
-  _pin: string;
-  preferredCurrency: string;
-}
 
 export interface DetailTournament {
   id: string;
@@ -89,7 +78,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const [virtualList, setVirtualList] = useState([]);
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>();
   const [eventData, setEventData] = useState<EventList>();
   const useCoinsParam = router.query.useCoins;
@@ -101,19 +90,6 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
-
-  const userDefault = {
-    name: '',
-    seedsTag: '',
-    email: '',
-    pin: '',
-    avatar: '',
-    bio: '',
-    birthDate: '',
-    phoneNumber: '',
-    _pin: '',
-    preferredCurrency: ''
-  };
 
   const defaultOption = {
     id: '',
@@ -240,18 +216,21 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
         setPaymentStatus(resp);
 
         if (response) {
-          if (response.payment_url !== '') {
+          if (response.payment_url !== '' && paymentMethod !== 'BNC_QRIS') {
             window.open(response.payment_url as string, '_blank');
           }
-          await router
-            .replace(
-              `/homepage/event/${id as string}/payment/receipt/${
-                response.order_id as string
-              }`
-            )
-            .catch(error => {
-              toast.error(error);
-            });
+          const query = response.payment_url !== '' ? { paymentUrl: response.payment_url } : undefined;
+          
+          await router.replace(
+            {
+              pathname: `/homepage/event/${id as string}/payment/receipt/${response.order_id as string}` + `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+              query
+            },
+            undefined,
+            { shallow: true }
+          ).catch(error => {
+            toast(`${error as string}`);
+          });
         }
       }
     } catch (error) {
@@ -299,28 +278,32 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       </Typography>
       <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
         <PaymentOptions
-          label="Virtual Account"
-          options={virtualList}
+          label={t('seedsEvent.payment.eWalletLabel')}
+          options={eWalletList}
           onChange={setOption}
           currentValue={option}
+          userInfo={userInfo ?? userDefault}
         />
         <PaymentOptions
           label="QRIS"
           options={qRisList}
           onChange={setOption}
           currentValue={option}
+          userInfo={userInfo ?? userDefault}
         />
         <PaymentOptions
-          label={t('seedsEvent.payment.eWalletLabel')}
-          options={eWalletList}
+          label="Virtual Account"
+          options={virtualList}
           onChange={setOption}
           currentValue={option}
+          userInfo={userInfo ?? userDefault}
         />
         <PaymentOptions
           label={t('PlayPayment.ccLabel')}
           options={ccList}
           onChange={setOption}
           currentValue={option}
+          userInfo={userInfo ?? userDefault}
         />
         <SubmitButton
           disabled={option?.id == null}

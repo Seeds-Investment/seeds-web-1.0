@@ -2,53 +2,36 @@
 'use client';
 // import { useAppSelector } from '@/store/redux/store';
 import { standartCurrency } from '@/helpers/currency';
-import { getUserInfo } from '@/repository/profile.repository';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Radio } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import { type Payment } from './PaymentList';
-
-interface UserData {
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  phone: string;
-  _pin: string;
-  preferredCurrency: string;
-}
 
 interface IPaymentOption {
   option: Payment;
   onChange: (paymentOption: Payment) => void;
-  currentValue: any;
+  currentValue: Current | undefined;
+  userInfo: UserInfo;
+}
+
+interface Current {
+  id: string;
+  payment_method: string;
+  logo_url: string;
+  payment_type: string;
+  admin_fee: number;
+  is_promo_available: boolean;
+  promo_price: number;
+  service_fee: number;
+  payment_gateway?: string;
 }
 
 const PaymentOption = ({
   option,
   onChange,
-  currentValue
+  currentValue,
+  userInfo
 }: IPaymentOption): JSX.Element => {
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
-  // const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
-
-  const fetchData = async (): Promise<void> => {
-    try {
-      const response = await getUserInfo();
-      setUserInfo(response);
-    } catch (error) {
-      toast(`ERROR fetch user info ${error as string}`);
-    }
-  };
-
-  useEffect(() => {
-    void fetchData();
-    // void fetchPaymentList();
-  }, []);
   return (
     <label
       htmlFor={option?.id}

@@ -9,19 +9,19 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const [zoom, setZoom] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const goToPreviousSlide = (): any => {
-    setCurrentIndex(prevIndex =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-    return null;
-  };
+   const goToPreviousSlide = (): any => {
+     setCurrentIndex(prevIndex =>
+       prevIndex === 0 ? images.length - 1 : prevIndex - 1
+     );
+     return null;
+   };
 
-  const goToNextSlide = (): any => {
-    setCurrentIndex(prevIndex =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-    return null;
-  };
+   const goToNextSlide = (): any => {
+     setCurrentIndex(prevIndex =>
+       prevIndex === images.length - 1 ? 0 : prevIndex + 1
+     );
+     return null;
+   };
 
   const openModal = (): void => {
     setIsModalOpen(true);

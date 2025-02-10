@@ -19,6 +19,7 @@ import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import market from 'src/assets/market/market.svg';
 import Logo from '../ui/vector/Logo';
 
 interface props {
@@ -37,6 +38,7 @@ const menu = isGuest()
   : [
       { title: 'Social', url: '/social', image: social },
       { title: 'Homepage', url: '/homepage', image: homepage },
+      { title: 'Market', url: '/market', image: market },
       { title: 'Connect', url: '/connect', image: connect },
       { title: 'Play', url: '/play', image: play },
       { title: 'Setting', url: '/user-setting', image: setting },

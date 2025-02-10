@@ -57,6 +57,8 @@ const PromoCodeButton: React.FC<PromoProps> = ({
       return `/connect/payment/${id}/promo`;
     } else if (spotType === 'Premium Content') {
       return `/social/payment/${id}/promo`;
+    } else if (spotType === 'Paid Battle') {
+      return `/play/team-battle/${id}/promo`;
     }
     return '';
   };

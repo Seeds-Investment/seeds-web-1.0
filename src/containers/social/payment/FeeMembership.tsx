@@ -53,6 +53,7 @@ const FeeMembership: React.FC<props> = ({ setStep, detailPost, userInfo }) => {
           <div className="flex justify-center">
             <div className="flex flex-col pb-7 px-7">
               <h1 className="pt-4 text-center text-black font-poppins text-base font-semibold">
+                {userInfo?.preferredCurrency ?? 'IDR'}{' '}
                 {standartCurrency(detailPost?.premium_fee)}
               </h1>
               <h1 className="pt-2 text-center font-poppins text-base font-light">

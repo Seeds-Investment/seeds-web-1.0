@@ -12,7 +12,7 @@ import { type DataPost } from '@/utils/interfaces/social.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -130,24 +130,24 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
   }, []);
 
   useEffect(() => {
-    const validatePromo = async (): Promise<void> => {
-      if (promoCodeValidationResult) {
-        const admissionFee = Number(data?.premium_fee ?? 0);
-
-        const response = await promoValidate({
-          promo_code: promoCodeValidationResult?.response?.promo_code,
-          spot_type: 'Premium Content',
-          item_price: admissionFee,
-          item_id: data?.id,
-          currency: userInfo?.preferredCurrency ?? 'IDR'
-        });
-
-        setNewPromoCodeDiscount(response?.total_discount);
-      }
-    };
-
     void validatePromo();
   }, [data]);
+
+  const validatePromo = useCallback(async (): Promise<void> => {
+    if (promoCodeValidationResult) {
+      const admissionFee = Number(data?.premium_fee ?? 0);
+
+      const response = await promoValidate({
+        promo_code: promoCodeValidationResult?.response?.promo_code,
+        spot_type: 'Premium Content',
+        item_price: admissionFee,
+        item_id: data?.id,
+        currency: userInfo?.preferredCurrency ?? 'IDR',
+      });
+
+      setNewPromoCodeDiscount(response?.total_discount);
+    }
+  }, [promoCodeValidationResult, data, promoValidate, userInfo, setNewPromoCodeDiscount]);
 
   const handleOpenDialog = (value: boolean): void => {
     if (option?.payment_type === 'qris') {
@@ -240,6 +240,7 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
             handlePay={handlePay}
             dataPost={data}
             newPromoCodeDiscount={newPromoCodeDiscount}
+            userInfo={userInfo}
           />
         )}
       </Dialog>

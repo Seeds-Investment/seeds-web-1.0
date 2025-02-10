@@ -11,6 +11,7 @@ import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useEffect, useState } from 'react';
+import market from 'src/assets/market/market.svg';
 // import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import ModalLogout from '../popup/ModalLogout';
@@ -27,8 +28,10 @@ const SidebarLogin: React.FC = () => {
     : [
         { title: 'Social', url: '/social', image: social },
         { title: 'Homepage', url: '/homepage', image: homepage },
+        { title: 'Market', url: '/market', image: market },
         { title: 'Connect', url: '/connect', image: connect },
         { title: 'Play', url: '/play', image: play },
+        // { title: 'NFT', url: '/nft', image: nft },
         { title: 'Setting', url: '/user-setting', image: setting }
         // { title: 'Notification', url: '/setting', image: notification },
         // { title: 'Chat', url: '/setting', image: chat }

@@ -2,6 +2,7 @@ import Loading from '@/components/popup/Loading';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { CeklisCircle } from '@/constants/assets/icons';
+import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
@@ -11,7 +12,6 @@ import {
 } from '@/repository/payment.repository';
 import { getPlayById } from '@/repository/play.repository';
 import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
-import { formatCurrency } from '@/utils/common/currency';
 import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -295,7 +295,7 @@ const SuccessPaymentPage: React.FC = () => {
                 orderDetail?.transactionStatus === 'SUCCEEDED' ||
                 orderDetail?.transactionStatus === 'SUCCESS'
                   ? t('tournament.payment.successful')
-                  : `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                  : `${orderDetail?.currency ?? 'IDR'} ${standartCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`}
               </Typography>
@@ -347,7 +347,7 @@ const SuccessPaymentPage: React.FC = () => {
                       {t('tournament.payment.tournamentFee')}
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
-                      {`${orderDetail?.currency} ${formatCurrency(
+                      {`${orderDetail?.currency} ${standartCurrency(
                         (orderDetail?.grossAmount ?? 0) === 0
                           ? 0
                           : orderDetail?.grossAmount -
@@ -372,7 +372,7 @@ const SuccessPaymentPage: React.FC = () => {
                       {t('tournament.payment.tournamentFee')}
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
-                      {`${orderDetail?.currency} ${formatCurrency(
+                      {`${orderDetail?.currency} ${standartCurrency(
                         (orderDetail?.grossAmount ?? 0) === 0
                           ? 0
                           : orderDetail?.grossAmount -
@@ -398,7 +398,7 @@ const SuccessPaymentPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
-                        `${orderDetail.currency} ${formatCurrency(
+                        `${orderDetail.currency} ${standartCurrency(
                           paymentSelected[0].admin_fee ?? 0
                         )}`}
                     </Typography>
@@ -418,7 +418,7 @@ const SuccessPaymentPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
-                        `${orderDetail.currency} ${formatCurrency(
+                        `${orderDetail.currency} ${standartCurrency(
                           qRisList[0]?.admin_fee ?? 0
                         )}`}
                     </Typography>
@@ -437,7 +437,7 @@ const SuccessPaymentPage: React.FC = () => {
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
                       orderDetail.grossAmount !== undefined
-                        ? `${orderDetail.currency} ${formatCurrency(
+                        ? `${orderDetail.currency} ${standartCurrency(
                             paymentSelected[0]?.service_fee ?? 0
                           )}`
                         : ''}
@@ -459,7 +459,7 @@ const SuccessPaymentPage: React.FC = () => {
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
                       orderDetail.grossAmount !== undefined
-                        ? `${orderDetail.currency} ${formatCurrency(
+                        ? `${orderDetail.currency} ${standartCurrency(
                             qRisList[0]?.service_fee ?? 0
                           )}`
                         : ''}
@@ -480,7 +480,7 @@ const SuccessPaymentPage: React.FC = () => {
                           </Typography>
                           <Typography className="text-sm font-semibold text-[#262626]">
                             {orderDetail?.currency !== undefined
-                              ? `- ${orderDetail.currency} ${formatCurrency(
+                              ? `- ${orderDetail.currency} ${standartCurrency(
                                   paymentSelected.length > 0
                                     ? paymentSelected[0]?.promo_price ?? 0
                                     : 0
@@ -504,7 +504,7 @@ const SuccessPaymentPage: React.FC = () => {
                           </Typography>
                           <Typography className="text-sm font-semibold text-[#262626]">
                             {orderDetail?.currency !== undefined
-                              ? `- ${orderDetail.currency} ${formatCurrency(
+                              ? `- ${orderDetail.currency} ${standartCurrency(
                                   qRisList !== undefined
                                     ? qRisList[0]?.promo_price ?? 0
                                     : 0
@@ -530,7 +530,7 @@ const SuccessPaymentPage: React.FC = () => {
                             {t('tournament.payment.discountCoins')}
                           </Typography>
                           <Typography className="text-sm font-semibold text-[#262626]">
-                            {`- ${orderDetail.currency} ${formatCurrency(
+                            {`- ${orderDetail.currency} ${standartCurrency(
                               paymentSelected[0]?.admin_fee +
                                 paymentSelected[0]?.service_fee -
                                 orderDetail.grossAmount
@@ -557,7 +557,7 @@ const SuccessPaymentPage: React.FC = () => {
                             {t('tournament.payment.discountCoins')}
                           </Typography>
                           <Typography className="text-sm font-semibold text-[#262626]">
-                            {`- ${orderDetail.currency} ${formatCurrency(
+                            {`- ${orderDetail.currency} ${standartCurrency(
                               qRisList[0]?.admin_fee +
                                 qRisList[0]?.service_fee -
                                 orderDetail?.grossAmount
@@ -576,7 +576,7 @@ const SuccessPaymentPage: React.FC = () => {
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
-                      `${orderDetail?.currency} ${formatCurrency(
+                      `${orderDetail?.currency} ${standartCurrency(
                         orderDetail?.grossAmount
                       )}`}
                   </Typography>

@@ -1,4 +1,4 @@
-import PaymentList from '@/containers/play/payment/PaymentList';
+import PaymentList from '@/containers/tournament/payment/PaymentList';
 import withAuth from '@/helpers/withAuth';
 
 const PlayPayment = (): JSX.Element => {

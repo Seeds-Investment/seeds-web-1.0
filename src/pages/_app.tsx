@@ -59,10 +59,13 @@ function App({
 
   const loginLayouts =
     router.pathname.startsWith('/homepage') ||
+    router.pathname.startsWith('/market') ||
     router.pathname.startsWith('/social') ||
     router.pathname.startsWith('/connect') ||
     router.pathname.startsWith('/play') ||
+    router.pathname.startsWith('/nft') ||
     router.pathname.startsWith('/academy') ||
+    router.pathname.startsWith('/seedsplan') ||
     router.pathname.startsWith('/user-setting') ||
     router.pathname.startsWith('/my-profile') ||
     router.pathname.startsWith('/chat') ||

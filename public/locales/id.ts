@@ -701,7 +701,10 @@ export default {
     nextButton: 'Lanjut'
   },
   ProfilePage: {
-    title: 'Profil Saya'
+    title: 'Profil Saya',
+    subscriptionButton: 'Berlangganan Seeds Plan',
+    yourPackage: 'Paket Anda',
+    active: 'Aktif'
   },
   DeleteReasonAccountPopUp: {
     title: 'Apa alasan kamu menghapus akun ini?',
@@ -938,7 +941,10 @@ export default {
       'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
     limitPurchaseMessage:
       'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
-    limitDailyMessage: 'Kuota kode promo sudah mencapai limit'
+    limitDailyMessage: 'Kuota kode promo sudah mencapai limit',
+    specificFeature: 'Kode promo hanya untuk produk tertentu',
+    specificReferral: 'Kode promo hanya untuk kode referal tertentu',
+    invalidPromo: 'Kode promo tidak valid'
   },
   temporary: {
     welcome: {
@@ -1197,7 +1203,11 @@ export default {
       paymentFailed: 'Pembayaran Gagal',
       paymentFailedDescription:
         'Kami tidak bisa memproses pembayaran anda. Cek koneksi internet anda dan coba lagi.',
-      paymentFailedWarning: 'Pembayaran Langganan Premium Gagal'
+      paymentFailedWarning: 'Pembayaran Langganan Premium Gagal',
+      getAccessToUnlock: 'Dapatkan akses untuk membuka membershipmu',
+      enjoyUnlimitedAccess:
+        'Nikmati akses tak terbatas ke semua konten premium dari berbagai ahli.',
+      getFullAccess: 'Dapatkan akses penuh dengan membayar sekali seumur hidup'
     }
   },
 
@@ -1698,7 +1708,13 @@ export default {
       text15: 'Masuk untuk menuju arena bermain',
       text16: 'Masuk untuk menuju permainan',
       text17:
-        'Dana Virtual adalah dana virtual yang tersedia untuk Simulasi permainan saham'
+        'Dana Virtual adalah dana virtual yang tersedia untuk Simulasi permainan saham',
+      text18:
+        'Dapatkan pembaruan aset Anda hari ini! Dan mainkan permainan kami untuk mendapatkan lebih banyak hadiah.',
+      text19: 'Total Hadiah Bulan Ini'
+    },
+    section4: {
+      text1: 'asset dengan keuntungan tertinggi saat ini'
     },
     section3: {
       text1: 'Sumber semua utama berita keuangan terbaru',
@@ -1706,7 +1722,11 @@ export default {
       text3: 'Bulan Lalu',
       text4: 'Peringkatmu Saat Ini',
       text5: 'Cari dan ikuti profil yang menarik.',
-      text6: 'Daftar Profile'
+      text6: 'Daftar Profile',
+      text7: 'Keuntungan Tertinggi'
+    },
+    section5: {
+      cardcircletext1: 'anggota'
     }
   },
   chooseCurrency: {
@@ -2025,7 +2045,9 @@ export default {
     payment: {
       paymentMethod: 'Metode Pembayaran',
       pendingPaidTournament: 'Menunggu Turnamen Dibayar',
+      pendingPaidTeamBattle: 'Menunggu Pertarungan Tim Dibayar',
       tournamentFee: 'Biaya Turnamen',
+      teamBattleFee: 'Biaya Pertarungan Tim',
       adminFee: 'Biaya Admin',
       serviceFee: 'Biaya Layanan',
       discountFee: 'Diskon',
@@ -2036,6 +2058,7 @@ export default {
       virtualNumber: 'Nomor Virtual Akun Anda',
       successful: 'Pembayaran Berhasil',
       pending: 'Menunggu Pembayaran',
+      pendingBattle: 'Menunggu Pembayaran',
       recurringSaved: 'Pembayaran anda telah tersimpan'
     },
     clock: {
@@ -2543,8 +2566,11 @@ export default {
     dataNotFound: 'Data Tidak Ditemukan'
   },
   chat: {
+    chat: 'Chat',
+    allMessages: 'Semua Pesan',
     personalEmptyState: 'Tidak ada percakapan',
     communityEmptyState: 'Tidak ada percakapan komunitas',
+    requestEmptyState: 'Tidak ada permintaan percakapan',
     selectUsername: 'Kamu belum membuat percakapan. Yuk, pilih nama pengguna.',
     chatPeople: 'Chat People',
     createCommunity: 'Create Community',
@@ -2558,20 +2584,24 @@ export default {
     newChat: 'Percakapan Baru',
     willHelp: 'Seeds akan membantu kamu 🙌',
     startConversation: 'Mulai percakapan sekarang!',
-    textInputPlaceholder: 'Ketik Pesan…',
+    textInputPlaceholder: 'Buat Pesan…',
     seeMore: 'Lihat Lebih Banyak',
     links: 'Tautan',
     commonGroup: `Grup yang sama`,
     personal: 'Pribadi',
     community: 'Komunitas',
     request: 'Request',
+    chatRequest: 'Permintaan Percakapan',
     reject: 'Tolak',
     accept: 'Terima',
+    newMessage: 'Pesan Baru',
+    newMessageDescription: 'Katakan halo dan mulai percakapan!',
     newGroup: 'Grup Baru',
+    newGroupDescription: 'Ayo berkirim pesan 🎉 Buat grup baru!',
     groupName: 'Nama Grup',
     enterGroupName: 'Masukan nama grup',
     description: 'Deskripsi',
-    enterGroupDescription: 'Masukan deskripsi grup',
+    groupDescription: 'Deskripsi Grup',
     typeGroup: 'Tipe Grup',
     public: 'Publik',
     private: 'Pribadi',
@@ -2591,7 +2621,33 @@ export default {
     seen: 'Dilihat',
     muteNotificationTitle: 'Yakin mau membisukan notifikasi ini?',
     muteNotificationSubtitle:
-      'Peserta lain tidak akan tau jika kamu membisukan chat ini'
+      'Peserta lain tidak akan tau jika kamu membisukan chat ini',
+    setPhoto: 'Atur Gambar',
+    btnCreateGroup: 'Buat Obrolan Grup',
+    btnYes: 'Ya',
+    btnNo: 'Tidak',
+    members: 'Anggota',
+    addGroupDescription: 'Tambahkan Deskripsi Grup',
+    menuBar: {
+      changeGroupInfo: 'Change Group Info',
+      mutedNotif: 'Muted Notifications',
+      leaveGroup: 'Leave Group'
+    },
+    addNewMember: 'Tambahkan Anggota Baru',
+    searchMember: 'Cari Anggota',
+    shareGroup: 'Undang melalui Link',
+    editGroup: 'Edit Grup',
+    camera: 'Kamera',
+    gallery: 'Galeri',
+    record: 'Rekam',
+    placeholderDesc: 'Ketik deskripsi grup Anda di sini!',
+    modalCameraTitle: 'Ambil Foto',
+    modalRecordVideoTitle: 'Rekam Video',
+    successMute: 'Notifikasi Dibisukan',
+    retake: 'Ulangi',
+    usePhoto: 'Gunakan',
+    createMessagePlaceholder: 'Buat Pesan ...',
+    maxFileAlert: 'Ukuran file terlalu besar, ukuran file maksimal'
   },
   play: {
     keystat: 'Key Stats'
@@ -2624,6 +2680,11 @@ export default {
   teamBattle: {
     battleCompetition: 'Kompetisi Pertandingan',
     chooseCategory: 'Silakan Pilih Kategori',
+    summaryPayment: 'Ringkasan Pembayaran',
+    entranceFee: 'Biaya Masuk',
+    yourCurrentCurrency: 'Mata uang Anda saat ini',
+    useSeedsCoin: 'Gunakan Seeds Coin',
+    payButton: 'Bayar',
     joinAsPublicConfirm: 'Apakah Anda yakin ingin bergabung sebagai publik?',
     joinAsInvitation: 'Masukkan kode undangan Anda',
     placeholderInvitation: 'Masukkan di sini',
@@ -2708,5 +2769,110 @@ export default {
       notFound: `Kamu tidak memiliki {{data}}`,
       moreInfo: 'Informasi Lainnya'
     }
+  },
+  seedsPlan: {
+    desc: 'Pilih paket untuk mendapatkan penghematan dan kesenangan tanpa batas!',
+    button1: 'Ketentuan & Kebijakan',
+    button2: 'Cara Menggunakan Voucher',
+    howToUse:
+      'Buka aplikasi Seeds Finance. Pilih Kuis, Mainkan Turnamen, dan Pertarungan Tim di bagian "Play" atau pilih "Circle" dan "Premium" di bagian "Social" sesuai pilihan Anda. Pada halaman pembayaran, pilih metode pembayaran dan voucher ( termasuk voucher Seeds Unlimited yang Anda beli). Jika voucher sudah aktif, anda bisa mengikuti berbagai diskon premium secara gratis, tergantung jenis voucher yang anda beli. Yay! Sekarang anda dapat bergabung dan menikmati banyak penghematan',
+    button3: 'Langganan Sekarang!',
+    button4: 'Saya Mengerti',
+    button5: 'Berhenti Langganan',
+    button6: 'Ubah My SeedPlan',
+    button7: 'Pertanyaan yang Sering Diajukan',
+    button8: 'Gunakan Sekarang',
+    button9: 'Berhenti Berlangganan Seeds Plan',
+    stopPlanDesc: 'Anda akan kehilangan semua manfaat Anda setelah pembatalan.',
+    text1: 'Terbaik',
+    text2: 'Biaya Langganan',
+    text3: 'Diskon',
+    text4: 'bulan',
+    text5: 'Otomatis diperbarui 1 bulan setelah pembelian',
+    text6: 'Total diskon',
+    text7: 'Paket Anda: ',
+    text8: 'Aktif',
+    text9: 'Terbaik',
+    text10: 'Lihat Detail',
+    text11: 'Layanan anda akan berakhir pada ',
+    text12: 'Non-Aktif',
+    text13: 'Bisa hemat hingga Rp 150.000, setiap bulannya',
+    text14: 'Gunakan Voucher!',
+    text15: 'Paket baru Anda akan dimulai pada ',
+    text16: 'Kedaluwarsa pada ',
+    text17:
+      'Ingin mengubah atau melanjutkan SeedsPlan Kamu untuk aktivitas berikutnya? Bayar sekarang dan kamu tidak perlu kuatir lagi nanti!',
+    text18:
+      'Paket berikutnya akan aktif secara otomatis setelah paket saat ini berakhir',
+    text19: 'Kamu telah berlangganan 2 paket SeedsPlan. Kamu harus menunggu paket pertama habis sebelum berlangganan lagi.',
+    month: 'Bulan',
+    months: 'Bulan',
+    year: 'Tahun',
+    benefit: 'Keuntungan',
+    WalletForm: {
+      title: 'Masukkan nomor {{wallet}}',
+      phoneLabel: 'Nomor {{wallet}}',
+      phonePlaceholder: '8xxxxxxxx',
+      paymentDeadline: 'Bayar sebelum {{date}}',
+      admissionFeeLabel: 'Biaya Langganan',
+      adminFeeLabel: 'Biaya Admin',
+      serviceFeeLabel: 'Biaya Layanan',
+      adminFeeDiscountLabel: 'Diskon Biaya Admin ',
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Digunakan'
+    },
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      virtualNumber: 'Nomor Virtual Akun Anda',
+      pendingPaidSubscription: 'Menunggu Pembayaran',
+      subscriptionFee: 'Biaya Langganan',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      paymentSuccessful: 'Berhasil',
+      recurringSaved: 'Pembayaran anda telah tersimpan',
+      information: {
+        text1: 'Paket Anda saat ini',
+        text2: ' berlaku hingga ',
+        text3: ' Paket yang baru ',
+        text4: ' akan berlaku mulai ',
+        text5: ' pukul ',
+        text6: 'bulan',
+        text7: 'bulan'
+      },
+      warningIncoming: 'Anda sudah memiliki langganan aktif atau langganan yang akan datang!'
+    },
+    modalUnsubscribe: {
+      text1: 'Apakah Anda yakin untuk berhenti berlangganan?',
+      text2:
+        'Dengan berhenti berlangganan, keuntungan berikut akan dinonaktifkan',
+      text3: 'Voucher akan dinonaktifkan',
+      text4: 'Dengan berlangganan ini, anda mendapatkan keuntungan ',
+      text5: ' voucher ',
+      text6: ' voucher ',
+      text7: ' untuk Quiz, Tournament, dan Circle',
+      text8: 'Ya, saya yakin untuk berhenti berlangganan',
+      text9: 'Kembali'
+    },
+    modalChangePlan: {
+      title: 'Siap untuk beralih paket?',
+      description:
+        'Anda dapat beralih secara instan, dan paket baru Anda akan otomatis diterapkan setelah paket Anda yang saat ini berakhir.',
+      button1: 'Nanti',
+      button2: 'Berikutnya'
+    },
+    history: {
+      transactionHistory: 'Riwayat Transaksimu',
+      transactionHistoryEmpty: 'Riwayat Transaksimu Kosong',
+      noTransaction:
+        'Kamu belum melakukan transaksi apapun, nih. Yuk, mulai transaksi pertamamu sekarang!',
+      back: 'Kembali'
+    },
+    yes: 'Ya',
+    no: 'Tidak'
   }
 };

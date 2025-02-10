@@ -2,6 +2,7 @@ import Loading from '@/components/popup/Loading';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { CeklisCircle } from '@/constants/assets/icons';
+import { standartCurrency } from '@/helpers/currency';
 import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
@@ -13,7 +14,6 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
-import { formatCurrency } from '@/utils/common/currency';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -265,7 +265,7 @@ const SuccessPaymentPage: React.FC = () => {
               <Typography className="text-2xl font-semibold text-white text-center">
                 {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
                 orderDetail?.transactionStatus !== 'SUCCESS'
-                  ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                  ? `${orderDetail?.currency ?? 'IDR'} ${standartCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`
                   : t('quiz.payment.paymentSuccessful')}
@@ -318,7 +318,7 @@ const SuccessPaymentPage: React.FC = () => {
                       <Typography className="text-sm font-semibold text-[#262626]">
                         {orderDetail?.currency !== undefined &&
                         orderDetail?.grossAmount !== undefined
-                          ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                          ? `${orderDetail?.currency ?? 'IDR'} ${standartCurrency(
                               (orderDetail?.grossAmount ?? 0) === 0
                                 ? 0
                                 : (orderDetail?.grossAmount ?? 0) -
@@ -343,7 +343,7 @@ const SuccessPaymentPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
-                        `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                        `${orderDetail?.currency ?? 'IDR'} ${standartCurrency(
                           orderDetail?.admin_fee ?? 0
                         )}`}
                     </Typography>
@@ -362,7 +362,7 @@ const SuccessPaymentPage: React.FC = () => {
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
                       orderDetail.grossAmount !== undefined
-                        ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                        ? `${orderDetail?.currency ?? 'IDR'} ${standartCurrency(
                             orderDetail?.service_fee ?? 0
                           )}`
                         : ''}
@@ -385,7 +385,7 @@ const SuccessPaymentPage: React.FC = () => {
                             {orderDetail?.currency !== undefined
                               ? `- ${
                                   orderDetail?.currency ?? 'IDR'
-                                } ${formatCurrency(
+                                } ${standartCurrency(
                                   orderDetail?.promo_price ?? 0
                                 )}`
                               : ''}
@@ -409,7 +409,7 @@ const SuccessPaymentPage: React.FC = () => {
                         <Typography className="text-sm font-semibold text-[#262626]">
                           {`- ${
                             orderDetail?.currency ?? 'IDR'
-                          } ${formatCurrency(orderDetail?.seeds_coin ?? 0)}`}
+                          } ${standartCurrency(orderDetail?.seeds_coin ?? 0)}`}
                         </Typography>
                       </div>
                     )}
@@ -423,8 +423,8 @@ const SuccessPaymentPage: React.FC = () => {
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
-                      `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
-                        orderDetail.grossAmount
+                      `${orderDetail?.currency ?? 'IDR'} ${standartCurrency(
+                        orderDetail?.grossAmount ?? 0
                       )}`}
                   </Typography>
                 </div>

@@ -781,7 +781,10 @@ export default {
     nextButton: 'Continue'
   },
   ProfilePage: {
-    title: 'My Profile'
+    title: 'My Profile',
+    subscriptionButton: 'Subscribe to My Seeds Plan',
+    yourPackage: 'Your Package',
+    active: 'Active'
   },
   DeleteAccount: {
     title: 'Are you sure to delete this account?',
@@ -1018,7 +1021,11 @@ export default {
     notFound: 'Promo code not found. Make sure you entered a valid promo code.',
     limitPurchaseMessage:
       'You need to reach the minimum transaction before using the promo!',
-    limitDailyMessage: 'The promo code quota is already exceeding today’s limit'
+    limitDailyMessage:
+      'The promo code quota is already exceeding today’s limit',
+    specificFeature: 'Promo code only for specific feature',
+    specificReferral: 'Promo code only for specific referral code',
+    invalidPromo: 'Promo code is invalid'
   },
   temporary: {
     welcome: {
@@ -1275,7 +1282,11 @@ export default {
       paymentFailed: 'Payment Failed',
       paymentFailedDescription:
         'We can’t process your payment, Check your internet connection and try again.',
-      paymentFailedWarning: 'Payment Failed Circle Premium'
+      paymentFailedWarning: 'Payment Failed Circle Premium',
+      getAccessToUnlock: 'Get Access to unlock your membership',
+      enjoyUnlimitedAccess:
+        'Enjoy unlimited access to all premium content from various experts.',
+      getFullAccess: 'Get full access by paying once for a lifetime'
     }
   },
   articleList: {
@@ -1767,7 +1778,10 @@ export default {
       text14: 'See More',
       text15: 'Please Login to enter the arena simulation',
       text16: 'Login to enter arena simulation',
-      text17: 'Virtual cash is virtual money available for play game'
+      text17: 'Virtual cash is virtual money available for play game',
+      text18:
+        'Get update of your asset today! And playing our game to get more rewards.',
+      text19: 'Total Reward this month'
     },
     section3: {
       text1: 'Your all-in-one source for financial updates',
@@ -1775,7 +1789,14 @@ export default {
       text3: 'Last Month',
       text4: 'Current Rank',
       text5: 'Find and follow interesting profiles.',
-      text6: 'People List'
+      text6: 'People List',
+      text7: 'Top Gainers'
+    },
+    section4: {
+      text1: 'assets with the highest returns at the moment'
+    },
+    section5: {
+      cardcircletext1: 'members'
     }
   },
   chooseCurrency: {
@@ -2096,7 +2117,9 @@ export default {
     payment: {
       paymentMethod: 'Payment Method',
       pendingPaidTournament: 'Pending Paid Tournament',
+      pendingPaidTeamBattle: 'Pending Paid Team Battle',
       tournamentFee: 'Tournament Fee',
+      teamBattleFee: 'Team Battle Fee',
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',
       discountFee: 'Discount Fee',
@@ -2107,6 +2130,7 @@ export default {
       virtualNumber: 'Your Virtual Account Number',
       successful: 'Successful',
       pending: 'Pending Paid Tournament',
+      pendingBattle: 'Pending Paid Team Battle',
       recurringSaved: 'Your recurring has been saved!'
     },
     clock: {
@@ -2612,8 +2636,12 @@ export default {
     dataNotFound: 'Data Not Found'
   },
   chat: {
-    personalEmptyState: 'No Conversation',
+    chat: 'Chat',
+    allMessages: 'All Messages',
+    personalEmptyState: 'No message here!',
+    startChat: 'Start a chat!',
     communityEmptyState: 'No Community Chat',
+    requestEmptyState: 'No Chat Request',
     selectUsername:
       'You didn’t made any conversation yet, please select username.',
     chatPeople: 'Chat People',
@@ -2628,20 +2656,24 @@ export default {
     newChat: 'New Chat',
     willHelp: 'Seedy will help you 🙌',
     startConversation: 'Start a conversation now!',
-    textInputPlaceholder: 'Type message…',
+    textInputPlaceholder: 'Create Message…',
     seeMore: 'See more',
     links: 'Links',
     commonGroup: `Group's in common`,
     personal: 'Personal',
     community: 'Community',
     request: 'Request',
+    chatRequest: 'Chat Request',
     reject: 'Reject',
     accept: 'Accept',
+    newMessage: 'New Message',
+    newMessageDescription: 'Say hi and kick off the conversation!',
     newGroup: 'New Group',
+    newGroupDescription: "Let's chat  🎉 Start a new group!",
     groupName: 'Group Name',
     enterGroupName: 'Enter Group Name',
     description: 'Description',
-    enterGroupDescription: 'Enter Group Description',
+    groupDescription: 'Group Description',
     typeGroup: 'Type Group',
     public: 'Public',
     private: 'Private',
@@ -2652,7 +2684,7 @@ export default {
     emptyChat: 'No messages here yet. Start a conversation now!',
     deleteChatTitle: 'Are you sure to delete this chat?',
     deleteChatSubtitle:
-      'If you click yes, your chat history can not be retrace after deletethe chat',
+      'If you click yes, your chat history can not be retrace after delete the chat',
     search: 'Search',
     mute: 'Mute Notification',
     deleteChat: 'Delete chat',
@@ -2661,7 +2693,33 @@ export default {
     seen: 'Seen',
     muteNotificationTitle: 'Are you sure to mute notifications?',
     muteNotificationSubtitle:
-      'Other participants will not see that you muted this chat'
+      'Other participants will not see that you muted this chat',
+    setPhoto: 'Set Photo',
+    btnCreateGroup: 'Create Group Chat',
+    btnYes: 'Yes',
+    btnNo: 'No',
+    members: 'Members',
+    addGroupDescription: 'Add Group Description',
+    menuBar: {
+      changeGroupInfo: 'Change Group Info',
+      mutedNotif: 'Muted Notifications',
+      leaveGroup: 'Leave Group'
+    },
+    addNewMember: 'Add New Member',
+    searchMember: 'Search Member',
+    shareGroup: 'Invite via Link',
+    editGroup: 'Edit Group',
+    camera: 'Camera',
+    gallery: 'Gallery',
+    record: 'Record',
+    placeholderDesc: 'Type your group description here!',
+    modalCameraTitle: 'Take a photo',
+    modalRecordVideoTitle: 'Record a video',
+    successMute: 'Notification Muted',
+    retake: 'Retake',
+    usePhoto: 'Use Photo',
+    createMessagePlaceholder: 'Create Message ...',
+    maxFileAlert: 'The file size is too large, the maximum file size is'
   },
   play: {
     keystat: 'Key Stats'
@@ -2693,6 +2751,11 @@ export default {
   teamBattle: {
     battleCompetition: 'Battle Competition',
     chooseCategory: 'Please Choose Category',
+    summaryPayment: 'Summary of Payment',
+    entranceFee: 'Entrance Fee',
+    yourCurrentCurrency: 'Your current currency',
+    useSeedsCoin: 'Use Seeds Coin',
+    payButton: 'Pay',
     joinAsPublicConfirm: 'Are you sure you want to join as public?',
     joinAsInvitation: 'Input your code invitation',
     placeholderInvitation: 'Input here',
@@ -2775,5 +2838,109 @@ export default {
       notFound: `You don't have any {{data}} yet`,
       moreInfo: 'More Information'
     }
+  },
+  seedsPlan: {
+    desc: 'Choose the package to get unlimited savings and fun!',
+    button1: 'Terms & Conditions',
+    button2: 'How to Use Voucher',
+    howToUse:
+      'Open the Seeds Finance app. Select the Quiz, Play Tournament, and Team Battle in the "Play" section or select "Circle" and "Premium Post" in the "Social" section according to your choice. On the payment page, select payment method and voucher (including the Seeds Unlimited voucher you purchased). If the voucher is already active, you will be able to participate in variety of premium discount for free, depending on the type of voucher you purchased. Yay! Now you can join and enjoy multiple savings',
+    button3: 'Subscribe Now!',
+    button4: 'I Understand',
+    button5: 'Unsubscribe',
+    button6: 'Change My SeedsPlan',
+    button7: 'Frequently Asked Question',
+    button8: 'Use It Now',
+    button9: 'Stop Seeds Plan',
+    stopPlanDesc: 'You will lose all of your benefits after cancellation.',
+    text1: 'Best',
+    text2: 'Subscription Fee',
+    text3: 'Discount',
+    text4: 'month',
+    text5: 'Auto-renews 1 month from time of purchase',
+    text6: 'Total discount',
+    text7: 'Your package: ',
+    text8: 'Active',
+    text9: 'Best',
+    text10: 'See Details',
+    text11: 'Your plan will expire on ',
+    text12: 'Non-Active',
+    text13: 'You can save up to Rp 150.000 every month',
+    text14: 'Use it Now!',
+    text15: 'Your new plan will begin at ',
+    text16: 'Expired on ',
+    text17:
+      'Want to change or continue your SeedsPlan for the next activation? Pay now, and you won’t have to worry about it later!',
+    text18:
+      '*Your next plan will activate automatically after your current plan expires.',
+    text19: '*You have subscribed to 2 Seeds Plan. You have to wait for your first package to run out to subscribe again.',
+    month: 'Month',
+    months: 'Months',
+    year: 'Year',
+    benefit: 'Benefit',
+    WalletForm: {
+      title: 'Enter {{wallet}} Number',
+      phoneLabel: '{{wallet}} Number',
+      phonePlaceholder: '8xxxxxxxx',
+      paymentDeadline: 'Pay before {{date}}',
+      admissionFeeLabel: 'Subscription Fee',
+      adminFeeLabel: 'Admin Fee',
+      serviceFeeLabel: 'Service Fee',
+      adminFeeDiscountLabel: 'Admin Fee Discount ',
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Redeemed'
+    },
+    payment: {
+      paymentMethod: 'Payment Method',
+      virtualNumber: 'Your Virtual Account Number',
+      pendingPaidSubscription: 'Pending Paid Subscription',
+      subscriptionFee: 'Subscription Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      paymentSuccessful: 'Successful',
+      recurringSaved: 'Your recurring has been saved!',
+      information: {
+        text1: 'Your current plan',
+        text2: ' is valid until ',
+        text3: ' The incoming plan',
+        text4: ' will take effect on ',
+        text5: ' at ',
+        text6: 'month',
+        text7: 'months'
+      },
+      warningIncoming: 'You already have an active or incoming plan.'
+    },
+    modalUnsubscribe: {
+      text1: 'Are You Sure to Unsubscribe?',
+      text2: 'By unsubscribing, the following benefits will be deactivated',
+      text3: 'Voucher will be deactivated',
+      text4: 'This subscription contains ',
+      text5: ' voucher',
+      text6: ' vouchers ',
+      text7: ' on Quiz, Tournament, and Circle',
+      text8: 'Yes, I am sure to unsubscribe',
+      text9: 'Back'
+    },
+    modalChangePlan: {
+      title: 'Ready to switch plan?',
+      description:
+        ' You can make the switch instantly, and your new plan automatically applied once your current plan expires',
+      button1: 'Later',
+      button2: 'Next'
+    },
+    history: {
+      transactionHistory: 'Transaction History',
+      transactionHistoryEmpty: 'Transaction History Is Empty',
+      noTransaction:
+        'You haven’t made any transaction yet. Start your first transaction now!',
+      back: 'Back'
+    },
+    yes: 'Yes',
+    no: 'No'
   }
 };

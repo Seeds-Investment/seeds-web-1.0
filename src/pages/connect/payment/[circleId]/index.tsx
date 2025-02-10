@@ -89,7 +89,7 @@ const CirclePayment: React.FC = () => {
         <PaymentList dataPost={dataPost} />
       ) : (
         <CirclePaymentLayout>
-          <div className=" w-screen sm:w-full h-fit mb-10 rounded-xl">
+          <div className=" w-screen sm:w-full h-full rounded-xl">
             {handlePages()}
           </div>
         </CirclePaymentLayout>

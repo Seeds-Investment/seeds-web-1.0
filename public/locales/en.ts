@@ -2844,6 +2844,7 @@ export default {
       'Want to change or continue your SeedsPlan for the next activation? Pay now, and you won’t have to worry about it later!',
     text18:
       '*Your next plan will activate automatically after your current plan expires.',
+    text19: '*You have subscribed to 2 Seeds Plan. You have to wait for your first package to run out to subscribe again.',
     month: 'Month',
     months: 'Months',
     year: 'Year',
@@ -2873,7 +2874,17 @@ export default {
       idTransaction: 'ID Transaction',
       close: 'Close',
       paymentSuccessful: 'Successful',
-      recurringSaved: 'Your recurring has been saved!'
+      recurringSaved: 'Your recurring has been saved!',
+      information: {
+        text1: 'Your current plan',
+        text2: ' is valid until ',
+        text3: ' The incoming plan',
+        text4: ' will take effect on ',
+        text5: ' at ',
+        text6: 'month',
+        text7: 'months'
+      },
+      warningIncoming: 'You already have an active or incoming plan.'
     },
     modalUnsubscribe: {
       text1: 'Are You Sure to Unsubscribe?',

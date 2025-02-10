@@ -139,12 +139,12 @@ const DetailTab: React.FC<Props> = ({
           : activeTab === 'investor'
             ? <Investor detailProspektus={detailProspektus}/>
             : activeTab === 'news'
-              ? <News/>
+              ? <News detailProspektus={detailProspektus}/>
               : activeTab === 'discuss'
                 ? <Discuss idPembiayaan={detailProspektus?.Data?.idPinjaman}/>
                 : activeTab === 'factsheet'
-                  ? <Factsheet/>
-                  : <Report/>
+                  ? <Factsheet detailProspektus={detailProspektus}/>
+                  : <Report activeTab={activeTab}/>
       }
       </div>
     </div>

@@ -68,8 +68,8 @@ export const postDiscussion = async (formData: FormData): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
-    if (!accessTokenDanamart) {
-      return Promise.resolve('Access token Danamart not found');
+    if (accessTokenDanamart === null) {
+      return await Promise.resolve('Access token Danamart not found');
     }
 
     const response = await danamartApi.post(`/pemodal/Prospektus/postDiskusi`, formData, {
@@ -81,5 +81,30 @@ export const postDiscussion = async (formData: FormData): Promise<any> => {
     return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;
+  }
+};
+
+export const getOfferReport = async (
+  params: { 
+    pinjaman_id: string;
+  }
+): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.get('/pemodal/Laporan/penerbit', {
+      params,
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+      }
+    });
+
+    return response;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
   }
 };

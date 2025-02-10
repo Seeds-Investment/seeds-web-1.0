@@ -352,7 +352,7 @@ const Prospektus = (): React.ReactElement => {
                   {detailProspektus?.Data?.NamaPenerbit}
                 </Typography>
                 <div className="flex md:flex-row flex-col gap-6">
-                  <div className="flex flex-col gap-2 w-1/2 border-b border-[#bdbdbd]">
+                  <div className="flex flex-col gap-2 w-full md:w-1/2 border-b border-[#bdbdbd]">
                     <Typography className="font-poppins font-semibold text-base text-[#bdbdbd]">
                       {t('danamart.offers.detail.securitiesType')}
                     </Typography>
@@ -360,7 +360,7 @@ const Prospektus = (): React.ReactElement => {
                       {detailProspektus?.Data?.jenisEfek}
                     </Typography>
                   </div>
-                  <div className="flex flex-col gap-2 w-1/2 border-b border-[#bdbdbd]">
+                  <div className="flex flex-col gap-2 w-full md:w-1/2 border-b border-[#bdbdbd]">
                     <Typography className="font-poppins font-semibold text-base text-[#bdbdbd]">
                       {t('danamart.offers.detail.intendedUseOfFunds')}
                     </Typography>
@@ -370,7 +370,7 @@ const Prospektus = (): React.ReactElement => {
                   </div>
                 </div>
                 <div className="flex md:flex-row flex-col gap-6">
-                  <div className="flex flex-col gap-2 w-1/2 border-b border-[#bdbdbd]">
+                  <div className="flex flex-col gap-2 w-full md:w-1/2 border-b border-[#bdbdbd]">
                     <Typography className="font-poppins font-semibold text-base text-[#bdbdbd]">
                       {t('danamart.offers.detail.offeredAmount')}
                     </Typography>
@@ -378,7 +378,7 @@ const Prospektus = (): React.ReactElement => {
                       {detailProspektus?.Data?.jmlDana}
                     </Typography>
                   </div>
-                  <div className="flex flex-col gap-2 w-1/2 border-b border-[#bdbdbd]">
+                  <div className="flex flex-col gap-2 w-full md:w-1/2 border-b border-[#bdbdbd]">
                     <Typography className="font-poppins font-semibold text-base text-[#bdbdbd]">
                       {t('danamart.offers.detail.minimumInvestmentAmount')}
                     </Typography>
@@ -388,7 +388,7 @@ const Prospektus = (): React.ReactElement => {
                   </div>
                 </div>
                 <div className="flex md:flex-row flex-col gap-6">
-                  <div className="flex flex-col gap-2 w-1/2 border-b border-[#bdbdbd]">
+                  <div className="flex flex-col gap-2 w-full md:w-1/2 border-b border-[#bdbdbd]">
                     <Typography className="font-poppins font-semibold text-base text-[#bdbdbd]">
                       {t('danamart.offers.detail.coupon')}
                     </Typography>
@@ -396,7 +396,7 @@ const Prospektus = (): React.ReactElement => {
                       {detailProspektus?.Data?.Kupon}
                     </Typography>
                   </div>
-                  <div className="flex flex-col gap-2 w-1/2 border-b border-[#bdbdbd]">
+                  <div className="flex flex-col gap-2 w-full md:w-1/2 border-b border-[#bdbdbd]">
                     <Typography className="font-poppins font-semibold text-base text-[#bdbdbd]">
                       {t('danamart.offers.detail.tenor')}
                     </Typography>
@@ -406,7 +406,7 @@ const Prospektus = (): React.ReactElement => {
                   </div>
                 </div>
                 <div className="flex md:flex-row flex-col gap-6">
-                  <div className="flex flex-col gap-2 w-1/2 border-b border-[#bdbdbd]">
+                  <div className="flex flex-col gap-2 w-full md:w-1/2 border-b border-[#bdbdbd]">
                     <Typography className="font-poppins font-semibold text-base text-[#bdbdbd]">
                       {t('danamart.offers.detail.guarantee')}
                     </Typography>
@@ -414,7 +414,7 @@ const Prospektus = (): React.ReactElement => {
                       {detailProspektus?.Data?.Jaminan}
                     </Typography>
                   </div>
-                  <div className="flex flex-col gap-2 w-1/2 border-b border-[#bdbdbd]">
+                  <div className="flex flex-col gap-2 w-full md:w-1/2 border-b border-[#bdbdbd]">
                     <Typography className="font-poppins font-semibold text-base text-[#bdbdbd]">
                       {t('danamart.offers.detail.offerType')}
                     </Typography>

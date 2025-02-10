@@ -3378,6 +3378,12 @@ export default {
             text1: 'Join WhatsApp Group',
             text2: 'Write comments...',
             text3: 'Send',
+          },
+          news: {
+            text1: 'There is no new update yet',
+          },
+          factsheet: {
+            text1: 'There is no document yet',
           }
         }
       }

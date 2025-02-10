@@ -87,3 +87,48 @@ export interface TimelinePenawaran {
   tglTimeline: string | undefined[]
   beforeTimeline: string[]
 }
+
+export interface ReportData {
+  StatusCode: string
+  Status: string
+  message: string
+  UserId: string
+  data: ReportI[]
+}
+
+export interface ReportI {
+  tglLaporan: string
+  jenisLaporan: string
+  jenis: string
+  modelDetail: ModelDetail
+}
+
+export interface ModelDetail {
+  dataDok: DataDok
+  NamaDireksi: string
+  NamaDewanKomisaris: string
+  dataLaporan: DataLaporan
+}
+
+export interface DataDok {
+  RealisasiPenggunaanDana: string
+  LaporanNeraca: string
+  LaporanPerubahanEkuitas: string
+  CatatanAtasLaporanKeuangan: string
+  "LaporanLaba/Rugi": string
+  LaporanArusKas: string
+  HasilRups: string
+  jmlPembagianDividen: string
+  tglPembagianDividen: string
+}
+
+export interface DataLaporan {
+  text1: string
+  value1: string
+  text2: string
+  value2: string
+  text3: string
+  value3: string
+  text4: string
+  value4: string
+}

@@ -3312,6 +3312,12 @@ export default {
             text1: 'Gabung Grup WhatsApp',
             text2: 'Tulis komentar...',
             text3: 'Kirim',
+          },
+          news: {
+            text1: 'Belum ada kabar terbaru',
+          },
+          factsheet: {
+            text1: 'Dokumen tidak ada',
           }
         }
       }

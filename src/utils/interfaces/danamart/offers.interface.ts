@@ -100,7 +100,8 @@ export interface ReportI {
   tglLaporan: string
   jenisLaporan: string
   jenis: string
-  modelDetail: ModelDetail
+  modelDetail?: ModelDetail
+  modalDetail?: ModalDetail
 }
 
 export interface ModelDetail {
@@ -131,4 +132,12 @@ export interface DataLaporan {
   value3: string
   text4: string
   value4: string
+}
+
+export interface ModalDetail {
+  dokumen?: string
+  perkembanganProyek?: string
+  dm_ebus_01003?: string
+  dm_ebus_01004?: string
+  dm_ebus_01005?: string
 }

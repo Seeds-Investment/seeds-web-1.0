@@ -3384,6 +3384,48 @@ export default {
           },
           factsheet: {
             text1: 'There is no document yet',
+          },
+          report: {
+            filter: {
+              text1: 'Show 7 entries',
+              text2: 'Show 10 entries',
+              text3: 'Show 25 entries',
+              text4: 'Show 50 entries',
+              text5: 'Show 75 entries',
+              text6: 'Show 100 entries',
+              text7: 'Search...'
+            },
+            table: {
+              text1: 'Report Date',
+              text2: 'Report Type',
+              text3: 'No reports found.',
+              text4: 'Showing',
+              text5: 'to',
+              text6: 'of',
+              text7: 'entries',
+            },
+            modalDetail: {
+              title: 'Report Details',
+              text1: 'Report Type',
+              text2: 'Project Progress',
+              text3: 'Type',
+              text4: 'Download',
+              text5: 'View',
+              text6: 'Report Content',
+              text7: 'File',
+              text8: 'Realization of Fund Usage',
+              text9: 'Equity Change Report',
+              text10: 'Balance Sheet Report',
+              text11: 'Notes on Financial Statements',
+              text12: 'Profit/Loss Report',
+              text13: 'Board of Directors Member Name',
+              text14: 'Cash Flow Report',
+              text15: 'Board of Commissioners Member Name',
+              text16: 'General Meeting of Shareholders Result Report',
+              text17: 'Planned Dividend Distribution Date',
+              text18: 'Total Dividend Distribution (Rp)',
+              text19: 'Close',
+            }
           }
         }
       }

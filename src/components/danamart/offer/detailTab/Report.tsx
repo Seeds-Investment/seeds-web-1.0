@@ -5,6 +5,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from 'next/image';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FaRegEye } from "react-icons/fa";
 import { toast } from "react-toastify";
 import ModalDetailReport from "../ModalDetailReport";
@@ -15,6 +16,8 @@ interface Props {
 
 const Report: React.FC<Props> = ({ activeTab }) => {
   const router = useRouter();
+  const { t } = useTranslation();
+  const pathTranslation = 'danamart.offers.detail.tab.report'
   const id = Array.isArray(router.query.id) ? router.query.id[0] : router.query.id;
   const [reportData, setReportData] = useState<ReportI[]>([]);
   const [entries, setEntries] = useState<number>(7);
@@ -57,7 +60,7 @@ const Report: React.FC<Props> = ({ activeTab }) => {
             id="search"
             type="text"
             name="search"
-            placeholder="Search"
+            placeholder={`${t(`${pathTranslation}.filter.text7`)}`}
             className="block w-full md:max-w-[200px] text-[#262626] text-sm h-10 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-2 pl-4 rounded-full border border-[#BDBDBD]"
           />
           {
@@ -78,26 +81,26 @@ const Report: React.FC<Props> = ({ activeTab }) => {
           }}
           className="w-full md:max-w-[250px] border rounded-full p-2 cursor-pointer"
         >
-          <option value={7}>Show 7 entries</option>
-          <option value={10}>Show 10 entries</option>
-          <option value={25}>Show 25 entries</option>
-          <option value={50}>Show 50 entries</option>
-          <option value={75}>Show 75 entries</option>
-          <option value={100}>Show 100 entries</option>
+          <option value={7}>{t(`${pathTranslation}.filter.text1`)}</option>
+          <option value={10}>{t(`${pathTranslation}.filter.text2`)}</option>
+          <option value={25}>{t(`${pathTranslation}.filter.text3`)}</option>
+          <option value={50}>{t(`${pathTranslation}.filter.text4`)}</option>
+          <option value={75}>{t(`${pathTranslation}.filter.text5`)}</option>
+          <option value={100}>{t(`${pathTranslation}.filter.text6`)}</option>
         </select>
       </div>
       <div className="w-full p-4 rounded-lg shadow-lg font-poppins text-sm">
         <table className="min-w-full border border-gray-300 rounded-md">
           <thead>
             <tr className="bg-gray-100">
-              <th className="text-left p-2 border-b border-gray-300">Report Date</th>
-              <th className="text-left p-2 border-b border-gray-300">Report Type</th>
+              <th className="text-left p-2 border-b border-gray-300">{t(`${pathTranslation}.table.text1`)}</th>
+              <th className="text-left p-2 border-b border-gray-300">{t(`${pathTranslation}.table.text2`)}</th>
               <th className="text-left p-2 border-b border-gray-300"></th>
             </tr>
           </thead>
           <tbody>
             {paginatedData?.length > 0 ? (
-              paginatedData.map((report, index) => (
+              paginatedData?.map((report, index) => (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="p-2 border-b border-gray-300">{report.tglLaporan}</td>
                   <td className="p-2 border-b border-gray-300">{report.jenisLaporan}</td>
@@ -117,7 +120,7 @@ const Report: React.FC<Props> = ({ activeTab }) => {
             ) : (
               <tr>
                 <td colSpan={3} className="p-4 text-center text-gray-500">
-                  No reports found.
+                  {t(`${pathTranslation}.table.text3`)}
                 </td>
               </tr>
             )}
@@ -125,7 +128,7 @@ const Report: React.FC<Props> = ({ activeTab }) => {
         </table>
         <div className="flex justify-between items-center mt-4">
           <span>
-            Showing {startIndex + 1} to {(startIndex + entries) < filteredData.length ? startIndex + entries : filteredData.length} of {filteredData.length} entries
+            {t(`${pathTranslation}.table.text4`)} {startIndex + 1} {t(`${pathTranslation}.table.text5`)} {(startIndex + entries) < filteredData.length ? startIndex + entries : filteredData.length} {t(`${pathTranslation}.table.text6`)} {filteredData.length} {t(`${pathTranslation}.table.text7`)}
           </span>
           <div className="flex justify-center items-center gap-2">
             <button

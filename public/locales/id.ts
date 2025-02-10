@@ -3318,6 +3318,48 @@ export default {
           },
           factsheet: {
             text1: 'Dokumen tidak ada',
+          },
+          report: {
+            filter: {
+              text1: 'Tampilkan 7 entri',
+              text2: 'Tampilkan 10 entri',
+              text3: 'Tampilkan 25 entri',
+              text4: 'Tampilkan 50 entri',
+              text5: 'Tampilkan 75 entri',
+              text6: 'Tampilkan 100 entri',
+              text7: 'Cari...'
+            },
+            table: {
+              text1: 'Tanggal Laporan',
+              text2: 'Jenis Laporan',
+              text3: 'Tidak ada laporan yang ditemukan.',
+              text4: 'Menampilkan',
+              text5: 'hingga',
+              text6: 'dari',
+              text7: 'entri',
+            },
+            modalDetail: {
+              title: 'Detail Laporan',
+              text1: 'Jenis Laporan',
+              text2: 'Perkembangan Proyek',
+              text3: 'Jenis',
+              text4: 'Download',
+              text5: 'Lihat',
+              text6: 'Isi Laporan',
+              text7: 'File',
+              text8: 'Realisasi Penggunaan Data',
+              text9: 'Laporan Perubahan Ekuitas',
+              text10: 'Laporan Neraca',
+              text11: 'Catatan Atas Laporan Keuangan',
+              text12: 'Laporan Laba/Rugi',
+              text13: 'Nama Anggota Direksi',
+              text14: 'Laporan Arus Kas',
+              text15: 'Nama Anggota Dewan Komisaris',
+              text16: 'Laporan Hasil RUPS',
+              text17: 'Rencana Tanggal Pembagian Dividen',
+              text18: 'Jumlah Pembagian Dividen (Rp)',
+              text19: 'Tutup',
+            }
           }
         }
       }

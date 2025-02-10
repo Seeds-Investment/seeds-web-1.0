@@ -1,7 +1,7 @@
 import Backward from '@/assets/auth/Backward.svg';
 import Info from '@/assets/auth/Info.png';
 import SeedyLock from '@/assets/auth/SeedyLock.png';
-import AuthPassword from '@/components/auth/AuthPassword';
+import AuthPassword from '@/components/auth2/AuthPassword';
 import { changePassword, forgotPassword } from '@/repository/auth.repository';
 import { useAppSelector } from '@/store/redux/store';
 import { Button, Typography } from '@material-tailwind/react';
@@ -95,7 +95,7 @@ const PasswordForm: React.FC<IPasswordForm> = ({
           <div className="w-full">
             <AuthPassword
               handleChange={handleOldPass}
-              formData={formData.oldPassword}
+              value={formData.oldPassword}
               error={errorOldPass}
               name="oldPassword"
               label={t(
@@ -123,7 +123,7 @@ const PasswordForm: React.FC<IPasswordForm> = ({
           <div className="w-full">
             <AuthPassword
               handleChange={handlePass}
-              formData={formData.password}
+              value={formData.password}
               error={errorPass}
               name="password"
               label={t(
@@ -154,7 +154,7 @@ const PasswordForm: React.FC<IPasswordForm> = ({
           <div className="w-full">
             <AuthPassword
               handleChange={handlePass}
-              formData={formData.password}
+              value={formData.password}
               error={errorPass}
               name="password"
               label={t(
@@ -176,7 +176,7 @@ const PasswordForm: React.FC<IPasswordForm> = ({
           <div className="w-full">
             <AuthPassword
               handleChange={handleRepass}
-              formData={repass.repass}
+              value={repass.repass}
               error={errorRepass}
               name="repass"
               label={t(

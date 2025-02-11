@@ -4,6 +4,7 @@ export interface OTPDataI {
   phoneNumber: string;
   method: string;
   otp: string;
+  pinId?: string;
   name?: string;
   token?: string;
 }

@@ -93,7 +93,13 @@ const AuthVerification: React.FC<AuthVerificationI> = ({
     const response = await checkPhoneNumber(formattedData.phoneNumber);
     if (response === undefined && passTest) {
       setGuest('register');
-      await handleGetOTP(method, setCountdown, setSelect, formattedData);
+      await handleGetOTP(
+        method,
+        setCountdown,
+        setSelect,
+        formattedData,
+        setOTPForm
+      );
     }
   };
 
@@ -111,7 +117,13 @@ const AuthVerification: React.FC<AuthVerificationI> = ({
       }
       if (response.is_need_set_password === true && passTest) {
         setGuest('guest-normal-register');
-        await handleGetOTP(method, setCountdown, setSelect, formattedData);
+        await handleGetOTP(
+          method,
+          setCountdown,
+          setSelect,
+          formattedData,
+          setOTPForm
+        );
         await forgotPassword({
           phoneNumber: formattedData.phoneNumber,
           oldPassword: formData.password,

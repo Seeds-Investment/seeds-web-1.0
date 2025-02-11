@@ -373,7 +373,7 @@ const SeedsPlan: React.FC = () => {
                 <div className="col-span-2 w-full rounded-none px-2 pb-4 to-[#536D7FCC] md:rounded-xl bg-gradient-to-b from-[#9ec849] py-4">
                   <div className="md:mt-4 flex flex-row gap-2 items-center mb-4 w-full">
                     <div className="rounded-3xl bg-white w-full">
-                      {packagePlanList.map(item => (
+                      {packagePlanList?.map(item => (
                         <button
                           key={item.name}
                           className={`text-sm md:text-base md:p-3 p-2 font-poppins w-4/12 rounded-full duration-100 ${

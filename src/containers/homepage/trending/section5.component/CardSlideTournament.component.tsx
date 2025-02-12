@@ -143,7 +143,7 @@ export const CardSlideTournament: React.FC<props> = ({
                         floated={false}
                         shadow={false}
                         color="transparent"
-                        className="m-0 p-0 w-auto h-32 rounded-t-[13.37px] lg:rounded-t-[13.37px] rounded-b-none"
+                        className="m-0 p-0 w-auto h-32 rounded rounded-t-[18px] rounded-b-none"
                       >
                         <Image
                           src={

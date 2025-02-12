@@ -70,15 +70,16 @@ const CardBannerPromotion: React.FC<BannerProps> = ({ data }) => {
   };
   const router = useRouter();
   const breakpoints = {
-    1280: { slidesPerView: 3 },
-    720: { slidesPerView: 3 },
-    480: { slidesPerView: 3 },
-    320: { slidesPerView: 1, centeredSlide: true }
+    1280: { slidesPerView: 4 },
+    1024: { slidesPerView: 3 },
+    768: { slidesPerView: 2 },
+    480: { slidesPerView: 1.5 },
+    320: { slidesPerView: 1, centeredSlides: true }
   };
   return (
     <div className="flex flex-col items-center justify-center w-full gap-2">
       <Swiper
-        className="flex flex-row w-full gap-4 h-auto"
+        className="flex flex-row w-full h-auto"
         loop={true}
         slidesPerView={3}
         autoplay={{ delay: 1000 }}
@@ -90,19 +91,21 @@ const CardBannerPromotion: React.FC<BannerProps> = ({ data }) => {
       >
         {data?.map((item, idx: number) => (
           <SwiperSlide key={idx}>
-            <div className="w-full flex flex-row justify-center">
-              <Card className="md:w-80 w-full rounded-[10px] md:h-32 h-36">
+            <div className="w-full flex flex-row justify-center p-2">
+              <Card className="md:w-80 w-full rounded-[10px] h-fit">
                 <CardHeader floated={false} className="p-0 m-0">
-                  <Image
-                    onClick={async () => {
-                      await router.push(`${item.external_url}`);
-                    }}
-                    src={item.image_url}
-                    alt={item.name}
-                    className="w-full h-64"
-                    width={300}
-                    height={300}
-                  />
+                  <div className="relative w-full aspect-[1430/676] overflow-hidden cursor-pointer">
+                    <Image
+                      onClick={async () => {
+                        await router.push(`${item.external_url}`);
+                      }}
+                      src={item.image_url}
+                      alt={item.name}
+                      className="absolute top-0 left-0 w-full h-full object-cover"
+                      width={1430}
+                      height={676}
+                    />
+                  </div>
                 </CardHeader>
               </Card>
             </div>

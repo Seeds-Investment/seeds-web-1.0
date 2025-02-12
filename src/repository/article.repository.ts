@@ -23,6 +23,30 @@ export const getArticle = async (params: {
     return error.response;
   }
 };
+
+export const getArticleWithAuth = async (params: {
+  page: number;
+  limit: number;
+  search: string;
+  language: string;
+  source: string;
+  category: string;
+}): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await articleService.get('/news/v1/all', {
+      params,
+      headers: {
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
 export const getArticleHome = async (params: {
   page: number;
   limit: number;

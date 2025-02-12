@@ -1,30 +1,16 @@
 'use-client';
-import { getArticleByIdHome, postLike } from '@/repository/article.repository';
+import { type Article } from '@/containers/homepage/news/NewsPage';
+import { postLike } from '@/repository/article.repository';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 interface ArticleCardProps {
-  articleId: string;
-}
-
-interface ArticleDetail {
-  id: number;
-  title: string;
-  author: string;
-  link: string;
-  videoUrl: string;
-  imageUrl: string;
-  content: string;
-  sourceId: string;
-  language: string;
-  category: string;
-  publicationDate: string;
-  total_likes: number;
-  total_comments: number;
-  total_shares: number;
-  is_liked: boolean;
+  articles: Article;
+  articleId: number;
+  setIsRefetch: React.Dispatch<React.SetStateAction<boolean>>;
+  isRefetch: boolean;
 }
 
 interface FormRequestInterface {
@@ -35,10 +21,12 @@ const initialFormRequest = {
   comment: ''
 };
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
-  const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
-    null
-  );
+const ArticleCard: React.FC<ArticleCardProps> = ({
+  articles,
+  articleId,
+  setIsRefetch,
+  isRefetch
+}) => {
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
   const [open, setOpen] = useState(false);
@@ -50,7 +38,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
     return (tempElement.textContent ?? tempElement.innerText ?? '').toString();
   };
 
-  const cleanedContent = stripHtmlTags(articleDetail?.content ?? '');
+  const cleanedContent = stripHtmlTags(articles?.content ?? '');
 
   function LimitString({
     text,
@@ -75,51 +63,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
     );
   }
 
-  useEffect(() => {
-    if (typeof articleId !== 'string') {
-      // Check if articleId is a valid non-empty string
-      const fetchArticleDetail = (): void => {
-        getArticleByIdHome(articleId)
-          .then(response => {
-            if (response.status === 200) {
-              setArticleDetail(response.news);
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching article detail:', error);
-          });
-      };
-      fetchArticleDetail();
-    }
-  }, [articleId]);
-
   const likeArticle = async (articleId: number): Promise<void> => {
     try {
       const response = await postLike(formRequest, articleId);
       if (response.status === 200) {
-        if (response.is_liked === true) {
-          setArticleDetail(prevArticleDetail => {
-            if (prevArticleDetail !== null) {
-              return {
-                ...prevArticleDetail,
-                total_likes: prevArticleDetail?.total_likes + 1,
-                is_liked: true
-              };
-            }
-            return prevArticleDetail;
-          });
-        } else {
-          setArticleDetail(prevArticleDetail => {
-            if (prevArticleDetail !== null) {
-              return {
-                ...prevArticleDetail,
-                total_likes: prevArticleDetail?.total_likes - 1,
-                is_liked: false
-              };
-            }
-            return prevArticleDetail;
-          });
-        }
+        setIsRefetch(!isRefetch)
       }
     } catch (error) {
       console.log(error);
@@ -180,7 +128,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
   }
 
   const defaultNews = '/assets/default-news.png';
-  const imageUrl = articleDetail?.imageUrl ?? defaultNews;
+  const imageUrl = articles?.imageUrl ?? defaultNews;
   const isImageValid = isImageUrlValid(imageUrl);
   return (
     <>
@@ -200,30 +148,30 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
       <div className="bg-[#FFF]  flex lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
         <div className="px-4 pb-3 w-3/4">
           <h1 className="text-base font-semibold text-[#000] my-4">
-            {articleDetail?.title !== undefined &&
-            articleDetail.title.length > 45
-              ? `${articleDetail.title.slice(0, 45)}...`
-              : articleDetail?.title}
+            {articles?.title !== undefined &&
+            articles.title.length > 45
+              ? `${articles.title.slice(0, 45)}...`
+              : articles?.title}
           </h1>
           <Link
             className="text-sm"
-            href={`/homepage/articles/${articleDetail?.id ?? 0}`}
+            href={`/homepage/articles/${articles?.id ?? 0}`}
           >
             <LimitString text={cleanedContent} limit={80} />
           </Link>
         </div>
         <div className="lg:px-4 lg:py-4 py-3 px-1 flex flex-col ">
-          <Link href={`/homepage/articles/${articleDetail?.id ?? 0}`}>
+          <Link href={`/homepage/articles/${articles?.id ?? 0}`}>
             {isImageValid ? (
               <img
                 src={imageUrl}
-                alt={articleDetail?.title}
+                alt={articles?.title}
                 className="w-[153px] object-cover h-[160px] rounded-[18px]"
               />
             ) : (
               <img
                 src={defaultNews}
-                alt={articleDetail?.title}
+                alt={articles?.title}
                 className="w-[153px] object-cover h-[160px] rounded-[18px]"
               />
             )}
@@ -231,18 +179,18 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
           <div className="flex flex-row justify-between mt-4 bottom-2 w-full gap-4 right-5 absolute">
             <div className="flex flex-row ms-7 justify-between">
               <p className="text-xs font-normal text-[#8A8A8A]">
-                {formatDateToIndonesian(articleDetail?.publicationDate ?? '')}
+                {formatDateToIndonesian(articles?.publicationDate ?? '')}
               </p>
               <p className="text-xs font-normal text-[#7C7C7C]">
                 {formatDateToIndonesianAgo(
-                  articleDetail?.publicationDate ?? ''
+                  articles?.publicationDate ?? ''
                 )}
               </p>
             </div>
             <div className="flex flex-row gap-2">
               <div className="flex flex-row gap-1">
-                {articleDetail?.is_liked !== undefined &&
-                articleDetail.is_liked ? (
+                {articles?.is_liked !== undefined &&
+                articles.is_liked ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="25"
@@ -251,7 +199,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
                     fill="#3AC4A0"
                     className="cursor-pointer"
                     onClick={async () => {
-                      await likeArticle(articleDetail?.id ?? 0);
+                      await likeArticle(articleId);
                     }}
                   >
                     <path
@@ -270,7 +218,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
                     fill="none"
                     className="cursor-pointer"
                     onClick={async () => {
-                      await likeArticle(articleDetail?.id ?? 0);
+                      await likeArticle(articleId);
                     }}
                   >
                     <path
@@ -282,26 +230,9 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
                   </svg>
                 )}
                 <span className="mx-2 text-[#3AC4A0]">
-                  {articleDetail?.total_likes}
+                  {articles?.total_likes}
                 </span>
               </div>
-              {/* <div className="flex flex-row gap-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="25"
-                height="25"
-                viewBox="0 0 25 25"
-                fill="none"
-              >
-                <path
-                  d="M21.0029 11.5779C21.0064 12.8978 20.698 14.1998 20.1029 15.3779C19.3974 16.7897 18.3127 17.9771 16.9704 18.8072C15.6281 19.6373 14.0812 20.0773 12.5029 20.0779C11.1831 20.0814 9.88104 19.773 8.70293 19.1779L3.00293 21.0779L4.90293 15.3779C4.30786 14.1998 3.99949 12.8978 4.00293 11.5779C4.00354 9.99967 4.44354 8.45276 5.27365 7.11046C6.10376 5.76816 7.29118 4.68348 8.70293 3.97791C9.88104 3.38284 11.1831 3.07447 12.5029 3.07791H13.0029C15.0873 3.1929 17.056 4.07267 18.5321 5.54877C20.0082 7.02487 20.8879 8.99356 21.0029 11.0779V11.5779Z"
-                  stroke="#262626"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span>{articleDetail?.total_comments}</span>
-            </div> */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="25"
@@ -310,7 +241,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
                 fill="none"
                 className="cursor-pointer"
                 onClick={() => {
-                  copyValueWithUrl(articleDetail?.id ?? 0);
+                  copyValueWithUrl(articleId);
                 }}
               >
                 <path

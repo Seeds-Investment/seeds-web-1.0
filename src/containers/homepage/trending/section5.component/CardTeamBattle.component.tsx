@@ -90,7 +90,7 @@ const CardTeamBattle: React.FC<props> = ({ data, loading = true }) => {
           speed={1000}
           loop={true}
           slidesPerView={3}
-          centeredSlides={true}
+          centeredSlides={false}
           className="w-full !flex !flex-col gap-3"
           draggable={true}
           modules={[Autoplay]}
@@ -100,10 +100,10 @@ const CardTeamBattle: React.FC<props> = ({ data, loading = true }) => {
           {data?.length >= 0 && data?.length !== null ? (
             data?.map((item, idx: number) => (
               <SwiperSlide key={idx}>
-                <Card key={idx} shadow={false} className="md:w-80 w-full">
+                <Card key={idx} shadow={false} className="md:w-80 w-full h-full bg-gradient-to-br from-[#106B6E] to-[#553BB8] rounded-t-[18px] rounded-b-none">
                   <CardHeader
                     floated={false}
-                    className="p-0 flex w-full border-none justify-center m-0 rounded-t-[25px] rounded-b-none"
+                    className="p-0 flex w-full border-none justify-center m-0 rounded-t-[18px] rounded-b-none"
                   >
                     <Image
                       src={
@@ -112,8 +112,8 @@ const CardTeamBattle: React.FC<props> = ({ data, loading = true }) => {
                           : 'https://dev-assets.seeds.finance/storage/cloud/0ac00be5-98a3-40cf-b1c7-22d88a4affde.png'
                       }
                       alt={item.banner}
-                      width={250}
-                      height={30}
+                      width={1000}
+                      height={1000}
                       className="w-full"
                     />
                   </CardHeader>

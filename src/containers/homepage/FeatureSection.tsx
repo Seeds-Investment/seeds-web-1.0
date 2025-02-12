@@ -28,7 +28,7 @@ const features = [
   {
     images: Referral,
     title: 'Referral',
-    event: 'under construction'
+    event: ''
   },
   {
     images: MyEarningWallet,

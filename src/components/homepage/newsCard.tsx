@@ -1,53 +1,15 @@
 'use-client';
-import { getArticleById } from '@/repository/article.repository';
+import { type Article } from '@/containers/homepage/news/NewsPage';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 interface ArticleCardProps {
-  articleId: string;
+  articles: Article;
 }
 
-interface ArticleDetail {
-  id: number;
-  title: string;
-  author: string;
-  link: string;
-  videoUrl: string;
-  imageUrl: string;
-  content: string;
-  sourceId: string;
-  language: string;
-  category: string;
-  publicationDate: string;
-  total_likes: number;
-  total_comments: number;
-  total_shares: number;
-  is_liked: boolean;
-}
-
-const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
-  const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
-    null
-  );
+const NewsCard: React.FC<ArticleCardProps> = ({ articles }) => {
   const [open] = useState(false);
-
-  useEffect(() => {
-    if (typeof articleId !== 'string') {
-      const fetchArticleDetail = (): void => {
-        getArticleById(articleId)
-          .then(response => {
-            if (response.status === 200) {
-              setArticleDetail(response.news);
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching article detail:', error);
-          });
-      };
-      fetchArticleDetail();
-    }
-  }, [articleId]);
 
   function isImageUrlValid(url: string): boolean {
     return url?.startsWith('http://') || url?.startsWith('https://');
@@ -77,7 +39,7 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
   }
 
   const defaultNews = '/assets/default-news.png';
-  const imageUrl = articleDetail?.imageUrl ?? defaultNews;
+  const imageUrl = articles?.imageUrl ?? defaultNews;
   const isImageValid = isImageUrlValid(imageUrl);
   return (
     <>
@@ -99,36 +61,36 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
           <div className="flex flex-row justify-between">
           </div>
           <Link
-            href={`/homepage/news/${articleDetail?.id ?? 0}`}
+            href={`/homepage/news/${articles?.id ?? 0}`}
             className="text-base font-semibold text-[#000] my-4"
           >
-            {articleDetail?.title}
+            {articles?.title}
           </Link>
           <div className="flex flex-row justify-between bottom-2 w-full gap-4 right-5 absolute">
             <div className="flex flex-row ms-7 justify-between">
               <p className="text-xs font-normal text-[#8A8A8A]">
-                {formatDateToIndonesian(articleDetail?.publicationDate ?? '')}
+                {formatDateToIndonesian(articles?.publicationDate ?? '')}
               </p>
               <p className="text-xs font-normal text-[#7C7C7C]">
                 {formatDateToIndonesianAgo(
-                  articleDetail?.publicationDate ?? ''
+                  articles?.publicationDate ?? ''
                 )}
               </p>
             </div>
           </div>
         </div>
         <div className="lg:px-4 lg:py-4 py-3 px-1 flex flex-col ">
-          <Link href={`/homepage/news/${articleDetail?.id ?? 0}`}>
+          <Link href={`/homepage/news/${articles?.id ?? 0}`}>
             {isImageValid ? (
               <img
                 src={imageUrl}
-                alt={articleDetail?.title}
+                alt={articles?.title}
                 className="w-[153px] object-cover h-[160px] rounded-[18px]"
               />
             ) : (
               <img
                 src={defaultNews}
-                alt={articleDetail?.title}
+                alt={articles?.title}
                 className="w-[153px] object-cover h-[160px] rounded-[18px]"
               />
             )}

@@ -40,6 +40,7 @@ export default function ArticleList(): React.ReactElement {
   const [articles, setArticles] = useState<Article[]>([]);
   const [searchInput, setSearchInput] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  const [isRefetch, setIsRefetch] = useState<boolean>(false);
 
   const [params, setParams] = useState({
     page: 1,
@@ -59,7 +60,7 @@ export default function ArticleList(): React.ReactElement {
     }));
   }, [languageCtx.language]);
 
-  async function fetchArticles(): Promise<void> {
+  const fetchArticles = async (): Promise<void> => {
     try {
       const response = await getArticleHome({
         ...params,
@@ -100,7 +101,7 @@ export default function ArticleList(): React.ReactElement {
     fetchData().catch(error => {
       toast.error('Error fetching data: ', error);
     });
-  }, [params]);
+  }, [params?.language, isRefetch]);
 
   useEffect(() => {
     setParams(prevParams => ({
@@ -347,8 +348,16 @@ export default function ArticleList(): React.ReactElement {
         </button>
       </div>
       <div className="grid z-10 lg:grid-cols-4 gap-4 mt-8">
-        {articles.map(article => {
-          return <ArticleCard key={article.id} articleId={article.id} />;
+        {articles.map((article, index) => {
+          return (
+            <ArticleCard
+              key={article.id} 
+              articles={articles[index]} 
+              articleId={Number(article.id)}
+              setIsRefetch={setIsRefetch}
+              isRefetch={isRefetch}
+            />
+          )
         })}
       </div>
 

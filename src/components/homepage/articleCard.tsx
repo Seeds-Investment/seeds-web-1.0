@@ -146,22 +146,20 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
         </div>
       )}
       <div className="bg-[#FFF]  flex lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
-        <div className="px-4 pb-3 w-3/4">
+        <Link
+          href={`/homepage/articles/${articleId}`}
+          className="px-4 pb-3 w-3/4"
+        >
           <h1 className="text-base font-semibold text-[#000] my-4">
             {articles?.title !== undefined &&
             articles.title.length > 45
-              ? `${articles.title.slice(0, 45)}...`
+              ? `${articles?.title.slice(0, 45)}...`
               : articles?.title}
           </h1>
-          <Link
-            className="text-sm"
-            href={`/homepage/articles/${articles?.id ?? 0}`}
-          >
-            <LimitString text={cleanedContent} limit={80} />
-          </Link>
-        </div>
+          <LimitString text={cleanedContent} limit={80} />
+        </Link>
         <div className="lg:px-4 lg:py-4 py-3 px-1 flex flex-col ">
-          <Link href={`/homepage/articles/${articles?.id ?? 0}`}>
+          <Link href={`/homepage/articles/${articleId}`}>
             {isImageValid ? (
               <img
                 src={imageUrl}
@@ -190,7 +188,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             <div className="flex flex-row gap-2">
               <div className="flex flex-row gap-1">
                 {articles?.is_liked !== undefined &&
-                articles.is_liked ? (
+                articles?.is_liked ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="25"

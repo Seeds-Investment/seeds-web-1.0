@@ -107,18 +107,6 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
     return url?.startsWith('http://') || url?.startsWith('https://');
   }
 
-  // function formatDateToIndonesian(dateStr: string): string {
-  //   try {
-  //     const parsedDate = parseISO(dateStr);
-  //     const formattedDate = format(parsedDate, 'd MMMM yyyy', { locale: id }); // id adalah kode bahasa Indonesia
-
-  //     return formattedDate;
-  //   } catch (error) {
-  //     console.error('Error parsing or formatting date:', error);
-  //     return ''; // Mengembalikan string kosong jika terjadi kesalahan
-  //   }
-  // }
-
   function copyValueWithUrl(valueToCopy: number): boolean {
     const textToCopy = `${baseUrl}/article/${valueToCopy}`;
 

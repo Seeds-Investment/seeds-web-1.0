@@ -460,8 +460,13 @@ export default function ArticleList(): React.ReactElement {
         </Slider>
 
         <div className="grid z-10 lg:grid-cols-4 gap-4 mt-8">
-          {articles.map(article => {
-            return <NewsCard key={article.id} articleId={article.id} />;
+          {articles?.map((article, index) => {
+            return (
+              <NewsCard
+                key={article.id}
+                articles={articles[index]}
+              />
+            )
           })}
         </div>
         <div className="hidden lg:flex  justify-center mx-auto my-8">

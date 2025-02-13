@@ -31,6 +31,13 @@ const DailyQuestion: React.FC<props> = ({
   const options = ['A', 'B', 'C', 'D'];
   const { id } = useAppSelector(state => state.user.dataUser);
   const { t } = useTranslation();
+  function shuffleArray(array: number[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); // Pilih index random
+      [array[i], array[j]] = [array[j], array[i]]; // Swap elemen
+    }
+    return array;
+  }
 
   const handleClickOption = async (answerId: number): Promise<void> => {
     try {
@@ -102,10 +109,10 @@ const DailyQuestion: React.FC<props> = ({
             </p>
           </div>
         </div>
-        {Array.from([1, 2, 3, 4]).map((el, i) => {
+        {Array.from(shuffleArray([1, 2, 3, 4])).map((el, i) => {
           return (
             data?.data.daily_quiz[i18n.language as 'en' | 'id'].options[
-              `option_${el}` as 'option_1'
+              `option${el}` as 'option1'
             ] !== undefined && (
               <div
                 className="p-2 border-2 hover:border-black rounded-xl text-sm cursor-pointer"
@@ -113,7 +120,7 @@ const DailyQuestion: React.FC<props> = ({
                 onClick={async () => {
                   await handleClickOption(
                     data?.data.daily_quiz[i18n.language as 'en' | 'id'].options[
-                      `option_${el}` as 'option_1'
+                      `option${el}` as 'option1'
                     ].id
                   );
                 }}
@@ -121,7 +128,7 @@ const DailyQuestion: React.FC<props> = ({
                 {options[i]}.{' '}
                 {
                   data?.data.daily_quiz[i18n.language as 'en' | 'id'].options[
-                    `option_${el}` as 'option_1'
+                    `option${el}` as 'option1'
                   ].option
                 }
               </div>
@@ -156,9 +163,9 @@ const DailyQuestion: React.FC<props> = ({
               </div>
               <p className="text-sm">
                 {t('social.dailyQuiz.answer')}:{' '}
-                {`(${options[answerRecap - 1]}) ${
+                {`${
                   data?.data.daily_quiz[i18n.language as 'en' | 'id'].options[
-                    `option_${answerRecap}` as 'option_1'
+                    `option4`
                   ].option as string
                 }`}
               </p>

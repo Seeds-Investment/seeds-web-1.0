@@ -302,7 +302,9 @@ const SuccessPaymentPage: React.FC = () => {
                       <Typography className="text-sm font-semibold text-[#262626]">
                         {orderDetail?.currency !== undefined &&
                         orderDetail?.grossAmount !== undefined
-                          ? `${orderDetail?.currency ?? 'IDR'} ${standartCurrency(
+                          ? `${
+                              orderDetail?.currency ?? 'IDR'
+                            } ${standartCurrency(
                               (orderDetail?.grossAmount ?? 0) === 0
                                 ? 0
                                 : (orderDetail?.grossAmount ?? 0) -
@@ -504,4 +506,3 @@ const SuccessPaymentPage: React.FC = () => {
 };
 
 export default withAuth(SuccessPaymentPage);
-

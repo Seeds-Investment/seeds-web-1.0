@@ -624,8 +624,7 @@ const ModalMention: React.FC<props> = ({
                           id: `${item.id as string}-quiz`
                         }))
                       );
-                    } 
-                    else if (results[4]?.data?.length > 0) {
+                    } else if (results[4]?.data?.length > 0) {
                       setOtherTagId(5);
                       setTagLists(
                         results[4].data.map((item: any) => ({
@@ -933,10 +932,10 @@ const ModalMention: React.FC<props> = ({
       applyCustomStyle();
     }
   }, [open, pages]);
-  
+
   useEffect(() => {
-    setTagLists([])
-    setLastWordsWithSymbol('')
+    setTagLists([]);
+    setLastWordsWithSymbol('');
   }, [handleOpen]);
 
   const renderAvatar = (imageUrl: string): JSX.Element => {
@@ -1013,7 +1012,9 @@ const ModalMention: React.FC<props> = ({
             {tagLists?.map((el: any, i: number) => {
               if (
                 el?.tag === undefined &&
-                el?.name?.toLowerCase()?.includes(lastWordWithChar.split('@')[1]) === true
+                el?.name
+                  ?.toLowerCase()
+                  ?.includes(lastWordWithChar.split('@')[1]) === true
               ) {
                 return (
                   <div
@@ -1092,7 +1093,9 @@ const ModalMention: React.FC<props> = ({
                 );
               } else if (
                 el?.tag === undefined &&
-                el?.title?.toLowerCase()?.includes(lastWordWithChar.split('@')[1]) === true
+                el?.title
+                  ?.toLowerCase()
+                  ?.includes(lastWordWithChar.split('@')[1]) === true
               ) {
                 return (
                   <div
@@ -1140,7 +1143,10 @@ const ModalMention: React.FC<props> = ({
                           {el?.title}
                         </Typography>
                         <Typography className="font-poppins text-neutral-soft text-base font-normal">
-                          {el?.participants} {el?.participants > 1 ? t('social.postSection.players') : t('social.postSection.player')}
+                          {el?.participants}{' '}
+                          {el?.participants > 1
+                            ? t('social.postSection.players')
+                            : t('social.postSection.player')}
                         </Typography>
                       </div>
                     ) : null}
@@ -1211,7 +1217,10 @@ const ModalMention: React.FC<props> = ({
                           {el?.name}
                         </Typography>
                         <Typography className="font-poppins text-neutral-soft text-base font-normal">
-                          {el?.participants} {el?.participants > 1 ? t('social.postSection.players') : t('social.postSection.player')}
+                          {el?.participants}{' '}
+                          {el?.participants > 1
+                            ? t('social.postSection.players')
+                            : t('social.postSection.player')}
                         </Typography>
                       </div>
                     ) : null}

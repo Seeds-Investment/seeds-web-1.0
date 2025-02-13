@@ -57,7 +57,7 @@ const PlayAssetsList: React.FC<Props> = ({
     const dataInfo = await getUserInfo();
     setUserInfo(dataInfo);
   };
-  
+
   useEffect(() => {
     fetchData()
       .then()
@@ -76,107 +76,108 @@ const PlayAssetsList: React.FC<Props> = ({
     <>
       <div className="w-full flex flex-col justify-center items-center rounded-xl font-poppins bg-white">
         <div className="flex flex-col w-full">
-          {
-            assets !== null ?
-              assets?.map((asset, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between w-full items-center p-2 md:p-4 mt-4 bg-[#F9F9F9] border border-[#E9E9E9] md:border-none rounded-lg"
-                  onClick={() => {
-                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                    router.push(`/play/tournament/${id}/${asset.id}`);
-                  }}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div className="flex gap-4">
-                    <div className='flex justify-center items-center w-[40px] h-auto'>
-                      <img
-                        alt=""
-                        src={asset.logo}
-                        className="w-[35px] h-auto"
-                        width={100}
-                        height={100}
-                      />
-                    </div>
-                    <div className="flex flex-col justify-center items-start">
-                      <div className="flex justify-start items-center gap-1">
-                        <Typography className="text-sm md:text-lg text-black font-poppins font-semibold">
-                          {asset.seedsTicker} /
-                        </Typography>
-                        {asset?.assetType !== 'FOREX' ? (
-                          <Typography className="font-normal ml-1 text-sm md:text-lg text-[#262626]">
-                            {asset?.assetType === 'CRYPTO' && 'B'}
-                            {userInfo?.preferredCurrency}
-                          </Typography>
-                        ) : null}
-                      </div>
-                      <Typography className="text-sm md:text-lg text-[#7C7C7C] font-poppins">
-                        {asset.name}
-                      </Typography>
-                    </div>
+          {assets !== null ? (
+            assets?.map((asset, index) => (
+              <div
+                key={index}
+                className="flex justify-between w-full items-center p-2 md:p-4 mt-4 bg-[#F9F9F9] border border-[#E9E9E9] md:border-none rounded-lg"
+                onClick={() => {
+                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                  router.push(`/play/tournament/${id}/${asset.id}`);
+                }}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="flex gap-4">
+                  <div className="flex justify-center items-center w-[40px] h-auto">
+                    <img
+                      alt=""
+                      src={asset.logo}
+                      className="w-[35px] h-auto"
+                      width={100}
+                      height={100}
+                    />
                   </div>
-                  <div className="ml-auto flex flex-col gap-0.5">
-                    <div className="flex justify-end">
-                      <Typography className="font-semibold text-sm text-[#262626]">
-                        {userInfo?.preferredCurrency}{' '}
-                        {asset.priceBar.close > 0.01
-                          ? new Intl.NumberFormat().format(asset.priceBar.close)
-                          : asset.priceBar.close}
+                  <div className="flex flex-col justify-center items-start">
+                    <div className="flex justify-start items-center gap-1">
+                      <Typography className="text-sm md:text-lg text-black font-poppins font-semibold">
+                        {asset.seedsTicker} /
                       </Typography>
+                      {asset?.assetType !== 'FOREX' ? (
+                        <Typography className="font-normal ml-1 text-sm md:text-lg text-[#262626]">
+                          {asset?.assetType === 'CRYPTO' && 'B'}
+                          {userInfo?.preferredCurrency}
+                        </Typography>
+                      ) : null}
                     </div>
-                    <div className="flex justify-end">
-                      <Typography
-                        className={`flex font-normal text-sm ${
-                          handleArrow(
-                            calculatePercentageDifference(
-                              asset?.priceBar?.open,
-                              asset?.priceBar?.close
-                            ).value
-                          )
-                            ? 'text-[#3AC4A0]'
-                            : 'text-red-500'
-                        }`}
-                      >
-                        {handleArrow(
+                    <Typography className="text-sm md:text-lg text-[#7C7C7C] font-poppins">
+                      {asset.name}
+                    </Typography>
+                  </div>
+                </div>
+                <div className="ml-auto flex flex-col gap-0.5">
+                  <div className="flex justify-end">
+                    <Typography className="font-semibold text-sm text-[#262626]">
+                      {userInfo?.preferredCurrency}{' '}
+                      {asset.priceBar.close > 0.01
+                        ? new Intl.NumberFormat().format(asset.priceBar.close)
+                        : asset.priceBar.close}
+                    </Typography>
+                  </div>
+                  <div className="flex justify-end">
+                    <Typography
+                      className={`flex font-normal text-sm ${
+                        handleArrow(
                           calculatePercentageDifference(
                             asset?.priceBar?.open,
                             asset?.priceBar?.close
                           ).value
-                        ) ? (
-                          <ArrowTrendingUpIcon
-                            height={20}
-                            width={20}
-                            className="mr-2"
-                          />
-                        ) : (
-                          <ArrowTrendingDownIcon
-                            height={20}
-                            width={20}
-                            className="mr-2"
-                          />
-                        )}
-                        (
-                        {
-                          calculatePercentageDifference(
-                            asset?.priceBar?.open,
-                            asset?.priceBar?.close
-                          )?.value
-                        }{' '}
-                        %)
-                      </Typography>
-                    </div>
+                        )
+                          ? 'text-[#3AC4A0]'
+                          : 'text-red-500'
+                      }`}
+                    >
+                      {handleArrow(
+                        calculatePercentageDifference(
+                          asset?.priceBar?.open,
+                          asset?.priceBar?.close
+                        ).value
+                      ) ? (
+                        <ArrowTrendingUpIcon
+                          height={20}
+                          width={20}
+                          className="mr-2"
+                        />
+                      ) : (
+                        <ArrowTrendingDownIcon
+                          height={20}
+                          width={20}
+                          className="mr-2"
+                        />
+                      )}
+                      (
+                      {
+                        calculatePercentageDifference(
+                          asset?.priceBar?.open,
+                          asset?.priceBar?.close
+                        )?.value
+                      }{' '}
+                      %)
+                    </Typography>
                   </div>
                 </div>
-              ))
-          :
+              </div>
+            ))
+          ) : (
             <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
               <Image alt="" src={IconNoData} className="w-[250px]" />
               <p className="font-semibold text-black">
                 {t('tournament.assets.noAsset')}
               </p>
-              <p className="text-[#7C7C7C] mb-8">{t('tournament.assets.noAssetMessage')}</p>
+              <p className="text-[#7C7C7C] mb-8">
+                {t('tournament.assets.noAssetMessage')}
+              </p>
             </div>
-          }
+          )}
         </div>
       </div>
     </>

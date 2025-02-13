@@ -3,7 +3,10 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
-import { type PlanI, type UserInfo } from '@/utils/interfaces/subscription.interface';
+import {
+  type PlanI,
+  type UserInfo
+} from '@/utils/interfaces/subscription.interface';
 import { Input, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -64,14 +67,16 @@ const WalletForm = ({
       _discount = coinsDiscount > 0 ? coinsDiscount : 0;
     }
 
-    _admissionFee = dataPlan?.is_promo ? (dataPlan?.price_after_promo ?? 0) : (dataPlan?.price ?? 0)
+    _admissionFee = dataPlan?.is_promo
+      ? dataPlan?.price_after_promo ?? 0
+      : dataPlan?.price ?? 0;
     _adminFee = payment.admin_fee;
     _totalFee = parseFloat(
       `${(
-        Number(_admissionFee)
-        + Number(_adminFee)
-        + Number(payment.service_fee)
-        - Number(_discount)
+        Number(_admissionFee) +
+        Number(_adminFee) +
+        Number(payment.service_fee) -
+        Number(_discount)
       ).toFixed(2)}`
     );
 
@@ -129,40 +134,36 @@ const WalletForm = ({
       {renderPhoneInput()}
       <InlineText
         label={t(`${translationId}.admissionFeeLabel`)}
-        value={`${userInfo?.preferredCurrency } ${admissionFee}`}
+        value={`${userInfo?.preferredCurrency} ${admissionFee}`}
         className="mb-2"
       />
       <InlineText
         label={t(`${translationId}.serviceFeeLabel`)}
-        value={`${userInfo?.preferredCurrency } ${
-          payment.service_fee
-        }`}
+        value={`${userInfo?.preferredCurrency} ${payment.service_fee}`}
         className="mb-2"
       />
       <InlineText
         label={t(`${translationId}.adminFeeLabel`)}
-        value={`${userInfo?.preferredCurrency } ${adminFee}`}
+        value={`${userInfo?.preferredCurrency} ${adminFee}`}
         className="mb-2"
       />
       {payment.is_promo_available ? (
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`- ${userInfo?.preferredCurrency } ${
-            payment.promo_price
-          }`}
+          value={`- ${userInfo?.preferredCurrency} ${payment.promo_price}`}
           className="mb-2"
         />
       ) : null}
       {coinsDiscount > 0 && (
         <InlineText
           label={t(`${translationId}.seedsCoin`)}
-          value={`- ${userInfo?.preferredCurrency } ${coinsDiscount}`}
+          value={`- ${userInfo?.preferredCurrency} ${coinsDiscount}`}
           className="mb-2"
         />
       )}
       <hr />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right my-6">
-        {`${userInfo?.preferredCurrency } ${totalFee}`}
+        {`${userInfo?.preferredCurrency} ${totalFee}`}
       </Typography>
       <hr />
       <SubmitButton

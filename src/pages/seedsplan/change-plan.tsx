@@ -391,9 +391,7 @@ const ChangePlan: React.FC = () => {
                             await router.push('/play');
                           } else {
                             await router.push(
-                              `/seedsplan/payment?plan_id=${
-                                selectedPeriodPlan?.id
-                              }`
+                              `/seedsplan/payment?plan_id=${selectedPeriodPlan?.id}`
                             );
                           }
                         }}

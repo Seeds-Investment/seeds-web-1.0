@@ -32,4 +32,3 @@ export { default as SuccessNotif } from 'public/assets/images/SuccessNotif.png';
 export { default as Trash } from 'public/assets/images/trash.svg';
 export { default as Tree } from 'public/assets/images/tree.svg';
 export { default as Email } from 'public/assets/vector/email.svg';
-

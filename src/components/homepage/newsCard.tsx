@@ -96,8 +96,7 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
       )}
       <div className="bg-[#FFF]  flex lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
         <div className="px-4 py-3 w-3/4">
-          <div className="flex flex-row justify-between">
-          </div>
+          <div className="flex flex-row justify-between"></div>
           <Link
             href={`/homepage/news/${articleDetail?.id ?? 0}`}
             className="text-base font-semibold text-[#000] my-4"

@@ -197,7 +197,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   useEffect(() => {
     void validatePromo();
   }, [detailTournament]);
-  
+
   const validatePromo = useCallback(async (): Promise<void> => {
     if (promoCodeValidationResult) {
       if (detailTournament) {
@@ -214,7 +214,13 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
         setNewPromoCodeDiscount(response?.total_discount);
       }
     }
-  }, [promoCodeValidationResult, detailTournament, promoValidate, userInfo, setNewPromoCodeDiscount]);
+  }, [
+    promoCodeValidationResult,
+    detailTournament,
+    promoValidate,
+    userInfo,
+    setNewPromoCodeDiscount
+  ]);
 
   const getDetail = useCallback(async () => {
     try {

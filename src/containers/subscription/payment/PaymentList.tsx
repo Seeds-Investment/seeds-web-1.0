@@ -8,8 +8,15 @@ import Dialog from '@/components/ui/dialog/Dialog';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { getSubscriptionPlan, joinSubscription } from '@/repository/subscription.repository';
-import { type DataPlanI, type PaymentStatus, type PlanI } from '@/utils/interfaces/subscription.interface';
+import {
+  getSubscriptionPlan,
+  joinSubscription
+} from '@/repository/subscription.repository';
+import {
+  type DataPlanI,
+  type PaymentStatus,
+  type PlanI
+} from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -30,9 +37,9 @@ export interface Payment {
   promo_price: number;
   service_fee: number;
   payment_gateway: string;
-  is_active: boolean
-  is_priority: boolean
-  minimum_withdrawal: number
+  is_active: boolean;
+  is_priority: boolean;
+  minimum_withdrawal: number;
 }
 
 const PaymentList: React.FC = (): JSX.Element => {
@@ -86,13 +93,11 @@ const PaymentList: React.FC = (): JSX.Element => {
   const getPlanList = async (): Promise<void> => {
     try {
       const response: DataPlanI = await getSubscriptionPlan();
-      const {SILVER, GOLD, PLATINUM} = response.data
-      const mappedPlan = [
-        ...SILVER,
-        ...GOLD,
-        ...PLATINUM
-      ]
-      const selectedPlan = mappedPlan.find(plan => plan.id === selectedPeriodPlan)
+      const { SILVER, GOLD, PLATINUM } = response.data;
+      const mappedPlan = [...SILVER, ...GOLD, ...PLATINUM];
+      const selectedPlan = mappedPlan.find(
+        plan => plan.id === selectedPeriodPlan
+      );
       if (selectedPlan) {
         setDataPlan(selectedPlan);
       } else {

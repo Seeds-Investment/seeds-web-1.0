@@ -1,7 +1,10 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
-import { type PlanI, type UserInfo } from '@/utils/interfaces/subscription.interface';
+import {
+  type PlanI,
+  type UserInfo
+} from '@/utils/interfaces/subscription.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
@@ -59,7 +62,9 @@ const VirtualAccountGuide = ({
     promoCodeValidationResult !== 0
       ? promoCodeValidationResult?.total_discount
       : 0;
-  const admissionFee = dataPlan?.is_promo ? (dataPlan?.price_after_promo ?? 0) : (dataPlan?.price ?? 0);
+  const admissionFee = dataPlan?.is_promo
+    ? dataPlan?.price_after_promo ?? 0
+    : dataPlan?.price ?? 0;
   const adminFee = payment?.admin_fee;
   const serviceFee = payment?.service_fee;
   const promoPrice = payment?.promo_price;

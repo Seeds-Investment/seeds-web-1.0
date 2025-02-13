@@ -28,7 +28,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 
-const API_BASE_URL = process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
+const API_BASE_URL =
+  process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
 
 type NFT = {
   id: string;
@@ -82,7 +83,7 @@ const fetchUserId = async (): Promise<string | null> => {
     if (!accessToken) throw new Error('Access token tidak ditemukan');
 
     const response = await fetch(`${API_BASE_URL}/user/v1/`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` }
     });
 
     if (!response.ok) throw new Error('Gagal mengambil User ID');
@@ -128,10 +129,12 @@ const UnderLineTab = ({
 
           const processedData = data.data.map((nft: NFT) => ({
             ...nft,
-            image_url: nft.image_url.startsWith('http') ? nft.image_url : logo.src,
+            image_url: nft.image_url.startsWith('http')
+              ? nft.image_url
+              : logo.src,
             creator: {
               ...nft.creator,
-              avatar: nft.creator.avatar || logo.src,
+              avatar: nft.creator.avatar || logo.src
             }
           }));
 
@@ -432,7 +435,7 @@ const UnderLineTab = ({
               {errorMessageNFT}
             </div>
           ) : nftData.length > 0 ? (
-            nftData.map((nft) => (
+            nftData.map(nft => (
               <Card key={nft.id} className="animate-fade-in">
                 <Image
                   src={nft.image_url}
@@ -465,7 +468,7 @@ const UnderLineTab = ({
                     </p>
                   </div>
                   <Button
-                    onClick={() => window.location.href = `/nft/${nft.id}`}
+                    onClick={() => (window.location.href = `/nft/${nft.id}`)}
                     className="p-1 md:p-1.5 text-[10px] leading-4 font-light text-white bg-[#3AC4A0] rounded-full w-full hover:bg-[#2fa385] transition-colors"
                   >
                     DETAIL
@@ -483,7 +486,7 @@ const UnderLineTab = ({
     }
   ];
 
- useEffect(() => {
+  useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const myData = await getUserInfo();

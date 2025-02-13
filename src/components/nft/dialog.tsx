@@ -49,15 +49,21 @@ const NFTDialog = ({
   const renderTransactionContent = () => {
     if (transactionStatus) {
       return (
-        <div className={`p-4 rounded-lg text-center ${
-          transactionStatus.type === 'success' 
-            ? 'bg-green-50 text-green-800' 
-            : transactionStatus.type === 'error' 
-            ? 'bg-red-50 text-red-800'
-            : 'bg-blue-50 text-blue-800'
-        }`}>
-          <p className="font-semibold mb-2">{transactionStatus.type.toUpperCase()}</p>
-          <p className="whitespace-pre-wrap text-sm">{transactionStatus.message}</p>
+        <div
+          className={`p-4 rounded-lg text-center ${
+            transactionStatus.type === 'success'
+              ? 'bg-green-50 text-green-800'
+              : transactionStatus.type === 'error'
+              ? 'bg-red-50 text-red-800'
+              : 'bg-blue-50 text-blue-800'
+          }`}
+        >
+          <p className="font-semibold mb-2">
+            {transactionStatus.type.toUpperCase()}
+          </p>
+          <p className="whitespace-pre-wrap text-sm">
+            {transactionStatus.message}
+          </p>
           <Button
             className="mt-4 bg-[#3AC4A0] text-white"
             onClick={handleOpen}
@@ -111,13 +117,19 @@ const NFTDialog = ({
             </p>
             <div className="w-full border border-[#E9E9E9] bg-[#F9F9F9] grid grid-cols-2 gap-6 p-4 rounded-lg text-sm">
               <p className="text-[#BDBDBD]">From</p>
-              <p className="text-[#262626] truncate">{nftDetail?.owner.wallet_address}</p>
+              <p className="text-[#262626] truncate">
+                {nftDetail?.owner.wallet_address}
+              </p>
               <p className="text-[#BDBDBD]">To</p>
               <p className="text-[#262626] truncate">{walletAddress}</p>
               <p className="text-[#BDBDBD]">Type</p>
-              <p className="text-[#262626] px-8 py-1.5 bg-[#9adfcd] rounded-md">NFT BUY</p>
+              <p className="text-[#262626] px-8 py-1.5 bg-[#9adfcd] rounded-md">
+                NFT BUY
+              </p>
               <p className="text-[#BDBDBD]">Amount</p>
-              <p className="text-[#262626] px-7 py-1.5 bg-[#f1f1f1] rounded-md">{nftDetail?.price} DIAM</p>
+              <p className="text-[#262626] px-7 py-1.5 bg-[#f1f1f1] rounded-md">
+                {nftDetail?.price} DIAM
+              </p>
             </div>
             <div className="w-full pt-4 flex flex-col-reverse md:flex-row gap-4">
               <Button
@@ -216,9 +228,7 @@ const NFTDialog = ({
       size="md"
       className="rounded-xl font-poppins"
     >
-      <DialogBody className="p-0">
-        {renderTransactionContent()}
-      </DialogBody>
+      <DialogBody className="p-0">{renderTransactionContent()}</DialogBody>
     </Dialog>
   );
 };

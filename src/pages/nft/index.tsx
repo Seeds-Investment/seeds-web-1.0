@@ -19,11 +19,12 @@ const NFTDashboard: React.FC = () => {
 
   const handleOpen = () => setOpen(!open);
   const accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) {
-      throw new Error('Access token tidak ditemukan');
-    }
+  if (!accessToken) {
+    throw new Error('Access token tidak ditemukan');
+  }
 
-const API_BASE_URL = process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
+  const API_BASE_URL =
+    process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
   const handleConnectWallet = async () => {
     if (walletAddress) {
       setOpen(true);
@@ -43,20 +44,22 @@ const API_BASE_URL = process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.fina
       } else {
         setErrorMessage(result.error || 'Failed to connect wallet');
       }
-  const publicKeyy = sessionStorage.getItem('walletSession')
-  const walletconnect = {
-    wallet_address: publicKeyy, 
-  };
+      const publicKeyy = sessionStorage.getItem('walletSession');
+      const walletconnect = {
+        wallet_address: publicKeyy
+      };
 
-  // Panggil endpoint POST /nft/diamante/connect
-  const swaggerResponse = await fetch(`${API_BASE_URL}/nft/diamante/connect`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`, 
-    },
-    body: JSON.stringify(walletconnect),
-  });
+      const swaggerResponse = await fetch(
+        `${API_BASE_URL}/nft/diamante/connect`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken ?? ''}`
+          },
+          body: JSON.stringify(walletconnect)
+        }
+      );
     } catch (error) {
       setErrorMessage('An unexpected error occurred');
       console.error('Wallet connection error:', error);
@@ -64,7 +67,6 @@ const API_BASE_URL = process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.fina
       setIsLoading(false);
     }
   };
-  
 
   useEffect(() => {
     const sessionWallet = sessionStorage.getItem('walletSession');
@@ -81,7 +83,11 @@ const API_BASE_URL = process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.fina
       <Card className="md:p-5 rounded-none md:rounded-xl">
         <div className="flex flex-row-reverse md:flex-col gap-4 bg-gradient-to-b from-[#3AC4A0] to-[#94CCBD] w-full p-4 md:px-8 md:py-6">
           <div className="flex justify-between items-center">
-            <Image src={logo} alt="seeds-logo" className="w-16 hidden md:block" />
+            <Image
+              src={logo}
+              alt="seeds-logo"
+              className="w-16 hidden md:block"
+            />
             <FaClockRotateLeft className="text-black" />
           </div>
           <div className="relative w-full">
@@ -93,7 +99,7 @@ const API_BASE_URL = process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.fina
               className="bg-[#F9F9F9] border border-[#E9E9E9] w-full rounded-xl h-10 md:ps-16 ps-3 md:pe-3 pe-8 py-3 outline-none font-poppins placeholder:font-normal placeholder:text-xs placeholder:text-[#BDBDBD]"
               placeholder="Search NFT"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
@@ -110,15 +116,18 @@ const API_BASE_URL = process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.fina
             <Image src={diam} alt="diam-logo" />
             <p className="font-poppins font-semibold text-white text-sm">
               {isLoading
-                ? "Connecting..."
+                ? 'Connecting...'
                 : walletAddress
-                ? `Connected: ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
-                : "Connect to DIAM Wallet"}
+                ? `Connected: ${walletAddress.slice(
+                    0,
+                    6
+                  )}...${walletAddress.slice(-4)}`
+                : 'Connect to DIAM Wallet'}
             </p>
           </div>
           <FiChevronRight color="white" size={18} />
         </Button>
-        
+
         {errorMessage && (
           <p className="text-red-500 text-sm px-4">{errorMessage}</p>
         )}
@@ -132,9 +141,12 @@ const API_BASE_URL = process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.fina
           <Image src={checklist} alt="checklist" />
           <div className="flex flex-col gap-3.5 items-center justify-center">
             <p className="font-poppins font-semibold text-sm text-black text-center">
-              {walletAddress 
-                ? `Successfully connected to wallet:\n${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
-                : "Wallet connection successful!"}
+              {walletAddress
+                ? `Successfully connected to wallet:\n${walletAddress.slice(
+                    0,
+                    6
+                  )}...${walletAddress.slice(-4)}`
+                : 'Wallet connection successful!'}
             </p>
             <hr className="text-[#BDBDBD] w-full" />
             <p

@@ -129,12 +129,18 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
         spot_type: 'Premium Content',
         item_price: admissionFee,
         item_id: data?.id,
-        currency: userInfo?.preferredCurrency ?? 'IDR',
+        currency: userInfo?.preferredCurrency ?? 'IDR'
       });
 
       setNewPromoCodeDiscount(response?.total_discount);
     }
-  }, [promoCodeValidationResult, data, promoValidate, userInfo, setNewPromoCodeDiscount]);
+  }, [
+    promoCodeValidationResult,
+    data,
+    promoValidate,
+    userInfo,
+    setNewPromoCodeDiscount
+  ]);
 
   const handleOpenDialog = (value: boolean): void => {
     if (option?.payment_type === 'qris') {

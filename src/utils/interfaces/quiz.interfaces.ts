@@ -318,10 +318,10 @@ export interface Questions {
 }
 
 export interface DailyQuizOptions {
-  option_1: OptionI;
-  option_2: OptionI;
-  option_3: OptionI;
-  option_4: OptionI;
+  option1: OptionI;
+  option2: OptionI;
+  option3: OptionI;
+  option4: OptionI;
 }
 export interface OptionI {
   id: number;

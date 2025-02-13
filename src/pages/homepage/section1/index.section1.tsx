@@ -8,7 +8,7 @@ import BannerComponent from './banner-hooks/Banner.Component';
 
 const initialParamsBanner = {
   page: 1,
-  limit: 10
+  type: 'main'
 };
 const Section1New: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

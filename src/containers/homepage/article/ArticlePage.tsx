@@ -1,9 +1,10 @@
 import ArticleCard from '@/components/homepage/articleCard';
-import { getArticle } from '@/repository/article.repository';
+import { getArticleWithAuth } from '@/repository/article.repository';
 import LanguageContext from '@/store/language/language-context';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 export interface ArticleListRoot {
   promoCodeList: Article[];
@@ -38,6 +39,7 @@ export default function ArticlePage(): React.ReactElement {
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
   const [articles, setArticles] = useState<Article[]>([]);
+  const [isRefetch, setIsRefetch] = useState<boolean>(false);
 
   const [params, setParams] = useState({
     page: 1,
@@ -48,6 +50,23 @@ export default function ArticlePage(): React.ReactElement {
     category: 'All',
     totalPage: 9
   });
+  
+  const fetchArticles = async (): Promise<void> => {
+    try {
+      const response = await getArticleWithAuth({
+        ...params,
+        source: params.source,
+        category: params.category
+      });
+      setArticles(response.data !== null ? response.data : []);
+    } catch (error: any) {
+      toast.error('Error fetching articles:', error.response.data.message);
+    }
+  }
+
+  useEffect(() => {
+    void fetchArticles();
+  }, [params?.language, isRefetch]);
 
   useEffect(() => {
     setParams(prevParams => ({
@@ -56,39 +75,19 @@ export default function ArticlePage(): React.ReactElement {
     }));
   }, [languageCtx.language]);
 
-  async function fetchArticles(): Promise<void> {
-    try {
-      const response = await getArticle({
-        ...params,
-        source: params.source,
-        category: params.category
-      });
-
-      if (response.status === 200) {
-        setArticles(response.data);
-      } else {
-        console.error('Failed to fetch articles:', response);
-      }
-    } catch (error) {
-      console.error('Error fetching articles:', error);
-    }
-  }
-
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      await fetchArticles();
-    };
-
-    fetchData().catch(error => {
-      console.error('Error in fetchData:', error);
-    });
-  }, [params]);
-
   return (
     <div className="w-full">
       <div className="grid justify-between z-10 lg:grid-cols-4 gap-4 mt-8">
-        {articles?.map(article => {
-          return <ArticleCard key={article.id} articleId={article.id} />;
+        {articles?.map((article, index) => {
+          return (
+            <ArticleCard 
+              key={article.id} 
+              articles={articles[index]} 
+              articleId={Number(article.id)}
+              setIsRefetch={setIsRefetch}
+              isRefetch={isRefetch}
+            />
+          )
         })}
       </div>
       <div className="text-center justify-center mt-3">

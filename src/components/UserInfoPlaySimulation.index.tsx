@@ -124,7 +124,7 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
             {`Hi, ${userInfo?.name as string}!✌`}
           </Typography>
           <Typography className="capitalize text-[#FFFFFF] text-base font-normal">
-            {t('homepage.section2.text17')}
+            {t('homepage.section2.text18')}
           </Typography>
           <Card className="flex h-fit py-2 px-2 bg-[#fffcfc] rounded-[10px]">
             <CardBody className="p-0 m-0 flex flex-col justify-evenly">

@@ -10,7 +10,7 @@ import i18n from '@/utils/common/i18n';
 import { type DailyQuizRes } from '@/utils/interfaces/quiz.interfaces';
 import { type AxiosError } from 'axios';
 import Image from 'next/image';
-import React, { type Dispatch, type SetStateAction, useState } from 'react';
+import React, { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 interface props {
@@ -25,19 +25,13 @@ const DailyQuestion: React.FC<props> = ({
 }) => {
   const [evaluation, setEvaluation] = useState<string>('flex');
   const [answer, setAnswer] = useState<boolean>(false);
-  const [answerRecap, setAnswerRecap] = useState<number>(1);
   const [showPopUp, setShowPopUp] = useState<boolean>(false);
+  const [shuffledArray, setShuffledArray] = useState<number[]>([]);
+  const [isShuffled, setIsShuffled] = useState<boolean>(false);
   const [showSuccessShared, setShowSuccessShared] = useState<boolean>(false);
   const options = ['A', 'B', 'C', 'D'];
   const { id } = useAppSelector(state => state.user.dataUser);
   const { t } = useTranslation();
-  function shuffleArray(array: number[]) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1)); // Pilih index random
-      [array[i], array[j]] = [array[j], array[i]]; // Swap elemen
-    }
-    return array;
-  }
 
   const handleClickOption = async (answerId: number): Promise<void> => {
     try {
@@ -49,7 +43,6 @@ const DailyQuestion: React.FC<props> = ({
       if (response.data !== undefined) {
         setAnswer(response.data.is_correct);
         setEvaluation('hidden');
-        setAnswerRecap(answerId);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -89,6 +82,23 @@ const DailyQuestion: React.FC<props> = ({
       toast(err.message ?? 'Unknown Error');
     }
   };
+
+  function shuffleArray<T>(array: T[]): T[] {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  useEffect(() => {
+    if (!isShuffled) {
+      const shuffled = shuffleArray([1, 2, 3, 4]);
+      setShuffledArray(shuffled);
+      setIsShuffled(true);
+    }
+  }, [isShuffled]);
+
   return (
     <>
       <div
@@ -109,7 +119,7 @@ const DailyQuestion: React.FC<props> = ({
             </p>
           </div>
         </div>
-        {Array.from(shuffleArray([1, 2, 3, 4])).map((el, i) => {
+        {shuffledArray?.map((el, i) => {
           return (
             data?.data.daily_quiz[i18n.language as 'en' | 'id'].options[
               `option${el}` as 'option1'
@@ -164,9 +174,7 @@ const DailyQuestion: React.FC<props> = ({
               <p className="text-sm">
                 {t('social.dailyQuiz.answer')}:{' '}
                 {`${
-                  data?.data.daily_quiz[i18n.language as 'en' | 'id'].options[
-                    `option4`
-                  ].option as string
+                  data?.data.daily_quiz[i18n.language as 'en' | 'id']?.options?.option4?.option as string
                 }`}
               </p>
             </div>

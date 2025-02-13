@@ -97,7 +97,7 @@ const CardTeamBattle: React.FC<props> = ({ data, loading = true }) => {
           onSwiper={setSwiperInstance}
           breakpoints={breakPoints}
         >
-          {data?.length >= 0 && data?.length !== null ? (
+          {data?.length > 0 && data !== null ? (
             data?.map((item, idx: number) => (
               <SwiperSlide key={idx}>
                 <Card key={idx} shadow={false} className="md:w-80 w-full h-full bg-gradient-to-br from-[#106B6E] to-[#553BB8] rounded-t-[18px] rounded-b-none">
@@ -192,7 +192,7 @@ const CardTeamBattle: React.FC<props> = ({ data, loading = true }) => {
             ))
           ) : (
             <div className="w-full flex items-center justify-center">
-              <div className="flex flex-col items-center gap-2">
+              <div className="flex flex-col items-center gap-2 h-36">
                 <Image src={nodata} alt={nodata} width={60} height={60} />
                 <Typography className="font-semibold font-poppins text-base">
                   Opps, There’s No Play Yet

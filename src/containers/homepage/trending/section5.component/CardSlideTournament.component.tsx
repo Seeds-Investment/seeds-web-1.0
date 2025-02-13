@@ -123,7 +123,7 @@ export const CardSlideTournament: React.FC<props> = ({
           speed={1000}
           onSwiper={setSwiperInstance}
         >
-          {data?.length >= 0 && data?.length !== null ? (
+          {data?.length > 0 && data !== null ? (
             data?.map((item, idx: number) => {
               return (
                 <SwiperSlide key={idx}>

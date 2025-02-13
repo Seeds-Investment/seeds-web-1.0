@@ -108,7 +108,7 @@ export const CardSlideQuiz: React.FC<props> = ({ data, loading = true }) => {
           autoFocus={true}
           onSwiper={setSwiperInstance}
         >
-          {data?.length >= 0 && data?.length !== null ? (
+          {data?.length > 0 && data !== null ? (
             data?.map((item, index: number) => {
               return (
                 <SwiperSlide key={index}>

@@ -49,6 +49,7 @@ const NFTDashboard: React.FC = () => {
         wallet_address: publicKeyy
       };
 
+      // Panggil endpoint POST /nft/diamante/connect
       const swaggerResponse = await fetch(
         `${API_BASE_URL}/nft/diamante/connect`,
         {

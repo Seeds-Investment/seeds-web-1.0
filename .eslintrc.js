@@ -10,7 +10,16 @@ module.exports = {
     'prettier',
     'next'
   ],
-  overrides: [],
+  rules: {
+  '@typescript-eslint/restrict-plus-operands': ['error', { allowAny: true }],
+}
+,
+  overrides: [
+    {
+      files: ['*.js'],
+      parser: 'espree'
+    }
+  ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',

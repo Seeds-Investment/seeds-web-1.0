@@ -2753,6 +2753,8 @@ export default {
     button6: 'Ubah My SeedPlan',
     button7: 'Pertanyaan yang Sering Diajukan',
     button8: 'Gunakan Sekarang',
+    button9: 'Berhenti Berlangganan Seeds Plan',
+    stopPlanDesc: 'Anda akan kehilangan semua manfaat Anda setelah pembatalan.',
     text1: 'Terbaik',
     text2: 'Biaya Langganan',
     text3: 'Diskon',
@@ -2773,6 +2775,8 @@ export default {
       'Ingin mengubah atau melanjutkan SeedsPlan Kamu untuk aktivitas berikutnya? Bayar sekarang dan kamu tidak perlu kuatir lagi nanti!',
     text18:
       'Paket berikutnya akan aktif secara otomatis setelah paket saat ini berakhir',
+    text19:
+      'Kamu telah berlangganan 2 paket SeedsPlan. Kamu harus menunggu paket pertama habis sebelum berlangganan lagi.',
     month: 'Bulan',
     months: 'Bulan',
     year: 'Tahun',
@@ -2802,7 +2806,18 @@ export default {
       idTransaction: 'ID Transaksi',
       close: 'Tutup',
       paymentSuccessful: 'Berhasil',
-      recurringSaved: 'Pembayaran anda telah tersimpan'
+      recurringSaved: 'Pembayaran anda telah tersimpan',
+      information: {
+        text1: 'Paket Anda saat ini',
+        text2: ' berlaku hingga ',
+        text3: ' Paket yang baru ',
+        text4: ' akan berlaku mulai ',
+        text5: ' pukul ',
+        text6: 'bulan',
+        text7: 'bulan'
+      },
+      warningIncoming:
+        'Anda sudah memiliki langganan aktif atau langganan yang akan datang!'
     },
     modalUnsubscribe: {
       text1: 'Apakah Anda yakin untuk berhenti berlangganan?',
@@ -2829,6 +2844,8 @@ export default {
       noTransaction:
         'Kamu belum melakukan transaksi apapun, nih. Yuk, mulai transaksi pertamamu sekarang!',
       back: 'Kembali'
-    }
+    },
+    yes: 'Ya',
+    no: 'Tidak'
   }
 };

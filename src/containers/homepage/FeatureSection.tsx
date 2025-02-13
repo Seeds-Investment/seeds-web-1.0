@@ -28,7 +28,7 @@ const features = [
   {
     images: Referral,
     title: 'Referral',
-    event: ''
+    event: 'my-profile/referralCode?referralHistory=true'
   },
   {
     images: MyEarningWallet,

@@ -3362,6 +3362,23 @@ export default {
             }
           }
         }
+      },
+      purchase: {
+        title: 'Pembelian Efek',
+        type1: 'Obligasi',
+        type2: 'Saham',
+        card: {
+          text1: 'Cash In-hand',
+          text2: 'Investable Funds',
+          text3: 'Funds in Securities',
+        },
+        form: {
+          sourceCash: {
+            text1: 'Pilih Sumber Dana',
+            text2: 'Uang Tunai',
+            text3: 'Transfer Tunai'
+          }
+        }
       }
     }
   }

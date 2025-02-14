@@ -44,7 +44,7 @@ const PrevArrow = (props: ArrowProps): React.ReactElement => {
   );
 };
 
-const Penawaran = (): React.ReactElement => {
+const Offer = (): React.ReactElement => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.offers.dashboard';
   const [filterParams, setFilterParams] = useState({
@@ -313,4 +313,4 @@ const Penawaran = (): React.ReactElement => {
   );
 };
 
-export default withAuthDanamart(Penawaran);
+export default withAuthDanamart(Offer);

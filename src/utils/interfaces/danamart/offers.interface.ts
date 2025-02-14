@@ -79,7 +79,7 @@ export interface Days2 {
   listingDays: string
 }
 
-export interface TimelinePenawaran {
+export interface TimelineOffer {
   Status: string
   statusProspektus: string
   ListStatus: string
@@ -141,3 +141,61 @@ export interface ModalDetail {
   dm_ebus_01004?: string
   dm_ebus_01005?: string
 }
+
+// Purchase Offer
+
+export interface DashboardDataUser {
+  StatusCode: string
+  Status: string
+  message: string
+  dataSaldoUser: DataSaldoUser
+  dataChart: DataChart
+  mobileApps: MobileApps
+}
+
+export interface DataSaldoUser {
+  danaCash: string
+  dana_cash: string
+  total_wd0: number
+  total_dana_dalam_efek: number
+  danaRewerd: string
+  TotalDanaRewerd: number
+  danaInterim: string
+  TotalDanaTersedia: string
+  DanaDapatDiinvestasikan: string
+  TotalDanadalamEfek: string
+  totalDana: string
+  danaBisaTarik: string
+  batasPembelian: number
+  sisaPembelian: string
+  pendapatPertahun: number
+}
+
+export interface DataChart {
+  totalPembelianSektor: number
+  jmlSektor: number
+  chartjs: Chartjs
+  apexchart: Apexchart
+}
+
+export interface Chartjs {
+  persenEbus: string
+  persenEbe: string
+}
+
+export interface Apexchart {
+  SektorUsaha: string
+  jmlSektor: string
+}
+
+export interface MobileApps {
+  banner: Banner
+}
+
+export interface Banner {
+  image: string
+  type: string
+  url: string
+}
+
+// Purchase Offer Ends

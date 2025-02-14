@@ -712,3 +712,21 @@ export const useJobDetailList = (): ILabel[] => {
     }
   ];
 };
+
+export const useCashSource = (): ILabel[] => {
+  const { t } = useTranslation();
+  const pathTranslation = 'danamart.offers.purchase.form.sourceCash';
+
+  return [
+    {
+      key: 1,
+      label: t(`${pathTranslation}.text2`),
+      value: 'DanaCash'
+    },
+    {
+      key: 2,
+      label: t(`${pathTranslation}.text3`),
+      value: 'TransferCash'
+    }
+  ];
+};

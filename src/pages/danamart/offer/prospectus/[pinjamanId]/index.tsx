@@ -26,14 +26,15 @@ import { FaUserGroup } from 'react-icons/fa6';
 import { FiAlertOctagon } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
-const Prospektus = (): React.ReactElement => {
+const Prospectus = (): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
-  const prospektusId = router.query.id;
+  const prospectusId = router.query.pinjamanId;
+  console.log('rouzter ' , router)
 
   const [detailProspektus, setDetailProspektus] = useState<DetailProspektus>();
   const [offerData, setOfferData] = useState<OfferData>();
-  const [prospektusOffer, setProspektusOffer] = useState<OfferList>();
+  const [prospectusOffer, setProspectusOffer] = useState<OfferList>();
   const [isShowModalProgress, setIsShowModalProgress] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -42,7 +43,7 @@ const Prospektus = (): React.ReactElement => {
   const fetchDetailProspektus = async (): Promise<void> => {
     try {
       const response: DetailProspektus = await getDetailProspektus(
-        prospektusId as string
+        prospectusId as string
       );
       if (response.StatusCode === '200') {
         setDetailProspektus(response);
@@ -67,7 +68,7 @@ const Prospektus = (): React.ReactElement => {
   };
 
   useEffect(() => {
-    if (prospektusId !== undefined) {
+    if (prospectusId !== undefined) {
       setIsLoading(true);
       Promise.all([fetchDetailProspektus(), getOffers()]).finally(() => {
         setIsLoading(false);
@@ -75,12 +76,12 @@ const Prospektus = (): React.ReactElement => {
     } else {
       void router.push('/danamart/penawaran');
     }
-  }, [prospektusId]);
+  }, [prospectusId]);
 
   useEffect(() => {
     if (offerData !== undefined && detailProspektus !== undefined) {
-      setProspektusOffer(
-        offerData?.data.find(item => item.pinjaman_id === prospektusId)
+      setProspectusOffer(
+        offerData?.data.find(item => item.pinjaman_id === prospectusId)
       );
     }
   }, [offerData]);
@@ -117,16 +118,16 @@ const Prospektus = (): React.ReactElement => {
 
   return (
     <PageGradient defaultGradient className="w-full">
-      {!isLoading && detailProspektus != null && prospektusOffer != null ? (
+      {!isLoading && detailProspektus != null && prospectusOffer != null ? (
         <div className="w-full bg-white flex flex-col px-5 py-8">
           <Typography className="font-poppins md:text-3xl text-lg font-semibold text-[#262626] mt-6 mb:mt-8">
-            {t('danamart.offers.detail.offer')} {prospektusId}
+            {t('danamart.offers.detail.offer')} {prospectusId}
           </Typography>
           <div className="flex md:flex-col flex-col-reverse shadow-md rounded-lg p-6 md:gap-4 gap-2">
             {[
               {
                 label: t('danamart.offers.detail.minimumInvest'),
-                value: prospektusOffer?.jml_pendanaan
+                value: prospectusOffer?.jml_pendanaan
               },
               {
                 label: t('danamart.offers.detail.securitiesCode'),
@@ -134,7 +135,7 @@ const Prospektus = (): React.ReactElement => {
               },
               {
                 label: t('danamart.offers.detail.location'),
-                value: prospektusOffer?.lokasi
+                value: prospectusOffer?.lokasi
               },
               {
                 label: t('danamart.offers.detail.intendFund'),
@@ -275,37 +276,42 @@ const Prospektus = (): React.ReactElement => {
                   </Typography>
                   <Typography className="flex items-center font-poppins font-normal text-[10px] text-[#bdbdbd] gap-1">
                     <FaUserGroup size={10} color="#bdbdbd" />{' '}
-                    {prospektusOffer?.total_pemodal}
+                    {prospectusOffer?.total_pemodal}
                   </Typography>
                 </div>
                 <div className="flex items-center gap-4 w-full">
                   <div className="flex w-full h-[5px] bg-gray-200 rounded-full">
                     <div
                       className="bg-[#4FE6AF] transition-all duration-300 relative"
-                      style={{ width: `${prospektusOffer?.progresEfek}%` }}
+                      style={{ width: `${prospectusOffer?.progresEfek}%` }}
                     >
                       <div className="rounded-full w-[9px] h-[9px] bg-[#4FE6AF] absolute right-[-10px] top-1/2 transform -translate-y-1/2 z-10" />
                     </div>
                     <div
                       className="bg-[#4FE6AF] opacity-20 transition-all duration-300"
                       style={{
-                        width: `${100 - prospektusOffer?.progresEfek}%`
+                        width: `${100 - prospectusOffer?.progresEfek}%`
                       }}
                     ></div>
                   </div>
                   <Typography className="font-poppins font-normal text-[10px] text-[#262626]">
-                    {prospektusOffer?.progresEfek % 10 === 0
-                      ? prospektusOffer?.progresEfek
-                      : prospektusOffer?.progresEfek > 99.999999999
+                    {prospectusOffer?.progresEfek % 10 === 0
+                      ? prospectusOffer?.progresEfek
+                      : prospectusOffer?.progresEfek > 99.999999999
                       ? (
-                          Math.floor(prospektusOffer?.progresEfek * 10000) /
+                          Math.floor(prospectusOffer?.progresEfek * 10000) /
                           10000
                         ).toFixed(4)
-                      : prospektusOffer?.progresEfek?.toFixed(0)}
+                      : prospectusOffer?.progresEfek?.toFixed(0)}
                     %
                   </Typography>
                 </div>
-                <Button className="md:w-[311px] w-full h-[52px] bg-[#3AC4A0] text-white rounded-full">
+                <Button
+                  onClick={async() => 
+                    await router.push(`/danamart/offer/prospectus/${prospectusId as string}/purchase?UserPeminjamId=${detailProspektus?.Data?.BeliEfek?.UserPinjamanId}`)
+                  }
+                  className="md:w-[311px] w-full h-[52px] bg-[#3AC4A0] text-white rounded-full"
+                >
                   {t('danamart.offers.detail.buy')}
                 </Button>
                 <Typography className="font-semibold font-poppins text-[#3ac4a0] text-base flex items-center gap-2">
@@ -401,7 +407,7 @@ const Prospektus = (): React.ReactElement => {
                       {t('danamart.offers.detail.tenor')}
                     </Typography>
                     <Typography className="font-poppins font-normal text-base text-[#262626] py-3 ">
-                      {prospektusOffer?.tenor}
+                      {prospectusOffer?.tenor}
                     </Typography>
                   </div>
                 </div>
@@ -430,7 +436,7 @@ const Prospektus = (): React.ReactElement => {
           {/* Progress Penawaran */}
           <ProgressStep
             setIsShowModalProgress={setIsShowModalProgress}
-            timelinePenawaran={detailProspektus?.Data?.TimelinePenawaran}
+            timelineOffer={detailProspektus?.Data?.TimelinePenawaran}
           />
           <hr/>
           <DetailTab detailProspektus={detailProspektus}/>
@@ -453,4 +459,4 @@ const Prospektus = (): React.ReactElement => {
   );
 };
 
-export default withAuthDanamart(Prospektus);
+export default withAuthDanamart(Prospectus);

@@ -1,5 +1,5 @@
 import CAccordion from "@/components/CAccordion";
-import { DetailProspektus } from "@/utils/interfaces/danamart.interface";
+import { type DetailProspektus } from "@/utils/interfaces/danamart.interface";
 import { Typography } from "@material-tailwind/react";
 import { useTranslation } from "react-i18next";
 

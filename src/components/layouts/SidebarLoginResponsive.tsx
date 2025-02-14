@@ -65,7 +65,7 @@ const SidebarLoginResponsive: React.FC<props> = ({
           hasSubmenu: true,
           submenu: [
             { title: 'Dashboard', url: '/danamart/dashboard' },
-            { title: t('danamart.offers.sidebar.text1'), url: '/danamart/penawaran' },
+            { title: t('danamart.offers.sidebar.text1'), url: '/danamart/offer' },
           ]
         },
         { title: 'Setting', url: '/user-setting', image: setting },

@@ -78,7 +78,7 @@ const Discuss: React.FC<Props> = ({ idPembiayaan }) => {
         </div>
         <div className="w-full flex justify-center md:justify-end items-end">
           <Button
-            onClick={() => handlePostDiscussion()}
+            onClick={async () => { await handlePostDiscussion(); }}
             disabled={isiKomentar === '' || isLoading}
             className="w-full md:w-[200px] text-sm font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
           >

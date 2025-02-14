@@ -461,7 +461,7 @@ export interface Data {
   cekOmbak: string;
   NamaPenerbit: string;
   Sosmed: Sosmed;
-  TimelinePenawaran: TimelinePenawaran;
+  TimelinePenawaran: TimelineOffer;
   BeliEfek: BeliEfek;
   Overview: Overview;
   investorCorner: any[];
@@ -488,7 +488,7 @@ export interface Sosmed {
   linkedin: string;
 }
 
-export interface TimelinePenawaran {
+export interface TimelineOffer {
   Status: string;
   statusProspektus: string;
   ListStatus: string;

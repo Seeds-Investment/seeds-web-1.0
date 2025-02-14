@@ -108,3 +108,27 @@ export const getOfferReport = async (
     throw new Error(error.response.data.message);
   }
 };
+
+export const getDashboardUserById = async (
+  params: { 
+    pinjaman_id: string;
+  }
+): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.get('/pemodal/dashboard', {
+      params,
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};

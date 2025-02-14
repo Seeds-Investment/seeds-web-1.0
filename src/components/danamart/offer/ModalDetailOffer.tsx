@@ -79,7 +79,7 @@ const ModalDetailOffer: React.FC<Props> = ({
         <Button
           onClick={async () => {
             await router.push(
-              `/danamart/penawaran/prospektus?id=${data?.pinjaman_id}`
+              `/danamart/offer/prospectus/${data?.pinjaman_id}`
             );
           }}
           className="rounded-full w-fit px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"

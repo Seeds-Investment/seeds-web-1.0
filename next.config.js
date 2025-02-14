@@ -1,16 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
+    // Allow builds to pass even with type errors
     ignoreBuildErrors: true
   },
-  // uncomment script below before run build script
-  // dont push this file with uncomment output property
-  // output: 'standalone',
   reactStrictMode: false,
+  // Uncomment the following line if deploying standalone
+  // output: 'standalone',
   images: {
     domains: [
       'slashdot.org',
@@ -26,64 +22,34 @@ const nextConfig = {
       'pict.sindonews.net',
       'images.unsplash.com',
       'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com',
-      'sit-marketing-img.bankneo.co.id',
-      'marketing-img.bankneo.co.id'
+      'dev-assets.seeds.finance',
+      'assets.seeds.finance',
+      'cdn06.pramborsfm.com',
+      'i.pravatar.cc',
+      'dipssy.com',
+      'zengo.com',
+      'blockchainmagazine.com',
+      'widyasecurity.com'
     ],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'a.fsdn.com',
         port: '',
-        pathname: '*'
+        pathname: '/**'
       },
       {
         protocol: 'https',
         hostname: 'i.insider.com',
         port: '',
-        pathname: '*'
+        pathname: '/**'
       },
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
         port: '',
-        pathname: '*'
-      }
-      // {
-      //   protocol: 'https',
-      //   hostname: 'a.fsdn.com',
-      //   port: '',
-      //   pathname: '*'
-      // },
-      // {
-      //   protocol: 'https',
-      //   hostname: 'a.fsdn.com',
-      //   port: '',
-      //   pathname: '*'
-      // },
-      // {
-      //   protocol: 'https',
-      //   hostname: 'a.fsdn.com',
-      //   port: '',
-      //   pathname: '*'
-      // }
-    ]
-  },
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'es']
-  },
-  images: {
-    domains: [
-      'dev-assets.seeds.finance',
-      'assets.seeds.finance',
-      'cdn06.pramborsfm.com',
-      'i.pravatar.cc',
-      'images.unsplash.com',
-      'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com',
-      'sit-marketing-img.bankneo.co.id',
-      'marketing-img.bankneo.co.id'
-    ],
-    remotePatterns: [
+        pathname: '/**'
+      },
       {
         protocol: 'https',
         hostname: 'dev-assets.seeds.finance',
@@ -97,6 +63,10 @@ const nextConfig = {
         pathname: '/**'
       }
     ]
+  },
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'es']
   }
 };
 

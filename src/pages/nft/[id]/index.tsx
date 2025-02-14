@@ -9,187 +9,404 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import logo from 'public/assets/logo-seeds.png';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiArrowLeft, FiChevronRight } from 'react-icons/fi';
+import { Asset } from 'diamnet-sdk';
+import {
+  loadAccount,
+  createTrustline,
+  createBuyOffer,
+  createPassiveSellOffer,
+  signAndSubmitTransaction,
+  createSellOffer
+} from '@/lib/diamnet';
 
-interface Render {
-  fromImage: string;
-  fromTag: string;
-  fromName: string;
-  toImage: string;
-  toTag: string;
-  toName: string;
-  price: string;
-  date: string;
-}
+const passphrase = 'Diamante Testnet 2024';
 
-interface Column {
-  fieldId: string;
-  label: string;
-  render?: (value: Render) => React.ReactElement | string;
-}
+type NFT = {
+  id: string;
+  name: string;
+  description: string;
+  metadata_cid: string;
+  image_url: string;
+  price: number;
+  status: string;
+  owner: {
+    wallet_address: string;
+    avatar: string;
+  };
+  creator: {
+    wallet_address: string;
+    avatar: string;
+  };
+};
+
+type TransactionStatus = {
+  type: 'success' | 'error' | 'warning' | 'info' | 'loading';
+  message: string;
+};
 
 const NFTDetail: React.FC = () => {
   const router = useRouter();
+  const { id } = router.query;
   const [open, setOpen] = useState<{ open: boolean; state: number }>({
     open: false,
     state: 0
   });
-  const [detail, setDetail] = useState<boolean>(false);
-  const [transaction, setTransaction] = useState<boolean>(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [wallet, setWallet] = useState<boolean>(false);
-  const [sale, setSale] = useState<boolean>(false);
+  const [detail, setDetail] = useState(false);
+  const [transaction, setTransaction] = useState(false);
+  const [wallet, setWallet] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+  const [nftDetail, setNftDetail] = useState<NFT | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [transactionStatus, setTransactionStatus] =
+    useState<TransactionStatus | null>(null);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
 
-  const handleOpen = (): void => {
-    setOpen({ open: !open.open, state: 0 });
-  };
+  const API_BASE_URL =
+    process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
 
-  const handleSale = (): void => {
-    setSale(!sale);
-    handleOpen();
-  };
-  const handleChange = (state: number): void => {
-    setOpen(prev => ({ ...prev, state }));
-  };
-  const columns: Column[] = [
-    {
-      fieldId: 'from',
-      label: 'From',
-      render: (value: Render) => (
-        <div className="flex gap-3">
-          <Image
-            src={value.fromImage}
-            alt="fromImage"
-            className="w-10 h-10 bg-green-500 rounded-full"
-          />
-          <div>
-            <p className="font-poppins font-semibold text-sm text-neutral-medium">
-              @{value.fromTag}
-            </p>
-            <p className="font-poppins font-normal text-xs text-neutral-soft">
-              {value.fromName}
-            </p>
-          </div>
-        </div>
-      )
-    },
-    {
-      fieldId: 'to',
-      label: 'To',
-      render: (value: Render) => (
-        <div className="flex gap-3">
-          <Image
-            src={value.toImage}
-            alt="toImage"
-            className="w-10 h-10 bg-green-500 rounded-full"
-          />
-          <div>
-            <p className="font-poppins font-semibold text-sm text-neutral-medium">
-              @{value.toTag}
-            </p>
-            <p className="font-poppins font-normal text-xs text-neutral-soft">
-              {value.toName}
-            </p>
-          </div>
-        </div>
-      )
-    },
-    { fieldId: 'price', label: 'Price' },
-    { fieldId: 'date', label: 'Date' }
-  ];
-  const data: Render[] = [
-    {
-      fromImage: '',
-      fromTag: 'Anton123',
-      fromName: 'Anton',
-      toImage: '',
-      toTag: 'Budi123',
-      toName: 'Budi',
-      price: '100 Diam',
-      date: '11/11/2024'
-    },
-    {
-      fromImage: '',
-      fromTag: 'Budi123',
-      fromName: 'Budi',
-      toImage: '',
-      toTag: 'Dimas123',
-      toName: 'Dimas',
-      price: '100 Diam',
-      date: '11/11/2024'
+  useEffect(() => {
+    const sessionWallet = sessionStorage.getItem('walletSession');
+    if (sessionWallet) {
+      setWalletAddress(sessionWallet);
+      setWallet(true);
     }
-  ];
+  }, []);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchNFTDetail = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${API_BASE_URL}/nft/${id}`);
+        if (!response.ok)
+          throw new Error(`Failed to fetch NFT: ${response.status}`);
+        const data: NFT = await response.json();
+        setNftDetail(data);
+        setIsOwner(
+          data.owner.wallet_address === sessionStorage.getItem('walletSession')
+        );
+      } catch (error) {
+        console.error('Error fetching NFT details:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchNFTDetail();
+  }, [id]);
+
+  useEffect(() => {
+    // Update isOwner whenever nftDetail or walletAddress change
+    if (nftDetail && walletAddress) {
+      setIsOwner(nftDetail.owner.wallet_address === walletAddress);
+    }
+  }, [nftDetail, walletAddress]);
+
+  const handleBuy = async () => {
+    if (!walletAddress || !nftDetail || !id) {
+      setTransactionStatus({
+        type: 'error',
+        message: 'Wallet not connected or NFT data missing'
+      });
+      setOpen({ open: true, state: 0 });
+      return;
+    }
+
+    try {
+      setOpen({ open: true, state: 1 });
+      setTransactionStatus({
+        type: 'loading',
+        message: 'Initializing transaction...'
+      });
+
+      const account = await loadAccount(walletAddress);
+
+      // Create Trustline
+      setTransactionStatus({
+        type: 'loading',
+        message: 'Setting up trustline...'
+      });
+      const buyingAsset = new Asset(
+        nftDetail.name,
+        nftDetail.creator.wallet_address
+      );
+      const trustlineXDR = await createTrustline(
+        account,
+        nftDetail.name,
+        nftDetail.creator.wallet_address
+      );
+      await signAndSubmitTransaction(trustlineXDR, passphrase);
+
+      // Create Buy Offer
+      setTransactionStatus({
+        type: 'loading',
+        message: 'Creating buy offer...'
+      });
+      const sellingAsset = Asset.native();
+      const buyOfferXDR = await createBuyOffer(
+        account,
+        sellingAsset,
+        buyingAsset,
+        '1',
+        nftDetail.price
+      );
+
+      // Submit Buy Offer
+      const buyOfferResult = await signAndSubmitTransaction(
+        buyOfferXDR,
+        passphrase
+      );
+
+      // Update backend API
+      setTransactionStatus({
+        type: 'loading',
+        message: 'Updating ownership records...'
+      });
+      const accessToken = localStorage.getItem('accessToken');
+      const apiResponse = await fetch(`${API_BASE_URL}/nft/buy/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({})
+      });
+
+      if (!apiResponse.ok) {
+        const errorData = await apiResponse.json();
+        throw new Error(errorData.message || 'API update failed');
+      }
+
+      setTransactionStatus({
+        type: 'success',
+        message: `NFT purchased successfully!\nTransaction Hash: ${
+          buyOfferResult.message?.data || ''
+        }`
+      });
+      setOpen({ open: true, state: 2 });
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+      setTransactionStatus({
+        type: 'error',
+        message: `Transaction failed: ${errorMessage}`
+      });
+      setOpen({ open: true, state: 3 });
+      console.error('Transaction Error:', error);
+    }
+  };
+
+  const handleResell = async (newPrice: number) => {
+    if (!walletAddress || !nftDetail) {
+      setTransactionStatus({
+        type: 'error',
+        message: 'Wallet not connected or NFT data missing'
+      });
+      setOpen({ open: true, state: 0 });
+      return;
+    }
+    console.log('Handling resell with price:', newPrice);
+
+    try {
+      const account = await loadAccount(walletAddress);
+      const sellingAsset = new Asset(
+        nftDetail.name,
+        nftDetail.creator.wallet_address
+      );
+      const buyingAsset = Asset.native();
+
+      const sellOfferXDR = await createSellOffer(
+        account,
+        sellingAsset,
+        buyingAsset,
+        '1',
+        newPrice
+      );
+
+      const signedTransaction = await signAndSubmitTransaction(
+        sellOfferXDR,
+        passphrase
+      );
+
+      console.log(
+        sellingAsset,
+        buyingAsset,
+        newPrice,
+        sellOfferXDR,
+        signedTransaction
+      );
+
+      console.log('Signed transaction response:', signedTransaction);
+
+      const accessToken = localStorage.getItem('accessToken');
+      const updateResponse = await fetch(
+        `${API_BASE_URL}/nft/sell/${nftDetail?.id}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
+          },
+          body: JSON.stringify({ price: newPrice })
+        }
+      );
+
+      console.log('Update response:', updateResponse);
+
+      if (!updateResponse.ok) {
+        throw new Error('Failed to update NFT status');
+      }
+
+      setTransactionStatus({
+        type: 'success',
+        message: 'NFT successfully listed for sale!'
+      });
+
+      setOpen({ open: true, state: 2 });
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'An unexpected error occurred';
+      console.error('Error during resell:', errorMessage);
+      setTransactionStatus({
+        type: 'error',
+        message: `Resell failed: ${errorMessage}`
+      });
+      setOpen({ open: true, state: 3 });
+    }
+  };
+
+  const getButtonState = () => {
+    if (isOwner) {
+      if (nftDetail?.status === 'TRUE') {
+        return {
+          text: 'Cannot buy or cancel your own NFT',
+          disabled: true,
+          action: () => {}
+        };
+      }
+      return {
+        text: 'Sell NFT',
+        disabled: false,
+        action: () => {
+          const newPrice = parseFloat(
+            prompt('Enter new price in DIAM') as string
+          );
+          if (!isNaN(newPrice)) {
+            handleResell(newPrice);
+          } else {
+            alert('Invalid price entered!');
+          }
+        }
+      };
+    }
+    return {
+      text: 'BUY NFT',
+      disabled: false,
+      action: () => setOpen({ open: true, state: 0 })
+    };
+  };
+
+  if (isLoading) {
+    return <p className="text-center mt-10">Loading NFT details...</p>;
+  }
+
+  if (
+    !nftDetail ||
+    !nftDetail.status ||
+    !nftDetail.owner.wallet_address ||
+    !nftDetail.price ||
+    !nftDetail.name ||
+    !nftDetail.image_url
+  ) {
+    return (
+      <p className="text-red-500 text-center mt-10">
+        NFT not found. Please check the ID and try again.
+      </p>
+    );
+  }
+
+  const buttonState = getButtonState();
+
   return (
     <>
       <Card className="flex flex-col md:gap-4 p-0 md:p-5">
         <div className="flex justify-between items-center py-5 px-4 md:hidden font-semibold text-base text-neutral-medium font-poppins">
           <FiArrowLeft
             size={24}
-            onClick={() => {
-              router.back();
-            }}
+            onClick={() => router.back()}
             className="cursor-pointer"
           />
           <p>Detail NFT</p>
           <div className="w-6 aspect-square" />
         </div>
         <Image
-          src={logo}
-          alt="seeds-logo"
+          src={nftDetail.image_url}
+          alt={nftDetail.name}
           className="w-full object-cover aspect-[16/9] md:rounded-2xl"
+          width={600}
+          height={400}
         />
         <div className="flex flex-col gap-2 md:gap-4 p-3 md:p-0">
           <Button
             className="bg-[#3AC4A0] p-2.5 font-poppins font-semibold text-sm rounded-full normal-case"
-            onClick={handleOpen}
+            onClick={buttonState.action}
+            disabled={
+              buttonState.disabled || transactionStatus?.type === 'loading'
+            }
           >
-            {wallet ? `${sale ? 'Cancel' : 'List for'} Sale` : 'GET'}
+            {transactionStatus?.type === 'loading'
+              ? 'Processing...'
+              : buttonState.text}
           </Button>
+
           <div className="flex flex-col gap-3 bg-[#F3F4F8] border border-[#E9E9E9] rounded-lg py-2 px-3.5">
             <div className="flex flex-col gap-3.5">
               <div className="flex gap-3 items-center">
                 <div className="flex gap-1.5 items-center">
                   <Image
-                    src={logo}
-                    alt="pic-profile"
-                    className="w-5 h-5 bg-green-500 rounded-full"
+                    src={nftDetail.creator.avatar}
+                    alt="creator"
+                    className="w-5 h-5 rounded-full"
+                    width={32}
+                    height={32}
                   />
                   <p className="font-poppins font-semibold text-sm md:text-base text-[#3AC4A0]">
-                    Name
+                    {nftDetail.owner.wallet_address.slice(0, 6)}...
+                    {nftDetail.owner.wallet_address.slice(-4)}
                   </p>
                 </div>
-                {wallet && (
-                  <p
-                    className={`${
-                      sale
-                        ? 'bg-[#FFE9D4] text-[#B81516]'
-                        : 'bg-[#E9E9E9] text-neutral-soft'
-                    } rounded-full py-1 w-20 text-center font-semibold font-poppins text-xs`}
-                  >
-                    {sale ? 'On Sale' : 'Not Listed'}
-                  </p>
-                )}
+                <p
+                  className={`${
+                    nftDetail.status === 'TRUE'
+                      ? 'bg-[#FFE9D4] text-[#B81516]'
+                      : 'bg-[#E9E9E9] text-neutral-soft'
+                  } rounded-full py-1 w-20 text-center font-semibold font-poppins text-xs`}
+                >
+                  {nftDetail.status === 'TRUE' ? 'On Sale' : 'Not Listed'}
+                </p>
               </div>
 
               <div className="flex flex-col gap-2">
                 <p className="font-semibold font-poppins text-base md:text-lg text-neutral-medium">
-                  Nft Title
+                  {nftDetail.name}
                 </p>
                 <p className="font-poppins font-normal text-xs md:text-sm text-neutral-soft">
-                  Owned By Name
+                  Owned By {nftDetail.owner.wallet_address.slice(0, 6)}...
+                  {nftDetail.owner.wallet_address.slice(-4)}
                 </p>
                 <p className="bg-[#3AC4A0] py-0.5 px-6 font-poppins font-normal text-[10px] leading-4 md:text-xs text-[#1A857D] w-fit rounded">
-                  100 DIAM
+                  {nftDetail.price} DIAM
                 </p>
               </div>
             </div>
             <p className="font-poppins font-normal text-[10px] leading-4 md:text-xs text-neutral-medium text-justify">
-              Ilustrasi monkey funky sedang unjuk gigi tapi berhati peri dan
-              bergaya anak pantai., Ilustrasi monkey funky sedang unjuk gigi
-              tapi berhati peri dan bergaya anak pantai.
+              {nftDetail.description}
             </p>
           </div>
+
           <Accordion
             open={detail}
             icon={
@@ -203,9 +420,7 @@ const NFTDetail: React.FC = () => {
             className="py-2.5 ps-3.5 pe-5 bg-[#F3F4F8] border border-[#E9E9E9] rounded-lg"
           >
             <AccordionHeader
-              onClick={() => {
-                setDetail(!detail);
-              }}
+              onClick={() => setDetail(!detail)}
               className="p-0 font-semibold text-lg text-neutral-medium font-poppins border-none"
             >
               Token Detail
@@ -215,101 +430,40 @@ const NFTDetail: React.FC = () => {
                 <p className="text-neutral-medium text-xs md:text-sm font-normal font-poppins">
                   NFT Address
                 </p>
-                <u
-                  className="rounded px-3 md:px-7 bg-[#4FE6AF] text-[#1A857D] font-poppins font-normal text-[10px]
-              leading-4"
-                >
-                  oxnssbdwudbw
+                <u className="rounded px-3 md:px-7 bg-[#4FE6AF] text-[#1A857D] font-poppins font-normal text-[10px] leading-4">
+                  {nftDetail.id.slice(0, 12)}
                 </u>
               </div>
               <div className="flex justify-between items-center">
                 <p className="text-neutral-medium text-xs md:text-sm font-normal font-poppins">
                   Creator Address
                 </p>
-                <u
-                  className="rounded px-3 md:px-7 bg-[#4FE6AF] text-[#1A857D] font-poppins font-normal text-[10px]
-              leading-4"
-                >
-                  oxnssbdwudbw
+                <u className="rounded px-3 md:px-7 bg-[#4FE6AF] text-[#1A857D] font-poppins font-normal text-[10px] leading-4">
+                  {nftDetail.creator.wallet_address.slice(0, 6)}...
+                  {nftDetail.creator.wallet_address.slice(-4)}
                 </u>
               </div>
               <div className="flex justify-between items-center">
                 <p className="text-neutral-medium text-xs md:text-sm font-normal font-poppins">
                   Owner Address
                 </p>
-                <u
-                  className="rounded px-3 md:px-7 bg-[#4FE6AF] text-[#1A857D] font-poppins font-normal text-[10px]
-              leading-4"
-                >
-                  oxnssbdwudbw
+                <u className="rounded px-3 md:px-7 bg-[#4FE6AF] text-[#1A857D] font-poppins font-normal text-[10px] leading-4">
+                  {nftDetail.owner.wallet_address.slice(0, 6)}...
+                  {nftDetail.owner.wallet_address.slice(-4)}
                 </u>
-              </div>
-            </AccordionBody>
-          </Accordion>
-          <Accordion
-            open={transaction}
-            icon={
-              <FiChevronRight
-                className={`${
-                  transaction ? 'rotate-90' : '-rotate-90 md:rotate-0'
-                } transition-all`}
-                size={24}
-              />
-            }
-            className="py-2.5 ps-3.5 pe-5 bg-[#F3F4F8] border border-[#E9E9E9] rounded-lg"
-          >
-            <AccordionHeader
-              onClick={() => {
-                setTransaction(!transaction);
-              }}
-              className="p-0 font-semibold text-lg text-neutral-medium font-poppins border-none"
-            >
-              Transaction Activity
-            </AccordionHeader>
-            <AccordionBody className="flex flex-col gap-2.5 md:gap-4 py-4 md:py-5">
-              <div className="overflow-auto max-w-full">
-                <table className="min-w-[600px] w-full">
-                  <thead>
-                    <tr>
-                      {columns.map((column, index) => (
-                        <th
-                          key={index}
-                          className="text-left font-poppins text-sm font-semibold p-2 text-neutral-medium"
-                        >
-                          {column.label}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.map((rowData, rowIndex) => (
-                      <tr key={rowIndex}>
-                        {columns.map((column, colIndex) => (
-                          <td
-                            key={colIndex}
-                            className="p-2 font-poppins font-semibold text-neutral-medium text-sm"
-                          >
-                            {column.render !== undefined
-                              ? column.render(rowData)
-                              : rowData[column.fieldId as keyof Render]}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
               </div>
             </AccordionBody>
           </Accordion>
         </div>
       </Card>
+
       <NFTDialog
         open={open}
-        handleSale={handleSale}
-        wallet={wallet}
-        sale={sale}
-        handleOpen={handleOpen}
-        handleChange={handleChange}
+        nftDetail={nftDetail}
+        handleBuy={handleBuy}
+        walletAddress={walletAddress}
+        handleOpen={() => setOpen({ open: false, state: 0 })}
+        handleChange={state => setOpen({ open: true, state: state })}
       />
     </>
   );

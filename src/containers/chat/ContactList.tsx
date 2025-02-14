@@ -59,30 +59,48 @@ const ContactList: React.FC<props> = ({
           <Image alt="Search" src={filterSearch} width={24} height={24} />
         </div>
       </div>
-      <div className='flex justify-between items-center mt-4'>
-        <Typography className='font-poppins font-normal text-[#201B1C]'>
-          {activeTab === 'REQUEST' ? `${t('chat.chatRequest')} ${data?.length !== 0 ? `(${data?.length})` : ''}` : `${t('chat.allMessages')} ${data?.length !== 0 ? `(${data?.length})` : ''}`}
+      <div className="flex justify-between items-center mt-4">
+        <Typography className="font-poppins font-normal text-[#201B1C]">
+          {activeTab === 'REQUEST'
+            ? `${t('chat.chatRequest')} ${
+                data?.length !== 0 ? `(${data?.length})` : ''
+              }`
+            : `${t('chat.allMessages')} ${
+                data?.length !== 0 ? `(${data?.length})` : ''
+              }`}
         </Typography>
         <div
-          onClick={() => { handleChangeTab(activeTab === 'REQUEST' ? 'PERSONAL' : 'REQUEST'); }}
-          className='flex justify-center items-center cursor-pointer'
+          onClick={() => {
+            handleChangeTab(activeTab === 'REQUEST' ? 'PERSONAL' : 'REQUEST');
+          }}
+          className="flex justify-center items-center cursor-pointer"
         >
-          <Typography className='font-poppins font-normal text-seeds-button-green cursor-pointer hover:text-[#38aa8c] duration-300'>
-            {activeTab === 'REQUEST' ? `${t('chat.chat')}` : `${t('chat.request')}`}
+          <Typography className="font-poppins font-normal text-seeds-button-green cursor-pointer hover:text-[#38aa8c] duration-300">
+            {activeTab === 'REQUEST'
+              ? `${t('chat.chat')}`
+              : `${t('chat.request')}`}
           </Typography>
-          {
-            (activeTab !== 'REQUEST' && chatRequest !== 0) &&
-              <div className="rounded-full bg-[#FF6565] text-[#FFEBEB] w-[24px] h-[24px] flex justify-center items-center ml-2">
-                {chatRequest}
-              </div>
-          }
+          {activeTab !== 'REQUEST' && chatRequest !== 0 && (
+            <div className="rounded-full bg-[#FF6565] text-[#FFEBEB] w-[24px] h-[24px] flex justify-center items-center ml-2">
+              {chatRequest}
+            </div>
+          )}
         </div>
       </div>
       <div
         className={`flex flex-col max-h-[40vh] p-4 overflow-x-hidden mt-4 w-full`}
       >
         {filteredChats?.map((el: Chat) => {
-          return <ChatList data={el} key={el.id} userId={userId} handleListClick={() => { handleListClick(el?.status_joined); }}/>;
+          return (
+            <ChatList
+              data={el}
+              key={el.id}
+              userId={userId}
+              handleListClick={() => {
+                handleListClick(el?.status_joined);
+              }}
+            />
+          );
         })}
       </div>
     </div>

@@ -87,7 +87,11 @@ const TopGainers: React.FC = () => {
             {t('homepage.section4.text1')}
           </Typography>
         </div>
-        <TopgainersAssetHomepage data={topGainers} loading={isLoading} preferredCurrency={userInfo?.preferredCurrency ?? 'IDR'}/>
+        <TopgainersAssetHomepage
+          data={topGainers}
+          loading={isLoading}
+          preferredCurrency={userInfo?.preferredCurrency ?? 'IDR'}
+        />
       </div>
     </div>
   );

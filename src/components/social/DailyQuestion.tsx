@@ -10,7 +10,12 @@ import i18n from '@/utils/common/i18n';
 import { type DailyQuizRes } from '@/utils/interfaces/quiz.interfaces';
 import { type AxiosError } from 'axios';
 import Image from 'next/image';
-import React, { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import React, {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useState
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 interface props {
@@ -174,7 +179,8 @@ const DailyQuestion: React.FC<props> = ({
               <p className="text-sm">
                 {t('social.dailyQuiz.answer')}:{' '}
                 {`${
-                  data?.data.daily_quiz[i18n.language as 'en' | 'id']?.options?.option4?.option as string
+                  data?.data.daily_quiz[i18n.language as 'en' | 'id']?.options
+                    ?.option4?.option as string
                 }`}
               </p>
             </div>

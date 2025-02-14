@@ -89,15 +89,17 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
     } catch (error: any) {
       if (
         error?.status === 404 &&
-        error?.response?.data?.message === 'invitation code not found on this battle'
+        error?.response?.data?.message ===
+          'invitation code not found on this battle'
       ) {
-        setIsInvalidCode(true)
+        setIsInvalidCode(true);
         setTimeout(() => {
-          setIsInvalidCode(false)
-        }, 5000)
+          setIsInvalidCode(false);
+        }, 5000);
       } else if (
         error?.status === 404 &&
-        error?.response?.data?.message !== 'invitation code not found on this battle'
+        error?.response?.data?.message !==
+          'invitation code not found on this battle'
       ) {
         toast.error(error?.response?.data?.message);
       } else {

@@ -74,7 +74,7 @@ const TournamentDetail: React.FC = () => {
     try {
       const response: StatusSubscription = await getSubscriptionStatus();
       if (response !== undefined) {
-      setDataSubscription(response);
+        setDataSubscription(response);
       }
     } catch {}
   };
@@ -233,7 +233,6 @@ const TournamentDetail: React.FC = () => {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);
-  
 
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions

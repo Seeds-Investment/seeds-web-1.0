@@ -2045,10 +2045,11 @@ export default {
     done: 'Done',
     seeQRCode: 'See QR Code',
     expired: {
-      text1: "Your QR Code has expired",
-      text2: "Please make the purchase again and ensure that your payment has been completed in time"
+      text1: 'Your QR Code has expired',
+      text2:
+        'Please make the purchase again and ensure that your payment has been completed in time'
     },
-    repeat: "Repeat Purchase",
+    repeat: 'Repeat Purchase',
     completePayment: 'Complete the payment in',
     clock: {
       day: 'day',
@@ -2060,7 +2061,7 @@ export default {
       second: 'second',
       seconds: 'seconds',
       and: 'and'
-    },
+    }
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Please input your email correctly',
@@ -2873,7 +2874,8 @@ export default {
       'Want to change or continue your SeedsPlan for the next activation? Pay now, and you won’t have to worry about it later!',
     text18:
       '*Your next plan will activate automatically after your current plan expires.',
-    text19: '*You have subscribed to 2 Seeds Plan. You have to wait for your first package to run out to subscribe again.',
+    text19:
+      '*You have subscribed to 2 Seeds Plan. You have to wait for your first package to run out to subscribe again.',
     month: 'Month',
     months: 'Months',
     year: 'Year',

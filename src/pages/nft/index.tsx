@@ -62,7 +62,6 @@ const NFTDashboard: React.FC = () => {
       );
     } catch (error) {
       setErrorMessage('An unexpected error occurred');
-      console.error('Wallet connection error:', error);
     } finally {
       setIsLoading(false);
     }

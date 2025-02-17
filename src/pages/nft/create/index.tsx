@@ -127,7 +127,6 @@ const CreateNFT = (): ReactElement => {
       setDialogOpen(true);
       router.push('/my-profile');
     } catch (error: any) {
-      console.error(error);
       setDialogMessage(`Gagal membuat NFT: ${error.message}`);
       setDialogSuccess(false);
       setDialogOpen(true);

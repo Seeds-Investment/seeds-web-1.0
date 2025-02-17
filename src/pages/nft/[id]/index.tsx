@@ -89,7 +89,6 @@ const NFTDetail: React.FC = () => {
           data.owner.wallet_address === sessionStorage.getItem('walletSession')
         );
       } catch (error) {
-        console.error('Error fetching NFT details:', error);
       } finally {
         setIsLoading(false);
       }
@@ -195,7 +194,6 @@ const NFTDetail: React.FC = () => {
         message: `Transaction failed: ${errorMessage}`
       });
       setOpen({ open: true, state: 3 });
-      console.error('Transaction Error:', error);
     }
   };
 
@@ -208,7 +206,6 @@ const NFTDetail: React.FC = () => {
       setOpen({ open: true, state: 0 });
       return;
     }
-    console.log('Handling resell with price:', newPrice);
 
     try {
       const account = await loadAccount(walletAddress);
@@ -231,16 +228,6 @@ const NFTDetail: React.FC = () => {
         passphrase
       );
 
-      console.log(
-        sellingAsset,
-        buyingAsset,
-        newPrice,
-        sellOfferXDR,
-        signedTransaction
-      );
-
-      console.log('Signed transaction response:', signedTransaction);
-
       const accessToken = localStorage.getItem('accessToken');
       const updateResponse = await fetch(
         `${API_BASE_URL}/nft/sell/${nftDetail?.id}`,
@@ -253,8 +240,6 @@ const NFTDetail: React.FC = () => {
           body: JSON.stringify({ price: newPrice })
         }
       );
-
-      console.log('Update response:', updateResponse);
 
       if (!updateResponse.ok) {
         throw new Error('Failed to update NFT status');
@@ -269,7 +254,6 @@ const NFTDetail: React.FC = () => {
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : 'An unexpected error occurred';
-      console.error('Error during resell:', errorMessage);
       setTransactionStatus({
         type: 'error',
         message: `Resell failed: ${errorMessage}`

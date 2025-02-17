@@ -90,7 +90,6 @@ const fetchUserId = async (): Promise<string | null> => {
     const data = await response.json();
     return data.id;
   } catch (error: any) {
-    console.error('Error fetching User ID:', error.message);
     return null;
   }
 };
@@ -156,7 +155,6 @@ const UnderLineTab = ({
         const myData = await getUserInfo();
         setMyInfo(myData);
       } catch (error: any) {
-        console.error('Error fetching data:', error.message);
       }
     };
 
@@ -210,7 +208,6 @@ const UnderLineTab = ({
                             router
                               .push(`/connect/post/${el?.circle_id as string}`)
                               .catch((err: any) => {
-                                console.error(err);
                               });
                           }
                         }}
@@ -492,7 +489,6 @@ const UnderLineTab = ({
         const myData = await getUserInfo();
         setMyInfo(myData);
       } catch (error: any) {
-        console.error('Error fetching data:', error.message);
       }
     };
 

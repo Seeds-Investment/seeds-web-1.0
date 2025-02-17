@@ -38,7 +38,7 @@ const NFTDashboard: React.FC = () => {
 
     try {
       const result = await connectWallet();
-      if (result.success) {
+      if (result.success as boolean) {
         const publicKey = result.publicKey;
         setWalletAddress(publicKey);
         sessionStorage.setItem('walletSession', publicKey);

@@ -1,29 +1,27 @@
 import NFTDialog from '@/components/nft/dialog';
 import {
+  createBuyOffer,
+  createSellOffer,
+  createTrustline,
+  loadAccount,
+  signAndSubmitTransaction
+} from '@/lib/diamnet';
+import {
   Accordion,
   AccordionBody,
   AccordionHeader,
   Button,
   Card
 } from '@material-tailwind/react';
+import { Asset } from 'diamnet-sdk';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import logo from 'public/assets/logo-seeds.png';
 import React, { useEffect, useState } from 'react';
 import { FiArrowLeft, FiChevronRight } from 'react-icons/fi';
-import { Asset } from 'diamnet-sdk';
-import {
-  loadAccount,
-  createTrustline,
-  createBuyOffer,
-  createPassiveSellOffer,
-  signAndSubmitTransaction,
-  createSellOffer
-} from '@/lib/diamnet';
 
 const passphrase = 'Diamante Testnet 2024';
 
-type NFT = {
+interface NFT {
   id: string;
   name: string;
   description: string;
@@ -39,12 +37,12 @@ type NFT = {
     wallet_address: string;
     avatar: string;
   };
-};
+}
 
-type TransactionStatus = {
+interface TransactionStatus {
   type: 'success' | 'error' | 'warning' | 'info' | 'loading';
   message: string;
-};
+}
 
 const NFTDetail: React.FC = () => {
   const router = useRouter();
@@ -54,8 +52,6 @@ const NFTDetail: React.FC = () => {
     state: 0
   });
   const [detail, setDetail] = useState(false);
-  const [transaction, setTransaction] = useState(false);
-  const [wallet, setWallet] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [nftDetail, setNftDetail] = useState<NFT | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -68,19 +64,18 @@ const NFTDetail: React.FC = () => {
 
   useEffect(() => {
     const sessionWallet = sessionStorage.getItem('walletSession');
-    if (sessionWallet) {
+    if (sessionWallet !== null) {
       setWalletAddress(sessionWallet);
-      setWallet(true);
     }
   }, []);
 
   useEffect(() => {
-    if (!id) return;
+    if (id === undefined) return;
 
-    const fetchNFTDetail = async () => {
+    const fetchNFTDetail = async (): Promise<void> => {
       setIsLoading(true);
       try {
-        const response = await fetch(`${API_BASE_URL}/nft/${id}`);
+        const response = await fetch(`${API_BASE_URL}/nft/${id as string}`);
         if (!response.ok)
           throw new Error(`Failed to fetch NFT: ${response.status}`);
         const data: NFT = await response.json();
@@ -94,18 +89,18 @@ const NFTDetail: React.FC = () => {
       }
     };
 
-    fetchNFTDetail();
+    void fetchNFTDetail();
   }, [id]);
 
   useEffect(() => {
     // Update isOwner whenever nftDetail or walletAddress change
-    if (nftDetail && walletAddress) {
+    if (nftDetail !== null && walletAddress !== null) {
       setIsOwner(nftDetail.owner.wallet_address === walletAddress);
     }
   }, [nftDetail, walletAddress]);
 
-  const handleBuy = async () => {
-    if (!walletAddress || !nftDetail || !id) {
+  const handleBuy = async (): Promise<void> => {
+    if (walletAddress === null || nftDetail === null || id === undefined) {
       setTransactionStatus({
         type: 'error',
         message: 'Wallet not connected or NFT data missing'
@@ -165,24 +160,27 @@ const NFTDetail: React.FC = () => {
         message: 'Updating ownership records...'
       });
       const accessToken = localStorage.getItem('accessToken');
-      const apiResponse = await fetch(`${API_BASE_URL}/nft/buy/${id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-        body: JSON.stringify({})
-      });
+      const apiResponse = await fetch(
+        `${API_BASE_URL}/nft/buy/${id as string}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken as string}`
+          },
+          body: JSON.stringify({})
+        }
+      );
 
       if (!apiResponse.ok) {
         const errorData = await apiResponse.json();
-        throw new Error(errorData.message || 'API update failed');
+        throw new Error(errorData.message ?? 'API update failed');
       }
 
       setTransactionStatus({
         type: 'success',
         message: `NFT purchased successfully!\nTransaction Hash: ${
-          buyOfferResult.message?.data || ''
+          (buyOfferResult.message?.data as string) ?? ''
         }`
       });
       setOpen({ open: true, state: 2 });
@@ -197,8 +195,8 @@ const NFTDetail: React.FC = () => {
     }
   };
 
-  const handleResell = async (newPrice: number) => {
-    if (!walletAddress || !nftDetail) {
+  const handleResell = async (newPrice: number): Promise<void> => {
+    if (walletAddress === null || nftDetail === null) {
       setTransactionStatus({
         type: 'error',
         message: 'Wallet not connected or NFT data missing'
@@ -223,10 +221,7 @@ const NFTDetail: React.FC = () => {
         newPrice
       );
 
-      const signedTransaction = await signAndSubmitTransaction(
-        sellOfferXDR,
-        passphrase
-      );
+      await signAndSubmitTransaction(sellOfferXDR, passphrase);
 
       const accessToken = localStorage.getItem('accessToken');
       const updateResponse = await fetch(
@@ -235,7 +230,7 @@ const NFTDetail: React.FC = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
+            Authorization: `Bearer ${accessToken as string}`
           },
           body: JSON.stringify({ price: newPrice })
         }
@@ -262,7 +257,7 @@ const NFTDetail: React.FC = () => {
     }
   };
 
-  const getButtonState = () => {
+  const getButtonState = (): any => {
     if (isOwner) {
       if (nftDetail?.status === 'TRUE') {
         return {
@@ -279,7 +274,7 @@ const NFTDetail: React.FC = () => {
             prompt('Enter new price in DIAM') as string
           );
           if (!isNaN(newPrice)) {
-            handleResell(newPrice);
+            void handleResell(newPrice);
           } else {
             alert('Invalid price entered!');
           }
@@ -289,7 +284,9 @@ const NFTDetail: React.FC = () => {
     return {
       text: 'BUY NFT',
       disabled: false,
-      action: () => setOpen({ open: true, state: 0 })
+      action: () => {
+        setOpen({ open: true, state: 0 });
+      }
     };
   };
 
@@ -297,14 +294,7 @@ const NFTDetail: React.FC = () => {
     return <p className="text-center mt-10">Loading NFT details...</p>;
   }
 
-  if (
-    !nftDetail ||
-    !nftDetail.status ||
-    !nftDetail.owner.wallet_address ||
-    !nftDetail.price ||
-    !nftDetail.name ||
-    !nftDetail.image_url
-  ) {
+  if (nftDetail === null) {
     return (
       <p className="text-red-500 text-center mt-10">
         NFT not found. Please check the ID and try again.
@@ -320,7 +310,9 @@ const NFTDetail: React.FC = () => {
         <div className="flex justify-between items-center py-5 px-4 md:hidden font-semibold text-base text-neutral-medium font-poppins">
           <FiArrowLeft
             size={24}
-            onClick={() => router.back()}
+            onClick={() => {
+              router.back();
+            }}
             className="cursor-pointer"
           />
           <p>Detail NFT</p>
@@ -338,7 +330,8 @@ const NFTDetail: React.FC = () => {
             className="bg-[#3AC4A0] p-2.5 font-poppins font-semibold text-sm rounded-full normal-case"
             onClick={buttonState.action}
             disabled={
-              buttonState.disabled || transactionStatus?.type === 'loading'
+              buttonState.disabled === true ||
+              transactionStatus?.type === 'loading'
             }
           >
             {transactionStatus?.type === 'loading'
@@ -404,7 +397,9 @@ const NFTDetail: React.FC = () => {
             className="py-2.5 ps-3.5 pe-5 bg-[#F3F4F8] border border-[#E9E9E9] rounded-lg"
           >
             <AccordionHeader
-              onClick={() => setDetail(!detail)}
+              onClick={() => {
+                setDetail(!detail);
+              }}
               className="p-0 font-semibold text-lg text-neutral-medium font-poppins border-none"
             >
               Token Detail
@@ -446,8 +441,12 @@ const NFTDetail: React.FC = () => {
         nftDetail={nftDetail}
         handleBuy={handleBuy}
         walletAddress={walletAddress}
-        handleOpen={() => setOpen({ open: false, state: 0 })}
-        handleChange={state => setOpen({ open: true, state: state })}
+        handleOpen={() => {
+          setOpen({ open: false, state: 0 });
+        }}
+        handleChange={state => {
+          setOpen({ open: true, state: state });
+        }}
       />
     </>
   );

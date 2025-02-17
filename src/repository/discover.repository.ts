@@ -224,12 +224,10 @@ export const getCertificateById = async (id: string): Promise<any> => {
   }
 };
 
-export const getMyCertificate = async (
-  params: {
-    page: number,
-    limit: number
-  }
-): Promise<any> => {
+export const getMyCertificate = async (params: {
+  page: number;
+  limit: number;
+}): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -249,7 +247,9 @@ export const getMyCertificate = async (
   }
 };
 
-export const sendCertificateToEmail = async (ticketId: string): Promise<any> => {
+export const sendCertificateToEmail = async (
+  ticketId: string
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -263,11 +263,10 @@ export const sendCertificateToEmail = async (ticketId: string): Promise<any> => 
       {
         headers: {
           Accept: 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
+          Authorization: `Bearer ${accessToken}`
+        }
       }
     );
-
   } catch (error) {
     await Promise.reject(error);
   }

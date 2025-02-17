@@ -4,6 +4,7 @@ import LanguageContext from '@/store/language/language-context';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import 'swiper/css';
 
 export interface ArticleListRoot {
@@ -11,7 +12,7 @@ export interface ArticleListRoot {
   metadata: Metadata;
 }
 
-interface Article {
+export interface Article {
   id: string;
   title: string;
   author: string;
@@ -50,7 +51,7 @@ export default function NewsPage(): React.ReactElement {
     totalPage: 9
   });
 
-  async function fetchArticles(): Promise<void> {
+  const fetchArticles = async (): Promise<void> => {
     try {
       const response = await getArticle({
         ...params,
@@ -58,19 +59,14 @@ export default function NewsPage(): React.ReactElement {
         category: params.category
       });
       setArticles(response.data !== null ? response.data : []);
-    } catch (error) {
-      console.error('Error fetching articles:', error);
+    } catch (error: any) {
+      toast.error('Error fetching articles:', error.response.data.message);
     }
-  }
+  };
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      await fetchArticles();
-    };
-    fetchData().catch(error => {
-      console.error('Error in fetchData:', error);
-    });
-  }, [params]);
+    void fetchArticles();
+  }, [params?.language]);
 
   useEffect(() => {
     setParams(prevParams => ({
@@ -83,8 +79,8 @@ export default function NewsPage(): React.ReactElement {
     <>
       <div className="flex flex-col gap-10">
         <div className="grid z-10 lg:grid-cols-4 gap-4">
-          {articles?.map(article => {
-            return <NewsCard key={article.id} articleId={article.id} />;
+          {articles?.map((article, index) => {
+            return <NewsCard key={article.id} articles={articles[index]} />;
           })}
         </div>
         <div className="text-center justify-center">

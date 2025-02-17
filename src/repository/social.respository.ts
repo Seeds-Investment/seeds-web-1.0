@@ -153,12 +153,10 @@ export const getSocialPostHashtag = async (id: any): Promise<any> => {
   });
 };
 
-export const getSavedPost = async (
-  params: {
-    page: number,
-    limit: number
-  }
-): Promise<any> => {
+export const getSavedPost = async (params: {
+  page: number;
+  limit: number;
+}): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 

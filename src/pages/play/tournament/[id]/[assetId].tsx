@@ -89,7 +89,7 @@ const AssetDetailPage: React.FC = () => {
   const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {
       const response = await getPlayAssets(id as string, assetId as string, {
-        currency: currency
+        currency
       });
       if (typeof response === 'object') {
         setPortfolio(response.data);
@@ -361,7 +361,8 @@ const AssetDetailPage: React.FC = () => {
               variant="filled"
               disabled={
                 portfolio?.total_value === undefined ||
-                portfolio?.total_value === 0
+                portfolio?.total_value === 0 ||
+                detailTournament?.status === 'PAST'
               }
               className="normal-case rounded-full w-full py-2 bg-[#DD2525] text-white font-poppins"
               onClick={() => {
@@ -391,7 +392,8 @@ const AssetDetailPage: React.FC = () => {
             <Button
               variant="filled"
               disabled={
-                (ballance?.balance ?? 0) < (data?.lastPrice?.close ?? 0)
+                (ballance?.balance ?? 0) < (data?.lastPrice?.close ?? 0) ||
+                detailTournament?.status === 'PAST'
               }
               className="normal-case rounded-full w-full py-2 bg-[#3AC4A0] text-white font-poppins"
               onClick={() => {

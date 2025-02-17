@@ -25,7 +25,7 @@ const marketService = baseAxios(
 export const getTrendingAssets = async (params: {
   page: number;
   limit: number;
-  sortBy:string;
+  sortBy: string;
 }): Promise<any> => {
   try {
     let response = await tournamentService.get('asset/trending', {

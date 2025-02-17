@@ -77,7 +77,7 @@ export const formatNumber = (
 
 export const formatAssetPrice = (price: number): string => {
   let roundedPrice: number;
-  
+
   if (price > 11 || price < -11) {
     roundedPrice = Math.round(price * 100) / 100;
   } else if ((price < 11 && price > 1) || (price > -11 && price < -1)) {

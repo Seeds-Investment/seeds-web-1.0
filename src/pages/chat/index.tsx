@@ -212,12 +212,12 @@ const ChatPages: React.FC = () => {
 
   const handleListClick = (statusIsJoined: boolean): void => {
     if (statusIsJoined) {
-      setActiveTab('COMMUNITY')
+      setActiveTab('COMMUNITY');
     } else {
       if (activeTab !== 'REQUEST') {
-        setActiveTab('PERSONAL')
+        setActiveTab('PERSONAL');
       } else {
-        setActiveTab('REQUEST')
+        setActiveTab('REQUEST');
       }
     }
     setIsDropdownOpen(false);
@@ -307,7 +307,6 @@ const ChatPages: React.FC = () => {
     try {
       setIsLoading(true);
       if (activeTab !== 'REQUEST') {
-
         const response = await getListChat({
           ...filter,
           type: 'PERSONAL'
@@ -320,16 +319,16 @@ const ChatPages: React.FC = () => {
           ...filter,
           unread: true,
           type: 'REQUEST'
-
         });
 
         const newChatList = response.data;
         const newChatGroupList = getListChatGroup.data;
         const combinedChatList = [...newChatList, ...newChatGroupList];
-        combinedChatList.sort((a, b) => 
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        combinedChatList.sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         );
-        setChatRequest(getListChatRequest?.data?.length ?? 0)
+        setChatRequest(getListChatRequest?.data?.length ?? 0);
         setChatList(combinedChatList);
       } else {
         const getListChatRequest = await getListChat({
@@ -403,7 +402,7 @@ const ChatPages: React.FC = () => {
     } finally {
       setIsDeletePopupOpen(false);
       await router.push('/chat');
-      await fetchListChat()
+      await fetchListChat();
       setIsChatActive(false);
     }
   };
@@ -414,8 +413,8 @@ const ChatPages: React.FC = () => {
     } catch (error: any) {
       toast('Oops! Error when try to accept request');
     } finally {
-      setActiveTab('PERSONAL')
-      setIsChatActive(false)
+      setActiveTab('PERSONAL');
+      setIsChatActive(false);
     }
   };
 
@@ -425,8 +424,8 @@ const ChatPages: React.FC = () => {
     } catch (error: any) {
       toast('Oops! Error when try to reject request');
     } finally {
-      setActiveTab('PERSONAL')
-      setIsChatActive(false)
+      setActiveTab('PERSONAL');
+      setIsChatActive(false);
     }
   };
 
@@ -441,7 +440,7 @@ const ChatPages: React.FC = () => {
     } finally {
       setIsDeletePopupOpen(false);
       setIsLeavePopupOpen(false);
-      setIsChatActive(false)
+      setIsChatActive(false);
     }
   };
 

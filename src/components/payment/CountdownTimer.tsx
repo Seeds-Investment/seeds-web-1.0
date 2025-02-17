@@ -43,7 +43,7 @@ const CountdownTimer: React.FC<CountDownProps> = ({ deadline, className }) => {
   };
 
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
@@ -62,16 +62,32 @@ const CountdownTimer: React.FC<CountDownProps> = ({ deadline, className }) => {
     const parts = [];
 
     if (timeLeft.days !== 0) {
-      parts.push(timeLeft.days > 1 ? `${formatTime(timeLeft.days)} ${t('bnc.clock.days')}` : `${formatTime(timeLeft.days)} ${t('bnc.clock.day')}`);
+      parts.push(
+        timeLeft.days > 1
+          ? `${formatTime(timeLeft.days)} ${t('bnc.clock.days')}`
+          : `${formatTime(timeLeft.days)} ${t('bnc.clock.day')}`
+      );
     }
     if (timeLeft.hours !== 0) {
-      parts.push(timeLeft.hours > 1 ? `${formatTime(timeLeft.hours)} ${t('bnc.clock.hours')}` : `${formatTime(timeLeft.hours)} ${t('bnc.clock.hour')}`);
+      parts.push(
+        timeLeft.hours > 1
+          ? `${formatTime(timeLeft.hours)} ${t('bnc.clock.hours')}`
+          : `${formatTime(timeLeft.hours)} ${t('bnc.clock.hour')}`
+      );
     }
     if (timeLeft.minutes !== 0) {
-      parts.push(timeLeft.minutes > 1 ? `${formatTime(timeLeft.minutes)} ${t('bnc.clock.minutes')}` : `${formatTime(timeLeft.minutes)} ${t('bnc.clock.minute')}`);
+      parts.push(
+        timeLeft.minutes > 1
+          ? `${formatTime(timeLeft.minutes)} ${t('bnc.clock.minutes')}`
+          : `${formatTime(timeLeft.minutes)} ${t('bnc.clock.minute')}`
+      );
     }
     if (timeLeft.seconds !== 0) {
-      parts.push(timeLeft.seconds > 1 ? `${formatTime(timeLeft.seconds)} ${t('bnc.clock.seconds')}` : `${formatTime(timeLeft.seconds)} ${t('bnc.clock.second')}`);
+      parts.push(
+        timeLeft.seconds > 1
+          ? `${formatTime(timeLeft.seconds)} ${t('bnc.clock.seconds')}`
+          : `${formatTime(timeLeft.seconds)} ${t('bnc.clock.second')}`
+      );
     }
 
     if (parts.length === 0) return '';

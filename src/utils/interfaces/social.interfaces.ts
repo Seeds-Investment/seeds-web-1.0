@@ -48,16 +48,15 @@ export interface Owner {
 }
 
 export interface CircleI {
-  avatar: string
-  cover: string
-  monthly_time: number
-  name: string
-  premium_fee: number
-  role: string
-  status_joined: boolean
-  type: string
+  avatar: string;
+  cover: string;
+  monthly_time: number;
+  name: string;
+  premium_fee: number;
+  role: string;
+  status_joined: boolean;
+  type: string;
 }
-
 
 export interface QrisDetail {
   admin_fee: number;
@@ -88,8 +87,8 @@ export interface UserInfoI {
 }
 
 export interface SavedPostMetadata {
-  total: number
-  currentPage: number
-  limit: number
-  totalPage: number
+  total: number;
+  currentPage: number;
+  limit: number;
+  totalPage: number;
 }

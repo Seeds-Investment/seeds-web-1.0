@@ -350,18 +350,19 @@ const SeedsPlan: React.FC = () => {
                     {t('seedsPlan.text17')}
                   </Typography>
                 </div>
-                {
-                  subscriptionStatus?.incoming_subscription !== null &&
-                    <Typography className="font-poppins italic text-base text-[#A99CD1] text-justify">
-                      {t('seedsPlan.text19')}
-                    </Typography>
-                }
+                {subscriptionStatus?.incoming_subscription !== null && (
+                  <Typography className="font-poppins italic text-base text-[#A99CD1] text-justify">
+                    {t('seedsPlan.text19')}
+                  </Typography>
+                )}
                 <div className="flex flex-wrap-reverse md:flex-nowrap justify-center items-center md:gap-7 gap-4">
                   <Button
                     onClick={async () => {
                       await router.push('/seedsplan/change-plan');
                     }}
-                    disabled={subscriptionStatus?.incoming_subscription !== null}
+                    disabled={
+                      subscriptionStatus?.incoming_subscription !== null
+                    }
                     className="font-poppins text-sm font-semibold capitalize bg-[#3AC4A0] border border-[#3AC4A0] text-white rounded-full md:w-[342px] w-full h-[42px] flex items-center justify-center"
                   >
                     {t('seedsPlan.button6')}
@@ -373,7 +374,7 @@ const SeedsPlan: React.FC = () => {
                 <div className="col-span-2 w-full rounded-none px-2 pb-4 to-[#536D7FCC] md:rounded-xl bg-gradient-to-b from-[#9ec849] py-4">
                   <div className="md:mt-4 flex flex-row gap-2 items-center mb-4 w-full">
                     <div className="rounded-3xl bg-white w-full">
-                      {packagePlanList.map(item => (
+                      {packagePlanList?.map(item => (
                         <button
                           key={item.name}
                           className={`text-sm md:text-base md:p-3 p-2 font-poppins w-4/12 rounded-full duration-100 ${

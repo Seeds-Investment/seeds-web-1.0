@@ -81,23 +81,25 @@ const CardCircle: React.FC<props> = ({ data }) => {
   };
   const router = useRouter();
   const breakpoints = {
-    1280: { slidesPerView: 6 },
-    1080: { slidesPerView: 5 },
-    720: { slidesPerView: 3 },
-    480: { slidesPerView: 3 },
-    320: { slidesPerView: 1 }
+    320: { slidesPerView: 1, spaceBetween: 8 },
+    480: { slidesPerView: 2, spaceBetween: 12 },
+    720: { slidesPerView: 3, spaceBetween: 12 },
+    1080: { slidesPerView: 4, spaceBetween: 16 },
+    1280: { slidesPerView: 5, spaceBetween: 16 },
+    1536: { slidesPerView: 6, spaceBetween: 20 }
   };
   const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center justify-center gap-2 w-full">
       <Swiper
-        className="w-full flex gap-4"
+        className="w-full flex"
         loop={true}
         autoplay={{ delay: 3000 }}
         modules={[Autoplay]}
         slidesPerView={6}
+        spaceBetween={16}
         breakpoints={breakpoints}
-        centeredSlides={true}
+        centeredSlides={false}
         onSwiper={swiper => {
           setSwiperInstance(swiper);
         }}
@@ -112,9 +114,9 @@ const CardCircle: React.FC<props> = ({ data }) => {
           };
           return (
             <SwiperSlide key={idx}>
-              <Card className="md:w-40 w-full h-64 flex flex-col gap-0">
+              <Card className="w-full md:w-40 h-64 flex flex-col gap-0">
                 <CardHeader
-                  className="p-0 m-0 rounded-b-none"
+                  className="p-0 m-0 rounded-b-none relative h-36 overflow-hidden"
                   shadow={false}
                   floated={false}
                   style={myStyle}
@@ -122,47 +124,40 @@ const CardCircle: React.FC<props> = ({ data }) => {
                   <Image
                     src={data.cover}
                     alt={data.cover}
-                    width={300}
-                    height={300}
-                    className="relative w-full h-56 rounded-t-[15px] object-cover"
+                    layout="fill"
+                    objectFit="cover"
+                    className="w-full h-full"
                   />
                   {data.type !== 'free' ? (
-                    <div className="flex w-full h-20 pe-1 justify-end items-center absolute top-0">
-                      <div className="flex lg:w-[70px] lg:h-[25px] w-20 h-6 absolute overflow-hidden bg-white rounded-full lg:gap-[5px] gap-[2.39px] items-center justify-center border border-none">
-                        <Image
-                          src={chrownCirclePremium.src}
-                          alt="crown"
-                          className="lg:w-[15.1px] lg:h-[15.1px] w-4 h-4"
-                          width={300}
-                          height={300}
-                        />
-                        <Typography className="lg:text-[10.10px] lg:leading-[20.22px] text-xs leading-[9.56px] text-[#3AC4A0] font-semibold font-poppins">
-                          Premium
-                        </Typography>
-                      </div>
+                    <div className="absolute top-1 right-1 bg-white px-2 py-1 rounded-full flex items-center shadow-sm">
+                      <Image
+                        src={chrownCirclePremium.src}
+                        alt="crown"
+                        width={15}
+                        height={15}
+                      />
+                      <Typography className="text-xs text-[#3AC4A0] font-semibold ml-1">
+                        Premium
+                      </Typography>
                     </div>
                   ) : null}
                 </CardHeader>
                 <CardBody className="w-full bg-[#F3F4F8] py-3 px-2">
-                  <div className="flex flex-col h-20 items-start justify-center gap-1">
-                    <Typography className="font-poppins font-semibold text-xs text-[#000000]">
-                      {data.name}
-                    </Typography>
-                    <Typography className="font-poppins text-xs text-[#7C7C7C]">
-                      {`${data.total_member}${' '}${t(
-                        'homepage.section5.cardcircletext1'
-                      )}`}
-                    </Typography>
-                  </div>
+                  <Typography className="font-poppins font-semibold text-xs text-[#000000]">
+                    {data.name}
+                  </Typography>
+                  <Typography className="font-poppins text-xs text-[#7C7C7C]">
+                    {`${data.total_member} ${t(
+                      'homepage.section5.cardcircletext1'
+                    )}`}
+                  </Typography>
                   <Button
-                    className="bg-[#3AC4A0] w-full h-2 items-center justify-center flex rounded-[25px]"
+                    className="mt-2 bg-[#3AC4A0] w-full py-1 text-xs text-white rounded-[25px] hover:font-semibold"
                     onClick={async () => {
                       await router.push(`/connect/post/${data.id}`);
                     }}
                   >
-                    <Typography className="text-xs font-poppins text-white hover:font-semibold">
-                      join
-                    </Typography>
+                    Join
                   </Button>
                 </CardBody>
               </Card>

@@ -12,7 +12,10 @@ import {
   getMyCertificate
 } from '@/repository/discover.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { type CertificateI, type MyCertificateI } from '@/utils/interfaces/event.interface';
+import {
+  type CertificateI,
+  type MyCertificateI
+} from '@/utils/interfaces/event.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -20,15 +23,15 @@ import { useRouter } from 'next/router';
 import { EventIcon, MyCertificateIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import { initialCertificate } from './[id]';
 
 interface CertificateMetadataI {
-  total: number
-  current_page: number
-  limit: number
-  total_page: number
+  total: number;
+  current_page: number;
+  limit: number;
+  total_page: number;
 }
 
 const MyCertificate: React.FC = () => {
@@ -38,7 +41,8 @@ const MyCertificate: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [loading, setLoading] = useState<boolean>(false);
   const [certificateList, setCertificateList] = useState<MyCertificateI[]>([]);
-  const [certificateMetadata, setCertificateMetadata] = useState<CertificateMetadataI>();
+  const [certificateMetadata, setCertificateMetadata] =
+    useState<CertificateMetadataI>();
   const [certificateData, setCertificateData] = useState<CertificateI>();
   const [chosenCertificate, setChosenCertificate] = useState<number>(0);
   const [myCertificateParams, setMyCertificateParams] = useState({
@@ -56,13 +60,9 @@ const MyCertificate: React.FC = () => {
 
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
-      void fetchMyCertificates(myCertificateParams)
+      void fetchMyCertificates(myCertificateParams);
     }
-  }, [
-    id,
-    userInfo,
-    myCertificateParams.page
-  ]);
+  }, [id, userInfo, myCertificateParams.page]);
 
   useEffect(() => {
     if (userInfo !== undefined) {
@@ -74,8 +74,8 @@ const MyCertificate: React.FC = () => {
 
   useEffect(() => {
     if (triggerCertificate) {
-      void fetchCertificateById(certificateList[chosenCertificate]?.ticket_id)
-      setIsShowCertificate(true)
+      void fetchCertificateById(certificateList[chosenCertificate]?.ticket_id);
+      setIsShowCertificate(true);
     }
   }, [triggerCertificate]);
 
@@ -94,8 +94,8 @@ const MyCertificate: React.FC = () => {
     try {
       setLoading(true);
       const response = await getMyCertificate(myCertificateParams);
-      setCertificateList(response?.data)
-      setCertificateMetadata(response?.metadata)
+      setCertificateList(response?.data);
+      setCertificateMetadata(response?.metadata);
     } catch (error) {
       toast.error(`Error fetching certificate data: ${error as string}`);
     } finally {
@@ -107,8 +107,8 @@ const MyCertificate: React.FC = () => {
     try {
       setLoading(true);
       const response = await getCertificateById(id);
-      setCertificateData(response)
-      setTriggerCertificate(false)
+      setCertificateData(response);
+      setTriggerCertificate(false);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -116,7 +116,10 @@ const MyCertificate: React.FC = () => {
     }
   };
 
-  const base64ToBlob = (base64: string, type: string = 'application/pdf'): Blob => {
+  const base64ToBlob = (
+    base64: string,
+    type: string = 'application/pdf'
+  ): Blob => {
     const binary = atob(base64.replace(/\s/g, ''));
     const len = binary.length;
     const buffer = new ArrayBuffer(len);
@@ -136,28 +139,23 @@ const MyCertificate: React.FC = () => {
           }}
           eventName={certificateList[chosenCertificate]?.event_name ?? ''}
           certificateData={certificateData ?? initialCertificate}
-          file={URL.createObjectURL(base64ToBlob(certificateData?.pdf_data ?? ''))}
+          file={URL.createObjectURL(
+            base64ToBlob(certificateData?.pdf_data ?? '')
+          )}
         />
       )}
       <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
         <div className="flex justify-between w-full relative">
           <div
-            onClick={ async() => await router.push('/homepage/event')}
-            className='bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer absolute left-0 top-[-6px] lg:top-[-4px]'
+            onClick={async () => await router.push('/homepage/event')}
+            className="bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer absolute left-0 top-[-6px] lg:top-[-4px]"
           >
-            <Image
-              src={EventIcon}
-              alt={'EventIcon'}
-              width={20}
-              height={20}
-            />
+            <Image src={EventIcon} alt={'EventIcon'} width={20} height={20} />
           </div>
           <Typography className="w-full text-xl lg:text-2xl font-semibold text-center flex justify-center items-center">
-            {
-              certificateList?.length > 1
-                ? t('seedsEvent.myCertificates')
-                : t('seedsEvent.myCertificate')
-            }
+            {certificateList?.length > 1
+              ? t('seedsEvent.myCertificates')
+              : t('seedsEvent.myCertificate')}
           </Typography>
         </div>
       </div>
@@ -171,30 +169,30 @@ const MyCertificate: React.FC = () => {
                 <div
                   key={index}
                   onClick={() => {
-                    setChosenCertificate(index)
-                    setTriggerCertificate(true)
+                    setChosenCertificate(index);
+                    setTriggerCertificate(true);
                   }}
-                  className='flex justify-between items-center bg-[#F7F7F7] rounded-lg px-4 py-2 cursor-pointer hover:bg-[#e7e7e7] duration-300'
+                  className="flex justify-between items-center bg-[#F7F7F7] rounded-lg px-4 py-2 cursor-pointer hover:bg-[#e7e7e7] duration-300"
                 >
                   <div
                     key={index}
-                    className='flex justify-start items-center gap-4'
+                    className="flex justify-start items-center gap-4"
                   >
-                    <div className='flex justify-center items-center w-[45px] h-[45px] bg-seeds-button-green rounded-full'>
+                    <div className="flex justify-center items-center w-[45px] h-[45px] bg-seeds-button-green rounded-full">
                       <Image
                         src={MyCertificateIcon}
                         alt={'MyCertificateIcon'}
                         width={100}
                         height={100}
-                        className='w-[30px] h-[30px]'
+                        className="w-[30px] h-[30px]"
                       />
                     </div>
-                    <div className='font-poppins font-semibold text-[#262626]'>
+                    <div className="font-poppins font-semibold text-[#262626]">
                       {item?.event_name}
                     </div>
                   </div>
-                  <div className='w-[30px] h-[30px] flex justify-center items-center'>
-                    <IoIosArrowForward className='text-[#BDBDBD]'/>
+                  <div className="w-[30px] h-[30px] flex justify-center items-center">
+                    <IoIosArrowForward className="text-[#BDBDBD]" />
                   </div>
                 </div>
               ))}

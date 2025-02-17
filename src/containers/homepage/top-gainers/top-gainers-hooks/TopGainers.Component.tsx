@@ -13,9 +13,14 @@ import { type topgainers } from '../TopGainers.index';
 interface props {
   data: topgainers[];
   loading: boolean;
+  preferredCurrency: string;
 }
 
-const TopgainersAssetHomepage: React.FC<props> = ({ data, loading }) => {
+const TopgainersAssetHomepage: React.FC<props> = ({
+  data,
+  loading,
+  preferredCurrency
+}) => {
   const router = useRouter();
 
   const breakpoints = {
@@ -61,14 +66,15 @@ const TopgainersAssetHomepage: React.FC<props> = ({ data, loading }) => {
                         alt={data.asset_name}
                       />
                       <Typography className="font-poppins font-semibold text-[10px] uppercase">
-                        {data.asset_type}
+                        {data.asset_ticker} / {preferredCurrency}
                       </Typography>
                     </div>
                     <Typography className="font-semibold text-[rgb(38,38,38)] text-sm overflow-hidden">
-                      {data.asset_price.toLocaleString('id-ID', {
-                        style: 'currency',
-                        currency: 'IDR'
-                      }) ?? standartCurrency(data.asset_price)}
+                      {preferredCurrency ?? 'IDR'}
+                      {standartCurrency(data?.asset_price ?? 0).replace(
+                        'Rp',
+                        ''
+                      )}
                     </Typography>
                     <div className="flex w-full gap-1">
                       <Image

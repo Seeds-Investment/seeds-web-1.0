@@ -108,7 +108,7 @@ export const CardSlideQuiz: React.FC<props> = ({ data, loading = true }) => {
           autoFocus={true}
           onSwiper={setSwiperInstance}
         >
-          {data?.length >= 0 && data?.length !== null ? (
+          {data?.length > 0 && data !== null ? (
             data?.map((item, index: number) => {
               return (
                 <SwiperSlide key={index}>
@@ -127,9 +127,9 @@ export const CardSlideQuiz: React.FC<props> = ({ data, loading = true }) => {
                             : 'https://dev-assets.seeds.finance/storage/cloud/0ac00be5-98a3-40cf-b1c7-22d88a4affde.png'
                         }
                         alt={item.name}
-                        className="w-full h-40"
-                        width={300}
-                        height={50}
+                        className="w-full h-auto"
+                        width={1000}
+                        height={1000}
                       />
                     </CardHeader>
                     <CardBody className="py-2 px-3 w-full flex flex-col bg-gradient-to-r from-[#106B6E] to-[#96F7C1] gap-1">
@@ -143,7 +143,7 @@ export const CardSlideQuiz: React.FC<props> = ({ data, loading = true }) => {
                       </div>
                       <div className="border-dashed border border-separate-500"></div>
                       <div className="lg:w-full w-full p-1 flex flex-row justify-between items-end">
-                        <div className="flex gap-3 text-white ">
+                        <div className="flex gap-3 text-white justify-between w-full">
                           <div className="flex flex-col items-start justify-start">
                             <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
                               {`${t('quiz.entryFee')}`}
@@ -175,6 +175,8 @@ export const CardSlideQuiz: React.FC<props> = ({ data, loading = true }) => {
                             </Typography>
                           </div>
                         </div>
+                      </div>
+                      <div className="w-full flex justify-end items-end mb-2">
                         <Button
                           onClick={async () =>
                             await router.push(
@@ -184,7 +186,7 @@ export const CardSlideQuiz: React.FC<props> = ({ data, loading = true }) => {
                               }/play/quiz/${item.id}`
                             )
                           }
-                          className="flex justify-center items-center bg-white rounded-full text-[#3AC4A0] capitalize h-4"
+                          className="w-full md:w-1/2 flex justify-center items-center bg-white rounded-full text-[#3AC4A0] capitalize h-4"
                         >
                           {`${t('quiz.play')}`}
                         </Button>

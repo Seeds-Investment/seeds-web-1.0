@@ -126,25 +126,33 @@ const ModalEWallet = ({
       {renderPhoneInput()}
       <InlineText
         label={t('social.payment.socialFee')}
-        value={`${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(dataPost?.premium_fee ?? 0)}`}
+        value={`${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
+          dataPost?.premium_fee ?? 0
+        )}`}
         className="mb-2"
       />
       {showOtherFees && (
         <>
           <InlineText
             label={t(`${translationId}.serviceFeeLabel`)}
-            value={`${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(payment.service_fee ?? 0)}`}
+            value={`${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
+              payment.service_fee ?? 0
+            )}`}
             className="mb-2"
           />
           <InlineText
             label={t(`${translationId}.adminFeeLabel`)}
-            value={`${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(payment?.admin_fee ?? 0)}`}
+            value={`${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
+              payment?.admin_fee ?? 0
+            )}`}
             className="mb-2"
           />
           {payment.is_promo_available ? (
             <InlineText
               label={t(`${translationId}.adminFeeDiscountLabel`)}
-              value={`- ${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(payment.promo_price ?? 0)}`}
+              value={`- ${
+                userInfo?.preferredCurrency ?? 'IDR'
+              }${standartCurrency(payment.promo_price ?? 0)}`}
               className="mb-2"
             />
           ) : null}

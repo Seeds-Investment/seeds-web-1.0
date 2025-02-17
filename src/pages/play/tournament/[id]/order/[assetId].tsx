@@ -540,7 +540,7 @@ const BuyPage: React.FC = () => {
               {router.query?.transaction === 'buy' && t('buyAsset.text5')}
             </Typography>
             <Typography className="z-10 text-3xl font-poppins font-semibold  text-[#FFFFFF]">
-              {prefCurrency}
+              {(prefCurrency ?? 'idr').toUpperCase()}
               {` ${formatAssetPrice(
                 router.query?.transaction === 'buy'
                   ? ballance?.balance ?? 0
@@ -1102,7 +1102,7 @@ const BuyPage: React.FC = () => {
                               {t('playSimulation.marketPrice')}
                             </Typography>
                             <Typography className="text-[#262626] font-semibold text-xs">
-                              {userInfo?.preferredCurrency}
+                              {userInfo?.preferredCurrency}{' '}
                               {formatAssetPrice(
                                 lastPrice[
                                   prefCurrency as PreferredCurrencyI
@@ -1225,21 +1225,17 @@ const BuyPage: React.FC = () => {
                         </Typography>
                         {router.query.transaction === 'buy' ? (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
-                            {standartCurrency(amount).replace(
-                              'Rp',
-                              userInfo?.preferredCurrency as string
-                            )}
+                            {userInfo?.preferredCurrency}{' '}
+                            {standartCurrency(amount)}
                           </Typography>
                         ) : (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
+                            {userInfo?.preferredCurrency}{' '}
                             {standartCurrency(
                               +lotSell *
                                 (lastPrice[
                                   prefCurrency as PreferredCurrencyI
                                 ] ?? 0)
-                            ).replace(
-                              'Rp',
-                              userInfo?.preferredCurrency as string
                             )}
                           </Typography>
                         )}
@@ -1276,7 +1272,7 @@ const BuyPage: React.FC = () => {
                       }
                     }}
                   >
-                    {t('button.label.confirm')}
+                    {t('button.label.confirm')}afd
                   </Button>
                 </DialogFooter>
               </form>

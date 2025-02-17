@@ -67,7 +67,7 @@ const initialParamsPeople = {
 
 const initialParamsBanner = {
   page: 1,
-  limit: 10
+  type: 'exclusive'
 };
 
 const Section5New: React.FC = () => {
@@ -198,7 +198,7 @@ const Section5New: React.FC = () => {
           {categories.map(({ value }) => {
             return (
               <TabPanel key={value} value={value}>
-                <div className="flex w-full">
+                <div className="flex w-full h-fit">
                   {!isLoading ? (
                     multiTab === 'seedspedia' ? (
                       <CardSeedsPedia />

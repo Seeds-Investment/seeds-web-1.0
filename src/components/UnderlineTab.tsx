@@ -22,16 +22,16 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import logo from 'public/assets/logo-seeds.png';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
 
 const API_BASE_URL =
   process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
 
-type NFT = {
+interface NFT {
   id: string;
   name: string;
   description: string;
@@ -80,7 +80,7 @@ interface MyStyle extends React.CSSProperties {
 const fetchUserId = async (): Promise<string | null> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) throw new Error('Access token tidak ditemukan');
+    if (accessToken === null) throw new Error('Access token tidak ditemukan');
 
     const response = await fetch(`${API_BASE_URL}/user/v1/`, {
       headers: { Authorization: `Bearer ${accessToken}` }
@@ -111,13 +111,13 @@ const UnderLineTab = ({
   const [errorMessageNFT, setErrorMessageNFT] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchNFTs = async () => {
+    const fetchNFTs = async (): Promise<void> => {
       if (activeTab === 'nft') {
         setIsLoadingNFT(true);
         setErrorMessageNFT(null);
         try {
           const userId = await fetchUserId();
-          if (!userId) throw new Error('User tidak valid');
+          if (userId === null) throw new Error('User tidak valid');
 
           const response = await fetch(
             `${API_BASE_URL}/nft/user/${userId}?page=1&limit=20&sort=created_desc`
@@ -133,7 +133,7 @@ const UnderLineTab = ({
               : logo.src,
             creator: {
               ...nft.creator,
-              avatar: nft.creator.avatar || logo.src
+              avatar: nft.creator.avatar ?? logo.src
             }
           }));
 
@@ -146,7 +146,7 @@ const UnderLineTab = ({
       }
     };
 
-    fetchNFTs();
+    void fetchNFTs();
   }, [activeTab]);
 
   useEffect(() => {
@@ -158,7 +158,7 @@ const UnderLineTab = ({
       }
     };
 
-    fetchData();
+    void fetchData();
   }, []);
 
   const data: DataItem[] = [
@@ -172,11 +172,10 @@ const UnderLineTab = ({
               <div className="flex flex-col" key={`${el.id as string} ${idx}`}>
                 {el.circle !== undefined && (
                   <div
-                    className={`flex justify-between p-2 rounded-t-2xl px-4 ${
-                      el?.circle?.status_joined === true
-                        ? 'bg-[#E9E9E9]'
-                        : 'bg-[#DCFCE4]'
-                    } mt-5`}
+                    className={`flex justify-between p-2 rounded-t-2xl px-4 ${el?.circle?.status_joined === true
+                      ? 'bg-[#E9E9E9]'
+                      : 'bg-[#DCFCE4]'
+                      } mt-5`}
                   >
                     <div className="flex items-center">
                       <img
@@ -191,24 +190,20 @@ const UnderLineTab = ({
                       </Typography>
                     </div>
                     <button
-                      className={`${
-                        el?.circle?.status_joined === true
-                          ? 'bg-[#BDBDBD] cursor-not-allowed'
-                          : 'bg-seeds-button-green'
-                      } rounded-full`}
+                      className={`${el?.circle?.status_joined === true
+                        ? 'bg-[#BDBDBD] cursor-not-allowed'
+                        : 'bg-seeds-button-green'
+                        } rounded-full`}
                     >
                       <Typography
-                        className={`text-sm ${
-                          el?.circle?.status_joined === true
-                            ? 'text-neutral-soft'
-                            : 'text-white'
-                        } px-2 py-1 font-bold`}
+                        className={`text-sm ${el?.circle?.status_joined === true
+                          ? 'text-neutral-soft'
+                          : 'text-white'
+                          } px-2 py-1 font-bold`}
                         onClick={() => {
                           if (el?.circle?.status_joined === false) {
-                            router
-                              .push(`/connect/post/${el?.circle_id as string}`)
-                              .catch((err: any) => {
-                              });
+                            void router
+                              .push(`/connect/post/${el?.circle_id as string}`);
                           }
                         }}
                       >
@@ -338,22 +333,19 @@ const UnderLineTab = ({
                   return (
                     <Card
                       shadow={false}
-                      className={`flex justify-center border border-[#3AC4A0] bg-[#DCFCE4] sm:w-[164px] sm:mx-0 h-[92px] ${
-                        item?.type === 'ALL' ? 'w-[192px] mx-16' : 'w-[164px]'
-                      }`}
+                      className={`flex justify-center border border-[#3AC4A0] bg-[#DCFCE4] sm:w-[164px] sm:mx-0 h-[92px] ${item?.type === 'ALL' ? 'w-[192px] mx-16' : 'w-[164px]'
+                        }`}
                       key={item.type}
                     >
                       <CardBody className="p-0 flex flex-col items-center gap-2">
                         <div className="flex gap-[5px]">
                           <Image src={info} alt="information" />
                           <Typography className="text-[#3AC4A0] text-xs font-normal font-poppins">
-                            {`${
-                              item?.type === 'ALL'
-                                ? 'Win Percentage'
-                                : `${
-                                    item?.type?.charAt(0).toUpperCase() ?? ''
-                                  }${item?.type?.slice(1).toLowerCase() ?? ''}`
-                            }`}
+                            {`${item?.type === 'ALL'
+                              ? 'Win Percentage'
+                              : `${item?.type?.charAt(0).toUpperCase() ?? ''
+                              }${item?.type?.slice(1).toLowerCase() ?? ''}`
+                              }`}
                           </Typography>
                         </div>
 
@@ -396,7 +388,7 @@ const UnderLineTab = ({
                           </Typography>
                           <Typography className="text-[12.21px] leading-[16.28px] text-[#BDBDBD] font-poppins font-normal">
                             {(item?.name?.length ?? 0) >= 20 &&
-                            (window.innerWidth ?? 0) >= 1024
+                              (window.innerWidth ?? 0) >= 1024
                               ? `${item?.name?.slice(0, 20) ?? ''}...`
                               : item.name}
                           </Typography>
@@ -407,9 +399,8 @@ const UnderLineTab = ({
                           {item?.percentage}%
                         </Typography>
                         <Typography className="text-[#7555DA] text-[12.21px] leading-[16.28px] font-poppins font-normal">
-                          {`${item?.type?.charAt(0).toUpperCase() ?? ''}${
-                            item?.type?.slice(1).toLowerCase() ?? ''
-                          }`}
+                          {`${item?.type?.charAt(0).toUpperCase() ?? ''}${item?.type?.slice(1).toLowerCase() ?? ''
+                            }`}
                         </Typography>
                       </div>
                     </div>
@@ -427,7 +418,7 @@ const UnderLineTab = ({
         <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 w-full p-4">
           {isLoadingNFT ? (
             <div className="col-span-3 text-center">Memuat NFT...</div>
-          ) : errorMessageNFT ? (
+          ) : errorMessageNFT !== null ? (
             <div className="col-span-3 text-red-500 text-center">
               {errorMessageNFT}
             </div>
@@ -494,7 +485,7 @@ const UnderLineTab = ({
 
     fetchData()
       .then()
-      .catch(() => {});
+      .catch(() => { });
   }, []);
   return (
     <Tabs value={activeTab}>
@@ -512,9 +503,8 @@ const UnderLineTab = ({
             onClick={() => {
               setActiveTab(value);
             }}
-            className={`${
-              activeTab === value ? 'text-[#27A590]' : 'text-[#7C7C7C]'
-            } mx-[30px] text-base font-poppins font-semibold z-10`}
+            className={`${activeTab === value ? 'text-[#27A590]' : 'text-[#7C7C7C]'
+              } mx-[30px] text-base font-poppins font-semibold z-10`}
           >
             {label}
           </Tab>

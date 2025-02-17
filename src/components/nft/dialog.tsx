@@ -1,17 +1,14 @@
 import { Button, Dialog, DialogBody } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { FiX } from 'react-icons/fi';
-import { Asset } from 'diamnet-sdk';
-import { FormEvent } from 'react';
+import React from 'react';
 
-type TransactionStatus = {
+interface TransactionStatus {
   type: 'success' | 'error' | 'warning' | 'info' | 'loading';
   message: string;
 };
 
-type NFT = {
+interface NFT {
   id: string;
   name: string;
   price: number;
@@ -25,7 +22,7 @@ type NFT = {
   };
 };
 
-type NFTDialogProps = {
+interface NFTDialogProps {
   open: { open: boolean; state: number };
   handleOpen: () => void;
   handleChange: (state: number) => void;
@@ -43,20 +40,19 @@ const NFTDialog = ({
   nftDetail,
   handleBuy,
   walletAddress
-}: NFTDialogProps) => {
+}: NFTDialogProps): React.ReactElement => {
   const router = useRouter();
 
-  const renderTransactionContent = () => {
-    if (transactionStatus) {
+  const renderTransactionContent = (): React.ReactElement => {
+    if (transactionStatus !== undefined) {
       return (
         <div
-          className={`p-4 rounded-lg text-center ${
-            transactionStatus.type === 'success'
-              ? 'bg-green-50 text-green-800'
-              : transactionStatus.type === 'error'
+          className={`p-4 rounded-lg text-center ${transactionStatus.type === 'success'
+            ? 'bg-green-50 text-green-800'
+            : transactionStatus.type === 'error'
               ? 'bg-red-50 text-red-800'
               : 'bg-blue-50 text-blue-800'
-          }`}
+            }`}
         >
           <p className="font-semibold mb-2">
             {transactionStatus.type.toUpperCase()}
@@ -80,7 +76,7 @@ const NFTDialog = ({
         return (
           <div className="py-8 px-4 md:px-9 flex flex-col gap-4 items-center justify-center">
             <Image
-              src={nftDetail?.image_url || '/placeholder-nft.png'}
+              src={nftDetail?.image_url ?? '/placeholder-nft.png'}
               alt="nft-logo"
               className="rounded-xl w-40 h-40 object-cover"
               width={160}
@@ -100,7 +96,7 @@ const NFTDialog = ({
                 </Button>
                 <Button
                   className="w-full rounded-full bg-[#3AC4A0] text-white"
-                  onClick={() => handleChange(1)}
+                  onClick={() => { handleChange(1) }}
                 >
                   Buy
                 </Button>
@@ -155,7 +151,7 @@ const NFTDialog = ({
               Purchase Successful! 🎉
             </p>
             <Image
-              src={nftDetail?.image_url || '/placeholder-nft.png'}
+              src={nftDetail?.image_url ?? '/placeholder-nft.png'}
               alt="nft-logo"
               className="rounded-xl w-40 h-40 object-cover"
               width={160}
@@ -173,13 +169,13 @@ const NFTDialog = ({
             <div className="w-full pt-4 flex flex-col md:flex-row gap-4">
               <Button
                 className="w-full rounded-full border-[#3AC4A0] text-[#3AC4A0] bg-white"
-                onClick={() => router.back()}
+                onClick={() => { router.back() }}
               >
                 Back to Marketplace
               </Button>
               <Button
                 className="w-full rounded-full bg-[#3AC4A0] text-white"
-                onClick={() => router.push('/my-profile')}
+                onClick={() => { void router.push('/my-profile') }}
               >
                 Go to Profile
               </Button>
@@ -194,7 +190,7 @@ const NFTDialog = ({
               Purchase or Sell Failed! ❌
             </p>
             <Image
-              src={nftDetail?.image_url || '/placeholder-nft.png'}
+              src={nftDetail?.image_url ?? '/placeholder-nft.png'}
               alt="nft-logo"
               className="rounded-xl w-40 h-40 object-cover"
               width={160}
@@ -217,7 +213,7 @@ const NFTDialog = ({
         );
 
       default:
-        return null;
+        return <></>;
     }
   };
 

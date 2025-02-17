@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import * as DiamSdk from 'diamnet-sdk';
 import { BASE_FEE, Operation, TransactionBuilder } from 'diamnet-sdk';
-import { AccountResponse } from 'diamnet-sdk/lib/aurora';
+import { type AccountResponse } from 'diamnet-sdk/lib/aurora';
 
 const server = new DiamSdk.Aurora.Server('https://diamtestnet.diamcircle.io');
 const networkPassphrase = 'Diamante Testnet 2024';
 
-export const checkBalance = async (accountId: string) => {
+export const checkBalance = async (accountId: string): Promise<any> => {
   try {
     const account = await server.loadAccount(accountId);
     const balances = account.balances
@@ -22,12 +23,14 @@ export const checkBalance = async (accountId: string) => {
   }
 };
 
-export const loadAccount = async (accountId: string) => {
+export const loadAccount = async (accountId: string): Promise<any> => {
   try {
     const account = await server.loadAccount(accountId);
     return account;
   } catch (error: any) {
-    throw new Error(`Failed to load account: ${error.message}`);
+    throw new Error(
+      `Failed to load account: ${(error.message as string) ?? 'unknown error'}`
+    );
   }
 };
 
@@ -37,18 +40,18 @@ export const createPassiveSellOffer = async (
   buyingAsset: DiamSdk.Asset,
   amount: string,
   price: string
-) => {
+): Promise<any> => {
   try {
     const transaction = new TransactionBuilder(account, {
       fee: BASE_FEE,
-      networkPassphrase: networkPassphrase
+      networkPassphrase
     })
       .addOperation(
         DiamSdk.Operation.createPassiveSellOffer({
           selling: sellingAsset,
           buying: buyingAsset,
-          amount: amount,
-          price: price
+          amount,
+          price
         })
       )
       .setTimeout(30)
@@ -57,7 +60,11 @@ export const createPassiveSellOffer = async (
     return transaction.toXDR();
   } catch (error: any) {
     console.error('Error during Passive Sell Offer creation:', error);
-    throw new Error(`Failed to create passive sell offer: ${error.message}`);
+    throw new Error(
+      `Failed to create passive sell offer: ${
+        (error.message as string) ?? 'unknown error'
+      }`
+    );
   }
 };
 
@@ -68,19 +75,19 @@ export const createBuyOffer = async (
   buyAmount: string,
   price: number,
   offerId: string = '0'
-) => {
+): Promise<any> => {
   try {
     const transaction = new TransactionBuilder(account, {
       fee: BASE_FEE,
-      networkPassphrase: networkPassphrase
+      networkPassphrase
     })
       .addOperation(
         Operation.manageBuyOffer({
           selling: sellingAsset,
           buying: buyingAsset,
-          buyAmount: buyAmount,
-          price: price,
-          offerId: offerId
+          buyAmount,
+          price,
+          offerId
         })
       )
       .setTimeout(30)
@@ -89,7 +96,11 @@ export const createBuyOffer = async (
     return transaction.toXDR();
   } catch (error: any) {
     console.error('Error during Buy Offer creation:', error);
-    throw new Error(`Failed to create buy offer: ${error.message}`);
+    throw new Error(
+      `Failed to create buy offer: ${
+        (error.message as string) ?? 'unknown error'
+      }`
+    );
   }
 };
 
@@ -100,19 +111,19 @@ export const createSellOffer = async (
   amount: string,
   price: number,
   offerId: string = '0'
-) => {
+): Promise<any> => {
   try {
     const transaction = new TransactionBuilder(account, {
       fee: BASE_FEE,
-      networkPassphrase: networkPassphrase
+      networkPassphrase
     })
       .addOperation(
         Operation.manageSellOffer({
           selling: sellingAsset,
           buying: buyingAsset,
-          amount: amount,
-          price: price,
-          offerId: offerId
+          amount,
+          price,
+          offerId
         })
       )
       .setTimeout(30)
@@ -121,7 +132,11 @@ export const createSellOffer = async (
     return transaction.toXDR();
   } catch (error: any) {
     console.error('Error during Sell Offer creation:', error);
-    throw new Error(`Failed to create sell offer: ${error.message}`);
+    throw new Error(
+      `Failed to create sell offer: ${
+        (error.message as string) ?? 'unknown error'
+      }`
+    );
   }
 };
 
@@ -130,19 +145,19 @@ export const createTrustline = async (
   assetCode: string,
   assetIssuer: string,
   limit = undefined
-) => {
+): Promise<any> => {
   try {
     const asset = new DiamSdk.Asset(assetCode, assetIssuer);
 
     const transactionBuilder = new TransactionBuilder(account, {
       fee: BASE_FEE,
-      networkPassphrase: networkPassphrase
+      networkPassphrase
     });
 
     transactionBuilder.addOperation(
       Operation.changeTrust({
-        asset: asset,
-        limit: limit
+        asset,
+        limit
       })
     );
 
@@ -151,14 +166,18 @@ export const createTrustline = async (
     return transaction.toXDR();
   } catch (error: any) {
     console.error('Error during Trustline creation:', error);
-    throw new Error(`Failed to create trustline: ${error.message}`);
+    throw new Error(
+      `Failed to create trustline: ${
+        (error.message as string) ?? 'unknown error'
+      }`
+    );
   }
 };
 
 export const signAndSubmitTransaction = async (
   xdr: string,
   passphrase: string
-) => {
+): Promise<any> => {
   try {
     const signedTransaction = await (window as any).diam.sign(
       xdr,
@@ -168,7 +187,8 @@ export const signAndSubmitTransaction = async (
     return signedTransaction;
   } catch (error: any) {
     console.error('Error during transaction signing:', error);
-    const errorMessage = error.message?.data || 'An unknown error occurred';
+    const errorMessage =
+      (error.message?.data as string) ?? 'An unknown error occurred';
     throw new Error(`Failed to sign and submit transaction: ${errorMessage}`);
   }
 };
@@ -191,7 +211,7 @@ export const signAndSubmitTransaction = async (
 //   }
 // };
 
-export const connectWallet = async () => {
+export const connectWallet = async (): Promise<any> => {
   try {
     if (!(window as any).diam) {
       throw new Error(
@@ -199,7 +219,7 @@ export const connectWallet = async () => {
       );
     }
     const response = await (window as any).diam.connect();
-    if (response.message && response.message.data) {
+    if (response.message.data) {
       const publicKey = response.message.data[0].diamPublicKey;
       return { success: true, publicKey };
     } else {

@@ -1,14 +1,14 @@
 import NFTTabs from '@/components/nft/tabs';
 import withAuth from '@/helpers/withAuth';
-import { connectWallet } from '@/lib/diamnet';
 import { Button, Card, Dialog, DialogBody } from '@material-tailwind/react';
 import Image from 'next/image';
 import logo from 'public/assets/logo-seeds.png';
 import checklist from 'public/assets/nft/checklist.svg';
 import diam from 'public/assets/vector/diam.svg';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FaClockRotateLeft } from 'react-icons/fa6';
 import { FiChevronRight, FiSearch } from 'react-icons/fi';
+import { checkBalance, connectWallet } from '@/lib/diamnet';
 
 const NFTDashboard: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -16,19 +16,44 @@ const NFTDashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-
-  const handleOpen: any = () => {
-    setOpen(!open);
-  };
-  const accessToken = localStorage.getItem('accessToken');
-  if (accessToken === null) {
-    throw new Error('Access token tidak ditemukan');
-  }
+  const [popupStatus, setPopupStatus] = useState<
+    'connected' | 'already_connected' | 'invalid_wallet'
+  >('connected');
+  const [diamBalance, setDiamBalance] = useState<string | null>(null);
+  const [sessionData, setSessionData] = useState<{
+    userId: string;
+    address: string;
+  } | null>(null);
 
   const API_BASE_URL =
     process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
-  const handleConnectWallet = async (): Promise<void> => {
-    if (walletAddress !== null) {
+  const accessToken = localStorage.getItem('accessToken');
+
+  const handleOpen = () => setOpen(!open);
+
+  const fetchUserId = async (): Promise<string> => {
+    if (!accessToken) throw new Error('Access token tidak ditemukan');
+
+    const response = await fetch(`${API_BASE_URL}/user/v1/`, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+
+    if (!response.ok) throw new Error('Gagal mengambil User ID');
+    const data = await response.json();
+    return data.id;
+  };
+
+  const cleanupSession = useCallback(() => {
+    sessionStorage.removeItem('walletSession');
+    setWalletAddress(null);
+    setDiamBalance(null);
+    setSessionData(null);
+  }, []);
+
+  const handleConnectWallet = async () => {
+    if (!accessToken) throw new Error('Authentication required');
+    if (walletAddress) {
+      setPopupStatus('already_connected');
       setOpen(true);
       return;
     }
@@ -37,47 +62,105 @@ const NFTDashboard: React.FC = () => {
     setErrorMessage(null);
 
     try {
+      const currentUserId = await fetchUserId();
       const result = await connectWallet();
-      if (result.success as boolean) {
-        const publicKey = result.publicKey;
-        setWalletAddress(publicKey);
-        sessionStorage.setItem('walletSession', publicKey);
-        setOpen(true);
-      } else {
-        setErrorMessage(result.error ?? 'Failed to connect wallet');
-      }
-      const publicKeyy = sessionStorage.getItem('walletSession');
-      const walletconnect = {
-        wallet_address: publicKeyy
-      };
 
-      await fetch(`${API_BASE_URL}/nft/diamante/connect`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken ?? ''}`
-        },
-        body: JSON.stringify(walletconnect)
-      });
-    } catch (error) {
-      setErrorMessage('An unexpected error occurred');
+      if (result.success) {
+        const publicKey = result.publicKey;
+        const storedData = JSON.parse(
+          localStorage.getItem('walletSession') || 'null'
+        );
+
+        // Cek jika user ID sama tapi address berbeda
+        if (
+          storedData &&
+          storedData.userId === currentUserId &&
+          storedData.address !== publicKey
+        ) {
+          setPopupStatus('invalid_wallet');
+          setOpen(true);
+          throw new Error(
+            'Cannot connect different wallet to existing account'
+          );
+        }
+
+        // Simpan session baru
+        const newSessionData = { userId: currentUserId, address: publicKey };
+        localStorage.setItem('walletSession', JSON.stringify(newSessionData));
+        sessionStorage.setItem('walletSession', publicKey);
+
+        setWalletAddress(publicKey);
+        setSessionData(newSessionData);
+        setPopupStatus('connected');
+        setOpen(true);
+
+        await fetch(`${API_BASE_URL}/nft/diamante/connect`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
+          },
+          body: JSON.stringify({ wallet_address: publicKey })
+        });
+      }
+    } catch (error: any) {
+      setErrorMessage(error.message || 'An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    const sessionWallet = sessionStorage.getItem('walletSession');
-    if (sessionWallet !== null) setWalletAddress(sessionWallet);
+    const initializeSession = async () => {
+      const sessionWallet = sessionStorage.getItem('walletSession');
+      const storedData = JSON.parse(
+        localStorage.getItem('walletSession') || 'null'
+      );
 
-    const cleanupSession = (): void => {
-      sessionStorage.removeItem('walletSession');
+      if (sessionWallet && storedData) {
+        try {
+          const currentUserId = await fetchUserId();
+
+          // Validasi kesesuaian user ID dan address
+          if (
+            storedData.userId === currentUserId &&
+            storedData.address === sessionWallet
+          ) {
+            setWalletAddress(sessionWallet);
+            setSessionData(storedData);
+          }
+        } catch (error) {
+          cleanupSession();
+        }
+      }
     };
-    window.addEventListener('beforeunload', cleanupSession);
-    return () => {
-      window.removeEventListener('beforeunload', cleanupSession);
-    };
+
+    initializeSession();
   }, []);
+
+  useEffect(() => {
+    const sessionTimer = setTimeout(() => {
+      cleanupSession();
+    }, 10 * 60 * 1000);
+
+    const fetchBalance = async () => {
+      if (walletAddress) {
+        try {
+          const balanceResult = await checkBalance(walletAddress);
+          if (balanceResult.success) {
+            const nativeBalance = balanceResult.balances[0];
+            setDiamBalance(nativeBalance.replace('diams', 'DIAM'));
+          }
+        } catch (error) {
+          console.error('Gagal mengambil balance:', error);
+        }
+      }
+    };
+
+    fetchBalance();
+
+    return () => clearTimeout(sessionTimer);
+  }, [walletAddress]);
 
   return (
     <section className="flex flex-col gap-2 md:gap-4">
@@ -101,9 +184,7 @@ const NFTDashboard: React.FC = () => {
               className="bg-[#F9F9F9] border border-[#E9E9E9] w-full rounded-xl h-10 md:ps-16 ps-3 md:pe-3 pe-8 py-3 outline-none font-poppins placeholder:font-normal placeholder:text-xs placeholder:text-[#BDBDBD]"
               placeholder="Search NFT"
               value={searchQuery}
-              onChange={e => {
-                setSearchQuery(e.target.value);
-              }}
+              onChange={e => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
@@ -121,18 +202,17 @@ const NFTDashboard: React.FC = () => {
             <p className="font-poppins font-semibold text-white text-sm">
               {isLoading
                 ? 'Connecting...'
-                : walletAddress !== null
-                ? `Connected: ${walletAddress.slice(
-                    0,
-                    6
-                  )}...${walletAddress.slice(-4)}`
+                : walletAddress
+                ? diamBalance
+                  ? `${diamBalance}`
+                  : `0 DIAM`
                 : 'Connect to DIAM Wallet'}
             </p>
           </div>
           <FiChevronRight color="white" size={18} />
         </Button>
 
-        {errorMessage !== null && (
+        {errorMessage && (
           <p className="text-red-500 text-sm px-4">{errorMessage}</p>
         )}
 
@@ -144,13 +224,18 @@ const NFTDashboard: React.FC = () => {
         <DialogBody className="flex flex-col gap-4 p-0 justify-center items-center">
           <Image src={checklist} alt="checklist" />
           <div className="flex flex-col gap-3.5 items-center justify-center">
-            <p className="font-poppins font-semibold text-sm text-black text-center">
-              {walletAddress !== null
-                ? `Successfully connected to wallet:\n${walletAddress.slice(
-                    0,
-                    6
-                  )}...${walletAddress.slice(-4)}`
-                : 'Wallet connection successful!'}
+            <p className="font-poppins font-semibold text-sm text-black text-center whitespace-pre-line">
+              {popupStatus === 'connected' &&
+                'Successfully connected to DIAM Wallet'}
+              {popupStatus === 'already_connected' &&
+                `Already connected to:\n${walletAddress?.slice(
+                  0,
+                  6
+                )}...${walletAddress?.slice(
+                  -4
+                )}\nCannot connect another wallet`}
+              {popupStatus === 'invalid_wallet' &&
+                'Cannot connect different wallet to existing account'}
             </p>
             <hr className="text-[#BDBDBD] w-full" />
             <p

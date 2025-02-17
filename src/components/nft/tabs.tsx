@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import {
   Button,
   Card,
@@ -33,7 +32,7 @@ interface NFT {
     wallet_address: string;
     avatar: string;
   };
-};
+}
 
 const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
   const router = useRouter();
@@ -47,7 +46,9 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
   const API_BASE_URL =
     process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
 
-  const handleOpen = (): void => { setOpen(!open) };
+  const handleOpen = (): void => {
+    setOpen(!open);
+  };
 
   const fetchNFTs = async (): Promise<void> => {
     setIsLoading(true);
@@ -66,7 +67,7 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
         const data = await response.json();
 
         const { current_page, total_page } = data.metadata;
-        currentPage = +current_page + 1;
+        currentPage = current_page + 1;
         totalPage = total_page;
 
         // Filter NFT dengan status TRUE dan map data
@@ -79,7 +80,7 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
               : logo.src,
             creator: {
               ...nft.creator,
-              avatar: nft.creator.avatar ?? logo.src
+              avatar: nft.creator.avatar || logo.src
             }
           }));
 
@@ -88,14 +89,14 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
 
       setNftData(allNFTs);
     } catch (error: any) {
-      setErrorMessage(error.message ?? 'Terjadi kesalahan');
+      setErrorMessage(error.message || 'Terjadi kesalahan');
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    void fetchNFTs();
+    fetchNFTs();
   }, [searchQuery]);
 
   const PriceButton = ({
@@ -106,22 +107,24 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
     text: string;
   }): JSX.Element => (
     <Button
-      className={`${value === price
-        ? 'bg-[#DCFCE4] border border-[#3AC4A0] text-[#3AC4A0]'
-        : 'bg-[#F9F9F9] border border-[#E9E9E9] text-neutral-medium'
-        } font-normal font-poppins text-xs py-3 px-0`}
-      onClick={() => { setPrice(value) }}
+      className={`${
+        value === price
+          ? 'bg-[#DCFCE4] border border-[#3AC4A0] text-[#3AC4A0]'
+          : 'bg-[#F9F9F9] border border-[#E9E9E9] text-neutral-medium'
+      } font-normal font-poppins text-xs py-3 px-0`}
+      onClick={() => {
+        setPrice(value);
+      }}
     >
       {text}
     </Button>
   );
 
-  const renderCollectionTab = (): React.ReactElement => (
+  const renderCollectionTab = () => (
     <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
-      x
       {isLoading ? (
         <p>Memuat NFT...</p>
-      ) : errorMessage === null ? (
+      ) : errorMessage ? (
         <p className="text-red-500">{errorMessage}</p>
       ) : nftData.length > 0 ? (
         nftData.map(nft => (
@@ -157,7 +160,7 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
                 </p>
               </div>
               <Button
-                onClick={() => { void router.push(`/nft/${nft.id}`) }}
+                onClick={async () => await router.push(`/nft/${nft.id}`)}
                 className="p-1 md:p-1.5 text-[10px] leading-4 font-light text-white bg-[#3AC4A0] rounded-full w-full"
               >
                 GET
@@ -173,7 +176,7 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
     </div>
   );
 
-  const renderAccountTab = (): React.ReactElement => {
+  const renderAccountTab = () => {
     // Buat Map dari nftData, key-nya adalah wallet_address dan value-nya adalah objek creator
     const uniqueCreators = Array.from(
       new Map(
@@ -271,9 +274,12 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
             <Tab
               key={value}
               value={value}
-              onClick={() => { setActiveTab(value) }}
-              className={`font-semibold font-poppins text-base ${activeTab === value ? 'text-[#27A590]' : 'text-[#7C7C7C]'
-                }`}
+              onClick={() => {
+                setActiveTab(value);
+              }}
+              className={`font-semibold font-poppins text-base ${
+                activeTab === value ? 'text-[#27A590]' : 'text-[#7C7C7C]'
+              }`}
             >
               {label}
             </Tab>
@@ -297,9 +303,10 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
       </Tabs>
 
       <div
-        className={`${activeTab === 'collection' ? 'flex' : 'hidden'
-          } justify-center items-center gap-2 fixed bottom-10 right-10 md:right-16 z-50 normal-case font-poppins font-semibold text-lg rounded-full bg-[#3AC4A0] md:px-8 p-5 md:py-3.5 text-white cursor-pointer active:scale-95 transition-all`}
-        onClick={() => { void router.push('/nft/create') }}
+        className={`${
+          activeTab === 'collection' ? 'flex' : 'hidden'
+        } justify-center items-center gap-2 fixed bottom-10 right-10 md:right-16 z-50 normal-case font-poppins font-semibold text-lg rounded-full bg-[#3AC4A0] md:px-8 p-5 md:py-3.5 text-white cursor-pointer active:scale-95 transition-all`}
+        onClick={async () => await router.push('/nft/create')}
       >
         <FiPlus className="w-5 md:w-8 h-5 md:h-8" />
         <p className="hidden md:block">Upload NFT</p>

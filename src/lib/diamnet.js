@@ -177,10 +177,8 @@ const handleConnectWallet = async () => {
   // This feature just for debug only, pls delete when launch on product
   try {
     const result = await connectWallet();
-    console.log('Response from DIAM Wallet:', result);
     if (result.success) {
       const publicKey = result.publicKey;
-      console.log('Connected to wallet with public key:', publicKey);
       setWalletAddress(publicKey);
       alert(`Connected to wallet: ${publicKey}`);
     } else {

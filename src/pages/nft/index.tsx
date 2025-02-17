@@ -1,6 +1,6 @@
 import NFTTabs from '@/components/nft/tabs';
 import withAuth from '@/helpers/withAuth';
-import { connectWallet } from '@/lib/diamnet.js';
+import { connectWallet } from '@/lib/diamnet';
 import { Button, Card, Dialog, DialogBody } from '@material-tailwind/react';
 import Image from 'next/image';
 import logo from 'public/assets/logo-seeds.png';

@@ -17,7 +17,7 @@ import React, { useEffect, useState } from 'react';
 import { FiPlus, FiX } from 'react-icons/fi';
 import { TbArrowsSort } from 'react-icons/tb';
 
-type NFT = {
+interface NFT {
   id: string;
   name: string;
   description: string;
@@ -32,7 +32,7 @@ type NFT = {
     wallet_address: string;
     avatar: string;
   };
-};
+}
 
 const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
   const router = useRouter();
@@ -46,7 +46,7 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
   const API_BASE_URL =
     process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
 
-  const handleOpen = (): void => setOpen(!open);
+  const handleOpen = (): void => { setOpen(!open); };
 
   const fetchNFTs = async (): Promise<void> => {
     setIsLoading(true);
@@ -110,7 +110,7 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
           ? 'bg-[#DCFCE4] border border-[#3AC4A0] text-[#3AC4A0]'
           : 'bg-[#F9F9F9] border border-[#E9E9E9] text-neutral-medium'
       } font-normal font-poppins text-xs py-3 px-0`}
-      onClick={() => setPrice(value)}
+      onClick={() => { setPrice(value); }}
     >
       {text}
     </Button>
@@ -157,7 +157,7 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
                 </p>
               </div>
               <Button
-                onClick={() => router.push(`/nft/${nft.id}`)}
+                onClick={async () => await router.push(`/nft/${nft.id}`)}
                 className="p-1 md:p-1.5 text-[10px] leading-4 font-light text-white bg-[#3AC4A0] rounded-full w-full"
               >
                 GET
@@ -271,7 +271,7 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
             <Tab
               key={value}
               value={value}
-              onClick={() => setActiveTab(value)}
+              onClick={() => { setActiveTab(value); }}
               className={`font-semibold font-poppins text-base ${
                 activeTab === value ? 'text-[#27A590]' : 'text-[#7C7C7C]'
               }`}
@@ -301,7 +301,7 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
         className={`${
           activeTab === 'collection' ? 'flex' : 'hidden'
         } justify-center items-center gap-2 fixed bottom-10 right-10 md:right-16 z-50 normal-case font-poppins font-semibold text-lg rounded-full bg-[#3AC4A0] md:px-8 p-5 md:py-3.5 text-white cursor-pointer active:scale-95 transition-all`}
-        onClick={() => router.push('/nft/create')}
+        onClick={async () => await router.push('/nft/create')}
       >
         <FiPlus className="w-5 md:w-8 h-5 md:h-8" />
         <p className="hidden md:block">Upload NFT</p>

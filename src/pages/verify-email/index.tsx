@@ -28,7 +28,7 @@ const VerifyEmailPage = (): JSX.Element => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            token: token
+            token
           })
         };
 

@@ -30,14 +30,12 @@ const CardLimitOrder: React.FC<props> = ({ setLimitOrder }) => {
   useEffect(() => {
     setLimitOrder({
       type: activeTab,
-      profit: profit,
-      loss: loss
+      profit,
+      loss
     });
   }, [activeTab, profit, loss]);
 
-  // const handleActiveTab = (value: string): void => {
-  //   setActiveTab(value);
-  // };
+
 
   const handleChangeNumber = (
     e: ChangeEvent<HTMLInputElement>,

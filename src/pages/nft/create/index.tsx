@@ -32,8 +32,8 @@ const CreateNFT = (): ReactElement => {
 
   const handleCreateNFT = async (): Promise<void> => {
     try {
-      // 1) Pastikan user punya wallet session
-      const owner_address = sessionStorage.getItem('walletSession') || '';
+      const owner_address = sessionStorage.getItem('walletSession');
+
       if (!owner_address) {
         setDialogMessage('Session wallet habis. Silakan login ulang.');
         setDialogSuccess(false);
@@ -43,7 +43,7 @@ const CreateNFT = (): ReactElement => {
       }
 
       // 2) Pastikan file NFT ada
-      if (!image || image.length === 0) {
+      if ((image == null) || image.length === 0) {
         throw new Error('File NFT belum dipilih');
       }
       const media = image[0]; // Ambil file pertama
@@ -176,7 +176,7 @@ const CreateNFT = (): ReactElement => {
           className="rounded-xl border border-[#E9E9E9] h-[52px] placeholder:font-normal placeholder:text-base placeholder:text-[#BDBDBD] placeholder:font-poppins font-poppins text-neutral-medium text-base p-4"
           placeholder="Nature"
           value={name}
-          onChange={e => setName(e.target.value)}
+          onChange={e => { setName(e.target.value); }}
         />
       </div>
       <div className="flex flex-col gap-4">
@@ -193,7 +193,7 @@ const CreateNFT = (): ReactElement => {
           className="rounded-xl border border-[#E9E9E9] h-[101px] placeholder:font-normal placeholder:text-base placeholder:text-[#BDBDBD] placeholder:font-poppins font-poppins text-neutral-medium text-base p-4"
           placeholder="Let people know about your creativity..."
           value={description}
-          onChange={e => setDescription(e.target.value)}
+          onChange={e => { setDescription(e.target.value); }}
         />
       </div>
       <div className="flex flex-col gap-4">
@@ -209,7 +209,7 @@ const CreateNFT = (): ReactElement => {
           suffix=" DIAM"
           className="rounded-xl border border-[#E9E9E9] h-[52px] placeholder:font-normal placeholder:text-base placeholder:text-[#BDBDBD] placeholder:font-poppins font-poppins text-neutral-medium text-base p-4"
           value={price}
-          onValueChange={value => setPrice(value || '')}
+          onValueChange={value => { setPrice(value || ''); }}
         />
       </div>
       <Button

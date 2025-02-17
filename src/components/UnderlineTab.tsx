@@ -31,7 +31,7 @@ import { useRouter } from 'next/router';
 const API_BASE_URL =
   process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
 
-type NFT = {
+interface NFT {
   id: string;
   name: string;
   description: string;
@@ -41,7 +41,7 @@ type NFT = {
     wallet_address: string;
     avatar: string;
   };
-};
+}
 
 interface DataItem {
   label: string;

@@ -209,7 +209,7 @@ const Withdrawal = (): JSX.Element => {
             setDataSuccess(res.data);
             setDataSuccess(prevData => ({
               ...prevData,
-              image: image
+              image
             }));
             handleChangeStep('success');
           }

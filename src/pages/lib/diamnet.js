@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as DiamSdk from 'diamnet-sdk';
 import {
   Server,
@@ -48,14 +49,14 @@ export const createPassiveSellOffer = async (
   try {
     const transaction = new TransactionBuilder(account, {
       fee: BASE_FEE,
-      networkPassphrase: networkPassphrase
+      networkPassphrase
     })
       .addOperation(
         DiamSdk.Operation.createPassiveSellOffer({
           selling: sellingAsset,
           buying: buyingAsset,
-          amount: amount,
-          price: price
+          amount,
+          price
         })
       )
       .setTimeout(30)
@@ -79,15 +80,15 @@ export const createBuyOffer = async (
   try {
     const transaction = new TransactionBuilder(account, {
       fee: BASE_FEE,
-      networkPassphrase: networkPassphrase
+      networkPassphrase
     })
       .addOperation(
         Operation.manageBuyOffer({
           selling: sellingAsset,
           buying: buyingAsset,
-          buyAmount: buyAmount,
-          price: price,
-          offerId: offerId
+          buyAmount,
+          price,
+          offerId
         })
       )
       .setTimeout(30)
@@ -111,15 +112,15 @@ export const createSellOffer = async (
   try {
     const transaction = new TransactionBuilder(account, {
       fee: BASE_FEE,
-      networkPassphrase: networkPassphrase
+      networkPassphrase
     })
       .addOperation(
         Operation.manageSellOffer({
           selling: sellingAsset,
           buying: buyingAsset,
-          amount: amount,
-          price: price,
-          offerId: offerId
+          amount,
+          price,
+          offerId
         })
       )
       .setTimeout(30)
@@ -143,13 +144,13 @@ export const createTrustline = async (
 
     const transactionBuilder = new TransactionBuilder(account, {
       fee: BASE_FEE,
-      networkPassphrase: networkPassphrase
+      networkPassphrase
     });
 
     transactionBuilder.addOperation(
       Operation.changeTrust({
-        asset: asset,
-        limit: limit
+        asset,
+        limit
       })
     );
 

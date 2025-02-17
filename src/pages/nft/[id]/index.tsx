@@ -23,7 +23,7 @@ import {
 
 const passphrase = 'Diamante Testnet 2024';
 
-type NFT = {
+interface NFT {
   id: string;
   name: string;
   description: string;
@@ -39,12 +39,12 @@ type NFT = {
     wallet_address: string;
     avatar: string;
   };
-};
+}
 
-type TransactionStatus = {
+interface TransactionStatus {
   type: 'success' | 'error' | 'warning' | 'info' | 'loading';
   message: string;
-};
+}
 
 const NFTDetail: React.FC = () => {
   const router = useRouter();
@@ -99,13 +99,13 @@ const NFTDetail: React.FC = () => {
 
   useEffect(() => {
     // Update isOwner whenever nftDetail or walletAddress change
-    if (nftDetail && walletAddress) {
+    if ((nftDetail != null) && walletAddress) {
       setIsOwner(nftDetail.owner.wallet_address === walletAddress);
     }
   }, [nftDetail, walletAddress]);
 
   const handleBuy = async () => {
-    if (!walletAddress || !nftDetail || !id) {
+    if (!walletAddress || (nftDetail == null) || !id) {
       setTransactionStatus({
         type: 'error',
         message: 'Wallet not connected or NFT data missing'
@@ -198,7 +198,7 @@ const NFTDetail: React.FC = () => {
   };
 
   const handleResell = async (newPrice: number) => {
-    if (!walletAddress || !nftDetail) {
+    if (!walletAddress || (nftDetail == null)) {
       setTransactionStatus({
         type: 'error',
         message: 'Wallet not connected or NFT data missing'
@@ -289,7 +289,7 @@ const NFTDetail: React.FC = () => {
     return {
       text: 'BUY NFT',
       disabled: false,
-      action: () => setOpen({ open: true, state: 0 })
+      action: () => { setOpen({ open: true, state: 0 }); }
     };
   };
 
@@ -298,7 +298,7 @@ const NFTDetail: React.FC = () => {
   }
 
   if (
-    !nftDetail ||
+    (nftDetail == null) ||
     !nftDetail.status ||
     !nftDetail.owner.wallet_address ||
     !nftDetail.price ||
@@ -320,7 +320,7 @@ const NFTDetail: React.FC = () => {
         <div className="flex justify-between items-center py-5 px-4 md:hidden font-semibold text-base text-neutral-medium font-poppins">
           <FiArrowLeft
             size={24}
-            onClick={() => router.back()}
+            onClick={() => { router.back(); }}
             className="cursor-pointer"
           />
           <p>Detail NFT</p>
@@ -404,7 +404,7 @@ const NFTDetail: React.FC = () => {
             className="py-2.5 ps-3.5 pe-5 bg-[#F3F4F8] border border-[#E9E9E9] rounded-lg"
           >
             <AccordionHeader
-              onClick={() => setDetail(!detail)}
+              onClick={() => { setDetail(!detail); }}
               className="p-0 font-semibold text-lg text-neutral-medium font-poppins border-none"
             >
               Token Detail
@@ -446,8 +446,8 @@ const NFTDetail: React.FC = () => {
         nftDetail={nftDetail}
         handleBuy={handleBuy}
         walletAddress={walletAddress}
-        handleOpen={() => setOpen({ open: false, state: 0 })}
-        handleChange={state => setOpen({ open: true, state: state })}
+        handleOpen={() => { setOpen({ open: false, state: 0 }); }}
+        handleChange={state => { setOpen({ open: true, state }); }}
       />
     </>
   );

@@ -1,17 +1,16 @@
 import { Button, Dialog, DialogBody } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , FormEvent } from 'react';
 import { FiX } from 'react-icons/fi';
 import { Asset } from 'diamnet-sdk';
-import { FormEvent } from 'react';
 
-type TransactionStatus = {
+interface TransactionStatus {
   type: 'success' | 'error' | 'warning' | 'info' | 'loading';
   message: string;
-};
+}
 
-type NFT = {
+interface NFT {
   id: string;
   name: string;
   price: number;
@@ -23,9 +22,9 @@ type NFT = {
   owner: {
     wallet_address: string;
   };
-};
+}
 
-type NFTDialogProps = {
+interface NFTDialogProps {
   open: { open: boolean; state: number };
   handleOpen: () => void;
   handleChange: (state: number) => void;
@@ -33,7 +32,7 @@ type NFTDialogProps = {
   nftDetail?: NFT;
   handleBuy: () => Promise<void>;
   walletAddress?: string | null;
-};
+}
 
 const NFTDialog = ({
   open,
@@ -47,7 +46,7 @@ const NFTDialog = ({
   const router = useRouter();
 
   const renderTransactionContent = () => {
-    if (transactionStatus) {
+    if (transactionStatus != null) {
       return (
         <div
           className={`p-4 rounded-lg text-center ${
@@ -100,7 +99,7 @@ const NFTDialog = ({
                 </Button>
                 <Button
                   className="w-full rounded-full bg-[#3AC4A0] text-white"
-                  onClick={() => handleChange(1)}
+                  onClick={() => { handleChange(1); }}
                 >
                   Buy
                 </Button>
@@ -173,13 +172,13 @@ const NFTDialog = ({
             <div className="w-full pt-4 flex flex-col md:flex-row gap-4">
               <Button
                 className="w-full rounded-full border-[#3AC4A0] text-[#3AC4A0] bg-white"
-                onClick={() => router.back()}
+                onClick={() => { router.back(); }}
               >
                 Back to Marketplace
               </Button>
               <Button
                 className="w-full rounded-full bg-[#3AC4A0] text-white"
-                onClick={() => router.push('/my-profile')}
+                onClick={async () => await router.push('/my-profile')}
               >
                 Go to Profile
               </Button>

@@ -60,7 +60,7 @@ const NFTDetail: React.FC = () => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
 
   const API_BASE_URL =
-    process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
+    process.env.PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance';
 
   useEffect(() => {
     const sessionWallet = sessionStorage.getItem('walletSession');
@@ -93,7 +93,6 @@ const NFTDetail: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    // Update isOwner whenever nftDetail or walletAddress change
     if (nftDetail !== null && walletAddress !== null) {
       setIsOwner(nftDetail.owner.wallet_address === walletAddress);
     }
@@ -108,7 +107,6 @@ const NFTDetail: React.FC = () => {
       setOpen({ open: true, state: 0 });
       return;
     }
-
     try {
       setOpen({ open: true, state: 1 });
       setTransactionStatus({

@@ -29,7 +29,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 const API_BASE_URL =
-  process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
+  process.env.PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance';
 
 interface NFT {
   id: string;

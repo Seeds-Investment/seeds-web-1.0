@@ -18,6 +18,7 @@ import { checkBalance, connectWallet } from '@/lib/diamnet';
 /**
  * Tipe response dari /user/v1/
  */
+
 interface UserDataResponse {
   id: string;
 }
@@ -58,7 +59,7 @@ const NFTDashboard = (): ReactElement => {
   const [diamBalance, setDiamBalance] = useState<string | null>(null);
 
   const API_BASE_URL: string =
-    process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
+    process.env.PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance';
 
   /**
    * Ambil accessToken dari localStorage (pastikan cek environment)

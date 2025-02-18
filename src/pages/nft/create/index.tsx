@@ -13,7 +13,7 @@ import {
 import Image from 'next/image';
 
 const API_BASE_URL =
-  process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
+  process.env.PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance';
 
 interface CreateNFTResponse {
   path?: string;

@@ -44,7 +44,7 @@ const NFTTabs = ({ searchQuery }: { searchQuery: string }): JSX.Element => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const API_BASE_URL =
-    process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
+    process.env.PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance';
 
   const handleOpen = (): void => {
     setOpen(!open);

@@ -10,8 +10,14 @@ import {
   signAndSubmitTransaction,
   createPassiveSellOffer
 } from '../../../lib/diamnet';
+import Image from 'next/image';
+
 const API_BASE_URL =
   process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
+
+interface CreateNFTResponse {
+  path?: string;
+}
 
 const CreateNFT = (): ReactElement => {
   const router = useRouter();
@@ -20,39 +26,36 @@ const CreateNFT = (): ReactElement => {
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [price, setPrice] = useState<string>('');
+  const [price, setPrice] = useState('');
 
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [dialogMessage, setDialogMessage] = useState<string>('');
-  const [dialogSuccess, setDialogSuccess] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState('');
 
   const handleDialogToggle = (): void => {
-    setDialogOpen(!dialogOpen);
+    setDialogOpen((prev) => !prev);
   };
 
   const handleCreateNFT = async (): Promise<void> => {
     try {
-      const owner_address = sessionStorage.getItem('walletSession');
+      const ownerAddress = sessionStorage.getItem('walletSession') ?? '';
 
-      if (!owner_address) {
+      if (ownerAddress.trim() === '') {
         setDialogMessage('Session wallet habis. Silakan login ulang.');
-        setDialogSuccess(false);
         setDialogOpen(true);
-        router.push('/nft');
+        void router.push('/nft');
         return;
       }
 
-      // 2) Pastikan file NFT ada
-      if (image == null || image.length === 0) {
+      // Explicit check untuk file NFT
+      if (image === null || image.length === 0) {
         throw new Error('File NFT belum dipilih');
       }
-      const media = image[0]; // Ambil file pertama
 
-      // 3) Lakukan transaksi di Diamante
-      const account = await loadAccount(owner_address);
-      const sellingAsset = new DiamSdk.Asset(name, owner_address);
+      const media = image[0];
+      const account = await loadAccount(ownerAddress);
+      const sellingAsset = new DiamSdk.Asset(name, ownerAddress);
       const buyingAsset = DiamSdk.Asset.native();
-      const amount = '1'; // asumsikan NFT = 1 unit
+      const amount = '1';
       const xdr = await createPassiveSellOffer(
         account,
         sellingAsset,
@@ -61,10 +64,11 @@ const CreateNFT = (): ReactElement => {
         price
       );
       const passphrase = 'Diamante Testnet 2024';
-      const diamanteResponse = await signAndSubmitTransaction(xdr, passphrase);
 
-      const accessToken = localStorage.getItem('accessToken');
-      if (!accessToken) {
+      await signAndSubmitTransaction(xdr, passphrase);
+
+      const accessToken = localStorage.getItem('accessToken') ?? '';
+      if (accessToken === '') {
         throw new Error('Access token tidak ditemukan');
       }
 
@@ -75,7 +79,7 @@ const CreateNFT = (): ReactElement => {
       const uploadResponse = await fetch(`${API_BASE_URL}/v1/storage/cloud`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${accessToken ?? ''}`
+          Authorization: `Bearer ${accessToken}`
         },
         body: uploadForm
       });
@@ -84,26 +88,28 @@ const CreateNFT = (): ReactElement => {
         throw new Error('Gagal upload file ke /v1/storage/cloud');
       }
 
-      const uploadResult = await uploadResponse.json();
-      const image_url = uploadResult?.path;
-      if (!image_url) {
+      const uploadResult = (await uploadResponse.json()) as CreateNFTResponse;
+      const imageUrl = uploadResult?.path ?? '';
+
+      // Cek null/empty string secara eksplisit
+      if (imageUrl === '') {
         throw new Error(
           'File berhasil diupload, tapi "path" tidak ditemukan di response'
         );
       }
 
-      const metadata_cid = '';
-      const creator_address = owner_address;
+      const metadataCid = '';
+      const creatorAddress = ownerAddress;
       const status = 'TRUE';
 
       const swaggerPayload = {
         name,
         description,
-        metadata_cid,
-        image_url,
-        price: Number(price),
-        owner_address,
-        creator_address,
+        metadata_cid: metadataCid,
+        image_url: imageUrl,
+        price: Number.isNaN(Number(price)) ? 0 : Number(price),
+        owner_address: ownerAddress,
+        creator_address: creatorAddress,
         status
       };
 
@@ -123,12 +129,12 @@ const CreateNFT = (): ReactElement => {
       setDialogMessage(
         'NFT berhasil dibuat dan passive sell offer berhasil dibuat!'
       );
-      setDialogSuccess(true);
       setDialogOpen(true);
-      router.push('/my-profile');
-    } catch (error: any) {
-      setDialogMessage(`Gagal membuat NFT: ${error.message}`);
-      setDialogSuccess(false);
+      void router.push('/my-profile');
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Terjadi kesalahan tidak diketahui';
+      setDialogMessage(`Gagal membuat NFT: ${errorMessage}`);
       setDialogOpen(true);
     }
   };
@@ -137,12 +143,17 @@ const CreateNFT = (): ReactElement => {
     <Card className="p-5 flex flex-col gap-4">
       <div>
         <label htmlFor="file">
-          {imagePreview !== undefined ? (
-            <img
-              src={imagePreview}
-              alt="nft-create-logo"
-              className="w-full aspect-video rounded-2xl"
-            />
+          {/* Explicit check pada imagePreview agar tidak null, undefined, atau string kosong */}
+          {(imagePreview !== null && imagePreview !== undefined && imagePreview !== '') ? (
+            <div className="w-full aspect-video rounded-2xl overflow-hidden">
+              <Image
+                src={imagePreview}
+                alt="nft-create-preview"
+                className="object-cover"
+                width={800}
+                height={600}
+              />
+            </div>
           ) : (
             <div className="w-full aspect-video bg-[#F3F4F8] rounded-2xl p-8">
               <div className="border-dashed border border-[#7555DA80] w-full aspect-video rounded-xl flex flex-col items-center justify-center gap-2">
@@ -158,11 +169,12 @@ const CreateNFT = (): ReactElement => {
           type="file"
           id="file"
           className="hidden"
-          onChange={e => {
+          onChange={(e) => {
             setImage(e.target.files);
           }}
         />
       </div>
+
       <div className="flex flex-col gap-4">
         <label
           htmlFor="name"
@@ -170,17 +182,19 @@ const CreateNFT = (): ReactElement => {
         >
           Name
         </label>
+        {/* Tambah curly braces agar tidak dianggap return "void expression" */}
         <input
           type="text"
           id="name"
           className="rounded-xl border border-[#E9E9E9] h-[52px] placeholder:font-normal placeholder:text-base placeholder:text-[#BDBDBD] placeholder:font-poppins font-poppins text-neutral-medium text-base p-4"
           placeholder="Nature"
           value={name}
-          onChange={e => {
+          onChange={(e) => {
             setName(e.target.value);
           }}
         />
       </div>
+
       <div className="flex flex-col gap-4">
         <label
           htmlFor="description"
@@ -195,11 +209,12 @@ const CreateNFT = (): ReactElement => {
           className="rounded-xl border border-[#E9E9E9] h-[101px] placeholder:font-normal placeholder:text-base placeholder:text-[#BDBDBD] placeholder:font-poppins font-poppins text-neutral-medium text-base p-4"
           placeholder="Let people know about your creativity..."
           value={description}
-          onChange={e => {
+          onChange={(e) => {
             setDescription(e.target.value);
           }}
         />
       </div>
+
       <div className="flex flex-col gap-4">
         <label
           htmlFor="price"
@@ -213,14 +228,17 @@ const CreateNFT = (): ReactElement => {
           suffix=" DIAM"
           className="rounded-xl border border-[#E9E9E9] h-[52px] placeholder:font-normal placeholder:text-base placeholder:text-[#BDBDBD] placeholder:font-poppins font-poppins text-neutral-medium text-base p-4"
           value={price}
-          onValueChange={value => {
-            setPrice(value || '');
+          onValueChange={(value) => {
+            setPrice(value ?? '');
           }}
         />
       </div>
+
       <Button
         className="text-lg font-semibold text-white bg-[#3AC4A0] rounded-full w-full normal-case font-poppins"
-        onClick={handleCreateNFT}
+        onClick={() => {
+          void handleCreateNFT();
+        }}
       >
         Post For Sale
       </Button>
@@ -238,7 +256,9 @@ const CreateNFT = (): ReactElement => {
           <hr className="text-[#BDBDBD] w-full" />
           <p
             className="font-poppins font-semibold text-sm text-[#7555DA] cursor-pointer"
-            onClick={handleDialogToggle}
+            onClick={() => {
+              handleDialogToggle();
+            }}
           >
             OK
           </p>

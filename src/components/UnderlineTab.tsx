@@ -41,7 +41,7 @@ interface NFT {
     wallet_address: string;
     avatar: string;
   };
-};
+}
 
 interface DataItem {
   label: string;
@@ -154,8 +154,7 @@ const UnderLineTab = ({
       try {
         const myData = await getUserInfo();
         setMyInfo(myData);
-      } catch (error: any) {
-      }
+      } catch (error: any) {}
     };
 
     void fetchData();
@@ -172,10 +171,11 @@ const UnderLineTab = ({
               <div className="flex flex-col" key={`${el.id as string} ${idx}`}>
                 {el.circle !== undefined && (
                   <div
-                    className={`flex justify-between p-2 rounded-t-2xl px-4 ${el?.circle?.status_joined === true
-                      ? 'bg-[#E9E9E9]'
-                      : 'bg-[#DCFCE4]'
-                      } mt-5`}
+                    className={`flex justify-between p-2 rounded-t-2xl px-4 ${
+                      el?.circle?.status_joined === true
+                        ? 'bg-[#E9E9E9]'
+                        : 'bg-[#DCFCE4]'
+                    } mt-5`}
                   >
                     <div className="flex items-center">
                       <img
@@ -190,20 +190,23 @@ const UnderLineTab = ({
                       </Typography>
                     </div>
                     <button
-                      className={`${el?.circle?.status_joined === true
-                        ? 'bg-[#BDBDBD] cursor-not-allowed'
-                        : 'bg-seeds-button-green'
-                        } rounded-full`}
+                      className={`${
+                        el?.circle?.status_joined === true
+                          ? 'bg-[#BDBDBD] cursor-not-allowed'
+                          : 'bg-seeds-button-green'
+                      } rounded-full`}
                     >
                       <Typography
-                        className={`text-sm ${el?.circle?.status_joined === true
-                          ? 'text-neutral-soft'
-                          : 'text-white'
-                          } px-2 py-1 font-bold`}
+                        className={`text-sm ${
+                          el?.circle?.status_joined === true
+                            ? 'text-neutral-soft'
+                            : 'text-white'
+                        } px-2 py-1 font-bold`}
                         onClick={() => {
                           if (el?.circle?.status_joined === false) {
-                            void router
-                              .push(`/connect/post/${el?.circle_id as string}`);
+                            void router.push(
+                              `/connect/post/${el?.circle_id as string}`
+                            );
                           }
                         }}
                       >
@@ -333,19 +336,22 @@ const UnderLineTab = ({
                   return (
                     <Card
                       shadow={false}
-                      className={`flex justify-center border border-[#3AC4A0] bg-[#DCFCE4] sm:w-[164px] sm:mx-0 h-[92px] ${item?.type === 'ALL' ? 'w-[192px] mx-16' : 'w-[164px]'
-                        }`}
+                      className={`flex justify-center border border-[#3AC4A0] bg-[#DCFCE4] sm:w-[164px] sm:mx-0 h-[92px] ${
+                        item?.type === 'ALL' ? 'w-[192px] mx-16' : 'w-[164px]'
+                      }`}
                       key={item.type}
                     >
                       <CardBody className="p-0 flex flex-col items-center gap-2">
                         <div className="flex gap-[5px]">
                           <Image src={info} alt="information" />
                           <Typography className="text-[#3AC4A0] text-xs font-normal font-poppins">
-                            {`${item?.type === 'ALL'
-                              ? 'Win Percentage'
-                              : `${item?.type?.charAt(0).toUpperCase() ?? ''
-                              }${item?.type?.slice(1).toLowerCase() ?? ''}`
-                              }`}
+                            {`${
+                              item?.type === 'ALL'
+                                ? 'Win Percentage'
+                                : `${
+                                    item?.type?.charAt(0).toUpperCase() ?? ''
+                                  }${item?.type?.slice(1).toLowerCase() ?? ''}`
+                            }`}
                           </Typography>
                         </div>
 
@@ -388,7 +394,7 @@ const UnderLineTab = ({
                           </Typography>
                           <Typography className="text-[12.21px] leading-[16.28px] text-[#BDBDBD] font-poppins font-normal">
                             {(item?.name?.length ?? 0) >= 20 &&
-                              (window.innerWidth ?? 0) >= 1024
+                            (window.innerWidth ?? 0) >= 1024
                               ? `${item?.name?.slice(0, 20) ?? ''}...`
                               : item.name}
                           </Typography>
@@ -399,8 +405,9 @@ const UnderLineTab = ({
                           {item?.percentage}%
                         </Typography>
                         <Typography className="text-[#7555DA] text-[12.21px] leading-[16.28px] font-poppins font-normal">
-                          {`${item?.type?.charAt(0).toUpperCase() ?? ''}${item?.type?.slice(1).toLowerCase() ?? ''
-                            }`}
+                          {`${item?.type?.charAt(0).toUpperCase() ?? ''}${
+                            item?.type?.slice(1).toLowerCase() ?? ''
+                          }`}
                         </Typography>
                       </div>
                     </div>
@@ -479,13 +486,12 @@ const UnderLineTab = ({
       try {
         const myData = await getUserInfo();
         setMyInfo(myData);
-      } catch (error: any) {
-      }
+      } catch (error: any) {}
     };
 
     fetchData()
       .then()
-      .catch(() => { });
+      .catch(() => {});
   }, []);
   return (
     <Tabs value={activeTab}>
@@ -503,8 +509,9 @@ const UnderLineTab = ({
             onClick={() => {
               setActiveTab(value);
             }}
-            className={`${activeTab === value ? 'text-[#27A590]' : 'text-[#7C7C7C]'
-              } mx-[30px] text-base font-poppins font-semibold z-10`}
+            className={`${
+              activeTab === value ? 'text-[#27A590]' : 'text-[#7C7C7C]'
+            } mx-[30px] text-base font-poppins font-semibold z-10`}
           >
             {label}
           </Tab>

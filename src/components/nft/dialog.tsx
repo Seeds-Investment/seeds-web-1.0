@@ -6,7 +6,7 @@ import React from 'react';
 interface TransactionStatus {
   type: 'success' | 'error' | 'warning' | 'info' | 'loading';
   message: string;
-};
+}
 
 interface NFT {
   id: string;
@@ -20,7 +20,7 @@ interface NFT {
   owner: {
     wallet_address: string;
   };
-};
+}
 
 interface NFTDialogProps {
   open: { open: boolean; state: number };
@@ -30,7 +30,7 @@ interface NFTDialogProps {
   nftDetail?: NFT;
   handleBuy: () => Promise<void>;
   walletAddress?: string | null;
-};
+}
 
 const NFTDialog = ({
   open,
@@ -47,12 +47,13 @@ const NFTDialog = ({
     if (transactionStatus !== undefined) {
       return (
         <div
-          className={`p-4 rounded-lg text-center ${transactionStatus.type === 'success'
-            ? 'bg-green-50 text-green-800'
-            : transactionStatus.type === 'error'
+          className={`p-4 rounded-lg text-center ${
+            transactionStatus.type === 'success'
+              ? 'bg-green-50 text-green-800'
+              : transactionStatus.type === 'error'
               ? 'bg-red-50 text-red-800'
               : 'bg-blue-50 text-blue-800'
-            }`}
+          }`}
         >
           <p className="font-semibold mb-2">
             {transactionStatus.type.toUpperCase()}
@@ -96,7 +97,9 @@ const NFTDialog = ({
                 </Button>
                 <Button
                   className="w-full rounded-full bg-[#3AC4A0] text-white"
-                  onClick={() => { handleChange(1) }}
+                  onClick={() => {
+                    handleChange(1);
+                  }}
                 >
                   Buy
                 </Button>
@@ -169,13 +172,17 @@ const NFTDialog = ({
             <div className="w-full pt-4 flex flex-col md:flex-row gap-4">
               <Button
                 className="w-full rounded-full border-[#3AC4A0] text-[#3AC4A0] bg-white"
-                onClick={() => { router.back() }}
+                onClick={() => {
+                  router.back();
+                }}
               >
                 Back to Marketplace
               </Button>
               <Button
                 className="w-full rounded-full bg-[#3AC4A0] text-white"
-                onClick={() => { void router.push('/my-profile') }}
+                onClick={() => {
+                  void router.push('/my-profile');
+                }}
               >
                 Go to Profile
               </Button>

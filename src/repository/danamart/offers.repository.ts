@@ -1,4 +1,5 @@
 import baseAxios from '@/utils/common/axios';
+import { type PurchaseI } from '@/utils/interfaces/danamart/offers.interface';
 import axios from 'axios';
 
 const danamartApi = axios.create({
@@ -8,6 +9,15 @@ const danamartApi = axios.create({
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json'
+  }
+});
+
+const danamartPurchaseService = axios.create({
+  baseURL:
+    process.env.NEXT_PUBLIC_DANAMART_API_URL ??
+    'https://dev.danamart.id/development/dm-scf-api/public',
+  headers: {
+    'Content-Type': 'multipart/form-data'
   }
 });
 
@@ -122,6 +132,121 @@ export const getDashboardUserById = async (
     }
 
     const response = await danamartApi.get('/pemodal/dashboard', {
+      params,
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const getFormPurchase = async (
+  pinjamanId: string,
+  userPinjamanId: string,
+): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.get(`/pemodal/pendanaan/form/${pinjamanId}/${userPinjamanId}`, {
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const purchaseItem = async (
+  formData: PurchaseI
+): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+    const response = await danamartPurchaseService.post(
+      `/pemodal/pendanaan/beli`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    await Promise.reject(error);
+  }
+};
+
+export const getPurchaseOTP = async (formData: FormData): Promise<any> => { 
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.post(`/pemodal/dashboard/sendOTP`, formData, {
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const getDetailPayment = async (
+  params: { 
+    idPinjaman: string;
+  }
+): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.get('/pemodal/Pendanaan/getPembayaran', {
+      params,
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const cancelPayment = async (
+  params: { 
+    pinjamanId: string;
+  }
+): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.get('/pemodal/Pendanaan/deleteTransaksi', {
       params,
       headers: {
         Authorization: `Bearer ${accessTokenDanamart ?? ''}`

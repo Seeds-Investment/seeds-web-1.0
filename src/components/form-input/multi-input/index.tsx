@@ -73,7 +73,8 @@ const CommonInput = <T extends FieldValues>(
         fontFamily: 'Poppins, sans-serif',
         fontSize: '16px',
         lineHeight: '48px',
-        color: '#201B1C'
+        color: '#201B1C',
+        border: '1px solid #BDBDBD'
       }}
       id={`${props.registerName}-label`}
       placeholder={props.placeholder}

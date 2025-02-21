@@ -43,6 +43,7 @@ const SidebarLogin: React.FC = () => {
           submenu: [
             { title: 'Dashboard', url: '/danamart/dashboard' },
             { title: t('danamart.offers.sidebar.text1'), url: '/danamart/offer' },
+            { title: t('danamart.portfolio.sidebar.text1'), url: '/danamart/portfolio' },
           ]
         },
         { title: 'Setting', url: '/user-setting', image: setting }

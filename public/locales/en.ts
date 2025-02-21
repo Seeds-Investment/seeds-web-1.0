@@ -3438,14 +3438,125 @@ export default {
           text2: 'Investable Funds',
           text3: 'Funds in Securities',
         },
-        form: {
-          sourceCash: {
-            text1: 'Choose Source of Funds',
-            text2: 'Cash In-Hand',
-            text3: 'Transfer Cash',
+        form: {  
+          sourceCash: {  
+            text1: "Select Source of Funds",  
+            text2: "Cash In-hand",  
+            text3: "Transfer Cash"
+          },  
+          titleObligasi: "Bond Purchase",  
+          titleSaham: "Stock Purchase",  
+          text1: "Return on Investment",  
+          text2: "Purchase Slot",  
+          text3: "Investment Period (Months)",  
+          text4: "Purchase Amount (Rp)",  
+          text5: "Enter Purchase Amount (Rp)",  
+          text6: "Reward + Interim Funds (Rp)",  
+          text7: "Select Source of Funds",  
+          text8: "Use Reward + Interim Funds",  
+          text9: "Total Amount to Be Paid (Rp)",  
+          text10: "Select Payment Bank",  
+          text11: "Potential Profit",  
+          text12: "Monthly Return",  
+          text13: "10% Tax",  
+          text14: "Total Return",  
+          text15: "10% Administrative Fee",  
+          text16: "Total Capital + Return",  
+          text17: "Net Investment Return",  
+          text18: "Acknowledgment of Investing in PO Financing",  
+          text19: "Buy",  
+          text20: "Price Per Share (Rp)",  
+          text21: "Remaining Shares",  
+          text22: "Total Purchase (Rp)",  
+          text23: "Select Payment Bank",  
+          text24: "Purchase Quantity (Lot)",  
+          formResponse: {  
+            text1: "Purchase Successful",  
+            text2: "Almost there! Just a few more steps to complete your investment. Proceed with the next steps to continue the transaction.",  
+            text3: "Congratulations! Your investment purchase has been successfully completed!",  
+            text4: "Sorry, there is an unfinished transaction. Please complete your pending transaction first.",  
+            text5: "Minimum purchase amount is Rp. 100,000,-",  
+            text6: "Please acknowledge that you are investing in Project Financing."  
+          }  
+        },
+        disclaimer: {
+          text: `
+            <p>PT Dana Aguna Nusantara is a limited liability company engaged in providing crowdfunding services based on information technology (“Organizer”) and developing crowdfunding business by connecting Investors and Issuers (hereinafter referred to jointly as “Users”). In this crowdfunding service, a civil relationship arises when the Investor agrees to purchase securities offered by the Issuer, thus all risks arising from this relationship will be the responsibility of each party. The risk arising from the Investor's right to receive a return from the Issuer is a risk that must be borne by the Investor according to the Issuer's return policy. Danamart only acts as a crowdfunding service connecting Investors and Issuers and does not act as a business entity managing related funds or investments (Issuer). In accordance with Article 27 of the Financial Services Authority Regulation No. 57 of 2020 on <strong>SECURITIES OFFERING THROUGH INFORMATION TECHNOLOGY-BASED CROWDFUNDING SERVICES (“POJK 57/2020”)</strong>, which states:</p>
+            <br>
+            <ol>
+              <li>THE FINANCIAL SERVICES AUTHORITY DOES NOT APPROVE THE ISSUER AND DOES NOT DECLARE APPROVAL OR DISAPPROVAL OF THESE SECURITIES, NOR DOES IT VERIFY THE TRUTH OR SUFFICIENCY OF THE INFORMATION IN THIS CROWDFUNDING SERVICE. ANY STATEMENT TO THE CONTRARY IS ILLEGAL.</li>
+              <li>INFORMATION IN THIS CROWDFUNDING SERVICE IS IMPORTANT AND REQUIRES IMMEDIATE ATTENTION. IF THERE IS ANY DOUBT ABOUT THE ACTION TO BE TAKEN, IT IS RECOMMENDED TO CONSULT WITH THE ORGANIZER.</li>
+              <li>THE ISSUER AND ORGANIZER, EITHER INDIVIDUALLY OR TOGETHER, ARE FULLY RESPONSIBLE FOR THE ACCURACY OF ALL INFORMATION PROVIDED IN THIS CROWDFUNDING SERVICE.</li>
+              <li>Danamart acts as a crowdfunding organizer connecting Investors and Issuers and not as a business entity (Issuer). The Financial Services Authority acts as a regulator and licensor, not as an investment guarantor.</li>
+              <li>The decision to purchase securities on Danamart is entirely the right and responsibility of the Investor. Investors who purchase securities have agreed to all terms and conditions and understand the risks of purchasing securities, including selling those securities quickly, canceling the purchase, or losing part or all of their capital.</li>
+              <li><strong>Business Risk:</strong> Purchases that have not or do not yield results are fully the responsibility of the Investor. It is recommended that Investors make proper calculations and analysis of the Issuer and its business before purchasing securities.</li>
+              <li><strong>Investment Risk:</strong> Investors have the right to receive returns on the business carried out by the Issuer. There is a possibility that no returns will be distributed if the Issuer’s business experiences a downturn.</li>
+              <li><strong>Liquidity Risk:</strong> There is a possibility that Investors may not easily sell the securities on the secondary market for the Issuer's securities.</li>
+              <li><strong>Electronic System Failure:</strong> There is a possibility that the electronic system may experience disruptions at any time due to technical errors.</li>
+              <li><strong>Risk of Dividend Scarcity and/or Shareholding Dilution:</strong> If the issued security is a share.</li>
+              <li><strong>Default Risk:</strong> The decision to purchase securities may result in the risk of losing part or all of the invested capital, including a business downturn by the Issuer and other related risks.</li>
+            </ol>
+          `,
+          yes: 'Yes',
+          cancel: 'Cancel',
+        },
+        validationForm: {
+          text1: 'This field is required'
+        },
+        payment: {
+          qris: {
+            steps : `
+              <ol>
+                <li>Scan or take a screenshot of the QR code displayed on the screen using a banking app, e-wallet, or any other payment application that supports QRIS payments.</li>
+                <li>Check the transaction details in the application, then click the Pay button.</li>
+                <li>Enter your PIN.</li>
+                <li>Once the transaction is complete, return to this page and you will be redirected to the portfolio page.</li>
+              </ol>
+            `,
+          },
+          titleQR: "Payment with QRIS",
+          titleVA: "Payment with Virtual Account",
+          descriptionQR: "We have also sent the QRIS payment instructions via email. Please check your email and proceed with the payment.",
+          descriptionVA: "We have also sent the VA payment instructions via email. Please check your email and proceed with the payment.",
+          orderId: "Order ID",
+          nominal: "Nominal",
+          expiredDate: "Valid Until",
+          status: "Status",
+          numberVA: "Virtual Account Number",
+          numberVACopied: 'VA Number copied!',
+          scan: "Scan QRIS",
+          download: "Download QR",
+          howToPayQR: "How to pay via QRIS:",
+          howToPayVA1: "How to pay via",
+          howToPayVA2: "BANK",
+          refresh: "Refresh Status",
+          cancel: "Cancel Transaction",
+          cancelationSucceed: "Payment transaction was successfully canceled!",
+          cancelationFailed: "Payment transaction cancellation failed. Please try again."
+        },
+        modals: {
+          cancel: {
+            text1: 'Transaction Cancelation',
+            text2: 'Are you sure you want to delete this transaction?',
+            cancel: 'Cancel',
+            yes: 'Yes',
+          },
+          otp: {
+            process: 'Process',
+            verification: 'OTP Verification',
+            getOtp: 'Get OTP',
+            selectType: 'Select OTP Type',
+            tooManyAttempts: 'Too many attempts hitting OTP. Please wait for a while...',
+            cancel: 'Cancel',
+            yes: 'Yes',
           }
         }
       }
+    },
+    portfolio: {
+      sidebar: {
+        text1: 'Portfolio'
+      },
     }
   }
 };

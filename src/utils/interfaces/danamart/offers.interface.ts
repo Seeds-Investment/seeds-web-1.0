@@ -198,4 +198,115 @@ export interface Banner {
   url: string
 }
 
+// 
+
+export interface FormPurchaseData {
+  dataForm: DataForm
+  dataInput: DataInput
+  dm_pem_05001: string
+}
+
+export interface DataForm {
+  kodeEfek: string
+  sektorUsaha: string
+  slotPembelian: string
+  sisaPembelian: string
+  hargaLembarSaham: number
+  statuSimpan: string
+  BagiHasil?: string
+  jangkaWaktu?: string
+}
+
+export interface DataInput {
+  nohp: string
+  user_peminjam_id: string
+  user_pendana_id: string
+  pinjaman_id: string
+  sektor_usaha: string
+  bunga_persen: string
+  credit_rating: string
+  dm_pem_02003: string
+  dm_pem_02004: string
+  jml_pinjaman_terbit: string
+  tgl_jatuh_tempo: string
+  referral_id_lv1_peminjam: string
+  referral_id_lv2_peminjam: string
+  referral_id_lv1_pendana: string
+  referral_id_lv2_pendana: string
+  total_dana_reward: string
+  statusPembayaran: string
+  statusMetode: string
+  statusKeuangan: string
+  statusHp: number
+  inputSaham: InputSaham
+  inputObligasi: InputObligasi
+}
+
+export interface InputSaham {
+  harga_perlembar_saham: string
+  lembar_saham: string
+}
+
+export interface InputObligasi {
+  bid_cash: string
+}
+
+// 
+
+export interface PurchaseI {
+  user_peminjam_id?: string;
+  user_pendana_id?: string;
+  pinjaman_id?: string;
+  sektor_usaha?: string;
+  bunga_persen?: string;
+  credit_rating?: string;
+  dm_pem_02003?: string;
+  dm_pem_02004?: string;
+  jml_pinjaman_terbit?: string;
+  tgl_jatuh_tempo?: string;
+  referral_id_lv1_peminjam?: string;
+  referral_id_lv2_peminjam?: string;
+  referral_id_lv1_pendana?: string;
+  referral_id_lv2_pendana?: string;
+  total_dana_reward?: string;
+  bid_cash?: string | number;
+  harga_perlembar_saham?: string;
+  lembar_saham?: string;
+  bank_code?: string;
+  bid_rewerd?: boolean;
+  bid_reward?: boolean;
+  sumberDana: string;
+  kodeOtp?: string;
+}
+
+// 
+
+export interface PaymentDetail {
+  StatusCode: string
+  Status: string
+  message: string
+  Data: Data
+}
+
+export interface Data {
+  id: string
+  create_date: string
+  callback_date: string | null;
+  expiration_date: string
+  id_agent: string | null;
+  platform: string
+  user_pendana_id: string
+  email: string
+  handphone: string
+  pinjaman_id: string
+  jml_pendanaan: string
+  kode_pembayaran: string
+  fpc: string | null;
+  fpc_id: string | null;
+  fva: string
+  ext_id: string
+  fva_id: string
+  status_payment: string
+}
+
 // Purchase Offer Ends

@@ -3367,19 +3367,130 @@ export default {
         title: 'Pembelian Efek',
         type1: 'Obligasi',
         type2: 'Saham',
-        card: {
-          text1: 'Cash In-hand',
-          text2: 'Investable Funds',
-          text3: 'Funds in Securities',
+        card: {  
+          text1: "Uang Tunai",  
+          text2: "Dana Investasi",  
+          text3: "Dana dalam Sekuritas",  
         },
         form: {
           sourceCash: {
             text1: 'Pilih Sumber Dana',
-            text2: 'Uang Tunai',
+            text2: 'Cash In-hand',
             text3: 'Transfer Tunai'
+          },
+          titleObligasi: 'Pembelian Obligasi',
+          titleSaham: 'Pembelian Saham',
+          text1: 'Imbal Hasil',
+          text2: 'Slot Pembelian',
+          text3: 'Jangka Waktu (Bulan)',
+          text4: 'Jumlah Pembelian (Rp)',
+          text5: 'Masukan Jumlah Pembelian (Rp)',
+          text6: 'Dana Reward + Interim (Rp)',
+          text7: 'Pilih Sumber Dana',
+          text8: 'Pakai Dana Reward + Interim',
+          text9: 'Total Pembelian Yang Harus Dibayarkan (Rp)',
+          text10: 'Pilih Bank Pembayaran',
+          text11: 'Potensi Keuntungan',
+          text12: 'Imbal Hasil/Bulan',
+          text13: 'Pajak 10%',
+          text14: 'Total Imbal Hasil',
+          text15: 'Biaya Administrasi 10%',
+          text16: 'Total Modal + Imbal Hasil',
+          text17: 'Hasil Investasi (Nett)',
+          text18: 'Mengetahui berinvestasi pada PO Financing',
+          text19: 'Buy',
+          text20: 'Harga Per Lembar Saham (Rp)',
+          text21: 'Sisa Lembar Saham',
+          text22: 'Total Pembelian (Rp)',
+          text23: 'Pilih Bank Pembayaran',
+          text24: 'Jumlah Pembelian (Lot)',
+          formResponse: {
+            text1: 'Pembelian Sukses',
+            text2: 'Semangat, sedikit lagi kamu berhasil beli efek! Segera selesaikan proses berikutnya untuk melanjutkan transaksi.',
+            text3: 'Selamat! Proses pembelian efek sudah berhasil!',
+            text4: 'Maaf, ada pembelian efek yang belum selesai diproses. Silakan proses terlebih dahulu transaksi Kamu',
+            text5: 'Minimum pembelian adalah Rp. 100.000,-',
+            text6: 'Silakan setujui bahwa anda berinvestasi pada Project Financing',
+          }
+        },
+        disclaimer: {
+          text: `
+            <p>PT Dana Aguna Nusantara adalah suatu perseroan terbatas yang bergerak di bidang jasa layanan urun dana berbasis teknologi informasi (“Penyelenggara”) dan mengembangkan bisnis layanan urun dana bersama dengan mempertemukan Pemodal dan Penerbit (selanjutnya Pemodal dan Penerbit disebut bersama-sama sebagai “Pengguna”). Pada layanan urun dana ini, timbulnya hubungan perdata terjadi apabila Pemodal sepakat untuk membeli efek yang ditawarkan oleh Penerbit, sehingga segala risiko yang timbul dari hubungan tersebut akan menjadi tanggung jawab masing-masing pihak. Risiko yang timbul dari hak sebagai Pemodal untuk menerima imbal hasil dari Penerbit merupakan risiko yang wajib ditanggung oleh Pemodal sesuai kebijakan imbal hasil Penerbit. Danamart hanya bertindak sebagai layanan urun dana yang mempertemukan antara Pemodal dengan Penerbit dan tidak bertindak sebagai pelaku usaha yang menjalankan usaha untuk mengumpulkan dana terkait atau pengelola investasi (Penerbit). Sesuai dengan Pasal 27 Peraturan Otoritas Jasa Keuangan No. 57 Tahun 2020 tentang <strong>PENAWARAN EFEK MELALUI LAYANAN URUN DANA BERBASIS TEKNOLOGI INFORMASI (“POJK 57/2020”)</strong> yang menyatakan bahwa:</p>
+            <br>
+            <ol>
+              <li>OTORITAS JASA KEUANGAN TIDAK MEMBERIKAN PERSETUJUAN TERHADAP PENERBIT DAN TIDAK MEMBERIKAN PERNYATAAN MENYETUJUI ATAU TIDAK MENYETUJUI EFEK INI, TIDAK JUGA MENYATAKAN KEBENARAN ATAU KECUKUPAN INFORMASI DALAM LAYANAN URUN DANA INI. SETIAP PERNYATAAN YANG BERTENTANGAN DENGAN HAL TERSEBUT ADALAH PERBUATAN MELANGGAR HUKUM.</li>
+              <li>INFORMASI DALAM LAYANAN URUN DANA INI PENTING DAN PERLU MENDAPAT PERHATIAN SEGERA. APABILA TERDAPAT KERAGUAN PADA TINDAKAN YANG AKAN DIAMBIL, SEBAIKNYA BERKONSULTASI DENGAN PENYELENGGARA.</li>
+              <li>PENERBIT DAN PENYELENGGARA, BAIK SENDIRI-SENDIRI MAUPUN BERSAMA-SAMA, BERTANGGUNG JAWAB SEPENUHNYA ATAS KEBENARAN SEMUA INFORMASI YANG TERCANTUM DALAM LAYANAN URUN DANA INI.</li>
+              <li>Danamart bertindak sebagai penyelenggara urun dana yang mempertemukan Pemodal dan Penerbit dan bukan sebagai pihak yang menjalankan bisnis (Penerbit). Otoritas Jasa Keuangan bertindak sebagai regulator dan pemberi izin, bukan sebagai penjamin investasi.</li>
+              <li>Keputusan pembelian efek di Danamart, sepenuhnya merupakan hak dan tanggung jawab Pemodal. Pemodal yang melakukan pembelian efek telah menyetujui seluruh syarat dan ketentuan serta memahami risiko pembelian efek termasuk di dalamnya menjual kembali efek tersebut dengan cepat, membatalkan pembelian efek, dan atau kehilangan sebagian atau seluruh dari modal.</li>
+              <li>Risiko Usaha: Pembelian yang belum atau tidak menghasilkan sepenuhnya menjadi tanggung jawab Pemodal. Diharapkan Pemodal melakukan perhitungan dan analisa yang tepat terhadap Penerbit dan usahanya sebelum melakukan pembelian efek.</li>
+              <li>Risiko Investasi: Pemodal memiliki hak untuk mendapatkan imbal hasil atas usaha yang dilakukan oleh Penerbit. Tidak menutup kemungkinan bahwa tidak adanya pembagian imbal hasil karena usaha yang dilakukan oleh Penerbit mengalami penurunan.</li>
+              <li>Risiko Likuiditas: Adanya kemungkinan bahwa Pemodal tidak dapat dengan mudah menjual efek pada pasar sekunder untuk efek dari Penerbit.</li>
+              <li>Kegagalan Sistem Elektronik: Adanya kemungkinan bahwa sistem elektronik dapat mengalami gangguan sewaktu-waktu yang disebabkan oleh kesalahan teknis.</li>
+              <li>Risiko kelangkaan pembagian dividen dan/atau dilusi kepemilikan saham, jika Efek yang diterbitkan merupakan saham.</li>
+              <li>Risiko Gagal Bayar: Keputusan pembelian efek dapat mengakibatkan risiko kehilangan sebagian atau seluruh modal investasi termasuk di dalamnya penurunan usaha Penerbit dan lain hal sebagainya.</li>
+            </ol>
+          `,
+          yes: 'Ya',
+          cancel: 'Batalkan',
+        },
+        validationForm: {
+          text1: 'Kolom ini wajib diisi',
+        },
+        payment: {
+          qris: {
+            steps : `
+              <ol>
+                <li>Scan/screenshot kode QR yang tampil di layar dengan aplikasi bank, aplikasi dompet digital (e-wallet) atau aplikasi pembayaran lain yang mendukung pembayaran QRIS.</li>
+                <li>Periksa detail transaksi pada aplikasi, lalu klik tombol Bayar.</li>
+                <li>Masukan PIN.</li>
+                <li>Setelah transaksi selesai, kembali ke halaman ini dan akan diteruskan ke halaman portfolio.</li>
+              </ol>
+            `,
+          },
+          titleQR: "Pembayaran dengan QRIS",
+          titleVA: "Pembayaran dengan Virtual Account",
+          descriptionQR: "Kami juga telah mengirimkan instruksi pembayaran QRIS melalui email. Silakan periksa email Anda dan lanjutkan pembayaran.",
+          descriptionVA: "Kami juga telah mengirimkan instruksi pembayaran VA melalui email. Silakan periksa email Anda dan lanjutkan pembayaran.",
+          orderId: "ID Pesanan",
+          nominal: "Nominal",
+          expiredDate: "Berlaku Sampai",
+          status: "Status",
+          numberVA: "Nomor Virtual Account",
+          numberVACopied: 'Nomor VA berhasil disalin',
+          scan: "Pindai QRIS",
+          download: "Unduh QR",
+          howToPayQR: "Cara pembayaran menggunakan QRIS:",
+          howToPayVA1: "Petunjuk Pembayaran melalui BANK",
+          howToPayVA2: "",
+          refresh: "Perbarui Status",
+          cancel: "Batalkan Transaksi",
+          cancelationSucceed: 'Transaksi pembayaran berhasil dibatalkan!',
+          cancelationFailed: 'Transaksi pembayaran gagal dibatalkan. Coba lagi.'
+        },
+        modals: {
+          cancel: {
+            text1: 'Pembatalan Transaksi',
+            text2: 'Apakah Kamu yakin akan membatalkan transaksi ini?',
+            cancel: 'Tidak',
+            yes: 'Ya',
+          },
+          otp: {
+            process: 'Proses',
+            verification: 'Verifikasi OTP',
+            getOtp: 'Dapatkan Kode OTP',
+            selectType: 'Pilih Jenis OTP',
+            tooManyAttempts: 'Terlalu banyak meminta kode OTP. Tunggu sebentar lagi...',
+            cancel: 'Tidak',
+            yes: 'Ya',
           }
         }
       }
+    },
+    portfolio: {
+      sidebar: {
+        text1: 'Portofolio'
+      },
     }
   }
 };

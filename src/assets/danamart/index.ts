@@ -1,3 +1,8 @@
+export { default as BankBRI } from './bank-bri.svg';
+export { default as BankBCA } from './bank_bca.svg';
+export { default as BankBNI } from './bank_bni.svg';
+export { default as BankMandiri } from './bank_mandiri.svg';
+export { default as BankPermata } from './bank_permata.svg';
 export { default as CardCalendar } from './card-calendar.svg';
 export { default as CardClock } from './card-clock.svg';
 export { default as CardCoins } from './card-coins.svg';
@@ -5,6 +10,7 @@ export { default as CardTag } from './card-tag.svg';
 export { default as CardUser } from './card-user.svg';
 export { default as Clock } from './clock.svg';
 export { default as DanamartLogo } from './danamart-logo.png';
+export { default as DownloadIcon } from './download-icon.svg';
 export { default as ArrowLeftPaginationGray } from './pagination-left-gray.svg';
 export { default as ArrowLeftPaginationGreen } from './pagination-left-green.svg';
 export { default as ArrowRightPaginationGray } from './pagination-right-gray.svg';
@@ -23,6 +29,8 @@ export { default as ProgressPrelistingGreen } from './progres-prelisting-green.s
 export { default as ProgressPrelistingGrey } from './progres-prelisting-grey.svg';
 export { default as ProgressSigningGreen } from './progres-signing-green.svg';
 export { default as ProgressSigningGrey } from './progres-signing-grey.svg';
+export { default as SeedyCancelTransaction } from './seedy-cancel-transaction.svg';
+export { default as SeedyPayment } from './seedy-payment.svg';
 export { default as TabDiscussGray } from './tab-discuss-gray.svg';
 export { default as TabDiscussGreen } from './tab-discuss-green.svg';
 export { default as TabDiscussGroup } from './tab-discuss-group.svg';

@@ -30,7 +30,6 @@ const Prospectus = (): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
   const prospectusId = router.query.pinjamanId;
-  console.log('rouzter ' , router)
 
   const [detailProspektus, setDetailProspektus] = useState<DetailProspektus>();
   const [offerData, setOfferData] = useState<OfferData>();
@@ -115,6 +114,16 @@ const Prospectus = (): React.ReactElement => {
       });
     }
   }, [currentIndex]);
+
+  const getSecurityType = (jenisEfek: string): string => {
+    const lowerCaseEfek = jenisEfek.toLowerCase();
+    if (lowerCaseEfek.includes("saham")) {
+        return "stock";
+    } else if (lowerCaseEfek.includes("obligasi")) {
+        return "bond";
+    }
+    return "unknown";
+  };
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -308,7 +317,7 @@ const Prospectus = (): React.ReactElement => {
                 </div>
                 <Button
                   onClick={async() => 
-                    await router.push(`/danamart/offer/prospectus/${prospectusId as string}/purchase?UserPeminjamId=${detailProspektus?.Data?.BeliEfek?.UserPinjamanId}`)
+                    await router.push(`/danamart/offer/prospectus/${prospectusId as string}/purchase?UserPeminjamId=${detailProspektus?.Data?.BeliEfek?.UserPinjamanId}&type=${getSecurityType(detailProspektus?.Data?.jenisEfek)}`)
                   }
                   className="md:w-[311px] w-full h-[52px] bg-[#3AC4A0] text-white rounded-full"
                 >

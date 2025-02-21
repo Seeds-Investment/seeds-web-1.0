@@ -726,7 +726,37 @@ export const useCashSource = (): ILabel[] => {
     {
       key: 2,
       label: t(`${pathTranslation}.text3`),
-      value: 'TransferCash'
+      value: 'TransferDana'
+    }
+  ];
+};
+
+export const useBankName = (): ILabel[] => {
+  return [
+    {
+      key: 1,
+      label: 'VA BCA (Max. Rp 50.000.000,-)',
+      value: 'BCA'
+    },
+    {
+      key: 2,
+      label: 'VA Permata (Max. Rp 9.000.000,-)',
+      value: 'PERMATA'
+    },
+    {
+      key: 3,
+      label: 'VA Mandiri (Max. Rp 50.000.000,-)',
+      value: 'MANDIRI'
+    },
+    {
+      key: 4,
+      label: 'VA BNI (Max. Rp 50.000.000,-)',
+      value: 'BNI'
+    },
+    {
+      key: 5,
+      label: 'VA BRI (Max. Rp 50.000.000,-)',
+      value: 'BRI'
     }
   ];
 };

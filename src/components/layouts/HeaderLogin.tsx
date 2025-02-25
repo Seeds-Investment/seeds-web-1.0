@@ -52,7 +52,7 @@ const HeaderLogin: React.FC = () => {
       const response = await getUserInfo();
       setUserInfo(response);
     } catch (error: any) {
-      if (error.response.status !== 401) {
+      if (error?.response?.status !== 401) {
         toast.error('Error fetching user data');
       }
     }

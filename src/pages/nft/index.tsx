@@ -41,10 +41,11 @@ const NFTDashboard: React.FC = () => {
       setLoading(true);
       try {
         const res = await getNftList({ page, limit: 10, search: '' });
-        const data = res.data.filter(
-          val => val.metadata_cid !== ''
-          // && val.status === 'TRUE'
-        );
+        const data = res.data;
+        // filter(
+        //   val => val.metadata_cid !== ''
+        //   && val.status === 'TRUE'
+        // );
         setData(prev =>
           page === 1 || prev === undefined ? data : [...prev, ...data]
         );

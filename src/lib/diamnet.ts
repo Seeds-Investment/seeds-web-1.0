@@ -54,19 +54,19 @@ export const connectWallet = async (): Promise<ConnectWallet | undefined> => {
         const isConnected = await getUserAddress();
         if (
           typeof isConnected === 'object' &&
-          isConnected.wallet_address !== response.message.data[0].diamPublicKey
-        ) {
-          throw new Error(
-            'Oops! Please use the wallet address linked to this account'
-          );
-        } else if (
-          typeof isConnected === 'object' &&
           isConnected !== null &&
           !('wallet_address' in isConnected)
         ) {
           await connectSeeds({
             wallet_address: response.message.data[0].diamPublicKey
           });
+        } else if (
+          typeof isConnected === 'object' &&
+          isConnected.wallet_address !== response.message.data[0].diamPublicKey
+        ) {
+          throw new Error(
+            'Oops! Please use the wallet address linked to this account'
+          );
         }
         sessionStorage.setItem(
           'diamPublicKey',

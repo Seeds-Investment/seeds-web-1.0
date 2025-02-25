@@ -1,87 +1,86 @@
 import NFTTabs from '@/components/nft/tabs';
 import withAuth from '@/helpers/withAuth';
 import { connectWallet } from '@/lib/diamnet';
+import { type Data, getNftList } from '@/repository/nft.repository';
 import { Button, Card, Dialog, DialogBody } from '@material-tailwind/react';
 import Image from 'next/image';
 import logo from 'public/assets/logo-seeds.png';
 import checklist from 'public/assets/nft/checklist.svg';
 import diam from 'public/assets/vector/diam.svg';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FaClockRotateLeft } from 'react-icons/fa6';
 import { FiChevronRight, FiSearch } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 const NFTDashboard: React.FC = () => {
-  const [open, setOpen] = useState(false);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [open, setOpen] = useState<{ open: boolean; connect: boolean }>({
+    open: false,
+    connect: true
+  });
+  const [data, setData] = useState<Data[]>();
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
 
-  const handleOpen: any = () => {
-    setOpen(!open);
+  const handleOpen = (): void => {
+    setOpen(prev => ({ ...prev, open: !prev.open }));
   };
-  const accessToken = localStorage.getItem('accessToken');
-  if (accessToken === null) {
-    throw new Error('Access token tidak ditemukan');
-  }
-
-  const API_BASE_URL =
-    process.env.SERVER_URL ?? 'https://seeds-dev-gcp.seeds.finance';
-  const handleConnectWallet = async (): Promise<void> => {
-    if (walletAddress !== null) {
-      setOpen(true);
-      return;
-    }
-
-    setIsLoading(true);
-    setErrorMessage(null);
-
-    try {
-      const result = await connectWallet();
-      if (result.success as boolean) {
-        const publicKey = result.publicKey;
-        setWalletAddress(publicKey);
-        sessionStorage.setItem('walletSession', publicKey);
-        setOpen(true);
-      } else {
-        setErrorMessage(result.error ?? 'Failed to connect wallet');
+  const handleConnect = async (): Promise<void> => {
+    if ('diam' in window) {
+      const res = await connectWallet();
+      if (res?.status === 200) {
+        handleOpen();
       }
-      const publicKeyy = sessionStorage.getItem('walletSession');
-      const walletconnect = {
-        wallet_address: publicKeyy
-      };
-
-      await fetch(`${API_BASE_URL}/nft/diamante/connect`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken ?? ''}`
-        },
-        body: JSON.stringify(walletconnect)
-      });
-    } catch (error) {
-      setErrorMessage('An unexpected error occurred');
-    } finally {
-      setIsLoading(false);
+    } else {
+      toast.error('Please download Diam Wallet first, then refresh this tab');
     }
   };
+
+  const fetchData = useCallback(async () => {
+    if (!loading && hasMore) {
+      setLoading(true);
+      try {
+        const res = await getNftList({ page, limit: 10, search: '' });
+        const data = res.data.filter(
+          val => val.metadata_cid !== ''
+          // && val.status === 'TRUE'
+        );
+        setData(prev =>
+          page === 1 || prev === undefined ? data : [...prev, ...data]
+        );
+        if (res.metadata.current_page === res.metadata.total_page)
+          setHasMore(false);
+        setPage(prevPage => prevPage + 1);
+      } catch (error) {
+        toast.error(`Error fetching data: ${String(error)}`);
+      } finally {
+        setLoading(false);
+      }
+    }
+  }, [page]);
 
   useEffect(() => {
-    const sessionWallet = sessionStorage.getItem('walletSession');
-    if (sessionWallet !== null) setWalletAddress(sessionWallet);
-
-    const cleanupSession = (): void => {
-      sessionStorage.removeItem('walletSession');
-    };
-    window.addEventListener('beforeunload', cleanupSession);
-    return () => {
-      window.removeEventListener('beforeunload', cleanupSession);
-    };
+    void fetchData();
   }, []);
 
+  useEffect(() => {
+    const handleScroll = (): void => {
+      const isBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight;
+
+      if (isBottom && hasMore) {
+        void fetchData();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [fetchData]);
   return (
     <section className="flex flex-col gap-2 md:gap-4">
-      {/* Search Card */}
       <Card className="md:p-5 rounded-none md:rounded-xl">
         <div className="flex flex-row-reverse md:flex-col gap-4 bg-gradient-to-b from-[#3AC4A0] to-[#94CCBD] w-full p-4 md:px-8 md:py-6">
           <div className="flex justify-between items-center">
@@ -100,57 +99,45 @@ const NFTDashboard: React.FC = () => {
             <input
               className="bg-[#F9F9F9] border border-[#E9E9E9] w-full rounded-xl h-10 md:ps-16 ps-3 md:pe-3 pe-8 py-3 outline-none font-poppins placeholder:font-normal placeholder:text-xs placeholder:text-[#BDBDBD]"
               placeholder="Search NFT"
-              value={searchQuery}
-              onChange={e => {
-                setSearchQuery(e.target.value);
-              }}
             />
           </div>
         </div>
       </Card>
-
-      {/* Wallet Connection & Tabs Card */}
       <Card className="flex flex-col gap-9 md:p-5 rounded-none md:rounded-xl">
         <Button
-          className="flex justify-between items-center bg-[#94CCBD] border border-[#4FE6AF] px-4 py-1.5 md:px-7 md:py-2 rounded-[10px]"
-          onClick={handleConnectWallet}
-          disabled={isLoading}
+          disabled={sessionStorage.getItem('diamPublicKey') !== null}
+          className={`flex justify-between items-center ${
+            sessionStorage.getItem('diamPublicKey') !== null
+              ? 'bg-[#F9F9F9] border-[#3AC4A0] disabled:opacity-100'
+              : 'bg-[#94CCBD] border-[#4FE6AF]'
+          } border px-4 py-1.5 md:px-7 md:py-2 rounded-[10px]`}
+          onClick={handleConnect}
         >
           <div className="flex items-center gap-5">
             <Image src={diam} alt="diam-logo" />
-            <p className="font-poppins font-semibold text-white text-sm">
-              {isLoading
-                ? 'Connecting...'
-                : walletAddress !== null
-                ? `Connected: ${walletAddress.slice(
-                    0,
-                    6
-                  )}...${walletAddress.slice(-4)}`
+            <p
+              className={`font-poppins font-semibold ${
+                sessionStorage.getItem('diamPublicKey') !== null
+                  ? `text-[#444444]`
+                  : 'text-white'
+              } text-sm`}
+            >
+              {sessionStorage.getItem('diamPublicKey') !== null
+                ? `${String(sessionStorage.getItem('diamBalance'))} DIAM`
                 : 'Connect to DIAM Wallet'}
             </p>
           </div>
           <FiChevronRight color="white" size={18} />
         </Button>
-
-        {errorMessage !== null && (
-          <p className="text-red-500 text-sm px-4">{errorMessage}</p>
-        )}
-
-        <NFTTabs searchQuery={searchQuery} />
+        <NFTTabs data={data} />
       </Card>
-
-      {/* Connection Status Dialog */}
-      <Dialog open={open} handler={handleOpen} className="p-2.5" size="sm">
+      <Dialog handler={handleOpen} open={open.open} className="p-2.5" size="xs">
+        {/* {open.connect ? ( */}
         <DialogBody className="flex flex-col gap-4 p-0 justify-center items-center">
           <Image src={checklist} alt="checklist" />
           <div className="flex flex-col gap-3.5 items-center justify-center">
-            <p className="font-poppins font-semibold text-sm text-black text-center">
-              {walletAddress !== null
-                ? `Successfully connected to wallet:\n${walletAddress.slice(
-                    0,
-                    6
-                  )}...${walletAddress.slice(-4)}`
-                : 'Wallet connection successful!'}
+            <p className="font-poppins font-semibold text-sm text-black">
+              Successfull connect DIAM wallet !
             </p>
             <hr className="text-[#BDBDBD] w-full" />
             <p
@@ -161,6 +148,44 @@ const NFTDashboard: React.FC = () => {
             </p>
           </div>
         </DialogBody>
+        {/* ) : (
+          <DialogBody className="flex flex-col gap-4 justify-center items-center">
+            <div className="flex flex-col gap-3 justify-center items-center">
+              <div className="bg-gradient-to-tr from-[#96F7C1] to-[#3AC4A0] rounded-full w-fit p-0.5">
+                <Image src={copylink} alt="copylink" className="w-6 h-6" />
+              </div>
+              <div className="flex flex-col gap-2 justify-center items-center text-black">
+                <p className="font-semibold font-poppins text-sm">
+                  Connect to DIAM Wallet
+                </p>
+                <p className="font-normal font-poppins text-xs text-black text-center">
+                  Login into your account by connecting your with one of the
+                  digitals wallets
+                </p>
+              </div>
+            </div>
+            <hr className="text-[#BDBDBD] w-full" />
+            <Link
+              href={
+                'https://chromewebstore.google.com/detail/diam-wallet/ghncoolaiahphiaccmhdofdfkdokbljk'
+              }
+              target="_blank"
+            >
+              <Button className="rounded-full bg-[#3AC4A0] capitalize font-poppins font-semibold text-sm w-[220px]">
+                Download Diam Wallet
+              </Button>
+            </Link>
+            <Button
+              onClick={handleConnect}
+              className="rounded-full bg-[#3AC4A0] capitalize font-poppins font-semibold text-sm w-[220px]"
+            >
+              Connect Diam Wallet
+            </Button>
+            <p className="font-semibold font-poppins text-sm text-[#7555DA] cursor-pointer">
+              Set up later
+            </p>
+          </DialogBody>
+        )} */}
       </Dialog>
     </section>
   );

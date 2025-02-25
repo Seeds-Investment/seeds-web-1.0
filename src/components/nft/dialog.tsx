@@ -10,6 +10,7 @@ const NFTDialog = ({
   open,
   data,
   error,
+  disabled,
   setError,
   setPrice,
   handleOpen,
@@ -19,6 +20,7 @@ const NFTDialog = ({
   open: { open: boolean; state: number };
   data: Data;
   error: boolean;
+  disabled: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   setPrice: React.Dispatch<React.SetStateAction<number>>;
   handleOpen: () => void;
@@ -81,6 +83,7 @@ const NFTDialog = ({
             <Button
               className="w-full rounded-full text-white font-poppins font-semibold text-sm normal-case bg-[#3AC4A0]"
               onClick={handleConfirm}
+              disabled={disabled}
             >
               Confirm
             </Button>
@@ -162,6 +165,7 @@ const NFTDialog = ({
                 <Button
                   className="w-full rounded-full text-white font-poppins font-semibold text-sm normal-case bg-[#3AC4A0]"
                   onClick={handleConfirm}
+                  disabled={disabled}
                 >
                   Confirm Transaction
                 </Button>

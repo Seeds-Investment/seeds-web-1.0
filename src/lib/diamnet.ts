@@ -50,7 +50,6 @@ export const connectWallet = async (): Promise<ConnectWallet | undefined> => {
   try {
     if ('diam' in window) {
       const response: ConnectWallet = await (window as any).diam.connect();
-      console.log(response);
       if (response.status === 200) {
         const isConnected = await getUserAddress();
         if (
@@ -165,11 +164,9 @@ export const createTrustline = async (
         )
         .setTimeout(30)
         .build();
-        console.log(transaction,transaction.toXDR())
       await signSubmitTrans(transaction.toXDR());
     }
   } catch (error) {
-    console.log(error);
     toast.error(
       `Error during Trustline creation: ${String(error) ?? 'Unknown Error'}`
     );
@@ -185,7 +182,6 @@ export const signAndSubmitTransaction = async (
       true,
       networkPassphrase
     );
-    console.log(signedTransaction);
     if (signedTransaction.status !== 200)
       throw new Error(
         `${String(
@@ -233,7 +229,6 @@ const signSubmitTrans = async (
       networkPassphrase
     );
     if (signedTransaction.status !== 200) {
-      console.log(signedTransaction);
       throw new Error(
         `${String(
           signedTransaction.message.title ?? signedTransaction.message

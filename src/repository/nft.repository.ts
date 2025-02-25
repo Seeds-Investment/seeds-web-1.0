@@ -83,7 +83,7 @@ export const getUserAddress = async (): Promise<
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
-  } catch (error:any) {
+  } catch (error: any) {
     return error;
   }
 };
@@ -143,12 +143,16 @@ export const buyNft = async (
     if (accessToken === null || accessToken === '') {
       return await Promise.resolve('Access token not found');
     }
-    const response = await nftService.post(`buy/${id}`,{}, {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${accessToken ?? ''}`
+    const response = await nftService.post(
+      `buy/${id}`,
+      {},
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
       }
-    });
+    );
     return response;
   } catch (error) {
     throw new Error(`${String(error)}`);
@@ -156,7 +160,8 @@ export const buyNft = async (
 };
 
 export const sellNft = async (
-  id: string, price:{price:number}
+  id: string,
+  price: { price: number }
 ): Promise<string | AxiosResponse<any, any> | unknown> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -165,18 +170,14 @@ export const sellNft = async (
       return await Promise.resolve('Access token not found');
     }
 
-        const body = JSON.stringify(price);
+    const body = JSON.stringify(price);
 
-    const response = await nftService.post(
-      `sell/${id}`,
-      body,
-      {
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${accessToken ?? ''}`
-        }
+    const response = await nftService.post(`sell/${id}`, body, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
       }
-    );
+    });
     return response;
   } catch (error) {
     throw new Error(`${String(error)}`);

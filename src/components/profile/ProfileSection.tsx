@@ -6,7 +6,10 @@ import PlatinumPlan from '@/assets/seedsplan/platinum-plan.svg';
 import SilverPlan from '@/assets/seedsplan/silver-plan.svg';
 import ExpInfo from '@/components/ExpInfo';
 import { Share, Verified } from '@/constants/assets/icons';
-import { getSubscriptionPlan, getSubscriptionStatus } from '@/repository/subscription.repository';
+import {
+  getSubscriptionPlan,
+  getSubscriptionStatus
+} from '@/repository/subscription.repository';
 import { updateBlockUser } from '@/repository/user.repository';
 import { type Experience } from '@/utils/interfaces/earning.interfaces';
 import {

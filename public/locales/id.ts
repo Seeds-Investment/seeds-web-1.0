@@ -1963,7 +1963,8 @@ export default {
   },
   bnc: {
     payment: 'Pembayaran',
-    scanDescription: 'Pindai dengan Aplikasi Bank atau Aplikasi Pembayaran Anda',
+    scanDescription:
+      'Pindai dengan Aplikasi Bank atau Aplikasi Pembayaran Anda',
     instructions: {
       text1: 'Ambil gambar tangkapan layar dari Kode QR Anda',
       text2: 'Buka aplikasi bank atau pembayaran anda',
@@ -1974,7 +1975,8 @@ export default {
     seeQRCode: 'Lihat Kode QR',
     expired: {
       text1: 'Kode QR Anda telah kadaluarsa',
-      text2: 'Lakukan pembelian ulang dan pastikan pembayaran anda selesai tepat waktu'
+      text2:
+        'Lakukan pembelian ulang dan pastikan pembayaran anda selesai tepat waktu'
     },
     repeat: 'Ulangi Pembelian',
     completePayment: 'Selesaikan pembayaran dalam',
@@ -1988,7 +1990,7 @@ export default {
       second: 'detik',
       seconds: 'detik',
       and: 'dan'
-    },
+    }
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Tolong masukin emailmu yang benar',
@@ -2804,7 +2806,8 @@ export default {
       'Ingin mengubah atau melanjutkan SeedsPlan Kamu untuk aktivitas berikutnya? Bayar sekarang dan kamu tidak perlu kuatir lagi nanti!',
     text18:
       'Paket berikutnya akan aktif secara otomatis setelah paket saat ini berakhir',
-    text19: 'Kamu telah berlangganan 2 paket SeedsPlan. Kamu harus menunggu paket pertama habis sebelum berlangganan lagi.',
+    text19:
+      'Kamu telah berlangganan 2 paket SeedsPlan. Kamu harus menunggu paket pertama habis sebelum berlangganan lagi.',
     month: 'Bulan',
     months: 'Bulan',
     year: 'Tahun',
@@ -2844,7 +2847,8 @@ export default {
         text6: 'bulan',
         text7: 'bulan'
       },
-      warningIncoming: 'Anda sudah memiliki langganan aktif atau langganan yang akan datang!'
+      warningIncoming:
+        'Anda sudah memiliki langganan aktif atau langganan yang akan datang!'
     },
     modalUnsubscribe: {
       text1: 'Apakah Anda yakin untuk berhenti berlangganan?',

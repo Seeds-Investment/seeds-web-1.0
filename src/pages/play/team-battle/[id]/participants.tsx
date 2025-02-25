@@ -79,7 +79,7 @@ const BattleParticipants: React.FC = () => {
         <div className="flex justify-center items-center relative">
           <div
             className="absolute text-white left-0 w-[24px] h-[24px] hover:opacity-80 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            onClick={async() => {
+            onClick={async () => {
               await router.push(`/play/team-battle/${id as string}/stage`);
             }}
           >
@@ -98,12 +98,12 @@ const BattleParticipants: React.FC = () => {
               height={100}
               className="w-full h-full relative"
             />
-            <div className='absolute text-white font-poppins font-semibold text-center'>
-              {
-                (stage !== 'elimination' && stage !== 'semifinal' && stage !== 'final')
-                  ? t('teamBattle.participant.emptyTitle')
-                  : t(`teamBattle.participant.${stage as string}`)
-              }
+            <div className="absolute text-white font-poppins font-semibold text-center">
+              {stage !== 'elimination' &&
+              stage !== 'semifinal' &&
+              stage !== 'final'
+                ? t('teamBattle.participant.emptyTitle')
+                : t(`teamBattle.participant.${stage as string}`)}
             </div>
           </div>
           {participantsMetadata !== undefined ? (

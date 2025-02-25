@@ -16,7 +16,11 @@ interface props {
   preferredCurrency: string;
 }
 
-const TopgainersAssetHomepage: React.FC<props> = ({ data, loading, preferredCurrency }) => {
+const TopgainersAssetHomepage: React.FC<props> = ({
+  data,
+  loading,
+  preferredCurrency
+}) => {
   const router = useRouter();
 
   const breakpoints = {
@@ -67,7 +71,10 @@ const TopgainersAssetHomepage: React.FC<props> = ({ data, loading, preferredCurr
                     </div>
                     <Typography className="font-semibold text-[rgb(38,38,38)] text-sm overflow-hidden">
                       {preferredCurrency ?? 'IDR'}
-                      {standartCurrency(data?.asset_price ?? 0).replace('Rp', '')}
+                      {standartCurrency(data?.asset_price ?? 0).replace(
+                        'Rp',
+                        ''
+                      )}
                     </Typography>
                     <div className="flex w-full gap-1">
                       <Image

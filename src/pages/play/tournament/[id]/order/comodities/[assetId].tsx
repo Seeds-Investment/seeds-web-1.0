@@ -437,12 +437,13 @@ const BuyPage: React.FC = () => {
               {data?.realTicker}
             </p>
             <p className="text-xs font-normal text-[#7C7C7C] my-2">
-              Current cost: {(prefCurrency ?? 'IDR').toUpperCase()} {' '}
+              Current cost: {(prefCurrency ?? 'IDR').toUpperCase()}{' '}
               {formatAssetPrice(
                 lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                   ? lastPrice[prefCurrency as PreferredCurrencyI]
                   : (lastPriceAsset as number)
-              )} per gram
+              )}{' '}
+              per gram
             </p>
           </div>
         )}
@@ -566,7 +567,8 @@ const BuyPage: React.FC = () => {
             {router.query.transaction === 'buy' && (
               <div className="mt-4 mx-2">
                 <Typography className="mb-2 font-poppins text-base font-semibold text-black">
-                  {t('buyAsset.text8')} ({(prefCurrency ?? 'IDR').toUpperCase()})
+                  {t('buyAsset.text8')} ({(prefCurrency ?? 'IDR').toUpperCase()}
+                  )
                 </Typography>
                 {router.query.transaction === 'buy' && (
                   <input
@@ -859,7 +861,8 @@ const BuyPage: React.FC = () => {
                         </Typography>
                         {router.query.transaction === 'buy' ? (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
-                            {userInfo?.preferredCurrency ?? 'IDR'} {standartCurrency(
+                            {userInfo?.preferredCurrency ?? 'IDR'}{' '}
+                            {standartCurrency(
                               +assetAmount *
                                 (lastPrice[
                                   prefCurrency as PreferredCurrencyI
@@ -868,7 +871,8 @@ const BuyPage: React.FC = () => {
                           </Typography>
                         ) : (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
-                            {userInfo?.preferredCurrency ?? 'IDR'} {standartCurrency(
+                            {userInfo?.preferredCurrency ?? 'IDR'}{' '}
+                            {standartCurrency(
                               +lotSell *
                                 (lastPrice[
                                   prefCurrency as PreferredCurrencyI

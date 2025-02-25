@@ -185,7 +185,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   useEffect(() => {
     void validatePromo();
   }, [detailTournament]);
-  
+
   const validatePromo = useCallback(async (): Promise<void> => {
     if (promoCodeValidationResult) {
       if (detailTournament) {
@@ -202,7 +202,13 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
         setNewPromoCodeDiscount(response?.total_discount);
       }
     }
-  }, [promoCodeValidationResult, detailTournament, promoValidate, userInfo, setNewPromoCodeDiscount]);
+  }, [
+    promoCodeValidationResult,
+    detailTournament,
+    promoValidate,
+    userInfo,
+    setNewPromoCodeDiscount
+  ]);
 
   const getDetail = useCallback(async () => {
     try {
@@ -273,18 +279,26 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
           if (response.payment_url !== '' && paymentMethod !== 'BNC_QRIS') {
             window.open(response.payment_url as string, '_blank');
           }
-          const query = response.payment_url !== '' ? { paymentUrl: response.payment_url } : undefined;
-          
-          await router.replace(
-            {
-              pathname: `/play/payment-tournament/receipt/${response.order_id as string}` + `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
-              query
-            },
-            undefined,
-            { shallow: true }
-          ).catch(error => {
-            toast(`${error as string}`);
-          });
+          const query =
+            response.payment_url !== ''
+              ? { paymentUrl: response.payment_url }
+              : undefined;
+
+          await router
+            .replace(
+              {
+                pathname:
+                  `/play/payment-tournament/receipt/${
+                    response.order_id as string
+                  }` + `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+                query
+              },
+              undefined,
+              { shallow: true }
+            )
+            .catch(error => {
+              toast(`${error as string}`);
+            });
         }
       }
     } catch (error) {

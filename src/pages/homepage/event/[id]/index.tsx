@@ -13,10 +13,18 @@ import {
   getEventDetailsDate
 } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
-import { getCertificateById, getEventById, getEventTicketById } from '@/repository/discover.repository';
+import {
+  getCertificateById,
+  getEventById,
+  getEventTicketById
+} from '@/repository/discover.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
-import { type CertificateI, type EventList, type TicketData } from '@/utils/interfaces/event.interface';
+import {
+  type CertificateI,
+  type EventList,
+  type TicketData
+} from '@/utils/interfaces/event.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -64,7 +72,7 @@ const initialEventData: EventList = {
   name: '',
   updated_at: '',
   reward: ''
-}
+};
 
 export const initialCertificate: CertificateI = {
   event_ticket_id: '',
@@ -98,8 +106,8 @@ const SeedsEventDetail: React.FC = () => {
   useEffect(() => {
     if (
       !isEventEnded() &&
-      (eventData?.event_status === 'OFFLINE') &&
-      (ticketData?.status === 'CHECKED_IN')
+      eventData?.event_status === 'OFFLINE' &&
+      ticketData?.status === 'CHECKED_IN'
     ) {
       toast.success('Check In Successful!');
       router.push(`/homepage/event/${eventData?.id}/check-in-out`);
@@ -119,8 +127,8 @@ const SeedsEventDetail: React.FC = () => {
   }, [eventData]);
 
   useEffect(() => {
-    if ((isEventEnded()) && (ticketData !== undefined)) {
-      void fetchCertificateById(ticketData?.id)
+    if (isEventEnded() && ticketData !== undefined) {
+      void fetchCertificateById(ticketData?.id);
     }
   }, [ticketData]);
 
@@ -149,7 +157,7 @@ const SeedsEventDetail: React.FC = () => {
     try {
       setLoading(true);
       const response = await getCertificateById(id);
-      setCertificateData(response)
+      setCertificateData(response);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -203,10 +211,16 @@ const SeedsEventDetail: React.FC = () => {
     const oneHourBeforeStart = startDateTimestamp - 60 * 60 * 1000;
     const twoHoursAfterEnd = endDateTimestamp + 2 * 60 * 60 * 1000;
 
-    return currentDateTimestamp >= oneHourBeforeStart && currentDateTimestamp <= twoHoursAfterEnd;
+    return (
+      currentDateTimestamp >= oneHourBeforeStart &&
+      currentDateTimestamp <= twoHoursAfterEnd
+    );
   };
 
-  const base64ToBlob = (base64: string, type: string = 'application/pdf'): Blob => {
+  const base64ToBlob = (
+    base64: string,
+    type: string = 'application/pdf'
+  ): Blob => {
     const binary = atob(base64.replace(/\s/g, ''));
     const len = binary.length;
     const buffer = new ArrayBuffer(len);
@@ -238,7 +252,9 @@ const SeedsEventDetail: React.FC = () => {
           }}
           eventData={eventData ?? initialEventData}
           certificateData={certificateData ?? initialCertificate}
-          file={URL.createObjectURL(base64ToBlob(certificateData?.pdf_data ?? ''))}
+          file={URL.createObjectURL(
+            base64ToBlob(certificateData?.pdf_data ?? '')
+          )}
         />
       )}
       <div className="bg-white flex flex-col justify-center items-center rounded-xl font-poppins p-5">
@@ -349,9 +365,10 @@ const SeedsEventDetail: React.FC = () => {
             <div
               className="text-xs sm:text-sm text-[#7C7C7C] font-normal py-2 px-4 font-poppins mt-6"
               dangerouslySetInnerHTML={{
-                __html: eventData?.description
-                  ?.replace(/\n/g, '<br />')
-                  .replace(/\*(.*?)\*/g, '<b>$1</b>') ?? '-'
+                __html:
+                  eventData?.description
+                    ?.replace(/\n/g, '<br />')
+                    .replace(/\*(.*?)\*/g, '<b>$1</b>') ?? '-'
               }}
             />
           </div>
@@ -449,81 +466,88 @@ const SeedsEventDetail: React.FC = () => {
           </div>
         )}
       </div>
-      {
-        (eventData?.is_joined === false) ?
+      {eventData?.is_joined === false ? (
+        <div className="mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
+          <div className="w-full flex flex-col justify-start items-start">
+            <Typography className="text-sm font-poppins">
+              {t('seedsEvent.entranceFee')}
+            </Typography>
+            <Typography className="text-lg font-semibold font-poppins mb-4">
+              {(eventData?.event_price ?? 0) > 0
+                ? `${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
+                    eventData?.event_price ?? 0
+                  ).replace('Rp', '')}`
+                : t('seedsEvent.free')}
+            </Typography>
+          </div>
+          <button
+            disabled={isPastEvent()}
+            onClick={async () =>
+              await router.push(
+                `/homepage/event/${id as string}/booking-details`
+              )
+            }
+            className={`${
+              isPastEvent() ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0] cursor-pointer'
+            } flex justify-center items-center w-full text-white py-2 rounded-xl`}
+          >
+            {t('seedsEvent.booking.bookNow')}
+          </button>
+        </div>
+      ) : isEventEnded() ? (
+        eventData?.reward === 'E-CERTIFICATE' && (
           <div className="mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
-            <div className='w-full flex flex-col justify-start items-start'>
-              <Typography className='text-sm font-poppins'>
-                {t('seedsEvent.entranceFee')}
-              </Typography>
-              <Typography className='text-lg font-semibold font-poppins mb-4'>
-                {
-                  (eventData?.event_price ?? 0) > 0 ?
-                    `${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(eventData?.event_price ?? 0).replace('Rp', '')}`
-                    :
-                    t('seedsEvent.free')
-                }
-              </Typography>
-            </div>
             <button
-              disabled={isPastEvent()}
-              onClick={async () => await router.push(`/homepage/event/${id as string}/booking-details`)}
-              className={`${isPastEvent() ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0] cursor-pointer'} flex justify-center items-center w-full text-white py-2 rounded-xl`}
+              onClick={async () => {
+                setIsShowCertificate(true);
+              }}
+              className={`bg-[#3AC4A0] cursor-pointer' flex justify-center gap-2 items-center w-full text-white py-2 rounded-full`}
             >
-              {t('seedsEvent.booking.bookNow')}
+              <div className="flex justify-center items-center">
+                <Image
+                  src={EventTicket}
+                  alt={'EventTicket'}
+                  width={20}
+                  height={20}
+                />
+              </div>
+              <div className="flex justify-center items-center">
+                {t('seedsEvent.checkCertificate')}
+              </div>
             </button>
           </div>
-          : isEventEnded() ?
-            eventData?.reward === 'E-CERTIFICATE' &&
-              <div className="mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
-                <button
-                  onClick={async() => {
-                    setIsShowCertificate(true)
-                  }}
-                  className={`bg-[#3AC4A0] cursor-pointer' flex justify-center gap-2 items-center w-full text-white py-2 rounded-full`}
-                >
-                  <div className='flex justify-center items-center'>
-                    <Image
-                      src={EventTicket}
-                      alt={'EventTicket'}
-                      width={20}
-                      height={20}
-                    />
-                  </div>
-                  <div className='flex justify-center items-center'>
-                    {t('seedsEvent.checkCertificate')}
-                  </div>
-                </button>
+        )
+      ) : (
+        ticketData?.check_out_time === '0001-01-01T00:00:00Z' && (
+          <div className="mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
+            <button
+              onClick={async () => {
+                eventData?.event_status === 'OFFLINE' &&
+                ticketData?.status === 'CHECKED_IN'
+                  ? await router.push(
+                      `/homepage/event/${id as string}/check-in-out`
+                    )
+                  : setIsShowTicket(true);
+              }}
+              className={`bg-[#3AC4A0] cursor-pointer' flex justify-center gap-2 items-center w-full text-white py-2 rounded-full`}
+            >
+              <div className="flex justify-center items-center">
+                <Image
+                  src={EventTicket}
+                  alt={'EventTicket'}
+                  width={20}
+                  height={20}
+                />
               </div>
-            :
-            ticketData?.check_out_time === '0001-01-01T00:00:00Z' &&
-              <div className="mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
-                <button
-                  onClick={async() => {
-                    ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_IN'))
-                    ? await router.push(`/homepage/event/${id as string}/check-in-out`)
-                    : setIsShowTicket(true);
-                  }}
-                  className={`bg-[#3AC4A0] cursor-pointer' flex justify-center gap-2 items-center w-full text-white py-2 rounded-full`}
-                >
-                  <div className='flex justify-center items-center'>
-                    <Image
-                      src={EventTicket}
-                      alt={'EventTicket'}
-                      width={20}
-                      height={20}
-                    />
-                  </div>
-                  <div className='flex justify-center items-center'>
-                    {
-                      eventData?.event_status === 'OFFLINE'
-                        ? t('seedsEvent.seeYourTicket')
-                        : t('seedsEvent.seeEventLink')
-                    }
-                  </div>
-                </button>
+              <div className="flex justify-center items-center">
+                {eventData?.event_status === 'OFFLINE'
+                  ? t('seedsEvent.seeYourTicket')
+                  : t('seedsEvent.seeEventLink')}
               </div>
-      }
+            </button>
+          </div>
+        )
+      )}
     </>
   );
 };

@@ -219,18 +219,26 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
           if (response.payment_url !== '' && paymentMethod !== 'BNC_QRIS') {
             window.open(response.payment_url as string, '_blank');
           }
-          const query = response.payment_url !== '' ? { paymentUrl: response.payment_url } : undefined;
-          
-          await router.replace(
-            {
-              pathname: `/homepage/event/${id as string}/payment/receipt/${response.order_id as string}` + `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
-              query
-            },
-            undefined,
-            { shallow: true }
-          ).catch(error => {
-            toast(`${error as string}`);
-          });
+          const query =
+            response.payment_url !== ''
+              ? { paymentUrl: response.payment_url }
+              : undefined;
+
+          await router
+            .replace(
+              {
+                pathname:
+                  `/homepage/event/${id as string}/payment/receipt/${
+                    response.order_id as string
+                  }` + `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+                query
+              },
+              undefined,
+              { shallow: true }
+            )
+            .catch(error => {
+              toast(`${error as string}`);
+            });
         }
       }
     } catch (error) {

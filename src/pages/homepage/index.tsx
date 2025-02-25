@@ -4,6 +4,7 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import UserInfoPlaySimulation from '@/components/UserInfoPlaySimulation.index';
 import FeatureSection from '@/containers/homepage/FeatureSection';
 import Section5New from '@/containers/homepage/Section5New';
+import SubcroptionSection from '@/containers/homepage/SubcriptionSection';
 import TopGainers from '@/containers/homepage/top-gainers/TopGainers.index';
 import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
@@ -50,6 +51,9 @@ const Homepage: React.FC = () => {
         {userInfo !== undefined && (
           <UserInfoPlaySimulation playerInfo={userInfo} />
         )}
+      </CCard>
+      <CCard className="p-3 mb-5 h-auto rounded-none shadow-none flex-col gap-2">
+        <SubcroptionSection />
       </CCard>
       <ChooseCurrencyPopup handleOpen={handleOpen} open={popUpCurrency} />
       <CCard className="p-3 mb-5 h-auto rounded-none shadow-none flex-col gap-2">

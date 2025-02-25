@@ -12,11 +12,7 @@ interface props {
   handleListClick: () => void;
 }
 
-const ChatList: React.FC<props> = ({
-  data,
-  userId,
-  handleListClick
-}) => {
+const ChatList: React.FC<props> = ({ data, userId, handleListClick }) => {
   const router = useRouter();
   const { roomId } = router.query;
   return (

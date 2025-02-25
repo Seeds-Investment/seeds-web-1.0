@@ -3557,6 +3557,70 @@ export default {
       sidebar: {
         text1: 'Portfolio'
       },
+      title: 'Portfolio',
+      filter: {
+        text1: 'Show 7 entries',
+        text2: 'Show 10 entries',
+        text3: 'Show 25 entries',
+        text4: 'Show 50 entries',
+        text5: 'Show 75 entries',
+        text6: 'Show 100 entries',
+        text7: 'Search...'
+      },
+      table: {
+        text1: 'No data in the table.',
+        text2: 'Displaying',
+        text3: 'to',
+        text4: 'of',
+        text5: 'entries',
+        text6: 'Security Code',
+        text7: 'Offer ID',
+        text8: 'Stocks',
+        text9: 'Bonds',
+        text10: 'Purchase Amount',
+        text11: 'Price/Stock (Rp)',
+        text12: 'Stock Shares',
+        text13: 'Return (%)',
+        text14: 'Term (Months)',
+        text15: 'Maturity Date',
+        dropdown: {
+          text1: 'Offer Information',
+          text2: 'Purchase Information',
+          text3: 'Cost and Return Information',
+          text4: 'Factsheet',
+          text5: 'Cancel Purchase',
+        }
+      },
+      modal: {
+        offerInformation: {
+          text1: 'Offer Information',
+          text2: 'Issuer Name',
+          text3: 'Fund Transfer Date',
+          text4: 'Business Sector',
+          text5: 'Coupon/Dividend Payment Schedule',
+          text6: 'Percentage of Shares Released',
+          text7: 'Payment Status',
+          text8: 'Dividend Distribution Frequency',
+          text9: 'Dividend Distribution Percentage',
+          text10: 'Coupon',
+          text11: 'Tenor',
+          text12: 'Type of Offering',
+        },
+        financingInformation: {
+          text1: 'Purchase Information',
+          text2: 'Purchase Date',
+          text3: 'Purchase Amount',
+          text4: 'Contribution',
+        },
+        costReturn: {
+          text1: 'Cost and Return Information',
+          text2: 'Potential Return Income per Period',
+          text3: 'Potential Late Fee Income',
+          text4: 'Total Potential Return Income and Late Fee',
+          text5: 'Administrative Fee'
+        },
+        close: 'Close'
+      }
     }
   }
 };

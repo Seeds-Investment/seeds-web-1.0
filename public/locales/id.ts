@@ -3491,6 +3491,70 @@ export default {
       sidebar: {
         text1: 'Portofolio'
       },
+      title: 'Portofolio',
+      filter: {
+        text1: 'Tampilkan 7 entri',
+        text2: 'Tampilkan 10 entri',
+        text3: 'Tampilkan 25 entri',
+        text4: 'Tampilkan 50 entri',
+        text5: 'Tampilkan 75 entri',
+        text6: 'Tampilkan 100 entri',
+        text7: 'Cari...'
+      },
+      table: {
+        text1: 'Tidak ada data dalam tabel.',
+        text2: 'Menampilkan',
+        text3: 'hingga',
+        text4: 'dari',
+        text5: 'entri',
+        text6: 'Kode Efek',
+        text7: 'ID Penawaran',
+        text8: 'Saham',
+        text9: 'Obligasi',
+        text10: 'Jumlah Pembelian',
+        text11: 'Harga/Saham (Rp)',
+        text12: 'Lembar Saham',
+        text13: 'Imbal Hasil (%)',
+        text14: 'Jangka Waktu (Bulan)',
+        text15: 'Jatuh Tempo',
+        dropdown: {
+          text1: 'Informasi Penawaran',
+          text2: 'Informasi Pembelian',
+          text3: 'Informasi Biaya dan Imbal Hasil',
+          text4: 'Factsheet',
+          text5: 'Batalkan Pembelian',
+        }
+      },
+      modal: {
+        offerInformation: {
+          text1: 'Informasi Penawaran',
+          text2: 'Nama Penerbit',
+          text3: 'Tanggal Penyerahan Dana',
+          text4: 'Sektor Usaha',
+          text5: 'Jadwal Pembayaran Kupon / Dividen',
+          text6: 'Persentase Saham Yang Dilepas',
+          text7: 'Status Pembayaran',
+          text8: 'Intensitas Pembagian Dividen',
+          text9: 'Persentase Pembagian Dividen',
+          text10: 'Kupon',
+          text11: 'Tenor',
+          text12: 'Jenis Penawaran',
+        },
+        financingInformation: {
+          text1: 'Informasi Pembelian',
+          text2: 'Tanggal Pembelian',
+          text3: 'Jumlah Pembelian',
+          text4: 'Kontribusi',
+        },
+        costReturn: {
+          text1: 'Informasi Biaya dan Imbal Hasil',
+          text2: 'Potensi Penerimaan Imbal Hasil per Periode',
+          text3: 'Potensi Penerimaan Biaya Keterlambatan',
+          text4: 'Total Potensi Penerimaan Imbal Hasil dan Biaya Keterlambatan',
+          text5: 'Biaya Administrasi'
+        },
+        close: 'Tutup'
+      }
     }
   }
 };

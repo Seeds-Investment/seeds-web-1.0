@@ -128,7 +128,7 @@ const Prospectus = (): React.ReactElement => {
   return (
     <PageGradient defaultGradient className="w-full">
       {!isLoading && detailProspektus != null && prospectusOffer != null ? (
-        <div className="w-full bg-white flex flex-col px-5 py-8">
+        <div className="w-full bg-white flex flex-col px-5 py-8 rounded-lg">
           <Typography className="font-poppins md:text-3xl text-lg font-semibold text-[#262626] mt-6 mb:mt-8">
             {t('danamart.offers.detail.offer')} {prospectusId}
           </Typography>

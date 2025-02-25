@@ -44,6 +44,7 @@ const NFTDetail: React.FC = () => {
     state: 0
   });
   const [data, setData] = useState<Data>();
+  const [disabled, setDisabled] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [detail, setDetail] = useState<boolean>(false);
   const [transaction, setTransaction] = useState<boolean>(false);
@@ -63,6 +64,7 @@ const NFTDetail: React.FC = () => {
       id !== undefined
     ) {
       try {
+        setDisabled(true);
         if (
           sessionStorage.getItem('diamPublicKey') !== data.owner.wallet_address
         ) {
@@ -106,7 +108,10 @@ const NFTDetail: React.FC = () => {
             setError(Number.isNaN(price) || price === 0 || price < data.price);
           }
         }
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        setDisabled(false);
+      }
     }
   };
 
@@ -397,6 +402,7 @@ const NFTDetail: React.FC = () => {
           open={open}
           data={data}
           error={error}
+          disabled={disabled}
           setError={setError}
           setPrice={setPrice}
           handleOpen={handleOpen}

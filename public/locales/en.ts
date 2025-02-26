@@ -3680,6 +3680,74 @@ export default {
           text9: 'Failed to download report.'
         }
       }
+    },
+    outgoingFunds: {
+      sidebar: {
+        text1: 'Outgoing Funds'
+      },
+      title: 'Outgoing Funds',
+      text1: 'Total Overall Funds',
+      text2: 'Owned Funds',
+      text3: 'Investable Funds',
+      text4: 'Cash In-hand + Reward Funds + Interim Funds',
+      text5: 'Withdrawable Funds',
+      text6: 'Funds that can be withdrawn to an account',
+      text7: 'Withdraw Funds',
+      filter: {
+        text1: 'Show 7 entries',
+        text2: 'Show 10 entries',
+        text3: 'Show 25 entries',
+        text4: 'Show 50 entries',
+        text5: 'Show 75 entries',
+        text6: 'Show 100 entries',
+        text7: 'Search...'
+      },
+      table: {
+        text1: 'No data available in the table.',
+        text2: 'Showing',
+        text3: 'to',
+        text4: 'of',
+        text5: 'entries',
+        text6: 'Date',
+        text7: 'Status',
+        text8: 'Amount',
+        text9: 'Description',
+        text10: 'Processing',
+        text11: 'Completed',
+      },
+      modal: {
+        withdrawRequest: {
+          steps: 
+            "<ol> <li>Enter the withdrawal amount.</li> <li>Click the “Withdraw Funds” button to process your withdrawal.</li> <li>Danamart will process your withdrawal request within a maximum of 2 working days.</li> </ol>",
+          succeed: 'Congratulations, your withdrawal request has been received and will be processed soon!',
+          pending: 'There is still an ongoing withdrawal process in your account. Please wait until the withdrawal is completed, then try again.',
+          tooManyAttempts: 'Too many OTP requests. Please wait a moment...',
+          title: 'Withdrawal Request',
+          text1: 'Withdrawal Method',
+          text2: 'Total Amount to Withdraw + Admin Fee (Rp)',
+          text3: 'Minimum withdrawal Rp. 10,000,-',
+          text4: 'Admin Fee',
+          text5: 'Amount to be Received',
+          text6: 'Select OTP Verification',
+          text7: 'Get OTP',
+          text8: 'Time remaining:',
+          text9: 'Cancel',
+          text10: 'Back',
+          text11: 'Withdraw Funds',
+          text12: 'Process Withdrawal',
+          text13: 'Enter Withdrawal Amount',
+        },
+        detailOutcome: {
+          title: 'Outgoing Funds Details',
+          text1: 'Date',
+          text2: 'Status',
+          text3: 'Completed',
+          text4: 'Processing',
+          text5: 'Amount',
+          text6: 'Description',
+          text7: 'Close',
+        }
+      }
     }
   }
 };

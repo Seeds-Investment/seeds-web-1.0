@@ -1,52 +1,62 @@
-import { ArrowLeftPaginationGray, ArrowLeftPaginationGreen, ArrowRightPaginationGray, ArrowRightPaginationGreen, ArrowTailRightGreen, BankBCA, BankBNI, BankBRI, BankMandiri, BankPermata } from '@/assets/danamart';
-import ModalDetailBank from '@/components/danamart/incoming-funds/ModalDetailBank';
-import ModalDetailIncome from '@/components/danamart/incoming-funds/ModalDetailIncome';
-import ModalDownloadReport from '@/components/danamart/incoming-funds/ModalDownloadReport';
+import { ArrowLeftPaginationGray, ArrowLeftPaginationGreen, ArrowRightPaginationGray, ArrowRightPaginationGreen } from '@/assets/danamart';
+import DetailCashCard from '@/components/danamart/outgoing-funds/DetailCashCard';
+import ModalDetailOutcome from '@/components/danamart/outgoing-funds/ModalDetailOutcome';
+import ModalWithdraw from '@/components/danamart/outgoing-funds/ModalWithdraw';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { decryptResponse } from '@/helpers/cryptoDecrypt';
 import { standartCurrency } from '@/helpers/currency';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
-import { getProfileUser } from '@/repository/danamart/danamart.repository';
-import { getIncomingFunds } from '@/repository/danamart/incoming-funds.repository';
+import { getDashboardUser } from '@/repository/danamart/danamart.repository';
+import { getOutgoingFunds } from '@/repository/danamart/outgoing-funds.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import LanguageContext from '@/store/language/language-context';
-import { bankInstructionsEnglish } from '@/utils/_static/bank-en';
-import { bankInstructionsIndonesian } from '@/utils/_static/bank-id';
-import { type UserProfile } from '@/utils/interfaces/danamart.interface';
-import { type IncomingFundsData } from '@/utils/interfaces/danamart/incoming-funds.interface';
+import { type DashboardDataUser } from '@/utils/interfaces/danamart/offers.interface';
+import { type OutgoingFundsData } from '@/utils/interfaces/danamart/outgoing-funds.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Button, Typography } from '@material-tailwind/react';
-import Image, { type StaticImageData } from 'next/image';
-import React, { useContext, useEffect, useState } from 'react';
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaRegEye } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
-const IncomingFunds = (): React.ReactElement => {
+const OutgoingFunds = (): React.ReactElement => {
   const { t } = useTranslation();
-  const languageCtx = useContext(LanguageContext);
-  const pathTranslation = 'danamart.incomingFunds'
-  const [incomingFunds, setIncomingFunds] = useState<IncomingFundsData[]>([]);
+  const pathTranslation = 'danamart.outgoingFunds'
+  const [outgoingFunds, setOutgoingFundsData] = useState<OutgoingFundsData[]>([]);
   const [entries, setEntries] = useState<number>(7);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [selectedIncome, setSelectedIncome] = useState<number>(0);
+  const [selectedOutcome, setSelectedOutcome] = useState<number>(0);
   const [userData, setUserData] = useState<UserInfo>();
   const [sortColumn, setSortColumn] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const [isShowModalDetailIncomeFunds, setIsShowModalDetailIncomeFunds] = useState<boolean>(false);
-  const [isShowDownloadReport, setIsShowDownloadReport] = useState<boolean>(false);
-  const [isShowDetailBank, setIsShowDetailBank] = useState<boolean>(false);
-  const [selectedBankIndex, setSelectedBankIndex] = useState<number>(0);
-  const [userProfileData, setUserProfileData] = useState<UserProfile>();
+  const [isShowModalDetailOutgoingFunds, setIsShowModalDetailOutgoingFunds] = useState<boolean>(false);
+  const [isShowModalWithdraw, setIsShowModalWithdraw] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const getIncomingFundsData = async (): Promise<void> => {
+  const [dashboardData, setDashboardData] = useState<DashboardDataUser>();
+  
+  const fetchDashboardUser = async (): Promise<void> => {
     try {
-      const response = await getIncomingFunds();
-      if (response?.data?.StatusCode === '200') {
-        setIncomingFunds(response?.data?.data)
+      const dashboard = await getDashboardUser();
+      if (dashboard?.status === 200) {
+        const decryptedData = JSON.parse(
+          decryptResponse(dashboard.data) !== null
+            ? decryptResponse(dashboard.data)
+            : dashboard.data
+        );
+        setDashboardData(decryptedData);
+      }
+    } catch (error) {
+      toast.error(t('danamart.dashboard.errorGetDashboard'));
+    }
+  };
+
+  const getOutgoingFundsData = async (): Promise<void> => {
+    try {
+      const response = await getOutgoingFunds();
+      if (response?.data?.StatusCode === 200) {
+        setOutgoingFundsData(response?.data?.data)
       }
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -61,61 +71,10 @@ const IncomingFunds = (): React.ReactElement => {
       toast.error(error.message);
     }
   };
-  
-  const fetchUserProfile = async (): Promise<void> => {
-    try {
-      const profile = await getProfileUser();
-      if (profile?.status === 200) {
-        const decryptedProfile = JSON.parse(
-          decryptResponse(profile.data) !== null
-            ? decryptResponse(profile.data)
-            : profile.data
-        );
-        setUserProfileData(decryptedProfile);
-      }
-    } catch (error) {
-      toast.error(t('danamart.dashboard.errorGetUserProfile'));
-    }
-  };
 
-  const bankList = [
-    {
-      id: 0,
-      name: 'BCA',
-    },
-    {
-      id: 1,
-      name: 'MANDIRI',
-    },
-    {
-      id: 2,
-      name: 'BRI',
-    },
-    {
-      id: 3,
-      name: 'PERMATA',
-    },
-    {
-      id: 4,
-      name: 'BNI',
-    },
-    {
-      id: 5,
-      name: 'LAIN',
-    }
-  ]
-  
-  const handleBankLogo = (bankName: string): StaticImageData => {
-    if (bankName === 'BCA') return BankBCA;
-    if (bankName === 'MANDIRI') return BankMandiri;
-    if (bankName === 'PERMATA') return BankPermata;
-    if (bankName === 'BNI') return BankBNI;
-    return BankBRI;
-  };
-
-  const filteredData = incomingFunds?.filter((incomingFund) => {
-    const incomingFundString = JSON.stringify(incomingFund).toLowerCase();
-    return incomingFundString.includes(searchQuery.toLowerCase());
+  const filteredData = outgoingFunds?.filter((outgoingFund) => {
+    const outgoingFundString = JSON.stringify(outgoingFund).toLowerCase();
+    return outgoingFundString.includes(searchQuery.toLowerCase());
   });
 
   const totalPages = Math.ceil(filteredData.length / entries);
@@ -124,18 +83,18 @@ const IncomingFunds = (): React.ReactElement => {
 
   useEffect(() => {
     setIsLoading(true);
-    Promise.all([getIncomingFundsData(), fetchUserProfile(), fetchUserInfo()]).finally(() => {
+    Promise.all([fetchDashboardUser(), getOutgoingFundsData(), fetchUserInfo()]).finally(() => {
       setIsLoading(false);
     });
   }, []);
   
-  const handleSort = (column: keyof IncomingFundsData): void => {
+  const handleSort = (column: keyof OutgoingFundsData): void => {
     const newOrder = sortColumn === column && sortOrder === 'asc' ? 'desc' : 'asc';
     setSortColumn(column);
     setSortOrder(newOrder);
 
-    if (column === "tgl_deposit" || column === "ket") {
-      setIncomingFunds((prevData) =>
+    if (column === "tgl_withdraw" || column === "ket" || column === 'status') {
+      setOutgoingFundsData((prevData) =>
         [...prevData].sort((a, b) => {
           let valueA = a[column];
           let valueB = b[column];
@@ -145,8 +104,8 @@ const IncomingFunds = (): React.ReactElement => {
           return newOrder === "asc" ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
         })
       )
-    } else if (column === "jml_deposit") {
-      setIncomingFunds((prevData) =>
+    } else if (column === "jml_withdraw") {
+      setOutgoingFundsData((prevData) =>
         [...prevData].sort((a, b) => {
           const parseNumber = (value: unknown): number => {
             if (typeof value === "string") {
@@ -164,10 +123,36 @@ const IncomingFunds = (): React.ReactElement => {
       );
     }
   };
-  
-  const bankInstructions = languageCtx?.language === 'ID' ? bankInstructionsIndonesian : bankInstructionsEnglish;
-  const selectedBank = bankList[selectedBankIndex]?.name as keyof typeof bankInstructions;
-  const bankData = selectedBank in bankInstructions ? bankInstructions[selectedBank] : [];
+    
+  const dashboardCardData: Array<{
+    id: number;
+    title: string;
+    value: string;
+    background: string;
+    description: string;
+  }> = [
+    {
+      id: 1,
+      title: `${t(`${pathTranslation}.text1`)}`,
+      value: dashboardData?.dataSaldoUser?.totalDana ?? 'Rp. 0',
+      background: 'bg-gradient-to-tr from-[#5263F9]/20 via-white to-[#4FE6AF]/20',
+      description: `${t(`${pathTranslation}.text2`)}`
+    },
+    {
+      id: 2,
+      title: `${t(`${pathTranslation}.text3`)}`,
+      value: dashboardData?.dataSaldoUser?.DanaDapatDiinvestasikan ?? 'Rp. 0',
+      background: 'bg-gradient-to-tl from-[#5263F9]/20 via-white to-[#4FE6AF]/20',
+      description: `${t(`${pathTranslation}.text4`)}`
+    },
+    {
+      id: 3,
+      title: `${t(`${pathTranslation}.text5`)}`,
+      value: dashboardData?.dataSaldoUser?.danaBisaTarik ?? 'Rp. 0',
+      background: 'bg-gradient-to-br from-[#5263F9]/20 via-white to-[#4FE6AF]/20',
+      description: `${t(`${pathTranslation}.text6`)}`
+    },
+  ];
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -179,51 +164,17 @@ const IncomingFunds = (): React.ReactElement => {
         {
           !isLoading ?
             <div>
-              <Typography className="font-poppins text-lg font-semibold text-seeds-button-green mb-4">
-                {t(`${pathTranslation}.text1`)}
-              </Typography>
-              <div className="w-full flex flex-wrap gap-4">
-                {bankList?.map((bank, index) => (
-                  <div
-                    key={index}
-                    onClick={() => { 
-                      setIsShowDetailBank(true)
-                      setSelectedBankIndex(index)
-                    }}
-                    className="flex justify-center items-center w-[calc(50%-0.5rem)] border border-[#E9E9E9] rounded-lg py-8 cursor-pointer"
-                  >
-                    {
-                      bank?.name !== 'LAIN' ?
-                        <Image
-                          src={handleBankLogo(bank?.name)}
-                          alt="BankLogo"
-                          className="w-[60%] lg:w-[40%] h-auto object-cover"
-                          width={1000}
-                          height={1000}
-                        />
-                        :
-                        <div className='flex flex-col md:flex-row gap-2 justify-center items-center'>
-                          <Typography className="font-poppins text-md md:text-2xl font-semibold text-seeds-button-green">
-                            {t(`${pathTranslation}.text2`)}
-                          </Typography>
-                          <Image
-                            src={ArrowTailRightGreen}
-                            alt="BankLogo"
-                            className="w-[20px] h-auto object-cover text-seeds-button-green"
-                            width={1000}
-                            height={1000}
-                        />
-                        </div>
-                    }
-                  </div>
+              <div className="flex flex-col lg:flex-row items-center justify-center gap-4 w-full place-items-center">
+                {dashboardCardData?.map(item => (
+                  <DetailCashCard key={item?.id} data={item} />
                 ))}
               </div>
               <div className='flex justify-center items-center md:justify-end md:items-end'>
                 <Button
-                  onClick={() => { setIsShowDownloadReport(true) }}
+                  onClick={() => { setIsShowModalWithdraw(true) }}
                   className='w-full md:w-fit flex gap-2 justify-center items-center rounded-full bg-seeds-button-green border-[1px] text-sm font-semibold capitalize text-white transition-all font-poppins mt-6'
                 >
-                  {t(`${pathTranslation}.text3`)}
+                  {t(`${pathTranslation}.text7`)}
                 </Button>
               </div>
             </div>
@@ -281,30 +232,43 @@ const IncomingFunds = (): React.ReactElement => {
                   <table className="min-w-full border border-gray-300 rounded-md">
                     <thead>
                       <tr className="text-[#27A590] font-poppins bg-[#DCFCE4]">
-                        <th className="text-center p-2 border border-gray-300 cursor-pointer" onClick={() => { handleSort('tgl_deposit'); }}>{t(`${pathTranslation}.table.text6`)}</th>
-                        <th className="text-center p-2 border border-gray-300 cursor-pointer" onClick={() => { handleSort('jml_deposit'); }}>{t(`${pathTranslation}.table.text7`)}</th>
-                        <th className="text-center p-2 border border-gray-300 cursor-pointer hidden md:table-cell" onClick={() => { handleSort('ket'); }}>{t(`${pathTranslation}.table.text8`)}</th>
+                        <th className="text-center p-2 border border-gray-300 cursor-pointer" onClick={() => { handleSort('tgl_withdraw'); }}>{t(`${pathTranslation}.table.text6`)}</th>
+                        <th className="text-center p-2 border border-gray-300 cursor-pointer" onClick={() => { handleSort('status'); }}>{t(`${pathTranslation}.table.text7`)}</th>
+                        <th className="text-center p-2 border border-gray-300 cursor-pointer" onClick={() => { handleSort('jml_withdraw'); }}>{t(`${pathTranslation}.table.text8`)}</th>
+                        <th className="text-center p-2 border border-gray-300 cursor-pointer hidden md:table-cell" onClick={() => { handleSort('ket'); }}>{t(`${pathTranslation}.table.text9`)}</th>
                         <th className="text-center p-2 border border-gray-300 md:hidden table-cell"></th>
                       </tr>
                     </thead>
                     <tbody>
                       {paginatedData?.length > 0 ? (
-                        paginatedData?.map((income, index) => (
+                        paginatedData?.map((outcome, index) => (
                           <tr
                             onClick={() => {
-                              setIsShowModalDetailIncomeFunds(true)
-                              setSelectedIncome(index)
+                              setIsShowModalDetailOutgoingFunds(true)
+                              setSelectedOutcome(index)
                             }}
                             key={index} className="hover:bg-gray-50"
                           >
-                            <td className="p-2 border border-gray-300">{income?.tgl_deposit}</td>
-                            <td className="p-2 border border-gray-300 text-right">{`${userData?.preferredCurrency ?? 'IDR'} ${standartCurrency(Number(income?.jml_deposit ?? '0') ?? 0)}`}</td>
-                            <td className="p-2 border border-gray-300 hidden md:table-cell">{income?.ket}</td>
+                            <td className="p-2 border border-gray-300">{outcome?.tgl_withdraw}</td>
+                            <td className="text-center p-2 border border-gray-300">
+                              <span
+                                className={`px-3 py-1 rounded-lg text-sm font-medium 
+                                  ${outcome?.status === '1' 
+                                    ? 'bg-[#FFC107] text-[#212529]'
+                                    : 'bg-[#3AC4A0] text-white'}`}
+                              >
+                                {outcome?.status === '1' 
+                                  ? t(`${pathTranslation}.table.text10`) 
+                                  : t(`${pathTranslation}.table.text11`)}
+                              </span>
+                            </td>
+                            <td className="p-2 border border-gray-300 text-right">{`${userData?.preferredCurrency ?? 'IDR'} ${standartCurrency(Number(outcome?.jml_withdraw ?? '0') ?? 0)}`}</td>
+                            <td className="p-2 border border-gray-300 hidden md:table-cell">{outcome?.ket}</td>
                             <td className="p-2 border border-gray-300 text-center md:hidden table-cell">
                               <button
                                 onClick={() => {
-                                  setIsShowModalDetailIncomeFunds(true)
-                                  setSelectedIncome(index)
+                                  setIsShowModalDetailOutgoingFunds(true)
+                                  setSelectedOutcome(index)
                                 }}
                                 className="flex justify-center items-center text-[#262626] hover:scale-125 duration-200"
                               >
@@ -315,7 +279,10 @@ const IncomingFunds = (): React.ReactElement => {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={3} className="p-4 text-center text-gray-500">
+                          <td colSpan={3} className="p-4 text-center text-gray-500 md:hidden table-cell">
+                            {t(`${pathTranslation}.table.text1`)}
+                          </td>
+                          <td colSpan={4} className="p-4 text-center text-gray-500 hidden md:table-cell">
                             {t(`${pathTranslation}.table.text1`)}
                           </td>
                         </tr>
@@ -359,33 +326,24 @@ const IncomingFunds = (): React.ReactElement => {
               </div>
             </div>
       }
-      {isShowModalDetailIncomeFunds && (
-        <ModalDetailIncome
-          data={incomingFunds[selectedIncome]}
-          setIsShowModalDetailIncomeFunds={setIsShowModalDetailIncomeFunds}
-          isShowModalDetailIncomeFunds={isShowModalDetailIncomeFunds}
+      {isShowModalDetailOutgoingFunds && (
+        <ModalDetailOutcome
+          data={outgoingFunds[selectedOutcome]}
+          setIsShowModalDetailOutgoingFunds={setIsShowModalDetailOutgoingFunds}
+          isShowModalDetailOutgoingFunds={isShowModalDetailOutgoingFunds}
           currency={userData?.preferredCurrency ?? 'IDR'}
         />
       )}
-      {isShowDetailBank && userProfileData !== undefined && (
-        <ModalDetailBank
-          setIsShowDetailBank={setIsShowDetailBank}
-          isShowDetailBank={isShowDetailBank}
-          bankList={bankList}
-          selectedBankIndex={selectedBankIndex}
-          userProfileData={userProfileData}
-          bankData={bankData}
-        />
-      )}
-      {isShowDownloadReport && userProfileData !== undefined && (
-        <ModalDownloadReport
-          setIsShowDownloadReport={setIsShowDownloadReport}
-          isShowDownloadReport={isShowDownloadReport}
-          userProfileData={userProfileData}
+      {isShowModalWithdraw && (
+        <ModalWithdraw
+          setIsShowModalWithdraw={setIsShowModalWithdraw}
+          isShowModalWithdraw={isShowModalWithdraw}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
         />
       )}
     </PageGradient>
   )
 }
 
-export default withAuthDanamart(IncomingFunds);
+export default withAuthDanamart(OutgoingFunds);

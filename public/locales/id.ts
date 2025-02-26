@@ -3614,6 +3614,79 @@ export default {
           text9: 'Gagal mengunduh laporan! Mohon coba lagi.',
         }
       }
+    },
+    outgoingFunds: {
+      sidebar: {
+        text1: 'Dana Keluar'
+      },
+      title: 'Dana Keluar',
+      text1: 'Total Keseluruhan Dana',
+      text2: 'Dana yang dimiliki',
+      text3: 'Dana Dapat Diinvestasikan',
+      text4: 'Cash In-hand + Dana Reward + Dana Interim',
+      text5: 'Dana Yang bisa Ditarik',
+      text6: 'Dana yang dapat ditarik ke rekening',
+      text7: 'Tarik Dana',
+      filter: {
+        text1: 'Tampilkan 7 entri',
+        text2: 'Tampilkan 10 entri',
+        text3: 'Tampilkan 25 entri',
+        text4: 'Tampilkan 50 entri',
+        text5: 'Tampilkan 75 entri',
+        text6: 'Tampilkan 100 entri',
+        text7: 'Cari...'
+      },
+      table: {
+        text1: 'Tidak ada data dalam tabel.',
+        text2: 'Menampilkan',
+        text3: 'hingga',
+        text4: 'dari',
+        text5: 'entri',
+        text6: 'Tanggal',
+        text7: 'Status',
+        text8: 'Jumlah',
+        text9: 'Keterangan',
+        text10: 'Diproses',
+        text11: 'Selesai',
+      },
+      modal: {
+        withdrawRequest: {
+          steps : `
+            <ol>
+              <li>Masukkan jumlah nominal dana yang akan di Tarik Dana.</li>
+              <li>Klik tombol “Tarik Dana” untuk memproses menarik dana Kamu.</li>
+              <li>Danamart akan memproses permintaan Tarik Dana Kamu maksimal 2 hari kerja.</li>
+            </ol>
+          `,
+          succeed: 'Selamat, penarikan dana Anda diterima dan akan segera diproses!',
+          pending: 'Masih ada proses tarik dana yang belum diproses di akun Kamu. Silakan tunggu proses tarik dana hingga selesai, lalu coba kembali',
+          tooManyAttempts: 'Terlalu banyak meminta kode OTP. Tunggu sebentar lagi...',
+          title: 'Permintaan Penarikan Dana',
+          text1: 'Metode Tarik Dana',
+          text2: 'Jumlah Dana Yang Akan Ditarik + Biaya Admin (Rp)',
+          text3: 'Minimum penarikan Rp. 10.000,-',
+          text4: 'Biaya Admin',
+          text5: 'Jumlah Dana Yang Akan Diterima',
+          text6: 'Pilih Metode Verifikasi OTP',
+          text7: 'Dapatkan OTP',
+          text8: 'Waktu tersisa:',
+          text9: 'Batalkan',
+          text10: 'Kembali',
+          text11: 'Tarik Dana',
+          text12: 'Proses Tarik Dana',
+          text13: 'Input Jumlah Dana',
+        },
+        detailOutcome: {
+          title: 'Keterangan Dana Keluar',
+          text1: 'Tanggal',
+          text2: 'Status',
+          text3: 'Selesai',
+          text4: 'Diproses',
+          text5: 'Jumlah',
+          text6: 'Keterangan',
+          text7: 'Close',
+        }
+      }
     }
   }
 };

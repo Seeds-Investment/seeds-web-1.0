@@ -3555,6 +3555,65 @@ export default {
         },
         close: 'Tutup'
       }
+    },
+    incomingFunds: {
+      sidebar: {
+        text1: 'Dana Masuk'
+      },
+      title: 'Dana Masuk',
+      filter: {
+        text1: 'Tampilkan 7 entri',
+        text2: 'Tampilkan 10 entri',
+        text3: 'Tampilkan 25 entri',
+        text4: 'Tampilkan 50 entri',
+        text5: 'Tampilkan 75 entri',
+        text6: 'Tampilkan 100 entri',
+        text7: 'Cari...'
+      },
+      table: {
+        text1: 'Tidak ada data dalam tabel.',
+        text2: 'Menampilkan',
+        text3: 'hingga',
+        text4: 'dari',
+        text5: 'entri',
+        text6: 'Tanggal',
+        text7: 'Jumlah (Rp)',
+        text8: 'Keterangan',
+      },
+      text1: 'Metode Transfer Dana',
+      text2: 'Bank Lain',
+      text3: 'Download Laporan Transaksi',
+      modal: {
+        detailBank: {
+          text1: 'Nomor Virtual Account berhasil disalin!',
+          text2: 'Pembayaran Melalui Virtual Account Bank',
+          text3: '',
+          text4: 'Nama Rekening',
+          text5: 'Nomor VA Bank',
+          text6: '',
+          text7: 'Limit Virtual Account',
+          text8: 'Mengerti',
+          text9: '',
+        },
+        detailIncome: {
+          text1: 'Keterangan Dana Masuk',
+          text2: 'Tanggal',
+          text3: 'Jumlah',
+          text4: 'Keterangan',
+          close: 'Tutup',
+        },
+        downloadReport: {
+          text1: 'Download Laporan Transaksi',
+          text2: 'Dari',
+          text3: 'Sampai',
+          text4: 'Jenis File',
+          cancel: 'Batal',
+          yes: 'Download',
+          text7: 'Permintaan pengunduhan laporan berhasil. Mohon tunggu hingga proses selesai.',
+          text8: 'Laporan berhasil diunduh!',
+          text9: 'Gagal mengunduh laporan! Mohon coba lagi.',
+        }
+      }
     }
   }
 };

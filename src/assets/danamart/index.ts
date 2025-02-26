@@ -1,3 +1,4 @@
+export { default as ArrowTailRightGreen } from './arrow-tail-right-green.svg';
 export { default as BankBRI } from './bank-bri.svg';
 export { default as BankBCA } from './bank_bca.svg';
 export { default as BankBNI } from './bank_bni.svg';

@@ -3621,6 +3621,65 @@ export default {
         },
         close: 'Close'
       }
+    },
+    incomingFunds: {
+      sidebar: {
+        text1: 'Incoming Funds'
+      },
+      title: 'Incoming Funds',
+      filter: {
+        text1: 'Show 7 entries',
+        text2: 'Show 10 entries',
+        text3: 'Show 25 entries',
+        text4: 'Show 50 entries',
+        text5: 'Show 75 entries',
+        text6: 'Show 100 entries',
+        text7: 'Search...'
+      },
+      table: {
+        text1: 'No data in the table.',
+        text2: 'Showing',
+        text3: 'to',
+        text4: 'of',
+        text5: 'entries',
+        text6: 'Date',
+        text7: 'Amount (Rp)',
+        text8: 'Description',
+      },
+      text1: 'Fund Transfer Method',
+      text2: 'Other Banks',
+      text3: 'Download Transaction Report',
+      modal: {
+        detailBank: {
+          text1: 'Virtual Account number copied successfully!',
+          text2: 'Payment via',
+          text3: 'Bank Virtual Account',
+          text4: 'Account Name',
+          text5: '',
+          text6: 'Bank',
+          text7: 'Virtual Account Limit',
+          text8: 'Understood',
+          text9: 'VA Number',
+        },
+        detailIncome: {
+          text1: 'Incoming Fund Details',
+          text2: 'Date',
+          text3: 'Amount',
+          text4: 'Description',
+          close: 'Close',
+        },
+        downloadReport: {
+          text1: 'Download Transaction Report',
+          text2: 'From',
+          text3: 'To',
+          text4: 'File Type',
+          cancel: 'Cancel',
+          yes: 'Download',
+          text7: 'Report download request successful. Please wait for the download process.',
+          text8: 'Report downloaded successfully.',
+          text9: 'Failed to download report.'
+        }
+      }
     }
   }
 };

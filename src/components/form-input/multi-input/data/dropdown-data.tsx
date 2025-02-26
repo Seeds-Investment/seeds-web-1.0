@@ -760,3 +760,18 @@ export const useBankName = (): ILabel[] => {
     }
   ];
 };
+
+export const useFormatFile = (): ILabel[] => {
+  return [
+    {
+      key: 1,
+      label: 'PDF',
+      value: 'pdf'
+    },
+    {
+      key: 2,
+      label: 'Excel',
+      value: 'excel'
+    },
+  ];
+};

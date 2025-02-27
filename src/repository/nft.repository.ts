@@ -121,7 +121,11 @@ export const getNftList = async (params: {
   sort?: 'created_asc' | 'created_desc' | 'price_asc' | 'price_desc';
 }): Promise<NftData> => {
   return await nftService.get('all', {
-    params,
+    params: {
+      ...params,
+      lowest_price: params.lowestPrice,
+      highest_price: params.highestPrice
+    },
     headers: {
       Accept: 'application/json'
     }

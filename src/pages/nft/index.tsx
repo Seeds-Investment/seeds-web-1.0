@@ -16,7 +16,6 @@ import checklist from 'public/assets/nft/checklist.svg';
 import diam from 'public/assets/vector/diam.svg';
 import React, { useCallback, useEffect, useState } from 'react';
 import CurrencyInput from 'react-currency-input-field';
-import { FaClockRotateLeft } from 'react-icons/fa6';
 import { FiChevronRight, FiFilter, FiSearch, FiX } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
@@ -152,14 +151,7 @@ const NFTDashboard: React.FC = () => {
     <section className="flex flex-col gap-2 md:gap-4">
       <Card className="md:p-5 rounded-none md:rounded-xl">
         <div className="flex flex-row-reverse md:flex-col gap-4 bg-gradient-to-b from-[#3AC4A0] to-[#94CCBD] w-full p-4 md:px-8 md:py-6">
-          <div className="flex justify-between items-center">
-            <Image
-              src={logo}
-              alt="seeds-logo"
-              className="w-16 hidden md:block"
-            />
-            <FaClockRotateLeft className="text-black" />
-          </div>
+          <Image src={logo} alt="seeds-logo" className="w-16 hidden md:block" />
           <div className="relative w-full">
             <FiSearch
               className="absolute top-1/2 -translate-y-1/2 md:left-3 right-3 w-4 h-4 md:w-5 md:h-5"

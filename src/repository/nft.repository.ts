@@ -3,9 +3,16 @@ import baseAxios from '@/utils/common/axios';
 import { type AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 
+
+
 interface NftData {
   data: Data[];
   metadata: Metadata;
+}
+
+interface NftDataTrans {
+  data: TransData[];
+  metadata: MetadataTrans;
 }
 
 export interface Data {
@@ -20,6 +27,15 @@ export interface Data {
   creator: User;
 }
 
+export interface TransData {
+  id: string;
+  nft_id: string;
+  price: number;
+  owner: User;
+  creator: User;
+  transaction_date: string;
+}
+
 interface User {
   id: string;
   name: string;
@@ -32,6 +48,13 @@ interface Metadata {
   current_page: number;
   limit: number;
   total_page: number;
+}
+
+export interface MetadataTrans {
+  total: number;
+  currentPage: number;
+  limit: number;
+  totalPage: number;
 }
 
 const nftService = baseAxios(
@@ -92,6 +115,9 @@ export const getNftList = async (params: {
   page: number;
   limit: number;
   search?: string;
+  status?: string;
+  lowestPrice?: number;
+  highestPrice?: number;
   sort?: 'created_asc' | 'created_desc' | 'price_asc' | 'price_desc';
 }): Promise<NftData> => {
   return await nftService.get('all', {
@@ -102,8 +128,39 @@ export const getNftList = async (params: {
   });
 };
 
+export const getNftUser = async (
+  id: string,
+  params: {
+    page: number;
+    limit: number;
+    search?: string;
+    sort?: 'created_asc' | 'created_desc' | 'price_asc' | 'price_desc';
+  }
+): Promise<NftData> => {
+  return await nftService.get(`user/${id}`, {
+    params,
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};
+
 export const getNftById = async (id: string): Promise<Data> => {
   return await nftService.get(id, {
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};
+export const getNftTransaction = async (
+  id: string,
+  params: {
+    page: number;
+    limit: number;
+  }
+): Promise<NftDataTrans> => {
+  return await nftService.get(`${id}/transactions`, {
+    params,
     headers: {
       Accept: 'application/json'
     }

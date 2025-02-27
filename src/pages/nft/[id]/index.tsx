@@ -5,7 +5,13 @@ import {
   createSellOffer,
   createTrustline
 } from '@/lib/diamnet';
-import { type Data, getNftById, sellNft } from '@/repository/nft.repository';
+import {
+  type Data,
+  getNftById,
+  getNftTransaction,
+  sellNft,
+  type TransData
+} from '@/repository/nft.repository';
 import {
   Accordion,
   AccordionBody,
@@ -16,41 +22,40 @@ import {
 import { Asset } from 'diamnet-sdk';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FiArrowLeft, FiChevronRight } from 'react-icons/fi';
-
-interface Render {
-  fromImage: string;
-  fromTag: string;
-  fromName: string;
-  toImage: string;
-  toTag: string;
-  toName: string;
-  price: string;
-  date: string;
-}
+import { toast } from 'react-toastify';
 
 interface Column {
   fieldId: string;
   label: string;
-  render?: (value: Render) => React.ReactElement | string;
+  render: (value: TransData, index: number) => React.ReactElement;
 }
 
 const NFTDetail: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
+  const transactionRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState<{ open: boolean; state: number }>({
     open: false,
     state: 0
   });
   const [data, setData] = useState<Data>();
+  const [transData, setTransData] = useState<TransData[]>();
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const [disabled, setDisabled] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [detail, setDetail] = useState<boolean>(false);
   const [transaction, setTransaction] = useState<boolean>(false);
   const [price, setPrice] = useState<number>(0);
+
+  const formattedAddress = (address: string): string => {
+    return `${address.substring(0, 7)}***${address.slice(-7)}`;
+  };
   const handleOpen = (): void => {
-    setOpen({ open: !open.open, state: 0 });
+    if (!disabled) setOpen({ open: !open.open, state: 0 });
   };
 
   const handleChange = (state: number): void => {
@@ -68,27 +73,27 @@ const NFTDetail: React.FC = () => {
         if (
           sessionStorage.getItem('diamPublicKey') !== data.owner.wallet_address
         ) {
-          if (
-            sessionStorage.getItem('diamPublicKey') !==
-            data.creator.wallet_address
-          ) {
-            await createTrustline(
-              String(sessionStorage.getItem('diamPublicKey')),
-              data?.metadata_cid,
-              data?.creator.wallet_address
-            );
-          }
-          await createBuyOffer(
-            String(id),
+          const res = await createTrustline(
             String(sessionStorage.getItem('diamPublicKey')),
-            {
-              selling: Asset.native(),
-              buying: new Asset(data.metadata_cid, data.creator.wallet_address),
-              buyAmount: '1',
-              price: String(data.price)
-            }
+            data?.metadata_cid,
+            data?.creator.wallet_address
           );
-          handleChange(2);
+          if (res === 200) {
+            const status = await createBuyOffer(
+              String(id),
+              String(sessionStorage.getItem('diamPublicKey')),
+              {
+                selling: Asset.native(),
+                buying: new Asset(
+                  data.metadata_cid,
+                  data.creator.wallet_address
+                ),
+                buyAmount: '1',
+                price: String(data.price)
+              }
+            );
+            if (status === 200) handleChange(2);
+          }
         } else {
           if (!Number.isNaN(price) && price !== 0 && price >= data.price) {
             const status = await createSellOffer(data.owner.wallet_address, {
@@ -102,7 +107,7 @@ const NFTDetail: React.FC = () => {
             });
             if (status === 200) {
               await sellNft(data.id, { price });
-              router.back();
+              await router.push('/nft');
             }
           } else {
             setError(Number.isNaN(price) || price === 0 || price < data.price);
@@ -117,8 +122,49 @@ const NFTDetail: React.FC = () => {
 
   const handleDataId = useCallback(async () => {
     const res = await getNftById(String(id));
+    const trans = await getNftTransaction(String(id), {
+      page,
+      limit: 3
+    });
+    setTransData(trans.data);
     setData(res);
   }, [id]);
+
+  const fetchData = useCallback(async () => {
+    if (!loading && hasMore) {
+      setLoading(true);
+      try {
+        const res = await getNftTransaction(String(id), { page, limit: 3 });
+        const data = res.data;
+        setTransData(prev =>
+          page === 1 || prev === undefined ? data : [...prev, ...data]
+        );
+        if (res.metadata.currentPage === res.metadata.totalPage)
+          setHasMore(false);
+        setPage(prevPage => prevPage + 1);
+      } catch (error) {
+        toast.error(`Error fetching data: ${String(error)}`);
+      } finally {
+        setLoading(false);
+      }
+    }
+  }, [page]);
+
+  useEffect(() => {
+    const handleScroll = (): void => {
+      if (!loading && hasMore) {
+        void fetchData();
+      }
+    };
+    if (transactionRef.current !== null) {
+      transactionRef.current.addEventListener('scroll', handleScroll);
+    }
+    return () => {
+      if (transactionRef.current !== null) {
+        transactionRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [fetchData]);
 
   useEffect(() => {
     if (id !== undefined) {
@@ -129,19 +175,21 @@ const NFTDetail: React.FC = () => {
     {
       fieldId: 'from',
       label: 'From',
-      render: (value: Render) => (
+      render: (value: TransData) => (
         <div className="flex gap-3">
           <Image
-            src={value.fromImage}
-            alt="fromImage"
-            className="w-10 h-10 bg-green-500 rounded-full"
+            src={value.owner.avatar}
+            alt={value.owner.name}
+            width={40}
+            height={40}
+            className="rounded-full"
           />
           <div>
             <p className="font-poppins font-semibold text-sm text-neutral-medium">
-              @{value.fromTag}
+              {value.owner.name}
             </p>
             <p className="font-poppins font-normal text-xs text-neutral-soft">
-              {value.fromName}
+              {formattedAddress(value.owner.wallet_address)}
             </p>
           </div>
         </div>
@@ -150,49 +198,47 @@ const NFTDetail: React.FC = () => {
     {
       fieldId: 'to',
       label: 'To',
-      render: (value: Render) => (
-        <div className="flex gap-3">
-          <Image
-            src={value.toImage}
-            alt="toImage"
-            className="w-10 h-10 bg-green-500 rounded-full"
-          />
-          <div>
-            <p className="font-poppins font-semibold text-sm text-neutral-medium">
-              @{value.toTag}
-            </p>
-            <p className="font-poppins font-normal text-xs text-neutral-soft">
-              {value.toName}
-            </p>
+      render: (value: TransData, index: number) => {
+        const prevOwner =
+          index > 0 ? transData?.[index - 1].owner : value.creator;
+        return (
+          <div className="flex gap-3">
+            <Image
+              src={String(prevOwner?.avatar)}
+              alt={String(prevOwner?.name)}
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+            <div>
+              <p className="font-poppins font-semibold text-sm text-neutral-medium">
+                {prevOwner?.name}
+              </p>
+              <p className="font-poppins font-normal text-xs text-neutral-soft">
+                {formattedAddress(String(prevOwner?.wallet_address))}
+              </p>
+            </div>
           </div>
-        </div>
-      )
+        );
+      }
     },
-    { fieldId: 'price', label: 'Price' },
-    { fieldId: 'date', label: 'Date' }
+    {
+      fieldId: 'price',
+      label: 'Price',
+      render: (value: TransData) => <p>{value.price} DIAM</p>
+    },
+    {
+      fieldId: 'date',
+      label: 'Date',
+      render: (value: TransData) => {
+        const formatDate = new Date(value.transaction_date).toLocaleDateString(
+          'id-ID',
+          { year: 'numeric', month: '2-digit', day: '2-digit' }
+        );
+        return <p>{formatDate}</p>;
+      }
+    }
   ];
-  // const data: Render[] = [
-  //   {
-  //     fromImage: '',
-  //     fromTag: 'Anton123',
-  //     fromName: 'Anton',
-  //     toImage: '',
-  //     toTag: 'Budi123',
-  //     toName: 'Budi',
-  //     price: '100 Diam',
-  //     date: '11/11/2024'
-  //   },
-  //   {
-  //     fromImage: '',
-  //     fromTag: 'Budi123',
-  //     fromName: 'Budi',
-  //     toImage: '',
-  //     toTag: 'Dimas123',
-  //     toName: 'Dimas',
-  //     price: '100 Diam',
-  //     date: '11/11/2024'
-  //   }
-  // ];
   return (
     <>
       {data !== undefined && (
@@ -317,10 +363,7 @@ const NFTDetail: React.FC = () => {
                     className="rounded px-3 md:px-7 bg-[#4FE6AF] text-[#1A857D] font-poppins font-normal text-[10px]
               leading-4"
                   >
-                    {data?.creator.wallet_address.substring(0, 7)}***
-                    {data?.creator.wallet_address.substring(
-                      data?.creator.wallet_address.length - 7
-                    )}
+                    {formattedAddress(data?.creator.wallet_address)}
                   </u>
                 </div>
                 <div className="flex justify-between items-center">
@@ -331,10 +374,7 @@ const NFTDetail: React.FC = () => {
                     className="rounded px-3 md:px-7 bg-[#4FE6AF] text-[#1A857D] font-poppins font-normal text-[10px]
               leading-4"
                   >
-                    {data?.owner.wallet_address.substring(0, 7)}***
-                    {data?.owner.wallet_address.substring(
-                      data?.owner.wallet_address.length - 7
-                    )}
+                    {formattedAddress(data?.owner.wallet_address)}
                   </u>
                 </div>
               </AccordionBody>
@@ -360,7 +400,10 @@ const NFTDetail: React.FC = () => {
                 Transaction Activity
               </AccordionHeader>
               <AccordionBody className="flex flex-col gap-2.5 md:gap-4 py-4 md:py-5">
-                <div className="overflow-auto max-w-full">
+                <div
+                  className="overflow-auto max-w-full max-h-40"
+                  ref={transactionRef}
+                >
                   <table className="min-w-[600px] w-full">
                     <thead>
                       <tr>
@@ -374,22 +417,20 @@ const NFTDetail: React.FC = () => {
                         ))}
                       </tr>
                     </thead>
-                    {/* <tbody>
-                    {data.map((rowData, rowIndex) => (
-                      <tr key={rowIndex}>
-                        {columns.map((column, colIndex) => (
-                          <td
-                            key={colIndex}
-                            className="p-2 font-poppins font-semibold text-neutral-medium text-sm"
-                          >
-                            {column.render !== undefined
-                              ? column.render(rowData)
-                              : rowData[column.fieldId as keyof Render]}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody> */}
+                    <tbody>
+                      {transData?.map((rowData, rowIndex) => (
+                        <tr key={rowIndex}>
+                          {columns.map((column, colIndex) => (
+                            <td
+                              key={colIndex}
+                              className="p-2 font-poppins font-semibold text-neutral-medium text-sm"
+                            >
+                              {column.render(rowData, rowIndex)}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
                   </table>
                 </div>
               </AccordionBody>

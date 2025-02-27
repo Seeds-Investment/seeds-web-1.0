@@ -39,6 +39,10 @@ code {
     monospace;
 }
 
+div:has(> div > .DialogNft){
+   z-index: 60 !important;
+}
+
 /* Start Scrollbar */
 /* Firefox */
 * {

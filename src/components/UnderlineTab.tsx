@@ -7,6 +7,7 @@ import { chrownCirclePremium } from '@/constants/assets/icons';
 import PostSection from '@/containers/circle/[id]/PostSection';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
+import { type Data, getNftUser } from '@/repository/nft.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   Avatar,
@@ -23,8 +24,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import logo from 'public/assets/logo-seeds.png';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 interface DataItem {
@@ -73,6 +73,56 @@ const UnderLineTab = ({
   const { t } = useTranslation();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>('post');
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [nftData, setNftData] = useState<Data[]>();
+
+  const fetchNft = useCallback(async () => {
+    if (!loading && hasMore && profileData?.id !== undefined) {
+      setLoading(true);
+      try {
+        const res = await getNftUser(profileData?.id, {
+          page,
+          limit: 10,
+          sort: 'created_desc'
+        });
+        const data = res.data;
+        if (page === 1) {
+          setNftData(data);
+        } else {
+          setNftData(prev => [...(prev as Data[]), ...data]);
+        }
+        if (res.metadata.current_page === res.metadata.total_page)
+          setHasMore(false);
+        setPage(page + 1);
+      } catch (error) {
+        toast.error(`Error fetching data: ${String(error)}`);
+      } finally {
+        setLoading(false);
+      }
+    }
+  }, [page, profileData?.id]);
+
+  useEffect(() => {
+    const handleScroll = (): void => {
+      const isBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight;
+
+      if (isBottom && hasMore && page > 1) {
+        void fetchNft();
+      }
+    };
+    if (page === 1) {
+      void fetchNft();
+    }
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [fetchNft]);
+
   const data: DataItem[] = [
     {
       label: 'Post',
@@ -338,41 +388,64 @@ const UnderLineTab = ({
       value: 'nft',
       content: (
         <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 w-full p-4">
-          {Array.from({ length: 99 }, (_, index) => (
-            <Card className="" key={index}>
-              <Image
-                src={logo}
-                alt=""
-                className="h-1/2 w-full object-cover"
-                quality={100}
-              />
-              <div className="flex flex-col gap-2 md:gap-3.5 justify-evenly p-2 md:p-3.5 bg-[#F3F4F8] font-semibold text-xs font-poppins h-full">
-                <div>
-                  <div className="flex flex-col-reverse md:flex-col">
-                    <p className="text-[#262626]">Title NFT</p>
-                    <div className="flex gap-1">
-                      <Image
-                        src=""
-                        alt=""
-                        className="rounded-full bg-[#3AC4A0] aspect-square w-4"
-                      />
-                      <p className="text-[#3AC4A0]">Username</p>
+          {nftData !== undefined ? (
+            nftData?.map((val, i) => (
+              <Card className="h-[280px] bg-[#F3F4F8]" key={i}>
+                <img
+                  src={val.image_url}
+                  alt={val.name}
+                  className="h-2/3 md:h-1/2 w-full object-cover rounded-t-xl"
+                />
+                <div className="h-1/3 md:h-1/2 flex flex-col gap-2 md:gap-3.5 justify-between p-2 md:p-3.5 bg-transparent font-semibold text-xs font-poppins rounded-b-xl">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex flex-col">
+                      <p className="text-[#262626]">{val.name}</p>
+                      <div className="flex gap-1">
+                        <Image
+                          src={val.owner.avatar}
+                          alt={val.owner.name}
+                          width={16}
+                          height={16}
+                          className="rounded-full"
+                        />
+                        <p className="text-[#3AC4A0]">{val.owner.name}</p>
+                      </div>
+                      <p className="text-[10px] leading-4 font-light text-[#262626]">
+                        {val.price} DIAM
+                      </p>
                     </div>
+                    {sessionStorage.getItem('diamPublicKey') ===
+                      val?.owner.wallet_address && (
+                      <p
+                        className={`${
+                          val.status === 'TRUE'
+                            ? 'bg-[#FFE9D4] text-[#B81516]'
+                            : 'bg-[#E9E9E9] text-neutral-soft'
+                        } rounded-full py-1 w-20 text-center font-semibold font-poppins text-xs`}
+                      >
+                        {val.status === 'TRUE' ? 'On Sale' : 'Not Listed'}
+                      </p>
+                    )}
                   </div>
 
-                  <p className="text-[10px] leading-4 font-light text-[#262626]">
-                    Currency DIAM
-                  </p>
+                  <Button
+                    onClick={async () => {
+                      if (sessionStorage.getItem('diamPublicKey') !== null) {
+                        await router.push(`/nft/${val.id}`);
+                      } else {
+                        toast.info('Please connect the wallet first!');
+                      }
+                    }}
+                    className={`p-1 md:p-1.5 text-[10px] leading-4 font-light text-white bg-[#3AC4A0] rounded-full w-full`}
+                  >
+                    {profileData?.id === val.owner.id ? 'DETAIL' : 'GET'}
+                  </Button>
                 </div>
-                <Button
-                  onClick={async () => await router.push(`/nft/${index}`)}
-                  className="p-1 md:p-1.5 text-[10px] leading-4 font-light text-white bg-[#3AC4A0] rounded-full w-full"
-                >
-                  GET
-                </Button>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            ))
+          ) : (
+            <></>
+          )}
         </div>
       )
     }

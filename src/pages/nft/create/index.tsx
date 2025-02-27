@@ -4,7 +4,7 @@ import useFilePreview from '@/hooks/useFilePreview';
 import { createSellOffer } from '@/lib/diamnet';
 import { UseUploadMedia } from '@/repository/circleDetail.repository';
 import { createNft } from '@/repository/nft.repository';
-import { Button, Card } from '@material-tailwind/react';
+import { Button, Card, Spinner } from '@material-tailwind/react';
 import { Asset } from 'diamnet-sdk';
 import { useRouter } from 'next/router';
 import { useState, type ReactElement } from 'react';
@@ -213,11 +213,11 @@ const CreateNFT = (): ReactElement => {
           </div>
         </div>
         <Button
-          className="text-lg font-semibold text-white bg-[#3AC4A0] rounded-full w-full normal-case font-poppins"
+          className="text-lg flex justify-center font-semibold text-white bg-[#3AC4A0] rounded-full w-full normal-case font-poppins"
           type="submit"
           disabled={isLoading}
         >
-          Post For Sale
+          {isLoading ? <Spinner className="w-6 h-6" /> : 'Post For Sale'}
         </Button>
       </Card>
     </form>

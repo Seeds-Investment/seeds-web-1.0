@@ -126,7 +126,7 @@ export const createBuyOffer = async (
   assetId: string,
   accountId: string,
   buyOffer: BuyOffer
-): Promise<void> => {
+): Promise<number | undefined> => {
   try {
     const account: AccountResponse = await server.loadAccount(accountId);
     const transaction = transactionBuilder(account)
@@ -138,6 +138,7 @@ export const createBuyOffer = async (
     if (res?.status === 200) {
       await buyNft(assetId);
     }
+    return res?.status;
   } catch (error) {
     toast.error(
       `Error during Buy Offer creation: ${String(error) ?? 'Unknown Error'}`
@@ -150,27 +151,32 @@ export const createTrustline = async (
   assetCode: string,
   assetIssuer: string,
   limit: string = '1'
-): Promise<void> => {
-  try {
-    const account: AccountResponse = await server.loadAccount(accountId);
-    const asset = new DiamSdk.Asset(assetCode, assetIssuer);
-    if (!isTrustCreated(account, assetCode, assetIssuer)) {
-      const transaction = transactionBuilder(account)
-        .addOperation(
-          Operation.changeTrust({
-            asset,
-            limit
-          })
-        )
-        .setTimeout(30)
-        .build();
-      await signSubmitTrans(transaction.toXDR());
+): Promise<number | undefined> => {
+  if (accountId !== assetIssuer) {
+    try {
+      const account: AccountResponse = await server.loadAccount(accountId);
+      const asset = new DiamSdk.Asset(assetCode, assetIssuer);
+      if (!isTrustCreated(account, assetCode, assetIssuer)) {
+        const transaction = transactionBuilder(account)
+          .addOperation(
+            Operation.changeTrust({
+              asset,
+              limit
+            })
+          )
+          .setTimeout(30)
+          .build();
+        const res = await signSubmitTrans(transaction.toXDR());
+        return res?.status;
+      } else {
+        return 200;
+      }
+    } catch (error) {
+      toast.error(
+        `Error during Trustline creation: ${String(error) ?? 'Unknown Error'}`
+      );
     }
-  } catch (error) {
-    toast.error(
-      `Error during Trustline creation: ${String(error) ?? 'Unknown Error'}`
-    );
-  }
+  } else return 200;
 };
 
 export const signAndSubmitTransaction = async (

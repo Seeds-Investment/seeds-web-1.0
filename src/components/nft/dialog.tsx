@@ -1,5 +1,5 @@
 import { type Data } from '@/repository/nft.repository';
-import { Button, Dialog, DialogBody } from '@material-tailwind/react';
+import { Button, Dialog, DialogBody, Spinner } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -37,6 +37,7 @@ const NFTDialog = ({
       handler={handleOpen}
       size="md"
       dismiss={{ outsidePress: false }}
+      className="DialogNft"
     >
       {sessionStorage.getItem('diamPublicKey') === data.owner.wallet_address ? (
         <DialogBody className="p-5 flex flex-col gap-5 items-center justify-center">
@@ -50,7 +51,9 @@ const NFTDialog = ({
             </label>
             <FiX
               size={30}
-              className="text-neutral-soft cursor-pointer"
+              className={`text-neutral-soft ${
+                disabled ? 'cursor-default' : 'cursor-pointer'
+              }`}
               onClick={handleOpen}
             />
           </div>
@@ -61,9 +64,13 @@ const NFTDialog = ({
               placeholder="Enter Price"
               suffix=" DIAM"
               className="bg-[#F9F9F9] border border-neutral-soft placeholder:text-[#BDBDBD] placeholder:font-poppins placeholder:text-base placeholder:font-normal text-neutral-medium font-poppins text-base font-normal w-full rounded-lg p-3"
-              onChange={e => {
+              onValueChange={(_, __, values) => {
                 setError(false);
-                setPrice(parseFloat(e.target.value.replaceAll(',', '')));
+                setPrice(
+                  values?.float !== null && values?.float !== undefined
+                    ? values?.float
+                    : 0
+                );
               }}
             />
             {error && (
@@ -77,15 +84,16 @@ const NFTDialog = ({
             <Button
               className="w-full rounded-full bg-white font-poppins font-semibold text-sm normal-case text-[#3AC4A0] border border-[#3AC4A0]"
               onClick={handleOpen}
+              disabled={disabled}
             >
               Cancel
             </Button>
             <Button
-              className="w-full rounded-full text-white font-poppins font-semibold text-sm normal-case bg-[#3AC4A0]"
+              className="w-full flex justify-center rounded-full text-white font-poppins font-semibold text-sm normal-case bg-[#3AC4A0]"
               onClick={handleConfirm}
               disabled={disabled}
             >
-              Confirm
+              {disabled ? <Spinner className="w-6 h-6" /> : 'Confirm'}
             </Button>
           </div>
         </DialogBody>
@@ -159,15 +167,20 @@ const NFTDialog = ({
                 <Button
                   className="w-full rounded-full text-white font-poppins font-semibold text-sm normal-case bg-[#DD2525]"
                   onClick={handleOpen}
+                  disabled={disabled}
                 >
                   Cancel
                 </Button>
                 <Button
-                  className="w-full rounded-full text-white font-poppins font-semibold text-sm normal-case bg-[#3AC4A0]"
+                  className="w-full rounded-full flex justify-center text-white font-poppins font-semibold text-sm normal-case bg-[#3AC4A0]"
                   onClick={handleConfirm}
                   disabled={disabled}
                 >
-                  Confirm Transaction
+                  {disabled ? (
+                    <Spinner className="w-6 h-6" />
+                  ) : (
+                    'Confirm Transaction'
+                  )}
                 </Button>
               </div>
             </div>

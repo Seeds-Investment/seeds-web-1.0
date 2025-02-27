@@ -8,10 +8,8 @@ import { standartCurrency } from '@/helpers/currency';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
 import { getDashboardUser } from '@/repository/danamart/danamart.repository';
 import { getOutgoingFunds } from '@/repository/danamart/outgoing-funds.repository';
-import { getUserInfo } from '@/repository/profile.repository';
 import { type DashboardDataUser } from '@/utils/interfaces/danamart/offers.interface';
 import { type OutgoingFundsData } from '@/utils/interfaces/danamart/outgoing-funds.interface';
-import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -28,7 +26,6 @@ const OutgoingFunds = (): React.ReactElement => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedOutcome, setSelectedOutcome] = useState<number>(0);
-  const [userData, setUserData] = useState<UserInfo>();
   const [sortColumn, setSortColumn] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [isShowModalDetailOutgoingFunds, setIsShowModalDetailOutgoingFunds] = useState<boolean>(false);
@@ -62,15 +59,6 @@ const OutgoingFunds = (): React.ReactElement => {
       toast.error(`Error fetching data: ${error as string}`);
     }
   };
-    
-  const fetchUserInfo = async (): Promise<void> => {
-    try {
-      const res = await getUserInfo();
-      setUserData(res);
-    } catch (error: any) {
-      toast.error(error.message);
-    }
-  };
 
   const filteredData = outgoingFunds?.filter((outgoingFund) => {
     const outgoingFundString = JSON.stringify(outgoingFund).toLowerCase();
@@ -83,7 +71,7 @@ const OutgoingFunds = (): React.ReactElement => {
 
   useEffect(() => {
     setIsLoading(true);
-    Promise.all([fetchDashboardUser(), getOutgoingFundsData(), fetchUserInfo()]).finally(() => {
+    Promise.all([fetchDashboardUser(), getOutgoingFundsData()]).finally(() => {
       setIsLoading(false);
     });
   }, []);
@@ -262,7 +250,7 @@ const OutgoingFunds = (): React.ReactElement => {
                                   : t(`${pathTranslation}.table.text11`)}
                               </span>
                             </td>
-                            <td className="p-2 border border-gray-300 text-right">{`${userData?.preferredCurrency ?? 'IDR'} ${standartCurrency(Number(outcome?.jml_withdraw ?? '0') ?? 0)}`}</td>
+                            <td className="p-2 border border-gray-300 text-right">{`IDR ${standartCurrency(Number(outcome?.jml_withdraw ?? '0') ?? 0)}`}</td>
                             <td className="p-2 border border-gray-300 hidden md:table-cell">{outcome?.ket}</td>
                             <td className="p-2 border border-gray-300 text-center md:hidden table-cell">
                               <button
@@ -289,39 +277,42 @@ const OutgoingFunds = (): React.ReactElement => {
                       )}
                     </tbody>
                   </table>
-                  <div className="flex justify-between items-center mt-4">
-                    <span>
-                      {t(`${pathTranslation}.table.text2`)} {startIndex + 1} {t(`${pathTranslation}.table.text3`)} {(startIndex + entries) < filteredData.length ? startIndex + entries : filteredData.length} {t(`${pathTranslation}.table.text4`)} {filteredData.length} {t(`${pathTranslation}.table.text5`)}
-                    </span>
-                    <div className="flex justify-center items-center gap-2">
-                      <button
-                        onClick={() => { setCurrentPage((prev) => Math.max(prev - 1, 1)); }}
-                        disabled={currentPage === 1}
-                        className="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
-                      >
-                        <Image
-                          src={currentPage === 1 ? ArrowLeftPaginationGray : ArrowLeftPaginationGreen}
-                          alt="ArrowLeft"
-                          className="w-full h-auto object-cover"
-                          width={100}
-                          height={100}
-                        />
-                      </button>
-                      <button
-                        onClick={() => { setCurrentPage((prev) => Math.min(prev + 1, totalPages)); }}
-                        disabled={currentPage === totalPages}
-                        className="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
-                      >
-                        <Image
-                          src={currentPage === totalPages ? ArrowRightPaginationGray : ArrowRightPaginationGreen}
-                          alt="ArrowRight"
-                          className="w-full h-auto object-cover"
-                          width={100}
-                          height={100}
-                        />
-                      </button>
-                    </div>
-                  </div>
+                  {
+                    outgoingFunds?.length > 0 &&
+                      <div className="flex justify-between items-center mt-4">
+                        <span>
+                          {t(`${pathTranslation}.table.text2`)} {startIndex + 1} {t(`${pathTranslation}.table.text3`)} {(startIndex + entries) < filteredData.length ? startIndex + entries : filteredData.length} {t(`${pathTranslation}.table.text4`)} {filteredData.length} {t(`${pathTranslation}.table.text5`)}
+                        </span>
+                        <div className="flex justify-center items-center gap-2">
+                          <button
+                            onClick={() => { setCurrentPage((prev) => Math.max(prev - 1, 1)); }}
+                            disabled={currentPage === 1}
+                            className="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
+                          >
+                            <Image
+                              src={currentPage === 1 ? ArrowLeftPaginationGray : ArrowLeftPaginationGreen}
+                              alt="ArrowLeft"
+                              className="w-full h-auto object-cover"
+                              width={100}
+                              height={100}
+                            />
+                          </button>
+                          <button
+                            onClick={() => { setCurrentPage((prev) => Math.min(prev + 1, totalPages)); }}
+                            disabled={currentPage === totalPages}
+                            className="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
+                          >
+                            <Image
+                              src={currentPage === totalPages ? ArrowRightPaginationGray : ArrowRightPaginationGreen}
+                              alt="ArrowRight"
+                              className="w-full h-auto object-cover"
+                              width={100}
+                              height={100}
+                            />
+                          </button>
+                        </div>
+                      </div>
+                  }
                 </div>
               </div>
             </div>
@@ -331,7 +322,6 @@ const OutgoingFunds = (): React.ReactElement => {
           data={outgoingFunds[selectedOutcome]}
           setIsShowModalDetailOutgoingFunds={setIsShowModalDetailOutgoingFunds}
           isShowModalDetailOutgoingFunds={isShowModalDetailOutgoingFunds}
-          currency={userData?.preferredCurrency ?? 'IDR'}
         />
       )}
       {isShowModalWithdraw && (

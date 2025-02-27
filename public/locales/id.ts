@@ -3687,6 +3687,64 @@ export default {
           text7: 'Close',
         }
       }
+    },
+    purchaseHistory: {
+      sidebar: {
+        text1: 'Riwayat Pembelian'
+      },
+      title: 'Riwayat Pembelian',
+      filter: {
+        text1: 'Tampilkan 7 entri',
+        text2: 'Tampilkan 10 entri',
+        text3: 'Tampilkan 25 entri',
+        text4: 'Tampilkan 50 entri',
+        text5: 'Tampilkan 75 entri',
+        text6: 'Tampilkan 100 entri',
+        text7: 'Cari...'
+      },
+      table: {
+        text1: 'Tidak ada data dalam tabel.',
+        text2: 'Menampilkan',
+        text3: 'hingga',
+        text4: 'dari',
+        text5: 'entri',
+        text6: 'Kode Efek',
+        text7: 'ID Penawaran',
+        text8: 'Jumlah Pembelian',
+        text9: 'Tanggal Pembelian',
+        dropdown: {
+          text1: 'Informasi Penawaran',
+          text2: 'Informasi Pembelian',
+          text3: 'Informasi Biaya dan Imbal Hasil',
+          text4: 'Factsheet',
+        }
+      },
+      modal: {
+        offerInformation: {
+          text1: 'Informasi Penawaran',
+          text2: 'Nama Penerbit',
+          text3: 'ID Penawaran',
+          text4: 'Jatuh Tempo',
+          text5: 'Tanggal Penyerahan Dana',
+          text6: 'Jadwal Penyerahan Kupon/Dividen',
+          text7: 'Sektor Usaha',
+          text8: 'Status Pembayaran',
+        },
+        purchaseInformation: {
+          text1: 'Informasi Pembelian',
+          text2: 'Tanggal Pembelian',
+          text3: 'Jumlah Pembelian',
+          text4: 'Kontribusi (%)',
+        },
+        costReturn: {
+          text1: 'Informasi Biaya dan Imbal Hasil',
+          text2: 'Potensi Penerimaan Imbal Hasil per Periode',
+          text3: 'Potensi Penerimaan Biaya Keterlambatan',
+          text4: 'Total Potensi Penerimaan Imbal Hasil dan Biaya Keterlambatan',
+          text5: 'Biaya Administrasi'
+        },
+        close: 'Tutup'
+      }
     }
   }
 };

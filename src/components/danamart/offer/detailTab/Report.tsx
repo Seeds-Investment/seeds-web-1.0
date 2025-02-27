@@ -127,37 +127,42 @@ const Report: React.FC<Props> = ({ activeTab }) => {
           </tbody>
         </table>
         <div className="flex justify-between items-center mt-4">
-          <span>
-            {t(`${pathTranslation}.table.text4`)} {startIndex + 1} {t(`${pathTranslation}.table.text5`)} {(startIndex + entries) < filteredData.length ? startIndex + entries : filteredData.length} {t(`${pathTranslation}.table.text6`)} {filteredData.length} {t(`${pathTranslation}.table.text7`)}
-          </span>
-          <div className="flex justify-center items-center gap-2">
-            <button
-              onClick={() => { setCurrentPage((prev) => Math.max(prev - 1, 1)); }}
-              disabled={currentPage === 1}
-              className="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
-            >
-              <Image
-                src={currentPage === 1 ? ArrowLeftPaginationGray : ArrowLeftPaginationGreen}
-                alt="ArrowLeft"
-                className="w-full h-auto object-cover"
-                width={100}
-                height={100}
-              />
-            </button>
-            <button
-              onClick={() => { setCurrentPage((prev) => Math.min(prev + 1, totalPages)); }}
-              disabled={currentPage === totalPages}
-              className="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
-            >
-              <Image
-                src={currentPage === totalPages ? ArrowRightPaginationGray : ArrowRightPaginationGreen}
-                alt="ArrowRight"
-                className="w-full h-auto object-cover"
-                width={100}
-                height={100}
-              />
-            </button>
-          </div>
+          {
+            reportData?.length > 0 &&
+              <>
+                <span>
+                  {t(`${pathTranslation}.table.text4`)} {startIndex + 1} {t(`${pathTranslation}.table.text5`)} {(startIndex + entries) < filteredData.length ? startIndex + entries : filteredData.length} {t(`${pathTranslation}.table.text6`)} {filteredData.length} {t(`${pathTranslation}.table.text7`)}
+                </span>
+                <div className="flex justify-center items-center gap-2">
+                  <button
+                    onClick={() => { setCurrentPage((prev) => Math.max(prev - 1, 1)); }}
+                    disabled={currentPage === 1}
+                    className="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
+                  >
+                    <Image
+                      src={currentPage === 1 ? ArrowLeftPaginationGray : ArrowLeftPaginationGreen}
+                      alt="ArrowLeft"
+                      className="w-full h-auto object-cover"
+                      width={100}
+                      height={100}
+                    />
+                  </button>
+                  <button
+                    onClick={() => { setCurrentPage((prev) => Math.min(prev + 1, totalPages)); }}
+                    disabled={currentPage === totalPages}
+                    className="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
+                  >
+                    <Image
+                      src={currentPage === totalPages ? ArrowRightPaginationGray : ArrowRightPaginationGreen}
+                      alt="ArrowRight"
+                      className="w-full h-auto object-cover"
+                      width={100}
+                      height={100}
+                    />
+                  </button>
+                </div>
+              </>
+          }
         </div>
       </div>
       {isShowDetailReport && (

@@ -66,6 +66,8 @@ const SidebarLoginResponsive: React.FC<props> = ({
           submenu: [
             { title: 'Dashboard', url: '/danamart/dashboard' },
             { title: t('danamart.offers.sidebar.text1'), url: '/danamart/offer' },
+            { title: t('danamart.portfolio.sidebar.text1'), url: '/danamart/portfolio' },
+            { title: t('danamart.purchaseHistory.sidebar.text1'), url: '/danamart/purchase-history' },
             { title: t('danamart.incomingFunds.sidebar.text1'), url: '/danamart/incoming-funds' },
             { title: t('danamart.outgoingFunds.sidebar.text1'), url: '/danamart/outgoing-funds' },
           ]

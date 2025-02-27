@@ -3748,6 +3748,64 @@ export default {
           text7: 'Close',
         }
       }
+    },
+    purchaseHistory: {
+      sidebar: {
+        text1: "Purchase History"
+      },
+      title: "Purchase History",
+      filter: {
+        text1: "Show 7 entries",
+        text2: "Show 10 entries",
+        text3: "Show 25 entries",
+        text4: "Show 50 entries",
+        text5: "Show 75 entries",
+        text6: "Show 100 entries",
+        text7: "Search..."
+      },
+      table: {
+        text1: "No data in table.",
+        text2: "Showing",
+        text3: "to",
+        text4: "of",
+        text5: "entries",
+        text6: "Security Code",
+        text7: "Offer ID",
+        text8: "Purchase Amount",
+        text9: "Purchase Date",
+        dropdown: {
+          text1: "Offer Information",
+          text2: "Purchase Information",
+          text3: "Cost and Return Information",
+          text4: "Factsheet"
+        }
+      },
+      modal: {
+        offerInformation: {
+          text1: "Offer Information",
+          text2: "Issuer Name",
+          text3: "Offer ID",
+          text4: "Maturity Date",
+          text5: "Fund Submission Date",
+          text6: "Coupon/Dividend Submission Schedule",
+          text7: "Business Sector",
+          text8: "Payment Status"
+        },
+        purchaseInformation: {
+          text1: "Purchase Information",
+          text2: "Purchase Date",
+          text3: "Purchase Amount",
+          text4: "Contribution (%)"
+        },
+        costReturn: {
+          text1: "Cost and Return Information",
+          text2: "Potential Return Per Period",
+          text3: "Potential Late Fee Revenue",
+          text4: "Total Potential Return and Late Fee Revenue",
+          text5: "Administrative Fee"
+        },
+        close: "Close"
+      }
     }
   }
 };

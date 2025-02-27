@@ -1,5 +1,4 @@
-import { standartCurrency } from '@/helpers/currency';
-import { type IncomingFundsData } from '@/utils/interfaces/danamart/incoming-funds.interface';
+import { type ModalPembelian } from '@/utils/interfaces/danamart/purchase-history.interface';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Button, Typography } from '@material-tailwind/react';
 import React from 'react';
@@ -7,27 +6,27 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../../ui/modal/Modal';
 
 interface Props {
-  data: IncomingFundsData;
-  setIsShowModalDetailIncomeFunds: (value: boolean) => void;
-  isShowModalDetailIncomeFunds: boolean;
+  data: ModalPembelian;
+  setIsShowModalPurchaseInformation: (value: boolean) => void;
+  isShowModalPurchaseInformation: boolean;
 }
 
-const ModalDetailIncome: React.FC<Props> = ({
+const ModalPurchaseInformation: React.FC<Props> = ({
   data,
-  setIsShowModalDetailIncomeFunds,
-  isShowModalDetailIncomeFunds
+  setIsShowModalPurchaseInformation,
+  isShowModalPurchaseInformation,
 }) => {
   const { t } = useTranslation();
-  const pathTranslation = 'danamart.incomingFunds.modal.detailIncome';
+  const pathTranslation = 'danamart.purchaseHistory.modal'
 
   return (
     <Modal
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/25 flex justify-start items-start"
-      modalClasses="z-50 animate-slide-down fixed left-0 transform -translate-x-1/2 -translate-y-1/2 top-[60%] md:left-[35%] md:right-[-35%] mt-[-17rem] w-full h-fit md:w-[550px] p-6 rounded-lg bg-white"
+      modalClasses="z-50 animate-slide-down fixed top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 md:top-[60%] md:left-[35%] md:right-[-35%] mt-[-17rem] w-full h-[60vh] md:h-fit md:max-h-[70vh] md:w-[550px] p-6 rounded-lg bg-white"
     >
       <button
         onClick={() => {
-          setIsShowModalDetailIncomeFunds(!isShowModalDetailIncomeFunds);
+          setIsShowModalPurchaseInformation(!isShowModalPurchaseInformation);
         }}
         className="absolute top-4 right-4 p-1 bg-gray-100 rounded-md hover:bg-gray-200"
       >
@@ -35,37 +34,37 @@ const ModalDetailIncome: React.FC<Props> = ({
       </button>
 
       <Typography className="font-bold text-lg font-poppins">
-        {t(`${pathTranslation}.text1`)}
+        {t(`${pathTranslation}.purchaseInformation.text1`)}
       </Typography>
 
       <div className='p-4'>
         <div className='flex mt-4'>
           <div className='w-full'>
             <Typography className='font-poppins text-[#262626] font-semibold'>
-              {t(`${pathTranslation}.text2`)}
+              {t(`${pathTranslation}.purchaseInformation.text2`)}
             </Typography>
-            <Typography className='font-poppins text-[rgb(38,38,38)]'>
-              {data?.tgl_deposit}
+            <Typography className='font-poppins text-[#262626]'>
+              {data?.tglPembelian}
             </Typography>
           </div>
         </div>
         <div className='flex mt-4'>
           <div className='w-full'>
             <Typography className='font-poppins text-[#262626] font-semibold'>
-              {t(`${pathTranslation}.text3`)}
+              {t(`${pathTranslation}.purchaseInformation.text3`)}
             </Typography>
             <Typography className='font-poppins text-[#262626]'>
-              {`IDR ${standartCurrency(Number(data?.jml_deposit ?? '0') ?? 0)}`}
+              IDR {data?.jmlPembelian}
             </Typography>
           </div>
         </div>
         <div className='flex mt-4'>
           <div className='w-full'>
             <Typography className='font-poppins text-[#262626] font-semibold'>
-              {t(`${pathTranslation}.text4`)}
+              {t(`${pathTranslation}.purchaseInformation.text4`)}
             </Typography>
             <Typography className='font-poppins text-[#262626]'>
-              {data?.ket}
+              {data?.kontribusi}%
             </Typography>
           </div>
         </div>
@@ -73,7 +72,7 @@ const ModalDetailIncome: React.FC<Props> = ({
 
       <div className="w-full mt-2 flex justify-center md:justify-end">
         <Button
-          onClick={() => { setIsShowModalDetailIncomeFunds(!isShowModalDetailIncomeFunds) }}
+          onClick={() => { setIsShowModalPurchaseInformation(!isShowModalPurchaseInformation) }}
           className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
         >
           {t(`${pathTranslation}.close`)}
@@ -83,4 +82,4 @@ const ModalDetailIncome: React.FC<Props> = ({
   );
 };
 
-export default ModalDetailIncome;
+export default ModalPurchaseInformation;

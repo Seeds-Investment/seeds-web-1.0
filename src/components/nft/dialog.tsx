@@ -54,7 +54,9 @@ const NFTDialog = ({
               className={`text-neutral-soft ${
                 disabled ? 'cursor-default' : 'cursor-pointer'
               }`}
-              onClick={handleOpen}
+              onClick={() => {
+                if (!disabled) handleOpen();
+              }}
             />
           </div>
           <div className="flex flex-col gap-2 w-full">

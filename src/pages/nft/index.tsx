@@ -89,9 +89,12 @@ const NFTDashboard: React.FC = () => {
         if (params.page === 1) {
           setData(res.data);
         } else if (params.page > 1) {
-          setData(prev => [...(prev as Data[]), ...(data ?? [])]);
+          setData(prev => [...((prev as Data[]) ?? []), ...(data ?? [])]);
         }
-        if (res.metadata.current_page === res.metadata.total_page)
+        if (
+          res.metadata.current_page === res.metadata.total_page ||
+          res.metadata.total_page === 0
+        )
           setHasMore(false);
         setParams(prev => ({ ...prev, page: prev.page + 1 }));
       } catch (error) {

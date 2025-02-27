@@ -5,6 +5,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import nft from 'public/assets/nft/nft-logo.svg';
 import connect from 'public/assets/social/connect.svg';
 import homepage from 'public/assets/social/discover.svg';
 import play from 'public/assets/social/play.svg';
@@ -31,7 +32,7 @@ const SidebarLogin: React.FC = () => {
         { title: 'Market', url: '/market', image: market },
         { title: 'Connect', url: '/connect', image: connect },
         { title: 'Play', url: '/play', image: play },
-        // { title: 'NFT', url: '/nft', image: nft },
+        { title: 'NFT', url: '/nft', image: nft },
         { title: 'Setting', url: '/user-setting', image: setting }
         // { title: 'Notification', url: '/setting', image: notification },
         // { title: 'Chat', url: '/setting', image: chat }

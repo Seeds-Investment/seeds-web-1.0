@@ -8,8 +8,11 @@ import { BASE_FEE, Operation, TransactionBuilder } from 'diamnet-sdk';
 import { type AccountResponse } from 'diamnet-sdk/lib/aurora';
 import { toast } from 'react-toastify';
 
-const server = new DiamSdk.Aurora.Server('https://diamtestnet.diamcircle.io');
-const networkPassphrase = 'Diamante Testnet 2024';
+const server = new DiamSdk.Aurora.Server(
+  process.env.NEXT_PUBLIC_DIAM_URL ?? 'https://diamtestnet.diamcircle.io'
+);
+const networkPassphrase =
+  process.env.NEXT_PUBLIC_DIAM_PASSPHRASE ?? 'Diamante Testnet 2024';
 
 interface SuccessConnect {
   status: 200;

@@ -55,7 +55,7 @@ const NFTDetail: React.FC = () => {
     return `${address.substring(0, 7)}***${address.slice(-7)}`;
   };
   const handleOpen = (): void => {
-    if (!disabled) setOpen({ open: !open.open, state: 0 });
+    setOpen({ open: !open.open, state: 0 });
   };
 
   const handleChange = (state: number): void => {
@@ -92,7 +92,13 @@ const NFTDetail: React.FC = () => {
                 price: String(data.price)
               }
             );
-            if (status === 200) handleChange(2);
+            if (status === 200) {
+              handleChange(2);
+            } else {
+              throw new Error('Error while buy asset');
+            }
+          } else {
+            throw new Error('Error while create trustline asset');
           }
         } else {
           if (!Number.isNaN(price) && price !== 0 && price >= data.price) {
@@ -108,12 +114,15 @@ const NFTDetail: React.FC = () => {
             if (status === 200) {
               await sellNft(data.id, { price });
               await router.push('/nft');
+            } else {
+              throw new Error('Error while selling asset');
             }
           } else {
             setError(Number.isNaN(price) || price === 0 || price < data.price);
           }
         }
       } catch (error) {
+        handleOpen();
       } finally {
         setDisabled(false);
       }
@@ -122,11 +131,6 @@ const NFTDetail: React.FC = () => {
 
   const handleDataId = useCallback(async () => {
     const res = await getNftById(String(id));
-    const trans = await getNftTransaction(String(id), {
-      page,
-      limit: 3
-    });
-    setTransData(trans.data);
     setData(res);
   }, [id]);
 
@@ -136,10 +140,15 @@ const NFTDetail: React.FC = () => {
       try {
         const res = await getNftTransaction(String(id), { page, limit: 3 });
         const data = res.data;
-        setTransData(prev =>
-          page === 1 || prev === undefined ? data : [...prev, ...data]
-        );
-        if (res.metadata.currentPage === res.metadata.totalPage)
+        if (page === 1) {
+          setTransData(res.data);
+        } else if (page > 1) {
+          setTransData(prev => [...(prev ?? []), ...(data ?? [])]);
+        }
+        if (
+          res.metadata.currentPage === res.metadata.totalPage ||
+          res.metadata.totalPage === 0
+        )
           setHasMore(false);
         setPage(prevPage => prevPage + 1);
       } catch (error) {
@@ -152,16 +161,25 @@ const NFTDetail: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = (): void => {
-      if (!loading && hasMore) {
-        void fetchData();
+      if (transactionRef.current !== null) {
+        const { scrollTop, scrollHeight, clientHeight } =
+          transactionRef.current;
+        if (clientHeight + scrollTop >= scrollHeight && !loading) {
+          void fetchData();
+        }
       }
     };
-    if (transactionRef.current !== null) {
-      transactionRef.current.addEventListener('scroll', handleScroll);
+
+    if (page === 1) void fetchData();
+
+    const currentRef = transactionRef.current;
+    if (currentRef !== null) {
+      currentRef.addEventListener('scroll', handleScroll);
     }
+
     return () => {
-      if (transactionRef.current !== null) {
-        transactionRef.current.removeEventListener('scroll', handleScroll);
+      if (currentRef !== null) {
+        currentRef.removeEventListener('scroll', handleScroll);
       }
     };
   }, [fetchData]);

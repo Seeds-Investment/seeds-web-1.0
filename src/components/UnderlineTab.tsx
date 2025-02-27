@@ -91,9 +91,12 @@ const UnderLineTab = ({
         if (page === 1) {
           setNftData(data);
         } else {
-          setNftData(prev => [...(prev as Data[]), ...data]);
+          setNftData(prev => [...(prev as Data[])??[], ...data??[]]);
         }
-        if (res.metadata.current_page === res.metadata.total_page)
+        if (
+          res.metadata.current_page === res.metadata.total_page ||
+          res.metadata.total_page === 0
+        )
           setHasMore(false);
         setPage(page + 1);
       } catch (error) {

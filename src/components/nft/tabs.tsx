@@ -13,7 +13,7 @@ const NFTTabs = ({ data }: { data: Data[] | undefined }): JSX.Element => {
   return (
     <div>
       <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
-        {data !== undefined ? (
+        {data !== undefined && data !== null ? (
           data?.map((val, i) => (
             <Card className="h-[280px] bg-[#F3F4F8]" key={i}>
               <img

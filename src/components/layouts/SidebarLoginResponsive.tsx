@@ -70,6 +70,7 @@ const SidebarLoginResponsive: React.FC<props> = ({
             { title: t('danamart.purchaseHistory.sidebar.text1'), url: '/danamart/purchase-history' },
             { title: t('danamart.incomingFunds.sidebar.text1'), url: '/danamart/incoming-funds' },
             { title: t('danamart.outgoingFunds.sidebar.text1'), url: '/danamart/outgoing-funds' },
+            { title: t('danamart.promotion.sidebar.text1'), url: '/danamart/promotion' },
             { title: t('danamart.userLog.sidebar.text1'), url: '/danamart/user-log' },
           ]
         },

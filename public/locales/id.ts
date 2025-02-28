@@ -3771,6 +3771,26 @@ export default {
         text4: 'dari',
         text5: 'entri',
       }
+    },
+    promotion: {
+      sidebar: {
+        text1: 'Promosi'
+      },
+      title: 'Promosi',
+      text1: 'Punya kode promo? Masukan kode-mu disini',
+      text2: 'Jenis kode yang kamu punya',
+      text3: 'Pilih Jenis',
+      text4: 'Kode Promo',
+      text5: 'Input kode-mu disini',
+      text6: 'Masukan kode promo',
+      text7: 'Validasi Kode',
+      text8: 'Selamat! Kode-mu valid dan berhasil diklaim. Saat ini sudah bisa menikmati benefitnya.',
+      text9: 'Maaf! Kode-mu tidak valid, kuota sudah habis , masa berlakunya telah berakhir atau tidak memenuhi syarat dan ketentuan. Silakan coba lagi dengan kode lainnya ya.',
+      modal: {
+        title: 'Tentang Kode Promo dan Kode Referral',
+        text1: 'Kode Promo adalah kode unik yang dapat digunakan oleh-mu untuk mendapatkan penawaran menarik ya.',
+        close: 'Tutup'
+      }
     }
   }
 };

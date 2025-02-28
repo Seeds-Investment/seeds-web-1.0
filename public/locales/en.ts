@@ -3832,6 +3832,26 @@ export default {
         text4: "of",
         text5: "entries",
       }
+    },
+    promotion: {
+      sidebar: {
+        text1: 'Promotion'
+      },
+      title: 'Promotion',
+      text1: 'Have a promo code? Enter your code here',
+      text2: 'Type of code you have',
+      text3: 'Select Type',
+      text4: 'Promo Code',
+      text5: 'Enter your code here',
+      text6: 'Enter promo code',
+      text7: 'Validate Code',
+      text8: 'Congratulations! Your code is valid and successfully claimed. You can now enjoy its benefits.',
+      text9: 'Sorry! Your code is invalid, the quota has been exhausted, the validity period has expired, or it does not meet the terms and conditions. Please try again with another code.',
+      modal: {
+        title: 'About Promo Codes and Referral Codes',
+        text1: 'A Promo Code is a unique code that you can use to get exciting offers.',
+        close: 'Close'
+      }
     }
   }
 };

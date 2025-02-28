@@ -3806,6 +3806,32 @@ export default {
         },
         close: "Close"
       }
+    },
+    userLog: {
+      sidebar: {
+        text1: "User Log"
+      },
+      title: "User Log",
+      filter: {
+        text1: "Show 7 entries",
+        text2: "Show 10 entries",
+        text3: "Show 25 entries",
+        text4: "Show 50 entries",
+        text5: "Show 75 entries",
+        text6: "Show 100 entries",
+        text7: "Search...",
+        text8: 'Start Date',
+        text9: 'End Date',
+        text10: 'Apply',
+        text11: 'Reset',
+      },
+      table: {
+        text1: "No data in table.",
+        text2: "Showing",
+        text3: "to",
+        text4: "of",
+        text5: "entries",
+      }
     }
   }
 };

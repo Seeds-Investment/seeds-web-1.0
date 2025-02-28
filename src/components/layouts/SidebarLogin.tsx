@@ -47,6 +47,7 @@ const SidebarLogin: React.FC = () => {
             { title: t('danamart.purchaseHistory.sidebar.text1'), url: '/danamart/purchase-history' },
             { title: t('danamart.incomingFunds.sidebar.text1'), url: '/danamart/incoming-funds' },
             { title: t('danamart.outgoingFunds.sidebar.text1'), url: '/danamart/outgoing-funds' },
+            { title: t('danamart.userLog.sidebar.text1'), url: '/danamart/user-log' },
           ]
         },
         { title: 'Setting', url: '/user-setting', image: setting }
@@ -85,7 +86,7 @@ const SidebarLogin: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-3 py-6 bg-opacity-50 h-[100vh] overflow-y-scroll">
+    <div className="flex flex-col items-center gap-3 py-6 bg-opacity-50 h-[100vh] overflow-y-scroll scrollbar-hide">
       {isLogoutModal && (
         <ModalLogout
           onClose={() => {

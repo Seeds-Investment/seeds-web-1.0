@@ -371,3 +371,15 @@ li {
   .custom-danamart-slider .slick-list {
     margin: 0 -4px;
   }
+
+/* scrollbar-hide */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb {
+  display: none;
+}

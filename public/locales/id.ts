@@ -3745,6 +3745,32 @@ export default {
         },
         close: 'Tutup'
       }
+    },
+    userLog: {
+      sidebar: {
+        text1: 'Log Pengguna'
+      },
+      title: 'Log Pengguna',
+      filter: {
+        text1: 'Tampilkan 7 entri',
+        text2: 'Tampilkan 10 entri',
+        text3: 'Tampilkan 25 entri',
+        text4: 'Tampilkan 50 entri',
+        text5: 'Tampilkan 75 entri',
+        text6: 'Tampilkan 100 entri',
+        text7: 'Cari...',
+        text8: 'Tanggal Mulai',
+        text9: 'Tanggal Berakhir',
+        text10: 'Terapkan',
+        text11: 'Hapus',
+      },
+      table: {
+        text1: 'Tidak ada data dalam tabel.',
+        text2: 'Menampilkan',
+        text3: 'hingga',
+        text4: 'dari',
+        text5: 'entri',
+      }
     }
   }
 };

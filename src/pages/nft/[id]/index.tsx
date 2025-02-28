@@ -193,29 +193,6 @@ const NFTDetail: React.FC = () => {
     {
       fieldId: 'from',
       label: 'From',
-      render: (value: TransData) => (
-        <div className="flex gap-3">
-          <Image
-            src={value.owner.avatar}
-            alt={value.owner.name}
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-          <div>
-            <p className="font-poppins font-semibold text-sm text-neutral-medium">
-              {value.owner.name}
-            </p>
-            <p className="font-poppins font-normal text-xs text-neutral-soft">
-              {formattedAddress(value.owner.wallet_address)}
-            </p>
-          </div>
-        </div>
-      )
-    },
-    {
-      fieldId: 'to',
-      label: 'To',
       render: (value: TransData, index: number) => {
         const prevOwner =
           index > 0 ? transData?.[index - 1].owner : value.creator;
@@ -239,6 +216,29 @@ const NFTDetail: React.FC = () => {
           </div>
         );
       }
+    },
+    {
+      fieldId: 'to',
+      label: 'To',
+      render: (value: TransData) => (
+        <div className="flex gap-3">
+          <Image
+            src={value.owner.avatar}
+            alt={value.owner.name}
+            width={40}
+            height={40}
+            className="rounded-full"
+          />
+          <div>
+            <p className="font-poppins font-semibold text-sm text-neutral-medium">
+              {value.owner.name}
+            </p>
+            <p className="font-poppins font-normal text-xs text-neutral-soft">
+              {formattedAddress(value.owner.wallet_address)}
+            </p>
+          </div>
+        </div>
+      )
     },
     {
       fieldId: 'price',

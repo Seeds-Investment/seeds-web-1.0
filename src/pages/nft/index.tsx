@@ -176,7 +176,7 @@ const NFTDashboard: React.FC = () => {
         </div>
       </Card>
       <Card className="flex flex-col gap-9 md:p-5 rounded-none md:rounded-xl">
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <Button
             disabled={
               sessionStorage.getItem('diamPublicKey') !== null || loadingConnect
@@ -207,10 +207,11 @@ const NFTDashboard: React.FC = () => {
               </p>
             </div>
             <FiChevronRight
-              color={
+              color="white"
+              className={
                 sessionStorage.getItem('diamPublicKey') !== null
-                  ? '#444444'
-                  : 'white'
+                  ? 'hidden'
+                  : 'block'
               }
               size={18}
             />

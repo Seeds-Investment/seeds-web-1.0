@@ -52,9 +52,9 @@ const Homepage: React.FC = () => {
           <UserInfoPlaySimulation playerInfo={userInfo} />
         )}
       </CCard>
-      <CCard className="p-3 mb-5 h-auto rounded-none shadow-none flex-col gap-2">
-        <SubcroptionSection />
-      </CCard>
+
+      <SubcroptionSection />
+
       <ChooseCurrencyPopup handleOpen={handleOpen} open={popUpCurrency} />
       <CCard className="p-3 mb-5 h-auto rounded-none shadow-none flex-col gap-2">
         <Section1New />

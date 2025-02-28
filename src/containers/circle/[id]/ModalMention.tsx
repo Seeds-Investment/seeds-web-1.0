@@ -4,6 +4,7 @@ import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
 import PiePreviewPost from '@/components/circle/pie/PiePreviewPost';
 import HeaderLogin from '@/components/layouts/HeaderLogin';
+import ShowAudioPlayer from '@/components/ui/outputs/AudioPlayerViewer';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
 import ModalChoosePricePremium from '@/containers/social/main/ModalChoosePricePremium';
 import { formatCurrency, stringToNumberCurrency } from '@/helpers/currency';
@@ -1311,10 +1312,10 @@ const ModalMention: React.FC<props> = ({
     }
   };
 
-  const handlePages = (): any => {
+  const handleTextPages = (): any => {
     if (pages === 'text') {
       return (
-        <div className="mt-2">
+        <div className="md:my-4 mt-4 mb-2">
           <MentionsInput
             onChange={e => {
               handleFormChange(e);
@@ -1324,7 +1325,7 @@ const ModalMention: React.FC<props> = ({
             allowSpaceInQuery
             placeholder={`${t('circleDetail.textAreaPlaceholder')}`}
             style={{ outline: 'none' }}
-            className="w-[100%] focus:outline-black min-h-[100px] MentionInputTextArea bg-transparent font-poppins placeholder:font-poppins text-base placeholder:text-neutral-soft placeholder:text-base"
+            className="w-[100%] focus:outline-black lg:md:min-h-[60px] md:min-h-[70px] sm:min-h-[80px] min-h-[90px] MentionInputTextArea bg-transparent font-poppins placeholder:font-poppins text-base placeholder:text-neutral-soft placeholder:text-base"
             a11ySuggestionsListLabel={'Suggested mentions'}
           >
             <Mention
@@ -1372,7 +1373,47 @@ const ModalMention: React.FC<props> = ({
           {renderUserHashtags()}
         </div>
       );
-    } else if (pages === 'gif') {
+    } else {
+      return (
+        <>
+          <MentionsInput
+            onChange={e => {
+              handleFormChange(e);
+            }}
+            ref={containerRef}
+            value={form.content_text}
+            allowSpaceInQuery
+            placeholder={`${t('circleDetail.textAreaPlaceholder')}`}
+            style={{ outline: 'none' }}
+            className="w-[100%] focus:outline-black lg:md:min-h-[60px] md:min-h-[70px] sm:min-h-[80px] min-h-[90px] MentionInputTextArea bg-transparent font-poppins placeholder:font-poppins text-base placeholder:text-neutral-soft placeholder:text-base"
+            a11ySuggestionsListLabel={'Suggested mentions'}
+          >
+            <Mention
+              trigger={'@'}
+              data={[]}
+              markup="@[__display__](__id__)"
+              style={{ color: '#4FE6AF' }}
+            />
+            <Mention
+              trigger={'$'}
+              data={[]}
+              markup="$[__display__](__id__)"
+              style={{ color: '#4FE6AF' }}
+            />
+            <Mention
+              trigger={'#'}
+              data={[]}
+              markup="#[__display__]()"
+              style={{ color: '#4FE6AF' }}
+            />
+          </MentionsInput>
+        </>
+      );
+    }
+  };
+
+  const handlePages = (): any => {
+    if (pages === 'gif') {
       return (
         <Gif_Post
           setPages={setPages}
@@ -1385,6 +1426,7 @@ const ModalMention: React.FC<props> = ({
     } else if (pages === 'talk') {
       return (
         <VoiceRecorder
+          setPages={setPages}
           setAudio={setAudio}
           setLoading={setIsLoading}
           audio={audio}
@@ -1433,6 +1475,7 @@ const ModalMention: React.FC<props> = ({
         <Dialog
           open={open}
           handler={() => {
+            setPages('text');
             handleOpen();
             setForm({
               content_text: '',
@@ -1455,6 +1498,7 @@ const ModalMention: React.FC<props> = ({
             setHashtags([]);
             setSelectedAsset([]);
             setChartData(initialChartData);
+
             setOtherTagList({
               peopleList: [],
               circleList: [],
@@ -1475,7 +1519,7 @@ const ModalMention: React.FC<props> = ({
               changeForm={handleFormChange}
               form={form}
             />
-            <div className="flex flex-col px-14 pt-8">
+            <div className="flex flex-col px-8 pt-8">
               <Toast
                 message={errorMessage}
                 show={isError}
@@ -1541,21 +1585,18 @@ const ModalMention: React.FC<props> = ({
               )}
               {/* form text section */}
               <form onSubmit={handlePostCircle}>
-                {handlePages()}
-                <div className="flex justify-center pb-4 z-0">
+                {pages !== 'gif' && (
+                  <div className="mt-3"> {handleTextPages()}</div>
+                )}
+                <div className="flex justify-start pb-4 z-0">
                   {audio !== null && pages !== 'gif' && (
-                    <audio controls>
-                      <source
-                        src={URL?.createObjectURL(audio)}
-                        type="audio/wav"
-                        className="w-full"
-                      />
-                      Your browser does not support the audio element.
-                    </audio>
+                    <div>
+                      <ShowAudioPlayer audioFile={audio} />
+                    </div>
                   )}
                 </div>
-                <div className="flex flex-col max-h-[300px] overflow-auto pb-2">
-                  <div className="flex justify-center">
+                <div className="flex flex-col max-h-[500px] overflow-auto pb-2">
+                  <div className="flex justify-start ">
                     {document !== undefined &&
                       document !== null &&
                       pages !== 'gif' && <PDFViewer file={document} />}
@@ -1714,12 +1755,14 @@ const ModalMention: React.FC<props> = ({
                     <></>
                   )}
                   {form.pie_title !== '' ? (
-                    <PiePreviewPost
-                      form={form}
-                      userData={userInfo}
-                      chartData={chartData}
-                      data={selectedAsset}
-                    />
+                    <div className={`mt-4 ${gif}`}>
+                      <PiePreviewPost
+                        form={form}
+                        userData={userInfo}
+                        chartData={chartData}
+                        data={selectedAsset}
+                      />
+                    </div>
                   ) : null}
                 </div>
 
@@ -1728,6 +1771,7 @@ const ModalMention: React.FC<props> = ({
                     setIsError={setIsError}
                     setErrorMessage={setErrorMessage}
                     setPages={setPages}
+                    pageActive={pages}
                     setMedia={setMedia}
                     openPieModal={openPieModal}
                     setDocument={setDocument}
@@ -1736,11 +1780,13 @@ const ModalMention: React.FC<props> = ({
                     isTooMuch={isTooMuch}
                   />
                 )}
+                <div className="pb-12">{handlePages()}</div>
               </form>
             </div>
           </div>
         </Dialog>
       ) : (
+        // Mobile Version
         <>
           {open && (
             <div className="flex fixed top-0 left-0 z-[1000] flex-col bg-white h-screen w-screen">
@@ -1842,17 +1888,10 @@ const ModalMention: React.FC<props> = ({
                     )}
                     {/* form text section */}
                     <form onSubmit={handlePostCircle} className="h-full">
-                      {handlePages()}
-                      <div className="flex justify-center pb-4 z-0">
+                      {handleTextPages()}
+                      <div className="flex justify-start pb-4 z-0">
                         {audio !== null && pages !== 'gif' && (
-                          <audio controls>
-                            <source
-                              src={URL?.createObjectURL(audio)}
-                              type="audio/wav"
-                              className="w-full"
-                            />
-                            Your browser does not support the audio element.
-                          </audio>
+                          <ShowAudioPlayer audioFile={audio} />
                         )}
                       </div>
                       <div className="flex flex-col max-h-[300px] overflow-auto pb-2">
@@ -2027,7 +2066,9 @@ const ModalMention: React.FC<props> = ({
                       </div>
 
                       {pages !== 'gif' && (
-                        <div className={`flex flex-col absolute bottom-14`}>
+                        <div
+                          className={`flex flex-col sticky bottom-14 w-full`}
+                        >
                           <div className="sm:hidden flex-col justify-center pl-3 flex">
                             {drop && (
                               <div className="bg-white mb-[40vh] absolute z-[10] rounded-2xl border border-neutral-soft w-[300px] flex flex-col justify-center items-center transition">
@@ -2113,17 +2154,22 @@ const ModalMention: React.FC<props> = ({
                               </div>
                             </button>
                           </div>
-                          <UniqueInputButton
-                            setIsError={setIsError}
-                            setErrorMessage={setErrorMessage}
-                            setPages={setPages}
-                            setMedia={setMedia}
-                            openPieModal={openPieModal}
-                            setDocument={setDocument}
-                            isEmpty={isDisable}
-                            isError={isEmpty}
-                            isTooMuch={isTooMuch}
-                          />
+                          <div className="w-full ">
+                            {' '}
+                            <UniqueInputButton
+                              setIsError={setIsError}
+                              setErrorMessage={setErrorMessage}
+                              setPages={setPages}
+                              setMedia={setMedia}
+                              openPieModal={openPieModal}
+                              setDocument={setDocument}
+                              isEmpty={isDisable}
+                              isError={isEmpty}
+                              isTooMuch={isTooMuch}
+                              pageActive={pages}
+                            />
+                            {handlePages()}
+                          </div>
                         </div>
                       )}
                     </form>

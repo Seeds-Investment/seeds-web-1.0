@@ -17,7 +17,7 @@ const PDFViewer: React.FC<props> = ({ file }) => {
   }
 
   return (
-    <div className="flex">
+    <div className="flex bg-red w-full">
       <div className="w-fit h-fit bg-black px-2">
         <div className="bg-black max-w-full px-2 py-2">
           <h1 className="text-white font-poppins text-xs">

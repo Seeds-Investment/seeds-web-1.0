@@ -3,6 +3,7 @@ import more_vertical from '@/assets/more-option/more_vertical.svg';
 import SeedyQuestion from '@/assets/social/seedy-question.png';
 import MoreOption from '@/components/MoreOption';
 import ModalShareBattle from '@/components/popup/ModalShareBattle';
+import ShowAudioPlayer from '@/components/ui/outputs/AudioPlayerViewer';
 import {
   Bookmark,
   ChatBubble,
@@ -956,16 +957,7 @@ const PostSection: React.FC<props> = ({
                     </div>
                   )}
                   {categorizeURL(dataPost.media_urls)}
-                  {voice.length > 0 && (
-                    <audio controls>
-                      <source
-                        src={voice[0]}
-                        type="audio/wav"
-                        className="w-full mb-4"
-                      />
-                      Your browser does not support the audio element.
-                    </audio>
-                  )}
+                  {voice.length > 0 && <ShowAudioPlayer src={voice[0]} />}
                   {document.length > 0 && <PDFViewer file={document[0]} />}
                   {media.length > 0 && <ImageCarousel images={media} />}
                   {dataPost.pollings?.length > 0 && (
@@ -975,7 +967,6 @@ const PostSection: React.FC<props> = ({
                       pollingDate={dataPost.polling_date}
                     />
                   )}
-
                   {dataPost?.pie?.length > 0 ? (
                     <PieCirclePost data={dataPost} chartData={chartData} />
                   ) : null}
@@ -991,16 +982,7 @@ const PostSection: React.FC<props> = ({
                     </div>
                   )}
                   {categorizeURL(dataPost.media_urls)}
-                  {voice.length > 0 && (
-                    <audio controls>
-                      <source
-                        src={voice[0]}
-                        type="audio/wav"
-                        className="w-full mb-4"
-                      />
-                      Your browser does not support the audio element.
-                    </audio>
-                  )}
+                  {voice.length > 0 && <ShowAudioPlayer src={voice[0]} />}
                   {document.length > 0 && <PDFViewer file={document[0]} />}
                   {media.length > 0 && <ImageCarousel images={media} />}
                   {dataPost.pollings?.length > 0 && (

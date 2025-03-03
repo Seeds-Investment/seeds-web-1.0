@@ -1,4 +1,5 @@
 import Connect from '@/assets/event/connect.svg';
+import CreatorSpaceIcon from '@/assets/event/creator-game-icon.svg';
 import Event from '@/assets/event/event.svg';
 import MyEarningWallet from '@/assets/event/myearningwalletbg.svg';
 import OpenTrading from '@/assets/event/openTradingAccount.svg';
@@ -10,6 +11,11 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 const features = [
+  {
+    images: CreatorSpaceIcon,
+    title: 'Creator Space',
+    event: '/play/create-space'
+  },
   {
     images: Event,
     title: 'Events',

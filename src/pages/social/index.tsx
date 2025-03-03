@@ -622,7 +622,6 @@ const Social: React.FC = () => {
       )}
       {activeTab === 'circle' && (
         <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none pb-10">
-          <h1>sad</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {dataPost?.map((item, i) => {
               return (

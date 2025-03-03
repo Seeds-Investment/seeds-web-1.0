@@ -59,12 +59,13 @@ const ProfilePost: React.FC<props> = ({
         className="h-[48px] w-[48px] rounded-full object-cover"
       />
       <div className="flex flex-col">
-        <div className="flex">
-          <h1 className="text-[#262626] font-semibold font-poppins text-base">
+        <div className="flex sm:flex-row flex-col">
+          <h1 className="text-[#262626] font-semibold font-poppins text-base max-w-[90%]">
             {userInfo?.name}
           </h1>
           <div className="hidden flex-col justify-center pl-3 sm:flex">
-            <button className="font-poppins text-xs" onClick={handleDropDown}>
+            <button className="font-poppins text-xs" 
+              onClick={handleDropDown}>
               <div className="flex w-fit px-2 rounded-full bg-neutral-ultrasoft gap-1">
                 <div className="flex items-center">
                   <Image

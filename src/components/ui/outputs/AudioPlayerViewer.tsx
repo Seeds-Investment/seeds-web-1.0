@@ -9,12 +9,14 @@ interface AudioWithFile {
   audioFile: File;
   src?: never; // src tidak boleh ada jika audioFile ada
   className?: string;
+  showDuration?: boolean;
 }
 
 interface AudioWithSrc {
   src: string;
   audioFile?: never; // audioFile tidak boleh ada jika src ada
   className?: string;
+  showDuration?: boolean;
 }
 
 type AudioPlayerProps = AudioWithFile | AudioWithSrc;
@@ -22,7 +24,8 @@ type AudioPlayerProps = AudioWithFile | AudioWithSrc;
 const ShowAudioPlayer = ({
   audioFile,
   src,
-  className
+  className,
+  showDuration = false
 }: AudioPlayerProps): JSX.Element => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -195,11 +198,13 @@ const ShowAudioPlayer = ({
           />
         )}
       </div>
-
       {/* Duration */}
-      <span className="text-gray-600 text-sm">
-        {formatTime(currentTime)} / {formatTime(duration)}
-      </span>
+      {showDuration && (
+        <span className="text-gray-600 text-sm">
+          {formatTime(currentTime)} / {formatTime(duration)}
+        </span>
+      )}
+
       {/* Audio Element (Hidden) */}
       <audio
         src={audioSrc}

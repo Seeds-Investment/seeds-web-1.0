@@ -1,12 +1,13 @@
-import back_nav from '@/assets/circle-page/back_nav.svg';
 import {
   getGifFromGhipy,
   searchGifFromGhipy
 } from '@/repository/circleDetail.repository';
 import { type GiphyI } from '@/utils/interfaces/chat.interface';
+import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { Search } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
+import { IoMdArrowRoundBack } from 'react-icons/io';
 interface form {
   content_text: string;
   privacy?: string;
@@ -99,12 +100,19 @@ const GifPost: React.FC<props> = ({
 
   return (
     <div className="bg-white w-full">
-      <div className="relative -left-2 -top-8 flex flex-col justify-center ">
-        <button type="button" onClick={cancelHandler}>
-          <Image alt="Back" src={back_nav} className="h-6 w-6 object-cover" />
+      <div className="sm:flex hidden justify-start items-center w-full ">
+        <button
+          onClick={() => {
+            setPages('text');
+          }}
+          className="mr-4"
+        >
+          <IoMdArrowRoundBack />
         </button>
+        <Typography className="">Gift</Typography>
       </div>
-      <div className="relative flex justify-start ">
+
+      <div className="relative flex justify-start mt-4">
         {/* Search Icon */}
         <div className="absolute inset-y-0 left-3 flex items-center z-10">
           <Image alt="Search" src={Search} className="h-5 w-5 object-cover" />

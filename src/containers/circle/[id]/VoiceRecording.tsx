@@ -2,6 +2,7 @@ import talk from '@/assets/circle-page/talk.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { IoMdArrowRoundBack } from 'react-icons/io';
 
 interface Props {
   setPages: (page: string) => void;
@@ -21,7 +22,6 @@ export const VoiceRecorder: React.FC<Props> = ({
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const audioChunks = useRef<Blob[]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const [tempAudio, setTempAudio] = useState<any>(null);
 
   useEffect(() => {
     if (recording) {
@@ -69,8 +69,6 @@ export const VoiceRecorder: React.FC<Props> = ({
         });
 
         setAudio(audioFile);
-        console.log('audio', audioChunks.current);
-        setTempAudio(audioFile);
         audioChunks.current = [];
       };
     } catch (error) {
@@ -83,13 +81,24 @@ export const VoiceRecorder: React.FC<Props> = ({
     if (mediaRecorder.current != null) {
       mediaRecorder.current.stop();
       setRecording(false);
-
       setPages('text');
     }
   };
 
   return (
     <div className="flex items-center flex-col">
+      <div className="sm:flex hidden justify-start items-center w-full ">
+        <button
+          onClick={() => {
+            setPages('text');
+          }}
+          className="mr-4"
+        >
+          <IoMdArrowRoundBack />
+        </button>
+        <Typography className="">Voice Message</Typography>
+      </div>
+
       {/* Tombol Rekam */}
       <div className="relative">
         <button

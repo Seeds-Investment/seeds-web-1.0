@@ -4,9 +4,22 @@ import SeedsIcon from '@/assets/homepage/subcription-buttons/icon-subcriptions-1
 import SilverMemberIcon from '@/assets/homepage/subcription-buttons/silver-icon.png';
 import { getSubscriptionStatus } from '@/repository/subscription.repository';
 import { type StatusSubscription } from '@/utils/interfaces/subscription.interface';
+import { type StaticImageData } from 'next/image';
 import { useEffect, useState } from 'react';
 
-const subscriptionPlans = [
+
+interface SubscriptionPlan {
+  tagText?: string;
+  description: string;
+  title: string;
+  href: string;
+  icon: StaticImageData; // Menggunakan tipe IconType dari react-icons
+  type: string;
+  classNameText?: string;
+}
+
+
+const subscriptionPlans: SubscriptionPlan[] = [
   {
     tagText: 'Subscribe Now',
     description: 'Get exclusive perks & premium benefits!',
@@ -72,13 +85,18 @@ const UseGetStatusSubcriptionPlan = () => {
   );
 
   // Menentukan paket yang akan ditampilkan
-  const selectedPlan =
+  let selectedPlan =
     dataSubscription == null
-      ? subscriptionPlans[0] // Jika tidak ada data, akan tertampil paket subcription
+      ? subscriptionPlans[0] // Jika tidak ada data, tampilkan paket default
       : activeIndex === subscriptionPlans.length - 1 ||
         dataSubscription?.incoming_subscription !== null
-      ? subscriptionPlans[activeIndex] // Jika paket terakhir atau ada incoming_subscription,tidak menampilkan apapun
-      : subscriptionPlans[activeIndex + 1]; // Tampilkan paket selanjutnya
+      ? subscriptionPlans[activeIndex] // Jika paket terakhir atau ada incoming_subscription, tidak menampilkan apapun
+      : subscriptionPlans[activeIndex]; // Tampilkan paket
+
+
+  if (dataSubscription !== null ) {
+    selectedPlan = { ...selectedPlan, tagText: null };
+  }
 
   return {
     dataSubscription,

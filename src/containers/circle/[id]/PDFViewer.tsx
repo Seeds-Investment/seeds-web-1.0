@@ -91,7 +91,7 @@ const PDFViewer: React.FC<Props> = ({ file, handleRemove }) => {
                 />
               </svg>
             </button>
-            {/* <div className="flex gap-2">
+            <div className=" gap-2 hidden">
               <button
                 className="z-50 px-2 py-1  text-white rounded-md"
                 onClick={() => {
@@ -110,7 +110,7 @@ const PDFViewer: React.FC<Props> = ({ file, handleRemove }) => {
               >
                 ▶
               </button>
-            </div> */}
+            </div>
           </div>
         </div>
 

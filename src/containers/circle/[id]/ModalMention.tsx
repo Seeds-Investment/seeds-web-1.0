@@ -72,41 +72,6 @@ interface typeOfSelection {
   type: string;
 }
 
-interface UserData {
-  id: string;
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  preferredLanguage: string;
-  phone: string;
-  _pin: string;
-}
-
-interface Polling {
-  content_text: string;
-  media_url: string;
-}
-
-interface form {
-  content_text: string;
-  privacy: string;
-  media_urls: string[];
-  polling: {
-    options: Polling[];
-    isMultiVote: boolean;
-    canAddNewOption: boolean;
-    endDate: string;
-  };
-  pie_title: string;
-  pie_amount: any;
-  pie: [];
-  premium_fee: any;
-}
-
 interface AssetInterface {
   id: string;
   quote: string;

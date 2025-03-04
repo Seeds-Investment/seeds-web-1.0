@@ -1272,7 +1272,7 @@ const BuyPage: React.FC = () => {
                       }
                     }}
                   >
-                    {t('button.label.confirm')}afd
+                    {t('button.label.confirm')}
                   </Button>
                 </DialogFooter>
               </form>

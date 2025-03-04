@@ -45,7 +45,7 @@ const CardQuizGame: React.FC<CardQuizGameProps> = ({
             <Typography className="text-xs text-white font-extralight">
               Created By
             </Typography>
-            <Typography className="text-sm text-white font-semibold underline">
+            <Typography className="text-xs text-white font-semibold underline">
               {data.creator.name}
             </Typography>
           </div>

@@ -1,5 +1,6 @@
 import CardIcon from '@/assets/play/game-decentralize/quiz/card-icon-quiz.svg';
 import DummyPeople from '@/assets/play/game-decentralize/quiz/dummy-people.png';
+import CCard from '@/components/CCard';
 import CardQuizGame from '@/components/play/game-decentralize/CardQuizGame';
 import { type QuizGameI } from '@/utils/interfaces/games/quiz-game.interface';
 
@@ -78,13 +79,13 @@ const quizGames: QuizGameI[] = [
 
 const QuizSpacePage = (): React.ReactElement => {
   return (
-    <div>
+    <CCard className="bg-white px-6">
       <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 md:px-0 px-4 py-4">
         {quizGames.map((quiz, index) => {
           return <CardQuizGame key={index} data={quiz} icon={CardIcon} />;
         })}
       </div>
-    </div>
+    </CCard>
   );
 };
 

@@ -1,12 +1,13 @@
-import back_nav from '@/assets/circle-page/back_nav.svg';
 import {
   getGifFromGhipy,
   searchGifFromGhipy
 } from '@/repository/circleDetail.repository';
 import { type GiphyI } from '@/utils/interfaces/chat.interface';
+import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { Search } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
+import { IoMdArrowRoundBack } from 'react-icons/io';
 interface form {
   content_text: string;
   privacy?: string;
@@ -98,35 +99,41 @@ const GifPost: React.FC<props> = ({
   };
 
   return (
-    <div className="block bg-white pl-[5vh] w-full">
-      <div className="flex h-14 w-[375px]">
-        <div className="flex flex-col justify-center">
-          <button type="button" onClick={cancelHandler}>
-            <Image alt="Back" src={back_nav} className="h-6 w-6 object-cover" />
-          </button>
-        </div>
-        <div className="flex justify-center items-center w-full">
-          <h1 className="font-poppins font-semibold text-lg">Choose GIF</h1>
-        </div>
+    <div className="bg-white w-full">
+      <div className="sm:flex hidden justify-start items-center w-full ">
+        <button
+          onClick={() => {
+            setPages('text');
+          }}
+          className="mr-4"
+        >
+          <IoMdArrowRoundBack />
+        </button>
+        <Typography className="">Gift</Typography>
       </div>
-      <div className="flex justify-end mt-8">
-        <div className="flex justify-center flex-col relative left-10">
-          <Image alt="Search" src={Search} className="h-6 w-6 object-cover" />
+
+      <div className="relative flex justify-start mt-4">
+        {/* Search Icon */}
+        <div className="absolute inset-y-0 left-3 flex items-center z-10">
+          <Image alt="Search" src={Search} className="h-5 w-5 object-cover" />
         </div>
-        <form>
+
+        {/* Search Input */}
+        <form className="w-full relative">
           <input
             type="text"
             name="searchGif"
             value={search.searchGif}
             onChange={handleFormChange}
-            className="h-10 pl-12 focus:outline-none placeholder:text-neutral-soft rounded-xl w-[350px] border border-neutral-ultrasoft"
-            placeholder="Memes Stock"
             onKeyDown={handleKeyDown}
+            placeholder="Memes Stock"
+            className="h-10 pl-10 focus:outline-none placeholder:text-neutral-soft rounded-xl w-full border border-neutral-ultrasoft"
           />
         </form>
       </div>
+
       {isLoading ? (
-        renderLoading()
+        <div className="mt-[2rem]">{renderLoading()}</div>
       ) : (
         <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-8">
           {dataGif?.map((el: any, i: number) => {

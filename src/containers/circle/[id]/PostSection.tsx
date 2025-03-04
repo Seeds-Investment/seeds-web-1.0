@@ -3,6 +3,7 @@ import more_vertical from '@/assets/more-option/more_vertical.svg';
 import SeedyQuestion from '@/assets/social/seedy-question.png';
 import MoreOption from '@/components/MoreOption';
 import ModalShareBattle from '@/components/popup/ModalShareBattle';
+import ShowAudioPlayer from '@/components/ui/outputs/AudioPlayerViewer';
 import {
   Bookmark,
   ChatBubble,
@@ -831,7 +832,7 @@ const PostSection: React.FC<props> = ({
         key={`${dataPost.id as string}${Math.floor(Math.random() * 100000000)}`}
       >
         <div className="flex gap-4 md:gap-8">
-          <div className="hidden md:flex">
+          {/* <div className="hidden md:flex">
             <div className="shrink-0">
               <img
                 src={
@@ -850,11 +851,11 @@ const PostSection: React.FC<props> = ({
                 }}
               />
             </div>
-          </div>
+          </div> */}
           <div className="w-full">
             <div className="mb-4">
               <div className="flex gap-5 pb-4">
-                <div className="md:hidden flex">
+                <div className=" flex">
                   <div className="shrink-0">
                     <img
                       src={
@@ -878,30 +879,43 @@ const PostSection: React.FC<props> = ({
                 </div>
 
                 <div className="w-full">
-                  <div className="flex justify-between">
-                    <div className="flex items-center gap-2">
-                      <Typography
+                  <div className="flex justify-between h-full">
+                    <div className="flex items-center h-full  gap-2">
+                        <Typography
                         className="font-bold text-black md:text-lg cursor-pointer"
                         onClick={async () => {
                           isGuest()
-                            ? await router.push('/auth')
-                            : dataPost.user_id === userInfo.id
-                            ? await router.push('/my-profile')
-                            : await router.push(
-                                `/social/${dataPost.user_id as string}`
-                              );
+                          ? await router.push('/auth')
+                          : dataPost.user_id === userInfo.id
+                          ? await router.push('/my-profile')
+                          : await router.push(
+                            `/social/${dataPost.user_id as string}`
+                            );
                         }}
-                      >
-                        @
+                        >
                         {dataPost.owner !== undefined
                           ? dataPost.owner.seeds_tag !== undefined
-                            ? dataPost.owner.seeds_tag
-                            : dataPost.owner.username
+                          ? dataPost.owner.seeds_tag.length > 15
+                            ? `${String(dataPost.owner.seeds_tag).substring(0, 15)}...`
+                            : String(dataPost.owner.seeds_tag)
+                          : String(dataPost.owner.username).length > 15
+                          ? `${String(dataPost.owner.username).substring(0, 15)}...`
+                          : String(dataPost.owner.username)
                           : null}
-                      </Typography>
+                        </Typography>
+                      <Image src={Dot.src} alt={Dot.alt} width={5} height={5} />
+                      <div className="flex gap-1 items-center text-gray-500">
+                        <Typography className="text-xs md:text-sm">
+                          {formatDate(dataPost.created_at)}
+                        </Typography>
+
+                        {/* <Typography className="text-xs md:text-sm">
+                          {formatTime(dataPost.created_at)}
+                        </Typography> */}
+                      </div>
                       {/* {dataPost.owner.verified === true && (
                       <CheckCircleIcon width={20} height={20} color="#5E44FF" />
-                    )} */}
+                      )} */}
 
                       {dataPost.owner !== undefined
                         ? dataPost.owner.verified === true && (
@@ -934,15 +948,6 @@ const PostSection: React.FC<props> = ({
                       />
                     )}
                   </div>
-                  <div className="flex gap-1 items-center text-gray-500">
-                    <Typography className="text-xs md:text-sm">
-                      {formatDate(dataPost.created_at)}
-                    </Typography>
-                    <Image src={Dot.src} alt={Dot.alt} width={5} height={5} />
-                    <Typography className="text-xs md:text-sm">
-                      {formatTime(dataPost.created_at)}
-                    </Typography>
-                  </div>
                 </div>
               </div>
               {isGuest() ? (
@@ -956,16 +961,7 @@ const PostSection: React.FC<props> = ({
                     </div>
                   )}
                   {categorizeURL(dataPost.media_urls)}
-                  {voice.length > 0 && (
-                    <audio controls>
-                      <source
-                        src={voice[0]}
-                        type="audio/wav"
-                        className="w-full mb-4"
-                      />
-                      Your browser does not support the audio element.
-                    </audio>
-                  )}
+                  {voice.length > 0 && <ShowAudioPlayer src={voice[0]} />}
                   {document.length > 0 && <PDFViewer file={document[0]} />}
                   {media.length > 0 && <ImageCarousel images={media} />}
                   {dataPost.pollings?.length > 0 && (
@@ -975,7 +971,6 @@ const PostSection: React.FC<props> = ({
                       pollingDate={dataPost.polling_date}
                     />
                   )}
-
                   {dataPost?.pie?.length > 0 ? (
                     <PieCirclePost data={dataPost} chartData={chartData} />
                   ) : null}
@@ -991,16 +986,7 @@ const PostSection: React.FC<props> = ({
                     </div>
                   )}
                   {categorizeURL(dataPost.media_urls)}
-                  {voice.length > 0 && (
-                    <audio controls>
-                      <source
-                        src={voice[0]}
-                        type="audio/wav"
-                        className="w-full mb-4"
-                      />
-                      Your browser does not support the audio element.
-                    </audio>
-                  )}
+                  {voice.length > 0 && <ShowAudioPlayer src={voice[0]} />}
                   {document.length > 0 && <PDFViewer file={document[0]} />}
                   {media.length > 0 && <ImageCarousel images={media} />}
                   {dataPost.pollings?.length > 0 && (

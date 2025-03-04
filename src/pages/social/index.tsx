@@ -2,13 +2,13 @@ import CCard from '@/components/CCard';
 import Loading from '@/components/popup/Loading';
 import DailyQuestion from '@/components/social/DailyQuestion';
 import ModalAddPost from '@/components/social/ModalAddPost';
+import RenderLoading from '@/components/ui/loading/RenderLoading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import ModalMention from '@/containers/circle/[id]/ModalMention';
 import PostSection from '@/containers/circle/[id]/PostSection';
 import Card1 from '@/containers/social/main/Card1';
 import Card2 from '@/containers/social/main/Card2';
 import { isGuest } from '@/helpers/guest';
-import withAuth from '@/helpers/withAuth';
 import { getCircle, likeCircle } from '@/repository/circle.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getDailyQuiz } from '@/repository/quiz.repository';
@@ -374,14 +374,6 @@ const Social: React.FC = () => {
     }
   }, []);
 
-  const renderLoading = (): JSX.Element => (
-    <div className="flex justify-center h-10 pt-4">
-      <div className="h-72 absolute">
-        <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
-      </div>
-    </div>
-  );
-
   const handleScroll = (): void => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
@@ -462,14 +454,12 @@ const Social: React.FC = () => {
           setIsOpenModalAdd(false);
         }}
       />
-
       <Card1
         activeTab={activeTab}
         setActiveTab={handleChangeTab}
         changeFilter={handleChangeFilter}
         filter={filter}
       />
-
       {!isGuest() && activeTab !== 'circle' && (
         <div className="fixed bottom-10 right-10 z-20">
           <div className="bg-[#3AC4A0] p-2 rounded-full cursor-pointer hover:scale-110 duration-300">
@@ -484,13 +474,11 @@ const Social: React.FC = () => {
           </div>
         </div>
       )}
-
       {isGuest() || activeTab === 'circle' ? (
         <></>
       ) : (
         <Card2 userData={userInfo} handleOpen={handleOpen} />
       )}
-
       {activeTab !== 'circle' && (
         <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none pb-10">
           <div className="flex justify-end">
@@ -620,6 +608,7 @@ const Social: React.FC = () => {
                       </button>
                     </div>
                   )}
+
                   <PostSection
                     dataPost={el}
                     setData={setDataPost}
@@ -628,7 +617,7 @@ const Social: React.FC = () => {
                 </div>
               );
             })}
-          {isLoadingPost && renderLoading()}
+          {isLoadingPost && <RenderLoading />}
         </CCard>
       )}
       {activeTab === 'circle' && (
@@ -729,4 +718,4 @@ const Social: React.FC = () => {
   );
 };
 
-export default withAuth(Social);
+export default Social;

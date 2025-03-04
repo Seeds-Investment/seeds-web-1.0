@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 'use-client';
+import CreatorQuizButton from '@/assets/play/game-decentralize/creator-quiz-icon.svg';
 import Circle from '@/assets/play/tournament/circleleaderboard.svg';
 import LeaderBoardIcon from '@/assets/play/tournament/leaderBoardIcon.svg';
 import IconNoData from '@/assets/play/tournament/noData.svg';
@@ -447,11 +448,11 @@ const Player = (): React.ReactElement => {
       </div>
 
       <div className="w-full h-auto cursor-default bg-white p-5 md:mt-4 rounded-2xl">
-        <div className="flex flex-col justify-center items-center rounded-xl">
+        <div className="flex flex-col justify-center items-start rounded-xl">
           <Typography className="text-center mb-5 text-xl font-semibold text-[#262626] font-poppins">
-            Seeds Play
+            Seeds Plays
           </Typography>
-          <div className="flex flex-row justify-between sm:gap-4 w-full sm:w-auto">
+          <div className="flex flex-row justify-start sm:gap-4 w-full ">
             <button
               onClick={() => {
                 void router.push('/play/quiz');
@@ -495,6 +496,21 @@ const Player = (): React.ReactElement => {
               />
               <Typography className="text-base sm:text-xl font-normal text-[#262626] font-poppins">
                 Team Battle
+              </Typography>
+            </button>
+            <button
+              onClick={() => {
+                void router.push('/play/creator-space');
+              }}
+              className="flex flex-col items-center text-center"
+            >
+              <Image
+                alt="creator-quiz"
+                src={CreatorQuizButton}
+                className="mb-2 w-28 h-28 sm:w-32 sm:h-32 object-contain"
+              />
+              <Typography className="text-base sm:text-xl font-normal text-[#262626] font-poppins">
+                Creator Quiz
               </Typography>
             </button>
           </div>

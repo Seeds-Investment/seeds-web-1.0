@@ -7,12 +7,12 @@ import { type GameSpaceI } from '@/components/play/CardGameSpace';
 const listGame: GameSpaceI[] = [
   {
     image: SeedsGame,
-    link: '/play/create-space/quiz',
+    link: '/play/creator-space/quiz',
     name: 'Seeds Game'
   },
   {
     image: PlayArena,
-    link: '/play/create-space/play-arena',
+    link: '/play/creator-space/play-arena',
     name: 'Play Game'
   }
 ];

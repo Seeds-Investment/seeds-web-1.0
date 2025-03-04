@@ -14,7 +14,7 @@ const features = [
   {
     images: CreatorSpaceIcon,
     title: 'Creator Space',
-    event: '/play/create-space'
+    event: '/play/creator-space'
   },
   {
     images: Event,

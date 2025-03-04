@@ -84,7 +84,8 @@ module.exports = withMT({
         'bounce-horizontal': 'bounce-horizontal 2000ms infinite',
         'bounce-reverse': 'bounce-reverse 2000ms infinite',
         'shadow-move': 'shadow-move 3s infinite',
-        'shadow-voicenotes': 'shadow-voicenotes 1s infinite'
+        'shadow-voicenotes': 'shadow-voicenotes 1s infinite',
+        shimmer: 'shimmer 1.5s infinite linear'
       },
       keyframes: {
         'slide-down': {
@@ -178,6 +179,10 @@ module.exports = withMT({
         'shadow-voicenotes': {
           '0%, 100%': { boxShadow: '0 0 8px 1px rgba(255, 255, 255, 1)' },
           '50%': { boxShadow: '0 0 15px 5px rgba(220, 252, 228, 1)' }
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' }
         }
       }
     }

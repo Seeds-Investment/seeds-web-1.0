@@ -40,7 +40,8 @@ const pathsWithoutHeader = [
   'auth',
   'story-boarding',
   'term-condition',
-  'social'
+  'social',
+  'ads'
 ];
 
 function App({

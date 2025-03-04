@@ -79,15 +79,9 @@ const quizGames: QuizGameI[] = [
 const QuizSpacePage = (): React.ReactElement => {
   return (
     <div>
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
+      <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 md:px-0 px-4 py-4">
         {quizGames.map((quiz, index) => {
-          return (
-            <CardQuizGame
-              key={index}
-              data={quiz}
-              icon={CardIcon}
-            ></CardQuizGame>
-          );
+          return <CardQuizGame key={index} data={quiz} icon={CardIcon} />;
         })}
       </div>
     </div>

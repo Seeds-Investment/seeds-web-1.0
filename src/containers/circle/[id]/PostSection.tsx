@@ -584,21 +584,6 @@ const PostSection: React.FC<props> = ({
     }
   }, []);
 
-  function formatTime(inputDateString: any): string {
-    const date = new Date(inputDateString);
-    date.setUTCHours(date.getUTCHours() + 7);
-    let hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-
-    let ampm = 'AM';
-    if (hours >= 12) {
-      ampm = 'PM';
-      if (hours > 12) hours -= 12;
-    }
-    if (hours === 0) hours = 12;
-    return `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
-  }
-
   const media: string[] = [];
   const document: string[] = [];
   const voice: string[] = [];

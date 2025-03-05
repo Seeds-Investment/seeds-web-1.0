@@ -1,14 +1,8 @@
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import twitter from 'public/assets/circle/share/twitter.svg';
-import whatsapp from 'public/assets/circle/share/whatsapp.svg';
-import facebook from 'public/assets/images/facebook.svg';
-import linkedin from 'public/assets/images/linkedin.png';
-import metaschoolBarcode from 'public/assets/metaschool/metaschool-barcode.png';
 import metaschoolFlayer from 'public/assets/metaschool/metaschool-flyer.png';
-import metaschoolSquare from 'public/assets/metaschool/metaschool-square.png';
-import metaschool from 'public/assets/metaschool/metaschool.png';
+import shock from 'public/assets/metaschool/shock.jpg';
 import React, { useEffect, useState } from 'react';
 
 const follow = [
@@ -159,17 +153,7 @@ const Ads = (): React.ReactElement => {
           <p className="text-center text-lg sm:text-2xl md:text-4xl text-[#333333] font-bold">
             💻 INGIN RAUP GAJI HINGGA $13.000/BULAN SEBAGAI WEB3 DEVELOPER? 👨‍💻
           </p>
-          <Image src={metaschool} alt="metaschool" className="rounded-lg" />
-          <Link
-            href="https://api.whatsapp.com/send/?phone=628118883519"
-            target="_blank"
-            className="w-full"
-          >
-            <Button className="font-poppins bg-seeds-button-green w-full">
-              BOOK NOW!
-            </Button>
-          </Link>
-
+          <Image src={shock} alt="shock" className="rounded-lg w-full" />
           <div className="flex flex-col gap-2">
             <div className="bg-[#f4f4f4] text-[#333333] rounded p-2.5 text-xs sm:text-sm md:text-base">
               ❌ Fenomena Layoff di Industri Teknologi Makin Luas. Banyak
@@ -264,11 +248,6 @@ const Ads = (): React.ReactElement => {
           <p className="text-lg sm:text-2xl md:text-4xl text-[#6a11cb] font-semibold">
             🌟 Kenapa Harus Seeds Academy x Metaschool?
           </p>
-          <Image
-            src={metaschoolSquare}
-            alt="metaschoolSquare"
-            className="rounded-lg w-3/4 self-center"
-          />
           <div className="flex flex-col gap-2">
             {whyseeds.map((val, i) => (
               <div
@@ -311,11 +290,6 @@ const Ads = (): React.ReactElement => {
           <p className="text-lg sm:text-2xl md:text-4xl text-[#6a11cb] font-semibold">
             🎯 Daftar Sekarang & Kunci Masa Depan Kariermu!
           </p>
-          <Image
-            src={metaschoolBarcode}
-            alt="metaschoolBarcode"
-            className="rounded-lg"
-          />
           <p className="text-base sm:text-xl md:text-2xl text-[#6a11cb] font-semibold">
             Cara Daftarnya Gampang Banget! 📝
           </p>
@@ -333,6 +307,35 @@ const Ads = (): React.ReactElement => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+      <section className="flex sm:justify-center items-center">
+        <div className="sm:w-3/4 flex flex-col gap-2 sm:gap-5">
+          <p className="text-lg sm:text-2xl md:text-4xl text-[#6a11cb] font-semibold">
+            📢 Bagikan & Raih Manfaat Lebih Banyak!
+          </p>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1 bg-[#f4f4f4] text-[#333333] rounded p-2.5 text-xs sm:text-sm md:text-base">
+              <p>
+                💬 <span className="font-bold">Testimoni Alumni:</span> “Belajar
+                Web3 di Seeds Academy benar-benar membuka peluang baru.
+                Sertifikat dari Metaschool menambah nilai plus di CV saya!” —
+                Andi, Front-End Developer
+              </p>
+              <div>
+                <p className="font-bold">👥 Ajak Teman & Komunitas!</p>
+                <p>
+                  Bagikan info ini ke rekan-rekan developer lain yang ingin
+                  upgrade skill buat menghindari PHK masal dan siap jadi
+                  developer masa depan!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="flex sm:justify-center items-center">
+        <div className="sm:w-3/4 flex flex-col gap-2 sm:gap-5">
           <p className="text-base sm:text-xl md:text-2xl text-[#6a11cb] font-semibold">
             📢 Jangan Tunda Lagi!
           </p>
@@ -343,8 +346,7 @@ const Ads = (): React.ReactElement => {
             </p>
             <div className="flex flex-col gap-2 sm:gap-5">
               <Link
-                href="https://api.whatsapp.com/send/?phone=628118883519"
-                target="_blank"
+                href="https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=qontak&msg=ID+%5B_gid_%5D%25break%25Hai+Min+Seeds%2C%25break%25Saya+Mau+Daftar+Event+Web3%25break%25Apakah+Promonya+masih+ada%3F"
                 className="w-full"
               >
                 <p className="font-bold text-base sm:text-xl md:text-2xl text-[#6a11cb]">
@@ -374,35 +376,22 @@ const Ads = (): React.ReactElement => {
           </div>
         </div>
       </section>
-      <section className="flex sm:justify-center items-center">
-        <div className="sm:w-3/4 flex flex-col gap-2 sm:gap-5"></div>
-      </section>
-      <section className="flex sm:justify-center items-center">
-        <div className="sm:w-3/4 flex flex-col gap-2 sm:gap-5">
-          <p className="text-lg sm:text-2xl md:text-4xl text-[#6a11cb] font-semibold">
-            📢 Bagikan & Raih Manfaat Lebih Banyak!
+      <section className="flex justify-center items-center">
+        <div className="sm:w-3/4 flex flex-col gap-2 sm:gap-5 items-center justify-center">
+          <p className="font-bold text-base text-center sm:text-xl md:text-2xl text-[#6a11cb]">
+            🌟 Mulailah langkah besarmu sekarang juga!
           </p>
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-col gap-1 bg-[#f4f4f4] text-[#333333] rounded p-2.5 text-xs sm:text-sm md:text-base">
-              <p>
-                💬 <span className="font-bold">Testimoni Alumni:</span> “Belajar
-                Web3 di Seeds Academy benar-benar membuka peluang baru.
-                Sertifikat dari Metaschool menambah nilai plus di CV saya!” —
-                Andi, Front-End Developer
-              </p>
-              <div>
-                <p className="font-bold">👥 Ajak Teman & Komunitas!</p>
-                <p>
-                  Bagikan info ini ke rekan-rekan developer lain yang ingin
-                  upgrade skill buat menghindari PHK masal dan siap jadi
-                  developer masa depan!
-                </p>
-              </div>
-            </div>
-          </div>
+          <Link
+            href="https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=qontak&msg=ID+%5B_gid_%5D%25break%25Hai+Min+Seeds%2C%25break%25Saya+Mau+Daftar+Event+Web3%25break%25Apakah+Promonya+masih+ada%3F"
+            className="w-full"
+          >
+            <Button className="font-poppins bg-seeds-button-green w-full">
+              BOOK NOW!
+            </Button>
+          </Link>
         </div>
       </section>
-      <section className="flex justify-center items-center">
+      {/* <section className="flex justify-center items-center">
         <div className="sm:w-3/4 flex flex-col gap-2 sm:gap-5 items-center justify-center">
           <p className="font-bold text-base sm:text-xl md:text-2xl text-[#6a11cb]">
             Pantau terus update di sosial media kami!
@@ -450,23 +439,7 @@ const Ads = (): React.ReactElement => {
             </Link>
           </div>
         </div>
-      </section>
-      <section className="flex justify-center items-center">
-        <div className="sm:w-3/4 flex flex-col gap-2 sm:gap-5 items-center justify-center">
-          <p className="font-bold text-base text-center sm:text-xl md:text-2xl text-[#6a11cb]">
-            🌟 Mulailah langkah besarmu sekarang juga!
-          </p>
-          <Link
-            href="https://api.whatsapp.com/send/?phone=628118883519"
-            target="_blank"
-            className="w-full"
-          >
-            <Button className="font-poppins bg-seeds-button-green w-full">
-              BOOK NOW!
-            </Button>
-          </Link>
-        </div>
-      </section>
+      </section> */}
     </div>
   );
 };

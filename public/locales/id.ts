@@ -2624,6 +2624,12 @@ export default {
     muteNotificationTitle: 'Yakin mau membisukan notifikasi ini?',
     muteNotificationSubtitle:
       'Peserta lain tidak akan tau jika kamu membisukan chat ini',
+    muted: {
+      text1: 'Notifikasi dibisukan selama 8 jam',
+      text2: 'Notifikasi dibisukan selama satu minggu',
+      text3: 'Notifikasi dibisukan',
+      text4: 'Ups! Terjadi kesalahan. Mohon coba lagi!'
+    },
     setPhoto: 'Atur Gambar',
     btnCreateGroup: 'Buat Obrolan Grup',
     btnYes: 'Ya',

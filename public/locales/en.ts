@@ -2695,6 +2695,12 @@ export default {
     muteNotificationTitle: 'Are you sure to mute notifications?',
     muteNotificationSubtitle:
       'Other participants will not see that you muted this chat',
+    muted: {
+      text1: 'Notifications Muted for 8 hours',
+      text2: 'Notifications Muted for one week',
+      text3: 'Notifications Muted',
+      text4: 'Oops! Error when try to mute chat'
+    },
     setPhoto: 'Set Photo',
     btnCreateGroup: 'Create Group Chat',
     btnYes: 'Yes',

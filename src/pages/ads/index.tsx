@@ -165,7 +165,9 @@ const Ads = (): React.ReactElement => {
             target="_blank"
             className="w-full"
           >
-            <Button className="bg-seeds-button-green w-full">BOOK NOW!</Button>
+            <Button className="font-poppins bg-seeds-button-green w-full">
+              BOOK NOW!
+            </Button>
           </Link>
 
           <div className="flex flex-col gap-2">
@@ -340,9 +342,16 @@ const Ads = (): React.ReactElement => {
               yang dicari perusahaan global, dan hindari risiko layoff!
             </p>
             <div className="flex flex-col gap-2 sm:gap-5">
-              <p className="font-bold text-base sm:text-xl md:text-2xl text-[#6a11cb]">
-                🔻 DAFTAR SEKARANG! 🔻
-              </p>
+              <Link
+                href="https://api.whatsapp.com/send/?phone=628118883519"
+                target="_blank"
+                className="w-full"
+              >
+                <p className="font-bold text-base sm:text-xl md:text-2xl text-[#6a11cb]">
+                  🔻 DAFTAR SEKARANG! 🔻
+                </p>
+              </Link>
+
               <div className="text-white font-bold text-xs sm:text-sm md:text-base flex justify-center items-center gap-2 sm:gap-5">
                 <div className="flex flex-col justify-center items-center w-1/4 aspect-square rounded-lg bg-[#6a11cb]">
                   <p>{timeLeft.days}</p>
@@ -396,7 +405,7 @@ const Ads = (): React.ReactElement => {
       <section className="flex justify-center items-center">
         <div className="sm:w-3/4 flex flex-col gap-2 sm:gap-5 items-center justify-center">
           <p className="font-bold text-base sm:text-xl md:text-2xl text-[#6a11cb]">
-            Bagikan ke Media Sosial:
+            Pantau terus update di sosial media kami!
           </p>
           <div className="flex gap-2">
             <Link
@@ -452,7 +461,9 @@ const Ads = (): React.ReactElement => {
             target="_blank"
             className="w-full"
           >
-            <Button className="bg-seeds-button-green w-full">BOOK NOW!</Button>
+            <Button className="font-poppins bg-seeds-button-green w-full">
+              BOOK NOW!
+            </Button>
           </Link>
         </div>
       </section>

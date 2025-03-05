@@ -494,12 +494,6 @@ const QuizDetail = (): React.ReactElement => {
                     );
                   }
                 }
-                // await gassPost({
-                //   act: 'form_trigger_custom',
-                //   event: 'prospek',
-                //   email: userInfo?.email,
-                //   phone: userInfo?.phoneNumber
-                // });
               } else if (
                 localStorage.getItem('accessToken') === null &&
                 isGuest()

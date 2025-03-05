@@ -183,8 +183,10 @@ const MyEvent: React.FC = () => {
             {t('seedsEvent.myEvent')}
           </Typography>
           <div
-            onClick={ async() => await router.push('/homepage/event/my-certificate')}
-            className='bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer absolute right-0 top-[-6px] lg:top-[-4px]'
+            onClick={async () =>
+              await router.push('/homepage/event/my-certificate')
+            }
+            className="bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer absolute right-0 top-[-6px] lg:top-[-4px]"
           >
             <Image
               src={MyCertificateIcon}

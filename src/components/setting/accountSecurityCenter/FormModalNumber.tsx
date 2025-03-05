@@ -71,12 +71,16 @@ const FormModalNumber: React.FC<IFormModalNumber> = ({
       };
       await checkPhoneNumber(formattedPhone.phone);
       await editUserInfo(formattedPhone);
-      await getOtp({ method: 'sms', phoneNumber: formattedPhone.phone });
+      const res = await getOtp({
+        method: 'sms',
+        phoneNumber: formattedPhone.phone
+      });
       await router.push({
         pathname: '/auth/change-phone-number',
         query: {
           number: formData.phone,
-          country
+          country,
+          pinId: res.session_id
         }
       });
     } catch (error: any) {

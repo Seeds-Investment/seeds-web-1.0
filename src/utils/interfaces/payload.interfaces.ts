@@ -7,6 +7,7 @@ export interface IVerifyOtp {
   otp: string;
   msisdn: string;
   method: string;
+  pinId?: string;
 }
 
 export interface IChangePasswordPayload {

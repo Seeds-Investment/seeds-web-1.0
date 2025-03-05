@@ -176,7 +176,7 @@ export const CardSlideQuiz: React.FC<props> = ({ data, loading = true }) => {
                           </div>
                         </div>
                       </div>
-                      <div className='w-full flex justify-end items-end mb-2'>
+                      <div className="w-full flex justify-end items-end mb-2">
                         <Button
                           onClick={async () =>
                             await router.push(

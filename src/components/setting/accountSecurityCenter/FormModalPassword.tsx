@@ -1,6 +1,6 @@
 import SeedyLock from '@/assets/auth/SeedyLock.png';
 import close from '@/assets/more-option/close.svg';
-import AuthPassword from '@/components/auth/AuthPassword';
+import AuthPassword from '@/components/auth2/AuthPassword';
 import { loginPhoneNumber } from '@/repository/auth.repository';
 import { deleteAccountProvider } from '@/repository/profile.repository';
 import { useAppSelector } from '@/store/redux/store';
@@ -90,7 +90,7 @@ const FormModalPassword: React.FC<IFormModalPassword> = ({
         <div className="w-full">
           <AuthPassword
             handleChange={handleChange}
-            formData={formData.password}
+            value={formData.password}
             error={error}
             name="password"
             label={t('authLogin.password').toString()}

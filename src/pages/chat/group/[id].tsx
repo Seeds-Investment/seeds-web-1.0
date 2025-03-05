@@ -222,7 +222,7 @@ const DetailGroup: React.FC = () => {
                     />
                   </div>
                 )}
-{/*                 <div
+                {/*                 <div
                   onClick={() => {
                     setIsShareModal(prev => !prev);
                   }}
@@ -334,7 +334,7 @@ const DetailGroup: React.FC = () => {
           onClick={handleLeaveGroup}
         />
       )}
-{/*       {isShareModal && (
+      {/*       {isShareModal && (
         <ModalShareGroup
           onClose={() => {
             setIsShareModal(false);

@@ -237,10 +237,7 @@ const BuyPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (
-      id !== undefined &&
-      userInfo !== undefined
-    ) {
+    if (id !== undefined && userInfo !== undefined) {
       void fetchPlayBallance(userInfo.preferredCurrency);
     }
     if (id !== undefined && router.query?.transaction !== 'buy') {

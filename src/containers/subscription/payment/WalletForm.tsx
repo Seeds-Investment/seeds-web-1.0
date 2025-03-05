@@ -5,7 +5,11 @@ import SubmitButton from '@/components/SubmitButton';
 import { getChatClock, getSubscriptionDate } from '@/helpers/dateFormat';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import LanguageContext from '@/store/language/language-context';
-import { type PlanI, type StatusSubscription, type UserInfo } from '@/utils/interfaces/subscription.interface';
+import {
+  type PlanI,
+  type StatusSubscription,
+  type UserInfo
+} from '@/utils/interfaces/subscription.interface';
 import { Input, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
@@ -71,14 +75,16 @@ const WalletForm = ({
       _discount = coinsDiscount > 0 ? coinsDiscount : 0;
     }
 
-    _admissionFee = dataPlan?.is_promo ? (dataPlan?.price_after_promo ?? 0) : (dataPlan?.price ?? 0)
+    _admissionFee = dataPlan?.is_promo
+      ? dataPlan?.price_after_promo ?? 0
+      : dataPlan?.price ?? 0;
     _adminFee = payment.admin_fee;
     _totalFee = parseFloat(
       `${(
-        Number(_admissionFee)
-        + Number(_adminFee)
-        + Number(payment.service_fee)
-        - Number(_discount)
+        Number(_admissionFee) +
+        Number(_adminFee) +
+        Number(payment.service_fee) -
+        Number(_discount)
       ).toFixed(2)}`
     );
 
@@ -136,97 +142,121 @@ const WalletForm = ({
       {renderPhoneInput()}
       <InlineText
         label={t(`${translationId}.admissionFeeLabel`)}
-        value={`${userInfo?.preferredCurrency } ${admissionFee}`}
+        value={`${userInfo?.preferredCurrency} ${admissionFee}`}
         className="mb-2"
       />
       <InlineText
         label={t(`${translationId}.serviceFeeLabel`)}
-        value={`${userInfo?.preferredCurrency } ${
-          payment.service_fee
-        }`}
+        value={`${userInfo?.preferredCurrency} ${payment.service_fee}`}
         className="mb-2"
       />
       <InlineText
         label={t(`${translationId}.adminFeeLabel`)}
-        value={`${userInfo?.preferredCurrency } ${adminFee}`}
+        value={`${userInfo?.preferredCurrency} ${adminFee}`}
         className="mb-2"
       />
       {payment.is_promo_available ? (
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`- ${userInfo?.preferredCurrency } ${
-            payment.promo_price
-          }`}
+          value={`- ${userInfo?.preferredCurrency} ${payment.promo_price}`}
           className="mb-2"
         />
       ) : null}
       {coinsDiscount > 0 && (
         <InlineText
           label={t(`${translationId}.seedsCoin`)}
-          value={`- ${userInfo?.preferredCurrency } ${coinsDiscount}`}
+          value={`- ${userInfo?.preferredCurrency} ${coinsDiscount}`}
           className="mb-2"
         />
       )}
       <hr />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right my-6">
-        {`${userInfo?.preferredCurrency } ${totalFee}`}
+        {`${userInfo?.preferredCurrency} ${totalFee}`}
       </Typography>
       <hr />
-      {
-        subscriptionStatus !== null &&
-          <div className='bg-[#DADADA] rounded-lg p-4'>
-            <Typography className='text-[#261679] font-poppins text-md'>
-              {t('seedsPlan.payment.information.text1')} (
-                <strong>
-                  {`
-                    ${subscriptionStatus?.active_subscription?.subscription_type.charAt(0).toUpperCase() + 
-                    subscriptionStatus?.active_subscription?.subscription_type.slice(1).toLowerCase()}
+      {subscriptionStatus !== null && (
+        <div className="bg-[#DADADA] rounded-lg p-4">
+          <Typography className="text-[#261679] font-poppins text-md">
+            {t('seedsPlan.payment.information.text1')} (
+            <strong>
+              {`
+                    ${
+                      subscriptionStatus?.active_subscription?.subscription_type
+                        .charAt(0)
+                        .toUpperCase() +
+                      subscriptionStatus?.active_subscription?.subscription_type
+                        .slice(1)
+                        .toLowerCase()
+                    }
                     ${subscriptionStatus?.active_subscription?.duration}
-                    ${subscriptionStatus?.active_subscription?.duration > 1
-                      ? t('seedsPlan.payment.information.text7')
-                      : t('seedsPlan.payment.information.text6')}
+                    ${
+                      subscriptionStatus?.active_subscription?.duration > 1
+                        ? t('seedsPlan.payment.information.text7')
+                        : t('seedsPlan.payment.information.text6')
+                    }
                   `}
-                </strong>
-              ) 
-              {t('seedsPlan.payment.information.text2')}
-              {languageCtx.language === 'ID'
-                ? getSubscriptionDate(
-                    new Date(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z'),
-                    'id-ID'
-                  )
-                : getSubscriptionDate(
-                    new Date(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z'),
-                    'en-US'
-                  )}
-              {t('seedsPlan.payment.information.text5')}
-              {getChatClock(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z')}.
-              {t('seedsPlan.payment.information.text3')} (
-                <strong>
-                  {`
-                    ${incomingSubscription?.name?.charAt(0).toUpperCase() + 
-                    incomingSubscription?.name.slice(1).toLowerCase()}
+            </strong>
+            ){t('seedsPlan.payment.information.text2')}
+            {languageCtx.language === 'ID'
+              ? getSubscriptionDate(
+                  new Date(
+                    subscriptionStatus?.active_subscription?.ended_at ??
+                      '2024-12-31T23:59:00Z'
+                  ),
+                  'id-ID'
+                )
+              : getSubscriptionDate(
+                  new Date(
+                    subscriptionStatus?.active_subscription?.ended_at ??
+                      '2024-12-31T23:59:00Z'
+                  ),
+                  'en-US'
+                )}
+            {t('seedsPlan.payment.information.text5')}
+            {getChatClock(
+              subscriptionStatus?.active_subscription?.ended_at ??
+                '2024-12-31T23:59:00Z'
+            )}
+            .{t('seedsPlan.payment.information.text3')} (
+            <strong>
+              {`
+                    ${
+                      incomingSubscription?.name?.charAt(0).toUpperCase() +
+                      incomingSubscription?.name.slice(1).toLowerCase()
+                    }
                     ${incomingSubscription?.duration_in_months}
-                    ${incomingSubscription?.duration_in_months > 1
-                      ? t('seedsPlan.payment.information.text7')
-                      : t('seedsPlan.payment.information.text6')}
+                    ${
+                      incomingSubscription?.duration_in_months > 1
+                        ? t('seedsPlan.payment.information.text7')
+                        : t('seedsPlan.payment.information.text6')
+                    }
                   `}
-                </strong>
-              )  
-              {t('seedsPlan.payment.information.text4')}
-              {languageCtx.language === 'ID'
-                ? getSubscriptionDate(
-                    new Date(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z'),
-                    'id-ID'
-                  )
-                : getSubscriptionDate(
-                    new Date(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z'),
-                    'en-US'
-                  )}
-              {t('seedsPlan.payment.information.text5')}
-              {getChatClock(subscriptionStatus?.active_subscription?.ended_at ?? '2024-12-31T23:59:00Z')}.
-            </Typography>
-          </div>
-      }
+            </strong>
+            ){t('seedsPlan.payment.information.text4')}
+            {languageCtx.language === 'ID'
+              ? getSubscriptionDate(
+                  new Date(
+                    subscriptionStatus?.active_subscription?.ended_at ??
+                      '2024-12-31T23:59:00Z'
+                  ),
+                  'id-ID'
+                )
+              : getSubscriptionDate(
+                  new Date(
+                    subscriptionStatus?.active_subscription?.ended_at ??
+                      '2024-12-31T23:59:00Z'
+                  ),
+                  'en-US'
+                )}
+            {t('seedsPlan.payment.information.text5')}
+            {getChatClock(
+              subscriptionStatus?.active_subscription?.ended_at ??
+                '2024-12-31T23:59:00Z'
+            )}
+            .
+          </Typography>
+        </div>
+      )}
       <hr />
       <SubmitButton
         className="my-4"

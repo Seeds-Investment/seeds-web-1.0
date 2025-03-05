@@ -136,7 +136,7 @@ const PaymentList: React.FC = (): JSX.Element => {
   useEffect(() => {
     void validatePromo();
   }, [detailBattle]);
-  
+
   const validatePromo = useCallback(async (): Promise<void> => {
     if (
       promoCodeValidationResult !== undefined &&
@@ -156,7 +156,13 @@ const PaymentList: React.FC = (): JSX.Element => {
         setNewPromoCodeDiscount(response?.total_discount);
       }
     }
-  }, [promoCodeValidationResult, detailBattle, promoValidate, userInfo, setNewPromoCodeDiscount]);
+  }, [
+    promoCodeValidationResult,
+    detailBattle,
+    promoValidate,
+    userInfo,
+    setNewPromoCodeDiscount
+  ]);
 
   const handlePayBattle = async (
     type: string,

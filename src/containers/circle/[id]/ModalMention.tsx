@@ -4,10 +4,12 @@ import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
 import PiePreviewPost from '@/components/circle/pie/PiePreviewPost';
 import HeaderLogin from '@/components/layouts/HeaderLogin';
+import ShowAudioPlayer from '@/components/ui/outputs/AudioPlayerViewer';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
 import ModalChoosePricePremium from '@/containers/social/main/ModalChoosePricePremium';
 import { formatCurrency, stringToNumberCurrency } from '@/helpers/currency';
 import { countWords } from '@/helpers/text';
+import useMentionForm from '@/hooks/socials/modal-mention/useMentionForm';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
   UseUploadMedia,
@@ -15,7 +17,6 @@ import {
   getUserTagList,
   updatePostSocialAndCircle
 } from '@/repository/circleDetail.repository';
-import { getUserInfo } from '@/repository/profile.repository';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Dialog, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -23,6 +24,7 @@ import { useRouter } from 'next/router';
 import { XIcon } from 'public/assets/vector';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IoCloseOutline } from 'react-icons/io5';
 import { Mention, MentionsInput } from 'react-mentions';
 import ModalPie from './ModalPie';
 import PDFViewer from './PDFViewer';
@@ -70,41 +72,6 @@ interface typeOfSelection {
   type: string;
 }
 
-interface UserData {
-  id: string;
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  preferredLanguage: string;
-  phone: string;
-  _pin: string;
-}
-
-interface Polling {
-  content_text: string;
-  media_url: string;
-}
-
-interface form {
-  content_text: string;
-  privacy: string;
-  media_urls: string[];
-  polling: {
-    options: Polling[];
-    isMultiVote: boolean;
-    canAddNewOption: boolean;
-    endDate: string;
-  };
-  pie_title: string;
-  pie_amount: any;
-  pie: [];
-  premium_fee: any;
-}
-
 interface AssetInterface {
   id: string;
   quote: string;
@@ -124,20 +91,6 @@ interface ChartData {
     backgroundColor: string[];
   }>;
 }
-
-const initialUserInfo: UserData = {
-  id: '',
-  name: '',
-  seedsTag: '',
-  email: '',
-  pin: '',
-  avatar: '',
-  bio: '',
-  birthDate: '',
-  phone: '',
-  preferredLanguage: '',
-  _pin: ''
-};
 
 const initialChartData = {
   labels: ['dummy'],
@@ -191,11 +144,9 @@ const ModalMention: React.FC<props> = ({
   const router = useRouter();
   const circleId: string | any = router.query.circleid;
   const [findId, setFindId] = useState<number>(1);
-  const [isError, setIsError] = useState<boolean>(false);
   const [isDisable, setIsDisable] = useState<boolean>(false);
   const [isEmpty, setisEmpty] = useState<boolean>(false);
   const [isTooMuch, setIsTooMuch] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
   const [audio, setAudio] = useState<any>(null);
   const [media, setMedia] = useState<File[]>([]);
   const [pages, setPages] = useState('text');
@@ -213,7 +164,6 @@ const ModalMention: React.FC<props> = ({
   const [debounceTimer, setDebounceTimer] = useState<ReturnType<
     typeof setTimeout
   > | null>(null);
-  const [userInfo, setUserInfo] = useState<UserData>(initialUserInfo);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [dropVal, setDropVal] = useState<typeOfPost>({
     type: t('social.postSetting.publicTitle'),
@@ -231,21 +181,16 @@ const ModalMention: React.FC<props> = ({
     quizList: [],
     teamBattle: []
   });
-  const [form, setForm] = useState<form>({
-    content_text: '',
-    privacy: 'public',
-    media_urls: [],
-    polling: {
-      options: [],
-      isMultiVote: false,
-      canAddNewOption: false,
-      endDate: ''
-    },
-    pie_title: '',
-    pie_amount: 0,
-    pie: [],
-    premium_fee: ''
-  });
+
+  const {
+    errorMessage,
+    form,
+    isError,
+    setForm,
+    userInfo,
+    setIsError,
+    setErrorMessage
+  } = useMentionForm();
 
   const width = useWindowInnerWidth();
   const openPieModal: any = () => {
@@ -277,19 +222,6 @@ const ModalMention: React.FC<props> = ({
       type: 'PREMIUM'
     }
   ];
-
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response = await getUserInfo();
-        setUserInfo(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    void fetchData();
-  }, []);
 
   useEffect(() => {
     if (dataPost !== undefined) {
@@ -496,7 +428,7 @@ const ModalMention: React.FC<props> = ({
       const formattedValue = formatCurrency(value);
       setForm(prevForm => ({ ...prevForm, [name]: formattedValue }));
     } else if (name === 'premium_fee') {
-      setForm(prevForm => ({ ...prevForm, premium_fee: parseInt(value) }));
+      setForm(prevForm => ({ ...prevForm, premium_fee: parseInt(value)}));
     } else if (name === 'pie_title') {
       setForm(prevForm => ({ ...prevForm, pie_title: value }));
     } else {
@@ -624,8 +556,7 @@ const ModalMention: React.FC<props> = ({
                           id: `${item.id as string}-quiz`
                         }))
                       );
-                    } 
-                    else if (results[4]?.data?.length > 0) {
+                    } else if (results[4]?.data?.length > 0) {
                       setOtherTagId(5);
                       setTagLists(
                         results[4].data.map((item: any) => ({
@@ -933,10 +864,10 @@ const ModalMention: React.FC<props> = ({
       applyCustomStyle();
     }
   }, [open, pages]);
-  
+
   useEffect(() => {
-    setTagLists([])
-    setLastWordsWithSymbol('')
+    setTagLists([]);
+    setLastWordsWithSymbol('');
   }, [handleOpen]);
 
   const renderAvatar = (imageUrl: string): JSX.Element => {
@@ -1013,7 +944,9 @@ const ModalMention: React.FC<props> = ({
             {tagLists?.map((el: any, i: number) => {
               if (
                 el?.tag === undefined &&
-                el?.name?.toLowerCase()?.includes(lastWordWithChar.split('@')[1]) === true
+                el?.name
+                  ?.toLowerCase()
+                  ?.includes(lastWordWithChar.split('@')[1]) === true
               ) {
                 return (
                   <div
@@ -1092,7 +1025,9 @@ const ModalMention: React.FC<props> = ({
                 );
               } else if (
                 el?.tag === undefined &&
-                el?.title?.toLowerCase()?.includes(lastWordWithChar.split('@')[1]) === true
+                el?.title
+                  ?.toLowerCase()
+                  ?.includes(lastWordWithChar.split('@')[1]) === true
               ) {
                 return (
                   <div
@@ -1140,7 +1075,10 @@ const ModalMention: React.FC<props> = ({
                           {el?.title}
                         </Typography>
                         <Typography className="font-poppins text-neutral-soft text-base font-normal">
-                          {el?.participants} {el?.participants > 1 ? t('social.postSection.players') : t('social.postSection.player')}
+                          {el?.participants}{' '}
+                          {el?.participants > 1
+                            ? t('social.postSection.players')
+                            : t('social.postSection.player')}
                         </Typography>
                       </div>
                     ) : null}
@@ -1211,7 +1149,10 @@ const ModalMention: React.FC<props> = ({
                           {el?.name}
                         </Typography>
                         <Typography className="font-poppins text-neutral-soft text-base font-normal">
-                          {el?.participants} {el?.participants > 1 ? t('social.postSection.players') : t('social.postSection.player')}
+                          {el?.participants}{' '}
+                          {el?.participants > 1
+                            ? t('social.postSection.players')
+                            : t('social.postSection.player')}
                         </Typography>
                       </div>
                     ) : null}
@@ -1302,20 +1243,24 @@ const ModalMention: React.FC<props> = ({
     }
   };
 
-  const handlePages = (): any => {
+  const handleTextPages = (): any => {
     if (pages === 'text') {
       return (
-        <div className="mt-2">
+        <div className="md:my-4 mt-4 mb-2">
           <MentionsInput
             onChange={e => {
-              handleFormChange(e);
+              handleFormChange(e)
             }}
             ref={containerRef}
             value={form.content_text}
             allowSpaceInQuery
             placeholder={`${t('circleDetail.textAreaPlaceholder')}`}
             style={{ outline: 'none' }}
-            className="w-[100%] focus:outline-black min-h-[100px] MentionInputTextArea bg-transparent font-poppins placeholder:font-poppins text-base placeholder:text-neutral-soft placeholder:text-base"
+            className={`w-[100%] focus:outline-black MentionInputTextArea bg-transparent font-poppins placeholder:font-poppins text-base placeholder:text-neutral-soft placeholder:text-base ${
+              form.content_text === ''
+                ? 'lg:min-h-[70px] md:min-h-[70px] sm:min-h-[80px] min-h-[90px]'
+                : 'min-h-auto'
+            }`}
             a11ySuggestionsListLabel={'Suggested mentions'}
           >
             <Mention
@@ -1362,8 +1307,52 @@ const ModalMention: React.FC<props> = ({
           {renderDollarSuggestion()}
           {renderUserHashtags()}
         </div>
-      );
-    } else if (pages === 'gif') {
+      )
+    } else {
+      return (
+        <>
+          <MentionsInput
+            onChange={e => {
+              handleFormChange(e)
+            }}
+            ref={containerRef}
+            value={form.content_text}
+            allowSpaceInQuery
+            placeholder={`${t('circleDetail.textAreaPlaceholder')}`}
+            style={{ outline: 'none' }}
+            className={`w-[100%] focus:outline-black MentionInputTextArea bg-transparent font-poppins placeholder:font-poppins text-base placeholder:text-neutral-soft placeholder:text-base ${
+              form.content_text === ''
+                ? 'lg:min-h-[70px] md:min-h-[70px] sm:min-h-[80px] min-h-[90px]'
+                : 'min-h-auto'
+            }`}
+            a11ySuggestionsListLabel={'Suggested mentions'}
+          >
+            <Mention
+              trigger={'@'}
+              data={[]}
+              markup="@[__display__](__id__)"
+              style={{ color: '#4FE6AF' }}
+            />
+            <Mention
+              trigger={'$'}
+              data={[]}
+              markup="$[__display__](__id__)"
+              style={{ color: '#4FE6AF' }}
+            />
+            <Mention
+              trigger={'#'}
+              data={[]}
+              markup="#[__display__]()"
+              style={{ color: '#4FE6AF' }}
+            />
+          </MentionsInput>
+        </>
+      )
+    }
+  };
+
+  const handlePages = (): any => {
+    if (pages === 'gif') {
       return (
         <Gif_Post
           setPages={setPages}
@@ -1376,6 +1365,7 @@ const ModalMention: React.FC<props> = ({
     } else if (pages === 'talk') {
       return (
         <VoiceRecorder
+          setPages={setPages}
           setAudio={setAudio}
           setLoading={setIsLoading}
           audio={audio}
@@ -1424,7 +1414,8 @@ const ModalMention: React.FC<props> = ({
         <Dialog
           open={open}
           handler={() => {
-            handleOpen();
+            setPages('text')
+            handleOpen()
             setForm({
               content_text: '',
               privacy: 'public',
@@ -1439,22 +1430,23 @@ const ModalMention: React.FC<props> = ({
               pie_amount: 0,
               pie: [],
               premium_fee: ''
-            });
-            setAudio(null);
-            setMedia([]);
-            setDocument(null);
-            setHashtags([]);
-            setSelectedAsset([]);
-            setChartData(initialChartData);
+            })
+            setAudio(null)
+            setMedia([])
+            setDocument(null)
+            setHashtags([])
+            setSelectedAsset([])
+            setChartData(initialChartData)
+
             setOtherTagList({
               peopleList: [],
               circleList: [],
               playList: [],
               quizList: [],
               teamBattle: []
-            });
-            setDollarLists([]);
-            setHashtags([]);
+            })
+            setDollarLists([])
+            setHashtags([])
           }}
           size="lg"
           className="max-w-full w-[90%] md:w-[50%] lg:w-[40%]"
@@ -1466,19 +1458,19 @@ const ModalMention: React.FC<props> = ({
               changeForm={handleFormChange}
               form={form}
             />
-            <div className="flex flex-col px-14 pt-8">
+            <div className="flex flex-col px-8 pt-8">
               <Toast
                 message={errorMessage}
                 show={isError}
                 onClose={(): void => {
-                  setIsError(false);
+                  setIsError(false)
                 }}
               />
-              {pages !== 'gif' && (
+              {pages !== 'gif' && pages !== 'talk' && (
                 <div className="flex justify-between">
                   <div
                     onClick={() => {
-                      setPages('text');
+                      setPages('text')
                     }}
                     className="cursor-pointer"
                   >
@@ -1493,7 +1485,7 @@ const ModalMention: React.FC<props> = ({
                   <div
                     className="flex flex-col justify-start cursor-pointer"
                     onClick={() => {
-                      handleOpen();
+                      handleOpen()
                       setForm({
                         content_text: '',
                         privacy: 'public',
@@ -1508,22 +1500,22 @@ const ModalMention: React.FC<props> = ({
                         pie_amount: 0,
                         pie: [],
                         premium_fee: ''
-                      });
-                      setAudio(null);
-                      setMedia([]);
-                      setDocument(null);
-                      setHashtags([]);
-                      setSelectedAsset([]);
-                      setChartData(initialChartData);
+                      })
+                      setAudio(null)
+                      setMedia([])
+                      setDocument(null)
+                      setHashtags([])
+                      setSelectedAsset([])
+                      setChartData(initialChartData)
                       setOtherTagList({
                         peopleList: [],
                         circleList: [],
                         playList: [],
                         quizList: [],
                         teamBattle: []
-                      });
-                      setDollarLists([]);
-                      setHashtags([]);
+                      })
+                      setDollarLists([])
+                      setHashtags([])
                     }}
                   >
                     <Image src={XIcon} alt="close" width={30} height={30} />
@@ -1532,29 +1524,33 @@ const ModalMention: React.FC<props> = ({
               )}
               {/* form text section */}
               <form onSubmit={handlePostCircle}>
-                {handlePages()}
-                <div className="flex justify-center pb-4 z-0">
-                  {audio !== null && pages !== 'gif' && (
-                    <audio controls>
-                      <source
-                        src={URL?.createObjectURL(audio)}
-                        type="audio/wav"
-                        className="w-full"
-                      />
-                      Your browser does not support the audio element.
-                    </audio>
-                  )}
-                </div>
-                <div className="flex flex-col max-h-[300px] overflow-auto pb-2">
-                  <div className="flex justify-center">
+                {pages !== 'gif' && pages !== 'talk' && (
+                  <div className="mt-3"> {handleTextPages()}</div>
+                )}
+                {audio !== null && pages !== 'gif' && pages !== 'talk' && (
+                  <div className="flex justify-start pb-4 z-0">
+                    <ShowAudioPlayer audioFile={audio} />
+                  </div>
+                )}
+                <div className="flex flex-col max-w-1/2  max-h-full overflow-auto ">
+                  <div className="flex justify-start ">
                     {document !== undefined &&
                       document !== null &&
-                      pages !== 'gif' && <PDFViewer file={document} />}
+                      pages !== 'gif' &&
+                      pages !== 'talk' && (
+                        <PDFViewer
+                          file={document}
+                          handleRemove={() => {
+                            setDocument(null)
+                          }}
+                        />
+                      )}
                   </div>
                   <div className="flex items-center">
                     <div className="flex flex-wrap gap-4">
                       {media.length > 0 &&
                         pages !== 'gif' &&
+                        pages !== 'talk' &&
                         media.map((el: File, i: number) => (
                           <div
                             className="flex flex-col gap-4"
@@ -1562,71 +1558,57 @@ const ModalMention: React.FC<props> = ({
                           >
                             {el.type.includes('image') ? (
                               <div className="max-h-[30vh] max-w-[30vw] relative -top-6">
-                                <div className="flex justify-end">
+                                <div className="relative flex justify-end ">
                                   <div
-                                    className="relative bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                                    className="relative  flex justify-center items-center right-2 top-10 p-1 w-[32px] h-[32px] cursor-pointer rounded-full bg-transparent before:absolute before:inset-0 before:bg-neutral-ultrasoft before:opacity-40 before:rounded-full"
                                     onClick={() => {
                                       const newMedia = media.filter(
-                                        (element, index) => {
-                                          if (index !== i) {
-                                            return element;
-                                          }
-                                          return null;
-                                        }
-                                      );
-                                      if (media.length > 1) {
-                                        setMedia(newMedia);
-                                      } else {
-                                        setMedia([]);
-                                      }
+                                        (element, index) =>
+                                          index !== i ? element : null
+                                      )
+                                      setMedia(media.length > 1 ? newMedia : [])
                                     }}
                                   >
-                                    <Image
-                                      src={XIcon}
-                                      alt="close"
-                                      width={20}
-                                      height={20}
+                                    <IoCloseOutline
+                                      size={16}
+                                      color="#FFFFFF"
+                                      className="relative z-10"
                                     />
                                   </div>
                                 </div>
-                                <img
+
+                                <Image
                                   src={URL?.createObjectURL(el)}
                                   alt="Preview Image"
-                                  className="object-fit max-h-[30vh] max-w-[30vw]"
+                                  width={0}
+                                  height={0}
+                                  sizes="100vw"
+                                  className="w-full h-auto object-cover sm:max-w-1/2 max-w-full rounded-2xl"
                                 />
                               </div>
                             ) : (
-                              <div className="max-h-[30vh] max-w-[30vw] relative -top-6">
-                                <div className="flex justify-end">
+                              <div className="max-h-[30vh]  sm:max-w-3/4 max-w-full relative -top-6">
+                                <div className="relative flex justify-end ">
                                   <div
-                                    className="relative z-10 bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                                    className="relative  flex justify-center items-center right-2 top-10 p-1 w-[32px] h-[32px] cursor-pointer rounded-full bg-transparent before:absolute before:inset-0 before:bg-neutral-ultrasoft before:opacity-40 before:rounded-full"
                                     onClick={() => {
                                       const newMedia = media.filter(
-                                        (element, index) => {
-                                          if (index !== i) {
-                                            return element;
-                                          }
-                                          return null;
-                                        }
-                                      );
-                                      if (media.length > 1) {
-                                        setMedia(newMedia);
-                                      } else {
-                                        setMedia([]);
-                                      }
+                                        (element, index) =>
+                                          index !== i ? element : null
+                                      )
+                                      setMedia(media.length > 1 ? newMedia : [])
                                     }}
                                   >
-                                    <Image
-                                      src={XIcon}
-                                      alt="close"
-                                      width={20}
-                                      height={20}
+                                    <IoCloseOutline
+                                      size={16}
+                                      color="#FFFFFF"
+                                      className="relative z-10"
                                     />
                                   </div>
                                 </div>
                                 <video
                                   controls
-                                  className="max-w-[30vw] max-h-[30vh] object-fit"
+                                  className="max-w-full max-h-[30vh] object-fit rounded-2xl"
                                   key={el.name}
                                 >
                                   <source
@@ -1640,56 +1622,55 @@ const ModalMention: React.FC<props> = ({
                         ))}
                       {form.media_urls.length > 0 &&
                         pages !== 'gif' &&
+                        pages !== 'talk' &&
                         form.media_urls.map((el: any, i: number) => {
                           return (
                             <div
-                              className="max-h-[230px] max-w-[230px] relative -top-6"
+                              className="max-h-[230px] max-w-[230px] relative -top-6 "
                               key={`${i} + 'MEDIA_URL'`}
                             >
-                              <div className="flex justify-end">
+                              <div className="relative flex justify-end ">
                                 <div
-                                  className="relative z-10 bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                                  className="relative  flex justify-center items-center right-2 top-10 p-1 w-[32px] h-[32px] cursor-pointer rounded-full bg-transparent before:absolute before:inset-0 before:bg-neutral-ultrasoft before:opacity-40 before:rounded-full"
                                   onClick={() => {
                                     const newMedia = form.media_urls.filter(
                                       (element, index) => {
                                         if (index !== i) {
-                                          return element;
+                                          return element
                                         }
-                                        return null;
+                                        return null
                                       }
-                                    );
+                                    )
                                     if (form.media_urls.length > 1) {
                                       setForm(prevState => ({
                                         ...prevState,
                                         media_urls: newMedia
-                                      }));
+                                      }))
                                     } else {
                                       setForm(prevState => ({
                                         ...prevState,
                                         media_urls: []
-                                      }));
+                                      }))
                                     }
                                   }}
                                 >
-                                  <Image
-                                    src={XIcon}
-                                    alt="close"
-                                    width={20}
-                                    height={20}
+                                  <IoCloseOutline
+                                    size={16}
+                                    color="#FFFFFF"
+                                    className="relative z-10"
                                   />
                                 </div>
                               </div>
                               <img
                                 src={el}
                                 alt="gif"
-                                className="h-[230px] w-[230px] object-cover"
+                                className="h-[230px] w-[230px] object-cover rounded-2xl"
                               />
                             </div>
-                          );
+                          )
                         })}
                     </div>
                   </div>
-
                   {form.polling?.options?.length > 0 && pages === 'text' ? (
                     form.polling?.options.map((el: any, i: number) => {
                       return (
@@ -1699,434 +1680,433 @@ const ModalMention: React.FC<props> = ({
                         >
                           {el.content_text}
                         </div>
-                      );
+                      )
                     })
                   ) : (
                     <></>
                   )}
                   {form.pie_title !== '' ? (
-                    <PiePreviewPost
-                      form={form}
-                      userData={userInfo}
-                      chartData={chartData}
-                      data={selectedAsset}
-                    />
+                    <div className={`mt-4 `}>
+                      <PiePreviewPost
+                        form={form}
+                        userData={userInfo}
+                        chartData={chartData}
+                        data={selectedAsset}
+                      />
+                    </div>
                   ) : null}
                 </div>
 
-                {pages !== 'gif' && (
-                  <UniqueInputButton
-                    setIsError={setIsError}
-                    setErrorMessage={setErrorMessage}
-                    setPages={setPages}
-                    setMedia={setMedia}
-                    openPieModal={openPieModal}
-                    setDocument={setDocument}
-                    isEmpty={isDisable}
-                    isError={isEmpty}
-                    isTooMuch={isTooMuch}
-                  />
+                {pages !== 'gif' && pages !== 'talk' && (
+                  <div className="pt-4">
+                    {' '}
+                    <UniqueInputButton
+                      setIsError={setIsError}
+                      setErrorMessage={setErrorMessage}
+                      setPages={setPages}
+                      pageActive={pages}
+                      setMedia={setMedia}
+                      openPieModal={openPieModal}
+                      setDocument={setDocument}
+                      isEmpty={isDisable}
+                      isError={isEmpty}
+                      isTooMuch={isTooMuch}
+                    />
+                  </div>
                 )}
+                <div className="pb-12">{handlePages()}</div>
               </form>
             </div>
           </div>
         </Dialog>
       ) : (
+        // Mobile Version
         <>
           {open && (
-            <div className="flex fixed top-0 left-0 z-[1000] flex-col bg-white h-screen w-screen">
-              <header className={`bg-white border-b p-5 rounded-xl md:mx-14`}>
-                <HeaderLogin />
-              </header>
-              <div className="flex-col bg-white h-full">
-                <div className="block bg-white w-full rounded-xl h-full ">
-                  <ModalChoosePricePremium
-                    isOpen={isOpenPremiumPrice}
-                    setIsOpen={setIsOpenPremiumPrice}
-                    changeForm={handleFormChange}
-                    form={form}
-                  />
-                  <div className="flex flex-col px-6 pt-8 h-full">
-                    <Toast
-                      message={errorMessage}
-                      show={isError}
-                      onClose={(): void => {
-                        setIsError(false);
-                      }}
+            <>
+              <div className="flex fixed top-0 left-0 z-[1000] flex-col bg-white h-screen w-screen">
+                <header className={`bg-white border-b p-5 rounded-xl md:mx-14`}>
+                  <HeaderLogin />
+                </header>
+                <div className="flex-col bg-white h-full">
+                  <div className="block bg-white w-full rounded-xl h-full ">
+                    <ModalChoosePricePremium
+                      isOpen={isOpenPremiumPrice}
+                      setIsOpen={setIsOpenPremiumPrice}
+                      changeForm={handleFormChange}
+                      form={form}
                     />
-                    {pages !== 'gif' && (
-                      <div className="flex justify-between">
-                        <div
-                          onClick={() => {
-                            setPages('text');
-                          }}
-                          className="cursor-pointer"
-                        >
-                          <ProfilePost
-                            handleDropDown={handleDropDown}
-                            dropVal={dropVal}
-                            drop={drop}
-                            dataSelection={dataSelection}
-                            handleInputChange={handleInputChange}
-                          />
-                        </div>
-                        <div
-                          className="flex flex-col justify-start cursor-pointer"
-                          onClick={() => {
-                            handleOpen();
-                            setForm({
-                              content_text: '',
-                              privacy: 'public',
-                              media_urls: [],
-                              polling: {
-                                options: [],
-                                isMultiVote: false,
-                                canAddNewOption: false,
-                                endDate: ''
-                              },
-                              pie_title: '',
-                              pie_amount: 0,
-                              pie: [],
-                              premium_fee: ''
-                            });
-                            setAudio(null);
-                            setMedia([]);
-                            setDocument(null);
-                            setHashtags([]);
-                            setSelectedAsset([]);
-                            setChartData(initialChartData);
-                            setOtherTagList({
-                              peopleList: [],
-                              circleList: [],
-                              playList: [],
-                              quizList: [],
-                              teamBattle: []
-                            });
-                            setDollarLists([]);
-                            setHashtags([]);
-                          }}
-                        >
-                          <div className="flex gap-2">
-                            <div className="sm:hidden flex justify-end">
-                              <button
-                                type="submit"
-                                disabled={isEmpty || isError}
-                                onClick={handlePostCircle}
-                                className={`flex justify-center py-2 items-center rounded-full px-6 font-semibold font-poppins h-fit ${
-                                  isEmpty || isError
-                                    ? 'bg-neutral-ultrasoft text-neutral-soft cursor-not-allowed'
-                                    : 'bg-seeds-button-green text-white'
-                                }`}
-                              >
-                                Post
-                              </button>
-                            </div>
-                            <Image
-                              src={XIcon}
-                              alt="close"
-                              width={30}
-                              height={30}
+                    <div className="flex flex-col px-6 pt-8 h-full">
+                      <Toast
+                        message={errorMessage}
+                        show={isError}
+                        onClose={(): void => {
+                          setIsError(false)
+                        }}
+                      />
+                      {pages !== 'gif' && (
+                        <div className="flex justify-between">
+                          <div
+                            onClick={() => {
+                              setPages('text')
+                            }}
+                            className="cursor-pointer"
+                          >
+                            <ProfilePost
+                              handleDropDown={handleDropDown}
+                              dropVal={dropVal}
+                              drop={drop}
+                              dataSelection={dataSelection}
+                              handleInputChange={handleInputChange}
                             />
                           </div>
-                        </div>
-                      </div>
-                    )}
-                    {/* form text section */}
-                    <form onSubmit={handlePostCircle} className="h-full">
-                      {handlePages()}
-                      <div className="flex justify-center pb-4 z-0">
-                        {audio !== null && pages !== 'gif' && (
-                          <audio controls>
-                            <source
-                              src={URL?.createObjectURL(audio)}
-                              type="audio/wav"
-                              className="w-full"
-                            />
-                            Your browser does not support the audio element.
-                          </audio>
-                        )}
-                      </div>
-                      <div className="flex flex-col max-h-[300px] overflow-auto pb-2">
-                        <div className="flex justify-center">
-                          {document !== undefined &&
-                            document !== null &&
-                            pages !== 'gif' && <PDFViewer file={document} />}
-                        </div>
-                        <div className="flex items-center">
-                          <div className="flex flex-wrap gap-4">
-                            {media.length > 0 &&
-                              pages !== 'gif' &&
-                              media.map((el: File, i: number) => (
-                                <div
-                                  className="flex flex-col gap-4"
-                                  key={`${i} this is file`}
+                          <div
+                            className="flex flex-col justify-start cursor-pointer"
+                            onClick={() => {
+                              handleOpen()
+                              setForm({
+                                content_text: '',
+                                privacy: 'public',
+                                media_urls: [],
+                                polling: {
+                                  options: [],
+                                  isMultiVote: false,
+                                  canAddNewOption: false,
+                                  endDate: ''
+                                },
+                                pie_title: '',
+                                pie_amount: 0,
+                                pie: [],
+                                premium_fee: ''
+                              })
+                              setAudio(null)
+                              setMedia([])
+                              setDocument(null)
+                              setHashtags([])
+                              setSelectedAsset([])
+                              setChartData(initialChartData)
+                              setOtherTagList({
+                                peopleList: [],
+                                circleList: [],
+                                playList: [],
+                                quizList: [],
+                                teamBattle: []
+                              })
+                              setDollarLists([])
+                              setHashtags([])
+                            }}
+                          >
+                            <div className="flex gap-2">
+                              <div className="sm:hidden flex justify-end">
+                                <button
+                                  type="submit"
+                                  disabled={isEmpty || isError}
+                                  onClick={handlePostCircle}
+                                  className={`flex justify-center py-2 items-center rounded-full px-6 font-semibold font-poppins h-fit ${
+                                    isEmpty || isError
+                                      ? 'bg-neutral-ultrasoft text-neutral-soft cursor-not-allowed'
+                                      : 'bg-seeds-button-green text-white'
+                                  }`}
                                 >
-                                  {el.type.includes('image') ? (
-                                    <div className="max-h-[30vh] max-w-[30vw] relative -top-6">
-                                      <div className="flex justify-end">
+                                  Post
+                                </button>
+                              </div>
+                              <Image
+                                src={XIcon}
+                                alt="close"
+                                width={30}
+                                height={30}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {/* form text section */}
+                      <form onSubmit={handlePostCircle} className="h-full">
+                        {pages !== 'gif' && handleTextPages()}
+                        <div className="flex justify-start pb-4 z-0">
+                          {audio !== null && pages !== 'gif' && (
+                            <ShowAudioPlayer audioFile={audio} />
+                          )}
+                        </div>
+
+                        <div className="flex flex-col max-h-[300px] overflow-auto pb-2 ">
+                          <div className="flex justify-center">
+                            {document !== undefined &&
+                              document !== null &&
+                              pages !== 'gif' && <PDFViewer file={document} />}
+                          </div>
+
+                          <div className="flex items-center w-full">
+                            <div className="flex flex-wrap gap-4 w-full ">
+                              {media.length > 0 &&
+                                pages !== 'gif' &&
+                                media.map((el: File, i: number) => (
+                                  <div
+                                    className="flex flex-col gap-4 w-full"
+                                    key={`${i} this is file`}
+                                  >
+                                    {el.type.includes('image') ? (
+                                      <div className="max-h-[30vh] max-w-full relative -top-6">
+                                        <div className="relative flex justify-end ">
+                                          <div
+                                            className="relative  flex justify-center items-center right-2 top-10 p-1 w-[32px] h-[32px] cursor-pointer rounded-full bg-transparent before:absolute before:inset-0 before:bg-neutral-ultrasoft before:opacity-40 before:rounded-full"
+                                            onClick={() => {
+                                              const newMedia = media.filter(
+                                                (element, index) =>
+                                                  index !== i ? element : null
+                                              )
+                                              setMedia(
+                                                media.length > 1 ? newMedia : []
+                                              )
+                                            }}
+                                          >
+                                            <IoCloseOutline
+                                              size={16}
+                                              color="#FFFFFF"
+                                              className="relative z-10"
+                                            />
+                                          </div>
+                                        </div>
+                                        <Image
+                                          src={URL?.createObjectURL(el)}
+                                          alt="Preview Image"
+                                          width={0}
+                                          height={0}
+                                          sizes="100vw"
+                                          className="w-full h-auto object-cover  "
+                                        />
+                                      </div>
+                                    ) : (
+                                      <div className="max-h-[30vh] w-full relative -top-6">
+                                        <div className="relative flex justify-end ">
+                                          <div
+                                            className="relative  flex justify-center items-center right-2 top-10 p-1 w-[32px] h-[32px] cursor-pointer rounded-full bg-transparent before:absolute before:inset-0 before:bg-neutral-ultrasoft before:opacity-40 before:rounded-full"
+                                            onClick={() => {
+                                              const newMedia = media.filter(
+                                                (element, index) =>
+                                                  index !== i ? element : null
+                                              )
+                                              setMedia(
+                                                media.length > 1 ? newMedia : []
+                                              )
+                                            }}
+                                          >
+                                            <IoCloseOutline
+                                              size={16}
+                                              color="#FFFFFF"
+                                              className="relative z-10"
+                                            />
+                                          </div>
+                                        </div>
+                                        <video
+                                          controls
+                                          className="max-w-full max-h-[30vh] object-fit rounded-2xl"
+                                          key={el.name}
+                                        >
+                                          <source
+                                            src={URL?.createObjectURL(el)}
+                                            type="video/mp4"
+                                          />
+                                        </video>
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                              {form.media_urls.length > 0 &&
+                                pages !== 'gif' &&
+                                form.media_urls.map((el: any, i: number) => {
+                                  return (
+                                    <div
+                                      className="max-h-full max-w-full w-full relative -top-6"
+                                      key={`${i} + 'MEDIA_URL'`}
+                                    >
+                                      <div className="relative flex justify-end ">
                                         <div
-                                          className="relative bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                                          className="relative  flex justify-center items-center right-2 top-10 p-1 w-[32px] h-[32px] cursor-pointer rounded-full bg-transparent before:absolute before:inset-0 before:bg-neutral-ultrasoft before:opacity-40 before:rounded-full"
                                           onClick={() => {
-                                            const newMedia = media.filter(
-                                              (element, index) => {
-                                                if (index !== i) {
-                                                  return element;
+                                            const newMedia =
+                                              form.media_urls.filter(
+                                                (element, index) => {
+                                                  if (index !== i) {
+                                                    return element
+                                                  }
+                                                  return null
                                                 }
-                                                return null;
-                                              }
-                                            );
-                                            if (media.length > 1) {
-                                              setMedia(newMedia);
+                                              )
+                                            if (form.media_urls.length > 1) {
+                                              setForm(prevState => ({
+                                                ...prevState,
+                                                media_urls: newMedia
+                                              }))
                                             } else {
-                                              setMedia([]);
+                                              setForm(prevState => ({
+                                                ...prevState,
+                                                media_urls: []
+                                              }))
                                             }
                                           }}
                                         >
-                                          <Image
-                                            src={XIcon}
-                                            alt="close"
-                                            width={20}
-                                            height={20}
+                                          <IoCloseOutline
+                                            size={16}
+                                            color="#FFFFFF"
+                                            className="relative z-10"
                                           />
                                         </div>
                                       </div>
                                       <img
-                                        src={URL?.createObjectURL(el)}
-                                        alt="Preview Image"
-                                        className="object-fit max-h-[30vh] max-w-[30vw]"
+                                        src={el}
+                                        alt="gif"
+                                        className="h-full w-full object-cover rounded-2xl"
                                       />
                                     </div>
-                                  ) : (
-                                    <div className="max-h-[30vh] max-w-[30vw] relative -top-6">
-                                      <div className="flex justify-end">
-                                        <div
-                                          className="relative z-10 bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
-                                          onClick={() => {
-                                            const newMedia = media.filter(
-                                              (element, index) => {
-                                                if (index !== i) {
-                                                  return element;
-                                                }
-                                                return null;
-                                              }
-                                            );
-                                            if (media.length > 1) {
-                                              setMedia(newMedia);
-                                            } else {
-                                              setMedia([]);
-                                            }
-                                          }}
-                                        >
-                                          <Image
-                                            src={XIcon}
-                                            alt="close"
-                                            width={20}
-                                            height={20}
-                                          />
-                                        </div>
-                                      </div>
-                                      <video
-                                        controls
-                                        className="max-w-[30vw] max-h-[30vh] object-fit"
-                                        key={el.name}
+                                  )
+                                })}
+                            </div>
+                          </div>
+                          {form.polling?.options?.length > 0 &&
+                          pages === 'text' ? (
+                            form.polling?.options.map((el: any, i: number) => {
+                              return (
+                                <div
+                                  className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
+                                  key={`${i} + 'Polling'`}
+                                >
+                                  {el.content_text}
+                                </div>
+                              )
+                            })
+                          ) : (
+                            <></>
+                          )}
+                          {form.pie_title !== '' ? (
+                            <PiePreviewPost
+                              form={form}
+                              userData={userInfo}
+                              chartData={chartData}
+                              data={selectedAsset}
+                            />
+                          ) : null}
+                        </div>
+                        {pages !== 'gif' && (
+                          <div
+                            className={`flex flex-col sticky bottom-14 w-full`}
+                          >
+                            <div className="sm:hidden flex flex-col justify-center pl-3 ">
+                              {drop && (
+                                <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl border border-neutral-soft w-full max-h-[50vh] overflow-y-auto transition-all">
+                                  {dataSelection.map(
+                                    (el: typeOfSelection, i) => (
+                                      <label
+                                        key={`${i}radioSelection`}
+                                        className="cursor-pointer w-full"
                                       >
-                                        <source
-                                          src={URL?.createObjectURL(el)}
-                                          type="video/mp4"
+                                        <input
+                                          type="radio"
+                                          className="peer sr-only"
+                                          name="type"
+                                          onChange={handleInputChange}
+                                          value={el.name}
                                         />
-                                      </video>
-                                    </div>
+                                        <div className="w-[90%] mx-auto my-3 cursor-pointer z-50 rounded-md bg-white p-3 text-gray-600 ring-1 ring-[#7C7C7C] transition-all peer-checked:ring-seeds-green peer-checked:ring-offset-1 hover:shadow hover:text-seeds-green hover:ring-seeds-green">
+                                          <div className="flex gap-3 items-center">
+                                            <div className="flex flex-col justify-center">
+                                              <Image
+                                                alt={el.name}
+                                                src={el.svg}
+                                                className="h-[22px] w-[22px]"
+                                              />
+                                            </div>
+                                            <div className="flex justify-between w-full gap-5">
+                                              <div className="flex flex-col justify-start">
+                                                <p className="text-xs font-semibold font-poppins text-[#262626]">
+                                                  {el.name}
+                                                </p>
+                                                <p className="text-xs font-poppins text-[#7C7C7C]">
+                                                  {el.message}
+                                                </p>
+                                              </div>
+                                              <div className="flex flex-col justify-center">
+                                                <svg
+                                                  width="16"
+                                                  height="16"
+                                                  viewBox="0 0 24 24"
+                                                >
+                                                  <path
+                                                    fill="currentColor"
+                                                    d="m10.6 13.8l-2.175-2.175q-.275-.275-.675-.275t-.7.3q-.275.275-.275.7q0 .425.275.7L9.9 15.9q.275.275.7.275q.425 0 .7-.275l5.675-5.675q.275-.275.275-.675t-.3-.7q-.275-.275-.7-.275q-.425 0-.7.275ZM12 22q-2.075 0-3.9-.788q-1.825-.787-3.175-2.137q-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175q1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138q1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175q-1.35 1.35-3.175 2.137Q14.075 22 12 22Z"
+                                                  />
+                                                </svg>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </label>
+                                    )
                                   )}
                                 </div>
-                              ))}
-                            {form.media_urls.length > 0 &&
-                              pages !== 'gif' &&
-                              form.media_urls.map((el: any, i: number) => {
-                                return (
-                                  <div
-                                    className="max-h-[230px] max-w-[230px] relative -top-6"
-                                    key={`${i} + 'MEDIA_URL'`}
-                                  >
-                                    <div className="flex justify-end">
-                                      <div
-                                        className="relative z-10 bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
-                                        onClick={() => {
-                                          const newMedia =
-                                            form.media_urls.filter(
-                                              (element, index) => {
-                                                if (index !== i) {
-                                                  return element;
-                                                }
-                                                return null;
-                                              }
-                                            );
-                                          if (form.media_urls.length > 1) {
-                                            setForm(prevState => ({
-                                              ...prevState,
-                                              media_urls: newMedia
-                                            }));
-                                          } else {
-                                            setForm(prevState => ({
-                                              ...prevState,
-                                              media_urls: []
-                                            }));
-                                          }
-                                        }}
-                                      >
-                                        <Image
-                                          src={XIcon}
-                                          alt="close"
-                                          width={20}
-                                          height={20}
-                                        />
-                                      </div>
-                                    </div>
-                                    <img
-                                      src={el}
-                                      alt="gif"
-                                      className="h-[230px] w-[230px] object-cover"
+                              )}
+
+                              <button
+                                className="font-poppins text-xs mb-4"
+                                type="button"
+                                onClick={handleDropDown}
+                              >
+                                <div className="flex w-fit px-2 rounded-full bg-neutral-ultrasoft gap-1">
+                                  <div className="flex items-center">
+                                    <Image
+                                      alt="type"
+                                      src={dropVal.svg}
+                                      className="h-3 w-3 rounded-full"
                                     />
                                   </div>
-                                );
-                              })}
-                          </div>
-                        </div>
-
-                        {form.polling?.options?.length > 0 &&
-                        pages === 'text' ? (
-                          form.polling?.options.map((el: any, i: number) => {
-                            return (
-                              <div
-                                className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
-                                key={`${i} + 'Polling'`}
-                              >
-                                {el.content_text}
-                              </div>
-                            );
-                          })
-                        ) : (
-                          <></>
-                        )}
-                        {form.pie_title !== '' ? (
-                          <PiePreviewPost
-                            form={form}
-                            userData={userInfo}
-                            chartData={chartData}
-                            data={selectedAsset}
-                          />
-                        ) : null}
-                      </div>
-
-                      {pages !== 'gif' && (
-                        <div className={`flex flex-col absolute bottom-14`}>
-                          <div className="sm:hidden flex-col justify-center pl-3 flex">
-                            {drop && (
-                              <div className="bg-white mb-[40vh] absolute z-[10] rounded-2xl border border-neutral-soft w-[300px] flex flex-col justify-center items-center transition">
-                                {dataSelection.map((el: typeOfSelection, i) => {
-                                  return (
-                                    <label
-                                      className="cursor-default"
-                                      key={`${i}radioSelection`}
-                                    >
-                                      <input
-                                        type="radio"
-                                        className="peer sr-only"
-                                        name="type"
-                                        onChange={handleInputChange}
-                                        value={el.name}
-                                      />
-                                      <div className="w-[270px] my-3 cursor-pointer z-50 rounded-md bg-white p-2 text-gray-600 ring-1 ring-[#7C7C7C] transition-all hover:shadow hover:text-seeds-green hover:ring-seeds-green hover:ring-offset-1">
-                                        <div className="flex gap-2">
-                                          <div className="flex flex-col justify-center">
-                                            <Image
-                                              alt="public"
-                                              src={el.svg}
-                                              className="h-[22px] w-[22px] object-cover"
-                                            />
-                                          </div>
-                                          <div className="flex justify-between w-full gap-5 ">
-                                            <div className="flex flex-col justify-start">
-                                              <p className="text-xs font-semibold font-poppins text-[#262626]">
-                                                {el.name}
-                                              </p>
-                                              <p className="text-xs font-poppins text-[#7C7C7C]">
-                                                {el.message}
-                                              </p>
-                                            </div>
-                                            <div className="flex flex-col justify-center">
-                                              <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 24 24"
-                                              >
-                                                <path
-                                                  fill="currentColor"
-                                                  d="m10.6 13.8l-2.175-2.175q-.275-.275-.675-.275t-.7.3q-.275.275-.275.7q0 .425.275.7L9.9 15.9q.275.275.7.275q.425 0 .7-.275l5.675-5.675q.275-.275.275-.675t-.3-.7q-.275-.275-.7-.275q-.425 0-.7.275ZM12 22q-2.075 0-3.9-.788q-1.825-.787-3.175-2.137q-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175q1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138q1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175q-1.35 1.35-3.175 2.137Q14.075 22 12 22Z"
-                                                />
-                                              </svg>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </label>
-                                  );
-                                })}
-                              </div>
-                            )}
-                            <button
-                              className="font-poppins text-xs mb-4"
-                              type="button"
-                              onClick={handleDropDown}
-                            >
-                              <div className="flex w-fit px-2 rounded-full bg-neutral-ultrasoft gap-1">
-                                <div className="flex items-center">
-                                  <Image
-                                    alt="type"
-                                    src={dropVal.svg}
-                                    className="h-3 w-3 rounded-full"
-                                  />
+                                  <Typography className="text-black text-xs font-poppins">
+                                    {dropVal.type}
+                                  </Typography>
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 12 12"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M4.16516 6.61704L5.60796 8.30893C5.82521 8.56369 6.17616 8.56369 6.39342 8.30893L7.83622 6.61704C8.18717 6.2055 7.93649 5.5 7.4407 5.5H4.5551C4.05931 5.5 3.81421 6.2055 4.16516 6.61704Z"
+                                      fill="#262626"
+                                    />
+                                  </svg>
                                 </div>
-                                <Typography className="text-black text-xs font-poppins">
-                                  {dropVal.type}
-                                </Typography>
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="12"
-                                  height="12"
-                                  viewBox="0 0 12 12"
-                                  fill="none"
-                                >
-                                  <path
-                                    d="M4.16516 6.61704L5.60796 8.30893C5.82521 8.56369 6.17616 8.56369 6.39342 8.30893L7.83622 6.61704C8.18717 6.2055 7.93649 5.5 7.4407 5.5H4.5551C4.05931 5.5 3.81421 6.2055 4.16516 6.61704Z"
-                                    fill="#262626"
-                                  />
-                                </svg>
-                              </div>
-                            </button>
+                              </button>
+                            </div>
+                            <div className="w-full ">
+                              {' '}
+                              <UniqueInputButton
+                                setIsError={setIsError}
+                                setErrorMessage={setErrorMessage}
+                                setPages={setPages}
+                                setMedia={setMedia}
+                                openPieModal={openPieModal}
+                                setDocument={setDocument}
+                                isEmpty={isDisable}
+                                isError={isEmpty}
+                                isTooMuch={isTooMuch}
+                                pageActive={pages}
+                              />
+                            </div>
                           </div>
-                          <UniqueInputButton
-                            setIsError={setIsError}
-                            setErrorMessage={setErrorMessage}
-                            setPages={setPages}
-                            setMedia={setMedia}
-                            openPieModal={openPieModal}
-                            setDocument={setDocument}
-                            isEmpty={isDisable}
-                            isError={isEmpty}
-                            isTooMuch={isTooMuch}
-                          />
-                        </div>
-                      )}
-                    </form>
+                        )}
+                        {handlePages()}
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </>
           )}
         </>
       )}
     </>
-  );
+  )
 };
 
 export default ModalMention;

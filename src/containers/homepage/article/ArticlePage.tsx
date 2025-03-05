@@ -50,7 +50,7 @@ export default function ArticlePage(): React.ReactElement {
     category: 'All',
     totalPage: 9
   });
-  
+
   const fetchArticles = async (): Promise<void> => {
     try {
       const response = await getArticleWithAuth({
@@ -62,7 +62,7 @@ export default function ArticlePage(): React.ReactElement {
     } catch (error: any) {
       toast.error('Error fetching articles:', error.response.data.message);
     }
-  }
+  };
 
   useEffect(() => {
     void fetchArticles();
@@ -80,14 +80,14 @@ export default function ArticlePage(): React.ReactElement {
       <div className="grid justify-between z-10 lg:grid-cols-4 gap-4 mt-8">
         {articles?.map((article, index) => {
           return (
-            <ArticleCard 
-              key={article.id} 
-              articles={articles[index]} 
+            <ArticleCard
+              key={article.id}
+              articles={articles[index]}
               articleId={Number(article.id)}
               setIsRefetch={setIsRefetch}
               isRefetch={isRefetch}
             />
-          )
+          );
         })}
       </div>
       <div className="text-center justify-center mt-3">

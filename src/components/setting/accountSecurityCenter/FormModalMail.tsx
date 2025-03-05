@@ -1,7 +1,7 @@
 import PenMail from '@/assets/auth/PenMail.svg';
 import SeedyMail from '@/assets/auth/SeedyMail.png';
 import close from '@/assets/more-option/close.svg';
-import AuthCommonInput from '@/components/auth/AuthCommonInput';
+import AuthCommonInput from '@/components/auth2/AuthCommonInput';
 import { checkEmail } from '@/repository/auth.repository';
 import { editUserInfo } from '@/repository/profile.repository';
 import { useAppSelector } from '@/store/redux/store';

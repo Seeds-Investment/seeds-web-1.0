@@ -33,4 +33,3 @@ export { default as voiceNotesPauseIcon } from './voice-notes-pause-icon.svg';
 export { default as voiceNotesSendIconDisabled } from './voice-notes-send-icon-disable.svg';
 export { default as voiceNotesSendIcon } from './voice-notes-send-icon.svg';
 export { default as wave } from './wave.svg';
-

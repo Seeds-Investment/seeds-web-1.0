@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 const MainPhoneNumber: React.FC = () => {
   const [select, setSelect] = useState(0);
   const [number, setNumber] = useState('');
+  const [pinId, setPinId] = useState('');
   const [method, setMethod] = useState('whatsapp');
   const [countdown, setCountdown] = useState(0);
   const getOTP = {
@@ -98,6 +99,7 @@ const MainPhoneNumber: React.FC = () => {
         setNumber={setNumber}
         getOTP={getOTP}
         setCountdown={setCountdown}
+        setPinId={setPinId}
       />
       <ValidateOTP
         select={select}
@@ -107,6 +109,8 @@ const MainPhoneNumber: React.FC = () => {
         getOTP={getOTP}
         countdown={countdown}
         setCountdown={setCountdown}
+        pinId={pinId}
+        setPinId={setPinId}
       />
     </PageGradient>
   );

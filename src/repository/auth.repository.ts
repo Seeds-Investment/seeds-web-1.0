@@ -283,7 +283,7 @@ export const getOtp = async (payload: IGetOtp): Promise<any> => {
     ) {
       return await Promise.resolve(null);
     }
-    return await authService.put(`/otp`, { ...payload });
+    return await authService.put(`/otp/resend`, { ...payload });
   } catch (error: any) {
     toast.error(error?.response?.data?.message);
   }

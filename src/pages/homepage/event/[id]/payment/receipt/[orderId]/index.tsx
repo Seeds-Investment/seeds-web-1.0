@@ -209,21 +209,29 @@ const SuccessPaymentPage: React.FC = () => {
   const toggleDropdown = (): void => {
     setIsOpen(!isOpen);
   };
-  
-    const handleViewQR = async(): Promise<void> => {
-      const query = paymentUrl !== '' ? { paymentUrl } : undefined;
-  
-      await router.replace(
+
+  const handleViewQR = async (): Promise<void> => {
+    const query = paymentUrl !== '' ? { paymentUrl } : undefined;
+
+    await router
+      .replace(
         {
-          pathname: `/homepage/event/${id}/payment/receipt/${orderId}` + `${((orderDetail?.paymentMethod?.includes('BNC')) ?? false) ? '/qris' : ''}`,
+          pathname:
+            `/homepage/event/${id}/payment/receipt/${orderId}` +
+            `${
+              orderDetail?.paymentMethod?.includes('BNC') ?? false
+                ? '/qris'
+                : ''
+            }`,
           query
         },
         undefined,
         { shallow: true }
-      ).catch(error => {
+      )
+      .catch(error => {
         toast(`${error as string}`);
       });
-    }
+  };
 
   return (
     <div className="pt-10">
@@ -253,11 +261,9 @@ const SuccessPaymentPage: React.FC = () => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {
-                  orderDetail?.transactionStatus !== 'SUCCESS' &&
-                  orderDetail?.transactionStatus !== 'SETTLEMENT' &&
-                  orderDetail?.transactionStatus !== 'SUCCEEDED'
-                ? (
+                {orderDetail?.transactionStatus !== 'SUCCESS' &&
+                orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                orderDetail?.transactionStatus !== 'SUCCEEDED' ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -278,24 +284,20 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {
-                  orderDetail?.transactionStatus === 'SUCCESS' ||
-                  orderDetail?.transactionStatus === 'SETTLEMENT' ||
-                  orderDetail?.transactionStatus === 'SUCCEEDED'
-                    ? ''
-                    : t('seedsEvent.payment.receipt.pending')
-                }
+                {orderDetail?.transactionStatus === 'SUCCESS' ||
+                orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                orderDetail?.transactionStatus === 'SUCCEEDED'
+                  ? ''
+                  : t('seedsEvent.payment.receipt.pending')}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {
-                  orderDetail?.transactionStatus === 'SUCCESS' ||
-                  orderDetail?.transactionStatus === 'SETTLEMENT' ||
-                  orderDetail?.transactionStatus === 'SUCCEEDED'
-                    ? t('seedsEvent.payment.receipt.successful')
-                    : `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
-                        orderDetail?.grossAmount ?? 0
-                      )}`
-                }
+                {orderDetail?.transactionStatus === 'SUCCESS' ||
+                orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                orderDetail?.transactionStatus === 'SUCCEEDED'
+                  ? t('seedsEvent.payment.receipt.successful')
+                  : `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                      orderDetail?.grossAmount ?? 0
+                    )}`}
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
                 {orderDetail?.transactionStatus === 'SETTLEMENT' &&
@@ -621,13 +623,11 @@ const SuccessPaymentPage: React.FC = () => {
                   />
                 </div>
                 <Typography className="font-poppins text-sm text-[#3C49D6]">
-                  {
-                    orderDetail?.transactionStatus === 'SUCCESS' ||
-                    orderDetail?.transactionStatus === 'SETTLEMENT' ||
-                    orderDetail?.transactionStatus === 'SUCCEEDED'
-                      ? t('seedsEvent.payment.receipt.messageComplete')
-                      : t('seedsEvent.payment.receipt.messageUncomplete')
-                  }
+                  {orderDetail?.transactionStatus === 'SUCCESS' ||
+                  orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                  orderDetail?.transactionStatus === 'SUCCEEDED'
+                    ? t('seedsEvent.payment.receipt.messageComplete')
+                    : t('seedsEvent.payment.receipt.messageUncomplete')}
                 </Typography>
               </div>
 
@@ -635,13 +635,19 @@ const SuccessPaymentPage: React.FC = () => {
               <div className="w-full flex flex-col items-center justify-center">
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
-                  onClick={async() => { void handleViewQR() }}
+                  onClick={async () => {
+                    void handleViewQR();
+                  }}
                 >
                   {t('bnc.seeQRCode')}
                 </Button>
                 <Button
-                  className={`${((orderDetail?.paymentMethod?.includes('BNC')) ?? false) ? 'mt-4' : 'mt-10'} w-full text-sm font-semibold bg-seeds-button-green rounded-full capitalize`}
-                  onClick={async() => {
+                  className={`${
+                    orderDetail?.paymentMethod?.includes('BNC') ?? false
+                      ? 'mt-4'
+                      : 'mt-10'
+                  } w-full text-sm font-semibold bg-seeds-button-green rounded-full capitalize`}
+                  onClick={async () => {
                     if (
                       orderDetail?.transactionStatus === 'SUCCESS' ||
                       orderDetail?.transactionStatus === 'SETTLEMENT' ||
@@ -651,22 +657,24 @@ const SuccessPaymentPage: React.FC = () => {
                         `/homepage/event/${id}/${orderId}/booking-success-details`
                       );
                     } else {
-                      const query = paymentUrl !== '' ? { paymentUrl } : undefined;
-                      await router.replace(
-                        {
-                          pathname: `/homepage/event/${id}/payment/receipt/${orderId}`,
-                          query
-                        },
-                        undefined,
-                        { shallow: true }
-                      ).catch(error => {
-                        toast(`${error as string}`);
-                      });
+                      const query =
+                        paymentUrl !== '' ? { paymentUrl } : undefined;
+                      await router
+                        .replace(
+                          {
+                            pathname: `/homepage/event/${id}/payment/receipt/${orderId}`,
+                            query
+                          },
+                          undefined,
+                          { shallow: true }
+                        )
+                        .catch(error => {
+                          toast(`${error as string}`);
+                        });
                     }
                   }}
                 >
-                  {
-                  orderDetail?.transactionStatus === 'SUCCESS' ||
+                  {orderDetail?.transactionStatus === 'SUCCESS' ||
                   orderDetail?.transactionStatus === 'SETTLEMENT' ||
                   orderDetail?.transactionStatus === 'SUCCEEDED'
                     ? t('seedsEvent.payment.receipt.seeTicket')

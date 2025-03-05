@@ -77,7 +77,7 @@ export default function ArticleList(): React.ReactElement {
     } catch (error) {
       toast.error(`Error fetching articles: ${error as string}`);
     }
-  }
+  };
 
   const categoryItemClass = 'py-1 rounded-full text-center w-full text-md px-2';
 
@@ -351,13 +351,13 @@ export default function ArticleList(): React.ReactElement {
         {articles.map((article, index) => {
           return (
             <ArticleCard
-              key={article.id} 
-              articles={articles[index]} 
+              key={article.id}
+              articles={articles[index]}
               articleId={Number(article.id)}
               setIsRefetch={setIsRefetch}
               isRefetch={isRefetch}
             />
-          )
+          );
         })}
       </div>
 

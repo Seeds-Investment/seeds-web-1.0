@@ -106,18 +106,25 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
         if (response.payment_url !== '' && paymentMethod !== 'BNC_QRIS') {
           window.open(response.payment_url as string, '_blank');
         }
-        const query = response.payment_url !== '' ? { paymentUrl: response.payment_url } : undefined;
-        
-        await router.replace(
-          {
-            pathname: `/social/payment/receipt/${response.order_id as string}` + `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
-            query
-          },
-          undefined,
-          { shallow: true }
-        ).catch(error => {
-          toast(`${error as string}`);
-        });
+        const query =
+          response.payment_url !== ''
+            ? { paymentUrl: response.payment_url }
+            : undefined;
+
+        await router
+          .replace(
+            {
+              pathname:
+                `/social/payment/receipt/${response.order_id as string}` +
+                `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+              query
+            },
+            undefined,
+            { shallow: true }
+          )
+          .catch(error => {
+            toast(`${error as string}`);
+          });
       }
     } catch (error) {
       toast.error(`${error as string}`);
@@ -142,12 +149,18 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
         spot_type: 'Premium Content',
         item_price: admissionFee,
         item_id: data?.id,
-        currency: userInfo?.preferredCurrency ?? 'IDR',
+        currency: userInfo?.preferredCurrency ?? 'IDR'
       });
 
       setNewPromoCodeDiscount(response?.total_discount);
     }
-  }, [promoCodeValidationResult, data, promoValidate, userInfo, setNewPromoCodeDiscount]);
+  }, [
+    promoCodeValidationResult,
+    data,
+    promoValidate,
+    userInfo,
+    setNewPromoCodeDiscount
+  ]);
 
   const handleOpenDialog = (value: boolean): void => {
     if (option?.payment_type === 'qris') {

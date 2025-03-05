@@ -100,7 +100,11 @@ const CardTeamBattle: React.FC<props> = ({ data, loading = true }) => {
           {data?.length > 0 && data !== null ? (
             data?.map((item, idx: number) => (
               <SwiperSlide key={idx}>
-                <Card key={idx} shadow={false} className="md:w-80 w-full h-full bg-gradient-to-br from-[#106B6E] to-[#553BB8] rounded-t-[18px] rounded-b-none">
+                <Card
+                  key={idx}
+                  shadow={false}
+                  className="md:w-80 w-full h-full bg-gradient-to-br from-[#106B6E] to-[#553BB8] rounded-t-[18px] rounded-b-none"
+                >
                   <CardHeader
                     floated={false}
                     className="p-0 flex w-full border-none justify-center m-0 rounded-t-[18px] rounded-b-none"

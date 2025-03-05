@@ -9,8 +9,18 @@ import Dialog from '@/components/ui/dialog/Dialog';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { getSubscriptionPlan, getSubscriptionPlanById, getSubscriptionStatus, joinSubscription } from '@/repository/subscription.repository';
-import { type DataPlanI, type PaymentStatus, type PlanI, type StatusSubscription } from '@/utils/interfaces/subscription.interface';
+import {
+  getSubscriptionPlan,
+  getSubscriptionPlanById,
+  getSubscriptionStatus,
+  joinSubscription
+} from '@/repository/subscription.repository';
+import {
+  type DataPlanI,
+  type PaymentStatus,
+  type PlanI,
+  type StatusSubscription
+} from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -31,9 +41,9 @@ export interface Payment {
   promo_price: number;
   service_fee: number;
   payment_gateway: string;
-  is_active: boolean
-  is_priority: boolean
-  minimum_withdrawal: number
+  is_active: boolean;
+  is_priority: boolean;
+  minimum_withdrawal: number;
 }
 
 export const userDefault: UserInfo = {
@@ -95,7 +105,8 @@ const PaymentList: React.FC = (): JSX.Element => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [dataPlan, setDataPlan] = useState<PlanI>();
   const [paymentStatus] = useState<PaymentStatus>();
-  const [subscriptionStatus, setSubscriptionStatus] = useState<StatusSubscription | null>(null);
+  const [subscriptionStatus, setSubscriptionStatus] =
+    useState<StatusSubscription | null>(null);
   const [subscriptionPlan, setSubscriptionPlan] = useState<PlanI>();
 
   const defaultOption = {
@@ -133,13 +144,11 @@ const PaymentList: React.FC = (): JSX.Element => {
   const getPlanList = async (): Promise<void> => {
     try {
       const response: DataPlanI = await getSubscriptionPlan();
-      const {SILVER, GOLD, PLATINUM} = response.data
-      const mappedPlan = [
-        ...SILVER,
-        ...GOLD,
-        ...PLATINUM
-      ]
-      const selectedPlan = mappedPlan.find(plan => plan.id === selectedPeriodPlan)
+      const { SILVER, GOLD, PLATINUM } = response.data;
+      const mappedPlan = [...SILVER, ...GOLD, ...PLATINUM];
+      const selectedPlan = mappedPlan.find(
+        plan => plan.id === selectedPeriodPlan
+      );
       if (selectedPlan) {
         setDataPlan(selectedPlan);
       } else {
@@ -161,7 +170,7 @@ const PaymentList: React.FC = (): JSX.Element => {
       toast(`ERROR fetch user info ${error as string}`);
     }
   };
-  
+
   const getStatus = async (): Promise<void> => {
     try {
       const response = await getSubscriptionStatus();
@@ -170,12 +179,12 @@ const PaymentList: React.FC = (): JSX.Element => {
       }
     } catch (error) {}
   };
-  
+
   const getSubscriptionDetail = async (planId: string): Promise<void> => {
     try {
       setLoading(true);
       const response = await getSubscriptionPlanById(planId);
-      setSubscriptionPlan(response)
+      setSubscriptionPlan(response);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -208,7 +217,7 @@ const PaymentList: React.FC = (): JSX.Element => {
   ): Promise<void> => {
     try {
       setLoading(true);
-      
+
       if (type === 'ewallet' && phoneNumber === '') {
         toast.error('Please fill the phone number');
         return;
@@ -229,7 +238,8 @@ const PaymentList: React.FC = (): JSX.Element => {
         if (response?.payment_url) {
           window.open(response.payment_url as string, '_blank');
         }
-        await router.replace(`/seedsplan/payment/receipt/${response.order_id as string}`)
+        await router
+          .replace(`/seedsplan/payment/receipt/${response.order_id as string}`)
           .catch(error => {
             toast.error(`${error as string}`);
           });
@@ -338,31 +348,35 @@ const PaymentList: React.FC = (): JSX.Element => {
       >
         {option?.payment_type === 'ewallet' && (
           <>
-            {dataPlan !== undefined && userInfo !== undefined && subscriptionPlan !== undefined && (
-              <WalletForm
-                payment={option}
-                handlePay={handlePay}
-                userInfo={userInfo}
-                dataPlan={dataPlan}
-                subscriptionStatus={subscriptionStatus}
-                incomingSubscription={subscriptionPlan}
-              />
-            )}
+            {dataPlan !== undefined &&
+              userInfo !== undefined &&
+              subscriptionPlan !== undefined && (
+                <WalletForm
+                  payment={option}
+                  handlePay={handlePay}
+                  userInfo={userInfo}
+                  dataPlan={dataPlan}
+                  subscriptionStatus={subscriptionStatus}
+                  incomingSubscription={subscriptionPlan}
+                />
+              )}
           </>
         )}
         {option?.payment_type === 'va' && (
           <>
-            {dataPlan !== undefined && userInfo !== undefined && subscriptionPlan !== undefined && (
-              <VirtualAccountGuide
-                payment={option}
-                handlePay={handlePay}
-                userInfo={userInfo}
-                dataPlan={dataPlan}
-                paymentStatus={paymentStatus}
-                subscriptionStatus={subscriptionStatus}
-                incomingSubscription={subscriptionPlan}
-              />
-            )}
+            {dataPlan !== undefined &&
+              userInfo !== undefined &&
+              subscriptionPlan !== undefined && (
+                <VirtualAccountGuide
+                  payment={option}
+                  handlePay={handlePay}
+                  userInfo={userInfo}
+                  dataPlan={dataPlan}
+                  paymentStatus={paymentStatus}
+                  subscriptionStatus={subscriptionStatus}
+                  incomingSubscription={subscriptionPlan}
+                />
+              )}
           </>
         )}
       </Dialog>

@@ -392,8 +392,8 @@ const AssetDetailPage: React.FC = () => {
             <Button
               variant="filled"
               disabled={
-                (ballance?.balance ?? 0) < (data?.lastPrice?.close ?? 0)
-                || detailTournament?.status === 'PAST'
+                (ballance?.balance ?? 0) < (data?.lastPrice?.close ?? 0) ||
+                detailTournament?.status === 'PAST'
               }
               className="normal-case rounded-full w-full py-2 bg-[#3AC4A0] text-white font-poppins"
               onClick={() => {

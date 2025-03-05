@@ -10,7 +10,10 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import { getSubscriptionStatus } from '@/repository/subscription.repository';
 import { getBattleDetail } from '@/repository/team-battle.repository';
-import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import {
+  selectPromoCodeValidationResult,
+  setPromoCodeValidationResult
+} from '@/store/redux/features/promo-code';
 import i18n from '@/utils/common/i18n';
 import { type StatusSubscription } from '@/utils/interfaces/subscription.interface';
 import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';

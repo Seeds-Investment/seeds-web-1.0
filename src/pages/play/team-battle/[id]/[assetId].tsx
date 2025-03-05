@@ -154,7 +154,7 @@ const AssetDetailPage: React.FC = () => {
       toast('Failed to fetch asset');
     }
   };
-const lastPriceAsset = data?.lastPrice.close;
+  const lastPriceAsset = data?.lastPrice.close;
   useEffect(() => {
     if (assetId !== null && userInfo !== undefined) {
       void fetchDetailAsset(userInfo.preferredCurrency);

@@ -2,20 +2,21 @@ import SeedySMSOTP from '@/assets/auth/SeedySMSOTP.png';
 import SeedyWAOTP from '@/assets/auth/SeedyWAOTP.png';
 import AuthOTP from '@/components/auth2/AuthOTP';
 import AuthLayout from '@/containers/auth/AuthLayout';
+import type { OTPDataI } from '@/utils/interfaces/otp.interface';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 const ChangeNumber: React.FC = () => {
-  const { number, country } = useRouter().query;
+  const { number, country, pinId } = useRouter().query;
   const [select, setSelect] = useState(1);
   const [method, setMethod] = useState('sms');
   const [countdown, setCountdown] = useState(0);
-
-  const [formOTPData, setFormOTPData] = useState({
+  const [formOTPData, setFormOTPData] = useState<OTPDataI>({
     phoneNumber: '',
     method,
-    otp: ''
+    otp: '',
+    pinId: pinId as string
   });
 
   useEffect(() => {

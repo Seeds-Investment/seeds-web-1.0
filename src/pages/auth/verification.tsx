@@ -52,7 +52,8 @@ const Register: React.FC = () => {
   const [otpForm, setOTPForm] = useState<OTPDataI>({
     phoneNumber: '',
     method,
-    otp: ''
+    otp: '',
+    pinId: ''
   });
 
   useEffect(() => {

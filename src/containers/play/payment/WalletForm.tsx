@@ -198,15 +198,17 @@ const WalletForm = ({
             ? 'Circle Membership'
             : t(`${translationId}.admissionFeeLabel`)
         }
-        value={`${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(admissionFee ?? 0)}`}
+        value={`${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
+          admissionFee ?? 0
+        )}`}
         className="mb-2"
       />
       {dataPost.quiz ? (
         <InlineText
           label={t('quiz.lifeline')}
-          value={`${userInfo?.preferredCurrency ?? 'IDR'} ${
-            standartCurrency(dataPost?.quiz?.fee ?? 0)
-          }`}
+          value={`${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
+            dataPost?.quiz?.fee ?? 0
+          )}`}
           className="mb-2"
         />
       ) : null}
@@ -214,9 +216,9 @@ const WalletForm = ({
         <>
           <InlineText
             label={t(`${translationId}.serviceFeeLabel`)}
-            value={`${userInfo?.preferredCurrency ?? 'IDR'} ${
-              standartCurrency(payment.service_fee ?? 0)
-            }`}
+            value={`${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
+              payment.service_fee ?? 0
+            )}`}
             className="mb-2"
           />
           <InlineText
@@ -227,9 +229,9 @@ const WalletForm = ({
           {payment.is_promo_available ? (
             <InlineText
               label={t(`${translationId}.adminFeeDiscountLabel`)}
-              value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${
-                standartCurrency(payment.promo_price ?? 0)
-              }`}
+              value={`- ${
+                userInfo?.preferredCurrency ?? 'IDR'
+              } ${standartCurrency(payment.promo_price ?? 0)}`}
               className="mb-2"
             />
           ) : null}
@@ -238,22 +240,26 @@ const WalletForm = ({
       {promoCodeValidationResult ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}
-          value={`- ${
-            userInfo?.preferredCurrency ?? 'IDR'
-          } ${standartCurrency(newPromoCodeDiscount ?? 0)}`}
+          value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
+            newPromoCodeDiscount ?? 0
+          )}`}
           className="mb-2"
         />
       ) : null}
       {coinsDiscount > 0 && (
         <InlineText
           label={t(`${translationId}.seedsCoin`)}
-          value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(coinsDiscount ?? 0)}`}
+          value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
+            coinsDiscount ?? 0
+          )}`}
           className="mb-2"
         />
       )}
       <hr />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right my-6">
-        {`${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(totalFee ?? 0)}`}
+        {`${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
+          totalFee ?? 0
+        )}`}
       </Typography>
       <hr />
       <SubmitButton

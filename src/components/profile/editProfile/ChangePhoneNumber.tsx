@@ -17,7 +17,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { ArrowBackwardIcon } from 'public/assets/vector';
-import { useState } from 'react';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 interface Form {
   form: any;
   setForm: any;
@@ -26,6 +26,7 @@ interface Form {
   setNumber: any;
   getOTP: any;
   setCountdown: any;
+  setPinId: Dispatch<SetStateAction<string>>;
 }
 
 interface CountryCodeInfo {
@@ -42,7 +43,8 @@ const ChangePhoneNumber: React.FC<Form> = ({
   setSelect,
   setNumber,
   getOTP,
-  setCountdown
+  setCountdown,
+  setPinId
 }: Form) => {
   const [country, setCountry] = useState(0);
 
@@ -78,7 +80,8 @@ const ChangePhoneNumber: React.FC<Form> = ({
       };
       await checkPhoneNumber(form.phone);
       await editUserInfo(updatedForm);
-      await getOtp(getOTP);
+      const res = await getOtp(getOTP);
+      setPinId(res?.session_id);
       setCountdown(60);
       setSelect(2);
     } catch (error: any) {

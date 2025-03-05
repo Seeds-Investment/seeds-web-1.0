@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 interface props {
   setPages: any;
+  pageActive: string;
   setMedia: any;
   openPieModal: any;
   setDocument: any;
@@ -27,7 +28,8 @@ const UniqueInputButton: React.FC<props> = ({
   setIsError,
   isEmpty,
   isError,
-  isTooMuch
+  isTooMuch,
+  pageActive
 }) => {
   const { t } = useTranslation();
   const handlePages = (page: string): any => {
@@ -119,10 +121,9 @@ const UniqueInputButton: React.FC<props> = ({
       return setDocument(fileMedia);
     }
   };
-
   return (
     <>
-      <div className="sm:flex justify-between pb-10 border-t border-neutral-ultrasoft hidden">
+      <div className="sm:flex justify-between pt-4 border-t border-neutral-ultrasoft hidden">
         <input
           type="file"
           id="MediaUpload"
@@ -131,9 +132,19 @@ const UniqueInputButton: React.FC<props> = ({
           accept="image/jpg,image/jpeg,image/png,video/mp4,video/mov"
         />
         <div className="flex gap-[18px]">
-          {/* gallery */}
-          <div className="flex flex-col">
-            <button type="button" onClick={handleGallery} className="p-2">
+          {/* Gallery */}
+          <div className="flex flex-col gap-1">
+            <button
+              type="button"
+              onClick={() => {
+                handleGallery();
+              }}
+              className={`p-2 ${
+                pageActive === 'image'
+                  ? 'bg-seeds-green bg-opacity-20 rounded-full'
+                  : ''
+              }`}
+            >
               <Image
                 alt="unique_post"
                 src={gallery}
@@ -144,14 +155,19 @@ const UniqueInputButton: React.FC<props> = ({
               Gallery
             </h1>
           </div>
+
           {/* GIF */}
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-1">
             <button
               type="button"
               onClick={() => {
                 handlePages('gif');
               }}
-              className="p-2"
+              className={`p-2 ${
+                pageActive === 'gif'
+                  ? 'bg-seeds-green bg-opacity-20 rounded-full'
+                  : ''
+              }`}
             >
               <Image
                 alt="unique_post"
@@ -163,14 +179,19 @@ const UniqueInputButton: React.FC<props> = ({
               GIF
             </h1>
           </div>
+
           {/* Poll */}
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-1">
             <button
               type="button"
-              className="p-2"
               onClick={() => {
                 handlePages('poll');
               }}
+              className={`p-2 ${
+                pageActive === 'poll'
+                  ? 'bg-seeds-green bg-opacity-20 rounded-full'
+                  : ''
+              }`}
             >
               <Image
                 alt="unique_post"
@@ -182,15 +203,20 @@ const UniqueInputButton: React.FC<props> = ({
               Poll
             </h1>
           </div>
+
           {/* Pie */}
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-1">
             <button
               type="button"
-              className="p-2"
               onClick={() => {
                 handlePages('pie');
                 openPieModal();
               }}
+              className={`p-2 ${
+                pageActive === 'pie'
+                  ? 'bg-seeds-green bg-opacity-20 rounded-full'
+                  : ''
+              }`}
             >
               <Image
                 alt="unique_post"
@@ -202,14 +228,19 @@ const UniqueInputButton: React.FC<props> = ({
               Pie
             </h1>
           </div>
-          {/* Voice */}
-          <div className="flex flex-col">
+
+          {/* Voice / Talk */}
+          <div className="flex flex-col gap-1">
             <button
               type="button"
               onClick={() => {
                 handlePages('talk');
               }}
-              className="p-2"
+              className={`p-2 ${
+                pageActive === 'talk'
+                  ? 'bg-seeds-green bg-opacity-20 rounded-full'
+                  : ''
+              }`}
             >
               <Image
                 alt="unique_post"
@@ -221,9 +252,18 @@ const UniqueInputButton: React.FC<props> = ({
               Talk
             </h1>
           </div>
+
           {/* PDF */}
-          <div className="flex flex-col">
-            <button type="button" onClick={handleDocument} className="p-2">
+          <div className="flex flex-col gap-1">
+            <button
+              type="button"
+              onClick={handleDocument}
+              className={`p-2 ${
+                pageActive === 'pdf'
+                  ? 'bg-seeds-green bg-opacity-20 rounded-full'
+                  : ''
+              }`}
+            >
               <Image
                 alt="unique_post"
                 src={pdf}
@@ -242,6 +282,7 @@ const UniqueInputButton: React.FC<props> = ({
             </h1>
           </div>
         </div>
+
         {/* post button */}
         <div className="hidden sm:flex items-center">
           <button
@@ -257,7 +298,7 @@ const UniqueInputButton: React.FC<props> = ({
           </button>
         </div>
       </div>
-      <div className="flex flex-col sm:hidden items-center mb-16">
+      <div className="flex flex-col pt-4 sm:hidden justify-between items-center mb-16">
         <input
           type="file"
           id="MediaUpload"
@@ -266,9 +307,17 @@ const UniqueInputButton: React.FC<props> = ({
           accept="image/jpg,image/jpeg,image/png,video/mp4,video/mov"
         />
         <div className="grid grid-cols-6 gap-4">
-          {/* gallery */}
+          {/* Gallery */}
           <div className="flex flex-col items-center">
-            <button type="button" onClick={handleGallery} className="p-2">
+            <button
+              type="button"
+              onClick={handleGallery}
+              className={`p-2 ${
+                pageActive === 'image'
+                  ? 'bg-seeds-green bg-opacity-20 rounded-full'
+                  : ''
+              }`}
+            >
               <Image
                 alt="unique_post"
                 src={gallery}
@@ -279,14 +328,17 @@ const UniqueInputButton: React.FC<props> = ({
               Gallery
             </h1>
           </div>
+
           {/* GIF */}
           <div className="flex flex-col items-center">
             <button
               type="button"
-              onClick={() => {
-                handlePages('gif');
-              }}
-              className="p-2"
+              onClick={() => handlePages('gif')}
+              className={`p-2 ${
+                pageActive === 'gif'
+                  ? 'bg-seeds-green bg-opacity-20 rounded-full'
+                  : ''
+              }`}
             >
               <Image
                 alt="unique_post"
@@ -298,14 +350,17 @@ const UniqueInputButton: React.FC<props> = ({
               GIF
             </h1>
           </div>
+
           {/* Poll */}
           <div className="flex flex-col items-center">
             <button
               type="button"
-              className="p-2"
-              onClick={() => {
-                handlePages('poll');
-              }}
+              onClick={() => handlePages('poll')}
+              className={`p-2 ${
+                pageActive === 'poll'
+                  ? 'bg-seeds-green bg-opacity-20 rounded-full'
+                  : ''
+              }`}
             >
               <Image
                 alt="unique_post"
@@ -317,15 +372,20 @@ const UniqueInputButton: React.FC<props> = ({
               Poll
             </h1>
           </div>
+
           {/* Pie */}
           <div className="flex flex-col items-center">
             <button
               type="button"
-              className="p-2"
               onClick={() => {
                 handlePages('pie');
                 openPieModal();
               }}
+              className={`p-2 ${
+                pageActive === 'pie'
+                  ? 'bg-seeds-green bg-opacity-20 rounded-full'
+                  : ''
+              }`}
             >
               <Image
                 alt="unique_post"
@@ -337,14 +397,17 @@ const UniqueInputButton: React.FC<props> = ({
               Pie
             </h1>
           </div>
-          {/* Voice */}
+
+          {/* Talk */}
           <div className="flex flex-col items-center">
             <button
               type="button"
-              onClick={() => {
-                handlePages('talk');
-              }}
-              className="p-2"
+              onClick={() => handlePages('talk')}
+              className={`p-2 ${
+                pageActive === 'talk'
+                  ? 'bg-seeds-green bg-opacity-20 rounded-full'
+                  : ''
+              }`}
             >
               <Image
                 alt="unique_post"
@@ -356,9 +419,18 @@ const UniqueInputButton: React.FC<props> = ({
               Talk
             </h1>
           </div>
+
           {/* PDF */}
           <div className="flex flex-col items-center">
-            <button type="button" onClick={handleDocument} className="p-2">
+            <button
+              type="button"
+              onClick={handleDocument}
+              className={`p-2 ${
+                pageActive === 'pdf'
+                  ? 'bg-seeds-green bg-opacity-20 rounded-full'
+                  : ''
+              }`}
+            >
               <Image
                 alt="unique_post"
                 src={pdf}
@@ -378,19 +450,6 @@ const UniqueInputButton: React.FC<props> = ({
           </div>
         </div>
       </div>
-      {/* <div className="sm:hidden flex justify-end mt-4">
-        <button
-          type="submit"
-          disabled={isEmpty || isError}
-          className={`flex justify-center py-2 items-center rounded-full px-6 font-semibold font-poppins h-fit ${
-            isEmpty || isError
-              ? 'bg-neutral-ultrasoft text-neutral-soft cursor-not-allowed'
-              : 'bg-seeds-button-green text-white'
-          }`}
-        >
-          Post
-        </button>
-      </div> */}
     </>
   );
 };

@@ -98,18 +98,18 @@ export interface TicketData {
 }
 
 export interface CertificateI {
-  event_ticket_id: string
-  serial_number: string
-  user_name: string
-  event_name: string
-  pdf_data: string
-  created_at: string
-  updated_at: string
+  event_ticket_id: string;
+  serial_number: string;
+  user_name: string;
+  event_name: string;
+  pdf_data: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface MyCertificateI {
-  ticket_id: string
-  event_name: string
-  user_id: string
-  created_at: string
+  ticket_id: string;
+  event_name: string;
+  user_id: string;
+  created_at: string;
 }

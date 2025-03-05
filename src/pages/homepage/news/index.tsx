@@ -43,7 +43,7 @@ export default function ArticleList(): React.ReactElement {
   const [searchInput, setSearchInput] = useState('');
 
   const [activeCategory, setActiveCategory] = useState('All');
-  
+
   const [params, setParams] = useState({
     page: 1,
     limit: 9,
@@ -131,7 +131,7 @@ export default function ArticleList(): React.ReactElement {
     setActiveCategory(newCategory);
   };
   const hotNewsItemClass = 'mb-2 mx-48';
-  
+
   const { t } = useTranslation();
 
   const categoryItemClass = 'py-1 rounded-full text-center w-full text-md px-2';
@@ -238,7 +238,9 @@ export default function ArticleList(): React.ReactElement {
             <option value="relevant">
               {t('articleList.article.sort.relevant')}
             </option>
-            <option value="recent">{t('articleList.article.sort.recent')}</option>
+            <option value="recent">
+              {t('articleList.article.sort.recent')}
+            </option>
           </select>
         </div>
         <div className="lg:hidden mt-4 ">
@@ -461,12 +463,7 @@ export default function ArticleList(): React.ReactElement {
 
         <div className="grid z-10 lg:grid-cols-4 gap-4 mt-8">
           {articles?.map((article, index) => {
-            return (
-              <NewsCard
-                key={article.id}
-                articles={articles[index]}
-              />
-            )
+            return <NewsCard key={article.id} articles={articles[index]} />;
           })}
         </div>
         <div className="hidden lg:flex  justify-center mx-auto my-8">

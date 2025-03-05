@@ -20,13 +20,15 @@ export const handleGetOTP = async (
   method: string,
   setCountdown: React.Dispatch<React.SetStateAction<number>>,
   setSelect: React.Dispatch<React.SetStateAction<number>>,
-  formOTPData: OTPDataI
+  formOTPData: OTPDataI,
+  setOTPForm: React.Dispatch<React.SetStateAction<OTPDataI>>
 ): Promise<void> => {
   const getOTP = {
     method,
     phoneNumber: formOTPData.phoneNumber
   };
-  await getOtp(getOTP);
+  const res = await getOtp(getOTP);
+  setOTPForm(prev => ({ ...prev, pinId: res?.session_id }));
   setCountdown(60);
   setSelect(1);
 };
@@ -45,7 +47,8 @@ export const handleOTP = async (
   const verifyOTP = {
     method: otpForm.method,
     msisdn: otpForm.phoneNumber,
-    otp: otpForm.otp
+    otp: otpForm.otp,
+    pinId: otpForm.pinId
   };
   const guestLoginOTP = {
     phone_number: otpForm.phoneNumber,

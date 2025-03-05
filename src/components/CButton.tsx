@@ -11,7 +11,8 @@ export default function CButton({
   onSubmit,
   disabled,
   color,
-  fullWidth
+  fullWidth,
+  style
 }: IButton): React.ReactElement {
   return (
     <Button

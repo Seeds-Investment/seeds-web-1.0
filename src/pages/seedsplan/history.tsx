@@ -37,7 +37,7 @@ const HistoryTransaction: React.FC = () => {
     } catch (error) {
       toast(`Error fetching data user: ${error as string}`);
     }
-  }, [])
+  }, []);
 
   return (
     <PageGradient defaultGradient className="w-full">

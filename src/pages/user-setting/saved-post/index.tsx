@@ -5,7 +5,10 @@ import PostSection from '@/containers/circle/[id]/PostSection';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getSavedPost } from '@/repository/social.respository';
-import { type DataPost, type UserInfoI } from '@/utils/interfaces/social.interfaces';
+import {
+  type DataPost,
+  type UserInfoI
+} from '@/utils/interfaces/social.interfaces';
 import {
   Menu,
   MenuHandler,
@@ -63,9 +66,9 @@ const SavedPost: React.FC = () => {
     };
   }, [handleScroll]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (hasMore) {
-      void fetchMySavedPost(mySavedPostParams)
+      void fetchMySavedPost(mySavedPostParams);
     }
   }, [mySavedPostParams.page]);
 
@@ -73,7 +76,7 @@ const SavedPost: React.FC = () => {
     mySavedPostParams: SavedPostListParams
   ): Promise<void> => {
     try {
-      setLoading(true)
+      setLoading(true);
       setIsLoadingPost(true);
       getSavedPost(mySavedPostParams)
         .then(res => {
@@ -81,7 +84,9 @@ const SavedPost: React.FC = () => {
           const total = res?.metadata?.total;
 
           if (res?.data !== null) {
-            setSavedPostData(prevState => savedPostData?.length === 0 ? [...data] : [...prevState, ...data]);
+            setSavedPostData(prevState =>
+              savedPostData?.length === 0 ? [...data] : [...prevState, ...data]
+            );
             if (savedPostData?.length + data?.length < total) {
               setHasMore(true);
             } else {
@@ -101,7 +106,7 @@ const SavedPost: React.FC = () => {
     } catch (error: any) {
       toast.error('Error fetching data:', error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
       setIsLoadingPost(false);
     }
   };
@@ -126,8 +131,8 @@ const SavedPost: React.FC = () => {
       <CCard className="flex flec-col p-4 md:p-5 mt-5 md:rounded-lg border-none rounded-none pb-5">
         <div className="flex justify-start items-center gap-4 mb-4">
           <div
-            onClick={async() => await router.push('/user-setting')}
-            className='flex justify-center items-center w-[24px] h-[24px] hover:scale-125 duration-300 cursor-pointer'
+            onClick={async () => await router.push('/user-setting')}
+            className="flex justify-center items-center w-[24px] h-[24px] hover:scale-125 duration-300 cursor-pointer"
           >
             <Image alt="" src={ArrowBackwardIcon} className="w-full h-auto" />
           </div>
@@ -181,9 +186,8 @@ const SavedPost: React.FC = () => {
         </div>
 
         {/* Post Section */}
-        {
-          !loading ? (
-            (savedPostData?.length > 0 && userInfo !== undefined) ?
+        {!loading ? (
+          savedPostData?.length > 0 && userInfo !== undefined ? (
             savedPostData?.map((el: DataPost, idx: number) => {
               return (
                 <div className="flex flex-col" key={`${el.id} ${idx}`}>
@@ -245,22 +249,24 @@ const SavedPost: React.FC = () => {
                 </div>
               );
             })
-            :
+          ) : (
             <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
               <Image alt="" src={IconNoData} className="w-[250px]" />
               <p className="font-semibold text-black text-lg">
                 {t('setting.setting.savedPost.noData')}
               </p>
-              <p className="text-[#7C7C7C] mb-8">{t('setting.setting.savedPost.noDataMessage')}</p>
-            </div>
-          ) : (
-            <div className="w-full flex justify-center h-fit my-8">
-              <div className="h-[60px]">
-                <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
-              </div>
+              <p className="text-[#7C7C7C] mb-8">
+                {t('setting.setting.savedPost.noDataMessage')}
+              </p>
             </div>
           )
-        }
+        ) : (
+          <div className="w-full flex justify-center h-fit my-8">
+            <div className="h-[60px]">
+              <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+            </div>
+          </div>
+        )}
       </CCard>
     </PageGradient>
   );

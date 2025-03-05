@@ -27,26 +27,26 @@ const PopUpRegistrationClosed: React.FC<PopUpJoinBattleProps> = ({
   const handleStageName = (): string => {
     if (languageCtx?.language === 'ID') {
       if (currentStage === 'ELIMINATION') {
-        return 'penyisihan'
+        return 'penyisihan';
       } else if (currentStage === 'SEMIFINAL') {
-        return 'semifinal'
+        return 'semifinal';
       } else if (currentStage === 'FINAL') {
-        return 'final'
+        return 'final';
       } else {
         return '';
       }
     } else {
       if (currentStage === 'ELIMINATION') {
-        return 'elimination stage'
+        return 'elimination stage';
       } else if (currentStage === 'SEMIFINAL') {
-        return 'semifinal stage'
+        return 'semifinal stage';
       } else if (currentStage === 'FINAL') {
-        return 'final stage'
+        return 'final stage';
       } else {
         return '';
       }
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/75 flex justify-center items-center z-50 w-full">
@@ -63,33 +63,25 @@ const PopUpRegistrationClosed: React.FC<PopUpJoinBattleProps> = ({
               />
             </div>
           </div>
-          <div className='flex flex-col gap-1 my-4 text-normal md:text-lg font-poppins'>
-            <div>
-              {t('teamBattle.battleClosed1')}
-            </div>
-            {
-              currentStage !== 'ENDED' ? (
-                currentStage !== 'CANCELED' ? (
-                  <div>
-                    {t('teamBattle.battleClosed2')} {handleStageName()}!
-                  </div>
-                ) : (
-                  <div>
-                    {t('teamBattle.battleClosed4')}
-                  </div>
-                )
-              ) : (
+          <div className="flex flex-col gap-1 my-4 text-normal md:text-lg font-poppins">
+            <div>{t('teamBattle.battleClosed1')}</div>
+            {currentStage !== 'ENDED' ? (
+              currentStage !== 'CANCELED' ? (
                 <div>
-                  {t('teamBattle.battleClosed3')}
+                  {t('teamBattle.battleClosed2')} {handleStageName()}!
                 </div>
+              ) : (
+                <div>{t('teamBattle.battleClosed4')}</div>
               )
-            }
+            ) : (
+              <div>{t('teamBattle.battleClosed3')}</div>
+            )}
           </div>
           <Button
             onClick={() => {
               handleClose();
             }}
-            className='w-[150px] bg-[#5E44FF] rounded-full shadow-lg hover:shadow-xl hover:scale-110 duration-300 mb-2'
+            className="w-[150px] bg-[#5E44FF] rounded-full shadow-lg hover:shadow-xl hover:scale-110 duration-300 mb-2"
           >
             OK
           </Button>

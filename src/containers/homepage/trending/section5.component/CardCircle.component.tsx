@@ -86,8 +86,8 @@ const CardCircle: React.FC<props> = ({ data }) => {
     720: { slidesPerView: 3, spaceBetween: 12 },
     1080: { slidesPerView: 4, spaceBetween: 16 },
     1280: { slidesPerView: 5, spaceBetween: 16 },
-    1536: { slidesPerView: 6, spaceBetween: 20 },
-  }
+    1536: { slidesPerView: 6, spaceBetween: 20 }
+  };
   const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center justify-center gap-2 w-full">
@@ -100,7 +100,9 @@ const CardCircle: React.FC<props> = ({ data }) => {
         spaceBetween={16}
         breakpoints={breakpoints}
         centeredSlides={false}
-        onSwiper={(swiper) => { setSwiperInstance(swiper); }}
+        onSwiper={swiper => {
+          setSwiperInstance(swiper);
+        }}
       >
         {data?.map((data, idx: number) => {
           const myStyle: MyStyle = {
@@ -108,7 +110,7 @@ const CardCircle: React.FC<props> = ({ data }) => {
               data.cover.split('.')[0] === 'https://seeds-bucket-new'
                 ? 'https://res.cloudinary.com/dafjb9vn7/image/upload/v1702374211/defaultBannerCircle_kp04b9.svg'
                 : data.cover
-            })`,
+            })`
           };
           return (
             <SwiperSlide key={idx}>
@@ -145,7 +147,9 @@ const CardCircle: React.FC<props> = ({ data }) => {
                     {data.name}
                   </Typography>
                   <Typography className="font-poppins text-xs text-[#7C7C7C]">
-                    {`${data.total_member} ${t('homepage.section5.cardcircletext1')}`}
+                    {`${data.total_member} ${t(
+                      'homepage.section5.cardcircletext1'
+                    )}`}
                   </Typography>
                   <Button
                     className="mt-2 bg-[#3AC4A0] w-full py-1 text-xs text-white rounded-[25px] hover:font-semibold"

@@ -47,11 +47,23 @@ const AuthGuest: React.FC<AuthGuestI> = ({
     try {
       const response = await checkPhoneNumber(formattedData.phoneNumber);
       if (response === undefined) {
-        await handleGetOTP(method, setCountdown, setSelect, formattedData);
+        await handleGetOTP(
+          method,
+          setCountdown,
+          setSelect,
+          formattedData,
+          setFormData
+        );
       }
     } catch (error: any) {
       setGuest('guest-login');
-      await handleGetOTP(method, setCountdown, setSelect, formattedData);
+      await handleGetOTP(
+        method,
+        setCountdown,
+        setSelect,
+        formattedData,
+        setFormData
+      );
       if (guest !== 'guest-login') {
         toast.error(error.response.data.message ?? 'Unknown Error');
       }

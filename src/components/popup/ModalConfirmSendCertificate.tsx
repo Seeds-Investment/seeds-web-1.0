@@ -13,16 +13,19 @@ interface Props {
   ticketId: string;
 }
 
-const ModalConfirmSendCertificate: React.FC<Props> = ({ onClose, ticketId }) => {
+const ModalConfirmSendCertificate: React.FC<Props> = ({
+  onClose,
+  ticketId
+}) => {
   const { t } = useTranslation();
 
   const sendCertificate = async (): Promise<void> => {
     try {
       const response = await sendCertificateToEmail(ticketId);
-      
+
       if (response === null) {
-        toast.success(t('seedsEvent.emailMessage'))
-        onClose()
+        toast.success(t('seedsEvent.emailMessage'));
+        onClose();
       }
     } catch (error) {
       toast.error(`Error sending certificate: ${error as string}`);
@@ -45,21 +48,23 @@ const ModalConfirmSendCertificate: React.FC<Props> = ({ onClose, ticketId }) => 
         />
       </div>
 
-      <Typography className='font-poppins font-semibold lg:text-lg mt-4 mb-8'>
+      <Typography className="font-poppins font-semibold lg:text-lg mt-4 mb-8">
         {t('seedsEvent.sendEmailConfirm')}
       </Typography>
 
-      <div className='flex justify-center items-center my-4'>
-        <div className='w-full lg:w-[75%] flex gap-4'>
+      <div className="flex justify-center items-center my-4">
+        <div className="w-full lg:w-[75%] flex gap-4">
           <Button
-            onClick={async () => { await sendCertificate(); }}
-            className='w-full bg-seeds-button-green rounded-full'
+            onClick={async () => {
+              await sendCertificate();
+            }}
+            className="w-full bg-seeds-button-green rounded-full"
           >
             {t('seedsEvent.yes')}
           </Button>
           <Button
             onClick={onClose}
-            className='w-full bg-[#BDBDBD] rounded-full'
+            className="w-full bg-[#BDBDBD] rounded-full"
           >
             {t('seedsEvent.no')}
           </Button>

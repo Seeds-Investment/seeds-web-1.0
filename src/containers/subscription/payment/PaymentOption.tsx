@@ -7,18 +7,18 @@ import Image from 'next/image';
 import { type Payment } from './PaymentList';
 
 export interface CurrentValueI {
-  id: string
-  payment_gateway: string
-  payment_method: string
-  logo_url: string
-  payment_type: string
-  admin_fee: number
-  service_fee: number
-  promo_price: number
-  is_active: boolean
-  is_promo_available: boolean
-  is_priority: boolean
-  minimum_withdrawal: number
+  id: string;
+  payment_gateway: string;
+  payment_method: string;
+  logo_url: string;
+  payment_type: string;
+  admin_fee: number;
+  service_fee: number;
+  promo_price: number;
+  is_active: boolean;
+  is_promo_available: boolean;
+  is_priority: boolean;
+  minimum_withdrawal: number;
 }
 
 interface IPaymentOption {

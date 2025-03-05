@@ -154,9 +154,7 @@ const AssetWatchList: React.FC = () => {
                 key={asset?.id}
                 onClick={() => {
                   void router.push(
-                    `/play/team-battle/${id as string}/${
-                      asset?.id
-                    }`
+                    `/play/team-battle/${id as string}/${asset?.id}`
                   );
                 }}
                 className="w-full flex items-center justify-between bg-[#F9F9F9] hover:bg-[#efefef] duration-150 cursor-pointer p-3 rounded-lg gap-3 mb-2"

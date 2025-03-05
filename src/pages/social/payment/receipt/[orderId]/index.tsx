@@ -139,20 +139,28 @@ const SuccessPaymentPage: React.FC = () => {
   const toggleDropdown = (): void => {
     setIsOpen(!isOpen);
   };
-    const handleViewQR = async(): Promise<void> => {
-      const query = paymentUrl !== '' ? { paymentUrl } : undefined;
-  
-      await router.replace(
+  const handleViewQR = async (): Promise<void> => {
+    const query = paymentUrl !== '' ? { paymentUrl } : undefined;
+
+    await router
+      .replace(
         {
-          pathname: `/social/payment/receipt/${id}` + `${((orderDetail?.paymentMethod?.includes('BNC')) ?? false) ? '/qris' : ''}`,
+          pathname:
+            `/social/payment/receipt/${id}` +
+            `${
+              orderDetail?.paymentMethod?.includes('BNC') ?? false
+                ? '/qris'
+                : ''
+            }`,
           query
         },
         undefined,
         { shallow: true }
-      ).catch(error => {
+      )
+      .catch(error => {
         toast(`${error as string}`);
       });
-    }
+  };
 
   return (
     <div className="pt-10">
@@ -399,12 +407,18 @@ const SuccessPaymentPage: React.FC = () => {
               <div className="w-full flex flex-col items-center justify-center">
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
-                  onClick={async() => { void handleViewQR() }}
+                  onClick={async () => {
+                    void handleViewQR();
+                  }}
                 >
                   {t('bnc.seeQRCode')}
                 </Button>
                 <Button
-                  className={`${((orderDetail?.paymentMethod?.includes('BNC')) ?? false) ? 'mt-4' : 'mt-10'} w-full text-sm font-semibold bg-seeds-button-green rounded-full capitalize`}
+                  className={`${
+                    orderDetail?.paymentMethod?.includes('BNC') ?? false
+                      ? 'mt-4'
+                      : 'mt-10'
+                  } w-full text-sm font-semibold bg-seeds-button-green rounded-full capitalize`}
                   onClick={() => {
                     void router.push(`/social`);
                   }}

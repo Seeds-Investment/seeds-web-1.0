@@ -22,6 +22,7 @@ interface Props {
   t: (key: string) => string;
   setConfirmRegistration: React.Dispatch<React.SetStateAction<boolean>>;
   setIsLinkedSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenModalLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CreateAccount: React.FC<Props> = ({
@@ -29,7 +30,8 @@ const CreateAccount: React.FC<Props> = ({
   router,
   t,
   setConfirmRegistration,
-  setIsLinkedSuccess
+  setIsLinkedSuccess,
+  setIsOpenModalLogin
 }) => {
   const [regisForm, setRegisForm] = useState<RegistrationForm>({
     namaDepan: '',
@@ -138,6 +140,10 @@ const CreateAccount: React.FC<Props> = ({
         type: 'individu'
       });
       toast.success(`Register ${response?.message as string}`);
+      if (response?.message === 'Log created successfully') {
+        setConfirmRegistration(false)
+        setIsOpenModalLogin(true)
+      }
     } catch (error: any) {
       toast.error(error.message);
     }

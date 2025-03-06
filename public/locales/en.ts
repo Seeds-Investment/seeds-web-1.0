@@ -2867,14 +2867,22 @@ export default {
     },
     register: {
       connectSeeds: 'Connect Seeds to Danamart',
+      connectDanamart: 'Connect Danamart to Seeds',
       automate:
         'Automate your investment journey by linking Seeds to Danamart effortlessly.',
       notLinked: 'Not Linked',
       linked: 'Linked',
       linkAccount: 'Link Phone Number and Email',
+      connectExisting: 'Connect with Existing Danamart Account',
+      back: 'Back',
+      connectAccount: 'Connect Account',
+      completeData: 'Complete Email and Phone Number',
+      makeSure: 'Make sure the email and phone number of your Seeds account are the same as those of your Danamart account',
+      notRegistered: 'Account not registered. Make sure your email and phone number in Seeds and Danamart are the same!',
+      connectSucceed: 'Account connected successfully',
       email: 'Email',
       phoneNumber: 'Phone Number',
-      createAccountButton: 'Create Danamart Account',
+      createAccountButton: 'Create Danamart New Account',
       createDanamartAccount: 'Create Account Danamart',
       createDesc:
         'Create a new Danamart account and unlock your investment potential.',
@@ -3427,6 +3435,25 @@ export default {
               text19: 'Close',
             }
           }
+        },
+        reportForm: {
+          title: 'Report',
+          text1: 'Name',
+          text2: 'Enter your name',
+          text3: 'Email',
+          text4: 'Enter your email',
+          text5: 'Phone Number',
+          text6: 'Enter your phone number',
+          text7: 'Statement',
+          text8: 'Enter statement title',
+          text9: 'Content',
+          text10: 'Enter report content',
+          text11: 'Submit Report',
+          text12: 'Report successfully submitted.',
+          text13: 'Report submission failed! Try again.',
+          validationForm: {
+            text1: 'This field is required'
+          },
         }
       },
       purchase: {

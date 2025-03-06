@@ -1,5 +1,6 @@
 import DetailTab from '@/components/danamart/offer/DetailTab';
 import ModalProgressOffer from '@/components/danamart/offer/ModalProgressOffer';
+import ModalReport from '@/components/danamart/offer/ModalReport';
 import ProgressStep from '@/components/danamart/offer/ProgressStep';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
@@ -38,6 +39,7 @@ const Prospectus = (): React.ReactElement => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const thumbnailRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [isShowReportForm, setIsShowReportForm] = useState<boolean>(false);
 
   const fetchDetailProspektus = async (): Promise<void> => {
     try {
@@ -323,8 +325,11 @@ const Prospectus = (): React.ReactElement => {
                 >
                   {t('danamart.offers.detail.buy')}
                 </Button>
-                <Typography className="font-semibold font-poppins text-[#3ac4a0] text-base flex items-center gap-2">
-                  <FiAlertOctagon size={20} />
+                <Typography
+                  onClick={() => { setIsShowReportForm(true) }}
+                  className="font-semibold font-poppins text-[#3ac4a0] text-base flex items-center gap-2 cursor-pointer"
+                >
+                  <FiAlertOctagon size={20}/>
                   {t('danamart.offers.detail.report')}
                 </Typography>
               </div>
@@ -462,6 +467,13 @@ const Prospectus = (): React.ReactElement => {
         <ModalProgressOffer
           setIsShowModalProgress={setIsShowModalProgress}
           isShowModalProgress={isShowModalProgress}
+        />
+      )}
+      {isShowReportForm && (
+        <ModalReport
+          url={prospectusOffer?.prospektus ?? ''}
+          setIsShowReportForm={setIsShowReportForm}
+          isShowReportForm={isShowReportForm}
         />
       )}
     </PageGradient>

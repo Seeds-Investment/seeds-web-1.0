@@ -1,6 +1,5 @@
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
-import Image from 'next/image';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Modal from '../../ui/modal/Modal';
@@ -37,7 +36,7 @@ const ModalProgressOffer: React.FC<Props> = ({
         rel="noopener noreferrer"
         className='mt-4'
       >
-        <Image
+        <img
           src={'https://dev.danamart.id/development/webapp/vendor/assets/img/progres-penawaran.png'}
           alt={'ProgressOffer'}
           className="w-full h-auto object-cover"

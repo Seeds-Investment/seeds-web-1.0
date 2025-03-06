@@ -9,25 +9,31 @@ import LinkedAccount from './LinkedAccount';
 
 interface Props {
   userInfo: UserInfo;
+  setIsOpenModalLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenModalRegister: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ModalRegister: React.FC<Props> = ({ userInfo }) => {
+const ModalRegister: React.FC<Props> = ({
+  userInfo,
+  setIsOpenModalLogin,
+  setIsOpenModalRegister
+}) => {
   const { t } = useTranslation();
   const router = useRouter();
 
   const [isLinkedSuccess, setIsLinkedSuccess] = useState<boolean>(false);
-  const [isConfirmRegistration, setIsConfirmRegistration] =
-    useState<boolean>(false);
+  const [isConfirmRegistration, setIsConfirmRegistration] = useState<boolean>(false);
+  const [isLinkExisting, setIsLinkExisting] = useState<boolean>(false);
 
   return (
     <Modal
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/25 flex justify-start items-start"
-      modalClasses={`z-50 animate-slide-down fixed bottom-0 md:top-[50%] md:left-[35%] md:right-[-35%] md:rounded-3xl rounded-t-3xl bg-white ${
+      modalClasses={`z-50 animate-slide-down fixed bottom-0 md:left-[35%] md:right-[-35%] md:rounded-3xl rounded-t-3xl bg-white ${
         !isLinkedSuccess && !isConfirmRegistration
-          ? 'mt-[-18rem] w-full h-[498px] md:w-[450px] md:h-[570px]'
+          ? 'mt-[-18rem] w-full h-fit min-h-[498px] md:w-[450px] md:h-fit'
           : isLinkedSuccess && !isConfirmRegistration
-          ? 'mt-[-12rem] w-full h-[374px] md:w-[450px] md:h-[398px]'
-          : 'mt-[-20rem] w-full md:w-[493px] h-[634px] overflow-y-auto md:overflow-y-visible'
+            ? 'mt-[-12rem] w-full h-fit md:w-[450px]'
+            : 'mt-[-20rem] w-full md:w-[493px] h-[634px] overflow-y-auto md:overflow-y-visible'
       }`}
     >
       {!isLinkedSuccess && !isConfirmRegistration && (
@@ -36,6 +42,10 @@ const ModalRegister: React.FC<Props> = ({ userInfo }) => {
           router={router}
           userInfo={userInfo}
           setIsLinkedSuccess={setIsLinkedSuccess}
+          isLinkExisting={isLinkExisting}
+          setIsLinkExisting={setIsLinkExisting}
+          setIsOpenModalLogin={setIsOpenModalLogin}
+          setIsOpenModalRegister={setIsOpenModalRegister}
         />
       )}{' '}
       {isLinkedSuccess && !isConfirmRegistration && (
@@ -52,6 +62,7 @@ const ModalRegister: React.FC<Props> = ({ userInfo }) => {
           t={t}
           setIsLinkedSuccess={setIsLinkedSuccess}
           setConfirmRegistration={setIsConfirmRegistration}
+          setIsOpenModalLogin={setIsOpenModalLogin}
         />
       )}
     </Modal>

@@ -329,3 +329,17 @@ export const getDetailProspektus = async (id: string): Promise<any> => {
     throw new Error(error.response.data.message);
   }
 };
+
+export const validateExistingAccount = async (
+  formData: FormData
+): Promise<any> => {
+  try {
+    const response = await danamartUpdateUserInformation.post(
+      `/daftar/email/checkAccount`,
+      formData
+    );
+    return response.data;
+  } catch (error: any) {
+    await Promise.reject(error);
+  }
+};

@@ -4,7 +4,6 @@ import withAuthDanamart from '@/helpers/withAuthDanamart';
 import { getAccountInformation } from '@/repository/danamart/danamart.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type UserInfo } from '@/utils/interfaces/user.interface';
-import { Button } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -16,8 +15,7 @@ const Danamart = (): React.ReactElement => {
   }>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOpenModalRegister, setIsOpenModalRegister] =
-    useState<boolean>(false);
+  const [isOpenModalRegister, setIsOpenModalRegister] = useState<boolean>(false);
   const [isOpenModalLogin, setIsOpenModalLogin] = useState<boolean>(false);
 
   const fetchUserInfo = async (): Promise<void> => {
@@ -31,8 +29,7 @@ const Danamart = (): React.ReactElement => {
 
   const fetchAccountStatus = async (): Promise<void> => {
     try {
-      const response: { email: string; phone_number: string } =
-        await getAccountInformation();
+      const response: { email: string; phone_number: string } = await getAccountInformation();
       setUserDanamartInformation(response);
     } catch (error: any) {
       toast.error(error.message);
@@ -64,7 +61,11 @@ const Danamart = (): React.ReactElement => {
   return (
     <div>
       {isOpenModalRegister && userData !== undefined && (
-        <ModalRegister userInfo={userData} />
+        <ModalRegister
+          userInfo={userData}
+          setIsOpenModalLogin={setIsOpenModalLogin}
+          setIsOpenModalRegister={setIsOpenModalRegister}
+        />
       )}
       {isOpenModalLogin && userData !== undefined && (
         <ModalLogin
@@ -73,25 +74,6 @@ const Danamart = (): React.ReactElement => {
           setIsLoading={setIsLoading}
           isLoading={isLoading}
         />
-      )}
-      <div>Danamart Page</div>
-      {localStorage.getItem('accessToken-danamart') !== null ? (
-        <Button
-          onClick={() => {
-            localStorage.removeItem('accessToken-danamart');
-            window.location.reload();
-          }}
-        >
-          Logout
-        </Button>
-      ) : (
-        <Button
-          onClick={() => {
-            setIsOpenModalLogin(true);
-          }}
-        >
-          Login
-        </Button>
       )}
     </div>
   );

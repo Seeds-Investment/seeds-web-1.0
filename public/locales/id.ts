@@ -2799,14 +2799,22 @@ export default {
     },
     register: {
       connectSeeds: 'Hubungkan Seeds dengan Danamart',
+      connectDanamart: 'Hubungkan Danamart ke Seeds',
       automate:
         'Optimalkan perjalanan investasi anda secara mudah dengan menghubungkan Seeds ke Danamart.',
       notLinked: 'Tidak Terhubung',
       linked: 'Terhubung',
       linkAccount: 'Hubungkan Nomor Telepon dan Email',
+      connectExisting: 'Hubungkan dengan Akun Danamart yang Sudah Ada',
+      back: 'Kembali',
+      connectAccount: 'Hubungkan Akun',
+      completeData: 'Lengkapi Email dan Nomor Telepon',
+      makeSure: 'Pastikan email dan nomor telepon akun Seeds Anda sama dengan email dan nomor telepon akun Danamart Anda',
+      notRegistered: 'Akun tidak terdaftar. Pastikan email dan nomor telepon akun Seeds dan Danamart anda sama!',
+      connectSucceed: 'Akun berhasil terhubung',
       email: 'Email',
       phoneNumber: 'Nomor Telepon',
-      createAccountButton: 'Buat Akun Danamart',
+      createAccountButton: 'Buat Akun Baru Danamart',
       createDanamartAccount: 'Buat Akun Danamart',
       createDesc: 'Buat akun Danamart baru dan buka potensi investasi anda.',
       no: 'Tidak',
@@ -3361,6 +3369,25 @@ export default {
               text19: 'Tutup',
             }
           }
+        },
+        reportForm: {
+          title: 'Laporan',
+          text1: 'Nama',
+          text2: 'Masukan nama anda',
+          text3: 'Email',
+          text4: 'Masukan email anda',
+          text5: 'Nomor Handphone',
+          text6: 'Masukan nomor handphone',
+          text7: 'Pernyataan',
+          text8: 'Masukan judul pernyataan',
+          text9: 'Isi',
+          text10: 'Masukan isi laporan',
+          text11: 'Kirim Laporan',
+          text12: 'Laporan berhasil dikirimkan.',
+          text13: 'Laporan gagal dikirimkan! Coba lagi.',
+          validationForm: {
+            text1: 'Kolom ini wajib diisi',
+          },
         }
       },
       purchase: {

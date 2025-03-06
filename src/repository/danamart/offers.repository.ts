@@ -1,3 +1,4 @@
+import { type ReportFormI } from '@/hooks/danamart/usePostReport';
 import baseAxios from '@/utils/common/axios';
 import { type PurchaseI } from '@/utils/interfaces/danamart/offers.interface';
 import axios from 'axios';
@@ -255,5 +256,29 @@ export const cancelPayment = async (
     return response;
   } catch (error: any) {
     throw new Error(error.response.data.message);
+  }
+};
+
+export const postReport = async (
+  formData: ReportFormI
+): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+    const response = await danamartPurchaseService.post(
+      `/pemodal/Prospektus/laporkan`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    await Promise.reject(error);
   }
 };

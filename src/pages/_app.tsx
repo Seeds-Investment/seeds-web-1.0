@@ -72,6 +72,7 @@ function App({
     router.pathname.startsWith('/chat') ||
     router.pathname.startsWith('/faq') ||
     router.pathname.startsWith('/withdrawal') ||
+    router.pathname.startsWith('/danamart') ||
     router.pathname.startsWith('/microsite-quiz');
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';

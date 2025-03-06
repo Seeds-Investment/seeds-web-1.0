@@ -1,3 +1,4 @@
+import ModalPayBattle from '@/components/team-battle/ModalPayBattle';
 import PopUpJoinBattle from '@/components/team-battle/PopUpJoinBattle';
 import PopUpPrizeBattle from '@/components/team-battle/popUpPrizeBattle';
 import PopUpRegistrationClosed from '@/components/team-battle/popUpRegistrationClosed';
@@ -6,8 +7,15 @@ import { standartCurrency } from '@/helpers/currency';
 import { getBattlePeriod } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
+import { getTransactionSummary } from '@/repository/seedscoin.repository';
+import { getSubscriptionStatus } from '@/repository/subscription.repository';
 import { getBattleDetail } from '@/repository/team-battle.repository';
+import {
+  selectPromoCodeValidationResult,
+  setPromoCodeValidationResult
+} from '@/store/redux/features/promo-code';
 import i18n from '@/utils/common/i18n';
+import { type StatusSubscription } from '@/utils/interfaces/subscription.interface';
 import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Button, Typography } from '@material-tailwind/react';
@@ -29,33 +37,52 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IoArrowBack, IoTriangleSharp } from 'react-icons/io5';
 import { LuDot } from 'react-icons/lu';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const MainTeamBattle = (): React.ReactElement => {
   const router = useRouter();
   const { id } = router.query;
   const { t } = useTranslation();
-  // const languageCtx = useContext(LanguageContext);
+  const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [showTnc, setShowTnc] = useState<boolean>(false);
   const [showPeriod, setShowPeriod] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [showPopUpJoinBattle, setShowPopUpJoinBattle] = useState<boolean>(false);
-  const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] = useState<boolean>(false);
-  const [showPopUpRegistrationClosed, setShowPopUpRegistrationClosed] = useState<boolean>(false);
+  const [showPopUpJoinBattle, setShowPopUpJoinBattle] =
+    useState<boolean>(false);
+  const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] =
+    useState<boolean>(false);
+  const [showPopUpRegistrationClosed, setShowPopUpRegistrationClosed] =
+    useState<boolean>(false);
   const [data, setData] = useState<TeamBattleDetail>();
   const [selectedSponsor, setSelectedSponsor] = useState('');
+  const [isModalPaymentOpen, setIsModalPaymentOpen] = useState(false);
+  const [dataSubscription, setDataSubscription] =
+    useState<StatusSubscription | null>(null);
+  const [totalAvailableCoins, setTotalAvailableCoins] = useState<number>(0);
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
 
-  const handleShowPopUpJoinBattle = (): void => {
-    setShowPopUpJoinBattle(!showPopUpJoinBattle);
+  const getSubscriptionPlanStatus = async (): Promise<void> => {
+    try {
+      const response: StatusSubscription = await getSubscriptionStatus();
+      if (response !== undefined) {
+        setDataSubscription(response);
+      }
+    } catch {}
   };
 
-  const handleShowPopUpPrizeBattle = (): void => {
-    setShowPopUpPrizeBattle(!showPopUpPrizeBattle);
-  };
-  
-  const handleShowPopUpRegistrationClosed = (): void => {
-    setShowPopUpRegistrationClosed(!showPopUpRegistrationClosed);
+  const handleGetSeedsCoin = async (): Promise<void> => {
+    try {
+      const dataCoins = await getTransactionSummary();
+      setTotalAvailableCoins(dataCoins?.data?.total_available_coins ?? 0);
+    } catch (error: any) {
+      toast.error(
+        `Error get data coins: ${error?.response?.data?.message as string}`
+      );
+    }
   };
 
   const handleGetDetailBattle = async (): Promise<void> => {
@@ -80,6 +107,16 @@ const MainTeamBattle = (): React.ReactElement => {
   };
 
   const handleRedirectJoin = async (): Promise<void> => {
+    if (isRegistrationClosed()) {
+      setShowPopUpRegistrationClosed(true);
+      return;
+    }
+
+    if (data?.is_paid === false && !data?.is_joined) {
+      setIsModalPaymentOpen(true);
+      return;
+    }
+
     if (data?.is_joined ?? false) {
       if (isStarted()) {
         await router.push(`/play/team-battle/${id as string}/stage`);
@@ -87,11 +124,7 @@ const MainTeamBattle = (): React.ReactElement => {
         await router.push(`/play/team-battle/${id as string}/waiting`);
       }
     } else {
-      if (isRegistrationClosed()) {
-        handleShowPopUpRegistrationClosed()
-      } else {
-        handleShowPopUpJoinBattle();
-      }
+      setShowPopUpJoinBattle(true);
     }
   };
 
@@ -123,13 +156,20 @@ const MainTeamBattle = (): React.ReactElement => {
     fetchData()
       .then()
       .catch(() => {});
+    if (promoCodeValidationResult?.id !== id) {
+      dispatch(setPromoCodeValidationResult(0));
+    }
   }, []);
 
   useEffect(() => {
     if (id !== undefined) {
       void handleGetDetailBattle();
     }
-  }, [id]);
+    if (userInfo?.preferredCurrency !== undefined) {
+      void handleGetSeedsCoin();
+    }
+    void getSubscriptionPlanStatus();
+  }, [id, userInfo]);
 
   return (
     <>
@@ -137,7 +177,7 @@ const MainTeamBattle = (): React.ReactElement => {
         <div className="flex justify-center items-center relative">
           <div
             className="absolute text-white left-0 lg:w-[50px] lg:h-[50px] w-[24px] h-[24px] hover:opacity-80 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
-            onClick={async() => {
+            onClick={async () => {
               await router.push('/play/team-battle');
             }}
           >
@@ -160,7 +200,7 @@ const MainTeamBattle = (): React.ReactElement => {
                   alt={'BattleSecondMedal'}
                 />
               </div>
-              <div className='font-poppins'>2nd</div>
+              <div className="font-poppins">2nd</div>
             </div>
             <div className="font-semibold">
               {`${standartCurrency(data?.prize[1]?.amount ?? 0).replace(
@@ -180,7 +220,7 @@ const MainTeamBattle = (): React.ReactElement => {
                   alt={'GoldCrown'}
                 />
               </div>
-              <div className='font-poppins'>1st</div>
+              <div className="font-poppins">1st</div>
             </div>
             <div className="font-semibold text-lg">
               {`${standartCurrency(data?.prize[0]?.amount ?? 0).replace(
@@ -200,7 +240,7 @@ const MainTeamBattle = (): React.ReactElement => {
                   alt={'BattleThirdMedal'}
                 />
               </div>
-              <div className='font-poppins'>3rd</div>
+              <div className="font-poppins">3rd</div>
             </div>
             <div className="font-semibold">
               {`${standartCurrency(data?.prize[2]?.amount ?? 0).replace(
@@ -210,7 +250,9 @@ const MainTeamBattle = (): React.ReactElement => {
             </div>
           </div>
           <div
-            onClick={handleShowPopUpPrizeBattle}
+            onClick={() => {
+              setShowPopUpPrizeBattle(!showPopUpPrizeBattle);
+            }}
             className="absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-lg cursor-pointer hover:bg-opacity-70 duration-300"
           >
             <Image
@@ -445,7 +487,9 @@ const MainTeamBattle = (): React.ReactElement => {
                   <div className="mt-4 hidden lg:flex">
                     <Button
                       onClick={handleRedirectJoin}
-                      className={`${isRegistrationClosed() ? 'bg-[#D9D9D9]' : 'bg-[#2934B2]'} w-full rounded-full border-[2px] border-white text-sm font-semibold font-poppins`}
+                      className={`${
+                        isRegistrationClosed() ? 'bg-[#D9D9D9]' : 'bg-[#2934B2]'
+                      } w-full rounded-full border-[2px] border-white text-sm font-semibold font-poppins`}
                     >
                       {data?.is_joined ?? false
                         ? t('teamBattle.mainPage.play')
@@ -595,7 +639,9 @@ const MainTeamBattle = (): React.ReactElement => {
                 </div>
 
                 <div
-                  onClick={handleShowPopUpPrizeBattle}
+                  onClick={() => {
+                    setShowPopUpPrizeBattle(!showPopUpPrizeBattle);
+                  }}
                   className="absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-md cursor-pointer hover:bg-opacity-70 duration-300"
                 >
                   <Image
@@ -687,7 +733,9 @@ const MainTeamBattle = (): React.ReactElement => {
           <div className="mt-6">
             <Button
               onClick={handleRedirectJoin}
-              className={`${isRegistrationClosed() ? 'bg-[#D9D9D9]' : 'bg-[#2934B2]'} w-full rounded-full border-[2px] border-white text-sm font-semibold font-poppins`}
+              className={`${
+                isRegistrationClosed() ? 'bg-[#D9D9D9]' : 'bg-[#2934B2]'
+              } w-full rounded-full border-[2px] border-white text-sm font-semibold font-poppins`}
             >
               {data?.is_joined ?? false
                 ? t('teamBattle.mainPage.play')
@@ -698,22 +746,41 @@ const MainTeamBattle = (): React.ReactElement => {
       </div>
       <PopUpJoinBattle
         isOpen={showPopUpJoinBattle}
-        onClose={handleShowPopUpJoinBattle}
+        onClose={() => {
+          setShowPopUpJoinBattle(!showPopUpJoinBattle);
+        }}
         battleId={id as string}
       />
       {userInfo !== undefined && data !== undefined && (
         <PopUpPrizeBattle
           isOpen={showPopUpPrizeBattle}
-          onClose={handleShowPopUpPrizeBattle}
+          onClose={() => {
+            setShowPopUpPrizeBattle(!showPopUpPrizeBattle);
+          }}
           userInfo={userInfo}
           data={data}
         />
       )}
       <PopUpRegistrationClosed
         isOpen={showPopUpRegistrationClosed}
-        onClose={handleShowPopUpRegistrationClosed}
+        onClose={() => {
+          setShowPopUpRegistrationClosed(!showPopUpRegistrationClosed);
+        }}
         currentStage={data?.status ?? ''}
       />
+      {isModalPaymentOpen && userInfo !== undefined && data !== undefined && (
+        <ModalPayBattle
+          onClose={() => {
+            setIsModalPaymentOpen(false);
+          }}
+          userInfo={userInfo}
+          detailBattle={data}
+          dataSubscription={dataSubscription}
+          totalAvailableCoins={totalAvailableCoins}
+          promoCodeValidation={promoCodeValidationResult}
+          setPopUpJoinBattle={setShowPopUpJoinBattle}
+        />
+      )}
     </>
   );
 };

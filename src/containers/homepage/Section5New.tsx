@@ -20,7 +20,12 @@ import CardPeople from './trending/section5.component/CardPeople.component';
 import CardPlayHomepage from './trending/section5.component/CardPlayHomepage.component';
 import CardSeedsPedia from './trending/section5.component/CardSeedsPedia.component';
 
-const categories = [
+interface categorie {
+  label: string;
+  value: string;
+}
+
+const categories: categorie[] = [
   {
     label: 'SeedsPedia',
     value: 'seedspedia'
@@ -62,7 +67,7 @@ const initialParamsPeople = {
 
 const initialParamsBanner = {
   page: 1,
-  limit: 10
+  type: 'exclusive'
 };
 
 const Section5New: React.FC = () => {
@@ -159,70 +164,68 @@ const Section5New: React.FC = () => {
 
   return (
     <div className="w-full h-auto cursor-default">
-      <div className="flex md:w-full justify-around gap-0">
-        <Tabs value={multiTab}>
-          <TabsHeader className="w-full justify-around bg-white md:gap-6 gap-2 overflow-x-auto">
-            {categories.map((item, idx: number) => (
-              <Button
-                className={`w-full flex justify-center items-center md:w-44 h-fit px-10 ${
+      <Tabs value={multiTab}>
+        <TabsHeader className="w-full flex justify-around bg-white md:gap-6 gap-2 py-2 overflow-x-auto">
+          {categories.map((item, idx: number) => (
+            <Button
+              className={`w-full flex justify-center items-center md:w-96 h-fit px-10 ${
+                activeButton !== idx
+                  ? 'border border-[#BDBDBD] hover:bg-white'
+                  : 'border bg-[#3AC4A0] hover:bg-[3AC4A0]'
+              } `}
+              variant="text"
+              color="gray"
+              key={idx}
+              onClick={() => {
+                handleMultiTabChange(item.value);
+                setActiveButton(idx);
+              }}
+              value={item.value}
+            >
+              <Typography
+                className={`text-xs md:text-center ${
                   activeButton !== idx
-                    ? 'border border-[#BDBDBD] hover:bg-white'
-                    : 'border bg-[#3AC4A0] hover:bg-[3AC4A0]'
-                } `}
-                variant="text"
-                color="gray"
-                key={idx}
-                onClick={() => {
-                  handleMultiTabChange(item.value);
-                  setActiveButton(idx);
-                }}
-                value={item.value}
+                    ? 'font-poppins text-[#BDBDBD]'
+                    : 'font-poppins text-[#FFFFFF] font-semibold'
+                }`}
               >
-                <Typography
-                  className={`text-xs md:text-center ${
-                    activeButton !== idx
-                      ? 'font-poppins text-[#BDBDBD]'
-                      : 'font-poppins text-[#FFFFFF] font-semibold'
-                  }`}
-                >
-                  {item.label}
-                </Typography>
-              </Button>
-            ))}
-          </TabsHeader>
-          <TabsBody>
-            {categories.map(({ value }) => {
-              return (
-                <TabPanel key={value} value={value}>
-                  <div className="flex w-full">
-                    {!isLoading ? (
-                      multiTab === 'seedspedia' ? (
-                        <CardSeedsPedia />
-                      ) : multiTab === 'promotion' ? (
-                        <CardBannerPromotion data={dataBanner} />
-                      ) : multiTab === 'people' ? (
-                        <CardPeople data={dataPeople} />
-                      ) : multiTab === 'circle' ? (
-                        <CardCircle data={circleData} />
-                      ) : multiTab === 'play' ? (
-                        <CardPlayHomepage />
-                      ) : (
-                        <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
-                          Data Not Found
-                        </Typography>
-                      )
+                {item.label}
+              </Typography>
+            </Button>
+          ))}
+        </TabsHeader>
+        <TabsBody>
+          {categories.map(({ value }) => {
+            return (
+              <TabPanel key={value} value={value}>
+                <div className="flex w-full h-fit">
+                  {!isLoading ? (
+                    multiTab === 'seedspedia' ? (
+                      <CardSeedsPedia />
+                    ) : multiTab === 'promotion' ? (
+                      <CardBannerPromotion data={dataBanner} />
+                    ) : multiTab === 'people' ? (
+                      <CardPeople data={dataPeople} />
+                    ) : multiTab === 'circle' ? (
+                      <CardCircle data={circleData} />
+                    ) : multiTab === 'play' ? (
+                      <CardPlayHomepage />
                     ) : (
                       <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
-                        Loading...
+                        Data Not Found
                       </Typography>
-                    )}
-                  </div>
-                </TabPanel>
-              );
-            })}
-          </TabsBody>
-        </Tabs>
-      </div>
+                    )
+                  ) : (
+                    <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center ">
+                      Loading...
+                    </Typography>
+                  )}
+                </div>
+              </TabPanel>
+            );
+          })}
+        </TabsBody>
+      </Tabs>
     </div>
   );
 };

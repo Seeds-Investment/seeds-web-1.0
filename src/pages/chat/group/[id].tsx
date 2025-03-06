@@ -2,7 +2,6 @@ import BackNav from '@/assets/circle-page/back_nav.svg';
 import MoreButton from '@/assets/more-option/more_vertical.svg';
 import AddGroupMembers from '@/components/chat/AddGroupMembers';
 import EditInfoGroup from '@/components/chat/EditInfoGroup';
-import ModalShareGroup from '@/components/chat/ModalShareGroup';
 import LeaveCommunityPopUp from '@/components/chat/PopUpLeave';
 import SearchGroupMembers from '@/components/chat/SearchGroupMembers';
 import Loading from '@/components/popup/Loading';
@@ -34,7 +33,6 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuSearch } from 'react-icons/lu';
 import { MdOutlineGroupAdd } from 'react-icons/md';
-import { RiLink } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import DefaultAvatar from '../../../../public/assets/chat/default-avatar.svg';
 import EditButton from '../../../../public/assets/chat/edit-icon.svg';
@@ -58,7 +56,7 @@ const DetailGroup: React.FC = () => {
   const [isOpenSearchMembers, setIsOpenSearchMembers] =
     useState<boolean>(false);
   const [isOpenAddMembers, setIsOpenAddMembers] = useState<boolean>(false);
-  const [isShareModal, setIsShareModal] = useState<boolean>(false);
+  // const [isShareModal, setIsShareModal] = useState<boolean>(false);
 
   const fetchGroupDetail = async (): Promise<void> => {
     try {
@@ -224,7 +222,7 @@ const DetailGroup: React.FC = () => {
                     />
                   </div>
                 )}
-                <div
+                {/*                 <div
                   onClick={() => {
                     setIsShareModal(prev => !prev);
                   }}
@@ -235,7 +233,7 @@ const DetailGroup: React.FC = () => {
                     size={24}
                     className="md:w-6 md:h-6 w-5 h-5"
                   />
-                </div>
+                </div> */}
                 <div
                   onClick={() => {
                     setIsOpenSearchMembers(prev => !prev);
@@ -336,14 +334,14 @@ const DetailGroup: React.FC = () => {
           onClick={handleLeaveGroup}
         />
       )}
-      {isShareModal && (
+      {/*       {isShareModal && (
         <ModalShareGroup
           onClose={() => {
             setIsShareModal(false);
           }}
           groupId={id as string}
         />
-      )}
+      )} */}
       <SearchGroupMembers
         isOpenSearchMembers={isOpenSearchMembers}
         setIsOpenSearchMembers={setIsOpenSearchMembers}

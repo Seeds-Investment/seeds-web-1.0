@@ -40,7 +40,8 @@ const pathsWithoutHeader = [
   'auth',
   'story-boarding',
   'term-condition',
-  'social'
+  'social',
+  'ads'
 ];
 
 function App({
@@ -63,7 +64,9 @@ function App({
     router.pathname.startsWith('/social') ||
     router.pathname.startsWith('/connect') ||
     router.pathname.startsWith('/play') ||
+    router.pathname.startsWith('/nft') ||
     router.pathname.startsWith('/academy') ||
+    router.pathname.startsWith('/seedsplan') ||
     router.pathname.startsWith('/user-setting') ||
     router.pathname.startsWith('/my-profile') ||
     router.pathname.startsWith('/chat') ||

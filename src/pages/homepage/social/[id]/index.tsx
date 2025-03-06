@@ -35,7 +35,8 @@ const initialUserInfo = {
   phone: '',
   preferredLanguage: '',
   verified: false,
-  _pin: ''
+  _pin: '',
+  preferredCurrency: ''
 };
 
 interface UserInfo {
@@ -51,6 +52,7 @@ interface UserInfo {
   preferredLanguage: string;
   _pin: string;
   verified: boolean;
+  preferredCurrency: string;
 }
 
 interface Filter {
@@ -169,6 +171,7 @@ const SocialWall = (): React.ReactElement => {
         playId={id as string}
       />
       <div className="w-full flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
+        sdf
         {/* Social Wall Title */}
         <div className="flex justify-start md:justify-between w-full">
           <Typography className="text-xl font-semibold">
@@ -183,14 +186,12 @@ const SocialWall = (): React.ReactElement => {
             </Typography>
           )}
         </div>
-
         {/* Social Wall Description */}
         <div className="flex justify-start w-full mt-2">
           <Typography className="text-sm md:text-md text-[#7C7C7C]">
             {t('tournament.social.description')}
           </Typography>
         </div>
-
         {/* Social Highlights */}
         <div className="flex w-full mt-4 overflow-x-scroll gap-2 pb-4 border-b-2 border-[#E2E2E2]">
           {/* Highlight Card */}
@@ -275,7 +276,6 @@ const SocialWall = (): React.ReactElement => {
             </div>
           )}
         </div>
-
         {/* Social Posts */}
         <div className="w-full">
           {!loadingPostList ? (
@@ -319,7 +319,6 @@ const SocialWall = (): React.ReactElement => {
             </div>
           )}
         </div>
-
         {/* Social Play Pagination */}
         <div className="flex justify-center mx-auto my-8">
           <SocialWallPagination

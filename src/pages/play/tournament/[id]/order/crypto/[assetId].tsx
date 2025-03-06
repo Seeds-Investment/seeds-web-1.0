@@ -222,7 +222,9 @@ const BuyPage: React.FC = () => {
 
   const fetchPlayPortfolio = async (): Promise<void> => {
     try {
-      const response = await getPlayAssets(id as string, assetId as string);
+      const response = await getPlayAssets(id as string, assetId as string, {
+        currency: userInfo?.preferredCurrency as string
+      });
       setPortfolio(response.data);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -510,11 +512,12 @@ const BuyPage: React.FC = () => {
             {t('buyAsset.text5')}
           </Typography>
           <Typography className="z-10 text-3xl font-poppins font-semibold  text-[#FFFFFF]">
+            {userInfo?.preferredCurrency ?? 'IDR'}{' '}
             {`${standartCurrency(
               router.query?.transaction === 'buy'
                 ? ballance?.balance ?? 0
                 : ballance?.balance ?? 0
-            ).replace('Rp', userInfo?.preferredCurrency as string)}`}{' '}
+            )}`}
           </Typography>
         </div>
         <div className="relative bg-white mb-[-2] w-full h-[12px]"></div>
@@ -653,7 +656,8 @@ const BuyPage: React.FC = () => {
             {router.query.transaction === 'buy' && (
               <div className="mt-4 mx-2 border border-1 rounded-[8px] border-[#E9E9E9] p-2">
                 <Typography className="mb-2 font-poppins text-base font-semibold text-black">
-                  {t('buyAsset.text10')} ({prefCurrency})
+                  {t('buyAsset.text10')} (
+                  {(prefCurrency ?? 'IDR').toUpperCase()})
                 </Typography>
                 {router.query.transaction === 'buy' && (
                   <input
@@ -672,7 +676,7 @@ const BuyPage: React.FC = () => {
                     placeholder="Insert nominal"
                   />
                 )}
-                <div className="w-full mt-3 lg:mt-0">
+                <div className="w-full mt-3 lg:mt-2">
                   <Typography className="font-poppins text-base font-semibold text-black mb-4">
                     {t('buyAsset.text20')}
                   </Typography>
@@ -981,7 +985,7 @@ const BuyPage: React.FC = () => {
                           {t('playSimulation.transactionFee')}
                         </Typography>
                         <Typography className="text-[#262626] font-semibold text-xs">
-                          0
+                          {userInfo?.preferredCurrency ?? 'IDR'} 0
                         </Typography>
                       </div>
                       <div className="flex justify-between mt-4">
@@ -990,21 +994,17 @@ const BuyPage: React.FC = () => {
                         </Typography>
                         {router.query.transaction === 'buy' ? (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
-                            {standartCurrency(amount).replace(
-                              'Rp',
-                              userInfo?.preferredCurrency as string
-                            )}
+                            {userInfo?.preferredCurrency ?? 'IDR'}{' '}
+                            {standartCurrency(amount)}
                           </Typography>
                         ) : (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
+                            {userInfo?.preferredCurrency ?? 'IDR'}{' '}
                             {standartCurrency(
                               +lotSell *
                                 (lastPrice[
                                   prefCurrency as PreferredCurrencyI
                                 ] ?? 0)
-                            ).replace(
-                              'Rp',
-                              userInfo?.preferredCurrency as string
                             )}
                           </Typography>
                         )}

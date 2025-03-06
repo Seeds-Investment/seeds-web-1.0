@@ -154,7 +154,7 @@ const CardPlayHomepage: React.FC = () => {
                 }}
                 className={`${
                   activeTab === value ? 'text-[#27A590]' : 'text-[#7C7C7C]'
-                } 2xl:mx-[90px] md:mx-[10px] lg:mx-[50px] xl:mx-[80px] text-xs md:text-[18.5px] font-poppins font-normal md:font-semibold z-10 w-auto`}
+                } font-poppins font-normal md:font-semibold md:text-[18.5px] text-xs z-10`}
               >
                 {label}
               </Tab>
@@ -167,7 +167,7 @@ const CardPlayHomepage: React.FC = () => {
                 value={value}
                 className="flex justify-center p-0 my-4"
               >
-                {content}
+                {!isLoading && content}
               </TabPanel>
             ))}
           </TabsBody>

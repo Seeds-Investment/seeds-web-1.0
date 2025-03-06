@@ -5,16 +5,13 @@ import SubmitButton from '@/components/SubmitButton';
 import { standartCurrency } from '@/helpers/currency';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Input, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import {
-  type DetailTournament,
-  type Payment,
-  type UserData
-} from './PaymentList';
+import { type DetailTournament, type Payment } from './PaymentList';
 import InlineText from './components/InlineText';
 
 interface WalletFormProps {
@@ -28,7 +25,7 @@ interface WalletFormProps {
   ) => Promise<void>;
   dataPost: DetailTournament;
   numberMonth?: number;
-  userInfo: UserData;
+  userInfo: UserInfo;
   newPromoCodeDiscount: number;
 }
 

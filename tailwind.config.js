@@ -38,7 +38,9 @@ module.exports = withMT({
         'quiz-gradient': 'linear-gradient(88deg, #10A8AD 0%, #79F0B8 137.56%)',
         slashedBanner:
           "url('/src/assets/play/tournament/bannerLeaderboard.png')",
-        userInfoBackground: "url('../assets/userInfoBackground.svg')"
+        userInfoBackground: "url('../assets/userInfoBackground.svg')",
+        'gradient-radial-subs':
+          'radial-gradient(ellipse at center, #EED69C, #FABE2C)'
       },
       backgroundSize: {
         '50%': '50%',
@@ -56,7 +58,21 @@ module.exports = withMT({
         270: '270deg'
       },
       boxShadow: {
-        center: '0 0px 1px 1px rgba(0, 0, 0, 0.05)'
+        center: '0 0px 1px 1px rgba(0, 0, 0, 0.05)',
+        'subs-complete': `
+          inset 0 8px 24px 16px #FFFFFF3e, 
+          inset 0 -24px 32px 0 #FFFFFF3e, 
+          inset 0 0 12px 0 #FFFFFF, 
+          0 6px 15px rgba(250, 190, 44, 0.5), 
+          0 2px 20px rgba(238, 214, 156, 0.5)
+        `,
+        'subs-complete-hover': `
+          inset 0 8px 24px 16px #FFFFFF3e, 
+          inset 0 -24px 32px 0 #FFFFFF3e, 
+          inset 0 0 12px 0 #FFFFFF, 
+          0 8px 18px rgba(250, 190, 44, 0.6), 
+          0 4px 25px rgba(238, 214, 156, 0.6)
+        `
       },
       animation: {
         'slide-down': 'slide-down 300ms ease-out forwards',

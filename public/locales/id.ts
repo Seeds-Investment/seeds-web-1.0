@@ -701,7 +701,10 @@ export default {
     nextButton: 'Lanjut'
   },
   ProfilePage: {
-    title: 'Profil Saya'
+    title: 'Profil Saya',
+    subscriptionButton: 'Berlangganan Seeds Plan',
+    yourPackage: 'Paket Anda',
+    active: 'Aktif'
   },
   DeleteReasonAccountPopUp: {
     title: 'Apa alasan kamu menghapus akun ini?',
@@ -938,7 +941,10 @@ export default {
       'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
     limitPurchaseMessage:
       'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
-    limitDailyMessage: 'Kuota kode promo sudah mencapai limit'
+    limitDailyMessage: 'Kuota kode promo sudah mencapai limit',
+    specificFeature: 'Kode promo hanya untuk produk tertentu',
+    specificReferral: 'Kode promo hanya untuk kode referal tertentu',
+    invalidPromo: 'Kode promo tidak valid'
   },
   temporary: {
     welcome: {
@@ -1197,7 +1203,11 @@ export default {
       paymentFailed: 'Pembayaran Gagal',
       paymentFailedDescription:
         'Kami tidak bisa memproses pembayaran anda. Cek koneksi internet anda dan coba lagi.',
-      paymentFailedWarning: 'Pembayaran Langganan Premium Gagal'
+      paymentFailedWarning: 'Pembayaran Langganan Premium Gagal',
+      getAccessToUnlock: 'Dapatkan akses untuk membuka membershipmu',
+      enjoyUnlimitedAccess:
+        'Nikmati akses tak terbatas ke semua konten premium dari berbagai ahli.',
+      getFullAccess: 'Dapatkan akses penuh dengan membayar sekali seumur hidup'
     }
   },
 
@@ -1626,10 +1636,9 @@ export default {
       text4: 'Hubungi Kami'
     },
     section12: {
-      text1: 'Komunitas Kami',
-      text2:
-        'Kami berkomitmen untuk meningkatkan literasi finansial Generasi Z dan milenial di Asia Tenggara.',
-      text3: 'Program Mitra'
+      text1: 'Kemitraan Khusus',
+      text2: 'Kemitraan Lainnya',
+      text3: 'Program Kemitraan'
     }
   },
   playSimulation: {
@@ -1952,6 +1961,37 @@ export default {
       'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
     winnerAlertMessage8: 'Klaim Hadiah Disini'
   },
+  bnc: {
+    payment: 'Pembayaran',
+    scanDescription:
+      'Pindai dengan Aplikasi Bank atau Aplikasi Pembayaran Anda',
+    instructions: {
+      text1: 'Ambil gambar tangkapan layar dari Kode QR Anda',
+      text2: 'Buka aplikasi bank atau pembayaran anda',
+      text3: 'Selesaikan pembayaran',
+      text4: "Klik tombol 'Selesai' dibawah"
+    },
+    done: 'Selesai',
+    seeQRCode: 'Lihat Kode QR',
+    expired: {
+      text1: 'Kode QR Anda telah kadaluarsa',
+      text2:
+        'Lakukan pembelian ulang dan pastikan pembayaran anda selesai tepat waktu'
+    },
+    repeat: 'Ulangi Pembelian',
+    completePayment: 'Selesaikan pembayaran dalam',
+    clock: {
+      day: 'hari',
+      days: 'hari',
+      hour: 'jam',
+      hours: 'jam',
+      minute: 'menit',
+      minutes: 'menit',
+      second: 'detik',
+      seconds: 'detik',
+      and: 'dan'
+    }
+  },
   micrositeQuiz: {
     errorEmailIncorrect: 'Tolong masukin emailmu yang benar',
     errorEmailAlready: 'Aduh, emailmu udah terdaftar nih',
@@ -2007,7 +2047,9 @@ export default {
     payment: {
       paymentMethod: 'Metode Pembayaran',
       pendingPaidTournament: 'Menunggu Turnamen Dibayar',
+      pendingPaidTeamBattle: 'Menunggu Pertarungan Tim Dibayar',
       tournamentFee: 'Biaya Turnamen',
+      teamBattleFee: 'Biaya Pertarungan Tim',
       adminFee: 'Biaya Admin',
       serviceFee: 'Biaya Layanan',
       discountFee: 'Diskon',
@@ -2018,6 +2060,7 @@ export default {
       virtualNumber: 'Nomor Virtual Akun Anda',
       successful: 'Pembayaran Berhasil',
       pending: 'Menunggu Pembayaran',
+      pendingBattle: 'Menunggu Pembayaran',
       recurringSaved: 'Pembayaran anda telah tersimpan'
     },
     clock: {
@@ -2526,6 +2569,7 @@ export default {
   },
   chat: {
     chat: 'Chat',
+    allMessages: 'Semua Pesan',
     personalEmptyState: 'Tidak ada percakapan',
     communityEmptyState: 'Tidak ada percakapan komunitas',
     requestEmptyState: 'Tidak ada permintaan percakapan',
@@ -2549,6 +2593,7 @@ export default {
     personal: 'Pribadi',
     community: 'Komunitas',
     request: 'Request',
+    chatRequest: 'Permintaan Percakapan',
     reject: 'Tolak',
     accept: 'Terima',
     newMessage: 'Pesan Baru',
@@ -2637,6 +2682,11 @@ export default {
   teamBattle: {
     battleCompetition: 'Kompetisi Pertandingan',
     chooseCategory: 'Silakan Pilih Kategori',
+    summaryPayment: 'Ringkasan Pembayaran',
+    entranceFee: 'Biaya Masuk',
+    yourCurrentCurrency: 'Mata uang Anda saat ini',
+    useSeedsCoin: 'Gunakan Seeds Coin',
+    payButton: 'Bayar',
     joinAsPublicConfirm: 'Apakah Anda yakin ingin bergabung sebagai publik?',
     joinAsInvitation: 'Masukkan kode undangan Anda',
     placeholderInvitation: 'Masukkan di sini',
@@ -3818,6 +3868,134 @@ export default {
         text1: 'Kode Promo adalah kode unik yang dapat digunakan oleh-mu untuk mendapatkan penawaran menarik ya.',
         close: 'Tutup'
       }
+    }
+  },
+  seedsPlan: {
+    desc: 'Pilih paket untuk mendapatkan penghematan dan kesenangan tanpa batas!',
+    button1: 'Ketentuan & Kebijakan',
+    button2: 'Cara Menggunakan Voucher',
+    howToUse:
+      'Buka aplikasi Seeds Finance. Pilih Kuis, Mainkan Turnamen, dan Pertarungan Tim di bagian "Play" atau pilih "Circle" dan "Premium" di bagian "Social" sesuai pilihan Anda. Pada halaman pembayaran, pilih metode pembayaran dan voucher ( termasuk voucher Seeds Unlimited yang Anda beli). Jika voucher sudah aktif, anda bisa mengikuti berbagai diskon premium secara gratis, tergantung jenis voucher yang anda beli. Yay! Sekarang anda dapat bergabung dan menikmati banyak penghematan',
+    button3: 'Langganan Sekarang!',
+    button4: 'Saya Mengerti',
+    button5: 'Berhenti Langganan',
+    button6: 'Ubah My SeedPlan',
+    button7: 'Pertanyaan yang Sering Diajukan',
+    button8: 'Gunakan Sekarang',
+    button9: 'Berhenti Berlangganan Seeds Plan',
+    stopPlanDesc: 'Anda akan kehilangan semua manfaat Anda setelah pembatalan.',
+    text1: 'Terbaik',
+    text2: 'Biaya Langganan',
+    text3: 'Diskon',
+    text4: 'bulan',
+    text5: 'Otomatis diperbarui 1 bulan setelah pembelian',
+    text6: 'Total diskon',
+    text7: 'Paket Anda: ',
+    text8: 'Aktif',
+    text9: 'Terbaik',
+    text10: 'Lihat Detail',
+    text11: 'Layanan anda akan berakhir pada ',
+    text12: 'Non-Aktif',
+    text13: 'Bisa hemat hingga Rp 150.000, setiap bulannya',
+    text14: 'Gunakan Voucher!',
+    text15: 'Paket baru Anda akan dimulai pada ',
+    text16: 'Kedaluwarsa pada ',
+    text17:
+      'Ingin mengubah atau melanjutkan SeedsPlan Kamu untuk aktivitas berikutnya? Bayar sekarang dan kamu tidak perlu kuatir lagi nanti!',
+    text18:
+      'Paket berikutnya akan aktif secara otomatis setelah paket saat ini berakhir',
+    text19:
+      'Kamu telah berlangganan 2 paket SeedsPlan. Kamu harus menunggu paket pertama habis sebelum berlangganan lagi.',
+    month: 'Bulan',
+    months: 'Bulan',
+    year: 'Tahun',
+    benefit: 'Keuntungan',
+    WalletForm: {
+      title: 'Masukkan nomor {{wallet}}',
+      phoneLabel: 'Nomor {{wallet}}',
+      phonePlaceholder: '8xxxxxxxx',
+      paymentDeadline: 'Bayar sebelum {{date}}',
+      admissionFeeLabel: 'Biaya Langganan',
+      adminFeeLabel: 'Biaya Admin',
+      serviceFeeLabel: 'Biaya Layanan',
+      adminFeeDiscountLabel: 'Diskon Biaya Admin ',
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Digunakan'
+    },
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      virtualNumber: 'Nomor Virtual Akun Anda',
+      pendingPaidSubscription: 'Menunggu Pembayaran',
+      subscriptionFee: 'Biaya Langganan',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      paymentSuccessful: 'Berhasil',
+      recurringSaved: 'Pembayaran anda telah tersimpan',
+      information: {
+        text1: 'Paket Anda saat ini',
+        text2: ' berlaku hingga ',
+        text3: ' Paket yang baru ',
+        text4: ' akan berlaku mulai ',
+        text5: ' pukul ',
+        text6: 'bulan',
+        text7: 'bulan'
+      },
+      warningIncoming:
+        'Anda sudah memiliki langganan aktif atau langganan yang akan datang!'
+    },
+    modalUnsubscribe: {
+      text1: 'Apakah Anda yakin untuk berhenti berlangganan?',
+      text2:
+        'Dengan berhenti berlangganan, keuntungan berikut akan dinonaktifkan',
+      text3: 'Voucher akan dinonaktifkan',
+      text4: 'Dengan berlangganan ini, anda mendapatkan keuntungan ',
+      text5: ' voucher ',
+      text6: ' voucher ',
+      text7: ' untuk Quiz, Tournament, dan Circle',
+      text8: 'Ya, saya yakin untuk berhenti berlangganan',
+      text9: 'Kembali'
+    },
+    modalChangePlan: {
+      title: 'Siap untuk beralih paket?',
+      description:
+        'Anda dapat beralih secara instan, dan paket baru Anda akan otomatis diterapkan setelah paket Anda yang saat ini berakhir.',
+      button1: 'Nanti',
+      button2: 'Berikutnya'
+    },
+    history: {
+      transactionHistory: 'Riwayat Transaksimu',
+      transactionHistoryEmpty: 'Riwayat Transaksimu Kosong',
+      noTransaction:
+        'Kamu belum melakukan transaksi apapun, nih. Yuk, mulai transaksi pertamamu sekarang!',
+      back: 'Kembali'
+    },
+    yes: 'Ya',
+    no: 'Tidak'
+  },
+  homepageSubcription: {
+    subscribeNow: {
+      tagText: 'Subscribe Now',
+      description: 'Dapatkan Keuntungan Khusus & Manfaat Premium!',
+      title: 'Bergabung di MySeeds Plan Sekarang ✨'
+    },
+    silver: {
+      tagText: 'UPGRADE NOW!',
+      description: 'Nikmati keuntungan dan manfaat khusus!',
+      title: 'Selamat datang di Seeds Plan! ✨'
+    },
+    gold: {
+      tagText: 'UPGRADE NOW!',
+      description: 'Nikmati keuntungan dan manfaat khusus!',
+      title: 'Selamat datang di Seeds Plan! ✨'
+    },
+    platinum: {
+      description: 'Nikmati keuntungan dan manfaat khusus!',
+      title: 'Selamat datang di Seeds Plan! ✨'
     }
   }
 };

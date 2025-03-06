@@ -1,41 +1,38 @@
-import { getPlayAssetTrending } from '@/repository/play.repository';
-import { trendingMarket } from '@/utils/interfaces/market.interface';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Input } from '@material-tailwind/react';
 import Image from 'next/image';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { type Dispatch, type SetStateAction } from 'react';
 import Background from 'src/assets/market/BgSearchbar.svg';
 
 const Search = ({
   setMenuOpen
 }: {
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
-  const [trendingAsset, setTrendingAsset] = useState<trendingMarket[]>([]);
-  const [searchQuery, setSearchQuery] = useState<string>('');
+}): React.ReactElement => {
+  // const [trendingAsset, setTrendingAsset] = useState<trendingMarket[]>([]);
+  // const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const fetchTrendingAsset = async (): Promise<void> => {
-    try {
-      const response = await getPlayAssetTrending({
-        page: 1,
-        limit: 5000,
-        sortBy: 'most_traded'
-      });
-      setTrendingAsset(response.data.data);
-    } catch (err: any) {
-      toast.error(`error fetching data: ${err}`);
-    }
-  };
+  // const fetchTrendingAsset = async (): Promise<void> => {
+  //   try {
+  //     const response = await getPlayAssetTrending({
+  //       page: 1,
+  //       limit: 5000,
+  //       sortBy: 'most_traded'
+  //     });
+  //     setTrendingAsset(response.data.data);
+  //   } catch (err: any) {
+  //     toast.error(`error fetching data: ${err as string}`);
+  //   }
+  // };
 
-  useEffect(() => {
-    void fetchTrendingAsset();
-  }, []);
+  // useEffect(() => {
+  //   void fetchTrendingAsset();
+  // }, []);
 
-  // Filter assets based on search query
-  const filteredAssets = trendingAsset.filter(asset =>
-    asset.asset_name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // // Filter assets based on search query
+  // const filteredAssets = trendingAsset.filter(asset =>
+  //   asset.asset_name.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
 
   return (
     <>
@@ -56,8 +53,8 @@ const Search = ({
               } else {
                 setMenuOpen(false);
               }
-              setSearchQuery(e.target.value);
-              setMenuOpen(e.target.value.length > 0); // Show menu if input is not empty
+              // setSearchQuery(e.target.value);
+              setMenuOpen(e.target.value.length > 0);
             }}
           />
           <div className="absolute inset-y-0 right-10 pr-3 flex items-center pointer-events-none">

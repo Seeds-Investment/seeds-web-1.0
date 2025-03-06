@@ -49,7 +49,7 @@ const PlayTournament = (): React.ReactElement => {
   const [tournamentActiveTab, setTournamentActiveTab] = useState(
     TournamentStatus.ACTIVE
   );
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [refreshSearch, setRefreshSearch] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
   const [data, setData] = useState<IDetailTournament[]>([]);

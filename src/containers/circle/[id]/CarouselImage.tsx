@@ -9,19 +9,19 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const [zoom, setZoom] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-   const goToPreviousSlide = (): any => {
-     setCurrentIndex(prevIndex =>
-       prevIndex === 0 ? images.length - 1 : prevIndex - 1
-     );
-     return null;
-   };
+  const goToPreviousSlide = (): any => {
+    setCurrentIndex(prevIndex =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+    return null;
+  };
 
-   const goToNextSlide = (): any => {
-     setCurrentIndex(prevIndex =>
-       prevIndex === images.length - 1 ? 0 : prevIndex + 1
-     );
-     return null;
-   };
+  const goToNextSlide = (): any => {
+    setCurrentIndex(prevIndex =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+    return null;
+  };
 
   const openModal = (): void => {
     setIsModalOpen(true);
@@ -43,22 +43,20 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   return (
     <div className="relative flex justify-start w-full">
       <div className="w-fit">
-        <div className="max-w-full w-fit h-[200px] md:h-[300px] bg-transparent">
-          <div className="relative bg-black max-w-full px-2 py-2">
-            <h1 className="text-white font-poppins text-sm">
-              {images.length} page
-            </h1>
-          </div>
-          <div className="flex justify-center h-full w-full">
+        <div className="max-h-[400px] max-w-full w-full h-fit md:h-fit bg-transparent">
+          <div className="relative flex justify-center h-full w-full">
             {images[currentIndex].split('.')[
               images[currentIndex].split('.').length - 1
             ] !== 'mp4' ? (
-              <img
-                src={images[currentIndex]}
-                alt={`Slide ${currentIndex}`}
-                className="max-w-full max-h-[200px] md:max-h-[300px] object-fit transition-transform duration-300 transform"
-                onClick={openModal}
-              />
+                <div className="w-full max-h-[400px] overflow-hidden rounded-2xl">
+                  <img
+                    src={images[currentIndex]}
+                    alt={`Slide ${currentIndex}`}
+                    className="w-full h-[400px] object-cover transition-transform duration-300 transform cursor-pointer"
+                    onClick={openModal}
+                  />
+                </div>
+              
             ) : (
               <video
                 controls

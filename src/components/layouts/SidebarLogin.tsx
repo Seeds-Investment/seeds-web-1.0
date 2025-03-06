@@ -5,6 +5,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import nft from 'public/assets/nft/nft-logo.svg';
 import connect from 'public/assets/social/connect.svg';
 import danamart from 'public/assets/social/danamart.svg';
 import homepage from 'public/assets/social/discover.svg';
@@ -51,6 +52,7 @@ const SidebarLogin: React.FC = () => {
             { title: t('danamart.userLog.sidebar.text1'), url: '/danamart/user-log' },
           ]
         },
+        { title: 'NFT', url: '/nft', image: nft },
         { title: 'Setting', url: '/user-setting', image: setting }
       ];
 

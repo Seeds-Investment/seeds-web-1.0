@@ -4,11 +4,12 @@
 import SubmitButton from '@/components/SubmitButton';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import { type EventList } from '@/utils/interfaces/event.interface';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Input, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type Payment, type UserData } from './PaymentList';
+import { type Payment } from './PaymentList';
 import InlineText from './components/InlineText';
 
 interface WalletFormProps {
@@ -22,7 +23,7 @@ interface WalletFormProps {
   ) => Promise<void>;
   dataPost: EventList;
   numberMonth?: number;
-  userInfo: UserData;
+  userInfo: UserInfo;
 }
 
 const WalletForm = ({

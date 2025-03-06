@@ -211,7 +211,9 @@ const BuyPage: React.FC = () => {
 
   const fetchPlayPortfolio = async (): Promise<void> => {
     try {
-      const response = await getPlayAssets(id as string, assetId as string);
+      const response = await getPlayAssets(id as string, assetId as string, {
+        currency: userInfo?.preferredCurrency as string
+      });
       setPortfolio(response.data);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -416,6 +418,7 @@ const BuyPage: React.FC = () => {
             {t('buyAsset.text5')}
           </Typography>
           <Typography className="z-10 text-3xl font-poppins font-semibold  text-[#FFFFFF]">
+            {userInfo?.preferredCurrency ?? 'IDR'}
             {`${standartCurrency(
               router.query?.transaction === 'buy'
                 ? ballance?.balance
@@ -423,7 +426,7 @@ const BuyPage: React.FC = () => {
                     (lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                       ? lastPrice[prefCurrency as PreferredCurrencyI]
                       : (lastPriceAsset as number))
-            ).replace('Rp', userInfo?.preferredCurrency as string)}`}{' '}
+            )}`}
           </Typography>
         </div>
         <div className="relative bg-white mb-[-2] w-full h-[12px]"></div>
@@ -434,12 +437,12 @@ const BuyPage: React.FC = () => {
               {data?.realTicker}
             </p>
             <p className="text-xs font-normal text-[#7C7C7C] my-2">
-              Current cost: {prefCurrency}{' '}
+              Current cost: {(prefCurrency ?? 'IDR').toUpperCase()}{' '}
               {formatAssetPrice(
                 lastPrice[prefCurrency as PreferredCurrencyI] !== 0
                   ? lastPrice[prefCurrency as PreferredCurrencyI]
                   : (lastPriceAsset as number)
-              )}
+              )}{' '}
               per gram
             </p>
           </div>
@@ -564,7 +567,8 @@ const BuyPage: React.FC = () => {
             {router.query.transaction === 'buy' && (
               <div className="mt-4 mx-2">
                 <Typography className="mb-2 font-poppins text-base font-semibold text-black">
-                  {t('buyAsset.text8')} ({prefCurrency})
+                  {t('buyAsset.text8')} ({(prefCurrency ?? 'IDR').toUpperCase()}
+                  )
                 </Typography>
                 {router.query.transaction === 'buy' && (
                   <input
@@ -848,7 +852,7 @@ const BuyPage: React.FC = () => {
                           {t('playSimulation.transactionFee')}
                         </Typography>
                         <Typography className="text-[#262626] font-semibold text-xs">
-                          0
+                          {userInfo?.preferredCurrency ?? 'IDR'} 0
                         </Typography>
                       </div>
                       <div className="flex justify-between mt-4">
@@ -857,26 +861,22 @@ const BuyPage: React.FC = () => {
                         </Typography>
                         {router.query.transaction === 'buy' ? (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
+                            {userInfo?.preferredCurrency ?? 'IDR'}{' '}
                             {standartCurrency(
                               +assetAmount *
                                 (lastPrice[
                                   prefCurrency as PreferredCurrencyI
                                 ] ?? 0)
-                            ).replace(
-                              'Rp',
-                              userInfo?.preferredCurrency as string
                             )}
                           </Typography>
                         ) : (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
+                            {userInfo?.preferredCurrency ?? 'IDR'}{' '}
                             {standartCurrency(
                               +lotSell *
                                 (lastPrice[
                                   prefCurrency as PreferredCurrencyI
                                 ] ?? 0)
-                            ).replace(
-                              'Rp',
-                              userInfo?.preferredCurrency as string
                             )}
                           </Typography>
                         )}

@@ -781,7 +781,10 @@ export default {
     nextButton: 'Continue'
   },
   ProfilePage: {
-    title: 'My Profile'
+    title: 'My Profile',
+    subscriptionButton: 'Subscribe to My Seeds Plan',
+    yourPackage: 'Your Package',
+    active: 'Active'
   },
   DeleteAccount: {
     title: 'Are you sure to delete this account?',
@@ -1018,7 +1021,11 @@ export default {
     notFound: 'Promo code not found. Make sure you entered a valid promo code.',
     limitPurchaseMessage:
       'You need to reach the minimum transaction before using the promo!',
-    limitDailyMessage: 'The promo code quota is already exceeding today’s limit'
+    limitDailyMessage:
+      'The promo code quota is already exceeding today’s limit',
+    specificFeature: 'Promo code only for specific feature',
+    specificReferral: 'Promo code only for specific referral code',
+    invalidPromo: 'Promo code is invalid'
   },
   temporary: {
     welcome: {
@@ -1275,7 +1282,11 @@ export default {
       paymentFailed: 'Payment Failed',
       paymentFailedDescription:
         'We can’t process your payment, Check your internet connection and try again.',
-      paymentFailedWarning: 'Payment Failed Circle Premium'
+      paymentFailedWarning: 'Payment Failed Circle Premium',
+      getAccessToUnlock: 'Get Access to unlock your membership',
+      enjoyUnlimitedAccess:
+        'Enjoy unlimited access to all premium content from various experts.',
+      getFullAccess: 'Get full access by paying once for a lifetime'
     }
   },
   articleList: {
@@ -1696,9 +1707,8 @@ export default {
       text4: 'Contact Us'
     },
     section12: {
-      text1: 'Our Communities',
-      text2:
-        "We're committed in improving financial literacy for Gen-Z and millennials in Southeast Asia.",
+      text1: 'Special Partnership',
+      text2: 'Other Partnership',
       text3: 'Partnership Program'
     }
   },
@@ -2023,6 +2033,36 @@ export default {
       'Click the image or Claim Button to be redirected to the prize.',
     winnerAlertMessage8: 'Claim Prize Here'
   },
+  bnc: {
+    payment: 'Payment',
+    scanDescription: 'Scan on your Bank Account or Payment App',
+    instructions: {
+      text1: 'Take a screenshoot QR Code',
+      text2: 'Open your bank account or payment app',
+      text3: 'Complete the transaction',
+      text4: "Click 'Done' button below"
+    },
+    done: 'Done',
+    seeQRCode: 'See QR Code',
+    expired: {
+      text1: 'Your QR Code has expired',
+      text2:
+        'Please make the purchase again and ensure that your payment has been completed in time'
+    },
+    repeat: 'Repeat Purchase',
+    completePayment: 'Complete the payment in',
+    clock: {
+      day: 'day',
+      days: 'days',
+      hour: 'hour',
+      hours: 'hours',
+      minute: 'minute',
+      minutes: 'minutes',
+      second: 'second',
+      seconds: 'seconds',
+      and: 'and'
+    }
+  },
   micrositeQuiz: {
     errorEmailIncorrect: 'Please input your email correctly',
     errorEmailAlready: 'Oops,  Your email already registered',
@@ -2078,7 +2118,9 @@ export default {
     payment: {
       paymentMethod: 'Payment Method',
       pendingPaidTournament: 'Pending Paid Tournament',
+      pendingPaidTeamBattle: 'Pending Paid Team Battle',
       tournamentFee: 'Tournament Fee',
+      teamBattleFee: 'Team Battle Fee',
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',
       discountFee: 'Discount Fee',
@@ -2089,6 +2131,7 @@ export default {
       virtualNumber: 'Your Virtual Account Number',
       successful: 'Successful',
       pending: 'Pending Paid Tournament',
+      pendingBattle: 'Pending Paid Team Battle',
       recurringSaved: 'Your recurring has been saved!'
     },
     clock: {
@@ -2595,6 +2638,7 @@ export default {
   },
   chat: {
     chat: 'Chat',
+    allMessages: 'All Messages',
     personalEmptyState: 'No message here!',
     startChat: 'Start a chat!',
     communityEmptyState: 'No Community Chat',
@@ -2620,6 +2664,7 @@ export default {
     personal: 'Personal',
     community: 'Community',
     request: 'Request',
+    chatRequest: 'Chat Request',
     reject: 'Reject',
     accept: 'Accept',
     newMessage: 'New Message',
@@ -2707,6 +2752,11 @@ export default {
   teamBattle: {
     battleCompetition: 'Battle Competition',
     chooseCategory: 'Please Choose Category',
+    summaryPayment: 'Summary of Payment',
+    entranceFee: 'Entrance Fee',
+    yourCurrentCurrency: 'Your current currency',
+    useSeedsCoin: 'Use Seeds Coin',
+    payButton: 'Pay',
     joinAsPublicConfirm: 'Are you sure you want to join as public?',
     joinAsInvitation: 'Input your code invitation',
     placeholderInvitation: 'Input here',
@@ -3878,7 +3928,133 @@ export default {
         title: 'About Promo Codes and Referral Codes',
         text1: 'A Promo Code is a unique code that you can use to get exciting offers.',
         close: 'Close'
-      }
+      },
+    }
+  },
+  seedsPlan: {
+    desc: 'Choose the package to get unlimited savings and fun!',
+    button1: 'Terms & Conditions',
+    button2: 'How to Use Voucher',
+    howToUse:
+      'Open the Seeds Finance app. Select the Quiz, Play Tournament, and Team Battle in the "Play" section or select "Circle" and "Premium Post" in the "Social" section according to your choice. On the payment page, select payment method and voucher (including the Seeds Unlimited voucher you purchased). If the voucher is already active, you will be able to participate in variety of premium discount for free, depending on the type of voucher you purchased. Yay! Now you can join and enjoy multiple savings',
+    button3: 'Subscribe Now!',
+    button4: 'I Understand',
+    button5: 'Unsubscribe',
+    button6: 'Change My SeedsPlan',
+    button7: 'Frequently Asked Question',
+    button8: 'Use It Now',
+    button9: 'Stop Seeds Plan',
+    stopPlanDesc: 'You will lose all of your benefits after cancellation.',
+    text1: 'Best',
+    text2: 'Subscription Fee',
+    text3: 'Discount',
+    text4: 'month',
+    text5: 'Auto-renews 1 month from time of purchase',
+    text6: 'Total discount',
+    text7: 'Your package: ',
+    text8: 'Active',
+    text9: 'Best',
+    text10: 'See Details',
+    text11: 'Your plan will expire on ',
+    text12: 'Non-Active',
+    text13: 'You can save up to Rp 150.000 every month',
+    text14: 'Use it Now!',
+    text15: 'Your new plan will begin at ',
+    text16: 'Expired on ',
+    text17:
+      'Want to change or continue your SeedsPlan for the next activation? Pay now, and you won’t have to worry about it later!',
+    text18:
+      '*Your next plan will activate automatically after your current plan expires.',
+    text19:
+      '*You have subscribed to 2 Seeds Plan. You have to wait for your first package to run out to subscribe again.',
+    month: 'Month',
+    months: 'Months',
+    year: 'Year',
+    benefit: 'Benefit',
+    WalletForm: {
+      title: 'Enter {{wallet}} Number',
+      phoneLabel: '{{wallet}} Number',
+      phonePlaceholder: '8xxxxxxxx',
+      paymentDeadline: 'Pay before {{date}}',
+      admissionFeeLabel: 'Subscription Fee',
+      adminFeeLabel: 'Admin Fee',
+      serviceFeeLabel: 'Service Fee',
+      adminFeeDiscountLabel: 'Admin Fee Discount ',
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Redeemed'
+    },
+    payment: {
+      paymentMethod: 'Payment Method',
+      virtualNumber: 'Your Virtual Account Number',
+      pendingPaidSubscription: 'Pending Paid Subscription',
+      subscriptionFee: 'Subscription Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      paymentSuccessful: 'Successful',
+      recurringSaved: 'Your recurring has been saved!',
+      information: {
+        text1: 'Your current plan',
+        text2: ' is valid until ',
+        text3: ' The incoming plan',
+        text4: ' will take effect on ',
+        text5: ' at ',
+        text6: 'month',
+        text7: 'months'
+      },
+      warningIncoming: 'You already have an active or incoming plan.'
+    },
+    modalUnsubscribe: {
+      text1: 'Are You Sure to Unsubscribe?',
+      text2: 'By unsubscribing, the following benefits will be deactivated',
+      text3: 'Voucher will be deactivated',
+      text4: 'This subscription contains ',
+      text5: ' voucher',
+      text6: ' vouchers ',
+      text7: ' on Quiz, Tournament, and Circle',
+      text8: 'Yes, I am sure to unsubscribe',
+      text9: 'Back'
+    },
+    modalChangePlan: {
+      title: 'Ready to switch plan?',
+      description:
+        ' You can make the switch instantly, and your new plan automatically applied once your current plan expires',
+      button1: 'Later',
+      button2: 'Next'
+    },
+    history: {
+      transactionHistory: 'Transaction History',
+      transactionHistoryEmpty: 'Transaction History Is Empty',
+      noTransaction:
+        'You haven’t made any transaction yet. Start your first transaction now!',
+      back: 'Back'
+    },
+    yes: 'Yes',
+    no: 'No'
+  },
+  homepageSubcription: {
+    subscribeNow: {
+      tagText: 'Subscribe Now',
+      description: 'Get exclusive perks & premium benefits!',
+      title: 'Join MySeeds Plan Today'
+    },
+    silver: {
+      tagText: 'UPGRADE NOW!',
+      description: 'Get exclusive perks & premium benefits!',
+      title: 'Join MySeeds Plan Today'
+    },
+    gold: {
+      tagText: 'UPGRADE NOW!',
+      description: 'Exclusive perks and premium benefits are now yours!',
+      title: 'Welcome to Seeds Plan! ✨'
+    },
+    platinum: {
+      description: 'Exclusive perks and premium benefits are now yours!',
+      title: 'Welcome to Seeds Plan! ✨'
     }
   }
 };

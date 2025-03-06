@@ -11,7 +11,7 @@ import { MdCheck, MdOutlineCameraswitch } from 'react-icons/md';
 import Webcam from 'react-webcam';
 
 interface WebcamPhotoProps {
-  type: string;
+  type: boolean;
   onCapture: (image: File, text?: string) => void;
   isCropShapeRound: boolean;
   isInputMessage?: boolean;
@@ -21,7 +21,7 @@ const FACING_MODE_USER = 'user';
 const FACING_MODE_ENVIRONMENT = 'environment';
 
 const WebcamPhoto: React.FC<WebcamPhotoProps> = ({
-  type = 'landscape',
+  type,
   onCapture,
   isCropShapeRound,
   isInputMessage
@@ -117,8 +117,8 @@ const WebcamPhoto: React.FC<WebcamPhotoProps> = ({
 
   const videoConstraints: MediaTrackConstraintSet = {
     facingMode,
-    width: type === 'landscape' ? 940 : 440,
-    height: type === 'landscape' ? 440 : 650
+    width: !type ? 940 : window.innerWidth,
+    height: !type ? 440 : window.innerHeight
   };
 
   const toggleFacingMode = useCallback(() => {
@@ -156,13 +156,13 @@ const WebcamPhoto: React.FC<WebcamPhotoProps> = ({
               <Image
                 src={croppedImage}
                 alt="Capture"
-                width={type === 'landscape' ? 940 : 440}
-                height={type === 'landscape' ? 440 : 650}
+                width={!type ? 940 : window.innerWidth}
+                height={!type ? 440 : window.innerHeight}
                 className={`${
                   isInputMessage === true
                     ? 'md:rounded-none'
                     : 'md:rounded-b-2xl'
-                } rounded-none object-cover max-w-[940px] md:max-h-[440px] max-h-[650px]`}
+                } rounded-none object-cover max-w-[940px] md:max-h-[440px] max-h-[940px]`}
               />
               <div
                 onClick={retake}
@@ -190,9 +190,7 @@ const WebcamPhoto: React.FC<WebcamPhotoProps> = ({
                 cropShape={isCropShapeRound ? 'round' : 'rect'}
                 classes={{
                   containerClassName: `mt-[60px] rounded-b-2xl ${
-                    type === 'landscape'
-                      ? 'w-[940px] h-[440px]'
-                      : 'w-full h-full'
+                    !type ? 'w-[940px] h-[440px]' : 'w-full h-full'
                   }`
                 }}
               />
@@ -217,8 +215,8 @@ const WebcamPhoto: React.FC<WebcamPhotoProps> = ({
             <Image
               src={captureImage}
               alt="Capture"
-              width={type === 'landscape' ? 940 : 440}
-              height={type === 'landscape' ? 440 : 650}
+              width={!type ? 940 : window.innerWidth}
+              height={!type ? 440 : window.innerHeight}
             />
             <div
               onClick={retake}
@@ -242,7 +240,7 @@ const WebcamPhoto: React.FC<WebcamPhotoProps> = ({
         <div className="relative">
           <Webcam
             className={`${
-              isInputMessage === true ? 'md:rounded-none' : 'md:rounded-b-2xl'
+              isInputMessage === true ? 'md:rounded-b-2xl' : 'md:rounded-b-2xl'
             } rounded-none`}
             ref={webcamRef}
             audio={false}

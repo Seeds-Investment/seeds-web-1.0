@@ -7,6 +7,7 @@ import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import nft from 'public/assets/nft/nft-logo.svg';
 import chat from 'public/assets/social/chat.svg';
 import connect from 'public/assets/social/connect.svg';
 import danamart from 'public/assets/social/danamart.svg';
@@ -58,6 +59,7 @@ const SidebarLoginResponsive: React.FC<props> = ({
         { title: 'Market', url: '/market', image: market },
         { title: 'Connect', url: '/connect', image: connect },
         { title: 'Play', url: '/play', image: play },
+        { title: 'NFT', url: '/nft', image: nft },
         {
           title: 'Danamart',
           url: '/danamart',

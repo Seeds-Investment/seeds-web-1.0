@@ -1,5 +1,5 @@
 import { getPlayAssetTrending } from '@/repository/play.repository';
-import { trendingMarket } from '@/utils/interfaces/market.interface';
+import { type trendingMarket } from '@/utils/interfaces/market.interface';
 import {
   ArrowTrendingDownIcon,
   ArrowTrendingUpIcon
@@ -14,7 +14,7 @@ const initialParamsMarket = {
   sortBy: 'trending'
 };
 
-const Trending = () => {
+const Trending = (): JSX.Element => {
   const [trendingAsset, setTrendingAsset] = useState<trendingMarket[]>([]);
   const [isLoading, setIsloading] = useState<boolean>(false);
 
@@ -51,6 +51,7 @@ const Trending = () => {
       {trendingAsset.length !== 0
         ? trendingAsset.map((item, idx: number) => (
             <Card
+              key={idx}
               className=" flex flex-row items-center p-2 bg-white rounded-lg shadow-sm"
               shadow={false}
             >
@@ -79,11 +80,8 @@ const Trending = () => {
                       className="mr-2"
                     />
                   )}
-                  (
-                  {item.regular_percentage
-                    ? Math.abs(item.regular_percentage).toFixed(2)
-                    : '0'}
-                  %)
+
+                  {`${item.regular_percentage?.toFixed(2) ?? '0'} %`}
                 </Typography>
               </div>
             </Card>

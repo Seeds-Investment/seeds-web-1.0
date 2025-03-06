@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import CCard from '@/components/CCard';
 import Dialog from '@/components/ui/dialog/Dialog';
+import { userDefault } from '@/containers/play/payment/PaymentList';
 import PaymentOptions from '@/containers/play/payment/PaymentOptions';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -11,7 +12,7 @@ import { type DataPost } from '@/utils/interfaces/social.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -37,6 +38,8 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
   const router = useRouter();
   const [eWalletList, setEWalletList] = useState([]);
   const [qRisList, setQRisList] = useState([]);
+  const [ccList, setCcList] = useState([]);
+  const [virtualAccountList, setVirtualAccountList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [option, setOption] = useState<Payment>();
   const [openDialog, setOpenDialog] = useState(false);
@@ -60,6 +63,8 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
       const data = await getPaymentList();
       setEWalletList(data.type_ewallet);
       setQRisList(data.type_qris);
+      setCcList(data.type_cc);
+      setVirtualAccountList(data.type_va);
     } catch (error) {
       toast.error(`Error fetching Payment List: ${error as string}`);
     }
@@ -97,15 +102,30 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
         spot_type: 'Premium Content'
       });
 
-      if (response?.payment_url !== undefined && response?.payment_url !== '') {
-        window.open(response.payment_url as string, '_blank');
-      }
+      if (response) {
+        if (response.payment_url !== '' && paymentMethod !== 'BNC_QRIS') {
+          window.open(response.payment_url as string, '_blank');
+        }
+        const query =
+          response.payment_url !== ''
+            ? { paymentUrl: response.payment_url }
+            : undefined;
 
-      await router
-        .push(`/social/payment/receipt/${response.order_id as string}`)
-        .catch(error => {
-          toast.error(`${error as string}`);
-        });
+        await router
+          .replace(
+            {
+              pathname:
+                `/social/payment/receipt/${response.order_id as string}` +
+                `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+              query
+            },
+            undefined,
+            { shallow: true }
+          )
+          .catch(error => {
+            toast(`${error as string}`);
+          });
+      }
     } catch (error) {
       toast.error(`${error as string}`);
     }
@@ -117,33 +137,48 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
   }, []);
 
   useEffect(() => {
-    const validatePromo = async (): Promise<void> => {
-      if (promoCodeValidationResult) {
-        const admissionFee = Number(data?.premium_fee ?? 0);
-
-        const response = await promoValidate({
-          promo_code: promoCodeValidationResult?.response?.promo_code,
-          spot_type: 'Premium Content',
-          item_price: admissionFee,
-          item_id: data?.id,
-          currency: userInfo?.preferredCurrency ?? 'IDR'
-        });
-
-        setNewPromoCodeDiscount(response?.total_discount);
-      }
-    };
-
     void validatePromo();
   }, [data]);
 
+  const validatePromo = useCallback(async (): Promise<void> => {
+    if (promoCodeValidationResult) {
+      const admissionFee = Number(data?.premium_fee ?? 0);
+
+      const response = await promoValidate({
+        promo_code: promoCodeValidationResult?.response?.promo_code,
+        spot_type: 'Premium Content',
+        item_price: admissionFee,
+        item_id: data?.id,
+        currency: userInfo?.preferredCurrency ?? 'IDR'
+      });
+
+      setNewPromoCodeDiscount(response?.total_discount);
+    }
+  }, [
+    promoCodeValidationResult,
+    data,
+    promoValidate,
+    userInfo,
+    setNewPromoCodeDiscount
+  ]);
+
   const handleOpenDialog = (value: boolean): void => {
     if (option?.payment_type === 'qris') {
-      void handlePay(
-        option?.payment_type,
-        'MIDTRANS',
-        'OTHER_QRIS',
-        data.premium_fee
-      );
+      if (option?.payment_gateway === 'BNC') {
+        void handlePay(
+          option?.payment_type,
+          'BNC',
+          'BNC_QRIS',
+          data.premium_fee
+        );
+      } else {
+        void handlePay(
+          option?.payment_type,
+          'MIDTRANS',
+          'OTHER_QRIS',
+          data.premium_fee
+        );
+      }
     } else {
       setOpenDialog(value);
     }
@@ -161,12 +196,28 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
             options={qRisList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
           <PaymentOptions
             label={t('PlayPayment.eWalletLabel')}
             options={eWalletList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
+          />
+          <PaymentOptions
+            label={t('PlayPayment.creditCardLabel')}
+            options={virtualAccountList}
+            onChange={setOption}
+            currentValue={option}
+            userInfo={userInfo ?? userDefault}
+          />
+          <PaymentOptions
+            label={t('PlayPayment.ccLabel')}
+            options={ccList}
+            onChange={setOption}
+            currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
           <Button
             disabled={option?.id == null}

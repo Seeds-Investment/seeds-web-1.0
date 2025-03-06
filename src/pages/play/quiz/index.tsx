@@ -26,7 +26,7 @@ interface StatusQuizI {
 const Player = (): React.ReactElement => {
   const { t } = useTranslation();
   const [quizActiveTab, setQuizActiveTab] = useState(QuizStatus.STARTED);
-  const [listQuiz, setListQuiz] = useState<IQuiz[]>([]);
+  const [listQuiz, setListQuiz] = useState<IQuiz[] | null>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
 
@@ -63,8 +63,8 @@ const Player = (): React.ReactElement => {
         status: quizActiveTab,
         currency
       });
-      if (res.data !== null) {
-        const list: IQuiz[] = res.data;
+      if (res.data !== undefined) {
+        const list: IQuiz[] | null = res.data;
         setListQuiz(list);
       }
     } catch (error) {
@@ -179,7 +179,7 @@ const Player = (): React.ReactElement => {
               </div>
             </div>
             <div className="w-full grid grid-cols-1 xl:grid-cols-3 gap-4 mt-4">
-              {listQuiz?.length === 0 && !loading ? (
+              {(listQuiz?.length === 0 && !loading) || listQuiz === null ? (
                 <div className="col-span-3">
                   <Image src={ListQuizEmpty} width={500} alt="Top Quiz Empty" />
                 </div>

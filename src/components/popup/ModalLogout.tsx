@@ -24,6 +24,8 @@ const ModalLogout: React.FC<Props> = ({ onClose, userInfo }) => {
     window.localStorage.removeItem('expiresAt');
     window.localStorage.removeItem('isBannerOpen');
     window.localStorage.removeItem('accessToken-danamart');
+    sessionStorage.removeItem('diamPublicKey');
+    sessionStorage.removeItem('diamBalance');
     await signOut();
     TrackerEvent({
       event: `SW_auth_logout`,

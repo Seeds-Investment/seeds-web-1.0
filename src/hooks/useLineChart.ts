@@ -63,15 +63,16 @@ const useLineChart = (
     }
     return moment(date).format('hh:mm A');
   }, []);
-  
+
   const chartItem = useMemo(() => {
-    const _priceBarHistory = fromPortfolio === true
-      ? data.datasets
-      : priceBarHistory?.map((i: PriceBarHistory) => i.close);
+    const _priceBarHistory =
+      fromPortfolio === true
+        ? data.datasets
+        : priceBarHistory?.map((i: PriceBarHistory) => i.close);
 
     // Get the last 6 data points
     const recentData = _priceBarHistory.slice(-6);
-    
+
     if (recentData.length < 6) {
       const padding = Array(6 - recentData.length).fill(0);
       recentData.unshift(...padding);
@@ -83,22 +84,30 @@ const useLineChart = (
 
     for (let g = 0; g < totalGroup; g++) {
       const endIdx = priceBarHistory?.length - 6 + (g + 1);
-      const currentGroup = (fromPortfolio ?? false)
-        ? labels[endIdx - 1] ?? 0
-        : labels[endIdx - 1]?.timestamp ?? 0;
+      const currentGroup =
+        fromPortfolio ?? false
+          ? labels[endIdx - 1] ?? 0
+          : labels[endIdx - 1]?.timestamp ?? 0;
 
       if (currentGroup === 0) {
         label.unshift('');
       } else {
-        const formatTime = (fromPortfolio ?? false)
-          ? currentGroup
-          : formatDateLabel(selectedTimeFrame, currentGroup);
+        const formatTime =
+          fromPortfolio ?? false
+            ? currentGroup
+            : formatDateLabel(selectedTimeFrame, currentGroup);
         label.push(formatTime);
       }
     }
 
     return { x: label, y: recentData };
-  }, [data, formatDateLabel, fromPortfolio, priceBarHistory, selectedTimeFrame]);
+  }, [
+    data,
+    formatDateLabel,
+    fromPortfolio,
+    priceBarHistory,
+    selectedTimeFrame
+  ]);
 
   return { data, selectedTimeFrame, chartItem };
 };

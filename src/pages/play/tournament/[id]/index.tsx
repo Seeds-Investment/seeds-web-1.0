@@ -22,11 +22,13 @@ import {
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
+import { getSubscriptionStatus } from '@/repository/subscription.repository';
 import LanguageContext from '@/store/language/language-context';
 import {
   selectPromoCodeValidationResult,
   setPromoCodeValidationResult
 } from '@/store/redux/features/promo-code';
+import { type StatusSubscription } from '@/utils/interfaces/subscription.interface';
 import {
   type IDetailTournament,
   type UserInfo
@@ -36,8 +38,10 @@ import { Switch, Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import SubsSeedy from 'public/assets/subscription/subs-seedy.svg';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FaChevronRight } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
@@ -63,6 +67,17 @@ const TournamentDetail: React.FC = () => {
   const [totalAvailableCoins, setTotalAvailableCoins] = useState<number>(0);
   const accessToken = localStorage.getItem('accessToken');
   const isStarted = useIsStarted(detailTournament?.play_time);
+  const [dataSubscription, setDataSubscription] =
+    useState<StatusSubscription | null>(null);
+
+  const getSubscriptionPlanStatus = async (): Promise<void> => {
+    try {
+      const response: StatusSubscription = await getSubscriptionStatus();
+      if (response !== undefined) {
+        setDataSubscription(response);
+      }
+    } catch {}
+  };
 
   const handleGetSeedsCoin = async (): Promise<void> => {
     try {
@@ -211,12 +226,14 @@ const TournamentDetail: React.FC = () => {
         getDetail();
       } else {
         getDetailWithAuth();
+        getSubscriptionPlanStatus();
       }
     }
     if (userInfo?.preferredCurrency !== undefined) {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);
+
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     const textToCopy = `${detailTournament?.play_id}`;
@@ -584,11 +601,14 @@ const TournamentDetail: React.FC = () => {
             <p className="text-lg font-semibold">
               {t('tournament.detailTerms')}
             </p>
-            {languageCtx.language === 'ID' ? (
-              <p className="text-[#7C7C7C]">{detailTournament?.tnc?.id}</p>
-            ) : (
-              <p className="text-[#7C7C7C]">{detailTournament?.tnc?.en}</p>
-            )}
+            <div
+              className="text-[#7C7C7C] font-poppins break-words "
+              dangerouslySetInnerHTML={{
+                __html: detailTournament?.tnc?.[
+                  languageCtx.language === 'id' ? 'id' : 'en'
+                ] as string
+              }}
+            />
           </div>
           <div className="mt-4">
             <Typography className="text-lg font-semibold font-poppins">
@@ -603,6 +623,33 @@ const TournamentDetail: React.FC = () => {
           </div>
         </div>
         <div className="w-full h-[300px] bg-white rounded-xl p-4 mb-32 md:mb-0">
+          {dataSubscription === null && (
+            <div
+              onClick={async () => await router.push('/seedsplan')}
+              className="w-full bg-gradient-radial-subs shadow-subs-complete hover:shadow-subs-complete-hover flex justify-between items-center px-2 md:py-2 py-1 gap-2 rounded-xl cursor-pointer font-poppins duration-300 border border-white mb-4"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <div className="absolute bg-gradient-to-b from-[#fdb458] to-[#fccc6e]/60 md:w-[35px] md:h-[35px] w-[50px] h-[50px] rounded-full"></div>
+                  <div className={'relative left-1'}>
+                    <Image
+                      src={SubsSeedy}
+                      alt={'subscription-image'}
+                      width={100}
+                      height={100}
+                      className="md:w-[35px] md:h-[35px] w-[50px] h-[50px]"
+                    />
+                  </div>
+                </div>
+                <Typography className="text-white font-semibold font-poppins text-sm capitalize">
+                  {t('ProfilePage.subscriptionButton')}
+                </Typography>
+              </div>
+              <div className="flex justify-center items-center h-[16px]">
+                <FaChevronRight className="text-white" size={16} />
+              </div>
+            </div>
+          )}
           {userInfo !== undefined &&
             (detailTournament?.admission_fee ?? 0) > 0 && (
               <PromoCode

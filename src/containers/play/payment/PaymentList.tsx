@@ -44,7 +44,7 @@ interface props {
   useCoins?: boolean;
 }
 
-const userDefault: UserInfo = {
+export const userDefault: UserInfo = {
   avatar: '',
   badge: '',
   bio: '',
@@ -136,22 +136,30 @@ const PaymentList: React.FC<props> = ({
 
       setQRisList(
         data?.type_qris?.filter((item: { payment_method: string }) =>
-          detailQuiz?.payment_method?.includes(item?.payment_method)
+          detailQuiz !== undefined
+            ? detailQuiz?.payment_method?.includes(item?.payment_method)
+            : item?.payment_method
         )
       );
       setEWalletList(
         data?.type_ewallet?.filter((item: { payment_method: string }) =>
-          detailQuiz?.payment_method?.includes(item?.payment_method)
+          detailQuiz !== undefined
+            ? detailQuiz?.payment_method?.includes(item?.payment_method)
+            : item?.payment_method
         )
       );
       setCcList(
         data?.type_cc?.filter((item: { payment_method: string }) =>
-          detailQuiz?.payment_method?.includes(item?.payment_method)
+          detailQuiz !== undefined
+            ? detailQuiz?.payment_method?.includes(item?.payment_method)
+            : item?.payment_method
         )
       );
       setVirtualAccountList(
         data?.type_va?.filter((item: { payment_method: string }) =>
-          detailQuiz?.payment_method?.includes(item?.payment_method)
+          detailQuiz !== undefined
+            ? detailQuiz?.payment_method?.includes(item?.payment_method)
+            : item?.payment_method
         )
       );
     } catch (error) {
@@ -266,11 +274,25 @@ const PaymentList: React.FC<props> = ({
         }
 
         if (response) {
-          if (response.payment_url !== '') {
+          if (response.payment_url !== '' && paymentMethod !== 'BNC_QRIS') {
             window.open(response.payment_url as string, '_blank');
           }
+          const query =
+            response.payment_url !== ''
+              ? { paymentUrl: response.payment_url }
+              : undefined;
+
           await router
-            .replace(`/play/payment/receipt/${response.order_id as string}`)
+            .replace(
+              {
+                pathname:
+                  `/play/payment/receipt/${response.order_id as string}` +
+                  `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+                query
+              },
+              undefined,
+              { shallow: true }
+            )
             .catch(error => {
               toast(`${error as string}`);
             });
@@ -293,16 +315,29 @@ const PaymentList: React.FC<props> = ({
             spot_type: 'Join Circle Premium'
           }
         });
-
         if (response.success === true) {
-          if (response.data.Response.payment_url !== undefined) {
+          if (
+            response.data.Response.payment_url !== '' &&
+            paymentMethod !== 'BNC_QRIS'
+          ) {
             window.open(response.data.Response.payment_url as string, '_blank');
           }
+          const query =
+            response.data.Response.payment_url !== ''
+              ? { paymentUrl: response.data.Response.payment_url }
+              : undefined;
+
           await router
-            .push(
-              `/connect/payment/receipt/${
-                response.data.Response.order_id as string
-              }`
+            .replace(
+              {
+                pathname:
+                  `/connect/payment/receipt/${
+                    response.data.Response.order_id as string
+                  }` + `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+                query
+              },
+              undefined,
+              { shallow: true }
             )
             .catch(error => {
               toast(`${error as string}`);
@@ -334,7 +369,16 @@ const PaymentList: React.FC<props> = ({
     }
 
     if (option?.payment_type === 'qris') {
-      void handlePay(option?.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
+      if (option?.payment_gateway === 'BNC') {
+        void handlePay(option?.payment_type, 'BNC', 'BNC_QRIS', _totalFee);
+      } else {
+        void handlePay(
+          option?.payment_type,
+          'MIDTRANS',
+          'OTHER_QRIS',
+          _totalFee
+        );
+      }
     } else if (option?.payment_type === 'cc') {
       void handlePay(option?.payment_type, 'STRIPE', 'CC', _totalFee);
     } else {
@@ -356,6 +400,7 @@ const PaymentList: React.FC<props> = ({
             options={qRisList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
         )}
         {eWalletList?.length > 0 && (
@@ -364,6 +409,7 @@ const PaymentList: React.FC<props> = ({
             options={eWalletList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
         )}
         {virtualAccountList?.length > 0 && (
@@ -372,6 +418,7 @@ const PaymentList: React.FC<props> = ({
             options={virtualAccountList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
         )}
         {ccList?.length > 0 && (
@@ -380,6 +427,7 @@ const PaymentList: React.FC<props> = ({
             options={ccList}
             onChange={setOption}
             currentValue={option}
+            userInfo={userInfo ?? userDefault}
           />
         )}
         <SubmitButton

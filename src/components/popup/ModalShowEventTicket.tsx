@@ -82,7 +82,8 @@ const ModalShowEventTicket: React.FC<Props> = ({
               onClick={async () => {
                 await router
                   .replace(
-                    !(isEventEnded ?? false) && ticketData?.status === 'CHECKED_IN'
+                    !(isEventEnded ?? false) &&
+                      ticketData?.status === 'CHECKED_IN'
                       ? `/homepage/event/${eventData?.id}/check-in-out`
                       : `/homepage/event/${eventData?.id}`
                   )

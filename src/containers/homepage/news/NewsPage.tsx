@@ -62,7 +62,7 @@ export default function NewsPage(): React.ReactElement {
     } catch (error: any) {
       toast.error('Error fetching articles:', error.response.data.message);
     }
-  }
+  };
 
   useEffect(() => {
     void fetchArticles();
@@ -80,7 +80,7 @@ export default function NewsPage(): React.ReactElement {
       <div className="flex flex-col gap-10">
         <div className="grid z-10 lg:grid-cols-4 gap-4">
           {articles?.map((article, index) => {
-            return <NewsCard key={article.id} articles={articles[index]}/>;
+            return <NewsCard key={article.id} articles={articles[index]} />;
           })}
         </div>
         <div className="text-center justify-center">

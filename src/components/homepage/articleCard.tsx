@@ -67,7 +67,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
     try {
       const response = await postLike(formRequest, articleId);
       if (response.status === 200) {
-        setIsRefetch(!isRefetch)
+        setIsRefetch(!isRefetch);
       }
     } catch (error) {
       console.log(error);
@@ -151,8 +151,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           className="px-4 pb-3 w-3/4"
         >
           <h1 className="text-base font-semibold text-[#000] my-4">
-            {articles?.title !== undefined &&
-            articles.title.length > 45
+            {articles?.title !== undefined && articles.title.length > 45
               ? `${articles?.title.slice(0, 45)}...`
               : articles?.title}
           </h1>
@@ -180,15 +179,12 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
                 {formatDateToIndonesian(articles?.publicationDate ?? '')}
               </p>
               <p className="text-xs font-normal text-[#7C7C7C]">
-                {formatDateToIndonesianAgo(
-                  articles?.publicationDate ?? ''
-                )}
+                {formatDateToIndonesianAgo(articles?.publicationDate ?? '')}
               </p>
             </div>
             <div className="flex flex-row gap-2">
               <div className="flex flex-row gap-1">
-                {articles?.is_liked !== undefined &&
-                articles?.is_liked ? (
+                {articles?.is_liked !== undefined && articles?.is_liked ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="25"

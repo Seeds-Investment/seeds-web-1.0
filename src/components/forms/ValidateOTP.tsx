@@ -4,7 +4,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import otpSms from 'public/assets/otpSms.png';
 import otpWhatsapp from 'public/assets/otpWhatsapp.png';
-import { useEffect, useRef, useState } from 'react';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 
 interface VariableOTP {
   select: number;
@@ -14,6 +20,8 @@ interface VariableOTP {
   getOTP: any;
   countdown: any;
   setCountdown: any;
+  pinId: string;
+  setPinId: Dispatch<SetStateAction<string>>;
 }
 
 const ValidateOTP: React.FC<VariableOTP> = ({
@@ -23,7 +31,9 @@ const ValidateOTP: React.FC<VariableOTP> = ({
   setMethod,
   getOTP,
   countdown,
-  setCountdown
+  setCountdown,
+  pinId,
+  setPinId
 }: VariableOTP) => {
   const router = useRouter();
   const [input, setInput] = useState(['', '', '', '']);
@@ -32,7 +42,8 @@ const ValidateOTP: React.FC<VariableOTP> = ({
   const verifyOTP = {
     method,
     msisdn: number,
-    otp: OTP
+    otp: OTP,
+    pinId
   };
 
   const handleChangeOTP = (index: number, value: string): void => {
@@ -62,7 +73,8 @@ const ValidateOTP: React.FC<VariableOTP> = ({
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        await getOtp(getOTP);
+        const res = await getOtp(getOTP);
+        setPinId(res?.session_id);
       } catch (error) {
         console.error('Error fetching OTP:', error);
       }
@@ -118,7 +130,8 @@ const ValidateOTP: React.FC<VariableOTP> = ({
                   }`}</Typography>
                   <Button
                     onClick={async () => {
-                      await getOtp(getOTP);
+                      const res = await getOtp(getOTP);
+                      setPinId(res?.session_id);
                       setCountdown(60);
                     }}
                     disabled={countdown > 0}

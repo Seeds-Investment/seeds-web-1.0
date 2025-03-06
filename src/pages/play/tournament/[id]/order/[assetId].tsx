@@ -1102,7 +1102,8 @@ const BuyPage: React.FC = () => {
                               {t('playSimulation.marketPrice')}
                             </Typography>
                             <Typography className="text-[#262626] font-semibold text-xs">
-                              {userInfo?.preferredCurrency} {formatAssetPrice(
+                              {userInfo?.preferredCurrency}{' '}
+                              {formatAssetPrice(
                                 lastPrice[
                                   prefCurrency as PreferredCurrencyI
                                 ] !== 0
@@ -1224,11 +1225,13 @@ const BuyPage: React.FC = () => {
                         </Typography>
                         {router.query.transaction === 'buy' ? (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
-                            {userInfo?.preferredCurrency} {standartCurrency(amount)}
+                            {userInfo?.preferredCurrency}{' '}
+                            {standartCurrency(amount)}
                           </Typography>
                         ) : (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
-                            {userInfo?.preferredCurrency} {standartCurrency(
+                            {userInfo?.preferredCurrency}{' '}
+                            {standartCurrency(
                               +lotSell *
                                 (lastPrice[
                                   prefCurrency as PreferredCurrencyI

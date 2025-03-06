@@ -10,6 +10,7 @@ import {
   loginSSO,
   register
 } from '@/repository/auth.repository';
+import { gassPost } from '@/repository/gass.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { fetchExpData } from '@/store/redux/features/exp';
 import { fetchUserData } from '@/store/redux/features/user';
@@ -80,6 +81,12 @@ const AuthRef: React.FC<AuthRefI> = ({
         await handleTracker();
       } else {
         const response = await loginPhoneNumber(loginForm);
+        await gassPost({
+          act: 'form_update',
+          phone: loginForm.phoneNumber,
+          event: 'prospek',
+          visitor_id: loginForm.visitor_id
+        });
         AuthLocalStorage(response);
         await handleTracker();
       }

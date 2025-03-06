@@ -15,6 +15,7 @@ import {
   loginPhoneNumber,
   validateSetupPassword
 } from '@/repository/auth.repository';
+import { gassPost } from '@/repository/gass.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { fetchExpData } from '@/store/redux/features/exp';
 import { fetchUserData } from '@/store/redux/features/user';
@@ -132,6 +133,12 @@ const AuthVerification: React.FC<AuthVerificationI> = ({
       } else if (response.is_need_set_password === false && passTest) {
         const response = await loginPhoneNumber(loginForm);
         if (response.status === 200) {
+          await gassPost({
+            act: 'form_update',
+            phone: loginForm.phoneNumber,
+            event: 'prospek',
+            visitor_id: loginForm.visitor_id
+          });
           AuthLocalStorage(response);
           await handleTracker();
         } else if (

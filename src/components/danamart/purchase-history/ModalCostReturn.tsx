@@ -7,7 +7,7 @@ import Modal from '../../ui/modal/Modal';
 
 interface Props {
   data: ModalInfoBiayaBunga;
-  setIsShowModalCostReturn: (value: boolean) => void;
+  setIsShowModalCostReturn: React.Dispatch<React.SetStateAction<boolean>>;
   isShowModalCostReturn: boolean;
 }
 

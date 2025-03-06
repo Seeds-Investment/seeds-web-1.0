@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../../ui/modal/Modal';
 
 interface Props {
-  setIsShowDetailReport: (value: boolean) => void;
+  setIsShowDetailReport: React.Dispatch<React.SetStateAction<boolean>>;
   isShowDetailReport: boolean;
   selectedReport: number;
   reportData: ReportI[];

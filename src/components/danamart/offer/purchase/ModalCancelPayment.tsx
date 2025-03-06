@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../../../ui/modal/Modal';
 
 interface Props {
-  setIsCancelPayment: (value: boolean) => void;
-  setIsShowCancelPayment: (value: boolean) => void;
+  setIsCancelPayment: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShowCancelPayment: React.Dispatch<React.SetStateAction<boolean>>;
   isShowCancelPayment: boolean
 }
 

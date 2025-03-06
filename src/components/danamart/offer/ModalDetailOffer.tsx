@@ -8,7 +8,7 @@ import Modal from '../../ui/modal/Modal';
 
 interface Props {
   data: OfferList;
-  setIsOpenModalDetail: (value: boolean) => void;
+  setIsOpenModalDetail: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenModalDetail: boolean;
 }
 

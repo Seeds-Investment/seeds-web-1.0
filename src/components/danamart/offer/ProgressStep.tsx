@@ -10,7 +10,7 @@ import { FiAlertOctagon } from "react-icons/fi";
 
 interface Props {
   timelineOffer: TimelineOffer;
-  setIsShowModalProgress: (value: boolean) => void;
+  setIsShowModalProgress: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ProgressStep: React.FC<Props> = ({

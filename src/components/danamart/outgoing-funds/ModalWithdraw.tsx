@@ -10,10 +10,10 @@ import { toast } from 'react-toastify';
 import Modal from '../../ui/modal/Modal';
 
 interface Props {
-  setIsShowModalWithdraw: (value: boolean) => void;
+  setIsShowModalWithdraw: React.Dispatch<React.SetStateAction<boolean>>;
   isShowModalWithdraw: boolean;
   isLoading: boolean;
-  setIsLoading: (value: boolean) => void;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ModalWithdraw: React.FC<Props> = ({

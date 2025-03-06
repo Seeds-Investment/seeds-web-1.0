@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import Modal from '../../ui/modal/Modal';
 
 interface Props {
-  setIsShowDetailBank: (value: boolean) => void;
+  setIsShowDetailBank: React.Dispatch<React.SetStateAction<boolean>>;
   isShowDetailBank: boolean;
   bankList: BankList[];
   selectedBankIndex: number;

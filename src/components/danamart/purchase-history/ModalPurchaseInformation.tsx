@@ -7,7 +7,7 @@ import Modal from '../../ui/modal/Modal';
 
 interface Props {
   data: ModalPembelian;
-  setIsShowModalPurchaseInformation: (value: boolean) => void;
+  setIsShowModalPurchaseInformation: React.Dispatch<React.SetStateAction<boolean>>;
   isShowModalPurchaseInformation: boolean;
 }
 

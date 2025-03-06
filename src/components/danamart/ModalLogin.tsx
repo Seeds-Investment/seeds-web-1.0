@@ -14,7 +14,7 @@ import Login from './Login';
 
 interface Props {
   userInfo: UserInfo;
-  setIsOpenModalLogin: (value: boolean) => void;
+  setIsOpenModalLogin: React.Dispatch<React.SetStateAction<boolean>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading: boolean;
 }

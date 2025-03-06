@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../../ui/modal/Modal';
 
 interface Props {
-  setIsShowModalProgress: (value: boolean) => void;
+  setIsShowModalProgress: React.Dispatch<React.SetStateAction<boolean>>;
   isShowModalProgress: boolean;
 }
 

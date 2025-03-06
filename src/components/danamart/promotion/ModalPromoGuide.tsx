@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../../ui/modal/Modal';
 
 interface Props {
-  setIsShowPromoGuide: (value: boolean) => void;
+  setIsShowPromoGuide: React.Dispatch<React.SetStateAction<boolean>>;
   isShowPromoGuide: boolean;
 }
 

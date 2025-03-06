@@ -8,7 +8,7 @@ import Modal from '../../ui/modal/Modal';
 
 interface Props {
   data: IncomingFundsData;
-  setIsShowModalDetailIncomeFunds: (value: boolean) => void;
+  setIsShowModalDetailIncomeFunds: React.Dispatch<React.SetStateAction<boolean>>;
   isShowModalDetailIncomeFunds: boolean;
 }
 

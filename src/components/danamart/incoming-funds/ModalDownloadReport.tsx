@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../../ui/modal/Modal';
 
 interface Props {
-  setIsShowDownloadReport: (value: boolean) => void;
+  setIsShowDownloadReport: React.Dispatch<React.SetStateAction<boolean>>;
   isShowDownloadReport: boolean;
   userProfileData: UserProfile;
 }

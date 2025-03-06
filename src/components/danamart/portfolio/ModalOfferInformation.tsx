@@ -7,7 +7,7 @@ import Modal from '../../ui/modal/Modal';
 
 interface Props {
   data: InformasiPenawaran;
-  setIsShowModalOfferInformation: (value: boolean) => void;
+  setIsShowModalOfferInformation: React.Dispatch<React.SetStateAction<boolean>>;
   isShowModalOfferInformation: boolean;
 }
 

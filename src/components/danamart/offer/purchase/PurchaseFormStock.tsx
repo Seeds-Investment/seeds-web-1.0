@@ -12,16 +12,16 @@ interface PurchaseFormProps {
   formPurchaseData: FormPurchaseData;
   pinjamanId: string;
   dashboardData: DashboardDataUser;
-  setIsShowDisclaimer: (value: boolean) => void;
-  setIsLoading: (value: boolean) => void;
-  setIsShowOTP: (value: boolean) => void;
+  setIsShowDisclaimer: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShowOTP: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading: boolean;
-  setIsPurchased: (value: boolean) => void;
+  setIsPurchased: React.Dispatch<React.SetStateAction<boolean>>;
   isPurchased: boolean;
   isContinueProcess: boolean;
   passedOTP: string;
-  setIsContinueProcess: (value: boolean) => void;
-  setIsPending: (value: boolean) => void;
+  setIsContinueProcess: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsPending: React.Dispatch<React.SetStateAction<boolean>>;
   isPending: boolean;
 }
 

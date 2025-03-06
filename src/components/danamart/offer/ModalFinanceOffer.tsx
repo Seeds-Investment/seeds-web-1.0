@@ -6,7 +6,7 @@ import Modal from '../../ui/modal/Modal';
 
 interface Props {
   financingType: string;
-  setIsShowFinanceInfo: (value: boolean) => void;
+  setIsShowFinanceInfo: React.Dispatch<React.SetStateAction<boolean>>;
   isShowFinanceInfo: boolean;
 }
 

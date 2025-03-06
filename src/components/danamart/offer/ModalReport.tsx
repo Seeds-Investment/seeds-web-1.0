@@ -10,7 +10,7 @@ import Modal from '../../ui/modal/Modal';
 
 interface Props {
   url: string;
-  setIsShowReportForm: (value: boolean) => void;
+  setIsShowReportForm: React.Dispatch<React.SetStateAction<boolean>>;
   isShowReportForm: boolean;
 }
 

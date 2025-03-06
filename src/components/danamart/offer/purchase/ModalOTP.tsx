@@ -8,8 +8,8 @@ import { toast } from 'react-toastify';
 import Modal from '../../../ui/modal/Modal';
 
 interface Props {
-  setIsContinueProcess: (value: boolean) => void;
-  setIsShowOTP: (value: boolean) => void;
+  setIsContinueProcess: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShowOTP: React.Dispatch<React.SetStateAction<boolean>>;
   isShowOTP: boolean;
   setPassedOTP: (otp: string) => void;
   isLoading: boolean;

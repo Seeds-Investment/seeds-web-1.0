@@ -7,9 +7,9 @@ import { useTranslation } from "react-i18next";
 
 interface Props {
   offer: OfferList;
-  setIsOpenModalDetail: (value: boolean) => void;
-  setIsShareModal: (value: boolean) => void;
-  setIsShowFinanceInfo: (value: boolean) => void;
+  setIsOpenModalDetail: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShareModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShowFinanceInfo: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedIndex: (value: number) => void;
   setFinancingType: (value: string) => void;
   isOpenModalDetail: boolean;

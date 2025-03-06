@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../../../ui/modal/Modal';
 
 interface Props {
-  setIsShowOTP: (value: boolean) => void;
-  setIsShowDisclaimer: (value: boolean) => void;
+  setIsShowOTP: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShowDisclaimer: React.Dispatch<React.SetStateAction<boolean>>;
   isShowDisclaimer: boolean
 }
 

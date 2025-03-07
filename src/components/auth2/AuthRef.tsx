@@ -84,6 +84,11 @@ const AuthRef: React.FC<AuthRefI> = ({
         await gassPost({
           act: 'form_update',
           phone: loginForm.phoneNumber,
+          visitor_id: loginForm.visitor_id
+        });
+        await gassPost({
+          act: 'form_trigger_custom',
+          phone: loginForm.phoneNumber,
           event: 'prospek',
           visitor_id: loginForm.visitor_id
         });

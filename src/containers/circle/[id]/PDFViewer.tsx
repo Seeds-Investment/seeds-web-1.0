@@ -50,7 +50,10 @@ const PDFViewer: React.FC<Props> = ({ file, handleRemove, mode = 'edit' }) => {
         <button
           onClick={e => {
             e.preventDefault();
-            setDocModal(true);
+            if (mode === 'view') {
+              setDocModal(true);
+            }
+            
           }}
           className={`absolute z-10 bottom-0 flex flex-col justify-between h-full w-full ${
             mode === 'edit' ? 'cursor-default' : ''

@@ -1599,7 +1599,9 @@ const ModalMention: React.FC<props> = ({
                     {document !== undefined &&
                       document !== null &&
                       pages !== 'gif' &&
-                      pages !== 'talk' && <PDFViewer file={document} />}
+                      pages !== 'talk' && (
+                        <PDFViewer mode="edit" file={document} />
+                      )}
                   </div>
                   ;
                   <div className="flex items-center">
@@ -1796,7 +1798,6 @@ const ModalMention: React.FC<props> = ({
                     form={form}
                   />
                   <div className="flex flex-col px-6 pt-8 h-full">
-                    
                     <Toast
                       message={errorMessage}
                       show={isError}
@@ -1889,14 +1890,16 @@ const ModalMention: React.FC<props> = ({
                           <ShowAudioPlayer audioFile={audio} />
                         )}
                       </div>
-                      
+
                       <div className="flex flex-col max-h-[300px] overflow-auto pb-2 ">
                         <div className="flex justify-center">
                           {document !== undefined &&
                             document !== null &&
-                            pages !== 'gif' && <PDFViewer file={document} />}
+                            pages !== 'gif' && (
+                              <PDFViewer mode="edit" file={document} />
+                            )}
                         </div>
-                        
+
                         <div className="flex items-center w-full">
                           <div className="flex flex-wrap gap-4 w-full ">
                             {media.length > 0 &&

@@ -1,7 +1,6 @@
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -14,6 +13,7 @@ import social from 'public/assets/social/social.svg';
 import { useEffect, useState } from 'react';
 import market from 'src/assets/market/market.svg';
 // import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '@/store/redux/store';
 import { toast } from 'react-toastify';
 import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
@@ -41,11 +41,11 @@ const SidebarLogin: React.FC = () => {
 
   // const { t } = useTranslation();
   const [accessToken, setAccessToken] = useState('');
+  const { dataUser } = useAppSelector(state => state.user);
   const width = useWindowInnerWidth();
   const router = useRouter();
   const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
   const [showLogoutButton, setShowLogoutButton] = useState(false);
-  const [userInfo, setUserInfo] = useState<any>([]);
   const isLinkActive = (href: string): string => {
     return router.asPath.startsWith(href) ? 'active' : '';
   };
@@ -55,9 +55,7 @@ const SidebarLogin: React.FC = () => {
       setAccessToken(localStorage.getItem('accessToken') ?? '');
       const fetchData = async (): Promise<void> => {
         try {
-          const dataInfo = await getUserInfo();
           setShowLogoutButton(true);
-          setUserInfo(dataInfo);
         } catch (error: any) {
           if (error.response.status !== 401) {
             toast(error.message, { type: 'error' });
@@ -78,7 +76,7 @@ const SidebarLogin: React.FC = () => {
           onClose={() => {
             setIsLogoutModal(prev => !prev);
           }}
-          userInfo={userInfo}
+          userInfo={dataUser}
         />
       )}
 
@@ -94,7 +92,7 @@ const SidebarLogin: React.FC = () => {
             onClick={() => {
               TrackerEvent({
                 event: `SW_${data.title.toLowerCase()}_page`,
-                userData: userInfo
+                userData: dataUser
               });
             }}
             className={isLinkActive(data.url)}

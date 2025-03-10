@@ -1,7 +1,6 @@
 import { isGuest } from '@/helpers/guest';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
 import { useAppSelector } from '@/store/redux/store';
 import { getLocalStorage } from '@/utils/common/localStorage';
@@ -19,22 +18,9 @@ import NotificationIcon from '../svgs/notificationIcon';
 import Logo from '../ui/vector/Logo';
 import SidebarLoginResponsive from './SidebarLoginResponsive';
 
-interface UserData {
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  phone: string;
-  _pin: string;
-}
-
 const HeaderLogin: React.FC = () => {
   const accessToken =
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const { dataUser } = useAppSelector(state => state.user);
   const width = useWindowInnerWidth();
   const router = useRouter();
@@ -45,17 +31,6 @@ const HeaderLogin: React.FC = () => {
 
   const handleOpenModal = (): void => {
     setOpenSidebarResponsive(!openSidebarResponsive);
-  };
-
-  const handleGetUserInfo = async (): Promise<void> => {
-    try {
-      const response = await getUserInfo();
-      setUserInfo(response);
-    } catch (error: any) {
-      if (error?.response?.status !== 401) {
-        toast.error('Error fetching user data');
-      }
-    }
   };
 
   const getLastTranslation = useCallback(async (): Promise<void> => {
@@ -70,11 +45,7 @@ const HeaderLogin: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    void handleGetUserInfo();
     void getLastTranslation();
-    if (!isGuest()) {
-      void handleGetUserInfo();
-    }
   }, []);
 
   const handleOpenLogout = (): void => {
@@ -97,7 +68,7 @@ const HeaderLogin: React.FC = () => {
           onClose={() => {
             setIsLogoutModal(prev => !prev);
           }}
-          userInfo={userInfo}
+          userInfo={dataUser}
         />
       )}
 
@@ -211,7 +182,7 @@ const HeaderLogin: React.FC = () => {
                     <ChatIcon />
                   </div>
                 </section>
-                {accessToken !== null && userInfo !== null ? (
+                {accessToken !== null && dataUser !== null ? (
                   <Link href="/my-profile">
                     <Image
                       alt="image"

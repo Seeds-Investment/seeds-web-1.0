@@ -1,0 +1,29 @@
+.customCalendar {
+
+  border-radius: 12px !important;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2) !important;
+  padding: 10px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.customDatepickerModal {
+  
+}
+
+.customDay {
+  padding: 8px !important;
+  border-radius: 50% !important;
+  transition: background-color 0.2s ease-in-out !important;
+}
+
+.customSelected {
+  background-color: #6fcf97 !important;
+  color: white !important;
+  border-radius: 50% !important;
+}
+
+.customInRange {
+  background-color: #e6f7eb !important;
+  color: #2d6a4f !important;
+  border-radius: 50% !important;
+}

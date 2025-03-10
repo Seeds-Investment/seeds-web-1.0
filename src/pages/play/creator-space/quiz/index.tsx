@@ -2,7 +2,7 @@ import CCard from '@/components/CCard';
 import HeroCreatorGameQuizSection from '@/containers/play/creator-space/quiz/HeroCreatorGameQuizSection';
 import ListGameCreatorSpaceSection from '@/containers/play/creator-space/quiz/ListGameCreatorSpaceSection';
 import QuizTabSection from '@/containers/play/creator-space/quiz/QuizTabSection';
-import UseListCreatorQuiz from '@/hooks/plays/GameDecentralize/quiz/UseListCreatorQuiz';
+import UseListCreatorQuiz from '@/hooks/plays/GameDecentralize/quiz/useListCreatorQuiz';
 
 const QuizSpacePage = (): React.ReactElement => {
   const { activeQuiz, handleTypeQuiz, isLoading } = UseListCreatorQuiz();

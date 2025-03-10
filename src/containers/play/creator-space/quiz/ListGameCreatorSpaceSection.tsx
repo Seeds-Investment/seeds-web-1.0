@@ -20,7 +20,7 @@ const ListGameCreatorSpaceSection: React.FC<
       <Typography className="font-normal text-md text-gray-600">
         Explore diverse quizzes to test and enhance your financial knowledge
       </Typography>
-      <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 md:px-0  py-4">
+      <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 md:px-0 py-4">
         {isLoading
           ? Array.from({ length: 6 }).map((_, index) => (
               <SkeletonCard key={index} size="fit" />

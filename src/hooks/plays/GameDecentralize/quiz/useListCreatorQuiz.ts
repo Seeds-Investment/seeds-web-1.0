@@ -16,7 +16,7 @@ const UseListCreatorQuiz = () => {
       duration: '10 days',
       players: 100,
       image: '/images/quiz-thumbnail-1.png',
-      link: '/play/quiz/1',
+      link: '/play/creator-space/quiz/1',
       isPending: false
     },
     {
@@ -24,13 +24,13 @@ const UseListCreatorQuiz = () => {
       name: 'Brain Teaser Challenge',
       creator: {
         name: 'Michael Johnson',
-        avatar: '/images/avatar-michael.png'
+        avatar: DummyPeople.src
       },
       entryFee: 15000,
       duration: '7 days',
       players: 75,
       image: '/images/quiz-thumbnail-2.png',
-      link: '/play/quiz/2',
+      link: '/play/creator-space/quiz/2',
       isPending: true
     },
     {
@@ -38,13 +38,13 @@ const UseListCreatorQuiz = () => {
       name: 'Math Genius',
       creator: {
         name: 'Alice Tanaka',
-        avatar: '/images/avatar-alice.png'
+        avatar: DummyPeople.src
       },
       entryFee: 5000,
       duration: '5 days',
       players: 50,
       image: '/images/quiz-thumbnail-3.png',
-      link: '/play/quiz/3',
+      link: '/play/creator-space/quiz/3',
       isPending: false
     },
     {
@@ -52,13 +52,13 @@ const UseListCreatorQuiz = () => {
       name: 'General Knowledge Trivia',
       creator: {
         name: 'Samuel Lee',
-        avatar: '/images/avatar-samuel.png'
+        avatar: DummyPeople.src
       },
       entryFee: 20000,
       duration: '14 days',
       players: 200,
       image: '/images/quiz-thumbnail-4.png',
-      link: '/play/quiz/4',
+      link: '/play/creator-space/quiz/4',
       isPending: true
     },
     {
@@ -66,13 +66,13 @@ const UseListCreatorQuiz = () => {
       name: 'History & Culture Quiz',
       creator: {
         name: 'Sophia Williams',
-        avatar: '/images/avatar-sophia.png'
+        avatar: DummyPeople.src
       },
       entryFee: 8000,
       duration: '3 days',
       players: 30,
       image: '/images/quiz-thumbnail-5.png',
-      link: '/play/quiz/5',
+      link: '/play/creator-space/quiz/5',
       isPending: true
     }
   ];

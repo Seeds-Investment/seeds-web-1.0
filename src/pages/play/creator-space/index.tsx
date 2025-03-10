@@ -1,5 +1,5 @@
 import CardGameSpace from '@/components/play/CardGameSpace';
-import UseListGameDecentralize from '@/hooks/plays/GameDecentralize/UseListGameDecentralize';
+import UseListGameDecentralize from '@/hooks/plays/GameDecentralize/useListGameDecentralize';
 import { Typography } from '@material-tailwind/react';
 
 const ListOfGameSpacesPage = (): React.ReactElement => {

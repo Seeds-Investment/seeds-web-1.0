@@ -7,18 +7,12 @@ import AuthVerification from '@/components/auth2/AuthVerification';
 import countries from '@/constants/countries.json';
 import AuthLayout from '@/containers/auth/AuthLayout';
 import queryList from '@/helpers/queryList';
+import { type LoginForm } from '@/repository/auth.repository';
 import type { OTPDataI } from '@/utils/interfaces/otp.interface';
 import DeviceDetector from 'device-detector-js';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-
-interface LoginFormData {
-  phoneNumber: string;
-  password: string;
-  platform: string;
-  os_name: string;
-}
 
 const Register: React.FC = () => {
   const deviceDetector = new DeviceDetector();
@@ -42,11 +36,12 @@ const Register: React.FC = () => {
       identifier: ''
     }
   });
-  const [loginForm, setLoginForm] = useState<LoginFormData>({
+  const [loginForm, setLoginForm] = useState<LoginForm>({
     phoneNumber: '',
     password: '',
     platform: '',
-    os_name: ''
+    os_name: '',
+    visitor_id: ''
   });
 
   const [otpForm, setOTPForm] = useState<OTPDataI>({
@@ -98,12 +93,19 @@ const Register: React.FC = () => {
   }, [otpForm.token]);
 
   useEffect(() => {
+    const visitorId = document.cookie
+      .split('; ')
+      .find(cookie => cookie.startsWith('visitor_id='))
+      ?.split('=')[1];
     setLoginForm({
       ...loginForm,
       platform: `${
         deviceDetector.parse(navigator.userAgent).device?.type as string
       }_web`,
-      os_name: `${deviceDetector.parse(navigator.userAgent).os?.name as string}`
+      os_name: `${
+        deviceDetector.parse(navigator.userAgent).os?.name as string
+      }`,
+      visitor_id: visitorId !== null && visitorId !== undefined ? visitorId : ''
     });
     if (queries.rc !== undefined) {
       setFormData({ ...formData, refCode: queries.rc });

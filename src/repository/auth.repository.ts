@@ -22,11 +22,12 @@ const userService = baseAxios(
   }/user/v1/`
 );
 
-interface LoginForm {
+export interface LoginForm {
   phoneNumber: string;
   password: string;
   platform?: string;
   os_name?: string;
+  visitor_id: string;
 }
 
 interface LoginSSOForm {

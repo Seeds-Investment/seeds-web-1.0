@@ -866,28 +866,34 @@ const PostSection: React.FC<props> = ({
                 <div className="w-full">
                   <div className="flex justify-between h-full">
                     <div className="flex items-center h-full  gap-2">
-                        <Typography
+                      <Typography
                         className="font-bold text-black md:text-lg cursor-pointer"
                         onClick={async () => {
                           isGuest()
-                          ? await router.push('/auth')
-                          : dataPost.user_id === userInfo.id
-                          ? await router.push('/my-profile')
-                          : await router.push(
-                            `/social/${dataPost.user_id as string}`
-                            );
+                            ? await router.push('/auth')
+                            : dataPost.user_id === userInfo.id
+                            ? await router.push('/my-profile')
+                            : await router.push(
+                                `/social/${dataPost.user_id as string}`
+                              );
                         }}
-                        >
+                      >
                         {dataPost.owner !== undefined
                           ? dataPost.owner.seeds_tag !== undefined
-                          ? dataPost.owner.seeds_tag.length > 15
-                            ? `${String(dataPost.owner.seeds_tag).substring(0, 15)}...`
-                            : String(dataPost.owner.seeds_tag)
-                          : String(dataPost.owner.username).length > 15
-                          ? `${String(dataPost.owner.username).substring(0, 15)}...`
-                          : String(dataPost.owner.username)
+                            ? dataPost.owner.seeds_tag.length > 15
+                              ? `${String(dataPost.owner.seeds_tag).substring(
+                                  0,
+                                  15
+                                )}...`
+                              : String(dataPost.owner.seeds_tag)
+                            : String(dataPost.owner.username).length > 15
+                            ? `${String(dataPost.owner.username).substring(
+                                0,
+                                15
+                              )}...`
+                            : String(dataPost.owner.username)
                           : null}
-                        </Typography>
+                      </Typography>
                       <Image src={Dot.src} alt={Dot.alt} width={5} height={5} />
                       <div className="flex gap-1 items-center text-gray-500">
                         <Typography className="text-xs md:text-sm">
@@ -947,7 +953,9 @@ const PostSection: React.FC<props> = ({
                   )}
                   {categorizeURL(dataPost.media_urls)}
                   {voice.length > 0 && <ShowAudioPlayer src={voice[0]} />}
-                  {document.length > 0 && <PDFViewer file={document[0]} />}
+                  {document.length > 0 && (
+                    <PDFViewer mode="view" file={document[0]} />
+                  )}
                   {media.length > 0 && <ImageCarousel images={media} />}
                   {dataPost.pollings?.length > 0 && (
                     <PollingView
@@ -972,7 +980,7 @@ const PostSection: React.FC<props> = ({
                   )}
                   {categorizeURL(dataPost.media_urls)}
                   {voice.length > 0 && <ShowAudioPlayer src={voice[0]} />}
-                  {document.length > 0 && <PDFViewer file={document[0]} />}
+                  {document.length > 0 && <PDFViewer mode='view' file={document[0]} />}
                   {media.length > 0 && <ImageCarousel images={media} />}
                   {dataPost.pollings?.length > 0 && (
                     <PollingView

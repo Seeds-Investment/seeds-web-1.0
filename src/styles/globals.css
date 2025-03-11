@@ -243,8 +243,12 @@ code {
 }
 
 .widthPDF {
-  width: calc(100vw - 200px);
+  width: calc(100vw - 10%);
+
 }
+
+
+
 
 .MentionInputTextArea textarea {
   outline: none;

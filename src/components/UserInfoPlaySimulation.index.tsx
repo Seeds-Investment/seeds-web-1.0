@@ -196,7 +196,9 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
                     {t('homepage.section2.text19')}
                   </Typography>
                   <Typography className="text-[#392594] font-poppins font-medium md:text-base text-[14px]">
-                    {standartCurrency(playDetail.prize[0])}
+                    {standartCurrency(
+                      playDetail.prize.reduce((acc, num) => acc + num, 0)
+                    )}
                   </Typography>
                 </div>
               </div>

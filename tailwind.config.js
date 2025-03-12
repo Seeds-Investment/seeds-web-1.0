@@ -40,7 +40,9 @@ module.exports = withMT({
           "url('/src/assets/play/tournament/bannerLeaderboard.png')",
         userInfoBackground: "url('../assets/userInfoBackground.svg')",
         'gradient-radial-subs':
-          'radial-gradient(ellipse at center, #EED69C, #FABE2C)'
+          'radial-gradient(ellipse at center, #EED69C, #FABE2C)',
+        'diamond-gradient':
+          'radial-gradient(ellipse at right, #FFF7D2 20%,#E3D2E3 40% ,#B798FF 100%)'
       },
       backgroundSize: {
         '50%': '50%',
@@ -84,7 +86,8 @@ module.exports = withMT({
         'bounce-horizontal': 'bounce-horizontal 2000ms infinite',
         'bounce-reverse': 'bounce-reverse 2000ms infinite',
         'shadow-move': 'shadow-move 3s infinite',
-        'shadow-voicenotes': 'shadow-voicenotes 1s infinite'
+        'shadow-voicenotes': 'shadow-voicenotes 1s infinite',
+        'infinite-line': 'infinite-line 30s linear infinite'
       },
       keyframes: {
         'slide-down': {
@@ -178,6 +181,14 @@ module.exports = withMT({
         'shadow-voicenotes': {
           '0%, 100%': { boxShadow: '0 0 8px 1px rgba(255, 255, 255, 1)' },
           '50%': { boxShadow: '0 0 15px 5px rgba(220, 252, 228, 1)' }
+        },
+        'infinite-line': {
+          '0%': {
+            transform: 'translateX(0)'
+          },
+          '100%': {
+            transform: 'translateX(-50%)'
+          }
         }
       }
     }

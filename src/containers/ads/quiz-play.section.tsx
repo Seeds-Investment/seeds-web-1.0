@@ -299,7 +299,9 @@ const QuizPlay = ({ cta }: { cta?: string }): React.ReactElement => {
                         </p>
                       </div>
                       <p className="font-normal text-neutral-soft text-base">
-                        {v.tnc.id}
+                        Uji pengetahuanmu dan raih posisi teratas di
+                        leaderboard! Tantang dirimu sekarang dan menangkan
+                        hadiah menarik!
                       </p>
                     </div>
                     <div className="flex gap-8">
@@ -339,7 +341,8 @@ const QuizPlay = ({ cta }: { cta?: string }): React.ReactElement => {
                   </div>
                 </div>
                 <p className="font-normal text-neutral-soft text-sm lg:hidden">
-                  {v.tnc.id}
+                  Uji pengetahuanmu dan raih posisi teratas di leaderboard!
+                  Tantang dirimu sekarang dan menangkan hadiah menarik!
                 </p>
                 <div className="flex flex-col gap-2 lg:hidden">
                   <div className="flex gap-4">

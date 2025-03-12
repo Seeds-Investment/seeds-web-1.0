@@ -182,5 +182,8 @@ module.exports = withMT({
       }
     }
   },
-  plugins: [require('tailwindcss-textshadow')]
+  plugins: [require('tailwindcss-textshadow'), require('daisyui')],
+  daisyui: {
+    themes: ['light']
+  }
 });

@@ -61,7 +61,7 @@ const ModalWithdraw: React.FC<Props> = ({
           } else {
             toast.success(response?.message)
           }
-          if (response) {
+          if (response !== null && response !== undefined) {
             setIsShowModalWithdraw(!isShowModalWithdraw)
             setOtp(['', '', '', '', '', ''])
           }

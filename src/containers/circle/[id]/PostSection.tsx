@@ -30,6 +30,7 @@ import { getQuizById } from '@/repository/quiz.repository';
 import { getBattleDetail } from '@/repository/team-battle.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
+import { type UserInfoI } from '@/utils/interfaces/social.interfaces';
 import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import moment from 'moment';
@@ -60,7 +61,7 @@ import PDFViewer from './PDFViewer';
 interface props {
   dataPost: any;
   setData: any;
-  userInfo: UserData;
+  userInfo: UserInfoI;
   handleSubmitBlockUser?: any;
   myInfo?: any;
 }
@@ -71,20 +72,6 @@ interface ChartData {
     data: number[];
     backgroundColor: string[];
   }>;
-}
-
-interface UserData {
-  id: string;
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  phone: string;
-  _pin: string;
-  preferredCurrency: string;
 }
 
 interface ShareData {
@@ -1283,7 +1270,7 @@ const PostSection: React.FC<props> = ({
                                 <div className="flex justify-center items-center text-xs font-semibold">
                                   {item?.admission_fee !== 0
                                     ? `${
-                                        userInfo?.preferredCurrency
+                                        userInfo?.preferredCurrency ?? 'IDR'
                                       }${standartCurrency(
                                         item?.admission_fee ?? 0
                                       ).replace('Rp', '')}`

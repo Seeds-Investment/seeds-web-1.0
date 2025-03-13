@@ -8,6 +8,7 @@ import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { type useRouter } from 'next/router';
 import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
+import { IoArrowBack } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 
 interface Props {
@@ -67,6 +68,15 @@ const LinkedAccount: React.FC<Props> = ({
   return (
     <div className="px-4 py-5 md:p-8 flex flex-col items-center gap-5">
       <div className="w-full relative flex justify-center">
+        {
+          isLinkExisting &&
+            <div
+              onClick={async () => { setIsLinkExisting(false) }}
+              className="absolute left-0 cursor-pointer hover:scale-110 duration-150"
+            >
+              <IoArrowBack size={22} />
+            </div>
+        }
         <div
           onClick={async () => {
             await router.push('/homepage');
@@ -156,14 +166,15 @@ const LinkedAccount: React.FC<Props> = ({
                 ? t('danamart.register.connectAccount')
                 : t('danamart.register.completeData')}
             </Button>
-            <Button
-              onClick={async () => {
-                setIsLinkExisting(false)
-              }}
-              className="w-full h-fit bg-seeds-button-green text-white font-poppins font-semibold text-base capitalize rounded-full mb-16 md:mb-0"
-            >
-              {t('danamart.register.back')}
-            </Button>
+            {
+              userInfo?.email !== '' && userInfo?.phoneNumber !== '' &&
+                <Button
+                  onClick={async () => { await router.push('/user-setting/account-security-center') }}
+                  className="w-full h-fit bg-seeds-button-green text-white font-poppins font-semibold text-base capitalize rounded-full"
+                >
+                  {t('danamart.register.changeData')}
+                </Button>
+            }
           </>
           :
           <>

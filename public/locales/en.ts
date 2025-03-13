@@ -2927,6 +2927,7 @@ export default {
       back: 'Back',
       connectAccount: 'Connect Account',
       completeData: 'Complete Email and Phone Number',
+      changeData: 'Change Email or Phone Number',
       makeSure: 'Make sure the email and phone number of your Seeds account are the same as those of your Danamart account',
       notRegistered: 'Account not registered. Make sure your email and phone number in Seeds and Danamart are the same!',
       connectSucceed: 'Account connected successfully',

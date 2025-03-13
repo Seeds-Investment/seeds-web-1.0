@@ -77,7 +77,7 @@ const AuthForgotPassNumber: React.FC<Props> = ({
         error?.response?.data?.message ===
         'requested phone number already exists'
       ) {
-        await handleGetOTP(method, setCountdown, setSelect, formattedData);
+        await handleGetOTP(method, setCountdown, setSelect, formattedData, setOTPForm);
       }
     } finally {
       setLoading(false);

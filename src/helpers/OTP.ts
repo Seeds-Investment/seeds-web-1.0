@@ -23,6 +23,7 @@ export const handleGetOTP = async (
   formOTPData: OTPDataI,
   setOTPForm: React.Dispatch<React.SetStateAction<OTPDataI>>
 ): Promise<void> => {
+
   const getOTP = {
     method,
     phoneNumber: formOTPData.phoneNumber

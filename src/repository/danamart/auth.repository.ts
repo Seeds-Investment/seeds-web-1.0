@@ -14,7 +14,7 @@ interface ChangePasswordI {
 
 const authService = axios.create({
   baseURL:
-    process.env.NEXT_PUBLIC_URL ??
+    process.env.NEXT_PUBLIC_DANAMART_API_URL ??
     'https://dev.danamart.id/development/dm-scf-api/public',
   headers: {
     'Content-Type': 'multipart/form-data'

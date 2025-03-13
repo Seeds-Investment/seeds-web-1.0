@@ -2859,6 +2859,7 @@ export default {
       back: 'Kembali',
       connectAccount: 'Hubungkan Akun',
       completeData: 'Lengkapi Email dan Nomor Telepon',
+      changeData: 'Ubah Email atau Nomor Telepon',
       makeSure: 'Pastikan email dan nomor telepon akun Seeds Anda sama dengan email dan nomor telepon akun Danamart Anda',
       notRegistered: 'Akun tidak terdaftar. Pastikan email dan nomor telepon akun Seeds dan Danamart anda sama!',
       connectSucceed: 'Akun berhasil terhubung',

@@ -4,6 +4,7 @@ import { getAllQuizNoToken, getQuizById } from '@/repository/quiz.repository';
 import { Button, Card } from '@material-tailwind/react';
 import Image from 'next/image';
 
+import { QuizStatus } from '@/utils/interfaces/quiz.interfaces';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 import CountdownTimer from './countdown.component';
@@ -12,11 +13,15 @@ const DetailQuiz = ({ cta }: { cta?: string }): React.ReactElement => {
   const [dataQuiz, setDataQuiz] = useState<QuizIdRoot[]>([]);
 
   const handleQuiz = useCallback(async () => {
-    const res = await getAllQuizNoToken({ limit: 5, page: 1, status: '' });
+    const res = await getAllQuizNoToken({
+      limit: 5,
+      page: 1,
+      status: QuizStatus.STARTED
+    });
     // eslint-disable-next-line prefer-const
     let counter = 0;
 
-    while (counter < res.data.length) {
+    while (counter < (res?.data?.length ?? 0)) {
       const resId: QuizIdRoot = await getQuizById({
         id: res.data[counter].id as string,
         currency: ''
@@ -49,7 +54,7 @@ const DetailQuiz = ({ cta }: { cta?: string }): React.ReactElement => {
               <Image
                 className="aspect-square !w-20 lg:!w-32 rounded-full"
                 src={
-                  v?.banner?.image_url?.startsWith(
+                  v.banner.image_url.startsWith(
                     'https://dev-assets.seeds.finance'
                   )
                     ? v.banner.image_url
@@ -141,8 +146,8 @@ const DetailQuiz = ({ cta }: { cta?: string }): React.ReactElement => {
                           )}
                         </span>
                       </p>
-                      <p>Available</p>{' '}
-                      <CountdownTimer targetDate={v.started_at} />
+                      <p className="text-transparent">.</p>
+                      <p className="text-transparent">.</p>
                     </div>
                   </div>
                 </div>
@@ -209,17 +214,18 @@ const DetailQuiz = ({ cta }: { cta?: string }): React.ReactElement => {
                     }).format(v.prizes.reduce((acc, val) => acc + val, 0))}
                   </span>
                 </p>
-                <p>Available</p> <CountdownTimer targetDate={v.started_at} />
+                <p className="text-transparent">.</p>
+                <p className="text-transparent">.</p>
               </div>
             </div>
-            <Link
-              className="w-full sm:w-fit sm:self-end lg:self-auto"
-              href={cta !== undefined ? cta : `/auth?qi=${v.id}`}
-            >
-              <Button className="  rounded-full bg-[#3AC4A0] capitalize font-poppins font-semibold text-xl w-full sm:w-36">
-                Play Now
-              </Button>
-            </Link>
+            <div className="flex flex-col w-full sm:w-fit sm:self-end lg:self-auto">
+              <CountdownTimer targetDate={v.ended_at} />
+              <Link href={cta !== undefined ? cta : `/auth?qi=${v.id}`}>
+                <Button className="rounded-full bg-[#3AC4A0] capitalize font-poppins font-semibold text-xl w-full">
+                  Play Now
+                </Button>
+              </Link>
+            </div>
           </Card>
         ))}
       </div>

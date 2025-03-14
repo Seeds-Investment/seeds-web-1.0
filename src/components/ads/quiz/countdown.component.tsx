@@ -36,21 +36,27 @@ const CountdownTimer = ({
   }, [targetDate]);
 
   return (
-    <div className="flex text-sm font-semibold font-poppins bg-[#3AC4A0]/75 text-white rounded-full item-center justify-center py-1 px-2">
+    <div
+      className={`flex text-sm font-semibold font-poppins ${
+        timeLeft.days === 0 &&
+        timeLeft.hours === 0 &&
+        timeLeft.minutes === 0 &&
+        timeLeft.seconds === 0
+          ? ''
+          : 'text-[#3AC4A0]'
+      } rounded-full item-center justify-center py-1 px-2`}
+    >
       {timeLeft.days === 0 &&
       timeLeft.hours === 0 &&
       timeLeft.minutes === 0 &&
       timeLeft.seconds === 0 ? (
-        'NOW'
+        'ENDED'
       ) : (
-        <div className="flex gap-2">
-          {timeLeft.days !== 0 ? (
-            <span>{timeLeft.days} Hari</span>
-          ) : (
-            <span>
-              {timeLeft.hours} : {timeLeft.minutes} : {timeLeft.seconds}
-            </span>
-          )}
+        <div className="flex w-[170px] justify-center">
+          <span>
+            {timeLeft.days} Days, {timeLeft.hours}h {timeLeft.minutes}m{' '}
+            {timeLeft.seconds}s
+          </span>
         </div>
       )}
     </div>

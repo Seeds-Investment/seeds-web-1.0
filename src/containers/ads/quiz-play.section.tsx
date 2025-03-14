@@ -29,7 +29,7 @@ export interface QuizRoot {
 }
 
 export interface Banner {
-  iamge_url: string;
+  image_url: string;
   image_link: string;
 }
 export interface QuizIdRoot {
@@ -98,41 +98,9 @@ const QuizPlay = ({ cta }: { cta?: string }): React.ReactElement => {
         <div className="py-6 flex flex-col gap-8 lg:gap-16" ref={sectionRef}>
           <DetailQuiz cta={cta} />
         </div>
-
         <WhyPlay />
         <ExploreQuiz />
-        {/* <div className="flex flex-col gap-8 md:gap-16 items-center justify-center">
-          <div className="flex flex-col items-center justify-center gap-2 md:gap-4">
-            <p className="font-semibold text-base md:text-4xl text-center text-neutral-medium">
-              🏆 Siapa yang Memimpin Permainan?
-            </p>
-            <p className="font-normal text-neutral-soft text-xs md:text-base text-center">
-              Persaingan semakin seru! 🔥 Lihat papan peringkat dan cek posisimu
-              di antara para pemain terbaik. Terus bermain, kumpulkan poin, dan
-              raih posisi teratas untuk hadiah eksklusif!
-            </p>
-          </div>
-          <div className="relative">
-            <div className="absolute w-[19%] rounded-full aspect-square bg-black right-1/2 translate-x-1/2" />
-            <div className="absolute w-[7%] rounded-full aspect-square bg-blue-400 right-[40%] top-[20%]" />
-
-            <div className="absolute w-[17%] rounded-full aspect-square bg-red-400 top-[7%] left-[8%]" />
-            <div className="absolute w-[5%] rounded-full aspect-square bg-blue-400 left-[20%] top-[27%]" />
-            <div className="absolute w-[17%] rounded-full aspect-square bg-red-400 top-[7%] right-[8%]" />
-            <div className="absolute w-[5%] rounded-full aspect-square bg-blue-400 right-[8%] top-[27%]" />
-
-            <Image src={kotak} alt="kotak" />
-          </div>
-          <div className="flex flex-col items-center justify-center gap-2 md:gap-4">
-            <p className="font-semibold text-base md:text-4xl text-center text-neutral-medium">
-              Main Sekarang & Lihat Papan Peringkat Lengkap!
-            </p>
-            <p className="font-normal text-neutral-medium text-xs md:text-base lg:text-2xl text-center">
-              Jangan sampai ketinggalan siapa yang memimpin! Tantang dirimu,
-              kumpulkan poin, dan raih hadiah luar biasa! 🔥
-            </p>
-          </div>
-        </div> */}
+        {/* <PodiumQuiz /> */}
       </section>
       <Testimony />
       <FooterQuiz scrollToSection={scrollToSection} />

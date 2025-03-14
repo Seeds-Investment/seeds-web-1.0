@@ -29,7 +29,7 @@ export interface QuizRoot {
 }
 
 export interface Banner {
-  iamge_url: string;
+  image_url: string;
   image_link: string;
 }
 export interface QuizIdRoot {

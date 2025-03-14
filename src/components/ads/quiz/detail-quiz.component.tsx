@@ -49,10 +49,10 @@ const DetailQuiz = ({ cta }: { cta?: string }): React.ReactElement => {
               <Image
                 className="aspect-square !w-20 lg:!w-32 rounded-full"
                 src={
-                  v?.banner?.iamge_url?.startsWith(
+                  v?.banner?.image_url?.startsWith(
                     'https://dev-assets.seeds.finance'
                   )
-                    ? v.banner.iamge_url
+                    ? v.banner.image_url
                     : ListQuizEmpty
                 }
                 alt={v.name}

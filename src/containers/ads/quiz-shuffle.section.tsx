@@ -86,8 +86,9 @@ export interface Lifeline {
   Price: number;
 }
 
-const QuizPlay = ({ cta }: { cta?: string }): React.ReactElement => {
+const QuizShuffle = ({ cta }: { cta?: string }): React.ReactElement => {
   const sectionRef = useRef<HTMLDivElement>(null);
+
   const scrollToSection = (): void => {
     sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -95,12 +96,11 @@ const QuizPlay = ({ cta }: { cta?: string }): React.ReactElement => {
     <div className="flex flex-col gap-6 md:gap-16 font-poppins">
       <Header scrollToSection={scrollToSection} />
       <section className="flex flex-col gap-6 lg:gap-16 px-4 md:px-20">
+        <ExploreQuiz />
+        <WhyPlay />
         <div className="py-6 flex flex-col gap-8 lg:gap-16" ref={sectionRef}>
           <DetailQuiz cta={cta} />
         </div>
-
-        <WhyPlay />
-        <ExploreQuiz />
         {/* <div className="flex flex-col gap-8 md:gap-16 items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-2 md:gap-4">
             <p className="font-semibold text-base md:text-4xl text-center text-neutral-medium">
@@ -140,4 +140,4 @@ const QuizPlay = ({ cta }: { cta?: string }): React.ReactElement => {
   );
 };
 
-export default QuizPlay;
+export default QuizShuffle;

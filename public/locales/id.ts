@@ -2838,7 +2838,7 @@ export default {
           placeholder: 'Tolong konfirmasi kata sandimu'
         },
         information:
-          'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+          'Kata sandi harus terdiri dari 8 karakter, terdiri dari huruf besar dan huruf kecil, dan karakter khusus.',
         modal: {
           title1: 'Berhasil',
           title2: 'Kata sandi yang baru berhasil dibuat',

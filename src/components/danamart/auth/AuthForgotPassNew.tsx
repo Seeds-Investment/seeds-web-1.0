@@ -1,4 +1,4 @@
-import Info from '@/assets/auth/Info.png';
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import SeedsXDanamart from '@/assets/danamart/seeds-danamart.svg';
 import AuthPassword from '@/components/auth2/AuthPassword';
 import { changePassword } from '@/repository/danamart/auth.repository';
@@ -34,15 +34,37 @@ const AuthForgotPassNew: React.FC<Props> = ({
   const [passwordTemp, setPasswordTemp] = useState<string>('');
   const [errorPass, setErrorPass] = useState(false);
   const [errorRepass, setErrorRepass] = useState(false);
-  const regex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+  const [validation, setValidation] = useState({
+    length: false,
+    lowerCase: false,
+    upperCase: false,
+    numbers: false,
+    specialChar: false,
+  });
+
+  const checkValidation = (password: string): void => {
+    setValidation({
+      length: password.length >= 8,
+      lowerCase: /[a-z]/.test(password),
+      upperCase: /[A-Z]/.test(password),
+      numbers: /\d/.test(password),
+      specialChar: /[\W_]/.test(password),
+    });
+  };
 
   const handlePass = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setErrorPass(false);
-    setPasswordTemp(e.target.value);
+    const value = e.target.value;
+    setPasswordTemp(value);
+    checkValidation(value);
+    setErrorPass(!regex.test(value));
   };
+
   const handleRepass = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setErrorRepass(false);
-    setFormDataNewPassword({ ...formDataNewPassword, [e.target.name]: e.target.value });
+    const value = e.target.value;
+    setFormDataNewPassword({ ...formDataNewPassword, [e.target.name]: value });
+    setErrorRepass(value !== passwordTemp || !regex.test(value));
   };
 
   const handleNext = async (): Promise<void> => {
@@ -89,7 +111,7 @@ const AuthForgotPassNew: React.FC<Props> = ({
           {t('danamart.forgotPassword.createNewPassword.title2')}
         </Typography>
       </div>
-      <div className='w-full flex flex-col gap-4 mt-4'>
+      <div className={`w-full flex flex-col mt-4 ${errorPass ? 'gap-6' : 'gap-2'}`}>
         <div className="w-full">
           <AuthPassword
             handleChange={handlePass}
@@ -126,21 +148,47 @@ const AuthForgotPassNew: React.FC<Props> = ({
             {errorRepass ? t('danamart.forgotPassword.authForgotPass.validation.match') : <br />}
           </Typography>
         </div>
-        <div className="flex gap-3">
-          <Image src={Info} alt="Info" className="w-5 h-5" />
-          <Typography className="font-poppins font-light text-sm text-[#3AC4A0]">
-            {t('danamart.forgotPassword.authForgotPass.information')}
+      </div>
+      <div className={`w-full flex flex-col gap-4 ${(errorRepass) ? 'mt-4' : 'mt-2'}`}>
+        <div className="flex flex-col gap-2">
+          <Typography className="font-poppins font-semibold text-sm text-seeds-green">
+            {t('danamart.register.passwordContain')}
           </Typography>
+          <div className="flex gap-2">
+            <ul className="font-poppins font-normal text-sm">
+              <li className={validation.numbers ? 'text-seeds-green' : 'text-[#7C7C7C]'}>
+                {t('danamart.register.numbers')}
+              </li>
+              <li className={validation.lowerCase ? 'text-seeds-green' : 'text-[#7C7C7C]'}>
+                {t('danamart.register.lowercase')}
+              </li>
+              <li className={validation.specialChar ? 'text-seeds-green' : 'text-[#7C7C7C]'}>
+                {t('danamart.register.specialCharacters')}
+              </li>
+            </ul>
+            <ul className="font-poppins font-normal text-sm">
+              <li className={validation.length ? 'text-seeds-green' : 'text-[#7C7C7C]'}>
+                {t('danamart.register.characters')}
+              </li>
+              <li className={validation.upperCase ? 'text-seeds-green' : 'text-[#7C7C7C]'}>
+                {t('danamart.register.capitalLetters')}
+              </li>
+            </ul>
+          </div>
         </div>
         <Button
           onClick={handleNext}
           disabled={
-            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-            !formDataNewPassword.password ||
-            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
             !passwordTemp ||
+            passwordTemp.length === 0 ||
+            !formDataNewPassword.password ||
             formDataNewPassword.password.length === 0 ||
-            passwordTemp.length === 0
+            formDataNewPassword.password !== passwordTemp ||
+            !(validation?.length) ||
+            !(validation?.lowerCase) ||
+            !(validation?.upperCase) ||
+            !(validation?.specialChar) ||
+            !(validation?.numbers)
           }
           className="w-full text-base font-semibold bg-seeds-button-green rounded-full capitalize"
         >

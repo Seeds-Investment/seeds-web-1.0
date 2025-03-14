@@ -88,6 +88,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
       }
     } else {
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('accessToken-danamart');
     }
   }, []);
 

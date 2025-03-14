@@ -2838,7 +2838,7 @@ export default {
           placeholder: 'Tolong konfirmasi kata sandimu'
         },
         information:
-          'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+          'Kata sandi harus terdiri dari 8 karakter, terdiri dari huruf besar dan huruf kecil, dan karakter khusus.',
         modal: {
           title1: 'Berhasil',
           title2: 'Kata sandi yang baru berhasil dibuat',
@@ -2885,7 +2885,7 @@ export default {
       createAccount: 'Buat Akun'
     },
     dashboard: {
-      title: 'Dasbor',
+      title: 'Beranda',
       description:
         'Pintu gerbang anda untuk memantau dan mengembangkan investasi.',
       verifyPhone: 'Jangan lupa untuk memverifikasi nomor telepon Anda',
@@ -3220,6 +3220,7 @@ export default {
         text1: 'Penawaran',
         text2:
           'Penawaran investasi eksklusif—kembangkan kekayaan Anda sekarang!',
+        text3: 'Tidak ada penawaran yang sesuai',
         filter: {
           text1: 'Jenis Efek',
           text2: 'Semua',
@@ -3869,6 +3870,13 @@ export default {
         text1: 'Kode Promo adalah kode unik yang dapat digunakan oleh-mu untuk mendapatkan penawaran menarik ya.',
         close: 'Tutup'
       }
+    },
+    idleLogout: 'Anda tidak aktif selama 30 menit atau lebih. Silakan masuk kembali ke Danamart.',
+    logout: {
+      text1: 'Keluar',
+      description: 'Apakah anda ingin logout dari Danamart?',
+      yes: 'Keluar',
+      cancel: 'Batal'
     }
   },
   seedsPlan: {

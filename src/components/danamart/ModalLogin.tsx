@@ -82,9 +82,7 @@ const ModalLogin: React.FC<Props> = ({
         <div className="w-full relative flex justify-center">
           {!isLoading && (
             <div
-              onClick={() => {
-                setIsOpenModalLogin(false);
-              }}
+              onClick={async() => { await router.push('/homepage')}}
               className="absolute right-0 cursor-pointer hover:scale-110 duration-150"
             >
               <IoMdClose size={20} />

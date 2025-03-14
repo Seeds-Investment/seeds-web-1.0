@@ -12,6 +12,7 @@ export { default as CardUser } from './card-user.svg';
 export { default as Clock } from './clock.svg';
 export { default as DanamartLogo } from './danamart-logo.png';
 export { default as DownloadIcon } from './download-icon.svg';
+export { default as NoData } from './noData.svg';
 export { default as ArrowLeftPaginationGray } from './pagination-left-gray.svg';
 export { default as ArrowLeftPaginationGreen } from './pagination-left-green.svg';
 export { default as ArrowRightPaginationGray } from './pagination-right-gray.svg';

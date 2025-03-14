@@ -1,3 +1,4 @@
+import { NoData } from '@/assets/danamart';
 import ModalDetailOffer from '@/components/danamart/offer/ModalDetailOffer';
 import ModalFinanceInformation from '@/components/danamart/offer/ModalFinanceOffer';
 import ModalShareOffer from '@/components/danamart/offer/ModalShareOffer';
@@ -7,6 +8,7 @@ import withAuthDanamart from '@/helpers/withAuthDanamart';
 import { getOffersList } from '@/repository/danamart/offers.repository';
 import { type OfferData } from '@/utils/interfaces/danamart/offers.interface';
 import { Typography } from '@material-tailwind/react';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
@@ -231,19 +233,29 @@ const Offer = (): React.ReactElement => {
               {...sliderSettings}
               className="custom-danamart-slider w-full h-fit gap-2 pt-2 pb-8 md:pb-4"
             >
-              {offerData?.data?.map((offer, index) => (
-                <OfferListCard
-                  key={index}
-                  offer={offer}
-                  setIsOpenModalDetail={setIsOpenModalDetail}
-                  isOpenModalDetail={isOpenModalDetail}
-                  setSelectedIndex={setSelectedIndex}
-                  setIsShareModal={setIsShareModal}
-                  setIsShowFinanceInfo={setIsShowFinanceInfo}
-                  setFinancingType={setFinancingType}
-                  index={index}
-                />
-              ))}
+              {
+                offerData?.data?.length !== 0 ?
+                  offerData?.data?.map((offer, index) => (
+                    <OfferListCard
+                      key={index}
+                      offer={offer}
+                      setIsOpenModalDetail={setIsOpenModalDetail}
+                      isOpenModalDetail={isOpenModalDetail}
+                      setSelectedIndex={setSelectedIndex}
+                      setIsShareModal={setIsShareModal}
+                      setIsShowFinanceInfo={setIsShowFinanceInfo}
+                      setFinancingType={setFinancingType}
+                      index={index}
+                    />
+                  ))
+                  :
+                  <div className="w-full bg-white flex flex-col justify-center items-center text-center lg:px-0">
+                    <Image alt="" src={NoData} className="w-[200px] md:w-[250px] mx-auto" />
+                    <Typography className="font-poppins font-medium text-[#262626]">
+                      {t(`${pathTranslation}.text3`)}
+                    </Typography>
+                  </div>
+              }
             </Slider>
           )}
         </div>

@@ -2772,6 +2772,1105 @@ export default {
       moreInfo: 'Informasi Lainnya'
     }
   },
+  danamart: {
+    login: {
+      welcome: 'Selamat Datang 🙌',
+      welcomeDescription: 'Silakan masuk menggunakan akun kamu',
+      email: 'Email',
+      password: 'Password',
+      passwordPlaceholder: 'Yuk, masukan kata sandi kamu',
+      emailPlaceholder: 'Yuk, masukan email kamu',
+      validation: {
+        login: 'Nomor telepon atau kata sandimu salah',
+        blank: 'Kamu harus mengisi kolom ini',
+        error: 'Terjadi kesalahan. Cek kata sandi Anda atau koneksi Anda!',
+        serverError: 'Terjadi kesalahan pada server. Mohon coba sesaat lagi.',
+        password:
+          'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+        wrongPassword:
+          'Password salah. Cek password Anda sebelum mengisi form!',
+        recaptcha:
+          'ReCAPTCHA tidak tersedia! Pastikan Anda telah mengisi ReCAPTCHA.'
+      },
+      loginButton: 'Masuk'
+    },
+    forgotPassword: {
+      forgotPasswordTitle: 'Lupa Kata Sandi 🔑',
+      forgotPasswordDescription:
+        'Masukkan email kamu dan kami akan mengirimkan link untuk mengatur ulang password kamu.',
+      forgotPasswordText: 'Lupa Kata Sandi?',
+      sendLink: 'Kirim Link',
+      backLogin: 'Masuk Kembali',
+      next: 'Selanjutnya',
+      authOTP: {
+        title1: 'Yuk, Masukan Kode OTP',
+        title2: 'Kode-nya kami kirim ke ',
+        title3: '',
+        resend: 'Kirim ulang kode OTP',
+        otherMethod1: 'Belum dapet kodenya? ',
+        otherMethod3: 'Coba',
+        otherMethod4: ' lewat',
+        validation: 'Yah, OTPmu salah, yuk coba lagi',
+        blank: 'Kamu haru mengisi kolom ini!'
+      },
+      createNewPassword: {
+        title1: 'Buat Kata Sandi Baru',
+        title2: 'Yuk, buat kata sandi yang baru!'
+      },
+      authForgotPass: {
+        title1: 'Masukkan Nomor Telepon',
+        title2: 'Untuk dapat kode OTP',
+        title3: 'Buat Kata Sandi Baru',
+        title4: 'Yuk, buat kata sandi yang aman',
+        validation: {
+          number: 'Ups, nomor telepon kamu tidak terdaftar',
+          password:
+            'Ups, kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+          match: 'Ups, kata sandi tidak cocok',
+          blank: 'Kamu haru mengisi kolom ini!'
+        },
+        newPassword: {
+          label: 'Buat Kata Sandi Baru',
+          placeholder: 'Tolong buat kata sandimu'
+        },
+        matchPassword: {
+          label: 'Konfirmasi Kata Sandi Baru',
+          placeholder: 'Tolong konfirmasi kata sandimu'
+        },
+        information:
+          'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+        modal: {
+          title1: 'Berhasil',
+          title2: 'Kata sandi yang baru berhasil dibuat',
+          title3: 'Tolong cek emailmu',
+          close: 'Tutup'
+        }
+      }
+    },
+    register: {
+      connectSeeds: 'Hubungkan Seeds dengan Danamart',
+      connectDanamart: 'Hubungkan Danamart ke Seeds',
+      automate:
+        'Optimalkan perjalanan investasi anda secara mudah dengan menghubungkan Seeds ke Danamart.',
+      notLinked: 'Tidak Terhubung',
+      linked: 'Terhubung',
+      linkAccount: 'Hubungkan Nomor Telepon dan Email',
+      connectExisting: 'Hubungkan dengan Akun Danamart yang Sudah Ada',
+      back: 'Kembali',
+      connectAccount: 'Hubungkan Akun',
+      completeData: 'Lengkapi Email dan Nomor Telepon',
+      changeData: 'Ubah Email atau Nomor Telepon',
+      makeSure: 'Pastikan email dan nomor telepon akun Seeds Anda sama dengan email dan nomor telepon akun Danamart Anda',
+      notRegistered: 'Akun tidak terdaftar. Pastikan email dan nomor telepon akun Seeds dan Danamart anda sama!',
+      connectSucceed: 'Akun berhasil terhubung',
+      email: 'Email',
+      phoneNumber: 'Nomor Telepon',
+      createAccountButton: 'Buat Akun Baru Danamart',
+      createDanamartAccount: 'Buat Akun Danamart',
+      createDesc: 'Buat akun Danamart baru dan buka potensi investasi anda.',
+      no: 'Tidak',
+      yes: 'Ya',
+      createPasswordTitle: 'Buat Kata Sandi Untuk Akun Danamart',
+      createPassword: 'Buat Kata Sandi',
+      pleaseCreatePassword: 'Silakan buat kata sandi',
+      confirmPassword: 'Konfirmasi kata sandi',
+      pleaseConfirmPassword: 'Silahkan konfirmasi kata sandi',
+      passwordContain: 'Password harus mengandung:',
+      numbers: 'Angka',
+      lowercase: 'Huruf Kecil',
+      specialCharacters: 'Karakter Khusus',
+      characters: '8 Karakter',
+      capitalLetters: 'Huruf Kapital',
+      passNotMatch: 'Kata sandi tidak cocok',
+      createAccount: 'Buat Akun'
+    },
+    dashboard: {
+      title: 'Dasbor',
+      description:
+        'Pintu gerbang anda untuk memantau dan mengembangkan investasi.',
+      verifyPhone: 'Jangan lupa untuk memverifikasi nomor telepon Anda',
+      verifyForm: 'Jangan lupa lengkapi data diri kamu',
+      here: 'di sini',
+      topUp: 'Isi Ulang',
+      cashInHand: 'Uang Tunai',
+      cashInHandDesc: 'Dana yang tersedia untuk ditarik atau di investasikan',
+      danaReward: 'Imbalan Dana',
+      danaRewardDesc: 'Dana promosi yang hanya dapat diinvestasikan',
+      danaInterim: 'Dana Sementara',
+      danaInterimDesc: 'Dana hasil dividen interim atau komisi referral',
+      investableFunds: 'Dana Dapat Diinvestasikan',
+      investableFundsDesc: 'Uang Tunai + Imbalan Dana + Dana Sementara',
+      fundsSecurities: 'Dana dalam Efek',
+      fundsSecuritiesDesc: 'Dana yang diinvestasikan pada efek',
+      totalFunds: 'Total Keseluruhan Dana',
+      totalFundsDesc: 'Total keseluruhan dana yang dimiliki',
+      purchaseAllocationSecurities: 'Alokasi pembelian berdasarkan efek',
+      shares: 'Saham',
+      bonds: 'Obligasi',
+      purchaseAllocationBusiness: 'Alokasi pembelian berdasarkan sektor usaha',
+      growthStocks: 'Pertumbuhan Saham',
+      incomeStocks: 'Pendapatan Saham',
+      alternatives: 'Alternatif',
+      errorGetUserDashboard: 'Gagal mendapatkan data dasbor',
+      errorGetUserProfile: 'Gagal mendapatkan data profile pengguna'
+    },
+    verification: {
+      photoIdCardTitle: {
+        title: 'Foto Kartu Identitas',
+        camera: 'Kamera',
+        upload: 'Unggah',
+        retake: 'Ambil Ulang',
+        uploadTitle: 'Unggah Kartu Identitas Anda',
+        uploadDescription:
+          'Untuk mengonfirmasi identitas Anda, harap unggah foto digital atau ambil foto.',
+        uploadRequirement: {
+          title: 'Ketentuan mengunggah KTP',
+          text1:
+            'Mengambil foto KTP langsung melalui kamera atau upload foto KTP.',
+          text2:
+            'File yang diunggah harus dalam format JPG/JPEG dan maksimal 4 MB.',
+          text3: 'KTP tidak rusak seperti retak atau patah.',
+          text4: 'Ambil foto KTP dengan posisi Landscape',
+          text5:
+            'Pastikan foto e-KTP jelas, tidak buram, pencahayaan cukup terang, dan tidak terpotong.'
+        },
+        successMessage: 'Data foto KTP berhasil diperbarui.'
+      },
+      accountInformation: {
+        accountInformationTitle: 'Informasi Akun',
+        occupation: 'Pekerjaan',
+        address: 'Alamat',
+        validPeriod: 'Masa Berlaku KTP',
+        others: 'Lainnya',
+        fieldWarning: 'Anda harus mengisi kolom ini',
+        text1: 'Apakah data di bawah sudah sesuai?',
+        text2: 'No KTP (NIK)',
+        text3: 'Masukan nomor KTP anda',
+        text4: 'Nama Lengkap',
+        text5: 'Masukan nama lengkap anda',
+        text6: 'Jenis Kelamin',
+        text7: 'Tempat Lahir',
+        text8: 'Masukan kota kelahiran anda',
+        text9: 'Tanggal Lahir',
+        text10: 'Agama',
+        text11: 'Pendidikan Terakhir',
+        text12: 'Status Pernikahan',
+        text13: 'Nama Pasangan',
+        text14: 'Masukan nama pasangan anda',
+        text15: 'Pekerjaan',
+        text16: 'Masukan pekerjaan anda',
+        text17: 'Bidang Pekerjaan',
+        text18: 'Masukan bidang pekerjaan',
+        text19: 'Lama Bekerja',
+        text20: 'Alamat Tempat Bekerja',
+        text21: 'Masukan alamat tempat anda bekerja',
+        text22: 'Nomor Telepon Tempat Bekerja',
+        text23: 'Masukan nomor telepon',
+        text24: 'Alamat',
+        text25: 'Masukan alamat anda',
+        text26: 'RT',
+        text27: 'Masukan nomor RT',
+        text28: 'RW',
+        text29: 'Masukan nomor RW',
+        text30: 'Kelurahan',
+        text31: 'Masukan nama kelurahan',
+        text32: 'Kecamatan',
+        text33: 'Masukan nama kecamatan',
+        text34: 'Kabupaten / Kota',
+        text35: 'Masukan nama kabupaten / kota',
+        text36: 'Provinsi',
+        text37: 'Masukan nama provinsi',
+        text38: 'Kode POS',
+        text39: 'Masukan kode pos',
+        text40: 'Kota Penerbit KTP',
+        text41: 'Masukan nama kota penerbit KTP',
+        text42: 'Kewarganegaraan',
+        text43: 'Masukan kewarganegaraan',
+        text44: 'Tanggal Masa Berlaku KTP',
+        text45: 'Masukan tanggal masa berlaku KTP',
+        text46: 'Nama Ibu Kandung',
+        text47: 'Masukan nama ibu kandung',
+        text48: 'Nama Ahli Waris',
+        text49: 'Masukan nama ahli waris',
+        text50: 'Nomor Telepon',
+        text51: 'Masukan nomor telepon',
+        text52: 'Tujuan Investasi',
+        text53: 'Sumber Informasi Danamart',
+        text54: 'Apakah kamu mempunyai NPWP?',
+        text55: 'No. NPWP',
+        text56: 'Masukan nomor NPWP',
+        text57: 'Tanggal Terbit NPWP',
+        text58: 'Masukan tanggal terbit NPWP',
+        text59: 'Simpan',
+        text60: 'Seumur Hidup',
+        text61: 'File NPWP',
+        text62: 'Masukan file atau foto NPWP',
+        dropdown: {
+          yes: 'Ya',
+          no: 'Tidak',
+          male: 'Laki-Laki',
+          female: 'Perempuan',
+          religion: {
+            text1: 'Islam',
+            text2: 'Katolik',
+            text3: 'Protestan',
+            text4: 'Hindu',
+            text5: 'Budha',
+            text6: 'Konghucu'
+          },
+          education: {
+            text1: 'Strata III',
+            text2: 'Strata II',
+            text3: 'Strata I / Diploma IV',
+            text4: 'Diploma III / Akademi',
+            text5: 'SLTA / Sederajat',
+            text6: 'SLTP / Sederajat',
+            text7: 'SD / Sederajat'
+          },
+          marriage: {
+            text1: 'Belum Kawin',
+            text2: 'Kawin',
+            text3: 'Cerai Hidup',
+            text4: 'Cerai Mati'
+          },
+          workingLength: {
+            text1: 'Tahun',
+            text2: 'Tahun',
+            text3: 'Lebih dari'
+          },
+          plan: {
+            text1: 'Dana Tabungan',
+            text2: 'Dana Pensiun',
+            text3: 'Dana Darurat',
+            text4: 'Modal Usaha',
+            text5: 'Lainnya'
+          },
+          information: {
+            text1: 'Search Engine',
+            text2: 'Instagram',
+            text3: 'Facebook',
+            text4: 'Tiktok',
+            text5: 'Youtube',
+            text6: 'Referral',
+            text7: 'Event',
+            text8: 'Berita',
+            text9: 'Radio',
+            text10: 'Lainnya'
+          },
+          jobDetailList: {
+            text1: 'Alas Kaki',
+            text2: 'Asuransi',
+            text3: 'Bank',
+            text4: 'Elektronik dan Komponennya',
+            text5: 'Energi',
+            text6: 'Garmen, Tekstil',
+            text7: 'Iklan, Percetakan dan Media',
+            text8: 'Institusi Keuangan',
+            text9: 'Jalan Tol, Bandara dan Pelabuhan',
+            text10: 'Kabel',
+            text11: 'Kayu',
+            text12: 'Keramik, Kaca atau Porselain',
+            text13: 'Kertas',
+            text14: 'Kimia',
+            text15: 'Konstruksi Bangunan',
+            text16: 'Konstruksi Non-Bangunan',
+            text17: 'Kosmetik dan Rumah Tangga',
+            text18: 'Layanan Komputer',
+            text19: 'Makanan dan Minuman',
+            text20: 'Mesin dan Alat Berat',
+            text21: 'Obat-obatan',
+            text22: 'Otomotif dan Komponennya',
+            text23: 'Pakan Ternak',
+            text24: 'Pariwisata, Hotel dan Restauran',
+            text25: 'Pendidikan',
+            text26: 'Peralatan Rumah Tangga',
+            text27: 'Perikanan',
+            text28: 'Perkebunan',
+            text29: 'Pertambangan Batu/Pasir',
+            text30: 'Pertambangan Batubara',
+            text31: 'Pertambangan Gas Alam',
+            text32: 'Pertambangan Logam dan Mineral',
+            text33: 'Perumahan dan Property',
+            text34: 'Perusahaan Grosir',
+            text35: 'Perusahaan Investasi',
+            text36: 'Perusahaan Retail',
+            text37: 'Perusahaan Sekuritas',
+            text38: 'Plastik dan Kemasan',
+            text39: 'Produk Logam',
+            text40: 'Pusat Kesehatan',
+            text41: 'Semen',
+            text42: 'Tanaman',
+            text43: 'Telekomunikasi',
+            text44: 'Tembakau',
+            text45: 'Transportasi',
+            text46: 'Lainnya'
+          }
+        },
+        validationForm: {
+          text1: 'Kolom ini wajib diisi',
+          text2: 'Harus berisi 16 digit angka',
+          text3: 'Harus berisi 15-16 digit angka',
+          text4: 'Harus berisi 3 digit angka'
+        }
+      },
+      financialInformationTittle: 'Informasi Keuangan',
+      financial: {
+        income: 'Pendapatan',
+        listIncome: {
+          salary: 'Gaji',
+          profit: 'Keuntungan',
+          husbandOrParent: 'Suami / Orang Tua',
+          other: 'Lainnya'
+        },
+        incomeSource: 'Sumber Penghasilan',
+        select: 'Pilih',
+        incomePerMonth: 'Penghasilan per bulan',
+        areYouAgree: 'Apakah Anda menyetujui?',
+        validateInputForm:
+          'Saya menyatakan bahwa data penghasilan yang saya isikan ini adalah benar dan akurat sesuai dengan kondisi keuangan saya saat ini.',
+        bankInformation: 'Informasi Bank',
+        nameOfAccount: 'Nama Pemilik Rekening',
+        accountNumber: 'No. Rekening',
+        accountNumberPlaceHolder: 'Nomor Rekening',
+        bankName: 'Nama Bank',
+        sidInformation: 'Informasi SID',
+        doYouAlready: 'Apakah sudah memiliki rekening efek?',
+        noSID: 'Nomor SID',
+        monthYearRegis: 'Bulan Tahun Registrasi',
+        accessCard: 'File Kartu Akses (JPG Format Max 4MB)',
+        beneficialInformation: 'Informasi Beneficial Owner',
+        isThereBeneficial:
+          'Apakah Terdapat Pemilik Manfaat (Beneficial Owner)?',
+        fullName: 'Nama Lengkap',
+        gender: 'Jenis Kelamin',
+        identityNumber: 'Nomor Identitas',
+        fileIdentity: 'File Identitas (JPG Format Max 4MB)',
+        address: 'Alamat',
+        birthPlace: 'Tempat Lahir',
+        birthDate: 'Tanggal Lahir',
+        citizenship: 'Kewarganegaraan',
+        job: 'Pekerjaan',
+        jobList: {
+          governmentEmployee: 'Pegawai Negeri',
+          privateSectorEmployee: 'Pegawai Swasta',
+          stateOwnedEnterpriseEmployee: 'Pegawai BUMN/BUMD',
+          nationalMilitaryOrPoliceOfficer: 'TNI/POLRI',
+          businessOwner: 'Pengusaha',
+          trader: 'Pedagang',
+          farmerOrFisherman: 'Petani/Nelayan',
+          student: 'Pelajar/Mahasiswa',
+          housewife: 'Ibu Rumah Tangga',
+          unemployed: 'Tidak Bekerja',
+          employee: 'Karyawan / Karyawati',
+          entrepreneur: 'Wiraswasta',
+          stateOfficial: 'Pejabat Negara',
+          accountant: 'Akuntan',
+          lawyerOrNotary: 'Pengacara/Notaris',
+          profession: 'Professional',
+          retiree: 'Pensiunan',
+          privateLecturerOrTeacher: 'Dosen/Guru Swasta',
+          publicLecturerOrTeacher: 'Dosen/Guru Negeri',
+          doctor: 'Dokter'
+        },
+        jobAddress: 'Alamat Pekerjaan',
+        jobPhoneNumber: 'Nomor Telepon Pekerjaan',
+        biologicalMotherName: 'Nama Gadis Ibu Kandung',
+        sourceOfFunds: 'Sumber Dana',
+        investmentGoals: 'Tujuan Investasi',
+        investmentGoalsList: {
+          longTermInvest: 'Investasi Jangka Panjang',
+          shortTermInvest: 'Investasi Jangka Pendek',
+          speculation: 'Spekulasi',
+          income: 'Pendapatan',
+          other: 'Lainnya'
+        },
+        relationshipWithBeneficial: 'Hubungan dengan Beneficial Owner',
+        marriageStatus: 'Status Perkawinan Beneficial Owner',
+        marriageStatusList: {
+          single: 'Belum Menikah',
+          married: 'Menikah'
+        },
+        partnerFullname: 'Nama Lengkap Pasangan',
+        ktpNumber: 'No KTP'
+      },
+      photoSelfieTittle: 'Foto Diri',
+      photoSelfie: {
+        previewSelfie: 'Pratinjau Foto Selfie',
+        camera: 'Kamera',
+        retake: 'Ambil Ulang',
+        continue: 'Lanjutkan',
+        cancel: 'Batalkan',
+        requirements: 'Ketentuan mengunggah Foto Selfie',
+        requirements1: 'Mengambil foto langsung menggunakan kamera.',
+        requirements2:
+          'Pastikan wajah kamu terlihat dengan pencahayaan yang cukup.',
+        requirements3:
+          'Area wajah terlihat jelas tanpa menggunakan aksesori seperti kacamata, masker, topi, dan lain-lain.',
+        requirements4: 'Tidak perlu memegang e-KTP atau benda lainnya.'
+      },
+      buttonSave: 'Simpan',
+      buttonPrevious: 'Sebelumnya',
+      buttonNext: 'Selanjutnya'
+    },
+    offers: {
+      sidebar: {
+        text1: 'Penawaran'
+      },
+      dashboard: {
+        text1: 'Penawaran',
+        text2:
+          'Penawaran investasi eksklusif—kembangkan kekayaan Anda sekarang!',
+        filter: {
+          text1: 'Jenis Efek',
+          text2: 'Semua',
+          text3: 'Saham',
+          text4: 'Obligasi',
+          text5: 'Status Penawaran',
+          text6: 'Semua',
+          text7: 'Listing',
+          text8: 'Prelisting',
+          text9: 'Filter',
+          text10: 'Semua',
+          text11: 'Jumlah Penawaran Terbesar',
+          text12: 'Jumlah Penawaran Terkecil',
+          text13: 'Jangka Waktu Terlama',
+          text14: 'Jangka Waktu Tercepat',
+          text15: 'Imbal Hasil Terbesar',
+          text16: 'Imbal Hasil Terkecil'
+        },
+        offerCard: {
+          text1: 'Pemodal',
+          text2: 'Jenis efek',
+          text3: 'Pembiayaan',
+          text4: 'Kupon',
+          text5: 'Tenor',
+          text6: 'Lihat Detail',
+          text7: 'Bagikan',
+          text8:
+            'Peluang investasi dari proyek yang <strong>telah selesai dikerjakan</strong> sehingga memiliki <strong>risiko lebih rendah</strong>.',
+          text9:
+            'Peluang investasi dari proyek yang <strong>sedang berjalan</strong> sehingga memiliki <strong>risiko lebih tinggi</strong>.',
+          text10: 'Selengkapnya'
+        },
+        prelisting:
+          'Tahapan sebelum listing, yaitu di mana kamu hanya bisa melihat penawaran yang tersedia di platform Danamart, tetapi <strong>masih belum bisa membeli</strong> penawaran efek tersebut. Tujuannya agar kamu mempelajari terlebih dahulu sebelum memutuskan pembelian/investasi pada penawaran efek yang tersedia. Tahapan prelisting ini berlangsung selama <strong>2 hari</strong>, sebelum berlanjut ke tahap listing.',
+        listing:
+          'Tahapan di mana selain bisa melihat informasi penawaran, kamu <strong>sudah bisa membeli</strong> penawaran efek yang tersedia di platform Danamart. Tahapan listing ini berlangsung selama <strong>30 hari</strong>, sejak berakhirnya masa prelisting.',
+        shareOffer: {
+          text1: 'Tautan penawaran telah disalin!',
+          text2: 'Bagikan Penawaran Ini',
+          text3: 'Bagikan Tautan'
+        },
+        detailOffer: {
+          text1: 'Minimal Investasi',
+          text2: 'Kode Efek',
+          text3: 'Lokasi',
+          text4: 'Tujuan Penggunaan Dana',
+          text5: 'Lihat Penawaran →'
+        }
+      },
+      detail: {
+        offer: 'Penawaran',
+        minimumInvest: 'Minimal Investasi',
+        securitiesCode: 'Kode Efek',
+        location: 'Lokasi',
+        intendFund: 'Tujuan Penggunaan Dana',
+        financier: 'Pemodal',
+        buy: 'Beli',
+        report: 'Laporkan',
+        securitiesType: 'Jenis Efek',
+        intendedUseOfFunds: 'Tujuan Penggunaan Dana',
+        offeredAmount: 'Jumlah Dana Penawaran',
+        minimumInvestmentAmount: 'Jumlah Minimum Dana',
+        coupon: 'Kupon',
+        tenor: 'Tenor',
+        guarantee: 'Jaminan',
+        offerType: 'Jenis Penawaran',
+        progress: {
+          text1: 'Pre-Listing',
+          text2: 'Listing',
+          text3: 'Pendanaan Selesai',
+          text4: 'Penyerahan Efek',
+          text5: 'Tanda Tangan Perjanjian',
+          text6: 'Penyerahan Dana',
+          text7: 'Pendistribusian Efek',
+          text8: 'Pembelian Selesai',
+          text9: 'Bisnis Berjalan',
+          text10: 'Penawaran Batal',
+          text11: 'Pengembalian Dana',
+          text12: 'Penawaran Dibatalkan',
+          text13: 'Progres Penawaran',
+          popup: {
+            title: 'Progress Penawaran',
+            text1: '<strong>Hari Kerja</strong> adalah hari dimana seseorang diharapkan untuk bekerja dan beraktivitas sesuai dengan jadwal kerja yang telah ditetapkan. Hari kerja hanya mencakup hari Senin hingga Jumat, sedangkan hari Sabtu dan Minggu dan libur nasional dianggap sebagai hari libur.',
+            text2: '<strong>Hari Kalender</strong> adalah hari yang terdiri dari 24 jam dan digunakan untuk menghitung durasi waktu dalam sistem penanggalan. Hari kalender dihitung mulai dari tengah malam hingga tengah malah berikutnya. Dalam kalender, setiap bulan memiliki 28-31 hari, kecuali bulan Februari yang memiliki 28 atau 29 hari dalam setiap empat tahun pada tahun kabisat.'
+          }
+        },
+        tab: {
+          title: {
+            text1: 'Overview',
+            text2: 'Investor Corner',
+            text3: 'News Update',
+            text4: 'Discuss',
+            text5: 'Factsheet',
+            text6: 'Report',
+          },
+          overview: {
+            title: 'Informasi Penerbit',
+            proyek: {
+              title: 'Proyek',
+              text1: 'Nilai Proyek',
+              text2: 'Proyeksi Margin Proyek',
+              text3: 'Jenis Pengerjaan Proyek',
+              text4: 'Uraian Pengerjaan Proyek',
+            },
+            bisnis: {
+              title: 'Bisnis',
+              text1: 'Perusahaan',
+              text2: 'Alamat Perusahaan',
+              text3: 'Lama Perusahaan Berdiri',
+              text4: 'Sektor Usaha',
+              text5: 'Jumlah Direktur',
+              text6: 'Jumlah Komisaris',
+              text7: 'Jumlah Pemegang Saham',
+              text8: 'Jumlah Karyawan',
+            },
+            keuangan: {
+              title: 'Keuangan',
+              text1: 'Penjualan',
+              text2: 'Laba Usaha',
+              text3: 'Laba Bersih',
+              text4: 'Aset Lancar',
+              text5: 'Aset Tetap',
+              text6: 'Hutang Lancar',
+              text7: 'Hutang Jangka Panjang',
+              text8: 'Ekuitas',
+            },
+            penanggungJawab: {
+              title: 'Penanggung Jawab',
+              text1: 'Nama Lengkap',
+              text2: 'Jenis Kelamin',
+              text3: 'Umur (Tahun)',
+              text4: 'Pendidikan Terakhir',
+              text5: 'Alamat',
+              text6: 'Jabatan',
+            },
+            proyeksi: {
+              title: 'Proyeksi',
+              text1: 'Proyeksi Penjualan Per Bulan',
+              text2: 'Proyeksi Penjualan Per Tahun',
+            }
+          },
+          investorCorner: {
+            text1: 'Jumlah Investor',
+            text2: 'Jumlah Pendanaan Terbesar',
+            text3: 'Jumlah Pendanaan Terkecil',
+            text4: 'Jumlah Rata-Rata Pendanaan',
+          },
+          discuss: {
+            text1: 'Gabung Grup WhatsApp',
+            text2: 'Tulis komentar...',
+            text3: 'Kirim',
+          },
+          news: {
+            text1: 'Belum ada kabar terbaru',
+          },
+          factsheet: {
+            text1: 'Dokumen tidak ada',
+          },
+          report: {
+            filter: {
+              text1: 'Tampilkan 7 entri',
+              text2: 'Tampilkan 10 entri',
+              text3: 'Tampilkan 25 entri',
+              text4: 'Tampilkan 50 entri',
+              text5: 'Tampilkan 75 entri',
+              text6: 'Tampilkan 100 entri',
+              text7: 'Cari...'
+            },
+            table: {
+              text1: 'Tanggal Laporan',
+              text2: 'Jenis Laporan',
+              text3: 'Tidak ada laporan yang ditemukan.',
+              text4: 'Menampilkan',
+              text5: 'hingga',
+              text6: 'dari',
+              text7: 'entri',
+            },
+            modalDetail: {
+              title: 'Detail Laporan',
+              text1: 'Jenis Laporan',
+              text2: 'Perkembangan Proyek',
+              text3: 'Jenis',
+              text4: 'Download',
+              text5: 'Lihat',
+              text6: 'Isi Laporan',
+              text7: 'File',
+              text8: 'Realisasi Penggunaan Data',
+              text9: 'Laporan Perubahan Ekuitas',
+              text10: 'Laporan Neraca',
+              text11: 'Catatan Atas Laporan Keuangan',
+              text12: 'Laporan Laba/Rugi',
+              text13: 'Nama Anggota Direksi',
+              text14: 'Laporan Arus Kas',
+              text15: 'Nama Anggota Dewan Komisaris',
+              text16: 'Laporan Hasil RUPS',
+              text17: 'Rencana Tanggal Pembagian Dividen',
+              text18: 'Jumlah Pembagian Dividen (Rp)',
+              text19: 'Tutup',
+            }
+          }
+        },
+        reportForm: {
+          title: 'Laporan',
+          text1: 'Nama',
+          text2: 'Masukan nama anda',
+          text3: 'Email',
+          text4: 'Masukan email anda',
+          text5: 'Nomor Handphone',
+          text6: 'Masukan nomor handphone',
+          text7: 'Pernyataan',
+          text8: 'Masukan judul pernyataan',
+          text9: 'Isi',
+          text10: 'Masukan isi laporan',
+          text11: 'Kirim Laporan',
+          text12: 'Laporan berhasil dikirimkan.',
+          text13: 'Laporan gagal dikirimkan! Coba lagi.',
+          validationForm: {
+            text1: 'Kolom ini wajib diisi',
+          },
+        }
+      },
+      purchase: {
+        title: 'Pembelian Efek',
+        type1: 'Obligasi',
+        type2: 'Saham',
+        card: {  
+          text1: "Uang Tunai",  
+          text2: "Dana Investasi",  
+          text3: "Dana dalam Sekuritas",  
+        },
+        form: {
+          sourceCash: {
+            text1: 'Pilih Sumber Dana',
+            text2: 'Cash In-hand',
+            text3: 'Transfer Tunai'
+          },
+          titleObligasi: 'Pembelian Obligasi',
+          titleSaham: 'Pembelian Saham',
+          text1: 'Imbal Hasil',
+          text2: 'Slot Pembelian',
+          text3: 'Jangka Waktu (Bulan)',
+          text4: 'Jumlah Pembelian (Rp)',
+          text5: 'Masukan Jumlah Pembelian (Rp)',
+          text6: 'Dana Reward + Interim (Rp)',
+          text7: 'Pilih Sumber Dana',
+          text8: 'Pakai Dana Reward + Interim',
+          text9: 'Total Pembelian Yang Harus Dibayarkan (Rp)',
+          text10: 'Pilih Bank Pembayaran',
+          text11: 'Potensi Keuntungan',
+          text12: 'Imbal Hasil/Bulan',
+          text13: 'Pajak 10%',
+          text14: 'Total Imbal Hasil',
+          text15: 'Biaya Administrasi 10%',
+          text16: 'Total Modal + Imbal Hasil',
+          text17: 'Hasil Investasi (Nett)',
+          text18: 'Mengetahui berinvestasi pada PO Financing',
+          text19: 'Buy',
+          text20: 'Harga Per Lembar Saham (Rp)',
+          text21: 'Sisa Lembar Saham',
+          text22: 'Total Pembelian (Rp)',
+          text23: 'Pilih Bank Pembayaran',
+          text24: 'Jumlah Pembelian (Lot)',
+          formResponse: {
+            text1: 'Pembelian Sukses',
+            text2: 'Semangat, sedikit lagi kamu berhasil beli efek! Segera selesaikan proses berikutnya untuk melanjutkan transaksi.',
+            text3: 'Selamat! Proses pembelian efek sudah berhasil!',
+            text4: 'Maaf, ada pembelian efek yang belum selesai diproses. Silakan proses terlebih dahulu transaksi Kamu',
+            text5: 'Minimum pembelian adalah Rp. 100.000,-',
+            text6: 'Silakan setujui bahwa anda berinvestasi pada Project Financing',
+          }
+        },
+        disclaimer: {
+          text: `
+            <p>PT Dana Aguna Nusantara adalah suatu perseroan terbatas yang bergerak di bidang jasa layanan urun dana berbasis teknologi informasi (“Penyelenggara”) dan mengembangkan bisnis layanan urun dana bersama dengan mempertemukan Pemodal dan Penerbit (selanjutnya Pemodal dan Penerbit disebut bersama-sama sebagai “Pengguna”). Pada layanan urun dana ini, timbulnya hubungan perdata terjadi apabila Pemodal sepakat untuk membeli efek yang ditawarkan oleh Penerbit, sehingga segala risiko yang timbul dari hubungan tersebut akan menjadi tanggung jawab masing-masing pihak. Risiko yang timbul dari hak sebagai Pemodal untuk menerima imbal hasil dari Penerbit merupakan risiko yang wajib ditanggung oleh Pemodal sesuai kebijakan imbal hasil Penerbit. Danamart hanya bertindak sebagai layanan urun dana yang mempertemukan antara Pemodal dengan Penerbit dan tidak bertindak sebagai pelaku usaha yang menjalankan usaha untuk mengumpulkan dana terkait atau pengelola investasi (Penerbit). Sesuai dengan Pasal 27 Peraturan Otoritas Jasa Keuangan No. 57 Tahun 2020 tentang <strong>PENAWARAN EFEK MELALUI LAYANAN URUN DANA BERBASIS TEKNOLOGI INFORMASI (“POJK 57/2020”)</strong> yang menyatakan bahwa:</p>
+            <br>
+            <ol>
+              <li>OTORITAS JASA KEUANGAN TIDAK MEMBERIKAN PERSETUJUAN TERHADAP PENERBIT DAN TIDAK MEMBERIKAN PERNYATAAN MENYETUJUI ATAU TIDAK MENYETUJUI EFEK INI, TIDAK JUGA MENYATAKAN KEBENARAN ATAU KECUKUPAN INFORMASI DALAM LAYANAN URUN DANA INI. SETIAP PERNYATAAN YANG BERTENTANGAN DENGAN HAL TERSEBUT ADALAH PERBUATAN MELANGGAR HUKUM.</li>
+              <li>INFORMASI DALAM LAYANAN URUN DANA INI PENTING DAN PERLU MENDAPAT PERHATIAN SEGERA. APABILA TERDAPAT KERAGUAN PADA TINDAKAN YANG AKAN DIAMBIL, SEBAIKNYA BERKONSULTASI DENGAN PENYELENGGARA.</li>
+              <li>PENERBIT DAN PENYELENGGARA, BAIK SENDIRI-SENDIRI MAUPUN BERSAMA-SAMA, BERTANGGUNG JAWAB SEPENUHNYA ATAS KEBENARAN SEMUA INFORMASI YANG TERCANTUM DALAM LAYANAN URUN DANA INI.</li>
+              <li>Danamart bertindak sebagai penyelenggara urun dana yang mempertemukan Pemodal dan Penerbit dan bukan sebagai pihak yang menjalankan bisnis (Penerbit). Otoritas Jasa Keuangan bertindak sebagai regulator dan pemberi izin, bukan sebagai penjamin investasi.</li>
+              <li>Keputusan pembelian efek di Danamart, sepenuhnya merupakan hak dan tanggung jawab Pemodal. Pemodal yang melakukan pembelian efek telah menyetujui seluruh syarat dan ketentuan serta memahami risiko pembelian efek termasuk di dalamnya menjual kembali efek tersebut dengan cepat, membatalkan pembelian efek, dan atau kehilangan sebagian atau seluruh dari modal.</li>
+              <li>Risiko Usaha: Pembelian yang belum atau tidak menghasilkan sepenuhnya menjadi tanggung jawab Pemodal. Diharapkan Pemodal melakukan perhitungan dan analisa yang tepat terhadap Penerbit dan usahanya sebelum melakukan pembelian efek.</li>
+              <li>Risiko Investasi: Pemodal memiliki hak untuk mendapatkan imbal hasil atas usaha yang dilakukan oleh Penerbit. Tidak menutup kemungkinan bahwa tidak adanya pembagian imbal hasil karena usaha yang dilakukan oleh Penerbit mengalami penurunan.</li>
+              <li>Risiko Likuiditas: Adanya kemungkinan bahwa Pemodal tidak dapat dengan mudah menjual efek pada pasar sekunder untuk efek dari Penerbit.</li>
+              <li>Kegagalan Sistem Elektronik: Adanya kemungkinan bahwa sistem elektronik dapat mengalami gangguan sewaktu-waktu yang disebabkan oleh kesalahan teknis.</li>
+              <li>Risiko kelangkaan pembagian dividen dan/atau dilusi kepemilikan saham, jika Efek yang diterbitkan merupakan saham.</li>
+              <li>Risiko Gagal Bayar: Keputusan pembelian efek dapat mengakibatkan risiko kehilangan sebagian atau seluruh modal investasi termasuk di dalamnya penurunan usaha Penerbit dan lain hal sebagainya.</li>
+            </ol>
+          `,
+          yes: 'Ya',
+          cancel: 'Batalkan',
+        },
+        validationForm: {
+          text1: 'Kolom ini wajib diisi',
+        },
+        payment: {
+          qris: {
+            steps : `
+              <ol>
+                <li>Scan/screenshot kode QR yang tampil di layar dengan aplikasi bank, aplikasi dompet digital (e-wallet) atau aplikasi pembayaran lain yang mendukung pembayaran QRIS.</li>
+                <li>Periksa detail transaksi pada aplikasi, lalu klik tombol Bayar.</li>
+                <li>Masukan PIN.</li>
+                <li>Setelah transaksi selesai, kembali ke halaman ini dan akan diteruskan ke halaman portfolio.</li>
+              </ol>
+            `,
+          },
+          titleQR: "Pembayaran dengan QRIS",
+          titleVA: "Pembayaran dengan Virtual Account",
+          descriptionQR: "Kami juga telah mengirimkan instruksi pembayaran QRIS melalui email. Silakan periksa email Anda dan lanjutkan pembayaran.",
+          descriptionVA: "Kami juga telah mengirimkan instruksi pembayaran VA melalui email. Silakan periksa email Anda dan lanjutkan pembayaran.",
+          orderId: "ID Pesanan",
+          nominal: "Nominal",
+          expiredDate: "Berlaku Sampai",
+          status: "Status",
+          numberVA: "Nomor Virtual Account",
+          numberVACopied: 'Nomor VA berhasil disalin',
+          scan: "Pindai QRIS",
+          download: "Unduh QR",
+          howToPayQR: "Cara pembayaran menggunakan QRIS:",
+          howToPayVA1: "Petunjuk Pembayaran melalui BANK",
+          howToPayVA2: "",
+          refresh: "Perbarui Status",
+          cancel: "Batalkan Transaksi",
+          cancelationSucceed: 'Transaksi pembayaran berhasil dibatalkan!',
+          cancelationFailed: 'Transaksi pembayaran gagal dibatalkan. Coba lagi.'
+        },
+        modals: {
+          cancel: {
+            text1: 'Pembatalan Transaksi',
+            text2: 'Apakah Kamu yakin akan membatalkan transaksi ini?',
+            cancel: 'Tidak',
+            yes: 'Ya',
+          },
+          otp: {
+            process: 'Proses',
+            verification: 'Verifikasi OTP',
+            getOtp: 'Dapatkan Kode OTP',
+            selectType: 'Pilih Jenis OTP',
+            tooManyAttempts: 'Terlalu banyak meminta kode OTP. Tunggu sebentar lagi...',
+            cancel: 'Tidak',
+            yes: 'Ya',
+          }
+        }
+      }
+    },
+    portfolio: {
+      sidebar: {
+        text1: 'Portofolio'
+      },
+      title: 'Portofolio',
+      filter: {
+        text1: 'Tampilkan 7 entri',
+        text2: 'Tampilkan 10 entri',
+        text3: 'Tampilkan 25 entri',
+        text4: 'Tampilkan 50 entri',
+        text5: 'Tampilkan 75 entri',
+        text6: 'Tampilkan 100 entri',
+        text7: 'Cari...'
+      },
+      table: {
+        text1: 'Tidak ada data dalam tabel.',
+        text2: 'Menampilkan',
+        text3: 'hingga',
+        text4: 'dari',
+        text5: 'entri',
+        text6: 'Kode Efek',
+        text7: 'ID Penawaran',
+        text8: 'Saham',
+        text9: 'Obligasi',
+        text10: 'Jumlah Pembelian',
+        text11: 'Harga/Saham (Rp)',
+        text12: 'Lembar Saham',
+        text13: 'Imbal Hasil (%)',
+        text14: 'Jangka Waktu (Bulan)',
+        text15: 'Jatuh Tempo',
+        dropdown: {
+          text1: 'Informasi Penawaran',
+          text2: 'Informasi Pembelian',
+          text3: 'Informasi Biaya dan Imbal Hasil',
+          text4: 'Factsheet',
+          text5: 'Batalkan Pembelian',
+        }
+      },
+      modal: {
+        offerInformation: {
+          text1: 'Informasi Penawaran',
+          text2: 'Nama Penerbit',
+          text3: 'Tanggal Penyerahan Dana',
+          text4: 'Sektor Usaha',
+          text5: 'Jadwal Pembayaran Kupon / Dividen',
+          text6: 'Persentase Saham Yang Dilepas',
+          text7: 'Status Pembayaran',
+          text8: 'Intensitas Pembagian Dividen',
+          text9: 'Persentase Pembagian Dividen',
+          text10: 'Kupon',
+          text11: 'Tenor',
+          text12: 'Jenis Penawaran',
+        },
+        financingInformation: {
+          text1: 'Informasi Pembelian',
+          text2: 'Tanggal Pembelian',
+          text3: 'Jumlah Pembelian',
+          text4: 'Kontribusi',
+        },
+        costReturn: {
+          text1: 'Informasi Biaya dan Imbal Hasil',
+          text2: 'Potensi Penerimaan Imbal Hasil per Periode',
+          text3: 'Potensi Penerimaan Biaya Keterlambatan',
+          text4: 'Total Potensi Penerimaan Imbal Hasil dan Biaya Keterlambatan',
+          text5: 'Biaya Administrasi'
+        },
+        close: 'Tutup'
+      }
+    },
+    incomingFunds: {
+      sidebar: {
+        text1: 'Dana Masuk'
+      },
+      title: 'Dana Masuk',
+      filter: {
+        text1: 'Tampilkan 7 entri',
+        text2: 'Tampilkan 10 entri',
+        text3: 'Tampilkan 25 entri',
+        text4: 'Tampilkan 50 entri',
+        text5: 'Tampilkan 75 entri',
+        text6: 'Tampilkan 100 entri',
+        text7: 'Cari...'
+      },
+      table: {
+        text1: 'Tidak ada data dalam tabel.',
+        text2: 'Menampilkan',
+        text3: 'hingga',
+        text4: 'dari',
+        text5: 'entri',
+        text6: 'Tanggal',
+        text7: 'Jumlah (Rp)',
+        text8: 'Keterangan',
+      },
+      text1: 'Metode Transfer Dana',
+      text2: 'Bank Lain',
+      text3: 'Download Laporan Transaksi',
+      modal: {
+        detailBank: {
+          text1: 'Nomor Virtual Account berhasil disalin!',
+          text2: 'Pembayaran Melalui Virtual Account Bank',
+          text3: '',
+          text4: 'Nama Rekening',
+          text5: 'Nomor VA Bank',
+          text6: '',
+          text7: 'Limit Virtual Account',
+          text8: 'Mengerti',
+          text9: '',
+        },
+        detailIncome: {
+          text1: 'Keterangan Dana Masuk',
+          text2: 'Tanggal',
+          text3: 'Jumlah',
+          text4: 'Keterangan',
+          close: 'Tutup',
+        },
+        downloadReport: {
+          text1: 'Download Laporan Transaksi',
+          text2: 'Dari',
+          text3: 'Sampai',
+          text4: 'Jenis File',
+          cancel: 'Batal',
+          yes: 'Download',
+          text7: 'Permintaan pengunduhan laporan berhasil. Mohon tunggu hingga proses selesai.',
+          text8: 'Laporan berhasil diunduh!',
+          text9: 'Gagal mengunduh laporan! Mohon coba lagi.',
+        }
+      }
+    },
+    outgoingFunds: {
+      sidebar: {
+        text1: 'Dana Keluar'
+      },
+      title: 'Dana Keluar',
+      text1: 'Total Keseluruhan Dana',
+      text2: 'Dana yang dimiliki',
+      text3: 'Dana Dapat Diinvestasikan',
+      text4: 'Cash In-hand + Dana Reward + Dana Interim',
+      text5: 'Dana Yang bisa Ditarik',
+      text6: 'Dana yang dapat ditarik ke rekening',
+      text7: 'Tarik Dana',
+      filter: {
+        text1: 'Tampilkan 7 entri',
+        text2: 'Tampilkan 10 entri',
+        text3: 'Tampilkan 25 entri',
+        text4: 'Tampilkan 50 entri',
+        text5: 'Tampilkan 75 entri',
+        text6: 'Tampilkan 100 entri',
+        text7: 'Cari...'
+      },
+      table: {
+        text1: 'Tidak ada data dalam tabel.',
+        text2: 'Menampilkan',
+        text3: 'hingga',
+        text4: 'dari',
+        text5: 'entri',
+        text6: 'Tanggal',
+        text7: 'Status',
+        text8: 'Jumlah',
+        text9: 'Keterangan',
+        text10: 'Diproses',
+        text11: 'Selesai',
+      },
+      modal: {
+        withdrawRequest: {
+          steps : `
+            <ol>
+              <li>Masukkan jumlah nominal dana yang akan di Tarik Dana.</li>
+              <li>Klik tombol “Tarik Dana” untuk memproses menarik dana Kamu.</li>
+              <li>Danamart akan memproses permintaan Tarik Dana Kamu maksimal 2 hari kerja.</li>
+            </ol>
+          `,
+          succeed: 'Selamat, penarikan dana Anda diterima dan akan segera diproses!',
+          pending: 'Masih ada proses tarik dana yang belum diproses di akun Kamu. Silakan tunggu proses tarik dana hingga selesai, lalu coba kembali',
+          tooManyAttempts: 'Terlalu banyak meminta kode OTP. Tunggu sebentar lagi...',
+          title: 'Permintaan Penarikan Dana',
+          text1: 'Metode Tarik Dana',
+          text2: 'Jumlah Dana Yang Akan Ditarik + Biaya Admin (Rp)',
+          text3: 'Minimum penarikan Rp. 10.000,-',
+          text4: 'Biaya Admin',
+          text5: 'Jumlah Dana Yang Akan Diterima',
+          text6: 'Pilih Metode Verifikasi OTP',
+          text7: 'Dapatkan OTP',
+          text8: 'Waktu tersisa:',
+          text9: 'Batalkan',
+          text10: 'Kembali',
+          text11: 'Tarik Dana',
+          text12: 'Proses Tarik Dana',
+          text13: 'Input Jumlah Dana',
+        },
+        detailOutcome: {
+          title: 'Keterangan Dana Keluar',
+          text1: 'Tanggal',
+          text2: 'Status',
+          text3: 'Selesai',
+          text4: 'Diproses',
+          text5: 'Jumlah',
+          text6: 'Keterangan',
+          text7: 'Close',
+        }
+      }
+    },
+    purchaseHistory: {
+      sidebar: {
+        text1: 'Riwayat Pembelian'
+      },
+      title: 'Riwayat Pembelian',
+      filter: {
+        text1: 'Tampilkan 7 entri',
+        text2: 'Tampilkan 10 entri',
+        text3: 'Tampilkan 25 entri',
+        text4: 'Tampilkan 50 entri',
+        text5: 'Tampilkan 75 entri',
+        text6: 'Tampilkan 100 entri',
+        text7: 'Cari...'
+      },
+      table: {
+        text1: 'Tidak ada data dalam tabel.',
+        text2: 'Menampilkan',
+        text3: 'hingga',
+        text4: 'dari',
+        text5: 'entri',
+        text6: 'Kode Efek',
+        text7: 'ID Penawaran',
+        text8: 'Jumlah Pembelian',
+        text9: 'Tanggal Pembelian',
+        dropdown: {
+          text1: 'Informasi Penawaran',
+          text2: 'Informasi Pembelian',
+          text3: 'Informasi Biaya dan Imbal Hasil',
+          text4: 'Factsheet',
+        }
+      },
+      modal: {
+        offerInformation: {
+          text1: 'Informasi Penawaran',
+          text2: 'Nama Penerbit',
+          text3: 'ID Penawaran',
+          text4: 'Jatuh Tempo',
+          text5: 'Tanggal Penyerahan Dana',
+          text6: 'Jadwal Penyerahan Kupon/Dividen',
+          text7: 'Sektor Usaha',
+          text8: 'Status Pembayaran',
+        },
+        purchaseInformation: {
+          text1: 'Informasi Pembelian',
+          text2: 'Tanggal Pembelian',
+          text3: 'Jumlah Pembelian',
+          text4: 'Kontribusi (%)',
+        },
+        costReturn: {
+          text1: 'Informasi Biaya dan Imbal Hasil',
+          text2: 'Potensi Penerimaan Imbal Hasil per Periode',
+          text3: 'Potensi Penerimaan Biaya Keterlambatan',
+          text4: 'Total Potensi Penerimaan Imbal Hasil dan Biaya Keterlambatan',
+          text5: 'Biaya Administrasi'
+        },
+        close: 'Tutup'
+      }
+    },
+    userLog: {
+      sidebar: {
+        text1: 'Log Pengguna'
+      },
+      title: 'Log Pengguna',
+      filter: {
+        text1: 'Tampilkan 7 entri',
+        text2: 'Tampilkan 10 entri',
+        text3: 'Tampilkan 25 entri',
+        text4: 'Tampilkan 50 entri',
+        text5: 'Tampilkan 75 entri',
+        text6: 'Tampilkan 100 entri',
+        text7: 'Cari...',
+        text8: 'Tanggal Mulai',
+        text9: 'Tanggal Berakhir',
+        text10: 'Terapkan',
+        text11: 'Hapus',
+      },
+      table: {
+        text1: 'Tidak ada data dalam tabel.',
+        text2: 'Menampilkan',
+        text3: 'hingga',
+        text4: 'dari',
+        text5: 'entri',
+      }
+    },
+    promotion: {
+      sidebar: {
+        text1: 'Promosi'
+      },
+      title: 'Promosi',
+      text1: 'Punya kode promo? Masukan kode-mu disini',
+      text2: 'Jenis kode yang kamu punya',
+      text3: 'Pilih Jenis',
+      text4: 'Kode Promo',
+      text5: 'Input kode-mu disini',
+      text6: 'Masukan kode promo',
+      text7: 'Validasi Kode',
+      text8: 'Selamat! Kode-mu valid dan berhasil diklaim. Saat ini sudah bisa menikmati benefitnya.',
+      text9: 'Maaf! Kode-mu tidak valid, kuota sudah habis , masa berlakunya telah berakhir atau tidak memenuhi syarat dan ketentuan. Silakan coba lagi dengan kode lainnya ya.',
+      modal: {
+        title: 'Tentang Kode Promo dan Kode Referral',
+        text1: 'Kode Promo adalah kode unik yang dapat digunakan oleh-mu untuk mendapatkan penawaran menarik ya.',
+        close: 'Tutup'
+      }
+    }
+  },
   seedsPlan: {
     desc: 'Pilih paket untuk mendapatkan penghematan dan kesenangan tanpa batas!',
     button1: 'Ketentuan & Kebijakan',

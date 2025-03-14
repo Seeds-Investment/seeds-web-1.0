@@ -39,6 +39,10 @@ code {
     monospace;
 }
 
+div:has(> div > .DialogNft){
+   z-index: 60 !important;
+}
+
 /* Start Scrollbar */
 /* Firefox */
 * {
@@ -368,4 +372,22 @@ li {
   scrollbar-color: #7555da #ffffff;
 }
 
+.custom-danamart-slider .slick-slide {
+  margin: 0 4px;
+}
+.custom-danamart-slider .slick-list {
+  margin: 0 -4px;
+}
+
+/* scrollbar-hide */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb {
+  display: none;
+}
 

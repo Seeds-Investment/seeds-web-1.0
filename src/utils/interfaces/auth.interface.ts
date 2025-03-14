@@ -1,3 +1,4 @@
+import { type LoginForm } from '@/repository/auth.repository';
 import type React from 'react';
 import type { Country } from './guest.interface';
 import { type OTPDataI } from './otp.interface';
@@ -57,8 +58,8 @@ export interface AuthVerificationI {
   setCountdown: React.Dispatch<React.SetStateAction<number>>;
   countries: Country[];
   method: string;
-  loginForm: LoginFormData;
-  setLoginForm: React.Dispatch<React.SetStateAction<LoginFormData>>;
+  loginForm: LoginForm;
+  setLoginForm: React.Dispatch<React.SetStateAction<LoginForm>>;
   otpForm: OTPDataI;
   setOTPForm: React.Dispatch<React.SetStateAction<OTPDataI>>;
   country: number;
@@ -85,7 +86,7 @@ export interface AuthPersonalDataI {
   className: string;
   setFormData: React.Dispatch<React.SetStateAction<AuthFormData>>;
   formData: AuthFormData;
-  loginForm: LoginFormData;
+  loginForm: LoginForm;
   guest: string;
 }
 
@@ -94,7 +95,7 @@ export interface AuthRefI {
   handleOpen: () => void;
   setFormData: React.Dispatch<React.SetStateAction<AuthFormData>>;
   formData: AuthFormData;
-  loginForm: LoginFormData;
+  loginForm: LoginForm;
   guest: string;
 }
 

@@ -31,12 +31,14 @@ interface props {
   open: boolean;
   handleOpen: () => void;
   handleLogout: () => void;
+  handleLogoutDanamart: () => void;
 }
 
 const SidebarLoginResponsive: React.FC<props> = ({
   open,
   handleOpen,
-  handleLogout
+  handleLogout,
+  handleLogoutDanamart
 }) => {
   const width = useWindowInnerWidth();
   const [accessToken, setAccessToken] = useState('');
@@ -74,6 +76,7 @@ const SidebarLoginResponsive: React.FC<props> = ({
             { title: t('danamart.outgoingFunds.sidebar.text1'), url: '/danamart/outgoing-funds' },
             { title: t('danamart.promotion.sidebar.text1'), url: '/danamart/promotion' },
             { title: t('danamart.userLog.sidebar.text1'), url: '/danamart/user-log' },
+            { title: t('danamart.logout.text1'), url: '#', isLogout: true }
           ]
         },
         { title: 'Setting', url: '/user-setting', image: setting },
@@ -189,14 +192,27 @@ const SidebarLoginResponsive: React.FC<props> = ({
                       {data.hasSubmenu !== undefined && isDanamartOpen && (
                         <ul>
                           {data.submenu?.map((sub, subIdx) => (
-                            <Link
-                              key={subIdx}
-                              className={`flex items-center ${isLinkActive(sub.url)}`}
-                              href={sub.url}
-                            >
-                              <GoDotFill size={20} />
-                              <h1>{sub.title}</h1>
-                            </Link>
+                            (sub.isLogout ?? false) ?
+                              <Link
+                                key={subIdx}
+                                className={`flex items-center ${isLinkActive(sub.url)}`}
+                                onClick={() => {
+                                  handleLogoutDanamart();
+                                }}
+                                href='#'
+                              >
+                                <GoDotFill size={20} />
+                                <h1>{sub.title}</h1>
+                              </Link>
+                              :
+                              <Link
+                                key={subIdx}
+                                className={`flex items-center ${isLinkActive(sub.url)}`}
+                                href={sub.url}
+                              >
+                                <GoDotFill size={20} />
+                                <h1>{sub.title}</h1>
+                              </Link>
                           ))}
                         </ul>
                       )}

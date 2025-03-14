@@ -18,6 +18,7 @@ import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { GoDotFill } from 'react-icons/go';
 import { toast } from 'react-toastify';
 import market from 'src/assets/market/market.svg';
+import ModalLogoutDanamart from '../danamart/auth/ModalLogoutDanamart';
 import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
 
@@ -50,6 +51,7 @@ const SidebarLogin: React.FC = () => {
             { title: t('danamart.outgoingFunds.sidebar.text1'), url: '/danamart/outgoing-funds' },
             { title: t('danamart.promotion.sidebar.text1'), url: '/danamart/promotion' },
             { title: t('danamart.userLog.sidebar.text1'), url: '/danamart/user-log' },
+            { title: t('danamart.logout.text1'), url: '#', isLogout: true }
           ]
         },
         { title: 'NFT', url: '/nft', image: nft },
@@ -61,6 +63,7 @@ const SidebarLogin: React.FC = () => {
   const router = useRouter();
   const [isDanamartOpen, setIsDanamartOpen] = useState(false);
   const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
+  const [isLogoutModalDanamart, setIsLogoutModalDanamart] = useState<boolean>(false);
   const [showLogoutButton, setShowLogoutButton] = useState(false);
   const [userInfo, setUserInfo] = useState<any>([]);
   const isLinkActive = (href: string): string => {
@@ -96,6 +99,13 @@ const SidebarLogin: React.FC = () => {
             setIsLogoutModal(prev => !prev);
           }}
           userInfo={userInfo}
+        />
+      )}
+      {isLogoutModalDanamart && (
+        <ModalLogoutDanamart
+          onClose={() => {
+            setIsLogoutModalDanamart(prev => !prev);
+          }}
         />
       )}
 
@@ -148,14 +158,25 @@ const SidebarLogin: React.FC = () => {
                 {data.hasSubmenu !== undefined && isDanamartOpen && (
                   <ul>
                     {data.submenu?.map((sub, subIdx) => (
-                      <Link
-                        key={subIdx}
-                        className={`flex items-center ${isLinkActive(sub.url)}`}
-                        href={sub.url}
-                      >
-                        <GoDotFill size={20} />
-                        <h1>{sub.title}</h1>
-                      </Link>
+                      (sub.isLogout ?? false) ?
+                        <Link
+                          key={subIdx}
+                          className={`flex items-center ${isLinkActive(sub.url)}`}
+                          onClick={() => {setIsLogoutModalDanamart(true)}}
+                          href='#'
+                        >
+                          <GoDotFill size={20} />
+                          <h1>{sub.title}</h1>
+                        </Link>
+                        :
+                        <Link
+                          key={subIdx}
+                          className={`flex items-center ${isLinkActive(sub.url)}`}
+                          href={sub.url}
+                        >
+                          <GoDotFill size={20} />
+                          <h1>{sub.title}</h1>
+                        </Link>
                     ))}
                   </ul>
                 )}

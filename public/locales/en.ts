@@ -3286,6 +3286,7 @@ export default {
       dashboard: {
         text1: 'Offers',
         text2: 'Exclusive investment offers—grow your wealth now!',
+        text3: 'No suitable offers available',
         filter: {
           text1: 'Types of Securities',
           text2: 'All',
@@ -3930,6 +3931,13 @@ export default {
         text1: 'A Promo Code is a unique code that you can use to get exciting offers.',
         close: 'Close'
       },
+    },
+    idleLogout: 'You have been idle for 30 minutes or more. Please log in again to Danamart.',
+    logout: {
+      text1: 'Logout',
+      description: 'Do you want to log out from Danamart?',
+      yes: 'Log Out',
+      cancel: 'Cancel'
     }
   },
   seedsPlan: {

@@ -11,6 +11,7 @@ import useSoundEffect from '@/hooks/useSoundEffects';
 import { type PaymentData } from '@/pages/play/quiz/[id]/help-option';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById, joinQuiz } from '@/repository/quiz.repository';
+import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import i18n from '@/utils/common/i18n';
 import {
   LifelinesEnum,
@@ -21,6 +22,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import FiftySeedy from '../../../assets/play/quiz/5050-seedy.png';
 import Fifty from '../../../assets/play/quiz/fifty.svg';
@@ -47,6 +49,10 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
 
   const [verifyCompanionVisibility, setVerifyCompanionVisibility] =
     useState<boolean>(false);
+    
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
 
   useEffect(() => {
     setRedeemCoin(router.query.useCoins === 'true');
@@ -122,85 +128,168 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
     let total = 0;
     const found = detailQuiz?.lifelines[lifelines.length - 1];
     total += found?.price ?? 0;
-    if (total + (detailQuiz?.admission_fee ?? 0) !== 0) {
-      onPay({
-        payment: {
-          quiz_id: id as string,
-          lifelines,
-          language: i18n.language,
-          payment_gateway: '',
-          payment_method: '',
-          phone_number: phoneNumber,
-          promo_code: '',
-          invitation_code: '',
-          is_use_coins: false
-        },
-        quiz: {
-          lifelines: detailQuiz?.lifelines ?? [],
-          fee: total,
-          admission_fee: detailQuiz?.admission_fee ?? 0
+
+    if (promoCodeValidationResult !== 0) {
+      if (
+        (promoCodeValidationResult?.response?.final_price !== undefined && promoCodeValidationResult?.response?.total_discount === undefined) ||
+        (promoCodeValidationResult?.response?.final_price !== undefined && promoCodeValidationResult?.response?.total_discount !== undefined)
+      ) {
+        if (total + (Number(promoCodeValidationResult?.response?.final_price)) !== 0) {
+          // Case 1
+          onPay({
+            payment: {
+              quiz_id: id as string,
+              lifelines,
+              language: i18n.language,
+              payment_gateway: '',
+              payment_method: '',
+              phone_number: phoneNumber,
+              promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
+              invitation_code: invitationCode as string,
+              is_use_coins: redeemCoin
+            },
+            quiz: {
+              lifelines: detailQuiz?.lifelines ?? [],
+              fee: total,
+              admission_fee: detailQuiz?.admission_fee ?? 0
+            }
+          });
+        } else {
+          // Case 2
+          try {
+            await joinQuiz({
+              quiz_id: id as string,
+              lifelines,
+              language: i18n.language,
+              payment_gateway: '',
+              payment_method: '',
+              phone_number: phoneNumber,
+              promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
+              invitation_code: invitationCode as string,
+              is_use_coins: redeemCoin
+            });
+            const formattedText = (text: string): string => {
+              return text.replaceAll(/[^a-zA-Z0-9_-]/g, '_');
+            };
+            TrackerEvent({
+              event: 'SW_quiz_payment',
+              userData: userInfo,
+              quizData: {
+                ...detailQuiz,
+                name: formattedText(detailQuiz?.name as string)
+              },
+              paymentData: { statusPayment: 'FREE' }
+            });
+            void router.replace(`/play/quiz/${detailQuiz?.id}/start`);
+          } catch (error) {
+            const err = error as AxiosError;
+            toast(err.message ?? 'Unknown Error');
+          }
         }
-      });
-      // navigateAndReset(
-      //   [
-      //     { name: 'Tabs', params: { playTab: 1 } },
-      //     { name: 'QuizDetailScreen', params: { id: detailQuiz.id } },
-      //     {
-      //       name: 'PaymentListScreen',
-      //       params: {
-      //         data: {
-      //           payment: {
-      //             quiz_id: id,
-      //             lifelines,
-      //             language: i18n.language,
-      //             payment_gateway: '',
-      //             payment_method: '',
-      //             phone_number: phoneNumber,
-      //             promo_code: '',
-      //             invitation_code: ''
-      //           },
-      //           quiz: {
-      //             lifelines: detailQuiz?.lifelines,
-      //             fee: total,
-      //             admission_fee: detailQuiz?.admission_fee
-      //           }
-      //         },
-      //         feature: PAYMENT_QUIZ,
-      //         promoCode: ''
-      //       }
-      //     }
-      //   ],
-      //   1
-      // );
+      } else {
+        if (total + ((detailQuiz?.admission_fee ?? 0) - Number(promoCodeValidationResult?.response?.total_discount)) !== 0) {
+          // Case 3
+          onPay({
+            payment: {
+              quiz_id: id as string,
+              lifelines,
+              language: i18n.language,
+              payment_gateway: '',
+              payment_method: '',
+              phone_number: phoneNumber,
+              promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
+              invitation_code: invitationCode as string,
+              is_use_coins: redeemCoin
+            },
+            quiz: {
+              lifelines: detailQuiz?.lifelines ?? [],
+              fee: total,
+              admission_fee: detailQuiz?.admission_fee ?? 0
+            }
+          });
+        } else {
+          // Case 4
+          try {
+            await joinQuiz({
+              quiz_id: id as string,
+              lifelines,
+              language: i18n.language,
+              payment_gateway: '',
+              payment_method: '',
+              phone_number: phoneNumber,
+              promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
+              invitation_code: invitationCode as string,
+              is_use_coins: redeemCoin
+            });
+            const formattedText = (text: string): string => {
+              return text.replaceAll(/[^a-zA-Z0-9_-]/g, '_');
+            };
+            TrackerEvent({
+              event: 'SW_quiz_payment',
+              userData: userInfo,
+              quizData: {
+                ...detailQuiz,
+                name: formattedText(detailQuiz?.name as string)
+              },
+              paymentData: { statusPayment: 'FREE' }
+            });
+            void router.replace(`/play/quiz/${detailQuiz?.id}/start`);
+          } catch (error) {
+            const err = error as AxiosError;
+            toast(err.message ?? 'Unknown Error');
+          }
+        }
+      }
     } else {
-      try {
-        await joinQuiz({
-          quiz_id: id as string,
-          lifelines,
-          language: i18n.language,
-          payment_gateway: '',
-          payment_method: '',
-          phone_number: phoneNumber,
-          promo_code: '',
-          invitation_code: invitationCode as string,
-          is_use_coins: redeemCoin
-        });
-        const formattedText = (text: string): string => {
-          return text.replaceAll(/[^a-zA-Z0-9_-]/g, '_');
-        };
-        TrackerEvent({
-          event: 'SW_quiz_payment',
-          userData: userInfo,
-          quizData: {
-            ...detailQuiz,
-            name: formattedText(detailQuiz?.name as string)
+      if (total + (detailQuiz?.admission_fee ?? 0) !== 0) {
+        onPay({
+          payment: {
+            quiz_id: id as string,
+            lifelines,
+            language: i18n.language,
+            payment_gateway: '',
+            payment_method: '',
+            phone_number: phoneNumber,
+            promo_code: '',
+            invitation_code: invitationCode as string,
+            is_use_coins: false
           },
-          paymentData: { statusPayment: 'FREE' }
+          quiz: {
+            lifelines: detailQuiz?.lifelines ?? [],
+            fee: total,
+            admission_fee: detailQuiz?.admission_fee ?? 0
+          }
         });
-        void router.replace(`/play/quiz/${detailQuiz?.id}/start`);
-      } catch (error) {
-        const err = error as AxiosError;
-        toast(err.message ?? 'Unknown Error');
+      } else {
+        try {
+          await joinQuiz({
+            quiz_id: id as string,
+            lifelines,
+            language: i18n.language,
+            payment_gateway: '',
+            payment_method: '',
+            phone_number: phoneNumber,
+            promo_code: '',
+            invitation_code: invitationCode as string,
+            is_use_coins: redeemCoin
+          });
+          const formattedText = (text: string): string => {
+            return text.replaceAll(/[^a-zA-Z0-9_-]/g, '_');
+          };
+          TrackerEvent({
+            event: 'SW_quiz_payment',
+            userData: userInfo,
+            quizData: {
+              ...detailQuiz,
+              name: formattedText(detailQuiz?.name as string)
+            },
+            paymentData: { statusPayment: 'FREE' }
+          });
+          void router.replace(`/play/quiz/${detailQuiz?.id}/start`);
+        } catch (error) {
+          const err = error as AxiosError;
+          toast(err.message ?? 'Unknown Error');
+        }
       }
     }
   };

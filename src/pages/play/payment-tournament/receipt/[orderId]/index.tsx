@@ -639,14 +639,17 @@ const SuccessPaymentPage: React.FC = () => {
               )}
 
               <div className="w-full flex flex-col items-center justify-center">
-                <Button
-                  className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
-                  onClick={async () => {
-                    void handleViewQR();
-                  }}
-                >
-                  {t('bnc.seeQRCode')}
-                </Button>
+                {
+                  (orderDetail?.paymentMethod?.includes('BNC') ?? false) &&
+                    <Button
+                      className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
+                      onClick={async () => {
+                        void handleViewQR();
+                      }}
+                    >
+                      {t('bnc.seeQRCode')}
+                    </Button>
+                }
                 <Button
                   className={`${
                     orderDetail?.paymentMethod?.includes('BNC') ?? false

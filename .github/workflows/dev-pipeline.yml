@@ -2,7 +2,7 @@ name: Deploy to DEV - web
 
 on:
   push:
-    branches: [update-cicd-dev-ali]
+    branches: [development]
 
 env:
   GITHUB_REGISTRY_IMAGE_NAME: dev-web

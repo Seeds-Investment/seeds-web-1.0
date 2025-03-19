@@ -48,8 +48,8 @@ const Trending = (): JSX.Element => {
 
   return (
     <div className="flex items-center justify-start md:justify-between overflow-x-auto md:overflow-x-visible gap-5">
-      {trendingAsset.length !== 0
-        ? trendingAsset.map((item, idx: number) => (
+      {trendingAsset?.length !== 0
+        ? trendingAsset?.map((item, idx: number) => (
             <Card
               key={idx}
               className=" flex flex-row items-center p-2 bg-white rounded-lg shadow-sm"

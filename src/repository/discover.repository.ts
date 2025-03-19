@@ -11,7 +11,7 @@ export interface EventListParams {
 
 const discoverService = baseAxios(
   `${
-    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
   }/discover/v1/`
 );
 

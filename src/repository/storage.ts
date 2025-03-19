@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const url = `${
-  process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
 }/v1/storage`;
 
 export const uploadCloud = async (formData: any): Promise<any> => {

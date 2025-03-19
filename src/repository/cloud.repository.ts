@@ -1,7 +1,7 @@
 import baseAxios from '@/utils/common/axios';
 
 const cloudService = baseAxios(
-  `${process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'}/v1/`
+  `${process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'}/v1/`
 );
 
 export const postCloud = async (formData: {

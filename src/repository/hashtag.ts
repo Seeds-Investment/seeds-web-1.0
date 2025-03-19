@@ -3,7 +3,7 @@ import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
 const hashtagService = baseAxios(
   `${
-    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
   }/hashtag/v2/`
 );
 

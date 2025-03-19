@@ -24,6 +24,4 @@ const UseListGameDecentralize = () => {
   };
 };
 
-
-
 export default UseListGameDecentralize;

@@ -48,15 +48,14 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
             {images[currentIndex].split('.')[
               images[currentIndex].split('.').length - 1
             ] !== 'mp4' ? (
-                <div className="w-full max-h-[400px] overflow-hidden rounded-2xl">
-                  <img
-                    src={images[currentIndex]}
-                    alt={`Slide ${currentIndex}`}
-                    className="w-full h-[400px] object-cover transition-transform duration-300 transform cursor-pointer"
-                    onClick={openModal}
-                  />
-                </div>
-              
+              <div className="w-full max-h-[400px] overflow-hidden rounded-2xl">
+                <img
+                  src={images[currentIndex]}
+                  alt={`Slide ${currentIndex}`}
+                  className="w-full h-[400px] object-cover transition-transform duration-300 transform cursor-pointer"
+                  onClick={openModal}
+                />
+              </div>
             ) : (
               <video
                 controls

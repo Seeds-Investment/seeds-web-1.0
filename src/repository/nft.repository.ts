@@ -3,8 +3,6 @@ import baseAxios from '@/utils/common/axios';
 import { type AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 
-
-
 interface NftData {
   data: Data[];
   metadata: Metadata;

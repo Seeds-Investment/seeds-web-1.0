@@ -428,7 +428,7 @@ const ModalMention: React.FC<props> = ({
       const formattedValue = formatCurrency(value);
       setForm(prevForm => ({ ...prevForm, [name]: formattedValue }));
     } else if (name === 'premium_fee') {
-      setForm(prevForm => ({ ...prevForm, premium_fee: parseInt(value)}));
+      setForm(prevForm => ({ ...prevForm, premium_fee: parseInt(value) }));
     } else if (name === 'pie_title') {
       setForm(prevForm => ({ ...prevForm, pie_title: value }));
     } else {
@@ -687,10 +687,14 @@ const ModalMention: React.FC<props> = ({
       if (media.length > 0) {
         await postMedia(media);
       }
-
       if (audio !== undefined && audio !== null) {
+        // const convert = await convertAudioToWav(audio, {});
+        // const fileToUpload = new File([convert], 'test.wav', {
+        //   type: 'audio/wav'
+        // });
         await postMedia(audio);
       }
+
       if (document !== undefined && document !== null) {
         await postMedia(document);
       }
@@ -1249,7 +1253,7 @@ const ModalMention: React.FC<props> = ({
         <div className="md:my-4 mt-4 mb-2">
           <MentionsInput
             onChange={e => {
-              handleFormChange(e)
+              handleFormChange(e);
             }}
             ref={containerRef}
             value={form.content_text}
@@ -1307,13 +1311,13 @@ const ModalMention: React.FC<props> = ({
           {renderDollarSuggestion()}
           {renderUserHashtags()}
         </div>
-      )
+      );
     } else {
       return (
         <>
           <MentionsInput
             onChange={e => {
-              handleFormChange(e)
+              handleFormChange(e);
             }}
             ref={containerRef}
             value={form.content_text}
@@ -1347,7 +1351,7 @@ const ModalMention: React.FC<props> = ({
             />
           </MentionsInput>
         </>
-      )
+      );
     }
   };
 
@@ -1839,7 +1843,9 @@ const ModalMention: React.FC<props> = ({
                           <div className="flex justify-center">
                             {document !== undefined &&
                               document !== null &&
-                              pages !== 'gif' && <PDFViewer mode='edit' file={document} />}
+                              pages !== 'gif' && (
+                                <PDFViewer mode="edit" file={document} />
+                              )}
                           </div>
 
                           <div className="flex items-center w-full">

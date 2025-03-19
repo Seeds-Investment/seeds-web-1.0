@@ -148,6 +148,7 @@ const MicrositeQuiz = (): React.ReactElement => {
       expiredUnixTime < currentUnixTime
     ) {
       window.localStorage.removeItem('accessToken');
+      window.localStorage.removeItem('accessToken-danamart');
       window.localStorage.removeItem('expiresAt');
       window.localStorage.removeItem('refreshToken');
     }

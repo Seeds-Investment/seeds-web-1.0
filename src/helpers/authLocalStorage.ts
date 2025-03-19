@@ -9,4 +9,5 @@ export const AuthLocalStorage = (data: Props): void => {
   window.localStorage.setItem('refreshToken', data.refreshToken);
   window.localStorage.setItem('expiresAt', data.expiresAt);
   window.localStorage.setItem('isBannerOpen', 'true');
+  window.localStorage.removeItem('accessToken-danamart');
 };

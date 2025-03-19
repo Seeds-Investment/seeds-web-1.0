@@ -12,6 +12,7 @@ import ID from 'public/assets/social/flag/ID.png';
 import US from 'public/assets/social/flag/US.png';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import ModalLogoutDanamart from '../danamart/auth/ModalLogoutDanamart';
 import ModalLogout from '../popup/ModalLogout';
 import ChatIcon from '../svgs/chatIcon';
 import NotificationIcon from '../svgs/notificationIcon';
@@ -28,6 +29,8 @@ const HeaderLogin: React.FC = () => {
     useState<boolean>(false);
   const languageCtx = useContext(LanguageContext);
   const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
+  const [isLogoutModalDanamart, setIsLogoutModalDanamart] =
+    useState<boolean>(false);
 
   const handleOpenModal = (): void => {
     setOpenSidebarResponsive(!openSidebarResponsive);
@@ -53,12 +56,18 @@ const HeaderLogin: React.FC = () => {
     setIsLogoutModal(true);
   };
 
+  const handleOpenLogoutDanamart = (): void => {
+    handleOpenModal();
+    setIsLogoutModalDanamart(true);
+  };
+
   return (
     <div>
       {openSidebarResponsive ? (
         <SidebarLoginResponsive
           handleOpen={handleOpenModal}
           handleLogout={handleOpenLogout}
+          handleLogoutDanamart={handleOpenLogoutDanamart}
           open={openSidebarResponsive}
         />
       ) : null}
@@ -69,6 +78,13 @@ const HeaderLogin: React.FC = () => {
             setIsLogoutModal(prev => !prev);
           }}
           userInfo={dataUser}
+        />
+      )}
+      {isLogoutModalDanamart && (
+        <ModalLogoutDanamart
+          onClose={() => {
+            setIsLogoutModalDanamart(prev => !prev);
+          }}
         />
       )}
 

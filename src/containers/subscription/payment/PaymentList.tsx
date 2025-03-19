@@ -258,9 +258,11 @@ const PaymentList: React.FC = (): JSX.Element => {
           });
       }
     } catch (error: any) {
+      setOpenDialog(false);
       if (error?.response?.data?.message === 'you already have incoming plan') {
-        setOpenDialog(false);
         toast.error(t('seedsPlan.payment.warningIncoming'));
+      } else if (error?.response?.data?.message === "bad request, minimum transaction using VA is 10000") {
+        toast.error(t('PlayPayment.VirtualAccountGuide.minimumPaymentError'));
       } else {
         toast.error(`Payment failed: ${error?.message ?? error}`);
       }

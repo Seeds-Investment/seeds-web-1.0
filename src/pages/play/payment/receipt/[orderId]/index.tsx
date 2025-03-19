@@ -1,13 +1,13 @@
 import Loading from '@/components/popup/Loading';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import VirtualAccountStep from '@/components/VirtualAccountStep';
 import { CeklisCircle } from '@/constants/assets/icons';
 import { standartCurrency } from '@/helpers/currency';
 import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
-  getHowToPay,
   getPaymentDetail,
   getPaymentList
 } from '@/repository/payment.repository';
@@ -37,7 +37,7 @@ interface PaymentList {
   promo_price: number;
 }
 
-interface ReceiptDetail {
+export interface ReceiptDetail {
   currency: string;
   grossAmount: number;
   howToPayApi?: string;
@@ -74,6 +74,10 @@ interface QrisDetail {
   service_fee: number;
 }
 
+interface OrderDetail {
+  paymentMethod: string;
+}
+
 const SuccessPaymentPage: React.FC = () => {
   const width = useWindowInnerWidth();
   const router = useRouter();
@@ -82,10 +86,9 @@ const SuccessPaymentPage: React.FC = () => {
   const id = router.query.orderId as string;
   const paymentUrl = router.query.paymentUrl as string;
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [eWalletList, setEWalletList] = useState([]);
-  const [steps, setSteps] = useState<string[]>([]);
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
+  const [eWalletList, setEWalletList] = useState([]);
+  const [vaList, setVaList] = useState<QrisDetail[]>([]);
   const [qRisList, setQRisList] = useState<QrisDetail[]>([]);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -110,62 +113,18 @@ const SuccessPaymentPage: React.FC = () => {
       const data = await getPaymentList();
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
+      setVaList(data.type_va);
     } catch (error) {
       toast.error(`Error fetching payment list: ${error as string}`);
     } finally {
       setIsLoading(false);
     }
   };
-
-  const fetchHowToPay = async (url: string): Promise<void> => {
-    try {
-      setIsLoading(true);
-      const data = await getHowToPay(url);
-      setSteps(data.payment_instruction[0].step);
-    } catch (error) {
-      toast.error(`Error fetching payment list: ${error as string}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  function parseStrongText(text: string): any {
-    const regex = /"(.*?)"/g;
-    const splitText = text.split(regex);
-
-    return splitText.map((part: string, index: number) => {
-      if (index % 2 === 1) {
-        return (
-          <strong className="font-semibold font-poppins" key={index}>
-            {part}
-          </strong>
-        );
-      } else {
-        return part;
-      }
-    });
-  }
 
   useEffect(() => {
     void fetchOrderDetail();
     void fetchPaymentList();
-    if (
-      orderDetail?.howToPayApi !== undefined &&
-      orderDetail?.howToPayApi !== ''
-    ) {
-      void fetchHowToPay(orderDetail.howToPayApi);
-    }
   }, [id, orderDetail?.howToPayApi]);
-
-  const paymentSelectedEWallet: PaymentList[] = eWalletList.filter(
-    (el: undefined | PaymentList): any => {
-      return el?.payment_method === orderDetail?.paymentMethod;
-    }
-  );
-
-  const toggleDropdown = (): void => {
-    setIsOpen(!isOpen);
-  };
 
   const getDetail = useCallback(async () => {
     try {
@@ -214,6 +173,27 @@ const SuccessPaymentPage: React.FC = () => {
         toast(`${error as string}`);
       });
   };
+
+  const getSelectedPayment = (
+    eWalletList: PaymentList[],
+    vaList: PaymentList[],
+    qRisList: PaymentList[],
+    orderDetail: OrderDetail | undefined
+  ): PaymentList[] => {
+    if (orderDetail === null) {
+      return [];
+    }
+
+    const paymentSelected: PaymentList[] = [
+      ...eWalletList?.filter((el) => el?.payment_method === orderDetail?.paymentMethod),
+      ...vaList?.filter((el) => el?.payment_method === orderDetail?.paymentMethod),
+      ...qRisList?.filter((el) => el?.payment_method === orderDetail?.paymentMethod),
+    ];
+
+    return paymentSelected.length > 0 ? paymentSelected : [];
+  };
+
+  const paymentSelected = getSelectedPayment(eWalletList, vaList, qRisList, orderDetail);
 
   return (
     <div className="pt-10">
@@ -273,7 +253,7 @@ const SuccessPaymentPage: React.FC = () => {
               <Typography className="text-2xl font-semibold text-white text-center">
                 {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
                 orderDetail?.transactionStatus !== 'SUCCESS'
-                  ? `${orderDetail?.currency ?? 'IDR'} ${standartCurrency(
+                  ? `${(orderDetail?.currency ?? 'IDR')?.toUpperCase()} ${standartCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`
                   : t('quiz.payment.paymentSuccessful')}
@@ -290,20 +270,10 @@ const SuccessPaymentPage: React.FC = () => {
                     ? t('quiz.payment.virtualNumber')
                     : t('quiz.payment.paymentMethod')}
                 </Typography>
-                {orderDetail?.paymentMethod === 'OTHER_QRIS' && (
+                {paymentSelected?.length > 0 && (
                   <div className="flex items-center justify-center mb-9 mt-3">
                     <Image
-                      src={qRisList[0]?.logo_url}
-                      alt="AVATAR"
-                      width={90}
-                      height={90}
-                    />
-                  </div>
-                )}
-                {paymentSelectedEWallet.length > 0 && (
-                  <div className="flex items-center justify-center mb-9 mt-3">
-                    <Image
-                      src={paymentSelectedEWallet[0].logo_url}
+                      src={paymentSelected[0]?.logo_url}
                       alt="AVATAR"
                       width={90}
                       height={90}
@@ -323,11 +293,11 @@ const SuccessPaymentPage: React.FC = () => {
                       <Typography className="text-sm font-semibold text-[#BDBDBD]">
                         {t('quiz.payment.quizFeeTotal')}
                       </Typography>
-                      <Typography className="text-sm font-semibold text-[#262626]">
+                      <Typography className="text-sm font-semibold text-[#262626] text-right">
                         {orderDetail?.currency !== undefined &&
                         orderDetail?.grossAmount !== undefined
                           ? `${
-                              orderDetail?.currency ?? 'IDR'
+                              (orderDetail?.currency)?.toUpperCase() ?? 'IDR'
                             } ${standartCurrency(
                               (orderDetail?.grossAmount ?? 0) === 0
                                 ? 0
@@ -353,7 +323,7 @@ const SuccessPaymentPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
-                        `${orderDetail?.currency ?? 'IDR'} ${standartCurrency(
+                        `${(orderDetail?.currency ?? 'IDR')?.toUpperCase()} ${standartCurrency(
                           orderDetail?.admin_fee ?? 0
                         )}`}
                     </Typography>
@@ -372,7 +342,7 @@ const SuccessPaymentPage: React.FC = () => {
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
                       orderDetail.grossAmount !== undefined
-                        ? `${orderDetail?.currency ?? 'IDR'} ${standartCurrency(
+                        ? `${(orderDetail?.currency ?? 'IDR')?.toUpperCase()} ${standartCurrency(
                             orderDetail?.service_fee ?? 0
                           )}`
                         : ''}
@@ -384,7 +354,7 @@ const SuccessPaymentPage: React.FC = () => {
 
                 {/* Discount Fee */}
                 {(orderDetail?.grossAmount ?? 0) > 0 &&
-                  paymentSelectedEWallet.length > 0 && (
+                  paymentSelected?.length > 0 && (
                     <div>
                       {(orderDetail?.is_promo_available ?? false) && (
                         <div className="flex flex-row justify-between mb-5">
@@ -394,7 +364,7 @@ const SuccessPaymentPage: React.FC = () => {
                           <Typography className="text-sm font-semibold text-[#262626]">
                             {orderDetail?.currency !== undefined
                               ? `- ${
-                                  orderDetail?.currency ?? 'IDR'
+                                  (orderDetail?.currency ?? 'IDR')?.toUpperCase()
                                 } ${standartCurrency(
                                   orderDetail?.promo_price ?? 0
                                 )}`
@@ -418,7 +388,7 @@ const SuccessPaymentPage: React.FC = () => {
                         </Typography>
                         <Typography className="text-sm font-semibold text-[#262626]">
                           {`- ${
-                            orderDetail?.currency ?? 'IDR'
+                            (orderDetail?.currency ?? 'IDR')?.toUpperCase()
                           } ${standartCurrency(orderDetail?.seeds_coin ?? 0)}`}
                         </Typography>
                       </div>
@@ -433,7 +403,7 @@ const SuccessPaymentPage: React.FC = () => {
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
-                      `${orderDetail?.currency ?? 'IDR'} ${standartCurrency(
+                      `${(orderDetail?.currency ?? 'IDR')?.toUpperCase()} ${standartCurrency(
                         orderDetail?.grossAmount ?? 0
                       )}`}
                   </Typography>
@@ -449,41 +419,15 @@ const SuccessPaymentPage: React.FC = () => {
                   </Typography>
                 </div>
               </Card>
-              {orderDetail?.vaNumber !== undefined && steps.length > 0 && (
-                <Card className="p-5 mt-8 bg-white">
-                  <div className="flex justify-between">
-                    <h1 className="text-xl font-bold mb-4">How to Pay</h1>
-                    <button className="ml-2" onClick={toggleDropdown}>
-                      {isOpen ? '▲' : '▼'}
-                    </button>
-                  </div>
-                  <div
-                    className={`overflow-hidden transition-max-height duration-700 ${
-                      isOpen ? 'max-h-[1000px]' : 'max-h-0'
-                    }`}
-                  >
-                    {steps.map((step: string, index: number) => (
-                      <div
-                        className="flex items-start mb-3 relative"
-                        key={index}
-                      >
-                        <div className="flex-shrink-0 w-6 h-6 z-50 rounded-full bg-seeds-purple-2 text-white flex items-center justify-center mr-3">
-                          {index + 1}
-                        </div>
-                        <Typography className="font-poppins text-black">
-                          {parseStrongText(step)}
-                        </Typography>
-                        {index < steps.length - 1 && (
-                          <div
-                            className="w-0.5 bg-seeds-purple-2 absolute left-3"
-                            style={{ height: 'calc(100% + 1.5rem)' }}
-                          ></div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              )}
+
+              {
+                orderDetail !== undefined &&
+                  <VirtualAccountStep
+                    setIsLoading={setIsLoading}
+                    orderDetail={orderDetail}
+                    id={id}
+                  />
+              }
 
               <div className="w-full flex flex-col items-center justify-center">
                 {

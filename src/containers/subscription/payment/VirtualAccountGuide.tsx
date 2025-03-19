@@ -5,10 +5,9 @@ import LanguageContext from '@/store/language/language-context';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import {
   type PlanI,
-  type StatusSubscription,
-  type UserInfo
+  type StatusSubscription
 } from '@/utils/interfaces/subscription.interface';
-import { Button, Typography } from '@material-tailwind/react';
+import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,8 +26,6 @@ interface VirtualAccountGuideProps {
     totalAmount: number,
     phoneNumber: string
   ) => Promise<void>;
-  paymentStatus: PaymentStatus | undefined;
-  userInfo: UserInfo;
   subscriptionStatus: StatusSubscription | null;
   incomingSubscription: PlanI;
 }
@@ -54,18 +51,13 @@ const VirtualAccountGuide = ({
   payment,
   dataPlan,
   handlePay,
-  userInfo,
-  paymentStatus,
   subscriptionStatus,
   incomingSubscription
 }: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
-  const accountNumber = paymentStatus != null ? paymentStatus.vaNumber : '';
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
-  const accountName = '';
-  const userName = userInfo?.name;
   const discount =
     promoCodeValidationResult !== 0
       ? promoCodeValidationResult?.total_discount
@@ -107,28 +99,6 @@ const VirtualAccountGuide = ({
         </Typography>
       </div>
       <Divider />
-      <Typography className="text-[#201B1C] font-normal">
-        {t(`${translationsId}.accountNumberLabel`)}
-      </Typography>
-      <div className="flex justify-between mb-4">
-        <Typography className="text-[#7555DA] font-normal">
-          {accountNumber}
-        </Typography>
-        <Button
-          variant="text"
-          onClick={() => {}}
-          className="text-[#3AC4A0] text-md font-normal p-0 normal-case "
-        >
-          {t(`${translationsId}.copy`)}
-        </Button>
-      </div>
-      <Typography className="text-[#201B1C] font-normal">
-        {t(`${translationsId}.accountNameLabel`)}
-      </Typography>
-      <Typography className="text-[#7555DA] font-normal">
-        {accountName}
-      </Typography>
-      <Divider />
       <InlineText
         label={
           dataPlan !== undefined
@@ -155,9 +125,9 @@ const VirtualAccountGuide = ({
           className="mb-2"
         />
       ) : null}
-      {promoCodeValidationResult !== undefined ? (
+      {promoCodeValidationResult !== undefined && promoCodeValidationResult !== 0 ? (
         <InlineText
-          label={t(`${translationId}.adminFeeDiscountLabel`)}
+          label={t(`${translationId}.promoCodeDiscountLabel`)}
           value={`- IDR ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             promoCodeValidationResult?.total_discount ?? 0
@@ -272,7 +242,7 @@ const VirtualAccountGuide = ({
         2.
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step2.1`)} </a>
         {t(`${translationsId}.step2.2`)}
-        <a className="text-[#7555DA]"> {accountNumber}</a>
+        <a className="text-[#7555DA]"></a>
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step2.3`)} </a>
         {t(`${translationsId}.step2.4`)}
       </Typography>
@@ -281,7 +251,6 @@ const VirtualAccountGuide = ({
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step3.1`)} </a>
         {t(`${translationsId}.step3.2`)}
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step3.3`)} </a>
-        {userName}.
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step3.4`)} </a>
         {t(`${translationsId}.step3.5`)}
       </Typography>
@@ -304,7 +273,7 @@ const VirtualAccountGuide = ({
           );
         }}
       >
-        {paymentStatus?.vaNumber !== undefined ? 'Pay' : 'Cek No Rekening'}
+        {t(`${translationsId}.button`)}
       </SubmitButton>
       <Divider />
     </div>

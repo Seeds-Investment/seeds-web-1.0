@@ -202,7 +202,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
           name: userName,
           phone_number: userPhone,
           email: userEmail,
-          promo_code: promoCodeValidationResult?.promo_code ?? '',
+          promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
           is_use_coins: useCoins,
           succes_url: `${
             process.env.NEXT_PUBLIC_DOMAIN as string
@@ -286,15 +286,15 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       </Typography>
       <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
         <PaymentOptions
-          label={t('seedsEvent.payment.eWalletLabel')}
-          options={eWalletList}
+          label="QRIS"
+          options={qRisList}
           onChange={setOption}
           currentValue={option}
           userInfo={userInfo ?? userDefault}
         />
         <PaymentOptions
-          label="QRIS"
-          options={qRisList}
+          label={t('seedsEvent.payment.eWalletLabel')}
+          options={eWalletList}
           onChange={setOption}
           currentValue={option}
           userInfo={userInfo ?? userDefault}

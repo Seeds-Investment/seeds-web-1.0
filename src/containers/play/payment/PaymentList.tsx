@@ -123,7 +123,7 @@ const PaymentList: React.FC<props> = ({
       });
       setDetailQuiz(quizDetails);
     } catch (error) {
-      toast(`Error fetching quiz details: ${error as string}`);
+      toast.error(`Error fetching quiz details: ${error as string}`);
     }
   };
 
@@ -163,7 +163,7 @@ const PaymentList: React.FC<props> = ({
         )
       );
     } catch (error) {
-      toast(`Error fetching Payment List: ${error as string}`);
+      toast.error(`Error fetching Payment List: ${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -173,7 +173,7 @@ const PaymentList: React.FC<props> = ({
       const response = await getUserInfo();
       setUserInfo(response);
     } catch (error) {
-      toast(`ERROR fetch user info ${error as string}`);
+      toast.error(`ERROR fetch user info ${error as string}`);
     }
   };
 
@@ -235,7 +235,7 @@ const PaymentList: React.FC<props> = ({
         type === 'ewallet' &&
         (phoneNumber === userInfo?.phoneNumber || phoneNumber === '')
       ) {
-        toast(`Please fill the phone number`);
+        toast.error(`Please fill the phone number`);
       }
       const replaceDataPost: PaymentData = dataPost;
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -294,7 +294,7 @@ const PaymentList: React.FC<props> = ({
               { shallow: true }
             )
             .catch(error => {
-              toast(`${error as string}`);
+              toast.error(`${error as string}`);
             });
         }
       } else {
@@ -340,12 +340,17 @@ const PaymentList: React.FC<props> = ({
               { shallow: true }
             )
             .catch(error => {
-              toast(`${error as string}`);
+              toast.error(`${error as string}`);
             });
         }
       }
-    } catch (error) {
-      toast(`${error as string}`);
+    } catch (error: any) {
+      setOpenDialog(false)
+      if (error?.response?.data?.message === "bad request, minimum transaction using VA is 10000") {
+        toast.error(t('PlayPayment.VirtualAccountGuide.minimumPaymentError'));
+      } else {
+        toast.error(`${error as string}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -474,7 +479,6 @@ const PaymentList: React.FC<props> = ({
             handlePay={handlePay}
             dataPost={dataPost}
             newPromoCodeDiscount={newPromoCodeDiscount}
-            username={userInfo?.name}
           />
         )}
       </Dialog>

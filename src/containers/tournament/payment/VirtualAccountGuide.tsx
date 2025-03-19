@@ -1,7 +1,7 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
-import { Button, Typography } from '@material-tailwind/react';
+import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +22,6 @@ interface VirtualAccountGuideProps {
   ) => Promise<void>;
   numberMonth: number;
   paymentStatus: PaymentStatus | undefined;
-  user_name: string | undefined;
   newPromoCodeDiscount: number;
 }
 
@@ -50,17 +49,12 @@ const VirtualAccountGuide = ({
   numberMonth,
   paymentStatus,
   newPromoCodeDiscount,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  user_name
 }: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
-  const accountNumber = paymentStatus != null ? paymentStatus.vaNumber : '';
   const [showOtherFees, setShowOtherFees] = useState<boolean>(false);
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
-  const accountName = '';
-  const userName = user_name;
   const discount =
     promoCodeValidationResult !== 0
       ? promoCodeValidationResult?.response?.total_discount
@@ -106,34 +100,8 @@ const VirtualAccountGuide = ({
         </Typography>
       </div>
       <Divider />
-      <Typography className="text-[#201B1C] font-normal">
-        {t(`${translationsId}.accountNumberLabel`)}
-      </Typography>
-      <div className="flex justify-between mb-4">
-        <Typography className="text-[#7555DA] font-normal">
-          {accountNumber}
-        </Typography>
-        <Button
-          variant="text"
-          onClick={() => {}}
-          className="text-[#3AC4A0] text-md font-normal p-0 normal-case "
-        >
-          {t(`${translationsId}.copy`)}
-        </Button>
-      </div>
-      <Typography className="text-[#201B1C] font-normal">
-        {t(`${translationsId}.accountNameLabel`)}
-      </Typography>
-      <Typography className="text-[#7555DA] font-normal">
-        {accountName}
-      </Typography>
-      <Divider />
       <InlineText
-        label={
-          dataPost !== undefined
-            ? 'Circle Membership'
-            : t(`${translationsId}.admissionFeeLabel`)
-        }
+        label={`${t('tournament.payment.tournamentFee')}`}
         value={`IDR ${admissionFee}`}
         className="mb-2"
       />
@@ -158,7 +126,7 @@ const VirtualAccountGuide = ({
           ) : null}
         </>
       )}
-      {promoCodeValidationResult !== undefined ? (
+      {promoCodeValidationResult !== undefined && promoCodeValidationResult !== 0 ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}
           value={`- IDR ${
@@ -191,7 +159,7 @@ const VirtualAccountGuide = ({
         2.
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step2.1`)} </a>
         {t(`${translationsId}.step2.2`)}
-        <a className="text-[#7555DA]"> {accountNumber}</a>
+        <a className="text-[#7555DA]"></a>
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step2.3`)} </a>
         {t(`${translationsId}.step2.4`)}
       </Typography>
@@ -200,7 +168,6 @@ const VirtualAccountGuide = ({
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step3.1`)} </a>
         {t(`${translationsId}.step3.2`)}
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step3.3`)} </a>
-        {userName}.
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step3.4`)} </a>
         {t(`${translationsId}.step3.5`)}
       </Typography>
@@ -222,7 +189,7 @@ const VirtualAccountGuide = ({
           );
         }}
       >
-        {paymentStatus?.vaNumber !== undefined ? 'Pay' : 'Cek No Rekening'}
+        {t(`${translationsId}.button`)}
       </SubmitButton>
       <Divider />
     </div>

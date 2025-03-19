@@ -1,10 +1,10 @@
-import ListQuizEmpty from '@/assets/play/quiz/list-quiz-empty.jpg';
 import { type QuizIdRoot } from '@/containers/ads/quiz-play.section';
 import { getAllQuizNoToken, getQuizById } from '@/repository/quiz.repository';
+import { QuizStatus } from '@/utils/interfaces/quiz.interfaces';
 import { Button, Card } from '@material-tailwind/react';
 import Image from 'next/image';
-
 import Link from 'next/link';
+import blink from 'public/assets/ads/blink.png';
 import React, { useCallback, useEffect, useState } from 'react';
 import CountdownTimer from './countdown.component';
 
@@ -12,11 +12,15 @@ const DetailQuiz = ({ cta }: { cta?: string }): React.ReactElement => {
   const [dataQuiz, setDataQuiz] = useState<QuizIdRoot[]>([]);
 
   const handleQuiz = useCallback(async () => {
-    const res = await getAllQuizNoToken({ limit: 5, page: 1, status: '' });
+    const res = await getAllQuizNoToken({
+      limit: 5,
+      page: 1,
+      status: QuizStatus.STARTED
+    });
     // eslint-disable-next-line prefer-const
     let counter = 0;
 
-    while (counter < res.data.length) {
+    while (counter < (res?.data?.length ?? 0)) {
       const resId: QuizIdRoot = await getQuizById({
         id: res.data[counter].id as string,
         currency: ''
@@ -46,19 +50,17 @@ const DetailQuiz = ({ cta }: { cta?: string }): React.ReactElement => {
             key={i}
           >
             <div className="flex gap-4 lg:gap-8 items-center">
-              <Image
-                className="aspect-square !w-20 lg:!w-32 rounded-full"
-                src={
-                  v?.banner?.image_url?.startsWith(
-                    'https://dev-assets.seeds.finance'
-                  )
-                    ? v.banner.image_url
-                    : ListQuizEmpty
-                }
-                alt={v.name}
-                width={80}
-                height={80}
-              />
+              <div className="relative rounded-full border border-[#3AC4A0]">
+                <Image
+                  className="aspect-square !w-20 lg:!w-32 rounded-full object-contain"
+                  src={blink}
+                  alt={v.name}
+                />
+                <p className="capitalize absolute top-1/2 right-1/2 translate-x-1/2 translate-y-1/2 text-neutral-medium font-semibold bg-white/50 rounded-lg px-2 py-1 w-full text-center">
+                  {v.category.replaceAll('_', ' ').toLowerCase()} Quiz
+                </p>
+              </div>
+
               <div className="flex flex-col gap-1 lg:hidden">
                 <p className="font-semibold text-neutral-medium text-sm">
                   {v.name}
@@ -141,8 +143,8 @@ const DetailQuiz = ({ cta }: { cta?: string }): React.ReactElement => {
                           )}
                         </span>
                       </p>
-                      <p>Available</p>{' '}
-                      <CountdownTimer targetDate={v.started_at} />
+                      <p className="text-transparent">.</p>
+                      <p className="text-transparent">.</p>
                     </div>
                   </div>
                 </div>
@@ -209,17 +211,18 @@ const DetailQuiz = ({ cta }: { cta?: string }): React.ReactElement => {
                     }).format(v.prizes.reduce((acc, val) => acc + val, 0))}
                   </span>
                 </p>
-                <p>Available</p> <CountdownTimer targetDate={v.started_at} />
+                <p className="text-transparent">.</p>
+                <p className="text-transparent">.</p>
               </div>
             </div>
-            <Link
-              className="w-full sm:w-fit sm:self-end lg:self-auto"
-              href={cta !== undefined ? cta : `/auth?qi=${v.id}`}
-            >
-              <Button className="  rounded-full bg-[#3AC4A0] capitalize font-poppins font-semibold text-xl w-full sm:w-36">
-                Play Now
-              </Button>
-            </Link>
+            <div className="flex flex-col w-full sm:w-fit sm:self-end lg:self-auto">
+              <CountdownTimer targetDate={v.ended_at} />
+              <Link href={cta !== undefined ? cta : `/auth?qi=${v.id}`}>
+                <Button className="rounded-full bg-[#3AC4A0] capitalize font-poppins font-semibold text-xl w-full">
+                  Play Now
+                </Button>
+              </Link>
+            </div>
           </Card>
         ))}
       </div>

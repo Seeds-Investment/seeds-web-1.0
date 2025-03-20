@@ -37,43 +37,52 @@ const ModalCostReturn: React.FC<Props> = ({
         {t(`${pathTranslation}.costReturn.text1`)}
       </Typography>
 
-      <div className='p-4'>
-        <div className='flex mt-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-[#262626] font-semibold'>
-              {data?.text1 === 'Potensi Penerimaan Imbal Hasil per Periode' ? t(`${pathTranslation}.costReturn.text2`) : data?.text1}
+      <div className="p-4">
+        <div className="flex mt-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-[#262626] font-semibold">
+              {data?.text1 === 'Potensi Penerimaan Imbal Hasil per Periode'
+                ? t(`${pathTranslation}.costReturn.text2`)
+                : data?.text1}
             </Typography>
-            <Typography className='font-poppins text-[#262626]'>
+            <Typography className="font-poppins text-[#262626]">
               {data?.value1}
             </Typography>
           </div>
         </div>
-        <div className='flex mt-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-[#262626] font-semibold'>
-              {data?.text2 === 'Potensi Penerimaan Biaya Keterlambatan' ? t(`${pathTranslation}.costReturn.text3`) : data?.text2}
+        <div className="flex mt-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-[#262626] font-semibold">
+              {data?.text2 === 'Potensi Penerimaan Biaya Keterlambatan'
+                ? t(`${pathTranslation}.costReturn.text3`)
+                : data?.text2}
             </Typography>
-            <Typography className='font-poppins text-[#262626]'>
+            <Typography className="font-poppins text-[#262626]">
               {data?.value2}
             </Typography>
           </div>
         </div>
-        <div className='flex mt-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-[#262626] font-semibold'>
-              {data?.text3 === 'Total Potensi Penerimaan Imbal Hasil dan Biaya Keterlambatan' ? t(`${pathTranslation}.costReturn.text4`) : data?.text3}
+        <div className="flex mt-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-[#262626] font-semibold">
+              {data?.text3 ===
+              'Total Potensi Penerimaan Imbal Hasil dan Biaya Keterlambatan'
+                ? t(`${pathTranslation}.costReturn.text4`)
+                : data?.text3}
             </Typography>
-            <Typography className='font-poppins text-[#262626]'>
+            <Typography className="font-poppins text-[#262626]">
               {data?.value3}
             </Typography>
           </div>
         </div>
-        <div className='flex mt-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-[#262626] font-semibold'>
-              {data?.text4 === 'Biaya Administrasi' ? t(`${pathTranslation}.costReturn.text5`) : data?.text4}
+        <div className="flex mt-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-[#262626] font-semibold">
+              {data?.text4 === 'Biaya Administrasi'
+                ? t(`${pathTranslation}.costReturn.text5`)
+                : data?.text4}
             </Typography>
-            <Typography className='font-poppins text-[#262626]'>
+            <Typography className="font-poppins text-[#262626]">
               {data?.value4}
             </Typography>
           </div>
@@ -82,7 +91,9 @@ const ModalCostReturn: React.FC<Props> = ({
 
       <div className="w-full mt-2 flex justify-center md:justify-end">
         <Button
-          onClick={() => { setIsShowModalCostReturn(!isShowModalCostReturn) }}
+          onClick={() => {
+            setIsShowModalCostReturn(!isShowModalCostReturn);
+          }}
           className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
         >
           {t(`${pathTranslation}.close`)}

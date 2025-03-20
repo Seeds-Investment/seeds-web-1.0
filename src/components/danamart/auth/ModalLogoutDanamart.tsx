@@ -17,7 +17,7 @@ const ModalLogoutDanamart: React.FC<Props> = ({ onClose }) => {
 
   const handleLogout = async (): Promise<void> => {
     window.localStorage.removeItem('accessToken-danamart');
-    onClose()
+    onClose();
     await router.push('/danamart');
   };
 

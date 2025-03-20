@@ -1,8 +1,22 @@
 import MInput from '@/components/form-input/multi-input';
-import { useDanamartInformation, useDeclarationsNPWP, useDeclarationsStatement, useGender, useInvestmentGoals, useJobDetailList, useJobList, useLastEducation, useMarriageStatus, useReligion, useWorkingLength } from '@/components/form-input/multi-input/data/dropdown-data';
+import {
+  useDanamartInformation,
+  useDeclarationsNPWP,
+  useDeclarationsStatement,
+  useGender,
+  useInvestmentGoals,
+  useJobDetailList,
+  useJobList,
+  useLastEducation,
+  useMarriageStatus,
+  useReligion,
+  useWorkingLength
+} from '@/components/form-input/multi-input/data/dropdown-data';
 import useBase64ToFileList from '@/hooks/danamart/useBase64ToFile';
 import useFilePreview from '@/hooks/danamart/useFilePreview';
-import useUpdateUserInfoForm, { type UserInfoFormData } from '@/hooks/danamart/useUpdateUserInfoForm';
+import useUpdateUserInfoForm, {
+  type UserInfoFormData
+} from '@/hooks/danamart/useUpdateUserInfoForm';
 import { getUserInformation } from '@/repository/danamart/danamart.repository';
 import { type AccountVerification } from '@/utils/interfaces/danamart.interface';
 import { Button, Typography } from '@material-tailwind/react';
@@ -17,28 +31,23 @@ interface AccountInformationProps {
   t: (key: string) => string;
 }
 
-const AccountInformation: React.FC<AccountInformationProps> = ({ 
-  step, 
+const AccountInformation: React.FC<AccountInformationProps> = ({
+  step,
   setStep,
   t
 }) => {
-  const {
-    handleSubmit,
-    onSubmit,
-    register,
-    errors,
-    control,
-    watch,
-    setValue
-  } = useUpdateUserInfoForm();
+  const { handleSubmit, onSubmit, register, errors, control, watch, setValue } =
+    useUpdateUserInfoForm();
 
-  const permanentId = watch("masa_berlaku");
-  const imageURL = watch("dm_penmit_01013");
-  const isMarried = watch("dm_penmit_01026");
-  const pathTranslation = 'danamart.verification.accountInformation'
+  const permanentId = watch('masa_berlaku');
+  const imageURL = watch('dm_penmit_01013');
+  const isMarried = watch('dm_penmit_01026');
+  const pathTranslation = 'danamart.verification.accountInformation';
   const [userInformation, setUserInformation] = useState<AccountVerification>();
   const [fileList, base64ToFileList] = useBase64ToFileList();
-  const [imageURLPreview] = useFilePreview((fileList != null) ? fileList : undefined);
+  const [imageURLPreview] = useFilePreview(
+    fileList != null ? fileList : undefined
+  );
   const [uploading, isUploading] = useState<boolean>(false);
 
   const handleSwitchChange = (): void => {
@@ -49,7 +58,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
       setValue('dm_penmit_01018', '2099-01-01');
     }
   };
-  
+
   const fetchDataUserInformation = async (): Promise<void> => {
     try {
       const response = await getUserInformation();
@@ -58,67 +67,73 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
       toast.error(`Error fetching data Photo Selfie`);
     }
   };
-    
+
   useEffect(() => {
     if (step === 2) {
       void fetchDataUserInformation();
     }
   }, [step, uploading]);
-  
+
   useEffect(() => {
-    base64ToFileList(imageURL)
+    base64ToFileList(imageURL);
   }, [imageURL]);
-  
+
   useEffect(() => {
     if (isMarried === 'single') {
-      setValue('namaPasangan', '')
+      setValue('namaPasangan', '');
     }
   }, [isMarried]);
-  
+
   useEffect(() => {
-    setValue('pernyataan', userInformation?.penmit?.pernyataan)
-    setValue('dm_penmit_01010', userInformation?.penmit?.dm_penmit_01010)
-    setValue('dm_penmit_01003', userInformation?.penmit?.dm_penmit_01003)
-    setValue('dm_penmit_01038', userInformation?.penmit?.dm_penmit_01038)
-    setValue('dm_penmit_01006', userInformation?.penmit?.dm_penmit_01006)
-    setValue('dm_penmit_01007', userInformation?.penmit?.dm_penmit_01007)
-    setValue('dm_penmit_01015', userInformation?.penmit?.dm_penmit_01015)
-    setValue('dm_penmit_01027', userInformation?.penmit?.dm_penmit_01027)
-    setValue('dm_penmit_01026', userInformation?.penmit?.dm_penmit_01026)
+    setValue('pernyataan', userInformation?.penmit?.pernyataan);
+    setValue('dm_penmit_01010', userInformation?.penmit?.dm_penmit_01010);
+    setValue('dm_penmit_01003', userInformation?.penmit?.dm_penmit_01003);
+    setValue('dm_penmit_01038', userInformation?.penmit?.dm_penmit_01038);
+    setValue('dm_penmit_01006', userInformation?.penmit?.dm_penmit_01006);
+    setValue('dm_penmit_01007', userInformation?.penmit?.dm_penmit_01007);
+    setValue('dm_penmit_01015', userInformation?.penmit?.dm_penmit_01015);
+    setValue('dm_penmit_01027', userInformation?.penmit?.dm_penmit_01027);
+    setValue('dm_penmit_01026', userInformation?.penmit?.dm_penmit_01026);
     if (userInformation?.penmit?.dm_penmit_01026 !== '') {
-      setValue('namaPasangan', userInformation?.penmit?.nama_pasangan)
+      setValue('namaPasangan', userInformation?.penmit?.nama_pasangan);
     }
-    setValue('dm_penmit_01029', userInformation?.penmit?.dm_penmit_01029)
-    setValue('dm_penmit_01039', userInformation?.penmit?.dm_penmit_01039)
-    setValue('dm_penmit_01040', userInformation?.penmit?.dm_penmit_01040)
-    setValue('alamat_tmpt_kerja', userInformation?.penmit?.alamat_tmpt_kerja)
-    setValue('telepon_tmpt_kerja', userInformation?.penmit?.telepon_tmpt_kerja)
-    setValue('dm_penmit_01032', userInformation?.penmit?.dm_penmit_01032)
-    setValue('dm_penmit_01019rt', userInformation?.penmit?.dm_penmit_01019?.substring(0,3))
-    setValue('dm_penmit_01019rw', userInformation?.penmit?.dm_penmit_01019?.substring(4,7))
-    setValue('dm_penmit_01037', userInformation?.penmit?.dm_penmit_01037)
-    setValue('dm_penmit_01036', userInformation?.penmit?.dm_penmit_01036)
-    setValue('dm_penmit_01035', userInformation?.penmit?.dm_penmit_01035)
-    setValue('dm_penmit_01034', userInformation?.penmit?.dm_penmit_01034)
-    setValue('dm_penmit_01033', userInformation?.penmit?.dm_penmit_01033)
-    setValue('dm_penmit_01017', userInformation?.penmit?.dm_penmit_01017)
-    setValue('dm_penmit_01008', userInformation?.penmit?.dm_penmit_01008)
+    setValue('dm_penmit_01029', userInformation?.penmit?.dm_penmit_01029);
+    setValue('dm_penmit_01039', userInformation?.penmit?.dm_penmit_01039);
+    setValue('dm_penmit_01040', userInformation?.penmit?.dm_penmit_01040);
+    setValue('alamat_tmpt_kerja', userInformation?.penmit?.alamat_tmpt_kerja);
+    setValue('telepon_tmpt_kerja', userInformation?.penmit?.telepon_tmpt_kerja);
+    setValue('dm_penmit_01032', userInformation?.penmit?.dm_penmit_01032);
+    setValue(
+      'dm_penmit_01019rt',
+      userInformation?.penmit?.dm_penmit_01019?.substring(0, 3)
+    );
+    setValue(
+      'dm_penmit_01019rw',
+      userInformation?.penmit?.dm_penmit_01019?.substring(4, 7)
+    );
+    setValue('dm_penmit_01037', userInformation?.penmit?.dm_penmit_01037);
+    setValue('dm_penmit_01036', userInformation?.penmit?.dm_penmit_01036);
+    setValue('dm_penmit_01035', userInformation?.penmit?.dm_penmit_01035);
+    setValue('dm_penmit_01034', userInformation?.penmit?.dm_penmit_01034);
+    setValue('dm_penmit_01033', userInformation?.penmit?.dm_penmit_01033);
+    setValue('dm_penmit_01017', userInformation?.penmit?.dm_penmit_01017);
+    setValue('dm_penmit_01008', userInformation?.penmit?.dm_penmit_01008);
     if (userInformation?.penmit?.dm_penmit_01018 === '2099-01-01') {
-      setValue('masa_berlaku', true)
-      setValue('dm_penmit_01018', userInformation?.penmit?.dm_penmit_01018)
+      setValue('masa_berlaku', true);
+      setValue('dm_penmit_01018', userInformation?.penmit?.dm_penmit_01018);
     } else {
-      setValue('masa_berlaku', false)
+      setValue('masa_berlaku', false);
     }
-    setValue('dm_penmit_01022', userInformation?.penmit?.dm_penmit_01022)
-    setValue('dm_penmit_01041', userInformation?.penmit?.dm_penmit_01041)
-    setValue('dm_penmit_01042', userInformation?.penmit?.dm_penmit_01042)
-    setValue('dm_pen_08002', userInformation?.resiko?.dm_pen_08002)
-    setValue('dm_pen_08009', userInformation?.resiko?.dm_pen_08009)
-    setValue('pernyataan_npwp', userInformation?.penmit?.pernyataan_npwp)
+    setValue('dm_penmit_01022', userInformation?.penmit?.dm_penmit_01022);
+    setValue('dm_penmit_01041', userInformation?.penmit?.dm_penmit_01041);
+    setValue('dm_penmit_01042', userInformation?.penmit?.dm_penmit_01042);
+    setValue('dm_pen_08002', userInformation?.resiko?.dm_pen_08002);
+    setValue('dm_pen_08009', userInformation?.resiko?.dm_pen_08009);
+    setValue('pernyataan_npwp', userInformation?.penmit?.pernyataan_npwp);
     if (userInformation?.penmit?.pernyataan_npwp === '0') {
-      setValue('dm_penmit_01012', userInformation?.penmit?.dm_penmit_01012)
-      setValue('dm_penmit_01045', userInformation?.penmit?.dm_penmit_01045)
-      setValue('dm_penmit_01013', userInformation?.penmit?.dm_penmit_01013)
+      setValue('dm_penmit_01012', userInformation?.penmit?.dm_penmit_01012);
+      setValue('dm_penmit_01045', userInformation?.penmit?.dm_penmit_01045);
+      setValue('dm_penmit_01013', userInformation?.penmit?.dm_penmit_01013);
     }
   }, [userInformation]);
 
@@ -135,7 +150,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           height={20}
         />
       </div>
-      <div className='w-full flex gap-2 mt-4'>
+      <div className="w-full flex gap-2 mt-4">
         <MInput
           label={t(`${pathTranslation}.text1`)}
           registerName="pernyataan"
@@ -147,7 +162,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           fullWidth={true}
         />
       </div>
-      <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+      <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
         <MInput
           label={t(`${pathTranslation}.text2`)}
           registerName="dm_penmit_01010"
@@ -164,7 +179,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text5`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
         <MInput
           label={t(`${pathTranslation}.text6`)}
@@ -177,7 +192,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           fullWidth={true}
         />
       </div>
-      <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+      <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
         <MInput
           label={t(`${pathTranslation}.text7`)}
           registerName="dm_penmit_01006"
@@ -185,7 +200,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text8`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
         <MInput
           label={t(`${pathTranslation}.text9`)}
@@ -193,7 +208,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           register={register}
           type="date"
           errors={errors}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
         <MInput
           label={t(`${pathTranslation}.text10`)}
@@ -206,7 +221,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           fullWidth={true}
         />
       </div>
-      <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+      <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
         <MInput
           label={t(`${pathTranslation}.text11`)}
           registerName="dm_penmit_01027"
@@ -228,24 +243,23 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           fullWidth={true}
         />
       </div>
-      {
-        (watch("dm_penmit_01026") === "married") &&
-          <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
-            <MInput
-              label={t(`${pathTranslation}.text13`)}
-              registerName="namaPasangan"
-              register={register}
-              type="text"
-              errors={errors}
-              placeholder={t(`${pathTranslation}.text14`)}
-              className='rounded-lg px-3 border border-[#BDBDBD]'
-            />
-          </div>
-      }
+      {watch('dm_penmit_01026') === 'married' && (
+        <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
+          <MInput
+            label={t(`${pathTranslation}.text13`)}
+            registerName="namaPasangan"
+            register={register}
+            type="text"
+            errors={errors}
+            placeholder={t(`${pathTranslation}.text14`)}
+            className="rounded-lg px-3 border border-[#BDBDBD]"
+          />
+        </div>
+      )}
       <Typography className="font-poppins font-semibold text-xl text-seeds-button-green my-4">
         {t(`${pathTranslation}.occupation`)}
       </Typography>
-      <div className='w-full flex flex-col md:flex-row gap-2'>
+      <div className="w-full flex flex-col md:flex-row gap-2">
         <MInput
           label={t(`${pathTranslation}.text15`)}
           registerName="dm_penmit_01029"
@@ -277,7 +291,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           fullWidth={true}
         />
       </div>
-      <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+      <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
         <MInput
           label={t(`${pathTranslation}.text20`)}
           registerName="alamat_tmpt_kerja"
@@ -285,7 +299,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text21`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
         <MInput
           label={t(`${pathTranslation}.text22`)}
@@ -308,7 +322,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           height={20}
         />
       </div>
-      <div className='w-full flex gap-2 mt-4'>
+      <div className="w-full flex gap-2 mt-4">
         <MInput
           label={t(`${pathTranslation}.text24`)}
           registerName="dm_penmit_01032"
@@ -316,10 +330,10 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text25`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
       </div>
-      <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+      <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
         <MInput
           label={t(`${pathTranslation}.text26`)}
           registerName="dm_penmit_01019rt"
@@ -347,11 +361,10 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text31`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
-        
       </div>
-      <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+      <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
         <MInput
           label={t(`${pathTranslation}.text32`)}
           registerName="dm_penmit_01036"
@@ -359,7 +372,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text33`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
         <MInput
           label={t(`${pathTranslation}.text34`)}
@@ -368,7 +381,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text35`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
         <MInput
           label={t(`${pathTranslation}.text36`)}
@@ -377,10 +390,10 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text37`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
       </div>
-      <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+      <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
         <MInput
           label={t(`${pathTranslation}.text38`)}
           registerName="dm_penmit_01033"
@@ -388,7 +401,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text39`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
         <MInput
           label={t(`${pathTranslation}.text40`)}
@@ -397,7 +410,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text41`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
         <MInput
           label={t(`${pathTranslation}.text42`)}
@@ -406,7 +419,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text43`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
       </div>
       <div className="w-full flex flex-col justify-start items-center gap-2 mt-4">
@@ -421,7 +434,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
             height={20}
           />
         </div>
-        <div className='w-full flex justify-start items-end gap-2'>
+        <div className="w-full flex justify-start items-end gap-2">
           <div className="w-auto">
             <MInput
               type="switch"
@@ -431,27 +444,26 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
               onSwitchToggle={handleSwitchChange}
             />
           </div>
-          <Typography className='w-full flex justify-start items-center font-poppins font-semibold'>
+          <Typography className="w-full flex justify-start items-center font-poppins font-semibold">
             {t(`${pathTranslation}.text60`)}
           </Typography>
         </div>
-        {
-          (permanentId === false) &&
-            <MInput
-              label={t(`${pathTranslation}.text45`)}
-              registerName="dm_penmit_01018"
-              register={register}
-              disabled={permanentId}
-              type="date"
-              errors={errors}
-              className='rounded-lg px-3 border border-[#BDBDBD]'
-            />
-        }
+        {permanentId === false && (
+          <MInput
+            label={t(`${pathTranslation}.text45`)}
+            registerName="dm_penmit_01018"
+            register={register}
+            disabled={permanentId}
+            type="date"
+            errors={errors}
+            className="rounded-lg px-3 border border-[#BDBDBD]"
+          />
+        )}
       </div>
       <Typography className="font-poppins font-semibold text-xl text-seeds-button-green my-4">
         {t(`${pathTranslation}.others`)}
       </Typography>
-      <div className='w-full flex flex-col md:flex-row gap-2'>
+      <div className="w-full flex flex-col md:flex-row gap-2">
         <MInput
           label={t(`${pathTranslation}.text46`)}
           registerName="dm_penmit_01022"
@@ -459,7 +471,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text47`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
         <MInput
           label={t(`${pathTranslation}.text48`)}
@@ -468,10 +480,10 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text49`)}
-          className='rounded-lg px-3 border border-[#BDBDBD]'
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
       </div>
-      <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+      <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
         <MInput
           label={t(`${pathTranslation}.text50`)}
           registerName="dm_penmit_01042"
@@ -502,7 +514,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           fullWidth={true}
         />
       </div>
-      <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+      <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
         <MInput
           label={t(`${pathTranslation}.text54`)}
           registerName="pernyataan_npwp"
@@ -514,10 +526,9 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           fullWidth={true}
         />
       </div>
-      {
-        (watch("pernyataan_npwp") === '0') &&
+      {watch('pernyataan_npwp') === '0' && (
         <div>
-          <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+          <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
             <MInput
               label={t(`${pathTranslation}.text55`)}
               registerName="dm_penmit_01012"
@@ -525,7 +536,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
               type="text"
               errors={errors}
               placeholder={t(`${pathTranslation}.text56`)}
-              className='rounded-lg px-3 border border-[#BDBDBD]'
+              className="rounded-lg px-3 border border-[#BDBDBD]"
             />
             <MInput
               label={t(`${pathTranslation}.text57`)}
@@ -534,10 +545,10 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
               type="date"
               errors={errors}
               placeholder={t(`${pathTranslation}.text58`)}
-              className='rounded-lg px-3 border border-[#BDBDBD]'
+              className="rounded-lg px-3 border border-[#BDBDBD]"
             />
           </div>
-          <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+          <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
             <MInput
               label={t(`${pathTranslation}.text61`)}
               registerName="dm_penmit_01013"
@@ -546,8 +557,8 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
               errors={errors}
               imageURLPreview={
                 imageURL === ''
-                ? imageURLPreview
-                : userInformation?.penmit?.dm_penmit_01013 !== undefined
+                  ? imageURLPreview
+                  : userInformation?.penmit?.dm_penmit_01013 !== undefined
                   ? `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${userInformation?.penmit?.dm_penmit_01013}`
                   : imageURLPreview
               }
@@ -556,16 +567,16 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
             />
           </div>
         </div>
-      }
+      )}
       <Button
         className="w-full text-base font-semibold bg-seeds-button-green mt-6 rounded-full capitalize"
-        disabled={watch("pernyataan") !== '1'}
+        disabled={watch('pernyataan') !== '1'}
         onClick={() => {
           handleSubmit((data: UserInfoFormData) => {
             onSubmit(data).then(() => {
               setStep(step + 1);
-              isUploading(!uploading)
-            })
+              isUploading(!uploading);
+            });
           })();
         }}
       >

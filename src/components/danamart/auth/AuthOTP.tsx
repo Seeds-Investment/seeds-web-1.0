@@ -118,7 +118,9 @@ const AuthOTP: React.FC<Props> = ({
       <div className={`${select === 1 ? 'flex flex-col' : 'hidden'} w-full`}>
         <div className="w-full relative flex justify-center">
           <div
-            onClick={() => { setPage('login'); }}
+            onClick={() => {
+              setPage('login');
+            }}
             className="absolute right-0 cursor-pointer hover:scale-110 duration-150"
           >
             <IoMdClose size={20} />
@@ -128,7 +130,7 @@ const AuthOTP: React.FC<Props> = ({
             alt="Backward"
             className="absolute left-0 cursor-pointer"
             onClick={() => {
-              setSelect(0)
+              setSelect(0);
             }}
           />
           <Image
@@ -145,17 +147,18 @@ const AuthOTP: React.FC<Props> = ({
             </Typography>
             {t('danamart.forgotPassword.authOTP.title2')}
             {method === 'whatsapp' ? 'Whatsapp' : 'SMS'}
-            {t('danamart.forgotPassword.authOTP.title3')} +{formattedData.phoneNumber}.
+            {t('danamart.forgotPassword.authOTP.title3')} +
+            {formattedData.phoneNumber}.
           </Typography>
         </div>
-        <div className='flex w-full justify-center items-center'>
+        <div className="flex w-full justify-center items-center">
           <Image
             src={image}
             alt="SeedyAuthLogin"
             className="w-[141.8px] md:flex hidden"
           />
         </div>
-        <div className='w-full flex flex-col'>
+        <div className="w-full flex flex-col">
           <div className="w-full">
             <div className="flex justify-between md:mb-4 mb-2 mt-2">
               <Button

@@ -7,7 +7,9 @@ import Modal from '../../ui/modal/Modal';
 
 interface Props {
   data: ModalInfoPendanaan;
-  setIsShowModalFinancingInformation: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShowModalFinancingInformation: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   isShowModalFinancingInformation: boolean;
 }
 
@@ -37,33 +39,33 @@ const ModalFinancingInformation: React.FC<Props> = ({
         {t(`${pathTranslation}.financingInformation.text1`)}
       </Typography>
 
-      <div className='p-4'>
-        <div className='flex mt-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-[#262626] font-semibold'>
+      <div className="p-4">
+        <div className="flex mt-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-[#262626] font-semibold">
               {t(`${pathTranslation}.financingInformation.text2`)}
             </Typography>
-            <Typography className='font-poppins text-[#262626]'>
+            <Typography className="font-poppins text-[#262626]">
               {data?.tanggalPembelian}
             </Typography>
           </div>
         </div>
-        <div className='flex mt-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-[#262626] font-semibold'>
+        <div className="flex mt-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-[#262626] font-semibold">
               {t(`${pathTranslation}.financingInformation.text3`)}
             </Typography>
-            <Typography className='font-poppins text-[#262626]'>
+            <Typography className="font-poppins text-[#262626]">
               {data?.jumlahPembelian}
             </Typography>
           </div>
         </div>
-        <div className='flex mt-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-[#262626] font-semibold'>
+        <div className="flex mt-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-[#262626] font-semibold">
               {t(`${pathTranslation}.financingInformation.text4`)}
             </Typography>
-            <Typography className='font-poppins text-[#262626]'>
+            <Typography className="font-poppins text-[#262626]">
               {data?.kontribusi}
             </Typography>
           </div>
@@ -72,7 +74,11 @@ const ModalFinancingInformation: React.FC<Props> = ({
 
       <div className="w-full mt-2 flex justify-center md:justify-end">
         <Button
-          onClick={() => { setIsShowModalFinancingInformation(!isShowModalFinancingInformation) }}
+          onClick={() => {
+            setIsShowModalFinancingInformation(
+              !isShowModalFinancingInformation
+            );
+          }}
           className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
         >
           {t(`${pathTranslation}.close`)}

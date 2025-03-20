@@ -1,17 +1,15 @@
-import CAccordion from "@/components/CAccordion";
-import { type DetailProspektus } from "@/utils/interfaces/danamart.interface";
-import { Typography } from "@material-tailwind/react";
-import { useTranslation } from "react-i18next";
+import CAccordion from '@/components/CAccordion';
+import { type DetailProspektus } from '@/utils/interfaces/danamart.interface';
+import { Typography } from '@material-tailwind/react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   detailProspektus: DetailProspektus;
 }
 
-const Overview: React.FC<Props> = ({
-  detailProspektus
-}) => {
+const Overview: React.FC<Props> = ({ detailProspektus }) => {
   const { t } = useTranslation();
-  const pathTranslation = 'danamart.offers.detail.tab.overview'
+  const pathTranslation = 'danamart.offers.detail.tab.overview';
 
   return (
     <div className="flex flex-col gap-4">
@@ -27,9 +25,13 @@ const Overview: React.FC<Props> = ({
       <div>
         <CAccordion
           key={1}
-          title={detailProspektus?.Data?.jenisEfek === 'Obligasi Bertahap' ? t(`${pathTranslation}.proyek.title`) : t(`${pathTranslation}.proyeksi.title`)}
+          title={
+            detailProspektus?.Data?.jenisEfek === 'Obligasi Bertahap'
+              ? t(`${pathTranslation}.proyek.title`)
+              : t(`${pathTranslation}.proyeksi.title`)
+          }
           description={
-            detailProspektus?.Data?.jenisEfek === 'Obligasi Bertahap' ?
+            detailProspektus?.Data?.jenisEfek === 'Obligasi Bertahap' ? (
               <div className="w-full flex flex-wrap justify-between items-start">
                 <div className="flex flex-col justify-center items-start w-full md:w-1/2 mt-4">
                   <Typography className="font-poppins font-semibold text-[#262626]">
@@ -44,7 +46,10 @@ const Overview: React.FC<Props> = ({
                     {t(`${pathTranslation}.proyek.text2`)}
                   </Typography>
                   <Typography className="font-poppins text-[#262626]">
-                    {detailProspektus?.Data?.Overview?.Proyek?.ProyeksiImbalHasilProyek}
+                    {
+                      detailProspektus?.Data?.Overview?.Proyek
+                        ?.ProyeksiImbalHasilProyek
+                    }
                   </Typography>
                 </div>
                 <div className="flex flex-col justify-center items-start w-full md:w-1/2 mt-4">
@@ -52,7 +57,10 @@ const Overview: React.FC<Props> = ({
                     {t(`${pathTranslation}.proyek.text3`)}
                   </Typography>
                   <Typography className="font-poppins text-[#262626]">
-                    {detailProspektus?.Data?.Overview?.Proyek?.JenisPengerjaanProyek}
+                    {
+                      detailProspektus?.Data?.Overview?.Proyek
+                        ?.JenisPengerjaanProyek
+                    }
                   </Typography>
                 </div>
                 <div className="flex flex-col justify-center items-start w-full md:w-1/2 mt-4">
@@ -60,18 +68,24 @@ const Overview: React.FC<Props> = ({
                     {t(`${pathTranslation}.proyek.text4`)}
                   </Typography>
                   <Typography className="font-poppins text-[#262626]">
-                    {detailProspektus?.Data?.Overview?.Proyek?.UraianMengenaiProyek}
+                    {
+                      detailProspektus?.Data?.Overview?.Proyek
+                        ?.UraianMengenaiProyek
+                    }
                   </Typography>
                 </div>
               </div>
-              :
+            ) : (
               <div className="w-full flex flex-wrap justify-between items-center">
                 <div className="flex flex-col justify-center items-start w-full md:w-1/2 mt-4">
                   <Typography className="font-poppins font-semibold text-[#262626]">
                     {t(`${pathTranslation}.proyeksi.text1`)}
                   </Typography>
                   <Typography className="font-poppins text-[#262626]">
-                    {detailProspektus?.Data?.Overview?.Proyeksi?.ProyeksiPenjualanPerBulan}
+                    {
+                      detailProspektus?.Data?.Overview?.Proyeksi
+                        ?.ProyeksiPenjualanPerBulan
+                    }
                   </Typography>
                 </div>
                 <div className="flex flex-col justify-center items-start w-full md:w-1/2 mt-4">
@@ -79,10 +93,14 @@ const Overview: React.FC<Props> = ({
                     {t(`${pathTranslation}.proyeksi.text2`)}
                   </Typography>
                   <Typography className="font-poppins text-[#262626]">
-                    {detailProspektus?.Data?.Overview?.Proyeksi?.ProyeksiPenjualanPerTahun}
+                    {
+                      detailProspektus?.Data?.Overview?.Proyeksi
+                        ?.ProyeksiPenjualanPerTahun
+                    }
                   </Typography>
                 </div>
               </div>
+            )
           }
         />
         <CAccordion
@@ -111,7 +129,11 @@ const Overview: React.FC<Props> = ({
                   {t(`${pathTranslation}.bisnis.text3`)}
                 </Typography>
                 <Typography className="font-poppins text-[#262626]">
-                  {detailProspektus?.Data?.Overview?.Bisnis?.["Lama Perusahaan Berdiri"]}
+                  {
+                    detailProspektus?.Data?.Overview?.Bisnis?.[
+                      'Lama Perusahaan Berdiri'
+                    ]
+                  }
                 </Typography>
               </div>
               <div className="flex flex-col justify-center items-start w-full md:w-1/2 mt-4">
@@ -143,7 +165,10 @@ const Overview: React.FC<Props> = ({
                   {t(`${pathTranslation}.bisnis.text7`)}
                 </Typography>
                 <Typography className="font-poppins text-[#262626]">
-                  {detailProspektus?.Data?.Overview?.Bisnis?.JumlahPemegangSaham}
+                  {
+                    detailProspektus?.Data?.Overview?.Bisnis
+                      ?.JumlahPemegangSaham
+                  }
                 </Typography>
               </div>
               <div className="flex flex-col justify-center items-start w-full md:w-1/2 mt-4">
@@ -215,7 +240,10 @@ const Overview: React.FC<Props> = ({
                   {t(`${pathTranslation}.keuangan.text7`)}
                 </Typography>
                 <Typography className="font-poppins text-[#262626]">
-                  {detailProspektus?.Data?.Overview?.Keuangan?.HutangJangkaPanjang}
+                  {
+                    detailProspektus?.Data?.Overview?.Keuangan
+                      ?.HutangJangkaPanjang
+                  }
                 </Typography>
               </div>
               <div className="flex flex-col justify-center items-start w-full md:w-1/2 mt-4">
@@ -239,7 +267,10 @@ const Overview: React.FC<Props> = ({
                   {t(`${pathTranslation}.penanggungJawab.text1`)}
                 </Typography>
                 <Typography className="font-poppins text-[#262626]">
-                  {detailProspektus?.Data?.Overview?.PenanggungJawab?.NamaLengkap}
+                  {
+                    detailProspektus?.Data?.Overview?.PenanggungJawab
+                      ?.NamaLengkap
+                  }
                 </Typography>
               </div>
               <div className="flex flex-col justify-center items-start w-full md:w-1/2 mt-4">
@@ -247,7 +278,11 @@ const Overview: React.FC<Props> = ({
                   {t(`${pathTranslation}.penanggungJawab.text2`)}
                 </Typography>
                 <Typography className="font-poppins text-[#262626]">
-                  {detailProspektus?.Data?.Overview?.PenanggungJawab?.["Jenis Kelamin"]}
+                  {
+                    detailProspektus?.Data?.Overview?.PenanggungJawab?.[
+                      'Jenis Kelamin'
+                    ]
+                  }
                 </Typography>
               </div>
               <div className="flex flex-col justify-center items-start w-full md:w-1/2 mt-4">
@@ -263,7 +298,11 @@ const Overview: React.FC<Props> = ({
                   {t(`${pathTranslation}.penanggungJawab.text4`)}
                 </Typography>
                 <Typography className="font-poppins text-[#262626]">
-                  {detailProspektus?.Data?.Overview?.PenanggungJawab?.["Pendidikan Terakhir"]}
+                  {
+                    detailProspektus?.Data?.Overview?.PenanggungJawab?.[
+                      'Pendidikan Terakhir'
+                    ]
+                  }
                 </Typography>
               </div>
               <div className="flex flex-col justify-center items-start w-full md:w-1/2 mt-4">
@@ -287,7 +326,7 @@ const Overview: React.FC<Props> = ({
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Overview
+export default Overview;

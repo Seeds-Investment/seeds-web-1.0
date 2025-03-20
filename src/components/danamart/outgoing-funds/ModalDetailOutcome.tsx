@@ -8,14 +8,16 @@ import Modal from '../../ui/modal/Modal';
 
 interface Props {
   data: OutgoingFundsData;
-  setIsShowModalDetailOutgoingFunds: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShowModalDetailOutgoingFunds: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   isShowModalDetailOutgoingFunds: boolean;
 }
 
 const ModalDetailOutcome: React.FC<Props> = ({
   data,
   setIsShowModalDetailOutgoingFunds,
-  isShowModalDetailOutgoingFunds,
+  isShowModalDetailOutgoingFunds
 }) => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.outgoingFunds.modal.detailOutcome';
@@ -38,52 +40,56 @@ const ModalDetailOutcome: React.FC<Props> = ({
         {t(`${pathTranslation}.title`)}
       </Typography>
 
-      <div className='p-4'>
-        <div className='flex mt-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-[#262626] font-semibold'>
+      <div className="p-4">
+        <div className="flex mt-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-[#262626] font-semibold">
               {t(`${pathTranslation}.text1`)}
             </Typography>
-            <Typography className='font-poppins text-[rgb(38,38,38)]'>
+            <Typography className="font-poppins text-[rgb(38,38,38)]">
               {data?.tgl_withdraw}
             </Typography>
           </div>
         </div>
-        <div className='flex mt-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-[#262626] font-semibold'>
+        <div className="flex mt-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-[#262626] font-semibold">
               {t(`${pathTranslation}.text2`)}
             </Typography>
             <Typography className="font-poppins">
               <span
                 className={`px-3 py-1 rounded-lg text-sm font-medium 
-                  ${data?.status === '0' 
-                    ? 'bg-[#3AC4A0] text-white'
-                    : 'bg-[#FFC107] text-[#212529]'}`}
+                  ${
+                    data?.status === '0'
+                      ? 'bg-[#3AC4A0] text-white'
+                      : 'bg-[#FFC107] text-[#212529]'
+                  }`}
               >
-                {data?.status === '0' 
-                  ? t(`${pathTranslation}.text3`) 
+                {data?.status === '0'
+                  ? t(`${pathTranslation}.text3`)
                   : t(`${pathTranslation}.text4`)}
               </span>
             </Typography>
           </div>
         </div>
-        <div className='flex mt-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-[#262626] font-semibold'>
+        <div className="flex mt-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-[#262626] font-semibold">
               {t(`${pathTranslation}.text5`)}
             </Typography>
-            <Typography className='font-poppins text-[#262626]'>
-              {`IDR ${standartCurrency(Number(data?.jml_withdraw ?? '0') ?? 0)}`}
+            <Typography className="font-poppins text-[#262626]">
+              {`IDR ${standartCurrency(
+                Number(data?.jml_withdraw ?? '0') ?? 0
+              )}`}
             </Typography>
           </div>
         </div>
-        <div className='flex mt-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-[#262626] font-semibold'>
+        <div className="flex mt-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-[#262626] font-semibold">
               {t(`${pathTranslation}.text6`)}
             </Typography>
-            <Typography className='font-poppins text-[#262626]'>
+            <Typography className="font-poppins text-[#262626]">
               {data?.ket}
             </Typography>
           </div>
@@ -92,7 +98,9 @@ const ModalDetailOutcome: React.FC<Props> = ({
 
       <div className="w-full mt-2 flex justify-center md:justify-end">
         <Button
-          onClick={() => { setIsShowModalDetailOutgoingFunds(!isShowModalDetailOutgoingFunds) }}
+          onClick={() => {
+            setIsShowModalDetailOutgoingFunds(!isShowModalDetailOutgoingFunds);
+          }}
           className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
         >
           {t(`${pathTranslation}.text7`)}

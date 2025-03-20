@@ -69,13 +69,34 @@ const SidebarLoginResponsive: React.FC<props> = ({
           hasSubmenu: true,
           submenu: [
             { title: 'Dashboard', url: '/danamart/dashboard' },
-            { title: t('danamart.offers.sidebar.text1'), url: '/danamart/offer' },
-            { title: t('danamart.portfolio.sidebar.text1'), url: '/danamart/portfolio' },
-            { title: t('danamart.purchaseHistory.sidebar.text1'), url: '/danamart/purchase-history' },
-            { title: t('danamart.incomingFunds.sidebar.text1'), url: '/danamart/incoming-funds' },
-            { title: t('danamart.outgoingFunds.sidebar.text1'), url: '/danamart/outgoing-funds' },
-            { title: t('danamart.promotion.sidebar.text1'), url: '/danamart/promotion' },
-            { title: t('danamart.userLog.sidebar.text1'), url: '/danamart/user-log' },
+            {
+              title: t('danamart.offers.sidebar.text1'),
+              url: '/danamart/offer'
+            },
+            {
+              title: t('danamart.portfolio.sidebar.text1'),
+              url: '/danamart/portfolio'
+            },
+            {
+              title: t('danamart.purchaseHistory.sidebar.text1'),
+              url: '/danamart/purchase-history'
+            },
+            {
+              title: t('danamart.incomingFunds.sidebar.text1'),
+              url: '/danamart/incoming-funds'
+            },
+            {
+              title: t('danamart.outgoingFunds.sidebar.text1'),
+              url: '/danamart/outgoing-funds'
+            },
+            {
+              title: t('danamart.promotion.sidebar.text1'),
+              url: '/danamart/promotion'
+            },
+            {
+              title: t('danamart.userLog.sidebar.text1'),
+              url: '/danamart/user-log'
+            },
             { title: t('danamart.logout.text1'), url: '#', isLogout: true }
           ]
         },
@@ -179,10 +200,16 @@ const SidebarLoginResponsive: React.FC<props> = ({
                         key={idx}
                       >
                         <div className="flex items-center gap-2">
-                          <Image width={20} height={20} src={data.image} alt="" />
+                          <Image
+                            width={20}
+                            height={20}
+                            src={data.image}
+                            alt=""
+                          />
                           <h1>{data.title}</h1>
                         </div>
-                        {localStorage.getItem('accessToken-danamart') !== null &&
+                        {localStorage.getItem('accessToken-danamart') !==
+                          null &&
                           (isDanamartOpen ? (
                             <FaChevronUp size={14} />
                           ) : (
@@ -191,29 +218,34 @@ const SidebarLoginResponsive: React.FC<props> = ({
                       </Link>
                       {data.hasSubmenu !== undefined && isDanamartOpen && (
                         <ul>
-                          {data.submenu?.map((sub, subIdx) => (
-                            (sub.isLogout ?? false) ?
+                          {data.submenu?.map((sub, subIdx) =>
+                            sub.isLogout ?? false ? (
                               <Link
                                 key={subIdx}
-                                className={`flex items-center ${isLinkActive(sub.url)}`}
+                                className={`flex items-center ${isLinkActive(
+                                  sub.url
+                                )}`}
                                 onClick={() => {
                                   handleLogoutDanamart();
                                 }}
-                                href='#'
+                                href="#"
                               >
                                 <GoDotFill size={20} />
                                 <h1>{sub.title}</h1>
                               </Link>
-                              :
+                            ) : (
                               <Link
                                 key={subIdx}
-                                className={`flex items-center ${isLinkActive(sub.url)}`}
+                                className={`flex items-center ${isLinkActive(
+                                  sub.url
+                                )}`}
                                 href={sub.url}
                               >
                                 <GoDotFill size={20} />
                                 <h1>{sub.title}</h1>
                               </Link>
-                          ))}
+                            )
+                          )}
                         </ul>
                       )}
                     </div>
@@ -228,7 +260,7 @@ const SidebarLoginResponsive: React.FC<props> = ({
                     </Link>
                   )}
                 </>
-            ))}
+              ))}
             <div className="flex flex-row">
               <section className="flex flex-row gap-2 rounded-full backdrop-blur-[10px] py-2 px-4">
                 <button

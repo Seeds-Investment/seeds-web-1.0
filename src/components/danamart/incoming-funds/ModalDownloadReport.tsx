@@ -17,31 +17,24 @@ interface Props {
 const ModalDownloadReport: React.FC<Props> = ({
   setIsShowDownloadReport,
   isShowDownloadReport,
-  userProfileData,
+  userProfileData
 }) => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.incomingFunds.modal.downloadReport';
 
-  const {
-    handleSubmit,
-    onSubmit,
-    register,
-    errors,
-    control,
-    watch,
-    setValue
-  } = useDownloadReport();
+  const { handleSubmit, onSubmit, register, errors, control, watch, setValue } =
+    useDownloadReport();
 
   const startDate = watch('daritgl');
   const endDate = watch('sampaitgl');
   const typeFile = watch('file');
 
   useEffect(() => {
-    setValue('userId', userProfileData?.detailUser[0]?.user_pendana_id)
-  }, [userProfileData, startDate, endDate, typeFile])
+    setValue('userId', userProfileData?.detailUser[0]?.user_pendana_id);
+  }, [userProfileData, startDate, endDate, typeFile]);
 
   const isDisable = (): boolean => {
-    return startDate === "" || endDate === "" || typeFile === undefined;
+    return startDate === '' || endDate === '' || typeFile === undefined;
   };
 
   return (
@@ -62,15 +55,15 @@ const ModalDownloadReport: React.FC<Props> = ({
         {t(`${pathTranslation}.text1`)}
       </Typography>
 
-      <div className='p-4'>
-        <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+      <div className="p-4">
+        <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
           <MInput
             label={`${t(`${pathTranslation}.text2`)}`}
             registerName="daritgl"
             register={register}
             type="date"
             errors={errors}
-            className='rounded-lg px-3 border border-[#BDBDBD]'
+            className="rounded-lg px-3 border border-[#BDBDBD]"
           />
           <MInput
             label={`${t(`${pathTranslation}.text3`)}`}
@@ -78,10 +71,10 @@ const ModalDownloadReport: React.FC<Props> = ({
             register={register}
             type="date"
             errors={errors}
-            className='rounded-lg px-3 border border-[#BDBDBD]'
+            className="rounded-lg px-3 border border-[#BDBDBD]"
           />
         </div>
-        <div className='w-full flex flex-col md:flex-row gap-2 mt-4'>
+        <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
           <MInput
             label={`${t(`${pathTranslation}.text4`)}`}
             registerName="file"
@@ -97,7 +90,9 @@ const ModalDownloadReport: React.FC<Props> = ({
 
       <div className="w-full mt-2 flex flex-col md:flex-row justify-center md:justify-end gap-4">
         <Button
-          onClick={() => { setIsShowDownloadReport(!isShowDownloadReport) }}
+          onClick={() => {
+            setIsShowDownloadReport(!isShowDownloadReport);
+          }}
           className="rounded-full w-full md:w-fit md:px-8 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-white text-[#7C7C7C] font-poppins"
         >
           {t(`${pathTranslation}.cancel`)}

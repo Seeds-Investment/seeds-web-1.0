@@ -77,7 +77,13 @@ const AuthForgotPassNumber: React.FC<Props> = ({
         error?.response?.data?.message ===
         'requested phone number already exists'
       ) {
-        await handleGetOTP(method, setCountdown, setSelect, formattedData, setOTPForm);
+        await handleGetOTP(
+          method,
+          setCountdown,
+          setSelect,
+          formattedData,
+          setOTPForm
+        );
       }
     } finally {
       setLoading(false);
@@ -95,7 +101,9 @@ const AuthForgotPassNumber: React.FC<Props> = ({
     <div className={`${className} w-full`}>
       <div className="w-full relative flex justify-center">
         <div
-          onClick={() => { setPage('login'); }}
+          onClick={() => {
+            setPage('login');
+          }}
           className="absolute right-0 cursor-pointer hover:scale-110 duration-150"
         >
           <IoMdClose size={20} />
@@ -115,7 +123,7 @@ const AuthForgotPassNumber: React.FC<Props> = ({
           {t('danamart.forgotPassword.forgotPasswordDescription')}
         </Typography>
       </div>
-      <div className='w-full flex flex-col gap-4 mt-4'>
+      <div className="w-full flex flex-col gap-4 mt-4">
         <div className="w-full">
           <AuthNumber
             handleChange={handleChangePhoneNumber}
@@ -134,8 +142,8 @@ const AuthForgotPassNumber: React.FC<Props> = ({
             }}
           />
         </div>
-        {
-          blank || error &&
+        {blank ||
+          (error && (
             <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
               {blank && error ? (
                 t('danamart.forgotPassword.authForgotPass.validation.blank')
@@ -145,7 +153,7 @@ const AuthForgotPassNumber: React.FC<Props> = ({
                 <br />
               )}
             </Typography>
-        }
+          ))}
         <Button
           onClick={handleNext}
           disabled={isLoading || formattedData?.phoneNumber === '62'}
@@ -154,7 +162,9 @@ const AuthForgotPassNumber: React.FC<Props> = ({
           {t('danamart.forgotPassword.next')}
         </Button>
         <Button
-          onClick={() => { setPage('login'); }}
+          onClick={() => {
+            setPage('login');
+          }}
           className="w-full text-base font-semibold bg-white text-seeds-button-green border border-seeds-button-green rounded-full capitalize"
         >
           {t('danamart.forgotPassword.backLogin')}

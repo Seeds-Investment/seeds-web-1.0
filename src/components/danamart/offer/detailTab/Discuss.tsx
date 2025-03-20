@@ -13,7 +13,7 @@ interface Props {
 
 const Discuss: React.FC<Props> = ({ idPembiayaan }) => {
   const { t } = useTranslation();
-  const pathTranslation = 'danamart.offers.detail.tab.discuss'
+  const pathTranslation = 'danamart.offers.detail.tab.discuss';
   const [isiKomentar, setIsiKomentar] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -23,7 +23,7 @@ const Discuss: React.FC<Props> = ({ idPembiayaan }) => {
 
   const handlePostDiscussion = async (): Promise<void> => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const formData = new FormData();
       formData.append('idPembiayaan', idPembiayaan);
       formData.append('isiKomentar', isiKomentar);
@@ -39,13 +39,13 @@ const Discuss: React.FC<Props> = ({ idPembiayaan }) => {
     } catch (error) {
       toast.error(`Error posting comment: ${error as string}`);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
   return (
     <>
-      {isLoading && <Loading/>}
+      {isLoading && <Loading />}
       <div className="w-full flex flex-col">
         <a
           href="https://chat.whatsapp.com/IUjsiVn82UaCPo8vNkZ4Tc"
@@ -78,7 +78,9 @@ const Discuss: React.FC<Props> = ({ idPembiayaan }) => {
         </div>
         <div className="w-full flex justify-center md:justify-end items-end">
           <Button
-            onClick={async () => { await handlePostDiscussion(); }}
+            onClick={async () => {
+              await handlePostDiscussion();
+            }}
             disabled={isiKomentar === '' || isLoading}
             className="w-full md:w-[200px] text-sm font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
           >

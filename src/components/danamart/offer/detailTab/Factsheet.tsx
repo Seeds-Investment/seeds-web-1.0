@@ -1,25 +1,23 @@
-import { type DetailProspektus } from "@/utils/interfaces/danamart.interface";
-import { Typography } from "@material-tailwind/react";
-import { useTranslation } from "react-i18next";
+import { type DetailProspektus } from '@/utils/interfaces/danamart.interface';
+import { Typography } from '@material-tailwind/react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   detailProspektus: DetailProspektus;
 }
 
-const Factsheet: React.FC<Props> = ({
-  detailProspektus
-}) => {
+const Factsheet: React.FC<Props> = ({ detailProspektus }) => {
   const { t } = useTranslation();
-  const pathTranslation = 'danamart.offers.detail.tab.factsheet'
+  const pathTranslation = 'danamart.offers.detail.tab.factsheet';
 
   const extractIframeUrl = (prospektus: string): string => {
     const match = prospektus.match(/src="([^"]+)"/);
-    return (match !== null) ? match[1] : '';
+    return match !== null ? match[1] : '';
   };
-  
+
   return (
     <div className="w-full flex">
-      {(detailProspektus?.Data?.Prospektus !== 'DOKUMEN TIDAK ADA') ? (
+      {detailProspektus?.Data?.Prospektus !== 'DOKUMEN TIDAK ADA' ? (
         <iframe
           src={extractIframeUrl(detailProspektus?.Data?.Prospektus ?? '')}
           frameBorder="0"
@@ -33,7 +31,7 @@ const Factsheet: React.FC<Props> = ({
         </Typography>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Factsheet
+export default Factsheet;

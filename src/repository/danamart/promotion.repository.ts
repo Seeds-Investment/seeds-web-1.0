@@ -9,9 +9,7 @@ const danamartApi = axios.create({
   }
 });
 
-export const validatePromoCode = async (
-  formData: FormData
-): Promise<any> => {
+export const validatePromoCode = async (formData: FormData): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 

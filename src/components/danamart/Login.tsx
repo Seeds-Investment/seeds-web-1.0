@@ -11,7 +11,11 @@ import AuthPassword from './auth/AuthPassword';
 
 interface LoginProps {
   userEmail: string;
-  handleLogin: (email: string, password: string, captchaToken: string) => Promise<void>;
+  handleLogin: (
+    email: string,
+    password: string,
+    captchaToken: string
+  ) => Promise<void>;
   isLoading: boolean;
   setPage: (value: string) => void;
 }
@@ -42,14 +46,20 @@ const Login: React.FC<LoginProps> = ({
     defaultValues: { email: userEmail, password: '' },
     resolver: yupResolver(
       Yup.object({
-        email: Yup.string().required(String(t('danamart.login.validation.blank'))),
-        password: Yup.string().required(String(t('danamart.login.validation.wrongPassword'))),
-        capchaToken: Yup.string().required(String(t('danamart.login.validation.recaptcha')))
+        email: Yup.string().required(
+          String(t('danamart.login.validation.blank'))
+        ),
+        password: Yup.string().required(
+          String(t('danamart.login.validation.wrongPassword'))
+        ),
+        capchaToken: Yup.string().required(
+          String(t('danamart.login.validation.recaptcha'))
+        )
       })
     )
   });
 
-  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<LoginFormInputs> = async data => {
     await handleLogin(data.email, data.password, capchaToken);
   };
 
@@ -69,45 +79,47 @@ const Login: React.FC<LoginProps> = ({
         {...register('email')}
         fillable={false}
         disabled={true}
-        handleSubmit={(e) => {
+        handleSubmit={e => {
           if (e.key === 'Enter') void handleSubmit(onSubmit)();
         }}
       />
 
       <AuthPassword
         value={watch('password')}
-        onChange={(e) => { setValue('password', e.target.value); }}
+        onChange={e => {
+          setValue('password', e.target.value);
+        }}
         error={Boolean(errors.password)}
         name="password"
         label={t('danamart.login.password')}
         placeholder={t('danamart.login.passwordPlaceholder')}
-        handleSubmit={(e) => {
+        handleSubmit={e => {
           if (e.key === 'Enter') void handleSubmit(onSubmit)();
         }}
         className={'mt-6'}
       />
-      {((errors.password !== null) && (errors.password !== undefined)) && 
-        <p className="text-red-500">
-          {errors.password.message}
-        </p>
-      }
+      {errors.password !== null && errors.password !== undefined && (
+        <p className="text-red-500">{errors.password.message}</p>
+      )}
 
       <div className="w-full flex flex-col justify-center items-center mt-4">
         <ReCAPTCHA
           ref={recaptchaRef}
           sitekey={RECAPTCHA_V2_SITE_KEY}
-          onChange={(token) => {
+          onChange={token => {
             handleRecaptcha(token);
-            setValue('capchaToken', token !== null && token !== undefined ? token : '', {
-              shouldValidate: true,
-            });
+            setValue(
+              'capchaToken',
+              token !== null && token !== undefined ? token : '',
+              {
+                shouldValidate: true
+              }
+            );
           }}
         />
-        {((errors.capchaToken !== null) && (errors.capchaToken !== undefined)) &&
-          <p className="text-red-500">
-            {errors.capchaToken.message}
-          </p>
-        }
+        {errors.capchaToken !== null && errors.capchaToken !== undefined && (
+          <p className="text-red-500">{errors.capchaToken.message}</p>
+        )}
       </div>
       <div className="w-full mt-4">
         <Typography

@@ -17,7 +17,7 @@ const ModalOfferInformation: React.FC<Props> = ({
   isShowModalOfferInformation
 }) => {
   const { t } = useTranslation();
-  const pathTranslation = 'danamart.portfolio.modal'
+  const pathTranslation = 'danamart.portfolio.modal';
 
   return (
     <Modal
@@ -37,166 +37,167 @@ const ModalOfferInformation: React.FC<Props> = ({
         {t(`${pathTranslation}.offerInformation.text1`)}
       </Typography>
 
-      {
-        data?.jenisEfek === 'Saham' ?
-          <div className='p-4'>
-            <div className='flex flex-col md:flex-row gap-4 mt-4'>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text2`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.namaPenerbit}
-                </Typography>
-              </div>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text3`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.TanggalPenyerahanDana}
-                </Typography>
-              </div>
+      {data?.jenisEfek === 'Saham' ? (
+        <div className="p-4">
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text2`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.namaPenerbit}
+              </Typography>
             </div>
-            <div className='flex flex-col md:flex-row gap-4 mt-4'>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text4`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.sektorUsaha}
-                </Typography>
-              </div>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text5`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.['JadwalPembayaranKupon/Dividen']}
-                </Typography>
-              </div>
-            </div>
-            <div className='flex flex-col md:flex-row gap-4 mt-4'>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text6`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.PersentaseSahamYangDilepas}
-                </Typography>
-              </div>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text7`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.StatusPembayaran}
-                </Typography>
-              </div>
-            </div>
-            <div className='flex mt-4'>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text8`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.IntensitasPembagianDividen}
-                </Typography>
-              </div>
-            </div>
-            <div className='flex mt-4'>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text9`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.PersentasePembagianDividen}
-                </Typography>
-              </div>
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text3`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.TanggalPenyerahanDana}
+              </Typography>
             </div>
           </div>
-          :
-          <div className='p-4'>
-            <div className='flex flex-col md:flex-row gap-4 mt-4'>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text2`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.namaPenerbit}
-                </Typography>
-              </div>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text3`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.TanggalPenyerahanDana}
-                </Typography>
-              </div>
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text4`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.sektorUsaha}
+              </Typography>
             </div>
-            <div className='flex flex-col md:flex-row gap-4 mt-4'>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text4`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.sektorUsaha}
-                </Typography>
-              </div>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text5`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.['JadwalPembayaranKupon/Dividen']}
-                </Typography>
-              </div>
-            </div>
-            <div className='flex flex-col md:flex-row gap-4 mt-4'>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text10`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.Kupon}
-                </Typography>
-              </div>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text7`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.StatusPembayaran}
-                </Typography>
-              </div>
-            </div>
-            <div className='flex mt-4'>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text11`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.Tenor}
-                </Typography>
-              </div>
-            </div>
-            <div className='flex mt-4'>
-              <div className='w-full'>
-                <Typography className='font-poppins text-[#262626] font-semibold'>
-                  {t(`${pathTranslation}.offerInformation.text12`)}
-                </Typography>
-                <Typography className='font-poppins text-[#262626]'>
-                  {data?.JenisPenawaran}
-                </Typography>
-              </div>
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text5`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.['JadwalPembayaranKupon/Dividen']}
+              </Typography>
             </div>
           </div>
-      }
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text6`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.PersentaseSahamYangDilepas}
+              </Typography>
+            </div>
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text7`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.StatusPembayaran}
+              </Typography>
+            </div>
+          </div>
+          <div className="flex mt-4">
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text8`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.IntensitasPembagianDividen}
+              </Typography>
+            </div>
+          </div>
+          <div className="flex mt-4">
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text9`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.PersentasePembagianDividen}
+              </Typography>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="p-4">
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text2`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.namaPenerbit}
+              </Typography>
+            </div>
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text3`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.TanggalPenyerahanDana}
+              </Typography>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text4`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.sektorUsaha}
+              </Typography>
+            </div>
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text5`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.['JadwalPembayaranKupon/Dividen']}
+              </Typography>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text10`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.Kupon}
+              </Typography>
+            </div>
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text7`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.StatusPembayaran}
+              </Typography>
+            </div>
+          </div>
+          <div className="flex mt-4">
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text11`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.Tenor}
+              </Typography>
+            </div>
+          </div>
+          <div className="flex mt-4">
+            <div className="w-full">
+              <Typography className="font-poppins text-[#262626] font-semibold">
+                {t(`${pathTranslation}.offerInformation.text12`)}
+              </Typography>
+              <Typography className="font-poppins text-[#262626]">
+                {data?.JenisPenawaran}
+              </Typography>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="w-full mt-2 flex justify-center md:justify-end">
         <Button
-          onClick={() => { setIsShowModalOfferInformation(!isShowModalOfferInformation) }}
+          onClick={() => {
+            setIsShowModalOfferInformation(!isShowModalOfferInformation);
+          }}
           className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
         >
           {t(`${pathTranslation}.close`)}

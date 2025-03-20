@@ -1,10 +1,10 @@
-import { postReport } from "@/repository/danamart/offers.repository";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
-import * as yup from "yup";
+import { postReport } from '@/repository/danamart/offers.repository';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import * as yup from 'yup';
 
 export interface ReportFormI {
   nama: string;
@@ -17,25 +17,49 @@ export interface ReportFormI {
 
 const usePostReport = (): any => {
   const { t } = useTranslation();
-  const pathTranslation = 'danamart.offers.detail.reportForm'
+  const pathTranslation = 'danamart.offers.detail.reportForm';
 
   const schema = yup.object().shape({
-    nama: yup.string().required(t(`${pathTranslation}.validationForm.text1`) ?? 'This field is required'),
-    email: yup.string().required(t(`${pathTranslation}.validationForm.text1`) ?? 'This field is required'),
-    nohp: yup.string().required(t(`${pathTranslation}.validationForm.text1`) ?? 'This field is required'),
-    pernyataan: yup.string().required(t(`${pathTranslation}.validationForm.text1`) ?? 'This field is required'),
-    isi: yup.string().required(t(`${pathTranslation}.validationForm.text1`) ?? 'This field is required'),
-    link: yup.string().required(t(`${pathTranslation}.validationForm.text1`) ?? 'This field is required'),
+    nama: yup
+      .string()
+      .required(
+        t(`${pathTranslation}.validationForm.text1`) ?? 'This field is required'
+      ),
+    email: yup
+      .string()
+      .required(
+        t(`${pathTranslation}.validationForm.text1`) ?? 'This field is required'
+      ),
+    nohp: yup
+      .string()
+      .required(
+        t(`${pathTranslation}.validationForm.text1`) ?? 'This field is required'
+      ),
+    pernyataan: yup
+      .string()
+      .required(
+        t(`${pathTranslation}.validationForm.text1`) ?? 'This field is required'
+      ),
+    isi: yup
+      .string()
+      .required(
+        t(`${pathTranslation}.validationForm.text1`) ?? 'This field is required'
+      ),
+    link: yup
+      .string()
+      .required(
+        t(`${pathTranslation}.validationForm.text1`) ?? 'This field is required'
+      )
   });
 
-	const defaultValues: ReportFormI  = {
+  const defaultValues: ReportFormI = {
     nama: '',
     email: '',
     nohp: '',
     pernyataan: '',
     isi: '',
     link: ''
-	}
+  };
 
   const {
     handleSubmit,
@@ -44,11 +68,11 @@ const usePostReport = (): any => {
     control,
     setValue,
     trigger,
-    watch,
+    watch
   } = useForm<ReportFormI>({
-    mode: "onSubmit",
+    mode: 'onSubmit',
     resolver: yupResolver(schema),
-		defaultValues
+    defaultValues
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +90,7 @@ const usePostReport = (): any => {
       setIsLoading(false);
     }
   };
-  
+
   return {
     handleSubmit,
     register,
@@ -76,7 +100,7 @@ const usePostReport = (): any => {
     trigger,
     watch,
     onSubmit,
-    isLoading,
+    isLoading
   };
 };
 

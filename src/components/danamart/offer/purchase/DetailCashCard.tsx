@@ -11,9 +11,7 @@ interface Props {
 
 const DetailCashCard: React.FC<Props> = ({ data }) => {
   return (
-    <div
-      className={`w-full h-fit rounded-lg shadow-md ${data.background}`}
-    >
+    <div className={`w-full h-fit rounded-lg shadow-md ${data.background}`}>
       <div className="flex flex-col gap-4 md:py-7 py-5 px-4">
         <div className="flex justify-center items-center rounded-full shrink-0 bg-gradient-to-b from-[#EDE3FE] to-[#FFFFFF] w-10 h-10">
           {data.icon}

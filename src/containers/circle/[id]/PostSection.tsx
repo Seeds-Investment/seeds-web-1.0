@@ -967,7 +967,9 @@ const PostSection: React.FC<props> = ({
                   )}
                   {categorizeURL(dataPost.media_urls)}
                   {voice.length > 0 && <ShowAudioPlayer src={voice[0]} />}
-                  {document.length > 0 && <PDFViewer mode='view' file={document[0]} />}
+                  {document.length > 0 && (
+                    <PDFViewer mode="view" file={document[0]} />
+                  )}
                   {media.length > 0 && <ImageCarousel images={media} />}
                   {dataPost.pollings?.length > 0 && (
                     <PollingView

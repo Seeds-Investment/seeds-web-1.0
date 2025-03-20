@@ -9,12 +9,10 @@ const danamartApi = axios.create({
   }
 });
 
-export const getUserLog = async (
-  params: { 
-    start_date: string;
-    end_date: string
-  }
-): Promise<any> => {
+export const getUserLog = async (params: {
+  start_date: string;
+  end_date: string;
+}): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 

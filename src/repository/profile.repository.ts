@@ -3,13 +3,13 @@ import { isUndefindOrNull } from '@/utils/common/utils';
 
 const profileService = baseAxios(
   `${
-    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
   }/user/v1/`
 );
 
 const referralService = baseAxios(
   `${
-    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
   }/referral-affiliates/v1/`
 );
 

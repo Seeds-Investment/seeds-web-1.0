@@ -29,7 +29,11 @@ const ModalLogin: React.FC<Props> = ({
   const router = useRouter();
   const [page, setPage] = useState<string>('login');
 
-  const handleLogin = async (email: string, password: string, captchaToken: string): Promise<void> => {
+  const handleLogin = async (
+    email: string,
+    password: string,
+    captchaToken: string
+  ): Promise<void> => {
     try {
       setIsLoading(true);
       const response = await login({
@@ -57,9 +61,15 @@ const ModalLogin: React.FC<Props> = ({
 
         if (decryptedData !== null) {
           const decryptedDataObject = JSON.parse(decryptedData);
-          if ((decryptedDataObject?.freeze_time === null) && (decryptedDataObject?.attempt === null)) {
+          if (
+            decryptedDataObject?.freeze_time === null &&
+            decryptedDataObject?.attempt === null
+          ) {
             toast.error(t('danamart.login.validation.serverError'));
-          } else if ((decryptedDataObject?.freeze_time !== null) && (decryptedDataObject?.freeze_time !== null)) {
+          } else if (
+            decryptedDataObject?.freeze_time !== null &&
+            decryptedDataObject?.freeze_time !== null
+          ) {
             toast.error(t('danamart.login.validation.wrongPassword'));
           } else {
             toast.error(t('danamart.login.validation.error'));
@@ -82,7 +92,9 @@ const ModalLogin: React.FC<Props> = ({
         <div className="w-full relative flex justify-center">
           {!isLoading && (
             <div
-              onClick={async() => { await router.push('/homepage')}}
+              onClick={async () => {
+                await router.push('/homepage');
+              }}
               className="absolute right-0 cursor-pointer hover:scale-110 duration-150"
             >
               <IoMdClose size={20} />
@@ -103,10 +115,7 @@ const ModalLogin: React.FC<Props> = ({
             setPage={setPage}
           />
         ) : (
-          <ForgotPassword
-            setPage={setPage}
-            userEmail={userInfo?.email ?? ''}
-          />
+          <ForgotPassword setPage={setPage} userEmail={userInfo?.email ?? ''} />
         )}
       </div>
     </Modal>

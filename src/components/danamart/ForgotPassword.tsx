@@ -13,10 +13,7 @@ interface Props {
   userEmail: string;
 }
 
-const ForgotPassword: React.FC<Props> = ({
-  setPage,
-  userEmail
-}) => {
+const ForgotPassword: React.FC<Props> = ({ setPage, userEmail }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [select, setSelect] = useState(0);
   const [method, setMethod] = useState('sms');
@@ -40,7 +37,7 @@ const ForgotPassword: React.FC<Props> = ({
   const handleOpen = (): void => {
     setOpen(!open);
   };
-  
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (countdown > 0) {
@@ -96,11 +93,7 @@ const ForgotPassword: React.FC<Props> = ({
           formDataNewPassword={formDataNewPassword}
           setFormDataNewPassword={setFormDataNewPassword}
         />
-        <AuthModalPass
-          setPage={setPage}
-          handleOpen={handleOpen}
-          open={open}
-        />
+        <AuthModalPass setPage={setPage} handleOpen={handleOpen} open={open} />
       </div>
     </Modal>
   );

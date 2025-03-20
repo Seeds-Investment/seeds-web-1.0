@@ -387,17 +387,17 @@ export type FinancialInfoFormPayload = Omit<
 >;
 
 export interface Resiko {
-  informasi_profil_resiko_id: string
-  user_pendana_id: string
-  dm_pen_08001: string
-  dm_pen_08002: string
-  dm_pen_08003: string
-  dm_pen_08004: string
-  dm_pen_08005: string
-  dm_pen_08006: string
-  dm_pen_08007: string
-  dm_pen_08008: string
-  dm_pen_08009: string
+  informasi_profil_resiko_id: string;
+  user_pendana_id: string;
+  dm_pen_08001: string;
+  dm_pen_08002: string;
+  dm_pen_08003: string;
+  dm_pen_08004: string;
+  dm_pen_08005: string;
+  dm_pen_08006: string;
+  dm_pen_08007: string;
+  dm_pen_08008: string;
+  dm_pen_08009: string;
 }
 
 export interface UpdateUserInfoForm {
@@ -519,8 +519,8 @@ export interface Proyek {
 }
 
 export interface Proyeksi {
-  ProyeksiPenjualanPerBulan: string
-  ProyeksiPenjualanPerTahun: string
+  ProyeksiPenjualanPerBulan: string;
+  ProyeksiPenjualanPerTahun: string;
 }
 
 export interface Bisnis {

@@ -1,19 +1,22 @@
-import { TabInvestorAverage, TabInvestorBiggest, TabInvestorFewest, TabInvestorTotal } from "@/assets/danamart";
-import { type DetailProspektus } from "@/utils/interfaces/danamart.interface";
-import { Typography } from "@material-tailwind/react";
+import {
+  TabInvestorAverage,
+  TabInvestorBiggest,
+  TabInvestorFewest,
+  TabInvestorTotal
+} from '@/assets/danamart';
+import { type DetailProspektus } from '@/utils/interfaces/danamart.interface';
+import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { standartCurrency } from '../../../../helpers/currency';
 
 interface Props {
   detailProspektus: DetailProspektus;
 }
 
-const Investor: React.FC<Props> = ({
-  detailProspektus
-}) => {
+const Investor: React.FC<Props> = ({ detailProspektus }) => {
   const { t } = useTranslation();
-  const pathTranslation = 'danamart.offers.detail.tab.investorCorner'
+  const pathTranslation = 'danamart.offers.detail.tab.investorCorner';
   return (
     <>
       <div className="w-full flex flex-col lg:flex-row justify-between items-start gap-2 lg:gap-4">
@@ -97,7 +100,7 @@ const Investor: React.FC<Props> = ({
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Investor
+export default Investor;

@@ -2,7 +2,7 @@ import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
 const devUrl =
-  process?.env?.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance';
+  process?.env?.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance';
 // const authService = baseAxios(`${devUrl}/asset/v1`);
 const authCircle = baseAxios(`${devUrl}/circle/v1`);
 const authPeople = baseAxios(`${devUrl}/user/v1`);

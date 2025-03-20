@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { purchaseItem } from "@/repository/danamart/offers.repository";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import * as yup from "yup";
+import { purchaseItem } from '@/repository/danamart/offers.repository';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 
 export interface PurchaseFormDataI {
   user_peminjam_id?: string;
@@ -33,46 +33,59 @@ export interface PurchaseFormDataI {
 const usePurchaseFormBond = (): any => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.offers.purchase.validationForm';
-  
+
   const schema = yup.object().shape({
-    bid_cash: yup.number().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
-    bank_code: yup.string().when(["sumberDana", "bid_cash"], {
-      is: (sumberDana: string, bid_cash: number) => sumberDana === "TransferDana" && bid_cash >= 1000000,
-      then: schema => schema.required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    bid_cash: yup
+      .number()
+      .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    bank_code: yup.string().when(['sumberDana', 'bid_cash'], {
+      is: (sumberDana: string, bid_cash: number) =>
+        sumberDana === 'TransferDana' && bid_cash >= 1000000,
+      then: schema =>
+        schema.required(
+          t(`${pathTranslation}.text1`) ?? 'This field is required'
+        ),
       otherwise: schema => schema.notRequired()
     }),
-    bid_reward: yup.boolean().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
-    sumberDana: yup.string().required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
-    kodeOtp: yup.string().when("sumberDana", {
-      is: "DanaCash",
-      then: schema => schema.required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    bid_reward: yup
+      .boolean()
+      .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    sumberDana: yup
+      .string()
+      .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    kodeOtp: yup.string().when('sumberDana', {
+      is: 'DanaCash',
+      then: schema =>
+        schema.required(
+          t(`${pathTranslation}.text1`) ?? 'This field is required'
+        ),
       otherwise: schema => schema.notRequired()
-    }),
+    })
   });
 
-	const defaultValues: PurchaseFormDataI  = {
-    user_peminjam_id: "",
-    user_pendana_id: "",
-    pinjaman_id: "",
-    sektor_usaha: "",
-    bunga_persen: "",
-    credit_rating: "",
-    dm_pem_02003: "",
-    dm_pem_02004: "",
-    jml_pinjaman_terbit: "",
-    tgl_jatuh_tempo: "",
-    referral_id_lv1_peminjam: "",
-    referral_id_lv2_peminjam: "",
-    referral_id_lv1_pendana: "",
-    referral_id_lv2_pendana: "",
-    total_dana_reward: "",
-    harga_perlembar_saham: "",
+  const defaultValues: PurchaseFormDataI = {
+    user_peminjam_id: '',
+    user_pendana_id: '',
+    pinjaman_id: '',
+    sektor_usaha: '',
+    bunga_persen: '',
+    credit_rating: '',
+    dm_pem_02003: '',
+    dm_pem_02004: '',
+    jml_pinjaman_terbit: '',
+    tgl_jatuh_tempo: '',
+    referral_id_lv1_peminjam: '',
+    referral_id_lv2_peminjam: '',
+    referral_id_lv1_pendana: '',
+    referral_id_lv2_pendana: '',
+    total_dana_reward: '',
+    harga_perlembar_saham: '',
     bid_cash: 0,
-    bank_code: "",
+    bank_code: '',
     bid_reward: false,
-    sumberDana: "",
-    kodeOtp: ""
-	}
+    sumberDana: '',
+    kodeOtp: ''
+  };
 
   const {
     handleSubmit,
@@ -84,9 +97,9 @@ const usePurchaseFormBond = (): any => {
     watch,
     reset
   } = useForm<PurchaseFormDataI>({
-    mode: "onSubmit",
+    mode: 'onSubmit',
     resolver: yupResolver(schema),
-		defaultValues
+    defaultValues
   });
 
   const onSubmit = async (data: PurchaseFormDataI): Promise<void> => {
@@ -97,7 +110,7 @@ const usePurchaseFormBond = (): any => {
       await Promise.reject(error);
     }
   };
-  
+
   return {
     handleSubmit,
     register,

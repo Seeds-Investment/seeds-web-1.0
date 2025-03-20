@@ -100,4 +100,3 @@ export { default as Voucher } from 'public/assets/vector/voucher.svg';
 export { default as WarningGreenIcon } from 'public/assets/vector/warning-green.svg';
 export { default as XIconWhite } from 'public/assets/vector/x-icon-white.svg';
 export { default as XIcon } from 'public/assets/vector/x.svg';
-

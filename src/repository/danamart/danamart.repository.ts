@@ -27,7 +27,7 @@ const danamartUpdateUserInformation = axios.create({
 
 const danamartService = baseAxios(
   `${
-    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
   }/user/v1/`
 );
 

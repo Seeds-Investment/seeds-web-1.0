@@ -1,14 +1,19 @@
-import { ArrowLeftPaginationGray, ArrowLeftPaginationGreen, ArrowRightPaginationGray, ArrowRightPaginationGreen } from "@/assets/danamart";
-import { getOfferReport } from "@/repository/danamart/offers.repository";
-import { type ReportI } from "@/utils/interfaces/danamart/offers.interface";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftPaginationGray,
+  ArrowLeftPaginationGreen,
+  ArrowRightPaginationGray,
+  ArrowRightPaginationGreen
+} from '@/assets/danamart';
+import { getOfferReport } from '@/repository/danamart/offers.repository';
+import { type ReportI } from '@/utils/interfaces/danamart/offers.interface';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { FaRegEye } from "react-icons/fa";
-import { toast } from "react-toastify";
-import ModalDetailReport from "../ModalDetailReport";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaRegEye } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import ModalDetailReport from '../ModalDetailReport';
 
 interface Props {
   activeTab: string;
@@ -17,8 +22,10 @@ interface Props {
 const Report: React.FC<Props> = ({ activeTab }) => {
   const router = useRouter();
   const { t } = useTranslation();
-  const pathTranslation = 'danamart.offers.detail.tab.report'
-  const id = Array.isArray(router.query.id) ? router.query.id[0] : router.query.id;
+  const pathTranslation = 'danamart.offers.detail.tab.report';
+  const id = Array.isArray(router.query.id)
+    ? router.query.id[0]
+    : router.query.id;
   const [reportData, setReportData] = useState<ReportI[]>([]);
   const [entries, setEntries] = useState<number>(7);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -29,19 +36,19 @@ const Report: React.FC<Props> = ({ activeTab }) => {
   const getOffers = async (id: string): Promise<void> => {
     try {
       const response = await getOfferReport({ pinjaman_id: id });
-      setReportData(response?.data?.data)
+      setReportData(response?.data?.data);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     }
   };
 
   useEffect(() => {
-    if (activeTab === 'report' && (id !== undefined)) {
+    if (activeTab === 'report' && id !== undefined) {
       void getOffers(id);
     }
   }, [id, activeTab]);
 
-  const filteredData = reportData?.filter((report) => {
+  const filteredData = reportData?.filter(report => {
     const reportString = JSON.stringify(report).toLowerCase();
     return reportString.includes(searchQuery.toLowerCase());
   });
@@ -56,26 +63,30 @@ const Report: React.FC<Props> = ({ activeTab }) => {
         <div className="relative w-full md:max-w-[200px]">
           <input
             value={searchQuery}
-            onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
+            onChange={e => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1);
+            }}
             id="search"
             type="text"
             name="search"
             placeholder={`${t(`${pathTranslation}.filter.text7`)}`}
             className="block w-full md:max-w-[200px] text-[#262626] text-sm h-10 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-2 pl-4 rounded-full border border-[#BDBDBD]"
           />
-          {
-            searchQuery !== '' &&
-              <div
-                onClick={() => { setSearchQuery(''); }}
-                className="w-[20px] h-auto absolute right-[15px] top-[10px] cursor-pointer hover:scale-125 duration-200"
-              >
-                <XMarkIcon/>
-              </div>
-          }
+          {searchQuery !== '' && (
+            <div
+              onClick={() => {
+                setSearchQuery('');
+              }}
+              className="w-[20px] h-auto absolute right-[15px] top-[10px] cursor-pointer hover:scale-125 duration-200"
+            >
+              <XMarkIcon />
+            </div>
+          )}
         </div>
         <select
           value={entries}
-          onChange={(e) => {
+          onChange={e => {
             setEntries(Number(e.target.value));
             setCurrentPage(1);
           }}
@@ -93,8 +104,12 @@ const Report: React.FC<Props> = ({ activeTab }) => {
         <table className="min-w-full border border-gray-300 rounded-md">
           <thead>
             <tr className="bg-gray-100">
-              <th className="text-left p-2 border-b border-gray-300">{t(`${pathTranslation}.table.text1`)}</th>
-              <th className="text-left p-2 border-b border-gray-300">{t(`${pathTranslation}.table.text2`)}</th>
+              <th className="text-left p-2 border-b border-gray-300">
+                {t(`${pathTranslation}.table.text1`)}
+              </th>
+              <th className="text-left p-2 border-b border-gray-300">
+                {t(`${pathTranslation}.table.text2`)}
+              </th>
               <th className="text-left p-2 border-b border-gray-300"></th>
             </tr>
           </thead>
@@ -102,13 +117,17 @@ const Report: React.FC<Props> = ({ activeTab }) => {
             {paginatedData?.length > 0 ? (
               paginatedData?.map((report, index) => (
                 <tr key={index} className="hover:bg-gray-50">
-                  <td className="p-2 border-b border-gray-300">{report.tglLaporan}</td>
-                  <td className="p-2 border-b border-gray-300">{report.jenisLaporan}</td>
+                  <td className="p-2 border-b border-gray-300">
+                    {report.tglLaporan}
+                  </td>
+                  <td className="p-2 border-b border-gray-300">
+                    {report.jenisLaporan}
+                  </td>
                   <td className="p-2 border-b border-gray-300">
                     <button
                       onClick={() => {
-                        setIsShowDetailReport(true)
-                        setSelectedReport(index)
+                        setIsShowDetailReport(true);
+                        setSelectedReport(index);
                       }}
                       className="flex justify-center items-center text-[#262626] hover:scale-125 duration-200"
                     >
@@ -127,42 +146,59 @@ const Report: React.FC<Props> = ({ activeTab }) => {
           </tbody>
         </table>
         <div className="flex justify-between items-center mt-4">
-          {
-            reportData?.length > 0 &&
-              <>
-                <span>
-                  {t(`${pathTranslation}.table.text4`)} {startIndex + 1} {t(`${pathTranslation}.table.text5`)} {(startIndex + entries) < filteredData.length ? startIndex + entries : filteredData.length} {t(`${pathTranslation}.table.text6`)} {filteredData.length} {t(`${pathTranslation}.table.text7`)}
-                </span>
-                <div className="flex justify-center items-center gap-2">
-                  <button
-                    onClick={() => { setCurrentPage((prev) => Math.max(prev - 1, 1)); }}
-                    disabled={currentPage === 1}
-                    className="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
-                  >
-                    <Image
-                      src={currentPage === 1 ? ArrowLeftPaginationGray : ArrowLeftPaginationGreen}
-                      alt="ArrowLeft"
-                      className="w-full h-auto object-cover"
-                      width={100}
-                      height={100}
-                    />
-                  </button>
-                  <button
-                    onClick={() => { setCurrentPage((prev) => Math.min(prev + 1, totalPages)); }}
-                    disabled={currentPage === totalPages}
-                    className="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
-                  >
-                    <Image
-                      src={currentPage === totalPages ? ArrowRightPaginationGray : ArrowRightPaginationGreen}
-                      alt="ArrowRight"
-                      className="w-full h-auto object-cover"
-                      width={100}
-                      height={100}
-                    />
-                  </button>
-                </div>
-              </>
-          }
+          {reportData?.length > 0 && (
+            <>
+              <span>
+                {t(`${pathTranslation}.table.text4`)} {startIndex + 1}{' '}
+                {t(`${pathTranslation}.table.text5`)}{' '}
+                {startIndex + entries < filteredData.length
+                  ? startIndex + entries
+                  : filteredData.length}{' '}
+                {t(`${pathTranslation}.table.text6`)} {filteredData.length}{' '}
+                {t(`${pathTranslation}.table.text7`)}
+              </span>
+              <div className="flex justify-center items-center gap-2">
+                <button
+                  onClick={() => {
+                    setCurrentPage(prev => Math.max(prev - 1, 1));
+                  }}
+                  disabled={currentPage === 1}
+                  className="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
+                >
+                  <Image
+                    src={
+                      currentPage === 1
+                        ? ArrowLeftPaginationGray
+                        : ArrowLeftPaginationGreen
+                    }
+                    alt="ArrowLeft"
+                    className="w-full h-auto object-cover"
+                    width={100}
+                    height={100}
+                  />
+                </button>
+                <button
+                  onClick={() => {
+                    setCurrentPage(prev => Math.min(prev + 1, totalPages));
+                  }}
+                  disabled={currentPage === totalPages}
+                  className="flex items-center justify-center w-[25px] h-[25px] cursor-pointer rounded-full"
+                >
+                  <Image
+                    src={
+                      currentPage === totalPages
+                        ? ArrowRightPaginationGray
+                        : ArrowRightPaginationGreen
+                    }
+                    alt="ArrowRight"
+                    className="w-full h-auto object-cover"
+                    width={100}
+                    height={100}
+                  />
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
       {isShowDetailReport && (

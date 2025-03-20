@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 interface ILabel {
   key: number;
@@ -284,13 +284,13 @@ export const useDanamartInformation = (): ILabel[] => {
       key: 10,
       label: t(`${pathTranslation}.information.text10`),
       value: 'Lainnya'
-    },
+    }
   ];
 };
 
 export const useIncome = (): ILabel[] => {
   const { t } = useTranslation();
-  const path = 'danamart.verification.financial.listIncome'
+  const path = 'danamart.verification.financial.listIncome';
 
   return [
     {
@@ -314,7 +314,7 @@ export const useIncome = (): ILabel[] => {
       value: 'Lainnya'
     }
   ];
-}; 
+};
 
 export const useMarriageStatus = (): ILabel[] => {
   const { t } = useTranslation();
@@ -332,7 +332,7 @@ export const useMarriageStatus = (): ILabel[] => {
       value: 'married'
     }
   ];
-}; 
+};
 
 export const useInvestmentGoals = (): ILabel[] => {
   const { t } = useTranslation();
@@ -477,7 +477,8 @@ export const useJobList = (): ILabel[] => {
 
 export const useJobDetailList = (): ILabel[] => {
   const { t } = useTranslation();
-  const path = 'danamart.verification.accountInformation.dropdown.jobDetailList';
+  const path =
+    'danamart.verification.accountInformation.dropdown.jobDetailList';
 
   return [
     {
@@ -772,6 +773,6 @@ export const useFormatFile = (): ILabel[] => {
       key: 2,
       label: 'Excel',
       value: 'excel'
-    },
+    }
   ];
 };

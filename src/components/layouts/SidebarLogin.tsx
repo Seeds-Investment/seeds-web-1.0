@@ -1,7 +1,6 @@
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -13,11 +12,13 @@ import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useEffect, useState } from 'react';
+import market from 'src/assets/market/market.svg';
+// import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '@/store/redux/store';
 import { useTranslation } from 'react-i18next';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { GoDotFill } from 'react-icons/go';
 import { toast } from 'react-toastify';
-import market from 'src/assets/market/market.svg';
 import ModalLogoutDanamart from '../danamart/auth/ModalLogoutDanamart';
 import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
@@ -44,13 +45,34 @@ const SidebarLogin: React.FC = () => {
           hasSubmenu: true,
           submenu: [
             { title: 'Dashboard', url: '/danamart/dashboard' },
-            { title: t('danamart.offers.sidebar.text1'), url: '/danamart/offer' },
-            { title: t('danamart.portfolio.sidebar.text1'), url: '/danamart/portfolio' },
-            { title: t('danamart.purchaseHistory.sidebar.text1'), url: '/danamart/purchase-history' },
-            { title: t('danamart.incomingFunds.sidebar.text1'), url: '/danamart/incoming-funds' },
-            { title: t('danamart.outgoingFunds.sidebar.text1'), url: '/danamart/outgoing-funds' },
-            { title: t('danamart.promotion.sidebar.text1'), url: '/danamart/promotion' },
-            { title: t('danamart.userLog.sidebar.text1'), url: '/danamart/user-log' },
+            {
+              title: t('danamart.offers.sidebar.text1'),
+              url: '/danamart/offer'
+            },
+            {
+              title: t('danamart.portfolio.sidebar.text1'),
+              url: '/danamart/portfolio'
+            },
+            {
+              title: t('danamart.purchaseHistory.sidebar.text1'),
+              url: '/danamart/purchase-history'
+            },
+            {
+              title: t('danamart.incomingFunds.sidebar.text1'),
+              url: '/danamart/incoming-funds'
+            },
+            {
+              title: t('danamart.outgoingFunds.sidebar.text1'),
+              url: '/danamart/outgoing-funds'
+            },
+            {
+              title: t('danamart.promotion.sidebar.text1'),
+              url: '/danamart/promotion'
+            },
+            {
+              title: t('danamart.userLog.sidebar.text1'),
+              url: '/danamart/user-log'
+            },
             { title: t('danamart.logout.text1'), url: '#', isLogout: true }
           ]
         },
@@ -59,13 +81,14 @@ const SidebarLogin: React.FC = () => {
       ];
 
   const [accessToken, setAccessToken] = useState('');
+  const { dataUser } = useAppSelector(state => state.user);
   const width = useWindowInnerWidth();
   const router = useRouter();
   const [isDanamartOpen, setIsDanamartOpen] = useState(false);
   const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
-  const [isLogoutModalDanamart, setIsLogoutModalDanamart] = useState<boolean>(false);
+  const [isLogoutModalDanamart, setIsLogoutModalDanamart] =
+    useState<boolean>(false);
   const [showLogoutButton, setShowLogoutButton] = useState(false);
-  const [userInfo, setUserInfo] = useState<any>([]);
   const isLinkActive = (href: string): string => {
     return router.asPath.startsWith(href) ? 'active' : '';
   };
@@ -75,9 +98,7 @@ const SidebarLogin: React.FC = () => {
       setAccessToken(localStorage.getItem('accessToken') ?? '');
       const fetchData = async (): Promise<void> => {
         try {
-          const dataInfo = await getUserInfo();
           setShowLogoutButton(true);
-          setUserInfo(dataInfo);
         } catch (error: any) {
           if (error.response.status !== 401) {
             toast(error.message, { type: 'error' });
@@ -98,7 +119,7 @@ const SidebarLogin: React.FC = () => {
           onClose={() => {
             setIsLogoutModal(prev => !prev);
           }}
-          userInfo={userInfo}
+          userInfo={dataUser}
         />
       )}
       {isLogoutModalDanamart && (
@@ -125,7 +146,7 @@ const SidebarLogin: React.FC = () => {
                   onClick={() => {
                     TrackerEvent({
                       event: `SW_${data.title.toLowerCase()}_page`,
-                      userData: userInfo
+                      userData: dataUser
                     });
                     if (
                       data.hasSubmenu !== undefined &&
@@ -157,27 +178,34 @@ const SidebarLogin: React.FC = () => {
                 </Link>
                 {data.hasSubmenu !== undefined && isDanamartOpen && (
                   <ul>
-                    {data.submenu?.map((sub, subIdx) => (
-                      (sub.isLogout ?? false) ?
+                    {data.submenu?.map((sub, subIdx) =>
+                      sub.isLogout ?? false ? (
                         <Link
                           key={subIdx}
-                          className={`flex items-center ${isLinkActive(sub.url)}`}
-                          onClick={() => {setIsLogoutModalDanamart(true)}}
-                          href='#'
+                          className={`flex items-center ${isLinkActive(
+                            sub.url
+                          )}`}
+                          onClick={() => {
+                            setIsLogoutModalDanamart(true);
+                          }}
+                          href="#"
                         >
                           <GoDotFill size={20} />
                           <h1>{sub.title}</h1>
                         </Link>
-                        :
+                      ) : (
                         <Link
                           key={subIdx}
-                          className={`flex items-center ${isLinkActive(sub.url)}`}
+                          className={`flex items-center ${isLinkActive(
+                            sub.url
+                          )}`}
                           href={sub.url}
                         >
                           <GoDotFill size={20} />
                           <h1>{sub.title}</h1>
                         </Link>
-                    ))}
+                      )
+                    )}
                   </ul>
                 )}
               </div>
@@ -186,7 +214,7 @@ const SidebarLogin: React.FC = () => {
                 onClick={() => {
                   TrackerEvent({
                     event: `SW_${data.title.toLowerCase()}_page`,
-                    userData: userInfo
+                    userData: dataUser
                   });
                 }}
                 className={isLinkActive(data.url)}

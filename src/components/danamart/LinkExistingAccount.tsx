@@ -102,15 +102,16 @@ const LinkExistingAccount: React.FC<Props> = ({
           ? t('danamart.register.createAccountButton')
           : t('danamart.register.linkAccount')}
       </Button>
-      {
-        userInfo?.email !== '' && userInfo?.phoneNumber !== '' &&
-          <Button
-            onClick={async () => { setIsLinkExisting(true) }}
-            className="w-full h-fit md:h-[52px] bg-seeds-button-green text-white font-poppins font-semibold text-base capitalize rounded-full mb-16 md:mb-0"
-          >
-            Link Existing Danamart Account
-          </Button>
-      }
+      {userInfo?.email !== '' && userInfo?.phoneNumber !== '' && (
+        <Button
+          onClick={async () => {
+            setIsLinkExisting(true);
+          }}
+          className="w-full h-fit md:h-[52px] bg-seeds-button-green text-white font-poppins font-semibold text-base capitalize rounded-full mb-16 md:mb-0"
+        >
+          Link Existing Danamart Account
+        </Button>
+      )}
     </div>
   );
 };

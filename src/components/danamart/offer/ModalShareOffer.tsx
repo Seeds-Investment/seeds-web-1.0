@@ -15,7 +15,7 @@ interface Props {
 
 const ModalShareOffer: React.FC<Props> = ({ onClose, url }) => {
   const { t } = useTranslation();
-	const pathTranslation = 'danamart.offers.dashboard.shareOffer'
+  const pathTranslation = 'danamart.offers.dashboard.shareOffer';
   const handleCopyClick = async (): Promise<void> => {
     const textToCopy = url;
     await navigator.clipboard.writeText(textToCopy).then(() => {

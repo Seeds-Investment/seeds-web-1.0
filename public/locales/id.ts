@@ -2860,8 +2860,10 @@ export default {
       connectAccount: 'Hubungkan Akun',
       completeData: 'Lengkapi Email dan Nomor Telepon',
       changeData: 'Ubah Email atau Nomor Telepon',
-      makeSure: 'Pastikan email dan nomor telepon akun Seeds Anda sama dengan email dan nomor telepon akun Danamart Anda',
-      notRegistered: 'Akun tidak terdaftar. Pastikan email dan nomor telepon akun Seeds dan Danamart anda sama!',
+      makeSure:
+        'Pastikan email dan nomor telepon akun Seeds Anda sama dengan email dan nomor telepon akun Danamart Anda',
+      notRegistered:
+        'Akun tidak terdaftar. Pastikan email dan nomor telepon akun Seeds dan Danamart anda sama!',
       connectSucceed: 'Akun berhasil terhubung',
       email: 'Email',
       phoneNumber: 'Nomor Telepon',
@@ -3303,8 +3305,10 @@ export default {
           text13: 'Progres Penawaran',
           popup: {
             title: 'Progress Penawaran',
-            text1: '<strong>Hari Kerja</strong> adalah hari dimana seseorang diharapkan untuk bekerja dan beraktivitas sesuai dengan jadwal kerja yang telah ditetapkan. Hari kerja hanya mencakup hari Senin hingga Jumat, sedangkan hari Sabtu dan Minggu dan libur nasional dianggap sebagai hari libur.',
-            text2: '<strong>Hari Kalender</strong> adalah hari yang terdiri dari 24 jam dan digunakan untuk menghitung durasi waktu dalam sistem penanggalan. Hari kalender dihitung mulai dari tengah malam hingga tengah malah berikutnya. Dalam kalender, setiap bulan memiliki 28-31 hari, kecuali bulan Februari yang memiliki 28 atau 29 hari dalam setiap empat tahun pada tahun kabisat.'
+            text1:
+              '<strong>Hari Kerja</strong> adalah hari dimana seseorang diharapkan untuk bekerja dan beraktivitas sesuai dengan jadwal kerja yang telah ditetapkan. Hari kerja hanya mencakup hari Senin hingga Jumat, sedangkan hari Sabtu dan Minggu dan libur nasional dianggap sebagai hari libur.',
+            text2:
+              '<strong>Hari Kalender</strong> adalah hari yang terdiri dari 24 jam dan digunakan untuk menghitung durasi waktu dalam sistem penanggalan. Hari kalender dihitung mulai dari tengah malam hingga tengah malah berikutnya. Dalam kalender, setiap bulan memiliki 28-31 hari, kecuali bulan Februari yang memiliki 28 atau 29 hari dalam setiap empat tahun pada tahun kabisat.'
           }
         },
         tab: {
@@ -3314,7 +3318,7 @@ export default {
             text3: 'News Update',
             text4: 'Discuss',
             text5: 'Factsheet',
-            text6: 'Report',
+            text6: 'Report'
           },
           overview: {
             title: 'Informasi Penerbit',
@@ -3323,7 +3327,7 @@ export default {
               text1: 'Nilai Proyek',
               text2: 'Proyeksi Margin Proyek',
               text3: 'Jenis Pengerjaan Proyek',
-              text4: 'Uraian Pengerjaan Proyek',
+              text4: 'Uraian Pengerjaan Proyek'
             },
             bisnis: {
               title: 'Bisnis',
@@ -3334,7 +3338,7 @@ export default {
               text5: 'Jumlah Direktur',
               text6: 'Jumlah Komisaris',
               text7: 'Jumlah Pemegang Saham',
-              text8: 'Jumlah Karyawan',
+              text8: 'Jumlah Karyawan'
             },
             keuangan: {
               title: 'Keuangan',
@@ -3345,7 +3349,7 @@ export default {
               text5: 'Aset Tetap',
               text6: 'Hutang Lancar',
               text7: 'Hutang Jangka Panjang',
-              text8: 'Ekuitas',
+              text8: 'Ekuitas'
             },
             penanggungJawab: {
               title: 'Penanggung Jawab',
@@ -3354,30 +3358,30 @@ export default {
               text3: 'Umur (Tahun)',
               text4: 'Pendidikan Terakhir',
               text5: 'Alamat',
-              text6: 'Jabatan',
+              text6: 'Jabatan'
             },
             proyeksi: {
               title: 'Proyeksi',
               text1: 'Proyeksi Penjualan Per Bulan',
-              text2: 'Proyeksi Penjualan Per Tahun',
+              text2: 'Proyeksi Penjualan Per Tahun'
             }
           },
           investorCorner: {
             text1: 'Jumlah Investor',
             text2: 'Jumlah Pendanaan Terbesar',
             text3: 'Jumlah Pendanaan Terkecil',
-            text4: 'Jumlah Rata-Rata Pendanaan',
+            text4: 'Jumlah Rata-Rata Pendanaan'
           },
           discuss: {
             text1: 'Gabung Grup WhatsApp',
             text2: 'Tulis komentar...',
-            text3: 'Kirim',
+            text3: 'Kirim'
           },
           news: {
-            text1: 'Belum ada kabar terbaru',
+            text1: 'Belum ada kabar terbaru'
           },
           factsheet: {
-            text1: 'Dokumen tidak ada',
+            text1: 'Dokumen tidak ada'
           },
           report: {
             filter: {
@@ -3396,7 +3400,7 @@ export default {
               text4: 'Menampilkan',
               text5: 'hingga',
               text6: 'dari',
-              text7: 'entri',
+              text7: 'entri'
             },
             modalDetail: {
               title: 'Detail Laporan',
@@ -3418,7 +3422,7 @@ export default {
               text16: 'Laporan Hasil RUPS',
               text17: 'Rencana Tanggal Pembagian Dividen',
               text18: 'Jumlah Pembagian Dividen (Rp)',
-              text19: 'Tutup',
+              text19: 'Tutup'
             }
           }
         },
@@ -3438,18 +3442,18 @@ export default {
           text12: 'Laporan berhasil dikirimkan.',
           text13: 'Laporan gagal dikirimkan! Coba lagi.',
           validationForm: {
-            text1: 'Kolom ini wajib diisi',
-          },
+            text1: 'Kolom ini wajib diisi'
+          }
         }
       },
       purchase: {
         title: 'Pembelian Efek',
         type1: 'Obligasi',
         type2: 'Saham',
-        card: {  
-          text1: "Uang Tunai",  
-          text2: "Dana Investasi",  
-          text3: "Dana dalam Sekuritas",  
+        card: {
+          text1: 'Uang Tunai',
+          text2: 'Dana Investasi',
+          text3: 'Dana dalam Sekuritas'
         },
         form: {
           sourceCash: {
@@ -3485,11 +3489,14 @@ export default {
           text24: 'Jumlah Pembelian (Lot)',
           formResponse: {
             text1: 'Pembelian Sukses',
-            text2: 'Semangat, sedikit lagi kamu berhasil beli efek! Segera selesaikan proses berikutnya untuk melanjutkan transaksi.',
+            text2:
+              'Semangat, sedikit lagi kamu berhasil beli efek! Segera selesaikan proses berikutnya untuk melanjutkan transaksi.',
             text3: 'Selamat! Proses pembelian efek sudah berhasil!',
-            text4: 'Maaf, ada pembelian efek yang belum selesai diproses. Silakan proses terlebih dahulu transaksi Kamu',
+            text4:
+              'Maaf, ada pembelian efek yang belum selesai diproses. Silakan proses terlebih dahulu transaksi Kamu',
             text5: 'Minimum pembelian adalah Rp. 100.000,-',
-            text6: 'Silakan setujui bahwa anda berinvestasi pada Project Financing',
+            text6:
+              'Silakan setujui bahwa anda berinvestasi pada Project Financing'
           }
         },
         disclaimer: {
@@ -3511,39 +3518,41 @@ export default {
             </ol>
           `,
           yes: 'Ya',
-          cancel: 'Batalkan',
+          cancel: 'Batalkan'
         },
         validationForm: {
-          text1: 'Kolom ini wajib diisi',
+          text1: 'Kolom ini wajib diisi'
         },
         payment: {
           qris: {
-            steps : `
+            steps: `
               <ol>
                 <li>Scan/screenshot kode QR yang tampil di layar dengan aplikasi bank, aplikasi dompet digital (e-wallet) atau aplikasi pembayaran lain yang mendukung pembayaran QRIS.</li>
                 <li>Periksa detail transaksi pada aplikasi, lalu klik tombol Bayar.</li>
                 <li>Masukan PIN.</li>
                 <li>Setelah transaksi selesai, kembali ke halaman ini dan akan diteruskan ke halaman portfolio.</li>
               </ol>
-            `,
+            `
           },
-          titleQR: "Pembayaran dengan QRIS",
-          titleVA: "Pembayaran dengan Virtual Account",
-          descriptionQR: "Kami juga telah mengirimkan instruksi pembayaran QRIS melalui email. Silakan periksa email Anda dan lanjutkan pembayaran.",
-          descriptionVA: "Kami juga telah mengirimkan instruksi pembayaran VA melalui email. Silakan periksa email Anda dan lanjutkan pembayaran.",
-          orderId: "ID Pesanan",
-          nominal: "Nominal",
-          expiredDate: "Berlaku Sampai",
-          status: "Status",
-          numberVA: "Nomor Virtual Account",
+          titleQR: 'Pembayaran dengan QRIS',
+          titleVA: 'Pembayaran dengan Virtual Account',
+          descriptionQR:
+            'Kami juga telah mengirimkan instruksi pembayaran QRIS melalui email. Silakan periksa email Anda dan lanjutkan pembayaran.',
+          descriptionVA:
+            'Kami juga telah mengirimkan instruksi pembayaran VA melalui email. Silakan periksa email Anda dan lanjutkan pembayaran.',
+          orderId: 'ID Pesanan',
+          nominal: 'Nominal',
+          expiredDate: 'Berlaku Sampai',
+          status: 'Status',
+          numberVA: 'Nomor Virtual Account',
           numberVACopied: 'Nomor VA berhasil disalin',
-          scan: "Pindai QRIS",
-          download: "Unduh QR",
-          howToPayQR: "Cara pembayaran menggunakan QRIS:",
-          howToPayVA1: "Petunjuk Pembayaran melalui BANK",
-          howToPayVA2: "",
-          refresh: "Perbarui Status",
-          cancel: "Batalkan Transaksi",
+          scan: 'Pindai QRIS',
+          download: 'Unduh QR',
+          howToPayQR: 'Cara pembayaran menggunakan QRIS:',
+          howToPayVA1: 'Petunjuk Pembayaran melalui BANK',
+          howToPayVA2: '',
+          refresh: 'Perbarui Status',
+          cancel: 'Batalkan Transaksi',
           cancelationSucceed: 'Transaksi pembayaran berhasil dibatalkan!',
           cancelationFailed: 'Transaksi pembayaran gagal dibatalkan. Coba lagi.'
         },
@@ -3552,16 +3561,17 @@ export default {
             text1: 'Pembatalan Transaksi',
             text2: 'Apakah Kamu yakin akan membatalkan transaksi ini?',
             cancel: 'Tidak',
-            yes: 'Ya',
+            yes: 'Ya'
           },
           otp: {
             process: 'Proses',
             verification: 'Verifikasi OTP',
             getOtp: 'Dapatkan Kode OTP',
             selectType: 'Pilih Jenis OTP',
-            tooManyAttempts: 'Terlalu banyak meminta kode OTP. Tunggu sebentar lagi...',
+            tooManyAttempts:
+              'Terlalu banyak meminta kode OTP. Tunggu sebentar lagi...',
             cancel: 'Tidak',
-            yes: 'Ya',
+            yes: 'Ya'
           }
         }
       }
@@ -3601,7 +3611,7 @@ export default {
           text2: 'Informasi Pembelian',
           text3: 'Informasi Biaya dan Imbal Hasil',
           text4: 'Factsheet',
-          text5: 'Batalkan Pembelian',
+          text5: 'Batalkan Pembelian'
         }
       },
       modal: {
@@ -3617,13 +3627,13 @@ export default {
           text9: 'Persentase Pembagian Dividen',
           text10: 'Kupon',
           text11: 'Tenor',
-          text12: 'Jenis Penawaran',
+          text12: 'Jenis Penawaran'
         },
         financingInformation: {
           text1: 'Informasi Pembelian',
           text2: 'Tanggal Pembelian',
           text3: 'Jumlah Pembelian',
-          text4: 'Kontribusi',
+          text4: 'Kontribusi'
         },
         costReturn: {
           text1: 'Informasi Biaya dan Imbal Hasil',
@@ -3657,7 +3667,7 @@ export default {
         text5: 'entri',
         text6: 'Tanggal',
         text7: 'Jumlah (Rp)',
-        text8: 'Keterangan',
+        text8: 'Keterangan'
       },
       text1: 'Metode Transfer Dana',
       text2: 'Bank Lain',
@@ -3672,14 +3682,14 @@ export default {
           text6: '',
           text7: 'Limit Virtual Account',
           text8: 'Mengerti',
-          text9: '',
+          text9: ''
         },
         detailIncome: {
           text1: 'Keterangan Dana Masuk',
           text2: 'Tanggal',
           text3: 'Jumlah',
           text4: 'Keterangan',
-          close: 'Tutup',
+          close: 'Tutup'
         },
         downloadReport: {
           text1: 'Download Laporan Transaksi',
@@ -3688,9 +3698,10 @@ export default {
           text4: 'Jenis File',
           cancel: 'Batal',
           yes: 'Download',
-          text7: 'Permintaan pengunduhan laporan berhasil. Mohon tunggu hingga proses selesai.',
+          text7:
+            'Permintaan pengunduhan laporan berhasil. Mohon tunggu hingga proses selesai.',
           text8: 'Laporan berhasil diunduh!',
-          text9: 'Gagal mengunduh laporan! Mohon coba lagi.',
+          text9: 'Gagal mengunduh laporan! Mohon coba lagi.'
         }
       }
     },
@@ -3726,20 +3737,23 @@ export default {
         text8: 'Jumlah',
         text9: 'Keterangan',
         text10: 'Diproses',
-        text11: 'Selesai',
+        text11: 'Selesai'
       },
       modal: {
         withdrawRequest: {
-          steps : `
+          steps: `
             <ol>
               <li>Masukkan jumlah nominal dana yang akan di Tarik Dana.</li>
               <li>Klik tombol “Tarik Dana” untuk memproses menarik dana Kamu.</li>
               <li>Danamart akan memproses permintaan Tarik Dana Kamu maksimal 2 hari kerja.</li>
             </ol>
           `,
-          succeed: 'Selamat, penarikan dana Anda diterima dan akan segera diproses!',
-          pending: 'Masih ada proses tarik dana yang belum diproses di akun Kamu. Silakan tunggu proses tarik dana hingga selesai, lalu coba kembali',
-          tooManyAttempts: 'Terlalu banyak meminta kode OTP. Tunggu sebentar lagi...',
+          succeed:
+            'Selamat, penarikan dana Anda diterima dan akan segera diproses!',
+          pending:
+            'Masih ada proses tarik dana yang belum diproses di akun Kamu. Silakan tunggu proses tarik dana hingga selesai, lalu coba kembali',
+          tooManyAttempts:
+            'Terlalu banyak meminta kode OTP. Tunggu sebentar lagi...',
           title: 'Permintaan Penarikan Dana',
           text1: 'Metode Tarik Dana',
           text2: 'Jumlah Dana Yang Akan Ditarik + Biaya Admin (Rp)',
@@ -3753,7 +3767,7 @@ export default {
           text10: 'Kembali',
           text11: 'Tarik Dana',
           text12: 'Proses Tarik Dana',
-          text13: 'Input Jumlah Dana',
+          text13: 'Input Jumlah Dana'
         },
         detailOutcome: {
           title: 'Keterangan Dana Keluar',
@@ -3763,7 +3777,7 @@ export default {
           text4: 'Diproses',
           text5: 'Jumlah',
           text6: 'Keterangan',
-          text7: 'Close',
+          text7: 'Close'
         }
       }
     },
@@ -3795,7 +3809,7 @@ export default {
           text1: 'Informasi Penawaran',
           text2: 'Informasi Pembelian',
           text3: 'Informasi Biaya dan Imbal Hasil',
-          text4: 'Factsheet',
+          text4: 'Factsheet'
         }
       },
       modal: {
@@ -3807,13 +3821,13 @@ export default {
           text5: 'Tanggal Penyerahan Dana',
           text6: 'Jadwal Penyerahan Kupon/Dividen',
           text7: 'Sektor Usaha',
-          text8: 'Status Pembayaran',
+          text8: 'Status Pembayaran'
         },
         purchaseInformation: {
           text1: 'Informasi Pembelian',
           text2: 'Tanggal Pembelian',
           text3: 'Jumlah Pembelian',
-          text4: 'Kontribusi (%)',
+          text4: 'Kontribusi (%)'
         },
         costReturn: {
           text1: 'Informasi Biaya dan Imbal Hasil',
@@ -3841,14 +3855,14 @@ export default {
         text8: 'Tanggal Mulai',
         text9: 'Tanggal Berakhir',
         text10: 'Terapkan',
-        text11: 'Hapus',
+        text11: 'Hapus'
       },
       table: {
         text1: 'Tidak ada data dalam tabel.',
         text2: 'Menampilkan',
         text3: 'hingga',
         text4: 'dari',
-        text5: 'entri',
+        text5: 'entri'
       }
     },
     promotion: {
@@ -3863,15 +3877,19 @@ export default {
       text5: 'Input kode-mu disini',
       text6: 'Masukan kode promo',
       text7: 'Validasi Kode',
-      text8: 'Selamat! Kode-mu valid dan berhasil diklaim. Saat ini sudah bisa menikmati benefitnya.',
-      text9: 'Maaf! Kode-mu tidak valid, kuota sudah habis , masa berlakunya telah berakhir atau tidak memenuhi syarat dan ketentuan. Silakan coba lagi dengan kode lainnya ya.',
+      text8:
+        'Selamat! Kode-mu valid dan berhasil diklaim. Saat ini sudah bisa menikmati benefitnya.',
+      text9:
+        'Maaf! Kode-mu tidak valid, kuota sudah habis , masa berlakunya telah berakhir atau tidak memenuhi syarat dan ketentuan. Silakan coba lagi dengan kode lainnya ya.',
       modal: {
         title: 'Tentang Kode Promo dan Kode Referral',
-        text1: 'Kode Promo adalah kode unik yang dapat digunakan oleh-mu untuk mendapatkan penawaran menarik ya.',
+        text1:
+          'Kode Promo adalah kode unik yang dapat digunakan oleh-mu untuk mendapatkan penawaran menarik ya.',
         close: 'Tutup'
       }
     },
-    idleLogout: 'Anda tidak aktif selama 30 menit atau lebih. Silakan masuk kembali ke Danamart.',
+    idleLogout:
+      'Anda tidak aktif selama 30 menit atau lebih. Silakan masuk kembali ke Danamart.',
     logout: {
       text1: 'Keluar',
       description: 'Apakah anda ingin logout dari Danamart?',

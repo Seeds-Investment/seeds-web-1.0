@@ -4,7 +4,7 @@ import { type GiphyI } from '@/utils/interfaces/chat.interface';
 import axios from 'axios';
 
 const baseUrl = baseAxios(
-  `${process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'}/`
+  `${process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'}/`
 );
 interface getDataCircleType {
   circleId: string;
@@ -507,7 +507,7 @@ export const UseUploadMedia = async (media: File): Promise<any> => {
 
   return await post(
     `${
-      process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+      process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
     }/v1/storage/cloud`,
     formData,
     {

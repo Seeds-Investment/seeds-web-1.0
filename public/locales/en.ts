@@ -2928,8 +2928,10 @@ export default {
       connectAccount: 'Connect Account',
       completeData: 'Complete Email and Phone Number',
       changeData: 'Change Email or Phone Number',
-      makeSure: 'Make sure the email and phone number of your Seeds account are the same as those of your Danamart account',
-      notRegistered: 'Account not registered. Make sure your email and phone number in Seeds and Danamart are the same!',
+      makeSure:
+        'Make sure the email and phone number of your Seeds account are the same as those of your Danamart account',
+      notRegistered:
+        'Account not registered. Make sure your email and phone number in Seeds and Danamart are the same!',
       connectSucceed: 'Account connected successfully',
       email: 'Email',
       phoneNumber: 'Phone Number',
@@ -3369,8 +3371,10 @@ export default {
           text13: 'Offering Progress',
           popup: {
             title: 'Offering Progress',
-            text1: '<strong>Working Day</strong> is a day when a person is expected to work and perform activities according to the established work schedule. A working day only includes Monday to Friday, while Saturday, Sunday, and national holidays are considered as holidays.',
-            text2: '<strong>Calendar Day</strong> is a day consisting of 24 hours and is used to calculate the duration of time in the calendar system. A calendar day is counted from midnight to the following midnight. In the calendar, each month has 28-31 days, except for February, which has 28 or 29 days every four years during a leap year.'
+            text1:
+              '<strong>Working Day</strong> is a day when a person is expected to work and perform activities according to the established work schedule. A working day only includes Monday to Friday, while Saturday, Sunday, and national holidays are considered as holidays.',
+            text2:
+              '<strong>Calendar Day</strong> is a day consisting of 24 hours and is used to calculate the duration of time in the calendar system. A calendar day is counted from midnight to the following midnight. In the calendar, each month has 28-31 days, except for February, which has 28 or 29 days every four years during a leap year.'
           }
         },
         tab: {
@@ -3380,7 +3384,7 @@ export default {
             text3: 'News Update',
             text4: 'Discuss',
             text5: 'Factsheet',
-            text6: 'Report',
+            text6: 'Report'
           },
           overview: {
             title: 'Issuer Information',
@@ -3389,7 +3393,7 @@ export default {
               text1: 'Project Value',
               text2: 'Project Margin Projection',
               text3: 'Project Type',
-              text4: 'Project Description',
+              text4: 'Project Description'
             },
             bisnis: {
               title: 'Business',
@@ -3400,7 +3404,7 @@ export default {
               text5: 'Number of Directors',
               text6: 'Number of Commissioners',
               text7: 'Number of Shareholders',
-              text8: 'Number of Employees',
+              text8: 'Number of Employees'
             },
             keuangan: {
               title: 'Finance',
@@ -3411,7 +3415,7 @@ export default {
               text5: 'Fixed Assets',
               text6: 'Current Liabilities',
               text7: 'Long-Term Liabilities',
-              text8: 'Equity',
+              text8: 'Equity'
             },
             penanggungJawab: {
               title: 'Person in Charge',
@@ -3420,30 +3424,30 @@ export default {
               text3: 'Age (Years)',
               text4: 'Last Education',
               text5: 'Address',
-              text6: 'Position',
+              text6: 'Position'
             },
             proyeksi: {
               title: 'Projection',
               text1: 'Monthly Sales Projection',
-              text2: 'Annual Sales Projection',
+              text2: 'Annual Sales Projection'
             }
           },
           investorCorner: {
             text1: 'Number of Investors',
             text2: 'Largest Funding Amount',
             text3: 'Smallest Funding Amount',
-            text4: 'Average Funding Amount',
+            text4: 'Average Funding Amount'
           },
           discuss: {
             text1: 'Join WhatsApp Group',
             text2: 'Write comments...',
-            text3: 'Send',
+            text3: 'Send'
           },
           news: {
-            text1: 'There is no new update yet',
+            text1: 'There is no new update yet'
           },
           factsheet: {
-            text1: 'There is no document yet',
+            text1: 'There is no document yet'
           },
           report: {
             filter: {
@@ -3462,7 +3466,7 @@ export default {
               text4: 'Showing',
               text5: 'to',
               text6: 'of',
-              text7: 'entries',
+              text7: 'entries'
             },
             modalDetail: {
               title: 'Report Details',
@@ -3484,7 +3488,7 @@ export default {
               text16: 'General Meeting of Shareholders Result Report',
               text17: 'Planned Dividend Distribution Date',
               text18: 'Total Dividend Distribution (Rp)',
-              text19: 'Close',
+              text19: 'Close'
             }
           }
         },
@@ -3505,7 +3509,7 @@ export default {
           text13: 'Report submission failed! Try again.',
           validationForm: {
             text1: 'This field is required'
-          },
+          }
         }
       },
       purchase: {
@@ -3515,48 +3519,52 @@ export default {
         card: {
           text1: 'Cash In-hand',
           text2: 'Investable Funds',
-          text3: 'Funds in Securities',
+          text3: 'Funds in Securities'
         },
-        form: {  
-          sourceCash: {  
-            text1: "Select Source of Funds",  
-            text2: "Cash In-hand",  
-            text3: "Transfer Cash"
-          },  
-          titleObligasi: "Bond Purchase",  
-          titleSaham: "Stock Purchase",  
-          text1: "Return on Investment",  
-          text2: "Purchase Slot",  
-          text3: "Investment Period (Months)",  
-          text4: "Purchase Amount (Rp)",  
-          text5: "Enter Purchase Amount (Rp)",  
-          text6: "Reward + Interim Funds (Rp)",  
-          text7: "Select Source of Funds",  
-          text8: "Use Reward + Interim Funds",  
-          text9: "Total Amount to Be Paid (Rp)",  
-          text10: "Select Payment Bank",  
-          text11: "Potential Profit",  
-          text12: "Monthly Return",  
-          text13: "10% Tax",  
-          text14: "Total Return",  
-          text15: "10% Administrative Fee",  
-          text16: "Total Capital + Return",  
-          text17: "Net Investment Return",  
-          text18: "Acknowledgment of Investing in PO Financing",  
-          text19: "Buy",  
-          text20: "Price Per Share (Rp)",  
-          text21: "Remaining Shares",  
-          text22: "Total Purchase (Rp)",  
-          text23: "Select Payment Bank",  
-          text24: "Purchase Quantity (Lot)",  
-          formResponse: {  
-            text1: "Purchase Successful",  
-            text2: "Almost there! Just a few more steps to complete your investment. Proceed with the next steps to continue the transaction.",  
-            text3: "Congratulations! Your investment purchase has been successfully completed!",  
-            text4: "Sorry, there is an unfinished transaction. Please complete your pending transaction first.",  
-            text5: "Minimum purchase amount is Rp. 100,000,-",  
-            text6: "Please acknowledge that you are investing in Project Financing."  
-          }  
+        form: {
+          sourceCash: {
+            text1: 'Select Source of Funds',
+            text2: 'Cash In-hand',
+            text3: 'Transfer Cash'
+          },
+          titleObligasi: 'Bond Purchase',
+          titleSaham: 'Stock Purchase',
+          text1: 'Return on Investment',
+          text2: 'Purchase Slot',
+          text3: 'Investment Period (Months)',
+          text4: 'Purchase Amount (Rp)',
+          text5: 'Enter Purchase Amount (Rp)',
+          text6: 'Reward + Interim Funds (Rp)',
+          text7: 'Select Source of Funds',
+          text8: 'Use Reward + Interim Funds',
+          text9: 'Total Amount to Be Paid (Rp)',
+          text10: 'Select Payment Bank',
+          text11: 'Potential Profit',
+          text12: 'Monthly Return',
+          text13: '10% Tax',
+          text14: 'Total Return',
+          text15: '10% Administrative Fee',
+          text16: 'Total Capital + Return',
+          text17: 'Net Investment Return',
+          text18: 'Acknowledgment of Investing in PO Financing',
+          text19: 'Buy',
+          text20: 'Price Per Share (Rp)',
+          text21: 'Remaining Shares',
+          text22: 'Total Purchase (Rp)',
+          text23: 'Select Payment Bank',
+          text24: 'Purchase Quantity (Lot)',
+          formResponse: {
+            text1: 'Purchase Successful',
+            text2:
+              'Almost there! Just a few more steps to complete your investment. Proceed with the next steps to continue the transaction.',
+            text3:
+              'Congratulations! Your investment purchase has been successfully completed!',
+            text4:
+              'Sorry, there is an unfinished transaction. Please complete your pending transaction first.',
+            text5: 'Minimum purchase amount is Rp. 100,000,-',
+            text6:
+              'Please acknowledge that you are investing in Project Financing.'
+          }
         },
         disclaimer: {
           text: `
@@ -3577,57 +3585,61 @@ export default {
             </ol>
           `,
           yes: 'Yes',
-          cancel: 'Cancel',
+          cancel: 'Cancel'
         },
         validationForm: {
           text1: 'This field is required'
         },
         payment: {
           qris: {
-            steps : `
+            steps: `
               <ol>
                 <li>Scan or take a screenshot of the QR code displayed on the screen using a banking app, e-wallet, or any other payment application that supports QRIS payments.</li>
                 <li>Check the transaction details in the application, then click the Pay button.</li>
                 <li>Enter your PIN.</li>
                 <li>Once the transaction is complete, return to this page and you will be redirected to the portfolio page.</li>
               </ol>
-            `,
+            `
           },
-          titleQR: "Payment with QRIS",
-          titleVA: "Payment with Virtual Account",
-          descriptionQR: "We have also sent the QRIS payment instructions via email. Please check your email and proceed with the payment.",
-          descriptionVA: "We have also sent the VA payment instructions via email. Please check your email and proceed with the payment.",
-          orderId: "Order ID",
-          nominal: "Nominal",
-          expiredDate: "Valid Until",
-          status: "Status",
-          numberVA: "Virtual Account Number",
+          titleQR: 'Payment with QRIS',
+          titleVA: 'Payment with Virtual Account',
+          descriptionQR:
+            'We have also sent the QRIS payment instructions via email. Please check your email and proceed with the payment.',
+          descriptionVA:
+            'We have also sent the VA payment instructions via email. Please check your email and proceed with the payment.',
+          orderId: 'Order ID',
+          nominal: 'Nominal',
+          expiredDate: 'Valid Until',
+          status: 'Status',
+          numberVA: 'Virtual Account Number',
           numberVACopied: 'VA Number copied!',
-          scan: "Scan QRIS",
-          download: "Download QR",
-          howToPayQR: "How to pay via QRIS:",
-          howToPayVA1: "How to pay via",
-          howToPayVA2: "BANK",
-          refresh: "Refresh Status",
-          cancel: "Cancel Transaction",
-          cancelationSucceed: "Payment transaction was successfully canceled!",
-          cancelationFailed: "Payment transaction cancellation failed. Please try again."
+          scan: 'Scan QRIS',
+          download: 'Download QR',
+          howToPayQR: 'How to pay via QRIS:',
+          howToPayVA1: 'How to pay via',
+          howToPayVA2: 'BANK',
+          refresh: 'Refresh Status',
+          cancel: 'Cancel Transaction',
+          cancelationSucceed: 'Payment transaction was successfully canceled!',
+          cancelationFailed:
+            'Payment transaction cancellation failed. Please try again.'
         },
         modals: {
           cancel: {
             text1: 'Transaction Cancelation',
             text2: 'Are you sure you want to delete this transaction?',
             cancel: 'Cancel',
-            yes: 'Yes',
+            yes: 'Yes'
           },
           otp: {
             process: 'Process',
             verification: 'OTP Verification',
             getOtp: 'Get OTP',
             selectType: 'Select OTP Type',
-            tooManyAttempts: 'Too many attempts hitting OTP. Please wait for a while...',
+            tooManyAttempts:
+              'Too many attempts hitting OTP. Please wait for a while...',
             cancel: 'Cancel',
-            yes: 'Yes',
+            yes: 'Yes'
           }
         }
       }
@@ -3667,7 +3679,7 @@ export default {
           text2: 'Purchase Information',
           text3: 'Cost and Return Information',
           text4: 'Factsheet',
-          text5: 'Cancel Purchase',
+          text5: 'Cancel Purchase'
         }
       },
       modal: {
@@ -3683,13 +3695,13 @@ export default {
           text9: 'Dividend Distribution Percentage',
           text10: 'Coupon',
           text11: 'Tenor',
-          text12: 'Type of Offering',
+          text12: 'Type of Offering'
         },
         financingInformation: {
           text1: 'Purchase Information',
           text2: 'Purchase Date',
           text3: 'Purchase Amount',
-          text4: 'Contribution',
+          text4: 'Contribution'
         },
         costReturn: {
           text1: 'Cost and Return Information',
@@ -3723,7 +3735,7 @@ export default {
         text5: 'entries',
         text6: 'Date',
         text7: 'Amount (Rp)',
-        text8: 'Description',
+        text8: 'Description'
       },
       text1: 'Fund Transfer Method',
       text2: 'Other Banks',
@@ -3738,14 +3750,14 @@ export default {
           text6: 'Bank',
           text7: 'Virtual Account Limit',
           text8: 'Understood',
-          text9: 'VA Number',
+          text9: 'VA Number'
         },
         detailIncome: {
           text1: 'Incoming Fund Details',
           text2: 'Date',
           text3: 'Amount',
           text4: 'Description',
-          close: 'Close',
+          close: 'Close'
         },
         downloadReport: {
           text1: 'Download Transaction Report',
@@ -3754,7 +3766,8 @@ export default {
           text4: 'File Type',
           cancel: 'Cancel',
           yes: 'Download',
-          text7: 'Report download request successful. Please wait for the download process.',
+          text7:
+            'Report download request successful. Please wait for the download process.',
           text8: 'Report downloaded successfully.',
           text9: 'Failed to download report.'
         }
@@ -3792,14 +3805,16 @@ export default {
         text8: 'Amount',
         text9: 'Description',
         text10: 'Processing',
-        text11: 'Completed',
+        text11: 'Completed'
       },
       modal: {
         withdrawRequest: {
-          steps: 
-            "<ol> <li>Enter the withdrawal amount.</li> <li>Click the “Withdraw Funds” button to process your withdrawal.</li> <li>Danamart will process your withdrawal request within a maximum of 2 working days.</li> </ol>",
-          succeed: 'Congratulations, your withdrawal request has been received and will be processed soon!',
-          pending: 'There is still an ongoing withdrawal process in your account. Please wait until the withdrawal is completed, then try again.',
+          steps:
+            '<ol> <li>Enter the withdrawal amount.</li> <li>Click the “Withdraw Funds” button to process your withdrawal.</li> <li>Danamart will process your withdrawal request within a maximum of 2 working days.</li> </ol>',
+          succeed:
+            'Congratulations, your withdrawal request has been received and will be processed soon!',
+          pending:
+            'There is still an ongoing withdrawal process in your account. Please wait until the withdrawal is completed, then try again.',
           tooManyAttempts: 'Too many OTP requests. Please wait a moment...',
           title: 'Withdrawal Request',
           text1: 'Withdrawal Method',
@@ -3814,7 +3829,7 @@ export default {
           text10: 'Back',
           text11: 'Withdraw Funds',
           text12: 'Process Withdrawal',
-          text13: 'Enter Withdrawal Amount',
+          text13: 'Enter Withdrawal Amount'
         },
         detailOutcome: {
           title: 'Outgoing Funds Details',
@@ -3824,92 +3839,92 @@ export default {
           text4: 'Processing',
           text5: 'Amount',
           text6: 'Description',
-          text7: 'Close',
+          text7: 'Close'
         }
       }
     },
     purchaseHistory: {
       sidebar: {
-        text1: "Purchase History"
+        text1: 'Purchase History'
       },
-      title: "Purchase History",
+      title: 'Purchase History',
       filter: {
-        text1: "Show 7 entries",
-        text2: "Show 10 entries",
-        text3: "Show 25 entries",
-        text4: "Show 50 entries",
-        text5: "Show 75 entries",
-        text6: "Show 100 entries",
-        text7: "Search..."
+        text1: 'Show 7 entries',
+        text2: 'Show 10 entries',
+        text3: 'Show 25 entries',
+        text4: 'Show 50 entries',
+        text5: 'Show 75 entries',
+        text6: 'Show 100 entries',
+        text7: 'Search...'
       },
       table: {
-        text1: "No data in table.",
-        text2: "Showing",
-        text3: "to",
-        text4: "of",
-        text5: "entries",
-        text6: "Security Code",
-        text7: "Offer ID",
-        text8: "Purchase Amount",
-        text9: "Purchase Date",
+        text1: 'No data in table.',
+        text2: 'Showing',
+        text3: 'to',
+        text4: 'of',
+        text5: 'entries',
+        text6: 'Security Code',
+        text7: 'Offer ID',
+        text8: 'Purchase Amount',
+        text9: 'Purchase Date',
         dropdown: {
-          text1: "Offer Information",
-          text2: "Purchase Information",
-          text3: "Cost and Return Information",
-          text4: "Factsheet"
+          text1: 'Offer Information',
+          text2: 'Purchase Information',
+          text3: 'Cost and Return Information',
+          text4: 'Factsheet'
         }
       },
       modal: {
         offerInformation: {
-          text1: "Offer Information",
-          text2: "Issuer Name",
-          text3: "Offer ID",
-          text4: "Maturity Date",
-          text5: "Fund Submission Date",
-          text6: "Coupon/Dividend Submission Schedule",
-          text7: "Business Sector",
-          text8: "Payment Status"
+          text1: 'Offer Information',
+          text2: 'Issuer Name',
+          text3: 'Offer ID',
+          text4: 'Maturity Date',
+          text5: 'Fund Submission Date',
+          text6: 'Coupon/Dividend Submission Schedule',
+          text7: 'Business Sector',
+          text8: 'Payment Status'
         },
         purchaseInformation: {
-          text1: "Purchase Information",
-          text2: "Purchase Date",
-          text3: "Purchase Amount",
-          text4: "Contribution (%)"
+          text1: 'Purchase Information',
+          text2: 'Purchase Date',
+          text3: 'Purchase Amount',
+          text4: 'Contribution (%)'
         },
         costReturn: {
-          text1: "Cost and Return Information",
-          text2: "Potential Return Per Period",
-          text3: "Potential Late Fee Revenue",
-          text4: "Total Potential Return and Late Fee Revenue",
-          text5: "Administrative Fee"
+          text1: 'Cost and Return Information',
+          text2: 'Potential Return Per Period',
+          text3: 'Potential Late Fee Revenue',
+          text4: 'Total Potential Return and Late Fee Revenue',
+          text5: 'Administrative Fee'
         },
-        close: "Close"
+        close: 'Close'
       }
     },
     userLog: {
       sidebar: {
-        text1: "User Log"
+        text1: 'User Log'
       },
-      title: "User Log",
+      title: 'User Log',
       filter: {
-        text1: "Show 7 entries",
-        text2: "Show 10 entries",
-        text3: "Show 25 entries",
-        text4: "Show 50 entries",
-        text5: "Show 75 entries",
-        text6: "Show 100 entries",
-        text7: "Search...",
+        text1: 'Show 7 entries',
+        text2: 'Show 10 entries',
+        text3: 'Show 25 entries',
+        text4: 'Show 50 entries',
+        text5: 'Show 75 entries',
+        text6: 'Show 100 entries',
+        text7: 'Search...',
         text8: 'Start Date',
         text9: 'End Date',
         text10: 'Apply',
-        text11: 'Reset',
+        text11: 'Reset'
       },
       table: {
-        text1: "No data in table.",
-        text2: "Showing",
-        text3: "to",
-        text4: "of",
-        text5: "entries",
+        text1: 'No data in table.',
+        text2: 'Showing',
+        text3: 'to',
+        text4: 'of',
+        text5: 'entries'
       }
     },
     promotion: {
@@ -3924,15 +3939,19 @@ export default {
       text5: 'Enter your code here',
       text6: 'Enter promo code',
       text7: 'Validate Code',
-      text8: 'Congratulations! Your code is valid and successfully claimed. You can now enjoy its benefits.',
-      text9: 'Sorry! Your code is invalid, the quota has been exhausted, the validity period has expired, or it does not meet the terms and conditions. Please try again with another code.',
+      text8:
+        'Congratulations! Your code is valid and successfully claimed. You can now enjoy its benefits.',
+      text9:
+        'Sorry! Your code is invalid, the quota has been exhausted, the validity period has expired, or it does not meet the terms and conditions. Please try again with another code.',
       modal: {
         title: 'About Promo Codes and Referral Codes',
-        text1: 'A Promo Code is a unique code that you can use to get exciting offers.',
+        text1:
+          'A Promo Code is a unique code that you can use to get exciting offers.',
         close: 'Close'
-      },
+      }
     },
-    idleLogout: 'You have been idle for 30 minutes or more. Please log in again to Danamart.',
+    idleLogout:
+      'You have been idle for 30 minutes or more. Please log in again to Danamart.',
     logout: {
       text1: 'Logout',
       description: 'Do you want to log out from Danamart?',

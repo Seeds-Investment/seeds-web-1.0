@@ -117,7 +117,7 @@ interface Image64IProps<T extends FieldValues> extends CommonProps<T> {
   extraClasses?: string;
   fileType?: string;
   setValue?: UseFormSetValue<T>;
-  onFileChange?: (base64String: string) => void
+  onFileChange?: (base64String: string) => void;
 }
 
 export type MultiProps<T extends FieldValues> =

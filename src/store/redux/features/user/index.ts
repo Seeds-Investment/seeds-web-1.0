@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_BASE_URL = `${
-  process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
 }/user/v1/`;
 
 interface IForm {

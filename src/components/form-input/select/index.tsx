@@ -2,8 +2,8 @@
 import ReactSelect, {
   type GroupBase,
   type OptionsOrGroups,
-  components,
-} from "react-select";
+  components
+} from 'react-select';
 
 interface Option {
   key: number;
@@ -26,41 +26,41 @@ const Select = ({
   disabled = false,
   onChange,
   rounded = false,
-  fullWidth = false,
+  fullWidth = false
 }: Props): JSX.Element => {
   return (
     <ReactSelect
-      value={options.find((item) => item.value === value)}
+      value={options.find(item => item.value === value)}
       options={options}
       isDisabled={disabled}
       onChange={onChange}
       styles={{
-        control: (baseStyle) => ({
+        control: baseStyle => ({
           ...baseStyle,
           padding: 5,
-          borderColor: "#BDBDBD",
-          borderRadius: rounded ? "50rem" : "0.5rem",
-          cursor: "pointer",
-        }),
+          borderColor: '#BDBDBD',
+          borderRadius: rounded ? '50rem' : '0.5rem',
+          cursor: 'pointer'
+        })
       }}
       className={fullWidth ? 'w-full' : ''}
       components={{
-        Option: (props) => (
+        Option: props => (
           <components.Option {...props}>
             <div className="flex flex-row gap-2 items-center cursor-pointer">
-              {(props.data?.icon) ? props.data?.icon() : null}
+              {props.data?.icon ? props.data?.icon() : null}
               <div>{props.data.label}</div>
             </div>
           </components.Option>
         ),
-        SingleValue: (props) => (
+        SingleValue: props => (
           <components.SingleValue {...props}>
             <div className="flex flex-row gap-2 items-center cursor-pointer">
               {props.data?.icon ? props.data?.icon() : null}
               <div>{props.data.label}</div>
             </div>
           </components.SingleValue>
-        ),
+        )
       }}
     />
   );

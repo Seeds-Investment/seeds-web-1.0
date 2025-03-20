@@ -24,7 +24,7 @@ const danamartPurchaseService = axios.create({
 
 const danamartService = baseAxios(
   `${
-    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
   }/user/v1/`
 );
 
@@ -47,14 +47,12 @@ export const getAccountInformation = async (): Promise<any> => {
   }
 };
 
-export const getOffersList = async (
-  params: { 
-    jenis: string; 
-    sektor: string; 
-    status: string; 
-    urutan: string 
-  }
-): Promise<any> => {
+export const getOffersList = async (params: {
+  jenis: string;
+  sektor: string;
+  status: string;
+  urutan: string;
+}): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -83,23 +81,25 @@ export const postDiscussion = async (formData: FormData): Promise<any> => {
       return await Promise.resolve('Access token Danamart not found');
     }
 
-    const response = await danamartApi.post(`/pemodal/Prospektus/postDiskusi`, formData, {
-      headers: {
-        Authorization: `Bearer ${accessTokenDanamart}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await danamartApi.post(
+      `/pemodal/Prospektus/postDiskusi`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
     return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;
   }
 };
 
-export const getOfferReport = async (
-  params: { 
-    pinjaman_id: string;
-  }
-): Promise<any> => {
+export const getOfferReport = async (params: {
+  pinjaman_id: string;
+}): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -120,11 +120,9 @@ export const getOfferReport = async (
   }
 };
 
-export const getDashboardUserById = async (
-  params: { 
-    pinjaman_id: string;
-  }
-): Promise<any> => {
+export const getDashboardUserById = async (params: {
+  pinjaman_id: string;
+}): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -146,7 +144,7 @@ export const getDashboardUserById = async (
 
 export const getFormPurchase = async (
   pinjamanId: string,
-  userPinjamanId: string,
+  userPinjamanId: string
 ): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
@@ -155,20 +153,21 @@ export const getFormPurchase = async (
       return await Promise.resolve('Access token Danamart not found');
     }
 
-    const response = await danamartApi.get(`/pemodal/pendanaan/form/${pinjamanId}/${userPinjamanId}`, {
-      headers: {
-        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+    const response = await danamartApi.get(
+      `/pemodal/pendanaan/form/${pinjamanId}/${userPinjamanId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+        }
       }
-    });
+    );
     return response;
   } catch (error: any) {
     throw new Error(error.response.data.message);
   }
 };
 
-export const purchaseItem = async (
-  formData: PurchaseI
-): Promise<any> => {
+export const purchaseItem = async (formData: PurchaseI): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -190,7 +189,7 @@ export const purchaseItem = async (
   }
 };
 
-export const getPurchaseOTP = async (formData: FormData): Promise<any> => { 
+export const getPurchaseOTP = async (formData: FormData): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -198,12 +197,16 @@ export const getPurchaseOTP = async (formData: FormData): Promise<any> => {
       return await Promise.resolve('Access token Danamart not found');
     }
 
-    const response = await danamartApi.post(`/pemodal/dashboard/sendOTP`, formData, {
-      headers: {
-        Authorization: `Bearer ${accessTokenDanamart}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await danamartApi.post(
+      `/pemodal/dashboard/sendOTP`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
 
     return { ...response, status: 200 };
   } catch (error: any) {
@@ -211,11 +214,9 @@ export const getPurchaseOTP = async (formData: FormData): Promise<any> => {
   }
 };
 
-export const getDetailPayment = async (
-  params: { 
-    idPinjaman: string;
-  }
-): Promise<any> => {
+export const getDetailPayment = async (params: {
+  idPinjaman: string;
+}): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -235,11 +236,9 @@ export const getDetailPayment = async (
   }
 };
 
-export const cancelPayment = async (
-  params: { 
-    pinjamanId: string;
-  }
-): Promise<any> => {
+export const cancelPayment = async (params: {
+  pinjamanId: string;
+}): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -247,21 +246,22 @@ export const cancelPayment = async (
       return await Promise.resolve('Access token Danamart not found');
     }
 
-    const response = await danamartApi.get('/pemodal/Pendanaan/deleteTransaksi', {
-      params,
-      headers: {
-        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+    const response = await danamartApi.get(
+      '/pemodal/Pendanaan/deleteTransaksi',
+      {
+        params,
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+        }
       }
-    });
+    );
     return response;
   } catch (error: any) {
     throw new Error(error.response.data.message);
   }
 };
 
-export const postReport = async (
-  formData: ReportFormI
-): Promise<any> => {
+export const postReport = async (formData: ReportFormI): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 

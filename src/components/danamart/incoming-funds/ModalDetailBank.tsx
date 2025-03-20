@@ -1,7 +1,10 @@
 import CAccordion from '@/components/CAccordion';
 import LanguageContext from '@/store/language/language-context';
 import { type UserProfile } from '@/utils/interfaces/danamart.interface';
-import { type BankData, type BankList } from '@/utils/interfaces/danamart/incoming-funds.interface';
+import {
+  type BankData,
+  type BankList
+} from '@/utils/interfaces/danamart/incoming-funds.interface';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Button, Typography } from '@material-tailwind/react';
 import React, { useContext } from 'react';
@@ -29,11 +32,11 @@ const ModalDetailBank: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
-  const pathTranslation = 'danamart.incomingFunds.modal.detailBank'
-  
+  const pathTranslation = 'danamart.incomingFunds.modal.detailBank';
+
   const handleCopyVANumber = async (vaNumber: string): Promise<void> => {
     await navigator.clipboard.writeText(vaNumber).then(() => {
-      toast.success(t(`${pathTranslation}.text1`))
+      toast.success(t(`${pathTranslation}.text1`));
     });
   };
 
@@ -52,65 +55,70 @@ const ModalDetailBank: React.FC<Props> = ({
       </button>
 
       <Typography className="font-bold text-lg font-poppins md:w-[90%]">
-        {t(`${pathTranslation}.text2`)} {bankList[selectedBankIndex]?.name} {t(`${pathTranslation}.text3`)}
+        {t(`${pathTranslation}.text2`)} {bankList[selectedBankIndex]?.name}{' '}
+        {t(`${pathTranslation}.text3`)}
       </Typography>
 
-      <div className='p-4'>
-        <div className='flex mt-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-seeds-button-green font-semibold'>
+      <div className="p-4">
+        <div className="flex mt-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-seeds-button-green font-semibold">
               {t(`${pathTranslation}.text4`)}
             </Typography>
-            <Typography className='font-poppins text-[rgb(38,38,38)] font-semibold'>
+            <Typography className="font-poppins text-[rgb(38,38,38)] font-semibold">
               {userProfileData?.detailUser[0]?.nama}
             </Typography>
           </div>
         </div>
-        <div className='flex flex-col md:flex-row mt-4 gap-6 md:gap-4'>
-          <div className='w-full'>
-            <Typography className='font-poppins text-seeds-button-green font-semibold'>
-              {t(`${pathTranslation}.text5`)} {languageCtx?.language === 'EN' ? bankList[selectedBankIndex]?.name === 'LAIN' ? 'Other' : bankList[selectedBankIndex]?.name : bankList[selectedBankIndex]?.name} {t(`${pathTranslation}.text6`)} {t(`${pathTranslation}.text9`)}
+        <div className="flex flex-col md:flex-row mt-4 gap-6 md:gap-4">
+          <div className="w-full">
+            <Typography className="font-poppins text-seeds-button-green font-semibold">
+              {t(`${pathTranslation}.text5`)}{' '}
+              {languageCtx?.language === 'EN'
+                ? bankList[selectedBankIndex]?.name === 'LAIN'
+                  ? 'Other'
+                  : bankList[selectedBankIndex]?.name
+                : bankList[selectedBankIndex]?.name}{' '}
+              {t(`${pathTranslation}.text6`)} {t(`${pathTranslation}.text9`)}
             </Typography>
             <Typography
-              onClick={async() => { await handleCopyVANumber(
-                bankList[selectedBankIndex]?.name === 'BCA'
-                  ? userProfileData?.detailUser[0]?.paymentcode_bca
-                  : bankList[selectedBankIndex]?.name === 'BNI'
+              onClick={async () => {
+                await handleCopyVANumber(
+                  bankList[selectedBankIndex]?.name === 'BCA'
+                    ? userProfileData?.detailUser[0]?.paymentcode_bca
+                    : bankList[selectedBankIndex]?.name === 'BNI'
                     ? userProfileData?.detailUser[0]?.paymentcode_bni
                     : bankList[selectedBankIndex]?.name === 'BRI'
-                      ? userProfileData?.detailUser[0]?.paymentcode_bri
-                      : userProfileData?.detailUser[0]?.paymentcode_mandiri
-              )}}
-              className='font-poppins text-[#262626] font-semibold cursor-pointer'
+                    ? userProfileData?.detailUser[0]?.paymentcode_bri
+                    : userProfileData?.detailUser[0]?.paymentcode_mandiri
+                );
+              }}
+              className="font-poppins text-[#262626] font-semibold cursor-pointer"
             >
-              {
-                bankList[selectedBankIndex]?.name === 'BCA'
-                  ? userProfileData?.detailUser[0]?.paymentcode_bca
-                  : bankList[selectedBankIndex]?.name === 'BNI'
-                    ? userProfileData?.detailUser[0]?.paymentcode_bni
-                    : bankList[selectedBankIndex]?.name === 'BRI'
-                      ? userProfileData?.detailUser[0]?.paymentcode_bri
-                      : userProfileData?.detailUser[0]?.paymentcode_mandiri
-              }
+              {bankList[selectedBankIndex]?.name === 'BCA'
+                ? userProfileData?.detailUser[0]?.paymentcode_bca
+                : bankList[selectedBankIndex]?.name === 'BNI'
+                ? userProfileData?.detailUser[0]?.paymentcode_bni
+                : bankList[selectedBankIndex]?.name === 'BRI'
+                ? userProfileData?.detailUser[0]?.paymentcode_bri
+                : userProfileData?.detailUser[0]?.paymentcode_mandiri}
               <FaRegCopy />
             </Typography>
           </div>
-          <div className='w-full'>
-            <Typography className='font-poppins text-seeds-button-green font-semibold'>
+          <div className="w-full">
+            <Typography className="font-poppins text-seeds-button-green font-semibold">
               {t(`${pathTranslation}.text7`)}
             </Typography>
-            <Typography className='font-poppins text-[#262626] font-semibold'>
-              {
-                bankList[selectedBankIndex]?.name === 'PERMATA'
-                  ? 'IDR 9,000,000'
-                  : 'IDR 50,000,000'
-              }
+            <Typography className="font-poppins text-[#262626] font-semibold">
+              {bankList[selectedBankIndex]?.name === 'PERMATA'
+                ? 'IDR 9,000,000'
+                : 'IDR 50,000,000'}
             </Typography>
           </div>
         </div>
       </div>
 
-      <div className='mt-2'>
+      <div className="mt-2">
         {bankData?.map((item, index) => (
           <CAccordion
             key={index}
@@ -127,7 +135,9 @@ const ModalDetailBank: React.FC<Props> = ({
 
       <div className="w-full mt-6 flex justify-center md:justify-end">
         <Button
-          onClick={() => { setIsShowDetailBank(!isShowDetailBank) }}
+          onClick={() => {
+            setIsShowDetailBank(!isShowDetailBank);
+          }}
           className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
         >
           {t(`${pathTranslation}.text8`)}

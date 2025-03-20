@@ -233,29 +233,32 @@ const Offer = (): React.ReactElement => {
               {...sliderSettings}
               className="custom-danamart-slider w-full h-fit gap-2 pt-2 pb-8 md:pb-4"
             >
-              {
-                offerData?.data?.length !== 0 ?
-                  offerData?.data?.map((offer, index) => (
-                    <OfferListCard
-                      key={index}
-                      offer={offer}
-                      setIsOpenModalDetail={setIsOpenModalDetail}
-                      isOpenModalDetail={isOpenModalDetail}
-                      setSelectedIndex={setSelectedIndex}
-                      setIsShareModal={setIsShareModal}
-                      setIsShowFinanceInfo={setIsShowFinanceInfo}
-                      setFinancingType={setFinancingType}
-                      index={index}
-                    />
-                  ))
-                  :
-                  <div className="w-full bg-white flex flex-col justify-center items-center text-center lg:px-0">
-                    <Image alt="" src={NoData} className="w-[200px] md:w-[250px] mx-auto" />
-                    <Typography className="font-poppins font-medium text-[#262626]">
-                      {t(`${pathTranslation}.text3`)}
-                    </Typography>
-                  </div>
-              }
+              {offerData?.data?.length !== 0 ? (
+                offerData?.data?.map((offer, index) => (
+                  <OfferListCard
+                    key={index}
+                    offer={offer}
+                    setIsOpenModalDetail={setIsOpenModalDetail}
+                    isOpenModalDetail={isOpenModalDetail}
+                    setSelectedIndex={setSelectedIndex}
+                    setIsShareModal={setIsShareModal}
+                    setIsShowFinanceInfo={setIsShowFinanceInfo}
+                    setFinancingType={setFinancingType}
+                    index={index}
+                  />
+                ))
+              ) : (
+                <div className="w-full bg-white flex flex-col justify-center items-center text-center lg:px-0">
+                  <Image
+                    alt=""
+                    src={NoData}
+                    className="w-[200px] md:w-[250px] mx-auto"
+                  />
+                  <Typography className="font-poppins font-medium text-[#262626]">
+                    {t(`${pathTranslation}.text3`)}
+                  </Typography>
+                </div>
+              )}
             </Slider>
           )}
         </div>

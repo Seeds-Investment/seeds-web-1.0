@@ -22,7 +22,8 @@ const ModalRegister: React.FC<Props> = ({
   const router = useRouter();
 
   const [isLinkedSuccess, setIsLinkedSuccess] = useState<boolean>(false);
-  const [isConfirmRegistration, setIsConfirmRegistration] = useState<boolean>(false);
+  const [isConfirmRegistration, setIsConfirmRegistration] =
+    useState<boolean>(false);
   const [isLinkExisting, setIsLinkExisting] = useState<boolean>(false);
 
   return (
@@ -32,8 +33,8 @@ const ModalRegister: React.FC<Props> = ({
         !isLinkedSuccess && !isConfirmRegistration
           ? 'mt-[-18rem] w-full h-fit min-h-[498px] md:w-[450px] md:h-fit'
           : isLinkedSuccess && !isConfirmRegistration
-            ? 'mt-[-12rem] w-full h-fit md:w-[450px]'
-            : 'mt-[-20rem] w-full md:w-[493px] h-[634px] overflow-y-auto md:overflow-y-visible'
+          ? 'mt-[-12rem] w-full h-fit md:w-[450px]'
+          : 'mt-[-20rem] w-full md:w-[493px] h-[634px] overflow-y-auto md:overflow-y-visible'
       }`}
     >
       {!isLinkedSuccess && !isConfirmRegistration && (

@@ -39,8 +39,8 @@ code {
     monospace;
 }
 
-div:has(> div > .DialogNft){
-   z-index: 60 !important;
+div:has(> div > .DialogNft) {
+  z-index: 60 !important;
 }
 
 /* Start Scrollbar */
@@ -248,11 +248,7 @@ div:has(> div > .DialogNft){
 
 .widthPDF {
   width: calc(100vw - 10%);
-
 }
-
-
-
 
 .MentionInputTextArea textarea {
   outline: none;
@@ -390,4 +386,3 @@ li {
 .scrollbar-hide::-webkit-scrollbar-thumb {
   display: none;
 }
-

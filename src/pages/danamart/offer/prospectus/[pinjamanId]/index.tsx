@@ -35,7 +35,8 @@ const Prospectus = (): React.ReactElement => {
   const [detailProspektus, setDetailProspektus] = useState<DetailProspektus>();
   const [offerData, setOfferData] = useState<OfferData>();
   const [prospectusOffer, setProspectusOffer] = useState<OfferList>();
-  const [isShowModalProgress, setIsShowModalProgress] = useState<boolean>(false);
+  const [isShowModalProgress, setIsShowModalProgress] =
+    useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const thumbnailRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -119,12 +120,12 @@ const Prospectus = (): React.ReactElement => {
 
   const getSecurityType = (jenisEfek: string): string => {
     const lowerCaseEfek = jenisEfek.toLowerCase();
-    if (lowerCaseEfek.includes("saham")) {
-        return "stock";
-    } else if (lowerCaseEfek.includes("obligasi")) {
-        return "bond";
+    if (lowerCaseEfek.includes('saham')) {
+      return 'stock';
+    } else if (lowerCaseEfek.includes('obligasi')) {
+      return 'bond';
     }
-    return "unknown";
+    return 'unknown';
   };
 
   return (
@@ -318,18 +319,28 @@ const Prospectus = (): React.ReactElement => {
                   </Typography>
                 </div>
                 <Button
-                  onClick={async() => 
-                    await router.push(`/danamart/offer/prospectus/${prospectusId as string}/purchase?UserPeminjamId=${detailProspektus?.Data?.BeliEfek?.UserPinjamanId}&type=${getSecurityType(detailProspektus?.Data?.jenisEfek)}`)
+                  onClick={async () =>
+                    await router.push(
+                      `/danamart/offer/prospectus/${
+                        prospectusId as string
+                      }/purchase?UserPeminjamId=${
+                        detailProspektus?.Data?.BeliEfek?.UserPinjamanId
+                      }&type=${getSecurityType(
+                        detailProspektus?.Data?.jenisEfek
+                      )}`
+                    )
                   }
                   className="md:w-[311px] w-full h-[52px] bg-[#3AC4A0] text-white rounded-full"
                 >
                   {t('danamart.offers.detail.buy')}
                 </Button>
                 <Typography
-                  onClick={() => { setIsShowReportForm(true) }}
+                  onClick={() => {
+                    setIsShowReportForm(true);
+                  }}
                   className="font-semibold font-poppins text-[#3ac4a0] text-base flex items-center gap-2 cursor-pointer"
                 >
-                  <FiAlertOctagon size={20}/>
+                  <FiAlertOctagon size={20} />
                   {t('danamart.offers.detail.report')}
                 </Typography>
               </div>
@@ -452,17 +463,16 @@ const Prospectus = (): React.ReactElement => {
             setIsShowModalProgress={setIsShowModalProgress}
             timelineOffer={detailProspektus?.Data?.TimelinePenawaran}
           />
-          <hr/>
-          <DetailTab detailProspektus={detailProspektus}/>
+          <hr />
+          <DetailTab detailProspektus={detailProspektus} />
         </div>
-      )
-      :
+      ) : (
         <div className="w-full flex justify-center h-fit mt-16">
           <div className="h-[60px]">
             <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
           </div>
         </div>
-      }
+      )}
       {isShowModalProgress && (
         <ModalProgressOffer
           setIsShowModalProgress={setIsShowModalProgress}

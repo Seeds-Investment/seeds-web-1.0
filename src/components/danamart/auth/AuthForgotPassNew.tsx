@@ -41,7 +41,7 @@ const AuthForgotPassNew: React.FC<Props> = ({
     lowerCase: false,
     upperCase: false,
     numbers: false,
-    specialChar: false,
+    specialChar: false
   });
 
   const checkValidation = (password: string): void => {
@@ -50,7 +50,7 @@ const AuthForgotPassNew: React.FC<Props> = ({
       lowerCase: /[a-z]/.test(password),
       upperCase: /[A-Z]/.test(password),
       numbers: /\d/.test(password),
-      specialChar: /[\W_]/.test(password),
+      specialChar: /[\W_]/.test(password)
     });
   };
 
@@ -72,11 +72,15 @@ const AuthForgotPassNew: React.FC<Props> = ({
       const passTest = regex.test(formDataNewPassword.password);
       if (!passTest) {
         setErrorPass(true);
-        throw new Error(`${t('danamart.forgotPassword.authForgotPass.validation.password')}`);
+        throw new Error(
+          `${t('danamart.forgotPassword.authForgotPass.validation.password')}`
+        );
       }
       if (formDataNewPassword.password !== passwordTemp) {
         setErrorRepass(true);
-        throw new Error(`${t('danamart.forgotPassword.authForgotPass.validation.match')}`);
+        throw new Error(
+          `${t('danamart.forgotPassword.authForgotPass.validation.match')}`
+        );
       }
       if (passTest && formDataNewPassword.password === passwordTemp) {
         await changePassword(formDataNewPassword);
@@ -91,7 +95,9 @@ const AuthForgotPassNew: React.FC<Props> = ({
     <div className={`${className} w-full`}>
       <div className="w-full relative flex justify-center">
         <div
-          onClick={() => { setPage('login'); }}
+          onClick={() => {
+            setPage('login');
+          }}
           className="absolute right-0 cursor-pointer hover:scale-110 duration-150"
         >
           <IoMdClose size={20} />
@@ -111,15 +117,21 @@ const AuthForgotPassNew: React.FC<Props> = ({
           {t('danamart.forgotPassword.createNewPassword.title2')}
         </Typography>
       </div>
-      <div className={`w-full flex flex-col mt-4 ${errorPass ? 'gap-6' : 'gap-2'}`}>
+      <div
+        className={`w-full flex flex-col mt-4 ${errorPass ? 'gap-6' : 'gap-2'}`}
+      >
         <div className="w-full">
           <AuthPassword
             handleChange={handlePass}
             value={passwordTemp}
             error={errorPass}
             name="passwordTemp"
-            label={t('danamart.forgotPassword.authForgotPass.newPassword.label')}
-            placeholder={t('danamart.forgotPassword.authForgotPass.newPassword.placeholder')}
+            label={t(
+              'danamart.forgotPassword.authForgotPass.newPassword.label'
+            )}
+            placeholder={t(
+              'danamart.forgotPassword.authForgotPass.newPassword.placeholder'
+            )}
             handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
               if (e.key === 'Enter') {
                 await handleNext();
@@ -127,7 +139,11 @@ const AuthForgotPassNew: React.FC<Props> = ({
             }}
           />
           <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-            {errorPass ? t('danamart.forgotPassword.authForgotPass.validation.password') : <br />}
+            {errorPass ? (
+              t('danamart.forgotPassword.authForgotPass.validation.password')
+            ) : (
+              <br />
+            )}
           </Typography>
         </div>
         <div className="w-full">
@@ -136,8 +152,12 @@ const AuthForgotPassNew: React.FC<Props> = ({
             value={formDataNewPassword.password}
             error={errorRepass}
             name="password"
-            label={t('danamart.forgotPassword.authForgotPass.matchPassword.label')}
-            placeholder={t('danamart.forgotPassword.authForgotPass.matchPassword.placeholder')}
+            label={t(
+              'danamart.forgotPassword.authForgotPass.matchPassword.label'
+            )}
+            placeholder={t(
+              'danamart.forgotPassword.authForgotPass.matchPassword.placeholder'
+            )}
             handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
               if (e.key === 'Enter') {
                 await handleNext();
@@ -145,32 +165,60 @@ const AuthForgotPassNew: React.FC<Props> = ({
             }}
           />
           <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-            {errorRepass ? t('danamart.forgotPassword.authForgotPass.validation.match') : <br />}
+            {errorRepass ? (
+              t('danamart.forgotPassword.authForgotPass.validation.match')
+            ) : (
+              <br />
+            )}
           </Typography>
         </div>
       </div>
-      <div className={`w-full flex flex-col gap-4 ${(errorRepass) ? 'mt-4' : 'mt-2'}`}>
+      <div
+        className={`w-full flex flex-col gap-4 ${
+          errorRepass ? 'mt-4' : 'mt-2'
+        }`}
+      >
         <div className="flex flex-col gap-2">
           <Typography className="font-poppins font-semibold text-sm text-seeds-green">
             {t('danamart.register.passwordContain')}
           </Typography>
           <div className="flex gap-2">
             <ul className="font-poppins font-normal text-sm">
-              <li className={validation.numbers ? 'text-seeds-green' : 'text-[#7C7C7C]'}>
+              <li
+                className={
+                  validation.numbers ? 'text-seeds-green' : 'text-[#7C7C7C]'
+                }
+              >
                 {t('danamart.register.numbers')}
               </li>
-              <li className={validation.lowerCase ? 'text-seeds-green' : 'text-[#7C7C7C]'}>
+              <li
+                className={
+                  validation.lowerCase ? 'text-seeds-green' : 'text-[#7C7C7C]'
+                }
+              >
                 {t('danamart.register.lowercase')}
               </li>
-              <li className={validation.specialChar ? 'text-seeds-green' : 'text-[#7C7C7C]'}>
+              <li
+                className={
+                  validation.specialChar ? 'text-seeds-green' : 'text-[#7C7C7C]'
+                }
+              >
                 {t('danamart.register.specialCharacters')}
               </li>
             </ul>
             <ul className="font-poppins font-normal text-sm">
-              <li className={validation.length ? 'text-seeds-green' : 'text-[#7C7C7C]'}>
+              <li
+                className={
+                  validation.length ? 'text-seeds-green' : 'text-[#7C7C7C]'
+                }
+              >
                 {t('danamart.register.characters')}
               </li>
-              <li className={validation.upperCase ? 'text-seeds-green' : 'text-[#7C7C7C]'}>
+              <li
+                className={
+                  validation.upperCase ? 'text-seeds-green' : 'text-[#7C7C7C]'
+                }
+              >
                 {t('danamart.register.capitalLetters')}
               </li>
             </ul>
@@ -184,11 +232,11 @@ const AuthForgotPassNew: React.FC<Props> = ({
             !formDataNewPassword.password ||
             formDataNewPassword.password.length === 0 ||
             formDataNewPassword.password !== passwordTemp ||
-            !(validation?.length) ||
-            !(validation?.lowerCase) ||
-            !(validation?.upperCase) ||
-            !(validation?.specialChar) ||
-            !(validation?.numbers)
+            !validation?.length ||
+            !validation?.lowerCase ||
+            !validation?.upperCase ||
+            !validation?.specialChar ||
+            !validation?.numbers
           }
           className="w-full text-base font-semibold bg-seeds-button-green rounded-full capitalize"
         >

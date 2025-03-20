@@ -69,16 +69,16 @@ const withAuthDanamart = (
         await Promise.all([checkAuthDanamart(), checkAuthSeeds()]);
       })();
     }, [router.pathname, accessToken]);
-    
+
     // Idle Logout
     useEffect(() => {
       let idleTimer: NodeJS.Timeout;
 
       const stopIdleTimer = (): void => {
         clearTimeout(idleTimer);
-        window.removeEventListener("mousemove", activityHandler);
-        window.removeEventListener("keydown", activityHandler);
-        window.removeEventListener("click", activityHandler);
+        window.removeEventListener('mousemove', activityHandler);
+        window.removeEventListener('keydown', activityHandler);
+        window.removeEventListener('click', activityHandler);
       };
 
       const resetIdleTimer = (): void => {
@@ -94,26 +94,26 @@ const withAuthDanamart = (
               try {
                 const response = await getIdleLogout();
 
-                if (response?.data?.StatusCode === "200") {
+                if (response?.data?.StatusCode === '200') {
                   window.localStorage.removeItem('accessToken-danamart');
                   hasLoggedOutRef.current = true;
                   toast.warning(t('danamart.idleLogout'));
-                  void router.push('/danamart')
+                  void router.push('/danamart');
                   stopIdleTimer();
                 }
               } catch {}
             })();
           }
         }, 1800000);
-      }
+      };
 
       const activityHandler = (): void => {
         resetIdleTimer();
       };
 
-      window.addEventListener("mousemove", activityHandler);
-      window.addEventListener("keydown", activityHandler);
-      window.addEventListener("click", activityHandler);
+      window.addEventListener('mousemove', activityHandler);
+      window.addEventListener('keydown', activityHandler);
+      window.addEventListener('click', activityHandler);
 
       resetIdleTimer();
 

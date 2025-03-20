@@ -87,7 +87,7 @@ const Dashboard = (): React.ReactElement => {
     return message !== '' ? (
       <div className="w-full bg-[#DA2D1F33] px-4 py-3">
         <Typography
-          onClick={async() => await router.push('/danamart/dashboard/verify')}
+          onClick={async () => await router.push('/danamart/dashboard/verify')}
           className="text-[#DA2D1F] font-poppins font-normal text-sm"
         >
           {message} {''}

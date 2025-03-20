@@ -34,15 +34,17 @@ const ModalPromoGuide: React.FC<Props> = ({
         {t(`${pathTranslation}.title`)}
       </Typography>
 
-      <div className='p-4'>
-        <Typography className='font-poppins text-[#262626]'>
+      <div className="p-4">
+        <Typography className="font-poppins text-[#262626]">
           {t(`${pathTranslation}.text1`)}
         </Typography>
       </div>
 
       <div className="w-full mt-2 flex justify-center md:justify-end">
         <Button
-          onClick={() => { setIsShowPromoGuide(!isShowPromoGuide) }}
+          onClick={() => {
+            setIsShowPromoGuide(!isShowPromoGuide);
+          }}
           className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
         >
           {t(`${pathTranslation}.close`)}

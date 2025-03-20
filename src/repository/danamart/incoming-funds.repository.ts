@@ -31,17 +31,20 @@ export const getIncomingFunds = async (): Promise<any> => {
 
 export const getExportData = async (params: { data: string }): Promise<any> => {
   try {
-    const accessTokenDanamart = localStorage.getItem("accessToken-danamart");
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
     if (accessTokenDanamart === null || accessTokenDanamart === '') {
       return await Promise.resolve('Access token Danamart not found');
     }
 
-    const response = await danamartApi.get("/pemodal/DanaMasuk/laporanDanaMasuk", {
-      params,
-      headers: {
-        Authorization: `Bearer ${accessTokenDanamart}`,
-      },
-    });
+    const response = await danamartApi.get(
+      '/pemodal/DanaMasuk/laporanDanaMasuk',
+      {
+        params,
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`
+        }
+      }
+    );
 
     return response;
   } catch (error: any) {

@@ -85,34 +85,33 @@ const CameraSelfie: React.FC<Props> = ({
       ) : (
         <>
           <div className="relative">
-            {
-              useConfirm ?
-                <Webcam
-                  ref={webcamRef}
-                  screenshotFormat="image/jpeg"
-                  audio={false}
-                  screenshotQuality={1}
-                  videoConstraints={{ facingMode: 'user', width, height }}
-                  onUserMedia={() => {
-                    if (setIsWebcamReady !== undefined) {
-                      setIsWebcamReady(true);
-                    }
-                  }}
-                  onUserMediaError={() => {
-                    if (setIsWebcamReady !== undefined) {
-                      setIsWebcamReady(false);
-                    }
-                  }}
-                />
-                :
-                <Webcam
-                  ref={webcamRef}
-                  screenshotFormat="image/jpeg"
-                  audio={false}
-                  screenshotQuality={1}
-                  videoConstraints={{ facingMode: 'user', width, height }}
-                />
-            }
+            {useConfirm ? (
+              <Webcam
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                audio={false}
+                screenshotQuality={1}
+                videoConstraints={{ facingMode: 'user', width, height }}
+                onUserMedia={() => {
+                  if (setIsWebcamReady !== undefined) {
+                    setIsWebcamReady(true);
+                  }
+                }}
+                onUserMediaError={() => {
+                  if (setIsWebcamReady !== undefined) {
+                    setIsWebcamReady(false);
+                  }
+                }}
+              />
+            ) : (
+              <Webcam
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                audio={false}
+                screenshotQuality={1}
+                videoConstraints={{ facingMode: 'user', width, height }}
+              />
+            )}
             <div
               onClick={capture}
               className="absolute bottom-3 left-1/2 transform -translate-x-1/2 cursor-pointer hover:scale-105 duration-150"

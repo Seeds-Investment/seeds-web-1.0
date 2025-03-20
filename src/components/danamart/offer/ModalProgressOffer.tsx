@@ -14,7 +14,7 @@ const ModalProgressOffer: React.FC<Props> = ({
   isShowModalProgress
 }) => {
   const { t } = useTranslation();
-	const pathTranslation = 'danamart.offers.detail.progress.popup'
+  const pathTranslation = 'danamart.offers.detail.progress.popup';
 
   return (
     <Modal
@@ -25,7 +25,9 @@ const ModalProgressOffer: React.FC<Props> = ({
         {t(`${pathTranslation}.title`)}
       </Typography>
       <button
-        onClick={() => { setIsShowModalProgress(!isShowModalProgress); }}
+        onClick={() => {
+          setIsShowModalProgress(!isShowModalProgress);
+        }}
         className="absolute top-4 right-4 p-1 bg-gray-100 rounded-md hover:bg-gray-200"
       >
         <XMarkIcon className="w-5 h-5 text-gray-600" />
@@ -34,17 +36,19 @@ const ModalProgressOffer: React.FC<Props> = ({
         href="https://dev.danamart.id/development/webapp/vendor/assets/img/progres-penawaran.png"
         target="_blank"
         rel="noopener noreferrer"
-        className='mt-4'
+        className="mt-4"
       >
         <img
-          src={'https://dev.danamart.id/development/webapp/vendor/assets/img/progres-penawaran.png'}
+          src={
+            'https://dev.danamart.id/development/webapp/vendor/assets/img/progres-penawaran.png'
+          }
           alt={'ProgressOffer'}
           className="w-full h-auto object-cover"
           width={1000}
           height={1000}
         />
       </a>
-      <div className='mt-4'>
+      <div className="mt-4">
         <ul>
           <li
             className="font-poppins text-md"

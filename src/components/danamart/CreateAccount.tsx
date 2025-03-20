@@ -141,8 +141,8 @@ const CreateAccount: React.FC<Props> = ({
       });
       toast.success(`Register ${response?.message as string}`);
       if (response?.message === 'Log created successfully') {
-        setConfirmRegistration(false)
-        setIsOpenModalLogin(true)
+        setConfirmRegistration(false);
+        setIsOpenModalLogin(true);
       }
     } catch (error: any) {
       toast.error(error.message);

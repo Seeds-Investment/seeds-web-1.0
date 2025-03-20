@@ -22,7 +22,9 @@ const Verify = (): React.ReactElement => {
   };
 
   const getBarClass = (currentStep: number): string =>
-    currentStep <= step ? 'bg-seeds-button-green' : 'bg-[#E9E9E9] hover:bg-seeds-button-green duration-300';
+    currentStep <= step
+      ? 'bg-seeds-button-green'
+      : 'bg-[#E9E9E9] hover:bg-seeds-button-green duration-300';
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -49,13 +51,19 @@ const Verify = (): React.ReactElement => {
           {[1, 2, 3, 4].map(currentStep => (
             <div
               key={currentStep}
-              className={`h-[6px] w-full ${getBarClass(currentStep)} cursor-pointer`}
-              onClick={() => { setStep(currentStep); }}
+              className={`h-[6px] w-full ${getBarClass(
+                currentStep
+              )} cursor-pointer`}
+              onClick={() => {
+                setStep(currentStep);
+              }}
             />
           ))}
         </div>
         {step === 1 && <PhotoIdCard step={step} setStep={setStep} t={t} />}
-        {step === 2 && <AccountInformation step={step} setStep={setStep} t={t} />}
+        {step === 2 && (
+          <AccountInformation step={step} setStep={setStep} t={t} />
+        )}
         {step === 3 && (
           <FinancialInformation step={step} setStep={setStep} t={t} />
         )}

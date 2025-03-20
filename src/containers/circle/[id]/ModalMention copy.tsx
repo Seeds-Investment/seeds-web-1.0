@@ -1411,7 +1411,7 @@ const ModalMention: React.FC<props> = ({
         </>
       );
     }
-  }
+  };
 
   const handlePages = (): any => {
     if (pages === 'gif') {
@@ -1455,7 +1455,7 @@ const ModalMention: React.FC<props> = ({
         />
       );
     }
-  }
+  };
 
   const renderHashtags = (name: string, desc: string): JSX.Element => {
     return (
@@ -1468,7 +1468,7 @@ const ModalMention: React.FC<props> = ({
         </Typography>
       </div>
     );
-  }
+  };
 
   return (
     <>

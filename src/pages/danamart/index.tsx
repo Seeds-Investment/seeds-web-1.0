@@ -15,7 +15,8 @@ const Danamart = (): React.ReactElement => {
   }>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOpenModalRegister, setIsOpenModalRegister] = useState<boolean>(false);
+  const [isOpenModalRegister, setIsOpenModalRegister] =
+    useState<boolean>(false);
   const [isOpenModalLogin, setIsOpenModalLogin] = useState<boolean>(false);
 
   const fetchUserInfo = async (): Promise<void> => {
@@ -29,7 +30,8 @@ const Danamart = (): React.ReactElement => {
 
   const fetchAccountStatus = async (): Promise<void> => {
     try {
-      const response: { email: string; phone_number: string } = await getAccountInformation();
+      const response: { email: string; phone_number: string } =
+        await getAccountInformation();
       setUserDanamartInformation(response);
     } catch (error: any) {
       toast.error(error.message);

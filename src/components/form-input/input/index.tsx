@@ -1,16 +1,16 @@
-import React, { type ForwardedRef, forwardRef } from "react";
-import { Input } from "react-daisyui";
+import React, { type ForwardedRef, forwardRef } from 'react';
+import { Input } from 'react-daisyui';
 import {
-    type ComponentColor,
-    type ComponentSize,
-    type IComponentBaseProps,
-} from "react-daisyui/dist/types";
-import { type FieldError } from "react-hook-form/dist/types";
-import ValidationError from "../validation/error";
+  type ComponentColor,
+  type ComponentSize,
+  type IComponentBaseProps
+} from 'react-daisyui/dist/types';
+import { type FieldError } from 'react-hook-form/dist/types';
+import ValidationError from '../validation/error';
 
 type InputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
-  "size" | "color"
+  'size' | 'color'
 > &
   IComponentBaseProps & {
     bordered?: boolean;
@@ -22,7 +22,7 @@ type InputProps = Omit<
 
 const CInputInner = (
   props: InputProps,
-  ref: ForwardedRef<HTMLInputElement>,
+  ref: ForwardedRef<HTMLInputElement>
 ): JSX.Element => {
   const handleWheel = (e: React.WheelEvent<HTMLInputElement>): void => {
     const target = e.target as HTMLInputElement;
@@ -35,7 +35,9 @@ const CInputInner = (
         {...props}
         ref={ref}
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        className={`w-full ${props.error !== undefined ? "!border-red-400" : ""} ${props.className ?? ''}`}
+        className={`w-full ${
+          props.error !== undefined ? '!border-red-400' : ''
+        } ${props.className ?? ''}`}
         onWheel={handleWheel}
       />
       <ValidationError error={props?.error} />
@@ -44,7 +46,7 @@ const CInputInner = (
 };
 
 const CInput = forwardRef(CInputInner) as (
-  props: InputProps & { ref?: ForwardedRef<HTMLInputElement> },
+  props: InputProps & { ref?: ForwardedRef<HTMLInputElement> }
 ) => ReturnType<typeof CInputInner>;
 
 export default CInput;

@@ -39,8 +39,8 @@ const TopgainersAssetHomepage: React.FC<props> = ({
       className="w-full h-full"
       breakpoints={breakpoints}
     >
-      {data.length !== 0
-        ? data.map((data, idx: number) => (
+      {data?.length !== 0
+        ? data?.map((data, idx: number) => (
             <SwiperSlide key={idx}>
               <div className="flex flex-row w-full md:px-2 px-0">
                 <Card

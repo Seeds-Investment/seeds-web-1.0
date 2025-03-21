@@ -961,7 +961,8 @@ export default {
       adminFeeDiscountLabel: 'Admin Fee Discount ',
       promoCodeDiscountLabel: 'Promo Code Discount',
       button: 'Pay',
-      seedsCoin: 'Seeds Coin Redeemed'
+      seedsCoin: 'Seeds Coin Redeemed',
+      teamBattleFee: 'Team Battle Fee'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -980,21 +981,30 @@ export default {
       },
       step2: {
         1: 'Enter',
-        2: 'nomor Virtual Account',
+        2: 'Virtual Account number',
         3: 'and choose',
         4: 'Send'
       },
       step3: {
         1: 'Check the information shown on the screen. Make sure the Merchant is',
-        2: 'Seeds, Total bill',
-        3: 'is correct and your username',
+        2: 'Seeds and total bill',
+        3: 'and your username are correct.',
         4: 'If true, Select',
         5: 'Ya'
       },
       step4: {
         1: 'Enter your m-{{provider}} PIN and select',
         2: 'OK'
-      }
+      },
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Redeemed',
+      howToPay: 'How to Pay',
+      choosePayment: 'Choose Payment Method:',
+      warningCompletion: 'Complete payment in',
+      minuteWarning: 'Less than 1 minute',
+      expired: 'Payment expired',
+      minimumPaymentError: 'The minimum transaction amount for Virtual Account payments is IDR 10,000.',
+      teamBattleFee: 'Team Battle Fee'
     }
   },
   promo: {
@@ -2046,8 +2056,8 @@ export default {
     seeQRCode: 'See QR Code',
     expired: {
       text1: 'Your QR Code has expired',
-      text2:
-        'Please make the purchase again and ensure that your payment has been completed in time'
+      text2: 'Please make the purchase again and ensure that your payment has been completed in time',
+      text3: 'Payment expired',
     },
     repeat: 'Repeat Purchase',
     completePayment: 'Complete the payment in',
@@ -2434,7 +2444,7 @@ export default {
       virtualAccountLabel: 'Virtual Account',
       eWalletLabel: 'E-Wallet',
       button: 'Pay',
-      eventFee: "Event's Fee",
+      eventFee: "Event Fee",
       howToPay: 'How to Pay',
       WalletForm: {
         title: 'Enter {{wallet}} Number',
@@ -2473,8 +2483,8 @@ export default {
         },
         step3: {
           1: 'Check the information shown on the screen. Make sure the Merchant is',
-          2: 'Seeds, Total bill',
-          3: 'is correct and your username',
+          2: 'Seeds and total bill',
+          3: 'and your username are correct.',
           4: 'If true, Select',
           5: 'Ya'
         },

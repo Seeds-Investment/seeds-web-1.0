@@ -1,6 +1,7 @@
-import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { payBattle } from '@/repository/team-battle.repository';
+import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type StatusSubscription } from '@/utils/interfaces/subscription.interface';
-import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
+import { type PaymentResult, type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Button, Switch, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -10,7 +11,8 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaChevronRight } from 'react-icons/fa';
 import { IoAlertCircle } from 'react-icons/io5';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../public/assets/images/goldHome.svg';
 import PromoCodeButton from '../promocode/promoCode';
 import Modal from '../ui/modal/Modal';
@@ -38,6 +40,10 @@ const ModalPayBattle: React.FC<Props> = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const [useCoins, setUseCoins] = useState<boolean>(false);
+  
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
 
   const isStarted = (): boolean => {
     const playTime = detailBattle?.elimination_start;
@@ -46,9 +52,72 @@ const ModalPayBattle: React.FC<Props> = ({
 
     return timeStart < timeNow;
   };
+  
+  const handlePayBattle = async (
+    type: string,
+    paymentGateway: string,
+    paymentMethod: string,
+    phoneNumber: string | undefined = userInfo?.phoneNumber
+  ): Promise<void> => {
+    try {
+      if (
+        type === 'ewallet' &&
+        (phoneNumber === userInfo?.phoneNumber || phoneNumber === '')
+      ) {
+        toast.error('Please fill the phone number');
+      }
+      if (detailBattle !== undefined) {
+        const response: PaymentResult = await payBattle({
+          battleId: detailBattle?.id,
+          paymentGateway,
+          paymentMethod,
+          phoneNumber: `+${phoneNumber}`,
+          promoCode: promoCodeValidationResult?.response?.promo_code ?? '',
+          isUseCoins: useCoins,
+          successUrl: `${
+            process.env.NEXT_PUBLIC_DOMAIN as string
+          }/play/team-battle/${detailBattle.id}/`,
+          cancelUrl: `${
+            process.env.NEXT_PUBLIC_DOMAIN as string
+          }/play/team-battle/${detailBattle.id}/`
+        });
+
+        if (response !== undefined) {
+          if (isStarted()) {
+            await router.push(`/play/team-battle/${detailBattle?.id}/stage`);
+          } else {
+            await router.push(`/play/team-battle/${detailBattle?.id}/waiting`);
+          }
+        }
+      }
+    } catch (error) {
+      toast.error(`${error as string}`);
+    }
+  };
+
+  const discount =
+    promoCodeValidationResult !== 0
+      ? promoCodeValidationResult?.response?.total_discount !== undefined
+        ? promoCodeValidationResult?.response?.total_discount
+        : detailBattle?.admission_fee - (promoCodeValidationResult?.response?.final_price ?? 0)
+      : 0;
 
   const handleRedirectPayment = async (): Promise<void> => {
-    if (isStarted()) {
+    if (promoCodeValidationResult !== 0 && promoCodeValidationResult !== undefined) {
+      if ((detailBattle?.admission_fee - discount) === 0) {
+        void handlePayBattle(
+          '',
+          '',
+          '',
+        );
+      } else {
+        await router.push(
+          `/play/team-battle/${
+            detailBattle?.id
+          }/payment?useCoins=${useCoins.toString()}`
+        );
+      }
+    } else {
       if (detailBattle?.admission_fee === 0) {
         onClose();
         setPopUpJoinBattle(true);

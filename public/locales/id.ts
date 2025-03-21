@@ -880,7 +880,8 @@ export default {
       adminFeeDiscountLabel: 'Diskon Biaya Admin ',
       promoCodeDiscountLabel: 'Diskon Kode Promo',
       button: 'Pay',
-      seedsCoin: 'Seeds Coin Digunakan'
+      seedsCoin: 'Seeds Coin Digunakan',
+      teamBattleFee: 'Biaya Team Battle'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -891,8 +892,8 @@ export default {
       admissionFeeLabel: 'Play Membership',
       promoCodeDiscountLabel: 'Diskon Kode Promo',
       adminFeeLabel: 'Admin',
-      note: 'Please complete your payment in 24 hours. Your order will be cancelled automatically if you do not make any payments in 24 hours',
-      instructionLabel: 'mBanking Transfer Instructions',
+      note: 'Selesaikan pembayaran Anda dalam 24 jam. Pesanan Anda akan dibatalkan secara otomatis jika pembayaran tidak dilakukan dalam 24 jam.',
+      instructionLabel: 'Instruksi Transfer mBanking',
       step1: {
         1: 'Pilih',
         2: 'm-Transfer > {{provider}} Virtual Account.'
@@ -904,16 +905,25 @@ export default {
         4: 'Send'
       },
       step3: {
-        1: 'Periksa Informasi yang tertera. pastikan Merchant tertulis adalah',
-        2: 'Seeds, Total bill',
-        3: 'dan username',
+        1: 'Periksa Informasi yang tertera. Pastikan Merchant tertulis adalah',
+        2: 'Seeds dan total bill',
+        3: 'dan username telah benar.',
         4: 'Jika benar, Pilih',
         5: 'Ya'
       },
       step4: {
         1: 'Masukan m-{{provider}} PIN kamu dan pilih',
         2: 'OK'
-      }
+      },
+      button: 'Bayar',
+      seedsCoin: 'Seeds Coin Digunakan',
+      howToPay: 'Cara Pembayaran',
+      choosePayment: 'Pilih Metode Pembayaran:',
+      warningCompletion: 'Selesaikan pembayaran dalam',
+      minuteWarning: 'Kurang dari 1 menit',
+      expired: 'Pembayaran kadaluarsa',
+      minimumPaymentError: 'Jumlah transaksi minimum untuk pembayaran Virtual Account adalah Rp 10.000.',
+      teamBattleFee: 'Biaya Team Battle'
     }
   },
   promo: {
@@ -1975,8 +1985,8 @@ export default {
     seeQRCode: 'Lihat Kode QR',
     expired: {
       text1: 'Kode QR Anda telah kadaluarsa',
-      text2:
-        'Lakukan pembelian ulang dan pastikan pembayaran anda selesai tepat waktu'
+      text2: 'Lakukan pembelian ulang dan pastikan pembayaran anda selesai tepat waktu',
+      text3: 'Pembayaran telah kadaluarsa',
     },
     repeat: 'Ulangi Pembelian',
     completePayment: 'Selesaikan pembayaran dalam',
@@ -2388,7 +2398,7 @@ export default {
         note: 'Selesaikan pembayaran dalam 24 jam. Pesanan akan otomatis dibatalkan jika pembayaran tidak diselesaikan dalam 24 jam kedepan.',
         instructionMessage:
           'Klik "Lanjutkan" untuk melanjutkan proses dan melihat instruksi pembayaran.',
-        instructionLabel: 'mBanking Transfer Instructions',
+        instructionLabel: 'Instruksi Transfer mBanking',
         step1: {
           1: 'Pilih',
           2: 'm-Transfer > {{provider}} Virtual Account.'
@@ -2401,8 +2411,8 @@ export default {
         },
         step3: {
           1: 'Periksa Informasi yang tertera. pastikan Merchant tertulis adalah',
-          2: 'Seeds, Total bill',
-          3: 'dan username',
+          2: 'Seeds dan total bill',
+          3: 'dan username telah benar.',
           4: 'Jika benar, Pilih',
           5: 'Ya'
         },

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
@@ -129,7 +130,6 @@ const TournamentDetail: React.FC = () => {
           router.push(
             `/play/tournament/${
               id as string
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             }/payment?invitationCode=${invitationCode}&useCoins=${useCoins}`
           );
         }
@@ -158,12 +158,16 @@ const TournamentDetail: React.FC = () => {
             '',
             '',
             '',
-            '',
+            promoCodeValidationResult?.response?.promo_code ?? '',
             invitationCode ?? '',
             false
           );
           if (response) {
-            router.push(`/play/tournament/${id as string}/home`);
+            if (isStarted) {
+              await router.push(`/play/tournament/${id as string}/home`);
+            } else {
+              toast.success('Join tournament successful');
+            }
           }
         }
       }
@@ -180,8 +184,8 @@ const TournamentDetail: React.FC = () => {
         '',
         '',
         '',
-        '',
-        '',
+        promoCodeValidationResult?.response?.promo_code ?? '',
+        invitationCode ?? '',
         false
       );
       if (response) {
@@ -235,7 +239,6 @@ const TournamentDetail: React.FC = () => {
   }, [id, userInfo]);
 
   const handleCopyClick = async (): Promise<void> => {
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     const textToCopy = `${detailTournament?.play_id}`;
     await navigator.clipboard.writeText(textToCopy).then(() => {
       toast('Play ID copied!');
@@ -268,16 +271,76 @@ const TournamentDetail: React.FC = () => {
           }
         } else {
           if (detailTournament?.is_need_invitation_code) {
-            if (invitationCode !== '') {
-              handleInvitationCode();
+            if (promoCodeValidationResult !== 0) {
+              if (
+                (promoCodeValidationResult?.response?.final_price !== undefined && promoCodeValidationResult?.response?.total_discount === undefined) ||
+                (promoCodeValidationResult?.response?.final_price !== undefined && promoCodeValidationResult?.response?.total_discount !== undefined)
+              ) {
+                if (Number(promoCodeValidationResult?.response?.final_price) !== 0) {
+                  // Case 1
+                  if (invitationCode !== '') {
+                    handleInvitationCode();
+                  }
+                } else {
+                  // Case 2
+                  if (invitationCode !== '') {
+                    handleInvitationCodeFree();
+                  }
+                }
+              } else {
+                if ((detailTournament?.admission_fee ?? 0) - Number(promoCodeValidationResult?.response?.total_discount) !== 0) {
+                  // Case 3
+                  if (invitationCode !== '') {
+                    handleInvitationCode();
+                  }
+                } else {
+                  // Case 4
+                  if (invitationCode !== '') {
+                    handleInvitationCodeFree();
+                  }
+                }
+              }
+            } else {
+              if (invitationCode !== '') {
+                handleInvitationCode();
+              }
             }
           } else {
-            if (!validInvit) {
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              await router.push(
-                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                `/play/tournament/${id as string}/payment?useCoins=${useCoins}`
-              );
+            if (promoCodeValidationResult !== 0) {
+              if (
+                (promoCodeValidationResult?.response?.final_price !== undefined && promoCodeValidationResult?.response?.total_discount === undefined) ||
+                (promoCodeValidationResult?.response?.final_price !== undefined && promoCodeValidationResult?.response?.total_discount !== undefined)
+              ) {
+                if (Number(promoCodeValidationResult?.response?.final_price) !== 0) {
+                  // Case 1
+                  if (!validInvit) {
+                    await router.push(
+                      `/play/tournament/${id as string}/payment?useCoins=${useCoins}`
+                    );
+                  }
+                } else {
+                  // Case 2
+                  await handleJoinFreeTournament();
+                }
+              } else {
+                if ((detailTournament?.admission_fee ?? 0) - Number(promoCodeValidationResult?.response?.total_discount) !== 0) {
+                  // Case 3
+                  if (!validInvit) {
+                    await router.push(
+                      `/play/tournament/${id as string}/payment?useCoins=${useCoins}`
+                    );
+                  }
+                } else {
+                  // Case 4
+                  await handleJoinFreeTournament();
+                }
+              }
+            } else {
+              if (!validInvit) {
+                await router.push(
+                  `/play/tournament/${id as string}/payment?useCoins=${useCoins}`
+                );
+              }
             }
           }
         }
@@ -413,8 +476,7 @@ const TournamentDetail: React.FC = () => {
           <Typography className="text-[34px] text-white font-semibold font-poppins">
             {detailTournament?.fixed_prize === 0
               ? t('tournament.free')
-              : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                `${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
+              : `${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
                   detailTournament?.fixed_prize ?? 0
                 ).replace('Rp', '')}`}
           </Typography>
@@ -687,8 +749,7 @@ const TournamentDetail: React.FC = () => {
           >
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
-              : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                `${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
+              : `${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
                   detailTournament?.admission_fee ?? 0
                 ).replace('Rp', '')}`}
           </Typography>

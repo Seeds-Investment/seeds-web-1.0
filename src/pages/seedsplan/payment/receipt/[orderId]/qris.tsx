@@ -3,9 +3,7 @@ import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import { getPaymentDetail } from '@/repository/payment.repository';
-import { getPlayById } from '@/repository/play.repository';
 import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
-import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -48,7 +46,6 @@ const SuccessPaymentPageQR: React.FC = () => {
   const paymentUrl = router.query.paymentUrl as string;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
-  const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -63,36 +60,13 @@ const SuccessPaymentPageQR: React.FC = () => {
   };
 
   useEffect(() => {
-    if (orderDetail?.itemId !== undefined) {
-      void fetchTournamentData(orderDetail?.itemId);
-    }
     void fetchOrderDetail();
     dispatch(setPromoCodeValidationResult(0));
   }, [id, orderDetail?.itemId, orderDetail?.howToPayApi]);
 
-  const fetchTournamentData = async (itemId: string): Promise<void> => {
-    try {
-      setIsLoading(true);
-      const resp: IDetailTournament = await getPlayById(itemId);
-      setDetailTournament(resp);
-    } catch (error) {
-      toast(`Error fetch tournament ${error as string}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
     dispatch(setPromoCodeValidationResult(0));
   }, [id, orderDetail]);
-
-  const isStarted = (): boolean => {
-    const playTime = detailTournament?.play_time ?? '2024-12-31T17:00:00Z';
-    const timeStart = new Date(playTime).getTime();
-    const timeNow = Date.now();
-
-    return timeStart < timeNow;
-  };
 
   const scanInstructions = [
     {
@@ -136,7 +110,7 @@ const SuccessPaymentPageQR: React.FC = () => {
               await router
                 .replace(
                   {
-                    pathname: `/play/payment-tournament/receipt/${id}`,
+                    pathname: `/seedsplan/payment/receipt/${id}`,
                     query
                   },
                   undefined,
@@ -230,27 +204,7 @@ const SuccessPaymentPageQR: React.FC = () => {
                     orderDetail?.transactionStatus !== 'SUCCEEDED'
                   }
                   className="w-full md:w-[300px] text-sm font-semibold bg-seeds-button-green rounded-full capitalize"
-                  onClick={() => {
-                    if (isStarted()) {
-                      if (
-                        orderDetail?.transactionStatus === 'SUCCESS' ||
-                        orderDetail?.transactionStatus === 'SETTLEMENT' ||
-                        orderDetail?.transactionStatus === 'SUCCEEDED'
-                      ) {
-                        void router.replace(
-                          `/play/tournament/${orderDetail?.itemId}/home`
-                        );
-                      } else {
-                        void router.replace(
-                          `/play/tournament/${orderDetail?.itemId as string}`
-                        );
-                      }
-                    } else {
-                      void router.replace(
-                        `/play/tournament/${orderDetail?.itemId as string}`
-                      );
-                    }
-                  }}
+                  onClick={() => { void router.replace(`/seedsplan`) }}
                 >
                   {t('bnc.done')}
                 </Button>
@@ -260,7 +214,7 @@ const SuccessPaymentPageQR: React.FC = () => {
               <Button
                 className="w-full md:w-[300px] text-sm font-semibold bg-seeds-button-green rounded-full capitalize mb-4"
                 onClick={async () => {
-                  await router.push(`/play/tournament/${orderDetail?.itemId}`);
+                  await router.push(`/seedsplan`);
                 }}
               >
                 {t('bnc.repeat')}

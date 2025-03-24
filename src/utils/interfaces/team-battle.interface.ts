@@ -279,6 +279,12 @@ export interface PaymentStatus {
   paymentMethod: string;
   vaNumber: string;
   howToPayApi: string;
+  admin_fee: number;
+  service_fee: number;
+  promoPrice: number;
+  seeds_coin: number;
+  promo_price?: number;
+  is_promo_available?: boolean;
 }
 
 export interface PaymentResult {

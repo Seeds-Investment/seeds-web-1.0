@@ -202,7 +202,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
           name: userName,
           phone_number: userPhone,
           email: userEmail,
-          promo_code: promoCodeValidationResult?.promo_code ?? '',
+          promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
           is_use_coins: useCoins,
           succes_url: `${
             process.env.NEXT_PUBLIC_DOMAIN as string
@@ -241,8 +241,13 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             });
         }
       }
-    } catch (error) {
-      toast.error(`${error as string}`);
+    } catch (error: any) {
+      setOpenDialog(false)
+      if (error?.response?.data?.message === "bad request, minimum transaction using VA is 10000") {
+        toast.error(t('PlayPayment.VirtualAccountGuide.minimumPaymentError'));
+      } else {
+        toast.error(`${error as string}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -286,15 +291,15 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       </Typography>
       <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
         <PaymentOptions
-          label={t('seedsEvent.payment.eWalletLabel')}
-          options={eWalletList}
+          label="QRIS"
+          options={qRisList}
           onChange={setOption}
           currentValue={option}
           userInfo={userInfo ?? userDefault}
         />
         <PaymentOptions
-          label="QRIS"
-          options={qRisList}
+          label={t('seedsEvent.payment.eWalletLabel')}
+          options={eWalletList}
           onChange={setOption}
           currentValue={option}
           userInfo={userInfo ?? userDefault}

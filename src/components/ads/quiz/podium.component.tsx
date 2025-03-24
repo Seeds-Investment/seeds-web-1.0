@@ -53,37 +53,83 @@ const PodiumQuiz = (): React.ReactElement => {
       </div>
       <div className="flex flex-col">
         <div className="relative">
-          <img
-            className="absolute w-[19%] rounded-full aspect-square right-1/2 translate-x-1/2 bg-[#B4E5BC]"
-            src={data.find(v => v?.current_rank === 1)?.avatar}
-            alt={data.find(v => v?.current_rank === 1)?.name}
-          />
-          <Image
-            src={first}
-            alt="first"
-            className="absolute w-[12%] rounded-full aspect-square right-[38%] top-[17%]"
-          />
-          <img
-            src={data.find(v => v?.current_rank === 2)?.avatar}
-            alt={data.find(v => v?.current_rank === 2)?.name}
-            className="absolute w-[17%] rounded-full aspect-square bg-[#F4CE9B] top-[7%] left-[8%]"
-          />
-          <Image
-            src={second}
-            alt="second"
-            className="absolute w-[12%] rounded-full aspect-square left-[16%] top-[22%]"
-          />
-          <img
-            src={data.find(v => v?.current_rank === 3)?.avatar}
-            alt={data.find(v => v?.current_rank === 3)?.name}
-            className="absolute w-[17%] rounded-full aspect-square bg-[#F3ABA7] top-[7%] right-[8%]"
-          />
-          <Image
-            src={third}
-            alt="third"
-            className="absolute w-[12%] rounded-full aspect-square right-[5%] top-[22%]"
-          />
-
+          <div className="absolute flex justify-between w-full h-full ps-[11%] pe-[9%]">
+            <div className="flex flex-col items-center w-[18%] mt-[3%]">
+              <p className="font-semibold text-neutral-medium text-xs sm:text-sm md:text-xl">
+                {data.find(v => v?.current_rank === 2)?.name ?? 'Winner'}
+              </p>
+              <div className="relative w-full">
+                <img
+                  src={data.find(v => v?.current_rank === 2)?.avatar}
+                  alt={data.find(v => v?.current_rank === 2)?.name}
+                  className="w-full rounded-full aspect-square bg-[#F4CE9B]"
+                />
+                <Image
+                  src={second}
+                  alt="second"
+                  className="absolute w-[70%] rounded-full aspect-square -right-[20%] -bottom-[20%]"
+                />
+              </div>
+              <div className="mt-[15%] sm:gap-4 flex flex-col justify-center items-center">
+                <p className="font-semibold text-neutral-medium text-xl sm:text-3xl md:text-4xl lg:text-5xl">
+                  2
+                </p>
+                <p className="font-semibold text-neutral-medium text-xs sm:text-sm md:text-base lg:text-xl text-center">
+                  Runner Up
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col items-center w-[21%] -mt-[5%]">
+              <p className="font-semibold text-neutral-medium text-xs sm:text-sm md:text-xl">
+                {data.find(v => v?.current_rank === 1)?.name ?? 'Winner'}
+              </p>
+              <div className="relative w-full">
+                <img
+                  className="w-full rounded-full aspect-square bg-[#B4E5BC]"
+                  src={data.find(v => v?.current_rank === 1)?.avatar}
+                  alt={data.find(v => v?.current_rank === 1)?.name}
+                />
+                <Image
+                  src={first}
+                  alt="first"
+                  className="absolute w-[70%] rounded-full aspect-square -right-[20%] -bottom-[20%]"
+                />
+              </div>
+              <div className="mt-[15%] sm:gap-4 flex flex-col justify-center items-center">
+                <p className="font-semibold text-neutral-medium text-xl sm:text-3xl md:text-4xl lg:text-5xl">
+                  1
+                </p>
+                <p className="font-semibold text-neutral-medium text-xs sm:text-sm md:text-base lg:text-xl text-center">
+                  Champion
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col items-center w-[18%] mt-[3%]">
+              <p className="font-semibold text-neutral-medium text-xs sm:text-sm md:text-xl">
+                {data.find(v => v?.current_rank === 3)?.name ?? 'Winner'}
+              </p>
+              <div className="relative w-full">
+                <img
+                  className="w-full rounded-full aspect-square bg-[#F3ABA7]"
+                  src={data.find(v => v?.current_rank === 3)?.avatar}
+                  alt={data.find(v => v?.current_rank === 3)?.name}
+                />
+                <Image
+                  src={third}
+                  alt="third"
+                  className="absolute w-[70%] rounded-full aspect-square -right-[20%] -bottom-[20%]"
+                />
+              </div>
+              <div className="mt-[15%] sm:gap-4 flex flex-col justify-center items-center">
+                <p className="font-semibold text-neutral-medium text-xl sm:text-3xl md:text-4xl lg:text-5xl">
+                  3
+                </p>
+                <p className="font-semibold text-neutral-medium text-xs sm:text-sm md:text-base lg:text-xl text-center">
+                  Third Place
+                </p>
+              </div>
+            </div>
+          </div>
           <Image src={kotak} alt="kotak" />
           <Image
             src={blurTop}

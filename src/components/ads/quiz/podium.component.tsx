@@ -1,9 +1,44 @@
+import { getQuizLeaderboard } from '@/repository/quiz.repository';
 import Image from 'next/image';
+import blurBottom from 'public/assets/ads/blur-bottom.png';
 import blurTop from 'public/assets/ads/blur-top.png';
+import first from 'public/assets/ads/first.png';
 import kotak from 'public/assets/ads/kotak.png';
-import React from 'react';
+import second from 'public/assets/ads/second.png';
+import third from 'public/assets/ads/third.png';
+import React, { useCallback, useEffect, useState } from 'react';
+
+interface Root {
+  id: string;
+  quiz_id: string;
+  user_id: string;
+  name: string;
+  seeds_tag: string;
+  bio: string;
+  avatar: string;
+  verified: boolean;
+  is_followed: boolean;
+  scores: number;
+  total_play: number;
+  total_win: number;
+  total_lose: number;
+  win_rate: number;
+  current_rank: number;
+  created_at: string;
+  updated_at: string;
+  total_prizes: number;
+}
 
 const PodiumQuiz = (): React.ReactElement => {
+  const [data, setData] = useState<Root[]>([]);
+
+  const handleRes = useCallback(async () => {
+    const res = await getQuizLeaderboard({ page: 1, limit: 6 });
+    setData(res.data);
+  }, []);
+  useEffect(() => {
+    void handleRes();
+  }, []);
   return (
     <div className="flex flex-col gap-8 md:gap-16 items-center justify-center">
       <div className="flex flex-col items-center justify-center gap-2 md:gap-4">
@@ -18,65 +53,86 @@ const PodiumQuiz = (): React.ReactElement => {
       </div>
       <div className="flex flex-col">
         <div className="relative">
-          <div></div>
-          <div className="absolute w-[19%] rounded-full aspect-square bg-black right-1/2 translate-x-1/2" />
-          <div className="absolute w-[7%] rounded-full aspect-square bg-blue-400 right-[40%] top-[20%]" />
-
-          <div className="absolute w-[17%] rounded-full aspect-square bg-red-400 top-[7%] left-[8%]" />
-          <div className="absolute w-[5%] rounded-full aspect-square bg-blue-400 left-[20%] top-[27%]" />
-          <div className="absolute w-[17%] rounded-full aspect-square bg-red-400 top-[7%] right-[8%]" />
-          <div className="absolute w-[5%] rounded-full aspect-square bg-blue-400 right-[8%] top-[27%]" />
+          <img
+            className="absolute w-[19%] rounded-full aspect-square right-1/2 translate-x-1/2 bg-[#B4E5BC]"
+            src={data.find(v => v?.current_rank === 1)?.avatar}
+            alt={data.find(v => v?.current_rank === 1)?.name}
+          />
+          <Image
+            src={first}
+            alt="first"
+            className="absolute w-[12%] rounded-full aspect-square right-[38%] top-[17%]"
+          />
+          <img
+            src={data.find(v => v?.current_rank === 2)?.avatar}
+            alt={data.find(v => v?.current_rank === 2)?.name}
+            className="absolute w-[17%] rounded-full aspect-square bg-[#F4CE9B] top-[7%] left-[8%]"
+          />
+          <Image
+            src={second}
+            alt="second"
+            className="absolute w-[12%] rounded-full aspect-square left-[16%] top-[22%]"
+          />
+          <img
+            src={data.find(v => v?.current_rank === 3)?.avatar}
+            alt={data.find(v => v?.current_rank === 3)?.name}
+            className="absolute w-[17%] rounded-full aspect-square bg-[#F3ABA7] top-[7%] right-[8%]"
+          />
+          <Image
+            src={third}
+            alt="third"
+            className="absolute w-[12%] rounded-full aspect-square right-[5%] top-[22%]"
+          />
 
           <Image src={kotak} alt="kotak" />
           <Image
             src={blurTop}
             alt="blurTop"
-            className="absolute z-10 -bottom-[10%] w-full"
+            className="absolute z-10 -bottom-[13%] w-full"
           />
         </div>
         <div className="relative flex">
-          {/* <table className="w-full border-collapse z-20">
+          <table className="w-full border-collapse z-20">
             <thead>
-              <tr className="text-center">
-                <th className="font-normal text-neutral-medium text-xl text-left">
+              <tr className="text-center text-sm sm:text-xl">
+                <th className="font-normal text-neutral-medium text-left">
                   Peserta
                 </th>
-                <th className="font-normal text-neutral-medium text-xl">
-                  Kompetisi
-                </th>
-                <th className="font-normal text-neutral-medium text-xl">
-                  Hadiah
-                </th>
+                <th className="font-normal text-neutral-medium">Hadiah</th>
               </tr>
             </thead>
             <tbody>
-              {participants.map((participant, index) => (
+              {data?.slice(3, 6)?.map((participant, index) => (
                 <tr key={index} className="text-center">
-                  <td className="py-4 px-6 flex items-center gap-8 text-left">
-                    <span className="font-semibold text-xl text-neutral-medium">
-                      {index + 1}
+                  <td className="py-2 sm:py-4 sm:px-6 flex items-center gap-2 sm:gap-8 text-left">
+                    <span className="font-semibold text-sm sm:text-xl text-neutral-medium">
+                      {index + 3}
                     </span>
-                    <Image
-                      src={participant.image}
-                      alt={participant.name}
-                      width={80}
-                      height={80}
-                      className="rounded-full object-cover bg-black"
+                    <img
+                      src={participant?.avatar}
+                      alt={participant?.name}
+                      className="rounded-full w-8 sm:w-16 object-cover bg-black"
                     />
-                    <span className="font-semibold text-base text-neutral-medium">
-                      {participant.name}
+                    <span className="font-semibold text-xs sm:text-base text-neutral-medium">
+                      {participant?.name}
                     </span>
                   </td>
-                  <td className="font-semibold text-base text-neutral-medium">
-                    {participant.competition}
-                  </td>
-                  <td className="font-semibold text-base text-neutral-medium">
-                    {participant.prize}
+                  <td className="font-semibold text-xs sm:text-base text-neutral-medium">
+                    {Intl.NumberFormat('id-ID', {
+                      style: 'currency',
+                      currency: 'IDR',
+                      maximumFractionDigits: 0
+                    }).format(participant?.total_prizes) ?? 0}
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table> */}
+          </table>
+          <Image
+            src={blurBottom}
+            alt="blurBottom"
+            className="absolute z-30 -bottom-[17%] md:-bottom-[25%] w-full"
+          />
         </div>
       </div>
 

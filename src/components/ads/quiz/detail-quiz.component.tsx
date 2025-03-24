@@ -1,10 +1,14 @@
 import { type QuizIdRoot } from '@/containers/ads/quiz-play.section';
-import { getAllQuizNoToken, getQuizById } from '@/repository/quiz.repository';
+import {
+  getAllQuizNoToken,
+  getQuizByIdNoToken
+} from '@/repository/quiz.repository';
 import { QuizStatus } from '@/utils/interfaces/quiz.interfaces';
 import { Button, Card } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import badge from 'public/assets/ads/badge.png';
 import cryptoAds from 'public/assets/ads/crypto-ads.jpg';
 import idAds from 'public/assets/ads/id-ads.jpg';
 import quizAds from 'public/assets/ads/quiz-ads.jpg';
@@ -26,7 +30,7 @@ const DetailQuiz = (): React.ReactElement => {
     let counter = 0;
 
     while (counter < (res?.data?.length ?? 0)) {
-      const resId: QuizIdRoot = await getQuizById({
+      const resId: QuizIdRoot = await getQuizByIdNoToken({
         id: res.data[counter].id as string,
         currency: ''
       });
@@ -57,10 +61,22 @@ const DetailQuiz = (): React.ReactElement => {
             )
             ?.map((v: QuizIdRoot, i) => (
               <Card
-                className="flex flex-col lg:flex-row items-start lg:items-center justify-between p-4 lg:p-8 gap-3 lg:gap-0"
+                className="relative flex flex-col lg:flex-row items-start lg:items-center justify-between p-4 lg:p-8 gap-3 lg:gap-0"
                 key={i}
               >
-                <div className="flex gap-4 lg:gap-8 items-center">
+                <Image
+                  src={badge}
+                  alt="badge"
+                  className="absolute top-0 lg:left-0 right-0 lg:right-auto"
+                />
+                <p className="absolute top-2 lg:left-14 right-2 lg:right-auto text-white font-semibold">
+                  {Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                  }).format(v?.prizes.reduce((acc, val) => acc + val, 0))}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 lg:gap-8 items-start sm:items-center">
                   <Image
                     className="aspect-square !w-20 lg:!w-32 rounded-full object-contain"
                     src={
@@ -75,7 +91,7 @@ const DetailQuiz = (): React.ReactElement => {
                     alt={v?.name}
                   />
 
-                  <div className="flex flex-col gap-1 lg:hidden">
+                  <div className="flex flex-row gap-1 lg:hidden">
                     <p className="font-semibold text-neutral-medium text-sm">
                       {v?.name}
                     </p>
@@ -103,19 +119,21 @@ const DetailQuiz = (): React.ReactElement => {
                             :{' '}
                             {Intl.DateTimeFormat('id-ID', {
                               day: '2-digit',
-                              month: 'long',
+                              month: '2-digit',
                               year: 'numeric'
-                            }).format(new Date(v?.started_at))}
+                            })?.format(new Date(v?.started_at))}
                           </p>
                           <p>End Date</p>
                           <p>
                             :{' '}
                             {Intl.DateTimeFormat('id-ID', {
                               day: '2-digit',
-                              month: 'long',
+                              month: '2-digit',
                               year: 'numeric'
-                            }).format(new Date(v?.ended_at))}
+                            })?.format(new Date(v?.ended_at))}
                           </p>
+                        </div>
+                        <div className="grid grid-cols-2 items-center gap-1">
                           <p>Participants</p>{' '}
                           <p>
                             :{' '}
@@ -123,8 +141,6 @@ const DetailQuiz = (): React.ReactElement => {
                               ? v?.participant_user_ids.length
                               : 0}
                           </p>
-                        </div>
-                        <div className="grid grid-cols-2 items-center gap-1">
                           <p>Ticket Price</p>
                           <p>
                             :{' '}
@@ -146,21 +162,6 @@ const DetailQuiz = (): React.ReactElement => {
                               </span>
                             )}
                           </p>
-                          <p>Total Prize</p>{' '}
-                          <p>
-                            :{' '}
-                            <span className="font-semibold text-neutral-medium">
-                              {Intl.NumberFormat('id-ID', {
-                                style: 'currency',
-                                currency: 'IDR',
-                                minimumFractionDigits: 0
-                              }).format(
-                                v?.prizes.reduce((acc, val) => acc + val, 0)
-                              )}
-                            </span>
-                          </p>
-                          <p className="text-transparent">.</p>
-                          <p className="text-transparent">.</p>
                         </div>
                       </div>
                     </div>
@@ -173,7 +174,7 @@ const DetailQuiz = (): React.ReactElement => {
                       :{' '}
                       {Intl.DateTimeFormat('id-ID', {
                         day: '2-digit',
-                        month: 'long',
+                        month: '2-digit',
                         year: 'numeric'
                       }).format(new Date(v?.started_at))}
                     </p>
@@ -182,10 +183,12 @@ const DetailQuiz = (): React.ReactElement => {
                       :{' '}
                       {Intl.DateTimeFormat('id-ID', {
                         day: '2-digit',
-                        month: 'long',
+                        month: '2-digit',
                         year: 'numeric'
                       }).format(new Date(v?.ended_at))}
                     </p>
+                  </div>
+                  <div className="grid grid-cols-2 items-center gap-1">
                     <p>Participants</p>{' '}
                     <p>
                       :{' '}
@@ -193,8 +196,6 @@ const DetailQuiz = (): React.ReactElement => {
                         ? v?.participant_user_ids.length
                         : 0}
                     </p>
-                  </div>
-                  <div className="grid grid-cols-2 items-center gap-1">
                     <p>Ticket Price</p>
                     <p>
                       :{' '}
@@ -216,19 +217,6 @@ const DetailQuiz = (): React.ReactElement => {
                         </span>
                       )}
                     </p>
-                    <p>Total Prize</p>{' '}
-                    <p>
-                      :{' '}
-                      <span className="font-semibold text-neutral-medium">
-                        {Intl.NumberFormat('id-ID', {
-                          style: 'currency',
-                          currency: 'IDR',
-                          minimumFractionDigits: 0
-                        }).format(v?.prizes.reduce((acc, val) => acc + val, 0))}
-                      </span>
-                    </p>
-                    <p className="text-transparent">.</p>
-                    <p className="text-transparent">.</p>
                   </div>
                 </div>
                 <div className="flex flex-col w-full sm:w-fit sm:self-end lg:self-auto">
@@ -242,7 +230,7 @@ const DetailQuiz = (): React.ReactElement => {
                         : `/auth?qi=${v?.id}`
                     }
                   >
-                    <Button className="rounded-full bg-[#3AC4A0] capitalize font-poppins font-semibold text-xl w-full">
+                    <Button className="rounded-full bg-[#3AC4A0] capitalize font-poppins font-semibold text-xl w-full sm:w-[141px]">
                       Play Now
                     </Button>
                   </Link>

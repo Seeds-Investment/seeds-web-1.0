@@ -116,6 +116,21 @@ export const getQuizById = async ({
   }
 };
 
+export const getQuizByIdNoToken = async ({
+  id,
+  currency
+}: {
+  id: string;
+  currency: string;
+}): Promise<any> => {
+  try {
+    const path = `/${id}?currency=${currency}`;
+    return await quizService.get(path);
+  } catch (error) {
+    console.error('Error fetching trending play list:', error);
+  }
+};
+
 export const getQuizCategoryById = async (id: string): Promise<any> => {
   try {
     return await quizService.get(`/category/${id}`);

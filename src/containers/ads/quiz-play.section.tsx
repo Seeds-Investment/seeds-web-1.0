@@ -1,8 +1,11 @@
+import Benefit from '@/components/ads/quiz/benefit.component';
 import DetailQuiz from '@/components/ads/quiz/detail-quiz.component';
 import ExploreQuiz from '@/components/ads/quiz/explore.component';
 import FooterQuiz from '@/components/ads/quiz/footer.component';
 import Header from '@/components/ads/quiz/header.component';
+import PodiumQuiz from '@/components/ads/quiz/podium.component';
 import Testimony from '@/components/ads/quiz/testimony.component';
+import WhatSeeds from '@/components/ads/quiz/what.component';
 import WhyPlay from '@/components/ads/quiz/why-play.component';
 import React, { useRef } from 'react';
 
@@ -95,12 +98,14 @@ const QuizPlay = (): React.ReactElement => {
     <div className="flex flex-col gap-6 md:gap-16 font-poppins">
       <Header scrollToSection={scrollToSection} />
       <section className="flex flex-col gap-6 lg:gap-16 px-4 md:px-20">
+        <WhatSeeds />
+        <Benefit/>
         <div className="py-6 flex flex-col gap-8 lg:gap-16" ref={sectionRef}>
           <DetailQuiz />
         </div>
         <WhyPlay />
         <ExploreQuiz />
-        {/* <PodiumQuiz /> */}
+        <PodiumQuiz />
       </section>
       <Testimony />
       <FooterQuiz scrollToSection={scrollToSection} />

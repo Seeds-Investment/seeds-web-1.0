@@ -69,12 +69,20 @@ const DetailQuiz = (): React.ReactElement => {
                   alt="badge"
                   className="absolute top-0 lg:left-0 right-0 lg:right-auto"
                 />
-                <p className="absolute top-2 lg:left-14 right-2 lg:right-auto text-white font-semibold">
-                  {Intl.NumberFormat('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                    minimumFractionDigits: 0
-                  }).format(v?.prizes.reduce((acc, val) => acc + val, 0))}
+                <p
+                  className={`absolute top-2 lg:left-14 right-2 lg:right-auto text-white font-semibold ${
+                    v?.prizes.reduce((acc, val) => acc + val, 0) === 0
+                      ? 'text-sm'
+                      : ''
+                  }`}
+                >
+                  {v?.prizes.reduce((acc, val) => acc + val, 0) === 0
+                    ? 'Special Reward'
+                    : Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                        minimumFractionDigits: 0
+                      }).format(v?.prizes.reduce((acc, val) => acc + val, 0))}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 lg:gap-8 items-start sm:items-center">
                   <Image
@@ -101,17 +109,15 @@ const DetailQuiz = (): React.ReactElement => {
                   </div>
                   <div className="lg:flex flex-col gap-8 hidden">
                     <div className="flex flex-col gap-2">
-                      <div className="flex gap-2 items-center">
-                        <p className="font-semibold text-neutral-medium text-xl">
-                          {v?.name}
-                        </p>
-                        <p className="font-semibold text-[#BDBDBD] text-xl">
+                      <p className="font-semibold text-neutral-medium text-xl">
+                        {v?.name}{' '}
+                        <span className="font-semibold text-[#BDBDBD] text-xl">
                           .
-                        </p>
-                        <p className="font-semibold text-[#BDBDBD] text-xs">
+                        </span>{' '}
+                        <span className="font-semibold text-[#BDBDBD] text-xs">
                           {v?.category}
-                        </p>
-                      </div>
+                        </span>
+                      </p>
                       <div className="flex flex-col lg:flex-row gap-1 lg:gap-4 font-normal text-neutral-medium text-sm w-fit">
                         <div className="grid grid-cols-2 items-center gap-1">
                           <p>Start Date</p>
@@ -229,6 +235,7 @@ const DetailQuiz = (): React.ReactElement => {
                             .replaceAll('#', '%23')}%25break%25`
                         : `/auth?qi=${v?.id}`
                     }
+                    className="w-fit self-end"
                   >
                     <Button className="rounded-full bg-[#3AC4A0] capitalize font-poppins font-semibold text-xl w-full sm:w-[141px]">
                       Play Now

@@ -35,6 +35,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
+          file: Dockerfile.prod
           push: true
           tags: |
              crpi-cstuvf7kwe6mse4u.ap-southeast-5.personal.cr.aliyuncs.com/seeds-prod/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}

@@ -16,23 +16,17 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - id: auth
-        name: Authenticate with Google Cloud
-        uses: google-github-actions/auth@v0
+      - uses: aliyun/acr-login@v1
         with:
-          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.3.0
-
-      - name: Configure docker credential helper artifact registry
-        run: gcloud auth configure-docker asia-southeast2-docker.pkg.dev
+          login-server: ${{ secrets.ALIBABA_LOGIN_SERVER }}
+          username: ${{ secrets.ALIBABA_ACR_USERNAME }}
+          password: ${{ secrets.ALIBABA_ACR_PASSWORD }}
 
       - name: Get version
         run: echo "GITHUB_SHA_SHORT=$(echo ${GITHUB_SHA::7})" >> $GITHUB_ENV
@@ -41,26 +35,32 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: Dockerfile.prod
           push: true
-          tags:
-            asia-southeast2-docker.pkg.dev/project-01-387706/seeds/${{
-            env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
+          file: services/b2b/Dockerfile
+          tags: |
+             crpi-cstuvf7kwe6mse4u.ap-southeast-5.personal.cr.aliyuncs.com/seeds-prod/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
 
-      - name: get-credentials GKE
-        uses: google-github-actions/get-gke-credentials@v1
-        with:
-          cluster_name: production-cluster
-          location: asia-southeast2
-
-      - name: Update Image GKE
+      - name: Setup ssh key
         run: |
-          export IMAGE_TAG=asia-southeast2-docker.pkg.dev/project-01-387706/seeds/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
-          export DEPLOYMENT_NAME=web
-          export CONTAINER_NAME=web
-          kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE_TAG -n production
+          mkdir -p $HOME/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY_PROD_ALIBABA }}" > $HOME/.ssh/id_rsa
+          chmod 600 $HOME/.ssh/id_rsa
 
-      # - name: Update secret
-      #   run: |
-      #     kubectl delete secret web-secret -n production
-      #     kubectl create secret generic web-secret --from-file=environment/.env-prod -n production
+      - name: Download docker image
+        run:  |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_PROD_ALI }}@${{ secrets.SSH_IP_PROD_ALI }} 'docker login crpi-cstuvf7kwe6mse4u.ap-southeast-5.personal.cr.aliyuncs.com'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_PROD_ALI }}@${{ secrets.SSH_IP_PROD_ALI }} 'docker pull crpi-cstuvf7kwe6mse4u.ap-southeast-5.personal.cr.aliyuncs.com/seeds-prod/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}'
+
+      - name: Update Docker Compose
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_PROD_ALI }}@${{ secrets.SSH_IP_PROD_ALI }} 'versi="$(cat /home/ecs-user/compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml | grep image | cut -d ":" -f 3)" && sed -i "s#image: crpi-cstuvf7kwe6mse4u.ap-southeast-5.personal.cr.aliyuncs.com/seeds-prod/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${versi}#image: crpi-cstuvf7kwe6mse4u.ap-southeast-5.personal.cr.aliyuncs.com/seeds-prod/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}#g" /home/ecs-user/compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml'
+
+      - name: Running container
+        run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_PROD_ALI }}@${{ secrets.SSH_IP_PROD_ALI }} 'docker compose -f /home/ecs-user/compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml up -d'
+
+      - name: Clean up old Docker images on server 
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_PROD_ALI }}@${{ secrets.SSH_IP_PROD_ALI }} './cleanup-docker-images.sh '${{ env.GITHUB_REGISTRY_IMAGE_NAME }}' '${{ env.GITHUB_SHA_SHORT }}''
+
+      - name: Clean up ssh key
+        run: rm -rf $HOME/.ssh/*

@@ -1,4 +1,5 @@
 import ModalPromoGuide from '@/components/danamart/promotion/ModalPromoGuide';
+import ModalPromoRejection from '@/components/danamart/promotion/ModalPromoRejection';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
 import { validatePromoCode } from '@/repository/danamart/promotion.repository';
@@ -15,6 +16,7 @@ const Promotion = (): React.ReactElement => {
   const [kodePromo, setKodePromo] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isShowPromoGuide, setIsShowPromoGuide] = useState<boolean>(false);
+  const [isShowPromoRejection, setIsShowPromoRejection] = useState<boolean>(false);
 
   const handleValidatePromoCode = async (): Promise<void> => {
     try {
@@ -39,9 +41,9 @@ const Promotion = (): React.ReactElement => {
         error?.response?.data?.message ===
         'Maaf! Kode-mu tidak valid, kuota sudah habis , masa berlakunya telah berakhir atau tidak memenuhi syarat dan ketentuan. Silakan coba lagi dengan kode lainnya ya.'
       ) {
-        toast.error(t(`${pathTranslation}.text9`));
+        setIsShowPromoRejection(true)
       } else {
-        toast.error(error?.response?.data?.message);
+        setIsShowPromoRejection(true)
       }
     } finally {
       setIsLoading(false);
@@ -116,6 +118,12 @@ const Promotion = (): React.ReactElement => {
         <ModalPromoGuide
           setIsShowPromoGuide={setIsShowPromoGuide}
           isShowPromoGuide={isShowPromoGuide}
+        />
+      )}
+      {isShowPromoRejection && (
+        <ModalPromoRejection
+          setIsShowPromoRejection={setIsShowPromoRejection}
+          isShowPromoRejection={isShowPromoRejection}
         />
       )}
     </PageGradient>

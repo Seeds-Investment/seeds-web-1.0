@@ -28,6 +28,7 @@ const CameraSelfie: React.FC<Props> = ({
 }) => {
   const webcamRef = useRef<Webcam | null>(null);
   const [captureImage, setCaptureImage] = useState<string | null>(null);
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
 
   const capture = useCallback(() => {
     if (webcamRef.current != null) {
@@ -53,6 +54,10 @@ const CameraSelfie: React.FC<Props> = ({
     }
   };
 
+  const switchCamera = (): void => {
+    setFacingMode(prev => (prev === 'user' ? 'environment' : 'user'));
+  };
+
   return (
     <div className="flex flex-col items-center gap-2">
       {captureImage !== null ? (
@@ -66,9 +71,7 @@ const CameraSelfie: React.FC<Props> = ({
           {!isUsePhoto && (
             <div className="flex items-center gap-3">
               <Button
-                onClick={() => {
-                  setCaptureImage(null);
-                }}
+                onClick={() => { setCaptureImage(null); }}
                 className="flex items-center justify-center bg-white border border-seeds-button-green text-seeds-green capitalize text-sm font-poppins font-semibold rounded-full w-[155px] h-[36px]"
               >
                 {t('danamart.verification.photoSelfie.retake')}
@@ -91,7 +94,7 @@ const CameraSelfie: React.FC<Props> = ({
                 screenshotFormat="image/jpeg"
                 audio={false}
                 screenshotQuality={1}
-                videoConstraints={{ facingMode: 'user', width, height }}
+                videoConstraints={{ facingMode, width, height }}
                 onUserMedia={() => {
                   if (setIsWebcamReady !== undefined) {
                     setIsWebcamReady(true);
@@ -121,17 +124,25 @@ const CameraSelfie: React.FC<Props> = ({
               </div>
             </div>
           </div>
-          <Button
-            onClick={() => {
-              setIsCameraActive(false);
-              if (setIsWebcamReady !== undefined) {
-                setIsWebcamReady(false);
-              }
-            }}
-            className="flex items-center justify-center bg-white border border-seeds-button-green text-seeds-green capitalize text-sm font-poppins font-semibold rounded-full w-[155px] h-[36px]"
-          >
-            {t('danamart.verification.photoSelfie.cancel')}
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              onClick={switchCamera}
+              className="flex items-center justify-center bg-white border border-seeds-button-green text-seeds-green capitalize text-sm font-poppins font-semibold rounded-full w-fit h-[36px]"
+            >
+              {t('danamart.verification.photoSelfie.switchCamera')}
+            </Button>
+            <Button
+              onClick={() => {
+                setIsCameraActive(false);
+                if (setIsWebcamReady !== undefined) {
+                  setIsWebcamReady(false);
+                }
+              }}
+              className="flex items-center justify-center bg-white border border-seeds-button-green text-seeds-green capitalize text-sm font-poppins font-semibold rounded-full w-[155px] h-[36px]"
+            >
+              {t('danamart.verification.photoSelfie.cancel')}
+            </Button>
+          </div>
         </>
       )}
     </div>

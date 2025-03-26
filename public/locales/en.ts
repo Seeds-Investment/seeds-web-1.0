@@ -2964,9 +2964,9 @@ export default {
       topUp: 'Top Up',
       cashInHand: 'Cash In-hand',
       cashInHandDesc: 'Funds available for withdrawal or investment',
-      danaReward: 'Dana Reward',
+      danaReward: 'Reward Funds',
       danaRewardDesc: 'Promotional funds that can only be invested',
-      danaInterim: 'Dana Interim',
+      danaInterim: 'Interim Funds',
       danaInterimDesc: 'Funds from interim dividends or referral commissions',
       investableFunds: 'Investable Funds',
       investableFundsDesc: 'Cash In-hand + Reward Fund + Interim Fund',
@@ -3265,6 +3265,7 @@ export default {
       photoSelfieTittle: 'Photo Selfie',
       photoSelfie: {
         previewSelfie: 'Preview Photo Selfie',
+        switchCamera: 'Switch Camera',
         camera: 'Camera',
         retake: 'Retake',
         cancel: 'Cancel',
@@ -3970,7 +3971,10 @@ export default {
         title: 'About Promo Codes and Referral Codes',
         text1:
           'A Promo Code is a unique code that you can use to get exciting offers.',
-        close: 'Close'
+        text2: 'Oops!',
+        text3: 'Sorry! Your code is invalid, the quota has been exhausted, the validity period has expired, or it does not meet the terms and conditions. Please try again with another code.',
+        close: 'Close',
+        ok: 'Ok',
       }
     },
     idleLogout:

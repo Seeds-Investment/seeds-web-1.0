@@ -3198,6 +3198,7 @@ export default {
       photoSelfieTittle: 'Foto Diri',
       photoSelfie: {
         previewSelfie: 'Pratinjau Foto Selfie',
+        switchCamera: 'Ubah Kamera',
         camera: 'Kamera',
         retake: 'Ambil Ulang',
         continue: 'Lanjutkan',
@@ -3907,7 +3908,10 @@ export default {
         title: 'Tentang Kode Promo dan Kode Referral',
         text1:
           'Kode Promo adalah kode unik yang dapat digunakan oleh-mu untuk mendapatkan penawaran menarik ya.',
-        close: 'Tutup'
+        text2: 'Ups!',
+        text3: 'Maaf! Kode-mu tidak valid, kuota sudah habis , masa berlakunya telah berakhir atau tidak memenuhi syarat dan ketentuan. Silakan coba lagi dengan kode lainnya ya.',
+        close: 'Tutup',
+        ok: 'Ok',
       }
     },
     idleLogout:

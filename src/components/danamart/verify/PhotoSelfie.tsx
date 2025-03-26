@@ -20,7 +20,6 @@ interface Props {
 
 const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
   const [photoSelfieData, setPhotoSelfieData] = useState<AccountVerification>();
-
   const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
   const [isUsePhoto, setIsUsePhoto] = useState<boolean>(false);
   const [imageData, setImageData] = useState<string>('');
@@ -88,7 +87,7 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
                 setImageData={setImageData}
                 height={312}
                 width={208}
-                useConfirm={false}
+                useConfirm={true}
               />
             ) : (
               <>

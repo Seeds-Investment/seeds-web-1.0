@@ -38,7 +38,7 @@ const OfferListCard: React.FC<Props> = ({
   return (
     <div
       key={offer.pinjaman_id}
-      className="w-full relative h-fit rounded-lg shadow-md hover:shadow-lg duration-100"
+      className="w-full relative h-full min-h-[400px] flex flex-col justify-between rounded-lg shadow-md hover:shadow-lg duration-100"
     >
       <div className="relative h-[150px] w-full">
         <Image
@@ -48,6 +48,21 @@ const OfferListCard: React.FC<Props> = ({
           height={1000}
           className="object-cover w-full h-full rounded-t-lg"
         />
+        {
+          offer?.is_co === "1" ? (
+            <Typography className="font-poppins absolute top-0 left-0 bg-[#B14FAB] opacity-90 text-white text-sm px-2 py-1 rounded-tl-lg rounded-br-lg">
+              {t(`${pathTranslation}.text11`)}
+            </Typography>
+          ) : offer?.status_sla === "Bisnis Berjalan" ? null : offer?.isPrelisting === "PreListing" ? (
+            <Typography className="font-poppins absolute top-0 left-0 bg-[#FF7F27] opacity-95 text-white text-sm px-2 py-1 rounded-tl-lg rounded-br-lg">
+              Pre-Listing
+            </Typography>
+          ) : offer?.isPrelisting === "Listing" ? (
+            <Typography className="font-poppins absolute top-0 left-0 bg-[#B0D44C] opacity-95 text-white text-sm px-2 py-1 rounded-tl-lg rounded-br-lg">
+              Listing
+            </Typography>
+          ) : null
+        }
       </div>
       <div className="p-2">
         <div className="w-full flex justify-between">
@@ -65,11 +80,11 @@ const OfferListCard: React.FC<Props> = ({
             </Typography>
           </div>
         </div>
-        <Typography className="font-poppins font-bold text-md my-3">
+        <Typography className="font-poppins font-bold text-md my-3 line-clamp-2 h-fit">
           {offer?.nama_perusahaan}
         </Typography>
-        <div className="w-full flex flex-wrap justify-between items-center bg-[#F7F7F7] p-2 rounded-sm">
-          <div className="flex items-center gap-2 w-1/2">
+        <div className="w-full flex flex-wrap justify-between items-center bg-[#F7F7F7] p-2 rounded-sm line-clamp-2 h-[140px]">
+          <div className={`flex items-center gap-2 ${offer?.dm_pem_05001 !== 'Invoice Financing' && offer?.dm_pem_05001 !== 'Project Financing' ? 'w-full' : 'w-1/2'}`}>
             <Image alt="CardClock" src={CardClock} width={18} height={18} />
             <div>
               <p className="text-gray-600 text-sm">
@@ -80,31 +95,31 @@ const OfferListCard: React.FC<Props> = ({
               </p>
             </div>
           </div>
-          {offer?.dm_pem_05001 !== 'Modal Usaha' ? (
-            <div className="flex items-center gap-2 w-1/2">
-              <Image alt="CardCoins" src={CardCoins} width={20} height={20} />
-              <div
-                onClick={() => {
-                  setIsShowFinanceInfo(true);
-                  setFinancingType(offer?.dm_pem_05001);
-                }}
-              >
-                <p className="text-gray-600 text-sm">
-                  {t(`${pathTranslation}.text3`)}
-                </p>
-                {offer?.dm_pem_05001 === 'Invoice Financing' ? (
-                  <p className="font-semibold text-white bg-[#04AF93] rounded-md py-1 px-2 text-xs">
-                    Invoice Financing
+          {offer?.dm_pem_05001 !== 'Modal Usaha' && (
+            (offer?.dm_pem_05001 === 'Invoice Financing' || 
+            offer?.dm_pem_05001 === 'Project Financing') &&
+              <div className="flex items-center gap-2 w-1/2">
+                <Image alt="CardCoins" src={CardCoins} width={20} height={20} />
+                <div
+                  onClick={() => {
+                    setIsShowFinanceInfo(true);
+                    setFinancingType(offer?.dm_pem_05001);
+                  }}
+                >
+                  <p className="text-gray-600 text-sm">
+                    {t(`${pathTranslation}.text3`)}
                   </p>
-                ) : offer?.dm_pem_05001 === 'Project Financing' ? (
-                  <p className="font-semibold text-white bg-[#FF5B5C] rounded-md py-1 px-2 text-xs">
-                    Project Financing
-                  </p>
-                ) : null}
+                  {offer?.dm_pem_05001 === 'Invoice Financing' ? (
+                    <p className="font-semibold text-white bg-[#04AF93] rounded-md py-1 px-2 text-xs">
+                      Invoice Financing
+                    </p>
+                  ) : offer?.dm_pem_05001 === 'Project Financing' ? (
+                    <p className="font-semibold text-white bg-[#DA2D1F] rounded-md py-1 px-2 text-xs">
+                      Project Financing
+                    </p>
+                  ) : null}
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 w-1/2"></div>
           )}
           <div className="flex items-center gap-2 w-1/2 mt-4">
             <Image alt="CardTag" src={CardTag} width={18} height={18} />

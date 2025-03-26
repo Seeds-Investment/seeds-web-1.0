@@ -2935,8 +2935,8 @@ export default {
       connectSucceed: 'Account connected successfully',
       email: 'Email',
       phoneNumber: 'Phone Number',
-      createAccountButton: 'Create Danamart New Account',
-      createDanamartAccount: 'Create Account Danamart',
+      createAccountButton: 'Create Danamart Account',
+      createDanamartAccount: 'Create Danamart Account',
       createDesc:
         'Create a new Danamart account and unlock your investment potential.',
       no: 'No',
@@ -3319,7 +3319,8 @@ export default {
             'Investment opportunity from <strong>completed projects</strong>, resulting in <strong>lower risk</strong>.',
           text9:
             'Investment opportunity from <strong>ongoing projects</strong>, resulting in <strong>higher risk</strong>.',
-          text10: 'Learn More'
+          text10: 'Learn More',
+          text11: 'Testing',
         },
         prelisting:
           'The prelisting phase is where you can only view the offers available on the Danamart platform, but <strong>you are not yet able to purchase</strong> these securities. The purpose is for you to study the offers first before making an investment or purchase decision. This prelisting phase lasts for <strong>2 days</strong> before proceeding to the listing phase.',
@@ -3510,6 +3511,10 @@ export default {
           validationForm: {
             text1: 'This field is required'
           }
+        },
+        listingModal: {
+          warningText: "The purchase of securities is not yet available as it is still in Pre-Listing status. Please wait until the status changes to Listing.",
+          close: "Close"
         }
       },
       purchase: {
@@ -3519,7 +3524,10 @@ export default {
         card: {
           text1: 'Cash In-hand',
           text2: 'Investable Funds',
-          text3: 'Funds in Securities'
+          text3: 'Funds in Securities',
+          text4: 'Funds in Stocks',
+          text5: 'Remaining Purchase',
+          text6: 'Unlimited'
         },
         form: {
           sourceCash: {
@@ -3553,6 +3561,13 @@ export default {
           text22: 'Total Purchase (Rp)',
           text23: 'Select Payment Bank',
           text24: 'Purchase Quantity (Lot)',
+          text25: "Security Code",
+          text26: "Business Sector",
+          text27: "Remaining Shares",
+          text28: "Price Per Share (Rp)",
+          text29: "Total Purchase (Rp)",
+          text30: "Number of Shares Purchased",
+          text31: "Enter Number of Shares Purchased",
           formResponse: {
             text1: 'Purchase Successful',
             text2:
@@ -3563,7 +3578,7 @@ export default {
               'Sorry, there is an unfinished transaction. Please complete your pending transaction first.',
             text5: 'Minimum purchase amount is Rp. 100,000,-',
             text6:
-              'Please acknowledge that you are investing in Project Financing.'
+              'Please acknowledge that you are investing in Project Financing.',
           }
         },
         disclaimer: {
@@ -3636,8 +3651,7 @@ export default {
             verification: 'OTP Verification',
             getOtp: 'Get OTP',
             selectType: 'Select OTP Type',
-            tooManyAttempts:
-              'Too many attempts hitting OTP. Please wait for a while...',
+            tooManyAttempts: 'Too many OTP requests. Please wait 5 minutes before trying again.',
             cancel: 'Cancel',
             yes: 'Yes'
           }
@@ -3674,6 +3688,8 @@ export default {
         text13: 'Return (%)',
         text14: 'Term (Months)',
         text15: 'Maturity Date',
+        text16: 'Testing',
+        text17: 'Crowdfunding',
         dropdown: {
           text1: 'Offer Information',
           text2: 'Purchase Information',
@@ -3725,7 +3741,10 @@ export default {
         text4: 'Show 50 entries',
         text5: 'Show 75 entries',
         text6: 'Show 100 entries',
-        text7: 'Search...'
+        text7: 'Search...',
+        text8: 'Filter by Date',
+        text9: 'Start Date',
+        text10: 'End Date',
       },
       table: {
         text1: 'No data in the table.',
@@ -3750,7 +3769,8 @@ export default {
           text6: 'Bank',
           text7: 'Virtual Account Limit',
           text8: 'Understood',
-          text9: 'VA Number'
+          text9: 'VA Number',
+          text10: 'Other'
         },
         detailIncome: {
           text1: 'Incoming Fund Details',
@@ -3792,7 +3812,10 @@ export default {
         text4: 'Show 50 entries',
         text5: 'Show 75 entries',
         text6: 'Show 100 entries',
-        text7: 'Search...'
+        text7: 'Search...',
+        text8: 'Filter by Date',
+        text9: 'Start Date',
+        text10: 'End Date',
       },
       table: {
         text1: 'No data available in the table.',
@@ -3815,7 +3838,7 @@ export default {
             'Congratulations, your withdrawal request has been received and will be processed soon!',
           pending:
             'There is still an ongoing withdrawal process in your account. Please wait until the withdrawal is completed, then try again.',
-          tooManyAttempts: 'Too many OTP requests. Please wait a moment...',
+          tooManyAttempts: 'Too many OTP requests. Please wait 5 minutes before trying again.',
           title: 'Withdrawal Request',
           text1: 'Withdrawal Method',
           text2: 'Total Amount to Withdraw + Admin Fee (Rp)',

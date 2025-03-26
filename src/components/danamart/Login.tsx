@@ -121,12 +121,12 @@ const Login: React.FC<LoginProps> = ({
           <p className="text-red-500">{errors.capchaToken.message}</p>
         )}
       </div>
-      <div className="w-full mt-4">
+      <div className="w-full mt-4 flex justify-end items-end">
         <Typography
           onClick={() => {
             setPage('forgot');
           }}
-          className="font-poppins font-semibold text-base text-[#DA2D1F] text-right cursor-pointer"
+          className="w-fit font-poppins font-semibold text-base text-[#DA2D1F] text-right cursor-pointer"
         >
           {t('danamart.forgotPassword.forgotPasswordText')}
         </Typography>

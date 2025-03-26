@@ -51,6 +51,16 @@ const IncomingFunds = (): React.ReactElement => {
   const [selectedBankIndex, setSelectedBankIndex] = useState<number>(0);
   const [userProfileData, setUserProfileData] = useState<UserProfile>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'start' | 'end'): void => {
+    if (type === 'start') {
+      setStartDate(e.target.value);
+    } else {
+      setEndDate(e.target.value);
+    }
+  };
 
   const getIncomingFundsData = async (): Promise<void> => {
     try {
@@ -115,13 +125,24 @@ const IncomingFunds = (): React.ReactElement => {
   };
 
   const filteredData = incomingFunds?.filter(incomingFund => {
-    const incomingFundString = JSON.stringify(incomingFund).toLowerCase();
-    return incomingFundString.includes(searchQuery.toLowerCase());
+    const incomingFundString = JSON?.stringify(incomingFund)?.toLowerCase();
+    return incomingFundString?.includes(searchQuery?.toLowerCase());
   });
 
-  const totalPages = Math.ceil(filteredData.length / entries);
+  const filteredByDate = filteredData?.filter((income) => {
+    const depositDate = new Date(income?.tgl_deposit);
+    const start = (startDate?.length > 0) ? new Date(startDate) : null;
+    const end = (endDate?.length > 0) ? new Date(endDate + 'T23:59:59') : null;
+
+    return (
+      ((start === null) || depositDate >= start) &&
+      ((end === null) || depositDate <= end)
+    );
+  });
+  
+  const totalPages = Math.ceil(filteredByDate?.length / entries);
   const startIndex = (currentPage - 1) * entries;
-  const paginatedData = filteredData.slice(startIndex, startIndex + entries);
+  const paginatedData = filteredByDate?.slice(startIndex, startIndex + entries);
 
   useEffect(() => {
     setIsLoading(true);
@@ -248,6 +269,33 @@ const IncomingFunds = (): React.ReactElement => {
       {!isLoading && (
         <div className="w-full bg-white flex flex-col px-5 py-6 rounded-lg mt-4">
           <div className="flex flex-col gap-2">
+            <Typography className="font-poppins text-lg font-semibold text-[#262626] mb-2">
+              {t(`${pathTranslation}.filter.text8`)}
+            </Typography>
+            <div className="flex flex-col md:flex-row md:space-x-4 space-y-2 md:space-y-0 mb-4">
+              <div className="flex flex-col">
+                <label htmlFor="startDate" className="text-[#262626] font-medium mb-1">{t(`${pathTranslation}.filter.text9`)}</label>
+                <input
+                  id="startDate"
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => { handleDateChange(e, 'start'); }}
+                  className="p-2 border border-gray-300 rounded-full"
+                />
+              </div>
+              
+              <div className="flex flex-col">
+                <label htmlFor="endDate" className="text-[#262626] font-medium mb-1">{t(`${pathTranslation}.filter.text10`)}</label>
+                <input
+                  id="endDate"
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => { handleDateChange(e, 'end'); }}
+                  className="p-2 border border-gray-300 rounded-full"
+                />
+              </div>
+            </div>
+            <hr className='hidden md:flex md:mb-4'/>
             <div className="w-full flex flex-col md:flex-row justify-between items-center mb-4 gap-4 md:gap-0">
               <div className="relative w-full md:max-w-[200px]">
                 <input
@@ -279,7 +327,7 @@ const IncomingFunds = (): React.ReactElement => {
                   setEntries(Number(e.target.value));
                   setCurrentPage(1);
                 }}
-                className="w-full md:max-w-[250px] border rounded-full p-2 cursor-pointer"
+                className="w-full md:max-w-[250px] border rounded-full p-2 cursor-pointer mt-2 md:mt-0"
               >
                 <option value={7}>
                   {t(`${pathTranslation}.filter.text1`)}
@@ -379,10 +427,10 @@ const IncomingFunds = (): React.ReactElement => {
                   <span>
                     {t(`${pathTranslation}.table.text2`)} {startIndex + 1}{' '}
                     {t(`${pathTranslation}.table.text3`)}{' '}
-                    {startIndex + entries < filteredData.length
+                    {startIndex + entries < filteredByDate?.length
                       ? startIndex + entries
-                      : filteredData.length}{' '}
-                    {t(`${pathTranslation}.table.text4`)} {filteredData.length}{' '}
+                      : filteredByDate?.length}{' '}
+                    {t(`${pathTranslation}.table.text4`)} {filteredByDate?.length}{' '}
                     {t(`${pathTranslation}.table.text5`)}
                   </span>
                   <div className="flex justify-center items-center gap-2">

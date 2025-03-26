@@ -2867,7 +2867,7 @@ export default {
       connectSucceed: 'Akun berhasil terhubung',
       email: 'Email',
       phoneNumber: 'Nomor Telepon',
-      createAccountButton: 'Buat Akun Baru Danamart',
+      createAccountButton: 'Buat Akun Danamart',
       createDanamartAccount: 'Buat Akun Danamart',
       createDesc: 'Buat akun Danamart baru dan buka potensi investasi anda.',
       no: 'Tidak',
@@ -3253,7 +3253,8 @@ export default {
             'Peluang investasi dari proyek yang <strong>telah selesai dikerjakan</strong> sehingga memiliki <strong>risiko lebih rendah</strong>.',
           text9:
             'Peluang investasi dari proyek yang <strong>sedang berjalan</strong> sehingga memiliki <strong>risiko lebih tinggi</strong>.',
-          text10: 'Selengkapnya'
+          text10: 'Selengkapnya',
+          text11: 'Cek Ombak',
         },
         prelisting:
           'Tahapan sebelum listing, yaitu di mana kamu hanya bisa melihat penawaran yang tersedia di platform Danamart, tetapi <strong>masih belum bisa membeli</strong> penawaran efek tersebut. Tujuannya agar kamu mempelajari terlebih dahulu sebelum memutuskan pembelian/investasi pada penawaran efek yang tersedia. Tahapan prelisting ini berlangsung selama <strong>2 hari</strong>, sebelum berlanjut ke tahap listing.',
@@ -3444,6 +3445,10 @@ export default {
           validationForm: {
             text1: 'Kolom ini wajib diisi'
           }
+        },
+        listingModal: {
+          warningText: 'Pembelian efek belum tersedia karena masih dalam status Pre-Listing. Silakan tunggu hingga status berubah menjadi Listing.',
+          close: 'Tutup'
         }
       },
       purchase: {
@@ -3453,7 +3458,10 @@ export default {
         card: {
           text1: 'Uang Tunai',
           text2: 'Dana Investasi',
-          text3: 'Dana dalam Sekuritas'
+          text3: 'Dana dalam Sekuritas',
+          text4: 'Dana Dalam Efek',
+          text5: 'Sisa Pembelian',
+          text6: 'Tidak Terbatas'
         },
         form: {
           sourceCash: {
@@ -3487,6 +3495,13 @@ export default {
           text22: 'Total Pembelian (Rp)',
           text23: 'Pilih Bank Pembayaran',
           text24: 'Jumlah Pembelian (Lot)',
+          text25: 'Kode Efek',
+          text26: 'Sektor Usaha',
+          text27: 'Sisa Lembar Saham',
+          text28: 'Harga Perlembar Saham (Rp)',
+          text29: 'Total Pembelian (Rp)',
+          text30: 'Jumlah Pembelian (Lembar)',
+          text31: 'Input Jumlah Lot Pembelian',
           formResponse: {
             text1: 'Pembelian Sukses',
             text2:
@@ -3496,7 +3511,7 @@ export default {
               'Maaf, ada pembelian efek yang belum selesai diproses. Silakan proses terlebih dahulu transaksi Kamu',
             text5: 'Minimum pembelian adalah Rp. 100.000,-',
             text6:
-              'Silakan setujui bahwa anda berinvestasi pada Project Financing'
+              'Silakan setujui bahwa anda berinvestasi pada Project Financing',
           }
         },
         disclaimer: {
@@ -3568,8 +3583,7 @@ export default {
             verification: 'Verifikasi OTP',
             getOtp: 'Dapatkan Kode OTP',
             selectType: 'Pilih Jenis OTP',
-            tooManyAttempts:
-              'Terlalu banyak meminta kode OTP. Tunggu sebentar lagi...',
+            tooManyAttempts: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
             cancel: 'Tidak',
             yes: 'Ya'
           }
@@ -3606,6 +3620,8 @@ export default {
         text13: 'Imbal Hasil (%)',
         text14: 'Jangka Waktu (Bulan)',
         text15: 'Jatuh Tempo',
+        text16: 'Cek Ombak',
+        text17: 'Penggalangan',
         dropdown: {
           text1: 'Informasi Penawaran',
           text2: 'Informasi Pembelian',
@@ -3657,7 +3673,10 @@ export default {
         text4: 'Tampilkan 50 entri',
         text5: 'Tampilkan 75 entri',
         text6: 'Tampilkan 100 entri',
-        text7: 'Cari...'
+        text7: 'Cari...',
+        text8: 'Filter Berdasarkan Tanggal',
+        text9: 'Tanggal Mulai',
+        text10: 'Tanggal Berakhir',
       },
       table: {
         text1: 'Tidak ada data dalam tabel.',
@@ -3682,7 +3701,8 @@ export default {
           text6: '',
           text7: 'Limit Virtual Account',
           text8: 'Mengerti',
-          text9: ''
+          text9: '',
+          text10: 'Lain'
         },
         detailIncome: {
           text1: 'Keterangan Dana Masuk',
@@ -3724,7 +3744,10 @@ export default {
         text4: 'Tampilkan 50 entri',
         text5: 'Tampilkan 75 entri',
         text6: 'Tampilkan 100 entri',
-        text7: 'Cari...'
+        text7: 'Cari...',
+        text8: 'Filter Berdasarkan Tanggal',
+        text9: 'Tanggal Mulai',
+        text10: 'Tanggal Berakhir',
       },
       table: {
         text1: 'Tidak ada data dalam tabel.',
@@ -3752,8 +3775,7 @@ export default {
             'Selamat, penarikan dana Anda diterima dan akan segera diproses!',
           pending:
             'Masih ada proses tarik dana yang belum diproses di akun Kamu. Silakan tunggu proses tarik dana hingga selesai, lalu coba kembali',
-          tooManyAttempts:
-            'Terlalu banyak meminta kode OTP. Tunggu sebentar lagi...',
+          tooManyAttempts: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
           title: 'Permintaan Penarikan Dana',
           text1: 'Metode Tarik Dana',
           text2: 'Jumlah Dana Yang Akan Ditarik + Biaya Admin (Rp)',

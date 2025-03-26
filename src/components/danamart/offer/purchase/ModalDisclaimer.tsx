@@ -8,12 +8,18 @@ interface Props {
   setIsShowOTP: React.Dispatch<React.SetStateAction<boolean>>;
   setIsShowDisclaimer: React.Dispatch<React.SetStateAction<boolean>>;
   isShowDisclaimer: boolean;
+  paymentMethod: string;
+  setIsContinueProcess:  React.Dispatch<React.SetStateAction<boolean>>;
+  cekOmbak: string | undefined;
 }
 
 const ModalDisclaimer: React.FC<Props> = ({
   setIsShowOTP,
   setIsShowDisclaimer,
-  isShowDisclaimer
+  isShowDisclaimer,
+  paymentMethod,
+  setIsContinueProcess,
+  cekOmbak
 }) => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.offers.purchase.disclaimer';
@@ -52,8 +58,20 @@ const ModalDisclaimer: React.FC<Props> = ({
         </Button>
         <Button
           onClick={() => {
-            setIsShowDisclaimer(!isShowDisclaimer);
-            setIsShowOTP(true);
+            if (cekOmbak === undefined) {
+              if (paymentMethod !== undefined) {
+                if (paymentMethod === 'DanaCash') {
+                  setIsShowDisclaimer(!isShowDisclaimer);
+                  setIsShowOTP(true);
+                } else {
+                  setIsShowDisclaimer(!isShowDisclaimer);
+                  setIsContinueProcess(true)
+                }
+              }
+            } else {
+              setIsShowDisclaimer(!isShowDisclaimer);
+              setIsContinueProcess(true)
+            }
           }}
           className="w-[150px] text-sm font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
         >

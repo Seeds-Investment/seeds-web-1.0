@@ -31,6 +31,7 @@ export { default as ProgressPrelistingGreen } from './progres-prelisting-green.s
 export { default as ProgressPrelistingGrey } from './progres-prelisting-grey.svg';
 export { default as ProgressSigningGreen } from './progres-signing-green.svg';
 export { default as ProgressSigningGrey } from './progres-signing-grey.svg';
+export { default as PromoFailed } from './promo-failed.svg';
 export { default as SeedyCancelTransaction } from './seedy-cancel-transaction.svg';
 export { default as SeedyPayment } from './seedy-payment.svg';
 export { default as TabDiscussGray } from './tab-discuss-gray.svg';
@@ -50,3 +51,4 @@ export { default as TabOverviewGray } from './tab-overview-gray.svg';
 export { default as TabOverviewGreen } from './tab-overview-green.svg';
 export { default as TabReportGray } from './tab-report-gray.svg';
 export { default as TabReportGreen } from './tab-report-green.svg';
+

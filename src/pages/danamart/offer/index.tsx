@@ -11,6 +11,7 @@ import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import Slider from 'react-slick';
 import { toast } from 'react-toastify';
 
@@ -21,28 +22,46 @@ interface ArrowProps {
 }
 
 const NextArrow = (props: ArrowProps): React.ReactElement => {
-  const { className, onClick } = props;
+  const { onClick } = props;
   return (
     <div
-      className={`${
-        className ?? ''
-      } rounded-full absolute right-[-50px] top-1/2 transform -translate-y-1/2 cursor-pointer shadow-lg`}
-      style={{ position: 'absolute', right: 10, background: '#4FE6AF' }}
+      className={`absolute right-[10px] top-1/2 transform -translate-y-1/2 cursor-pointer z-20 flex items-center justify-center`}
+      style={{
+        width: '40px',
+        height: '40px',
+        background: '#3AC4A0',
+        borderRadius: '50%',
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+        transition: 'background-color 200ms ease-in-out',
+      }}
+      onMouseEnter={(e) => { e.currentTarget.style.background = '#4FE6AF'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = '#3AC4A0'; }}
       onClick={onClick}
-    />
+    >
+      <FaChevronRight size={24} color="#fff" />
+    </div>
   );
 };
 
 const PrevArrow = (props: ArrowProps): React.ReactElement => {
-  const { className, onClick } = props;
+  const { onClick } = props;
   return (
     <div
-      className={`${
-        className ?? ''
-      } rounded-full absolute left-[-50px] top-1/2 transform -translate-y-1/2 cursor-pointer shadow-lg`}
-      style={{ position: 'absolute', left: 10, background: '#4FE6AF' }}
+      className={`absolute left-[10px] top-1/2 transform -translate-y-1/2 cursor-pointer z-20 flex items-center justify-center`}
+      style={{
+        width: '40px',
+        height: '40px',
+        background: '#3AC4A0',
+        borderRadius: '50%',
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+        transition: 'background-color 300ms ease-in-out',
+      }}
+      onMouseEnter={(e) => { e.currentTarget.style.background = '#4FE6AF'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = '#3AC4A0'; }}
       onClick={onClick}
-    />
+    >
+      <FaChevronLeft size={24} color="#fff" />
+    </div>
   );
 };
 
@@ -94,7 +113,7 @@ const Offer = (): React.ReactElement => {
     autoplay: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
-    dots: true,
+    dots: false,
     adaptiveHeight: true,
     focusOnSelect: true,
     swipeToSlide: true,
@@ -105,7 +124,7 @@ const Offer = (): React.ReactElement => {
           slidesToShow: 3,
           slidesToScroll: 1,
           infinite: true,
-          dots: true
+          dots: false
         }
       },
       {
@@ -113,7 +132,7 @@ const Offer = (): React.ReactElement => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          dots: true
+          dots: false
         }
       },
       {
@@ -121,7 +140,7 @@ const Offer = (): React.ReactElement => {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          dots: true
+          dots: false
         }
       }
     ]
@@ -221,7 +240,7 @@ const Offer = (): React.ReactElement => {
             </select>
           </div>
         </div>
-        <div className="w-full my-5 h-fit cursor-pointer gap-2">
+        <div className="w-full h-fit cursor-pointer gap-2">
           {loading ? (
             <div className="w-full flex justify-center h-fit my-8">
               <div className="h-[60px]">
@@ -231,7 +250,7 @@ const Offer = (): React.ReactElement => {
           ) : (
             <Slider
               {...sliderSettings}
-              className="custom-danamart-slider w-full h-fit gap-2 pt-2 pb-8 md:pb-4"
+              className="custom-danamart-slider w-full h-fit gap-4 pt-2 pb-8 md:pb-4 relative overflow-visible"
             >
               {offerData?.data?.length !== 0 ? (
                 offerData?.data?.map((offer, index) => (

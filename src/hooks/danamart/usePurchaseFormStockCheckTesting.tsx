@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { purchaseItem } from '@/repository/danamart/offers.repository';
+import { purchaseItemCheckTesting } from '@/repository/danamart/offers.repository';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -22,44 +22,19 @@ export interface PurchaseFormDataI {
   referral_id_lv1_pendana?: string;
   referral_id_lv2_pendana?: string;
   total_dana_reward?: string;
-  bid_cash: number;
-  bank_code?: string;
-  bid_reward: boolean;
-  sumberDana: string;
-  kodeOtp?: string;
+  bid_cash?: string;
+  harga_perlembar_saham?: string;
+  lembar_saham: string;
 }
 
-const usePurchaseFormBond = (): any => {
+const usePurchaseFormStockCheckTesting = (): any => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.offers.purchase.validationForm';
 
   const schema = yup.object().shape({
-    bid_cash: yup
-      .number()
-      .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
-    bank_code: yup.string().when(['sumberDana', 'bid_cash'], {
-      is: (sumberDana: string, bid_cash: number) =>
-        sumberDana === 'TransferDana' && bid_cash >= 1000000,
-      then: schema =>
-        schema.required(
-          t(`${pathTranslation}.text1`) ?? 'This field is required'
-        ),
-      otherwise: schema => schema.notRequired()
-    }),
-    bid_reward: yup
-      .boolean()
-      .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
-    sumberDana: yup
+    lembar_saham: yup
       .string()
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
-    kodeOtp: yup.string().when('sumberDana', {
-      is: 'DanaCash',
-      then: schema =>
-        schema.required(
-          t(`${pathTranslation}.text1`) ?? 'This field is required'
-        ),
-      otherwise: schema => schema.notRequired()
-    })
   });
 
   const defaultValues: PurchaseFormDataI = {
@@ -78,11 +53,9 @@ const usePurchaseFormBond = (): any => {
     referral_id_lv1_pendana: '',
     referral_id_lv2_pendana: '',
     total_dana_reward: '',
-    bid_cash: 0,
-    bank_code: '',
-    bid_reward: false,
-    sumberDana: '',
-    kodeOtp: ''
+    bid_cash: '',
+    harga_perlembar_saham: '',
+    lembar_saham: '',
   };
 
   const {
@@ -102,7 +75,7 @@ const usePurchaseFormBond = (): any => {
 
   const onSubmit = async (data: PurchaseFormDataI): Promise<void> => {
     try {
-      const response = await purchaseItem(data);
+      const response = await purchaseItemCheckTesting(data);
       return response;
     } catch (error) {
       await Promise.reject(error);
@@ -122,4 +95,4 @@ const usePurchaseFormBond = (): any => {
   };
 };
 
-export default usePurchaseFormBond;
+export default usePurchaseFormStockCheckTesting;

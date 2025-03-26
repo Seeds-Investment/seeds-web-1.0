@@ -373,6 +373,7 @@ li {
 }
 .custom-danamart-slider .slick-list {
   margin: 0 -4px;
+  height: fit-content;
 }
 
 /* scrollbar-hide */

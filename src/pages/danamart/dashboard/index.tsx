@@ -46,7 +46,7 @@ const Dashboard = (): React.ReactElement => {
         setDashboardData(decryptedData);
       }
     } catch (error) {
-      toast.error(t('danamart.dashboard.errorGetDashboard'));
+      toast.error(t('danamart.dashboard.errorGetUserDashboard'));
     }
   };
 

@@ -1,6 +1,7 @@
 import DetailTab from '@/components/danamart/offer/DetailTab';
 import ModalProgressOffer from '@/components/danamart/offer/ModalProgressOffer';
 import ModalReport from '@/components/danamart/offer/ModalReport';
+import ModalWaitListing from '@/components/danamart/offer/ModalWaitListing';
 import ProgressStep from '@/components/danamart/offer/ProgressStep';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
@@ -41,6 +42,7 @@ const Prospectus = (): React.ReactElement => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const thumbnailRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [isShowReportForm, setIsShowReportForm] = useState<boolean>(false);
+  const [isShowWaitListingModal, setIsShowWaitListingModal] = useState<boolean>(false);
 
   const fetchDetailProspektus = async (): Promise<void> => {
     try {
@@ -127,6 +129,14 @@ const Prospectus = (): React.ReactElement => {
     }
     return 'unknown';
   };
+
+  const isButtonDisabled = (): boolean => {
+    if (detailProspektus?.Data?.StatusListing === "Pembelian Selesai" && detailProspektus?.Data?.cekOmbak !== "1") {
+      return true
+    } else {
+      return false
+    }
+  }
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -319,17 +329,25 @@ const Prospectus = (): React.ReactElement => {
                   </Typography>
                 </div>
                 <Button
-                  onClick={async () =>
-                    await router.push(
-                      `/danamart/offer/prospectus/${
-                        prospectusId as string
-                      }/purchase?UserPeminjamId=${
-                        detailProspektus?.Data?.BeliEfek?.UserPinjamanId
-                      }&type=${getSecurityType(
-                        detailProspektus?.Data?.jenisEfek
-                      )}`
-                    )
-                  }
+                  onClick={async () => {
+                    if (detailProspektus?.Data?.StatusListing === 'Pre-Listing') {
+                      setIsShowWaitListingModal(true);
+                    } else {
+                      await router.push(
+                        `/danamart/offer/prospectus/${
+                          prospectusId as string
+                        }/purchase?UserPeminjamId=${
+                          detailProspektus?.Data?.BeliEfek?.UserPinjamanId
+                        }&type=${
+                          getSecurityType(detailProspektus?.Data?.jenisEfek)
+                        }${detailProspektus?.Data?.cekOmbak === '1'
+                          ? `&co=true`
+                          : `&co=false`
+                        }`
+                      );
+                    }
+                  }}
+                  disabled={isButtonDisabled()}
                   className="md:w-[311px] w-full h-[52px] bg-[#3AC4A0] text-white rounded-full"
                 >
                   {t('danamart.offers.detail.buy')}
@@ -484,6 +502,12 @@ const Prospectus = (): React.ReactElement => {
           url={prospectusOffer?.prospektus ?? ''}
           setIsShowReportForm={setIsShowReportForm}
           isShowReportForm={isShowReportForm}
+        />
+      )}
+      {isShowWaitListingModal && (
+        <ModalWaitListing
+          setIsShowWaitListingModal={setIsShowWaitListingModal}
+          isShowWaitListingModal={isShowWaitListingModal}
         />
       )}
     </PageGradient>

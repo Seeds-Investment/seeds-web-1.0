@@ -30,6 +30,7 @@ interface PurchaseFormProps {
   setIsContinueProcess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsPending: React.Dispatch<React.SetStateAction<boolean>>;
   isPending: boolean;
+  setPaymentMethod: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
@@ -46,7 +47,8 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
   passedOTP,
   setIsContinueProcess,
   setIsPending,
-  isPending
+  isPending,
+  setPaymentMethod
 }) => {
   const { t } = useTranslation();
   const {
@@ -105,10 +107,6 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
     }
   };
 
-  const parseCurrency = (value: string): number => {
-    return parseInt(value.replace(/\./g, ''), 10);
-  };
-
   useEffect(() => {
     setValue('user_peminjam_id', formPurchaseData?.dataInput?.user_peminjam_id);
     setValue('user_pendana_id', formPurchaseData?.dataInput?.user_pendana_id);
@@ -129,10 +127,7 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
       'referral_id_lv2_pendana',
       formPurchaseData?.dataInput?.referral_id_lv2_pendana
     );
-    setValue(
-      'jml_pinjaman_terbit',
-      parseCurrency(formPurchaseData?.dataForm?.slotPembelian)
-    );
+    setValue('jml_pinjaman_terbit', formPurchaseData?.dataInput?.jml_pinjaman_terbit);
     setValue(
       'jml_pinjaman_terbit_show',
       formPurchaseData?.dataForm?.slotPembelian
@@ -143,11 +138,6 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
     setValue('credit_rating', formPurchaseData?.dataInput?.credit_rating);
     setValue('dm_pem_02003', formPurchaseData?.dataInput?.dm_pem_02003);
     setValue('dm_pem_02004', formPurchaseData?.dataForm?.jangkaWaktu);
-    setValue(
-      'harga_perlembar_saham',
-      formPurchaseData?.dataForm?.hargaLembarSaham
-    );
-    setValue('sisa_lembar_saham', formPurchaseData?.dataForm?.sisaPembelian);
     setValue(
       'total_dana_reward',
       dashboardData?.dataSaldoUser?.TotalDanaRewerd
@@ -167,13 +157,14 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
       const period = Number(formPurchaseData?.dataForm?.jangkaWaktu);
 
       // Imbal hasil per bulan
-      const imbalHasilBulan = Math.round((bidCash * imbalHasil) / 12);
+      const imbalHasilBulanTemp = Math.round((bidCash * (imbalHasil / 12)));
+      const imbalHasilBulan = (Number(bidCash) * imbalHasil) / 12;
 
       // Total imbal hasil
-      const totalImbalHasil = imbalHasilBulan * period;
+      const totalImbalHasil = Math.round(imbalHasilBulan * period);
 
       // Total modal + imbal hasil
-      const totalModalImbalHasil = bidCash * 1 + totalImbalHasil;
+      const totalModalImbalHasil = Number(bidCash) + totalImbalHasil;
 
       // Pajak 10% dari imbal hasil per bulan
       const pajak = Math.round(0.1 * imbalHasilBulan);
@@ -187,6 +178,7 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
       );
 
       setValue('imbal_hasil_bulan', `Rp ${imbalHasilBulan}`);
+      setValue('imbal_hasil_bulan_temp', `Rp ${imbalHasilBulanTemp}`);
       setValue('pajak', `Rp ${pajak}`);
       setValue('total_imbal_hasil', `Rp ${totalImbalHasil}`);
       setValue('biaya_administrasi', `Rp ${biayaAdministrasi}`);
@@ -398,7 +390,7 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
       <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
         <MInput
           label={`${t(`${pathTranslation}.text12`)}`}
-          registerName="imbal_hasil_bulan"
+          registerName="imbal_hasil_bulan_temp"
           register={register}
           type="text"
           errors={errors}
@@ -475,8 +467,10 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
             } else {
               if (sourceCash === 'DanaCash') {
                 setIsShowDisclaimer(true);
+                setPaymentMethod('DanaCash')
               } else {
-                setIsContinueProcess(true);
+                setIsShowDisclaimer(true);
+                setPaymentMethod('TransferDana')
               }
             }
           }

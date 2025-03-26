@@ -350,16 +350,31 @@ const Portfolio = (): React.ReactElement => {
                   {paginatedData?.length > 0 ? (
                     paginatedData?.map((portfolio, index) => (
                       <tr key={index} className="hover:bg-gray-50">
-                        <td
-                          className="p-2 border-b border-gray-300 text-center"
-                          dangerouslySetInnerHTML={{
-                            __html: portfolio.kodeEfek ?? ''
-                          }}
-                        />
-                        <td className="p-2 border border-gray-300 text-center">
+                        <td className="px-2 py-3 border-b border-gray-300 text-center">
+                          <div className="flex justify-center items-center gap-1">
+                            <div
+                              className="inline-block"
+                              dangerouslySetInnerHTML={{ __html: portfolio.kodeEfek ?? '' }}
+                            />
+                            <div className="flex justify-start items-start h-full self-start mt-[-6px]">
+                              <div
+                                className={`py-[0.5px] px-[2px] rounded-md text-xs ${
+                                  portfolio?.is_co === '1'
+                                    ? 'bg-[#FFE5E5] text-[#DA2D1F]'
+                                    : 'bg-[#E5EDFC] text-[#04AF93]'
+                                }`}
+                              >
+                                {portfolio?.is_co === '1'
+                                  ? t(`${pathTranslation}.table.text16`)
+                                  : t(`${pathTranslation}.table.text17`)}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-2 py-3 border border-gray-300 text-center">
                           {portfolio.pinjamanId}
                         </td>
-                        <td className="p-2 border border-gray-300 text-right">
+                        <td className="px-2 py-3 border border-gray-300 text-right">
                           {portfolio?.hargaPerlembarSaham !== '-'
                             ? `IDR ${standartCurrency(
                                 convertCurrencyToNumber(
@@ -368,24 +383,24 @@ const Portfolio = (): React.ReactElement => {
                               )}`
                             : portfolio?.hargalembarSaham}
                         </td>
-                        <td className="p-2 border border-gray-300">
+                        <td className="px-2 py-3 border border-gray-300">
                           {portfolio.hargalembarSaham}
                         </td>
-                        <td className="p-2 border border-gray-300 text-right">
+                        <td className="px-2 py-3 border border-gray-300 text-right">
                           {portfolio.imbalHasil}
                         </td>
-                        <td className="p-2 border border-gray-300 text-right">
+                        <td className="px-2 py-3 border border-gray-300 text-right">
                           {portfolio.jangkaWaktu}
                         </td>
-                        <td className="p-2 border border-gray-300 text-right">
+                        <td className="px-2 py-3 border border-gray-300 text-right">
                           {portfolio.jatuhTempo}
                         </td>
-                        <td className="p-2 border border-gray-300 text-right">{`IDR ${standartCurrency(
+                        <td className="px-2 py-3 border border-gray-300 text-right">{`IDR ${standartCurrency(
                           convertCurrencyToNumber(
                             portfolio?.modalInfoPendanaan?.jumlahPembelian ?? ''
                           ) ?? 0
                         )}`}</td>
-                        <td className="p-2 border border-gray-300 text-center">
+                        <td className="px-2 py-3 border border-gray-300 text-center">
                           <button
                             onClick={() => {
                               setSelectedPortfolio(index);

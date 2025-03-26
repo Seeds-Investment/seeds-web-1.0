@@ -1,6 +1,6 @@
 import { type ReportFormI } from '@/hooks/danamart/usePostReport';
 import baseAxios from '@/utils/common/axios';
-import { type PurchaseI } from '@/utils/interfaces/danamart/offers.interface';
+import { type PurchaseCheckTestingI, type PurchaseI } from '@/utils/interfaces/danamart/offers.interface';
 import axios from 'axios';
 
 const danamartApi = axios.create({
@@ -189,6 +189,28 @@ export const purchaseItem = async (formData: PurchaseI): Promise<any> => {
   }
 };
 
+export const purchaseItemCheckTesting = async (formData: PurchaseCheckTestingI): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+    const response = await danamartPurchaseService.post(
+      `/pemodal/CekOmbak/beli`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    await Promise.reject(error);
+  }
+};
+
 export const getPurchaseOTP = async (formData: FormData): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
@@ -278,6 +300,31 @@ export const postReport = async (formData: ReportFormI): Promise<any> => {
       }
     );
     return response.data;
+  } catch (error: any) {
+    await Promise.reject(error);
+  }
+};
+
+export const getFormCheckTesting = async (
+  pinjamanId: string,
+  userPinjamanId: string
+): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.get(
+      `/pemodal/CekOmbak/form/${pinjamanId}/${userPinjamanId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+        }
+      }
+    );
+    return response;
   } catch (error: any) {
     await Promise.reject(error);
   }

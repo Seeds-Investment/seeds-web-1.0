@@ -64,6 +64,7 @@ const ModalRegister: React.FC<Props> = ({
           setIsLinkedSuccess={setIsLinkedSuccess}
           setConfirmRegistration={setIsConfirmRegistration}
           setIsOpenModalLogin={setIsOpenModalLogin}
+          setIsOpenModalRegister={setIsOpenModalRegister}
         />
       )}
     </Modal>

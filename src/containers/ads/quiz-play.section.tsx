@@ -71,6 +71,7 @@ export interface QuizIdRoot {
   is_free_voucher_claimed: boolean;
   is_need_invitation_code: boolean;
   created_at: string;
+  cta: string;
 }
 
 export interface Tnc {

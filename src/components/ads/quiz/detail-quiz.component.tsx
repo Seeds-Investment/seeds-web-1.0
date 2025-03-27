@@ -1,13 +1,12 @@
 import { type QuizIdRoot } from '@/containers/ads/quiz-play.section';
+import queryList from '@/helpers/queryList';
 import {
   getAllQuizNoToken,
   getQuizByIdNoToken
 } from '@/repository/quiz.repository';
-import { QuizStatus } from '@/utils/interfaces/quiz.interfaces';
 import { Button, Card } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import badge from 'public/assets/ads/badge.png';
 import cryptoAds from 'public/assets/ads/crypto-ads.jpg';
 import idAds from 'public/assets/ads/id-ads.jpg';
@@ -16,30 +15,62 @@ import usAds from 'public/assets/ads/us-ads.jpg';
 import React, { useCallback, useEffect, useState } from 'react';
 import CountdownTimer from './countdown.component';
 
+const ctaList = [
+  {
+    quiz: 'Smart ID Battle Quiz #2',
+    cta: 'https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=lead&msg=ID+%5B_gid_%5D+Hi+Min+Seeds%2C+%25break%25Saya+Tertarik+untuk+Ikutan+Kuis+Investasi+%25break%25Dapet+Hadiah+Rp+175.000%2C+ID_STOCK'
+  },
+  {
+    quiz: 'SEEDSTALK QUIZ SPECIAL INSPIRING JOURNEY #32',
+    cta: 'https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=lead&msg=ID+%5B_gid_%5D+Hi+Min+Seeds%2C+%25break%25Saya+Tertarik+untuk+Ikutan+Kuis+SEEDSTALK+QUIZ+SPECIAL+INSPIRING+JOURNEY+%2332+%25break%25Dapet+Hadiah+CASH+SPECIAL%2C+dari+Quiz+SEEDS'
+  },
+  {
+    quiz: 'CRYPTO QUIZ BATTLE COMPETITION #14',
+    cta: 'https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=lead&msg=ID+%5B_gid_%5D+Hi+Min+Seeds%2C+%25break%25Saya+Tertarik+untuk+Ikutan+Kuis+Investasi+%25break%25Dapet+Hadiah+CASH%2C+dari+Quiz+CRYPTO'
+  },
+  {
+    quiz: 'Seeds x Webull Community Quiz Championship',
+    cta: 'https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=lead&msg=ID+%5B_gid_%5D+Hi+Min+Seeds%2C+%25break%25Saya+Tertarik+untuk+Ikutan+Kuis+Investasi+%25break%25Dapet+Hadiah+Rp+135.000%2C+dari+Quiz+Webull+1'
+  },
+  {
+    quiz: 'Seeds x Webull Battle Quiz Competition #6',
+    cta: 'https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=lead&msg=ID+%5B_gid_%5D+Hi+Min+Seeds%2C+%25break%25Saya+Tertarik+untuk+Ikutan+Kuis+Investasi+%25break%25Dapet+Hadiah+Rp+135.000%2C+dari+Quiz+Webull+2'
+  }
+];
+
 const DetailQuiz = (): React.ReactElement => {
   const [dataQuiz, setDataQuiz] = useState<QuizIdRoot[]>([]);
-  const { type } = useRouter().query;
+  const { queries } = queryList();
 
   const handleQuiz = useCallback(async () => {
-    const res = await getAllQuizNoToken({
-      limit: 5,
-      page: 1,
-      status: QuizStatus.STARTED
-    });
     // eslint-disable-next-line prefer-const
     let counter = 0;
 
-    while (counter < (res?.data?.length ?? 0)) {
-      const resId: QuizIdRoot = await getQuizByIdNoToken({
-        id: res.data[counter].id as string,
-        currency: ''
+    while (counter < (ctaList?.length ?? 0)) {
+      const res = await getAllQuizNoToken({
+        limit: 1,
+        page: 1,
+        status: '',
+        search: ctaList[counter].quiz
       });
-      setDataQuiz(prev => [...prev, resId]);
+      if (res.data !== null) {
+        const resId: QuizIdRoot = await getQuizByIdNoToken({
+          id: res.data[0].id as string,
+          currency: ''
+        });
+        setDataQuiz(prev => [...prev, { ...resId, cta: ctaList[counter].cta }]);
+      }
       counter++;
     }
   }, []);
   useEffect(() => {
-    void handleQuiz();
+    if (
+      queries?.type === 'wa' ||
+      queries?.type === undefined ||
+      queries?.type === 'shuffle'
+    ) {
+      void handleQuiz();
+    }
   }, [handleQuiz]);
   return (
     <>
@@ -228,13 +259,7 @@ const DetailQuiz = (): React.ReactElement => {
                 <div className="flex flex-col w-full sm:w-fit sm:self-end lg:self-auto">
                   <CountdownTimer targetDate={v?.ended_at} />
                   <Link
-                    href={
-                      type === 'wa'
-                        ? `https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=qontak&msg=ID+%5B_gid_%5D%25break%25Hi+Min+Seeds%2C+%25break%25Saya+Tertarik+untuk+Ikutan+Kuis+Investasi+Dapet+Hadiah%25break%25${v?.name
-                            .replaceAll(' ', '+')
-                            .replaceAll('#', '%23')}%25break%25`
-                        : `/auth?qi=${v?.id}`
-                    }
+                    href={queries?.type === 'wa' ? v.cta : `/auth?qi=${v?.id}`}
                     className="w-fit self-end"
                   >
                     <Button className="rounded-full bg-[#3AC4A0] capitalize font-poppins font-semibold text-xl w-full sm:w-[141px]">

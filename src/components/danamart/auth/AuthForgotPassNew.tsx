@@ -4,7 +4,7 @@ import AuthPassword from '@/components/auth2/AuthPassword';
 import { changePassword } from '@/repository/danamart/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
@@ -35,6 +35,8 @@ const AuthForgotPassNew: React.FC<Props> = ({
   const [errorPass, setErrorPass] = useState(false);
   const [errorRepass, setErrorRepass] = useState(false);
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  const [errorPassMsg, setErrorPassMsg] = useState<string | null>(null);
+  const [errorRepassMsg, setErrorRepassMsg] = useState<string | null>(null);
 
   const [validation, setValidation] = useState({
     length: false,
@@ -58,13 +60,25 @@ const AuthForgotPassNew: React.FC<Props> = ({
     const value = e.target.value;
     setPasswordTemp(value);
     checkValidation(value);
-    setErrorPass(!regex.test(value));
+
+    if (!regex.test(value)) {
+      setErrorPassMsg("Oops, password must be 8 characters long and have both uppercase and lowercase letters.");
+    } else {
+      setErrorPassMsg(null);
+    }
   };
 
   const handleRepass = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
     setFormDataNewPassword({ ...formDataNewPassword, [e.target.name]: value });
-    setErrorRepass(value !== passwordTemp || !regex.test(value));
+
+    if (!regex.test(value)) {
+      setErrorRepassMsg("Oops, password must be 8 characters long and have both uppercase and lowercase letters.");
+    } else if (value !== passwordTemp) {
+      setErrorRepassMsg("Oops, password doesn’t match.");
+    } else {
+      setErrorRepassMsg(null);
+    }
   };
 
   const handleNext = async (): Promise<void> => {
@@ -90,6 +104,18 @@ const AuthForgotPassNew: React.FC<Props> = ({
       toast(error, { type: 'error' });
     }
   };
+
+  useEffect(() => {
+    if (formDataNewPassword.password) {
+      if (!regex.test(formDataNewPassword.password)) {
+        setErrorRepassMsg("Oops, password must be 8 characters long and have both uppercase and lowercase letters.");
+      } else if (formDataNewPassword.password !== passwordTemp) {
+        setErrorRepassMsg("Oops, password doesn’t match.");
+      } else {
+        setErrorRepassMsg(null);
+      }
+    }
+  }, [passwordTemp, formDataNewPassword.password]);
 
   return (
     <div className={`${className} w-full`}>
@@ -138,15 +164,14 @@ const AuthForgotPassNew: React.FC<Props> = ({
               }
             }}
           />
-          <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-            {errorPass ? (
-              t('danamart.forgotPassword.authForgotPass.validation.password')
-            ) : (
-              <br />
-            )}
-          </Typography>
+          {
+            passwordTemp !== '' &&
+              <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
+                {errorPassMsg ?? <br />}
+              </Typography>
+          }
         </div>
-        <div className="w-full">
+        <div className={`w-full ${errorPassMsg === null ? '' : 'mt-5'}`}>
           <AuthPassword
             handleChange={handleRepass}
             value={formDataNewPassword.password}
@@ -164,13 +189,12 @@ const AuthForgotPassNew: React.FC<Props> = ({
               }
             }}
           />
-          <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-            {errorRepass ? (
-              t('danamart.forgotPassword.authForgotPass.validation.match')
-            ) : (
-              <br />
-            )}
-          </Typography>
+          {
+            formDataNewPassword?.password !== '' &&
+              <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
+                {errorRepassMsg ?? <br />}
+              </Typography>
+          }
         </div>
       </div>
       <div

@@ -3914,6 +3914,12 @@ export default {
         ok: 'Ok',
       }
     },
+    setting: {
+      sidebar: {
+        text1: 'Pengaturan'
+      },
+      title: 'Pengaturan',
+    },
     idleLogout:
       'Anda tidak aktif selama 30 menit atau lebih. Silakan masuk kembali ke Danamart.',
     logout: {

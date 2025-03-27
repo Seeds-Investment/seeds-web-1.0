@@ -70,7 +70,7 @@ const AuthOTP: React.FC<Props> = ({
     setInput(['', '', '', '']);
     const newMethod = method === 'whatsapp' ? 'sms' : 'whatsapp';
     setMethod(newMethod);
-    await handleGetOTP(newMethod, setCountdown, setSelect, formattedData);
+    await handleGetOTP(newMethod, setCountdown, setSelect, formattedData, setOTPForm);
     inputRefs.current[0]?.focus();
     setOTPForm(prev => ({ ...prev, method: newMethod }));
   };
@@ -79,7 +79,7 @@ const AuthOTP: React.FC<Props> = ({
     e.preventDefault();
     try {
       setLoading(true);
-      if (otp.length === 0) {
+      if (otp?.length === 0) {
         setBlank(true);
         setError(true);
         setInput(['', '', '', '']);
@@ -171,7 +171,8 @@ const AuthOTP: React.FC<Props> = ({
                     method,
                     setCountdown,
                     setSelect,
-                    formattedData
+                    formattedData,
+                    setOTPForm
                   );
                 }}
                 disabled={countdown > 0}

@@ -131,7 +131,7 @@ const IncomingFunds = (): React.ReactElement => {
 
   const filteredByDate = filteredData?.filter((income) => {
     const depositDate = new Date(income?.tgl_deposit);
-    const start = (startDate?.length > 0) ? new Date(startDate) : null;
+    const start = (startDate?.length > 0) ? new Date(startDate + 'T00:00:00') : null;
     const end = (endDate?.length > 0) ? new Date(endDate + 'T23:59:59') : null;
 
     return (

@@ -97,6 +97,10 @@ const SidebarLoginResponsive: React.FC<props> = ({
               title: t('danamart.userLog.sidebar.text1'),
               url: '/danamart/user-log'
             },
+            {
+              title: t('danamart.setting.sidebar.text1'),
+              url: '/danamart/setting-account'
+            },
             { title: t('danamart.logout.text1'), url: '#', isLogout: true }
           ]
         },

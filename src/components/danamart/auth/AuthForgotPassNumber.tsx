@@ -8,11 +8,11 @@ import { checkPhoneNumber } from '@/repository/auth.repository';
 import type { ForgotPassData } from '@/utils/interfaces/auth.interface';
 import { type Country } from '@/utils/interfaces/guest.interface';
 import { type OTPDataI } from '@/utils/interfaces/otp.interface';
-import { Button, Typography } from '@material-tailwind/react';
+import { Button, Menu, MenuHandler, MenuItem, MenuList, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IoMdClose } from 'react-icons/io';
+import { IoIosArrowDown, IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import AuthNumber from './AuthNumber';
 
@@ -29,6 +29,7 @@ interface Props {
   setCountry: React.Dispatch<React.SetStateAction<number>>;
   otpForm: OTPDataI;
   setOTPForm: React.Dispatch<React.SetStateAction<OTPDataI>>;
+  setMethod: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AuthForgotPassNumber: React.FC<Props> = ({
@@ -43,7 +44,8 @@ const AuthForgotPassNumber: React.FC<Props> = ({
   country,
   setCountry,
   otpForm,
-  setOTPForm
+  setOTPForm,
+  setMethod
 }) => {
   const { t } = useTranslation();
   const [error, setError] = useState<boolean>(false);
@@ -154,6 +156,44 @@ const AuthForgotPassNumber: React.FC<Props> = ({
               )}
             </Typography>
           ))}
+
+        <div className="rounded-xl p-[2px] w-full bg-gradient-to-l from-[#97A4E7] to-[#47C0AA]">
+          <div className="relative flex justify-center items-center bg-white border-none w-full rounded-[10px] h-full">
+            <Menu>
+              <MenuHandler>
+                <Button
+                  ripple={false}
+                  variant="text"
+                  className="w-full flex items-center justify-between px-4 py-2 text-[#7C7C7C] font-poppins font-normal text-base hover:bg-transparent focus:border-none"
+                >
+                  <Typography>{method === "sms" ? "SMS" : "WhatsApp"}</Typography>
+                  <IoIosArrowDown className="text-gray-500" />
+                </Button>
+              </MenuHandler>
+              <MenuList className="absolute left-0 top-full mt-1 z-50 w-[250px] md:w-[350px] rounded-lg shadow-lg bg-white">
+                <MenuItem
+                  className="flex items-center gap-2 px-4 py-2 text-base text-[#262626] font-poppins hover:bg-gray-100"
+                  onClick={() => {
+                    setMethod("sms");
+                    setOTPForm(prev => ({ ...prev, method: "sms" }));
+                  }}
+                >
+                  SMS
+                </MenuItem>
+                <MenuItem
+                  className="flex items-center gap-2 px-4 py-2 text-base text-[#262626] font-poppins hover:bg-gray-100"
+                  onClick={() => {
+                    setMethod("whatsapp");
+                    setOTPForm(prev => ({ ...prev, method: "whatsapp" }));
+                  }}
+                >
+                  WhatsApp
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </div>
+        </div>
+
         <Button
           onClick={handleNext}
           disabled={isLoading || formattedData?.phoneNumber === '62'}

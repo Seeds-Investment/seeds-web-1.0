@@ -3977,6 +3977,12 @@ export default {
         ok: 'Ok',
       }
     },
+    setting: {
+      sidebar: {
+        text1: 'Setting'
+      },
+      title: 'Setting',
+    },
     idleLogout:
       'You have been idle for 30 minutes or more. Please log in again to Danamart.',
     logout: {

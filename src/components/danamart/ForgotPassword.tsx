@@ -71,6 +71,7 @@ const ForgotPassword: React.FC<Props> = ({ setPage, userEmail }) => {
           setCountry={setCountry}
           otpForm={formOTPData}
           setOTPForm={setFormOTPData}
+          setMethod={setMethod}
         />
         <AuthOTP
           setPage={setPage}

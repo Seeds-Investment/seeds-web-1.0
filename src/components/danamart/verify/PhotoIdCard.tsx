@@ -29,10 +29,7 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isWebcamReady, setIsWebcamReady] = useState<boolean>(false);
   const pathTranslation = 'danamart.verification.photoIdCardTitle';
-console.log('isIdCardUploaded ', isIdCardUploaded)
-console.log('photoIdCardData ', photoIdCardData)
-console.log('imageData ', imageData)
-console.log('isUsePhoto ', isUsePhoto)
+
   useEffect(() => {
     if (step === 1) {
       void fetchDataPhotoIdCard();
@@ -62,11 +59,9 @@ console.log('isUsePhoto ', isUsePhoto)
       setIsLoading(false);
     }
   };
-console.log('isIdCardUploaded:', isIdCardUploaded, typeof isIdCardUploaded);
 
   const saveData = async (): Promise<void> => {
     try {
-      console.log('isIdCardUplresponseoaded ', isIdCardUploaded)
       const response = await updatePhotoIdCard(
         isIdCardUploaded ? 'updateOcr' : 'simpan',
         imageData

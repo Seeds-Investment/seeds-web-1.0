@@ -233,7 +233,7 @@ export const updatePhotoIdCard = async (
 
     const formData = new FormData();
     formData.append('platform', platform);
-    formData.append('typeSubmit', 'updateOcr');
+    formData.append('typeSubmit', type);
     formData.append('dm_penmit_01011', imageEncoded);
 
     const response = await danamartApi.post(
@@ -248,7 +248,7 @@ export const updatePhotoIdCard = async (
     );
     return response;
   } catch (error: any) {
-    throw new Error(error.response.data.message);
+    await Promise.reject(error);
   }
 };
 

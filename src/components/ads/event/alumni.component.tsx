@@ -1,5 +1,6 @@
 import { Button, Card } from "@material-tailwind/react";
 import Image from "next/image";
+import Link from 'next/link';
 import andi from 'public/assets/ads/andi.png';
 import dimas from 'public/assets/ads/dimas.png';
 import rian from 'public/assets/ads/rian.png';
@@ -41,7 +42,7 @@ const testimony = [
   }
 ];
 
-const Alumni = ():React.ReactElement => {
+const Alumni = (): React.ReactElement => {
   return (
     <div className="bg-[#eff9f8] lg:px-20 lg:py-0 px-4 py-10 flex flex-col md:flex-row items-center gap-8 md:gap-0">
       <div className="w-full lg:w-1/2 xl:w-1/3 flex flex-col gap-6 items-center md:items-start">
@@ -54,9 +55,11 @@ const Alumni = ():React.ReactElement => {
             Academy!
           </p>
         </div>
-        <Button className="w-fit rounded-full capitalize font-poppins font-semibold lg:text-lg xl:text-xl text-base bg-[#3AC4A0]">
-          Daftar Sekarang
-        </Button>
+        <Link href="http://bit.ly/RspvSeedsAcademy" target="_blank">
+          <Button className="w-fit rounded-full capitalize font-poppins font-semibold lg:text-lg xl:text-xl text-base bg-[#3AC4A0]">
+            Daftar Sekarang
+          </Button>
+        </Link>
       </div>
       <div className="w-full lg:w-1/2 xl:w-2/3 flex gap-6 justify-center lg:justify-end">
         <div className="flex flex-col gap-8 h-[414px] justify-center items-center overflow-hidden">
@@ -139,6 +142,6 @@ const Alumni = ():React.ReactElement => {
       </div>
     </div>
   );
-}
+};
 
 export default Alumni

@@ -87,7 +87,9 @@ module.exports = withMT({
         'bounce-reverse': 'bounce-reverse 2000ms infinite',
         'shadow-move': 'shadow-move 3s infinite',
         'shadow-voicenotes': 'shadow-voicenotes 1s infinite',
-        'infinite-line': 'infinite-line 30s linear infinite'
+        'infinite-line': 'infinite-line 30s linear infinite',
+        'vertical-line': 'vertical-line 25s linear infinite',
+        'vertical-line-reverse': 'vertical-line-reverse 25s linear infinite'
       },
       keyframes: {
         'slide-down': {
@@ -188,6 +190,22 @@ module.exports = withMT({
           },
           '100%': {
             transform: 'translateX(-50%)'
+          }
+        },
+        'vertical-line': {
+          '0%': {
+            transform: 'translateY(0)'
+          },
+          '100%': {
+            transform: 'translateY(-50%)'
+          }
+        },
+        'vertical-line-reverse': {
+          '0%': {
+            transform: 'translateY(0)'
+          },
+          '100%': {
+            transform: 'translateY(50%)'
           }
         }
       }

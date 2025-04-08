@@ -2853,6 +2853,7 @@ export default {
         blank: 'You must fill in this field',
         error: 'There is an error. Check your password or connection!',
         serverError: 'A server error occurred. Kindly try again soon.',
+        limitEntry: 'You have entered the wrong password three times. Your login feature will be frozen for 5 minutes for security reasons.',
         password:
           'Password must contain 8 digit with upper case and lower case',
         wrongPassword:
@@ -3675,7 +3676,7 @@ export default {
       },
       table: {
         text1: 'No data in the table.',
-        text2: 'Displaying',
+        text2: 'Showing',
         text3: 'to',
         text4: 'of',
         text5: 'entries',

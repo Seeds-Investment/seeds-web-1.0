@@ -2785,6 +2785,7 @@ export default {
         blank: 'Kamu harus mengisi kolom ini',
         error: 'Terjadi kesalahan. Cek kata sandi Anda atau koneksi Anda!',
         serverError: 'Terjadi kesalahan pada server. Mohon coba sesaat lagi.',
+        limitEntry: 'Anda telah salah memasukan password tiga kali. Fitur login anda akan dibekukan 5 menit demi keamanan.',
         password:
           'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
         wrongPassword:

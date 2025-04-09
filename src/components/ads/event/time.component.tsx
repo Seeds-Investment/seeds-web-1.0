@@ -7,7 +7,7 @@ import CountdownTimer from './countdown.component';
 
 const Time = (): React.ReactElement => {
   return (
-    <div className="flex flex-col md:flex-row justify-evenly items-center px-4 py-10 lg:px-20 lg:py-11 bg-gradient-to-b from-[#67E3B6] to-[#19AEAE]">
+    <div className="w-full flex flex-col md:flex-row justify-evenly items-center px-4 py-10 lg:px-20 lg:py-11 bg-gradient-to-b from-[#67E3B6] to-[#19AEAE]">
       <Image src={blink} alt="blink" />
       <div className="flex flex-col gap-10 justify-center items-center">
         <div className="flex flex-col gap-4 text-center">

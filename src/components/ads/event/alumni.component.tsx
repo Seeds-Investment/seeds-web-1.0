@@ -44,7 +44,7 @@ const testimony = [
 
 const Alumni = (): React.ReactElement => {
   return (
-    <div className="bg-[#eff9f8] lg:px-20 lg:py-0 px-4 py-10 flex flex-col md:flex-row items-center gap-8 md:gap-0">
+    <div className="w-full bg-[#eff9f8] lg:px-20 lg:py-0 px-4 py-10 flex flex-col md:flex-row items-center gap-8 md:gap-0">
       <div className="w-full lg:w-1/2 xl:w-1/3 flex flex-col gap-6 items-center md:items-start">
         <div className="flex flex-col gap-2 lg:gap-6 text-center md:text-left">
           <p className="font-semibold text-neutral-medium text-base lg:text-xl xl:text-3xl">
@@ -61,7 +61,7 @@ const Alumni = (): React.ReactElement => {
           </Button>
         </Link>
       </div>
-      <div className="w-full lg:w-1/2 xl:w-2/3 flex gap-6 justify-center lg:justify-end">
+      <div className="w-full lg:w-1/2 xl:w-2/3 flex gap-6 justify-center lg:justify-end 2xl:justify-center">
         <div className="flex flex-col gap-8 h-[414px] justify-center items-center overflow-hidden">
           {Array.from({ length: 2 }).map((_, k) => (
             <div className="flex flex-col gap-8 animate-vertical-line" key={k}>

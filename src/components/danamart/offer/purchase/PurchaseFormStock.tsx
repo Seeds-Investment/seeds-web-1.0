@@ -31,6 +31,7 @@ interface PurchaseFormProps {
   setIsContinueProcess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsPending: React.Dispatch<React.SetStateAction<boolean>>;
   isPending: boolean;
+  setPaymentMethod: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const PurchaseFormStock: React.FC<PurchaseFormProps> = ({
@@ -47,7 +48,8 @@ const PurchaseFormStock: React.FC<PurchaseFormProps> = ({
   setIsContinueProcess,
   isLoading,
   setIsPending,
-  isPending
+  isPending,
+  setPaymentMethod
 }) => {
   const { t } = useTranslation();
   const {
@@ -70,6 +72,9 @@ const PurchaseFormStock: React.FC<PurchaseFormProps> = ({
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const cleanDanaRewerd = Number(
     dashboardData?.dataSaldoUser?.danaRewerd.replace(/[^\d]/g, '')
+  );
+  const availableDanaCash = Number(
+    dashboardData?.dataSaldoUser?.danaCash?.replace(/[^\d]/g, '')
   );
 
   const calculateTotalPayment = (): void => {
@@ -138,6 +143,10 @@ const PurchaseFormStock: React.FC<PurchaseFormProps> = ({
       'total_dana_reward',
       dashboardData?.dataSaldoUser?.TotalDanaRewerd
     );
+    setValue(
+      'total_dana_reward_shown',
+      dashboardData?.dataSaldoUser?.TotalDanaRewerd
+    );
   }, [formPurchaseData]);
 
   useEffect(() => {
@@ -201,10 +210,13 @@ const PurchaseFormStock: React.FC<PurchaseFormProps> = ({
           ) {
             toast.error(t(`${pathTranslation}.formResponse.text4`));
             setIsPending(!isPending);
+          }  else if (error?.response?.data?.messages?.message ===
+            "Maaf jumlah pembelian anda melebihi slot yang ada."
+          ) {
+            toast.error(t(`${pathTranslation}.formResponse.text7`));
           } else {
             toast.error(
-              'Error purchasing assets: ',
-              error?.response?.data?.messages?.message
+              `Error purchasing assets: ${error?.response?.data?.messages?.message as string}`,
             );
           }
           setIsContinueProcess(false);
@@ -259,15 +271,27 @@ const PurchaseFormStock: React.FC<PurchaseFormProps> = ({
         />
       </div>
       <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
-        <MInput
-          label={`${t(`${pathTranslation}.text6`)}`}
-          registerName="total_dana_reward"
-          type="number"
-          errors={errors}
-          control={control}
-          watch={watch}
-          disabled
-        />
+        {
+          dashboardData?.dataSaldoUser?.TotalDanaRewerd === 0 ?
+            <MInput
+              label={`${t(`${pathTranslation}.text6`)}`}
+              registerName="total_dana_reward_shown"
+              register={register}
+              type="text"
+              errors={errors}
+              disabled
+            />
+            :
+            <MInput
+              label={`${t(`${pathTranslation}.text6`)}`}
+              registerName="total_dana_reward"
+              type="number"
+              errors={errors}
+              control={control}
+              watch={watch}
+              disabled
+            />
+        }
         <MInput
           label={`${t(`${pathTranslation}.sourceCash.text1`)}`}
           registerName="sumberDana"
@@ -336,9 +360,45 @@ const PurchaseFormStock: React.FC<PurchaseFormProps> = ({
             toast.error(t(`${pathTranslation}.formResponse.text5`));
           } else {
             if (sourceCash === 'DanaCash') {
-              setIsShowDisclaimer(true);
+              if (availableDanaCash < watch('bid_cash')) {
+                toast.error(t(`${pathTranslation}.formResponse.text8`))
+              } else {
+                if (watch('lembar_saham') > watch('sisa_lembar_saham')) {
+                  toast.error(t(`${pathTranslation}.formResponse.text9`))
+                } else {
+                  setIsShowDisclaimer(true);
+                  setPaymentMethod('DanaCash')
+                }
+              }
             } else {
-              setIsContinueProcess(true);
+              if (
+                (watch('bank_code') === 'BCA') ||
+                (watch('bank_code') === 'MANDIRI') ||
+                (watch('bank_code') === 'BNI') ||
+                (watch('bank_code') === 'BRI')
+              ) {
+                if (totalPaid > 50000000) {
+                  toast.error(t(`${pathTranslation}.formResponse.text10`))
+                } else {
+                  if (lembarSaham > watch('sisa_lembar_saham')) {
+                    toast.error(t(`${pathTranslation}.formResponse.text9`))
+                  } else {
+                    setIsContinueProcess(true);
+                    setPaymentMethod('TransferDana')
+                  }
+                }
+              } else if (watch('bank_code') === 'PERMATA') {
+                if (totalPaid > 9000000) {
+                  toast.error(t(`${pathTranslation}.formResponse.text10`))
+                } else {
+                  if (lembarSaham > watch('sisa_lembar_saham')) {
+                    toast.error(t(`${pathTranslation}.formResponse.text9`))
+                  } else {
+                    setIsContinueProcess(true);
+                    setPaymentMethod('TransferDana')
+                  }
+                }
+              }
             }
           }
         }}

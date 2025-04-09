@@ -3514,6 +3514,10 @@ export default {
             text5: 'Minimum pembelian adalah Rp. 100.000,-',
             text6:
               'Silakan setujui bahwa anda berinvestasi pada Project Financing',
+            text7: 'Maaf jumlah pembelian anda melebihi slot yang ada',
+            text8: 'Maaf jumlah pembelian anda melebihi deposit anda',
+            text9: 'Maaf jumlah pembelian anda melebihi slot yang tersedia',
+            text10: 'Maaf jumlah pembelian anda melebihi batas transfer bank anda',
           }
         },
         disclaimer: {
@@ -3586,6 +3590,7 @@ export default {
             getOtp: 'Dapatkan Kode OTP',
             selectType: 'Pilih Jenis OTP',
             tooManyAttempts: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
+            wrongPassword: 'Password salah, silakan coba kembali.',
             cancel: 'Tidak',
             yes: 'Ya'
           }
@@ -3920,6 +3925,43 @@ export default {
         text1: 'Pengaturan'
       },
       title: 'Pengaturan',
+      text1: 'Ubah Password',
+      text2: 'Ubah Email',
+      text3: 'Ubah No Handphone',
+      text4: 'Ubah Rekening',
+      text5: 'Verifikasi',
+      text6: 'Hapus Akun',
+      verifyPhoneAndEmail: {
+        text1: 'Verifikasi nomor handphone berhasil!',
+        text2: 'Permintaan berhasil. Silakan cek email anda.',
+        text3: 'Verifikasi Akun Kamu',
+        text4: 'Email',
+        text5: 'Terverifikasi',
+        text6: 'Link verifikasi akan dikirim ke email',
+        text7: 'No Handphone',
+        text8: 'Kode verifikasi akan dikirim ke no handphone',
+        text9: 'Lanjutkan Verifikasi',
+      },
+      deleteAccount: {
+        text1: 'Hapus Akun',
+        text2: 'Password Akun Danamart Anda',
+        text3: 'Verifikasi OTP',
+        text4: 'Akun anda berhasil dihapus',
+        tooManyAttempts: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
+        disclaimer: `
+          <p>Sesuai dengan <strong>Peraturan Menteri Komunikasi dan Informatika No. 20 Tahun 2016</strong> tentang <strong>Perlindungan Data Pribadi Dalam Sistem Elektronik</strong> Pasal 20, disebutkan bahwa: <em>“Jika Pemilik Data Pribadi meminta penghapusan Data Perseorangan Tertentu miliknya, permintaan penghapusan tersebut dilakukan sesuai dengan ketentuan peraturan perundang-undangan.”</em></p>
+          <br>
+          <p>Dengan ini Danamart menyediakan fitur <strong>"Hapus Akun"</strong> dengan ketentuan sebagai berikut:</p>
+          <br>
+          <ol>
+            <li>Data pribadi yang akan dihapus meliputi: Nama, Email, No. Handphone, Tempat/Tanggal Lahir, Agama, Pekerjaan, Alamat, No. Rekening, dan data KTP.</li>
+            <li>Pastikan tidak terdapat <strong>DanaCash</strong> yang masih tersedia di dalam akun.</li>
+            <li>Jika terdapat <strong>DanaReward</strong>, maka DanaReward tersebut tidak dapat diambil kembali, kecuali melalui proses pendanaan terlebih dahulu sesuai dengan ketentuan yang berlaku pada DanaReward.</li>
+            <li>Pastikan tidak terdapat pendanaan yang sedang berjalan pada akun.</li>
+            <li>Data yang dihapus tidak mencakup riwayat transaksi Pemodal. Data transaksi akan tetap disimpan sesuai kebijakan penyimpanan data yang berlaku.</li>
+          </ol>
+        `
+      }
     },
     idleLogout:
       'Anda tidak aktif selama 30 menit atau lebih. Silakan masuk kembali ke Danamart.',

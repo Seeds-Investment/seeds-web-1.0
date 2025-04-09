@@ -274,6 +274,7 @@ const Purchase = (): React.ReactElement => {
                   setIsContinueProcess={setIsContinueProcess}
                   setIsPending={setIsPending}
                   isPending={isPending}
+                  setPaymentMethod={setPaymentMethod}
                 />
           ) : (
             router?.query?.co === 'true' ?

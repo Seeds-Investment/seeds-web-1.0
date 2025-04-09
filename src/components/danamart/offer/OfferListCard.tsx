@@ -41,7 +41,7 @@ const OfferListCard: React.FC<Props> = ({
       className="w-full relative h-full min-h-[400px] flex flex-col justify-between rounded-lg shadow-md hover:shadow-lg duration-100"
     >
       <div className="relative h-[150px] w-full">
-        <Image
+        <img
           alt="Offer Image"
           src={offer?.gbr_sektor_usaha ?? offer?.gbr_sektor_usaha_square}
           width={1000}

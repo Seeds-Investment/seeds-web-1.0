@@ -13,7 +13,6 @@ import {
   type OfferList
 } from '@/utils/interfaces/danamart/offers.interface';
 import { Button, Typography } from '@material-tailwind/react';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -225,7 +224,7 @@ const Prospectus = (): React.ReactElement => {
                       }}
                     />
                   ) : (
-                    <Image
+                    <img
                       src={
                         detailProspektus?.Data?.gambarProspektus[currentIndex]
                       }
@@ -271,7 +270,7 @@ const Prospectus = (): React.ReactElement => {
                             🎥
                           </div>
                         ) : (
-                          <Image
+                          <img
                             onClick={() => {
                               setCurrentIndex(index);
                             }}

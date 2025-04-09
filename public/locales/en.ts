@@ -3581,6 +3581,10 @@ export default {
             text5: 'Minimum purchase amount is Rp. 100,000,-',
             text6:
               'Please acknowledge that you are investing in Project Financing.',
+            text7: 'Sorry, your purchase amount exceeds the available slots.',
+            text8: 'Sorry, your purchase amount exceeds your in hand cash.',
+            text9: 'Sorry, your purchase amount exceeds the available slots',
+            text10: 'Sorry, your purchase amount exceeds your bank transfer limit',
           }
         },
         disclaimer: {
@@ -3654,6 +3658,7 @@ export default {
             getOtp: 'Get OTP',
             selectType: 'Select OTP Type',
             tooManyAttempts: 'Too many OTP requests. Please wait 5 minutes before trying again.',
+            wrongPassword: 'Wrong password. Please try again.',
             cancel: 'Cancel',
             yes: 'Yes'
           }
@@ -3983,6 +3988,43 @@ export default {
         text1: 'Setting'
       },
       title: 'Setting',
+      text1: 'Change Password',
+      text2: 'Change Email',
+      text3: 'Change Phone Number',
+      text4: 'Change Bank Account',
+      text5: 'Verification',
+      text6: 'Delete Account',
+      verifyPhoneAndEmail: {
+        text1: 'Phone number verification successful!',
+        text2: 'Request successful. Please check your email.',
+        text3: 'Verify Your Account',
+        text4: 'Email',
+        text5: 'Verified',
+        text6: 'A verification link will be sent to your email',
+        text7: 'Phone Number',
+        text8: 'A verification code will be sent to your phone number',
+        text9: 'Continue Verification',
+      },
+      deleteAccount: {
+        text1: 'Delete Account',
+        text2: 'Your Danamart Password',
+        text3: 'Verify OTP',
+        text4: 'Your account has been successfully deleted',
+        tooManyAttempts: 'Too many OTP requests. Please wait 5 minutes before trying again.',
+        disclaimer: `
+          <p>In accordance with <strong>Regulation of the Minister of Communication and Informatics No. 20 of 2016</strong> on <strong>Personal Data Protection in Electronic Systems</strong>, Article 20 states: <em>“If the Owner of Personal Data requests the deletion of certain individual data, the deletion request shall be carried out in accordance with the provisions of applicable laws and regulations.”</em></p>
+          <br>
+          <p>Danamart provides an <strong>"Delete Account"</strong> feature with the following conditions:</p>
+          <br>
+          <ol>
+            <li>The personal data to be deleted includes: Name, Email, Phone Number, Place/Date of Birth, Religion, Occupation, Address, Bank Account Number, and ID card data.</li>
+            <li>Ensure that there is no remaining <strong>DanaCash</strong> in the account.</li>
+            <li>If there is any <strong>DanaReward</strong>, it cannot be withdrawn, except through a funding process in accordance with the applicable DanaReward terms and conditions.</li>
+            <li>Ensure that there is no ongoing funding activity in the account.</li>
+            <li>The deleted data does not include investment transaction history. Transaction history will be retained in accordance with the applicable data retention policy.</li>
+          </ol>
+        `
+      }
     },
     idleLogout:
       'You have been idle for 30 minutes or more. Please log in again to Danamart.',

@@ -190,7 +190,7 @@ const PurchaseFormBondCheck: React.FC<PurchaseFormProps> = ({
       </div>
       <Button
         className="w-full text-base font-semibold bg-seeds-button-green mt-6 rounded-full capitalize"
-        disabled={lembarSaham === undefined || isLoading || bidCash > purchaseLimit}
+        disabled={lembarSaham === undefined || isLoading || bidCash > purchaseLimit || purchaseLimit <= 0}
         onClick={() => {
           if (watch('bid_cash') < 100000) {
             toast.error(t(`${pathTranslation}.formResponse.text5`));

@@ -133,3 +133,127 @@ export const postDeleteAccountRequest = async (formData: FormData): Promise<any>
     await Promise.reject(error);
   }
 };
+
+export const changePassword = async (formData: FormData): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.post(
+      `/pemodal/Setting/ubahPassword`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    await Promise.reject(error);
+  }
+};
+
+export const changeEmail = async (formData: FormData): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.post(
+      `/pemodal/setting/ubahEmail`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    await Promise.reject(error);
+  }
+};
+
+export const getBankList = async (): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.get(
+      `/pemodal/setting/getRekening`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    await Promise.reject(error);
+  }
+};
+
+export const changeBankAccount = async (formData: FormData): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.post(
+      `/pemodal/setting/getOtpSend?transaksi=ubahRek`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    await Promise.reject(error);
+  }
+};
+
+export const validateChangeBankOTP = async (formData: FormData): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.post(
+      `/pemodal/setting/getOtpValidate`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    await Promise.reject(error);
+  }
+};

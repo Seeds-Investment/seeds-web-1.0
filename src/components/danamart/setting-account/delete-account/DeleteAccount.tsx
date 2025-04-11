@@ -105,7 +105,7 @@ const DeleteAccount: React.FC = () => {
       </div>
       
       {/* Continue Button */}
-      <div className="w-full mt-6 flex justify-center md:justify-start">
+      <div className="w-full mt-6 flex justify-center md:justify-start mb-16 md:mb-0">
         <Button
           onClick={() => {
             setIsShowOTP(true)

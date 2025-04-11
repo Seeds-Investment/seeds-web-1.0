@@ -3660,7 +3660,8 @@ export default {
             tooManyAttempts: 'Too many OTP requests. Please wait 5 minutes before trying again.',
             wrongPassword: 'Wrong password. Please try again.',
             cancel: 'Cancel',
-            yes: 'Yes'
+            yes: 'Yes',
+            timeRemaining: 'Time remaining'
           }
         }
       }
@@ -4024,6 +4025,84 @@ export default {
             <li>The deleted data does not include investment transaction history. Transaction history will be retained in accordance with the applicable data retention policy.</li>
           </ol>
         `
+      },
+      changePassword: {
+        text1: 'Change Password',
+        text2: 'Current Password',
+        text3: 'New Password',
+        text4: 'Confirm New Password',
+        text5: 'Save Changes',
+        text6: 'Your account password has been successfully changed.',
+        text7: 'The old password is incorrect or does not match.',
+        text8: 'Password must be at least 8 characters and include lowercase, uppercase, and a number.',
+        text9: 'Password confirmation does not match.',
+        passwordPolicy: `
+          <p><strong>Password Requirements:</strong></p>
+          <br>
+          <ol>
+            <li>Must be at least <strong>8 characters</strong> long.</li>
+            <li>Must include at least <strong>lowercase letters</strong>, <strong>uppercase letters</strong>, and <strong>numbers</strong>.</li>
+            <li>The <strong>maximum password usage period</strong> is <strong>90 days</strong>.</li>
+            <li>The <strong>minimum interval</strong> to reuse the same password is after <strong>5 password changes</strong>.</li>
+            <li>Incorrect passwords can be attempted up to <strong>3 times</strong> before the account is locked.</li>
+            <li>The account will remain locked for <strong>30 minutes</strong> before it can be reset.</li>
+          </ol>
+        `
+      },
+      changeEmail: {
+        text1: 'Change Email',
+        text2: 'Your current email address is',
+        text3: 'New Email',
+        text4: 'Danamart Account Password',
+        text5: 'Invalid email format',
+        text6: 'The password is incorrect or does not match.',
+        text7: 'Email address is already in use! Please use a different email.',
+        text8: 'Please check your email to verify the email change.',
+        modal: {
+          text1: 'Confirmation',
+          text2: 'Your email will be changed to',
+          text3: 'We will send a verification email to your new email address. Your account will be automatically logged out after this.',
+          text4: 'Do you want to continue?',
+          cancel: 'Cancel',
+          continue: 'Continue',
+        }
+      },
+      changeBankAccount: {
+        text1: 'Your Bank Account',
+        text2: 'New Bank Account',
+        text3: '* You have not filled in your bank account details',
+        text4: 'Select Bank',
+        text5: 'Choose a bank...',
+        text6: 'Search bank...',
+        text7: 'Bank not found',
+        text8: 'New Bank Account Number',
+        text9: 'Enter account number',
+        text10: 'Account Holder Name',
+        text11: 'Enter account holder name',
+        text12: 'Your Account Password',
+        text13: 'Enter your Danamart account password',
+        text14: 'Select OTP Method',
+        text15: 'Choose a verification method',
+        text16: 'Change Bank Account',
+        text17: 'OTP Code Verification',
+        text18: 'Bank Account Change',
+        text19: 'Resend OTP',
+        text20: 'Time remaining',
+        text21: 'Continue with the account change process?',
+        validation: {
+          text1: 'Thank you for your patience. We would like to inform you that there is still a data change request in progress. Please wait until this process is completed before submitting another request.',
+          text2: 'The OTP code has been sent to your number. Please check your phone.',
+          text3: 'We have received your data change request. Our team will proceed to confirm this request by contacting you. Please wait patiently.',
+          text4: 'The verification code is incorrect, please enter a valid verification code.',
+          text5: 'The bank account number is incorrect or invalid.',
+          text6: "The account holder's name does not match.",
+          text7: 'Incorrect password, please try again.',
+          text8: 'Too many OTP requests. Please wait 5 minutes before trying again.',
+          text9: 'Please choose a verification code delivery method.',
+          text10: 'An error occurred. Please log in to your account again.',
+        },
+        close: 'Close',
+        continue: 'Continue'
       }
     },
     idleLogout:

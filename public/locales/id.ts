@@ -3592,7 +3592,8 @@ export default {
             tooManyAttempts: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
             wrongPassword: 'Password salah, silakan coba kembali.',
             cancel: 'Tidak',
-            yes: 'Ya'
+            yes: 'Ya',
+            timeRemaining: 'Waktu tersisa'
           }
         }
       }
@@ -3961,6 +3962,84 @@ export default {
             <li>Data yang dihapus tidak mencakup riwayat transaksi Pemodal. Data transaksi akan tetap disimpan sesuai kebijakan penyimpanan data yang berlaku.</li>
           </ol>
         `
+      },
+      changePassword: {
+        text1: 'Ubah Password',
+        text2: 'Password Saat Ini',
+        text3: 'Password Baru',
+        text4: 'Konfirmasi Password Baru',
+        text5: 'Simpan Perubahan',
+        text6: 'Password akunkamu telah berhasil diubah.',
+        text7: 'Password lama salah atau tidak sesuai.',
+        text8: 'Password harus terdiri dari minimal 8 karakter dan mencakup huruf kecil, huruf kapital, serta angka.',
+        text9: 'Konfirmasi password tidak sesuai.',
+        passwordPolicy: `
+          <p><strong>Persyaratan Password:</strong></p>
+          <br>
+          <ol>
+            <li>Minimal terdiri dari <strong>8 karakter</strong>.</li>
+            <li>Setidaknya terdiri dari <strong>huruf kecil</strong>, <strong>huruf kapital</strong>, dan <strong>angka</strong>.</li>
+            <li><strong>Periode maksimum</strong> penggunaan password yang diperbolehkan adalah <strong>90 hari</strong>.</li>
+            <li><strong>Interval minimum</strong> untuk menggunakan password yang sama kembali adalah setelah <strong>5 kali</strong> pergantian password.</li>
+            <li>Password yang salah dapat dicoba ulang hingga <strong>3 kali</strong> sebelum akun terkunci.</li>
+            <li>Lama akun tetap terkunci adalah <strong>30 menit</strong> sampai bisa direset ulang.</li>
+          </ol>
+        `
+      },
+      changeEmail: {
+        text1: 'Ubah Email',
+        text2: 'Alamat email anda adalah',
+        text3: 'Email Baru',
+        text4: 'Password Akun Danamart',
+        text5: 'Format email tidak sesuai',
+        text6: 'Password salah atau tidak sesuai.',
+        text7: 'Alamat Email sudah digunakan! Silahkan Ganti Email yang lain',
+        text8: 'Silakan cek email Kamu untuk verifikasi perubahan email.',
+        modal: {
+          text1: 'Konfirmasi',
+          text2: 'Email Kamu akan diubah menjadi',
+          text3: 'Kami akan mengirimkan email verifikasi ke alamat email Kamu yang baru. Akun kamu akan logout otomatis setelah ini.',
+          text4: 'Ingin melanjutkan?',
+          cancel: 'Batalkan',
+          continue: 'Lanjutkan',
+        }
+      },
+      changeBankAccount: {
+        text1: 'Rekening Kamu',
+        text2: 'Rekening Baru',
+        text3: '* Anda belum mengisi data akun bank',
+        text4: 'Pilih Bank',
+        text5: 'Pilih bank...',
+        text6: 'Cari bank...',
+        text7: 'Bank tidak ditemukan',
+        text8: 'Nomor Rekening Baru',
+        text9: 'Masukkan nomor rekening',
+        text10: 'Nama Pemilik Rekening',
+        text11: 'Masukkan nama rekening',
+        text12: 'Password Akun Kamu',
+        text13: 'Masukkan password akun danamart',
+        text14: 'Pilih Metode OTP',
+        text15: 'Pilih metode verifikasi',
+        text16: 'Ganti Rekening',
+        text17: 'Verifikasi Kode OTP',
+        text18: 'Perubahan Rekening',
+        text19: 'Resend OTP',
+        text20: 'Waktu tersisa',
+        text21: 'Lanjutkan proses perubahan rekening?',
+        validation: {
+          text1: 'Terima kasih atas kesabarannya. Kami ingin memberitahukan bahwa masih terdapat permintaan perubahan data yang masih dalam proses. Mohon tunggu sampai proses ini selesai dan Anda dapat mengajukannya kembali.',
+          text2: 'Kode OTP telah dikirim ke nomor anda. Silakan cek handphone anda.',
+          text3: 'Kami telah menerima permintaan perubahan data anda. Selanjutnya tim kami akan melakukan konfirmasi terkait permintaan perubahan data ini dengan cara menghubungimu. Mohon ditunggu ya.',
+          text4: 'Kode verifkasi salah, silakan masukkan kode verifikasi yang valid.',
+          text5: 'No rekening salah atau tidak valid.',
+          text6: 'Nama pemilik rekening tidak sesuai.',
+          text7: 'Password salah, silakan coba kembali.',
+          text8: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
+          text9: 'Silahkan pilih metode pengiriman Kode Verifikasi.',
+          text10: 'Terjadi kesalahan. Silakan login ulang akun Anda.',
+        },
+        close: 'Tutup',
+        continue: 'Lanjutkan'
       }
     },
     idleLogout:

@@ -10,7 +10,7 @@ interface Props {
   setIsContinueProcess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsShowOTP: React.Dispatch<React.SetStateAction<boolean>>;
   isShowOTP: boolean;
-  setPassedOTP: (otp: string) => void;
+  setPassedOTP: React.Dispatch<React.SetStateAction<string>>;
   isLoading: boolean;
 }
 

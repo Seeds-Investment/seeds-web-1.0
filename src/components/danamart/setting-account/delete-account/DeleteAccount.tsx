@@ -89,7 +89,7 @@ const DeleteAccount: React.FC = () => {
           value={password}
           onChange={(e) => { setPassword(e.target.value); }}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="********"
+          placeholder={`${t(`${pathTranslation}.text5`)}`}
         />
         <button
           type="button"
@@ -111,7 +111,7 @@ const DeleteAccount: React.FC = () => {
             setIsShowOTP(true)
           }}
           disabled={password === '' || isLoading}
-          className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
+          className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-md disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
         >
           {t(`${pathTranslation}.text3`)}
         </Button>

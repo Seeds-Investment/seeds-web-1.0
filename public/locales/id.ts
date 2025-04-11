@@ -3948,6 +3948,7 @@ export default {
         text2: 'Password Akun Danamart Anda',
         text3: 'Verifikasi OTP',
         text4: 'Akun anda berhasil dihapus',
+        text5: 'Masukkan password akun danamart',
         tooManyAttempts: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
         disclaimer: `
           <p>Sesuai dengan <strong>Peraturan Menteri Komunikasi dan Informatika No. 20 Tahun 2016</strong> tentang <strong>Perlindungan Data Pribadi Dalam Sistem Elektronik</strong> Pasal 20, disebutkan bahwa: <em>“Jika Pemilik Data Pribadi meminta penghapusan Data Perseorangan Tertentu miliknya, permintaan penghapusan tersebut dilakukan sesuai dengan ketentuan peraturan perundang-undangan.”</em></p>
@@ -3973,6 +3974,9 @@ export default {
         text7: 'Password lama salah atau tidak sesuai.',
         text8: 'Password harus terdiri dari minimal 8 karakter dan mencakup huruf kecil, huruf kapital, serta angka.',
         text9: 'Konfirmasi password tidak sesuai.',
+        text10: 'Masukkan password akun danamart',
+        text11: 'Masukkan password baru akun danamart',
+        text12: 'Konfirmasi password baru akun danamart',
         passwordPolicy: `
           <p><strong>Persyaratan Password:</strong></p>
           <br>
@@ -3995,6 +3999,8 @@ export default {
         text6: 'Password salah atau tidak sesuai.',
         text7: 'Alamat Email sudah digunakan! Silahkan Ganti Email yang lain',
         text8: 'Silakan cek email Kamu untuk verifikasi perubahan email.',
+        text9: 'Masukkan email baru',
+        text10: 'Masukkan password akun danamart',
         modal: {
           text1: 'Konfirmasi',
           text2: 'Email Kamu akan diubah menjadi',
@@ -4040,6 +4046,33 @@ export default {
         },
         close: 'Tutup',
         continue: 'Lanjutkan'
+      },
+      changePhoneNumber: {
+        text1: 'Ubah Nomor Handphone',
+        text2: 'Nomor handphone anda adalah',
+        text3: '* Anda belum mengisi data nomor handphone',
+        text4: 'Nomor Telepon',
+        text5: 'Masukkan nomor handphone baru',
+        text6: 'Password Akun Kamu',
+        text7: 'Masukkan password akun danamart',
+        text8: 'Pilih Metode Pengiriman Kode Verifikasi',
+        text9: 'Pilih Metode Verifikasi',
+        text10: 'Kirim Verifikasi',
+        text11: 'Verifikasi Kode OTP',
+        text12: 'Perubahan Nomor Handphone',
+        text13: 'Resend OTP',
+        text14: 'Waktu tersisa',
+        text15: 'Lanjutkan proses perubahan nomor handphone?',
+        cancel: 'Batalkan',
+        continue: 'Lanjutkan',
+        validation: {
+          text1: 'Kode verifikasi Berhasil Dikirim. Silahkan Cek Handphone Anda!',
+          text2: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
+          text3: 'Password salah, silakan coba kembali.',
+          text4: 'Nomor Handphone anda masih dalam proses pengajuan. Tunggu data selesai di konfirmasi oleh verifikator!',
+          text5: 'Kami telah menerima permintaan perubahan data-mu, selanjutnya tim kami akan melakukan konfirmasi terkait permintaan perubahan data ini dengan cara menghubungi-mu, mohon ditunggu ya.',
+          text6: 'Kode salah! Silakan ulangi input.',
+        }
       }
     },
     idleLogout:

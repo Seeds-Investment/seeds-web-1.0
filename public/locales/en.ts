@@ -4011,6 +4011,7 @@ export default {
         text2: 'Your Danamart Password',
         text3: 'Verify OTP',
         text4: 'Your account has been successfully deleted',
+        text5: 'Enter your Danamart account password',
         tooManyAttempts: 'Too many OTP requests. Please wait 5 minutes before trying again.',
         disclaimer: `
           <p>In accordance with <strong>Regulation of the Minister of Communication and Informatics No. 20 of 2016</strong> on <strong>Personal Data Protection in Electronic Systems</strong>, Article 20 states: <em>“If the Owner of Personal Data requests the deletion of certain individual data, the deletion request shall be carried out in accordance with the provisions of applicable laws and regulations.”</em></p>
@@ -4036,6 +4037,9 @@ export default {
         text7: 'The old password is incorrect or does not match.',
         text8: 'Password must be at least 8 characters and include lowercase, uppercase, and a number.',
         text9: 'Password confirmation does not match.',
+        text10: 'Enter your Danamart current account password',
+        text11: 'Enter your Danamart new account password',
+        text12: 'Confirm your Danamart new account password',
         passwordPolicy: `
           <p><strong>Password Requirements:</strong></p>
           <br>
@@ -4058,6 +4062,8 @@ export default {
         text6: 'The password is incorrect or does not match.',
         text7: 'Email address is already in use! Please use a different email.',
         text8: 'Please check your email to verify the email change.',
+        text9: 'Enter new email address',
+        text10: 'Enter your Danamart account password',
         modal: {
           text1: 'Confirmation',
           text2: 'Your email will be changed to',
@@ -4088,7 +4094,7 @@ export default {
         text18: 'Bank Account Change',
         text19: 'Resend OTP',
         text20: 'Time remaining',
-        text21: 'Continue with the account change process?',
+        text21: 'Continue with the bank account change process?',
         validation: {
           text1: 'Thank you for your patience. We would like to inform you that there is still a data change request in progress. Please wait until this process is completed before submitting another request.',
           text2: 'The OTP code has been sent to your number. Please check your phone.',
@@ -4103,6 +4109,33 @@ export default {
         },
         close: 'Close',
         continue: 'Continue'
+      },
+      changePhoneNumber: {
+        text1: 'Change Phone Number',
+        text2: 'Your phone number is',
+        text3: '* You have not provided a phone number',
+        text4: 'Phone Number',
+        text5: 'Enter your new phone number',
+        text6: 'Your Account Password',
+        text7: 'Enter your Danamart account password',
+        text8: 'Choose Verification Code Delivery Method',
+        text9: 'Select Verification Method',
+        text10: 'Send Verification',
+        text11: 'Verify OTP Code',
+        text12: 'Phone Number Change',
+        text13: 'Resend OTP',
+        text14: 'Time remaining',
+        text15: 'Continue the phone number change process?',
+        cancel: 'Cancel',
+        continue: 'Continue',
+        validation: {
+          text1: 'Verification code sent successfully. Please check your phone!',
+          text2: 'Too many OTP requests. Please wait 5 minutes before trying again.',
+          text3: 'Incorrect password, please try again.',
+          text4: 'Your phone number is currently in the approval process. Please wait for confirmation from the verifier!',
+          text5: 'We have received your data change request. Our team will contact you to confirm the request. Please wait.',
+          text6: 'Incorrect code! Please re-enter.',
+        }
       }
     },
     idleLogout:

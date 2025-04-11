@@ -96,7 +96,7 @@ const ChangePassword: React.FC = () => {
           value={oldPassword}
           onChange={(e) => { setOldPassword(e.target.value); }}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="********"
+          placeholder={`${t(`${pathTranslation}.text10`)}`}
         />
         <button
           type="button"
@@ -121,7 +121,7 @@ const ChangePassword: React.FC = () => {
             value={newPassword}
             onChange={(e) => { setNewPassword(e.target.value); }}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="********"
+            placeholder={`${t(`${pathTranslation}.text11`)}`}
           />
           <button
             type="button"
@@ -144,7 +144,7 @@ const ChangePassword: React.FC = () => {
             value={confirmNewPassword}
             onChange={(e) => { setConfirmNewPassword(e.target.value); }}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="********"
+            placeholder={`${t(`${pathTranslation}.text12`)}`}
           />
           <button
             type="button"
@@ -172,7 +172,7 @@ const ChangePassword: React.FC = () => {
         <Button
           onClick={handleChangePassword}
           disabled={isLoading || (oldPassword === '' || newPassword === '' || confirmNewPassword === '')}
-          className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
+          className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-md disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
         >
           {t(`${pathTranslation}.text5`)}
         </Button>

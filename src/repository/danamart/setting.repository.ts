@@ -257,3 +257,53 @@ export const validateChangeBankOTP = async (formData: FormData): Promise<any> =>
     await Promise.reject(error);
   }
 };
+
+export const changePhoneNumber = async (method: string, formData: FormData): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.post(
+      `/pemodal/Setting/handphoneBaru?metode=${method}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    await Promise.reject(error);
+  }
+};
+
+export const validateChangePhoneNumberOTP = async (formData: FormData): Promise<any> => {
+  try {
+    const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
+
+    if (accessTokenDanamart === null || accessTokenDanamart === '') {
+      return await Promise.resolve('Access token Danamart not found');
+    }
+
+    const response = await danamartApi.post(
+      `/pemodal/Setting/verifOtpHp`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    await Promise.reject(error);
+  }
+};

@@ -1,4 +1,4 @@
-import { validateChangeBankOTP } from '@/repository/danamart/setting.repository';
+import { validateChangePhoneNumberOTP } from '@/repository/danamart/setting.repository';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Button, Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
@@ -8,7 +8,6 @@ import Modal from '../../../ui/modal/Modal';
 
 interface Props {
   setIsAllowedOTP:  React.Dispatch<React.SetStateAction<boolean>>;
-  setIsShowSuccessValidate: React.Dispatch<React.SetStateAction<boolean>>;
   setIsContinueProcess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsShowOTP: React.Dispatch<React.SetStateAction<boolean>>;
   isShowOTP: boolean;
@@ -17,15 +16,14 @@ interface Props {
   setIsLoading:   React.Dispatch<React.SetStateAction<boolean>>;
   isAllowedOTP: boolean;
   passedOTP: string;
-  newBankAccountName: string;
-  bankNumber: string;
-  selectedBankName: string;
-  selectedBankCode: string;
+  combinedPhone: string;
+  setPhoneNumber:  React.Dispatch<React.SetStateAction<string>>;
+  setPassword:  React.Dispatch<React.SetStateAction<string>>;
+  setOtpType:  React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ModalOTP: React.FC<Props> = ({
   setIsAllowedOTP,
-  setIsShowSuccessValidate,
   setIsContinueProcess,
   setIsShowOTP,
   isShowOTP,
@@ -34,14 +32,11 @@ const ModalOTP: React.FC<Props> = ({
   setIsLoading,
   isAllowedOTP,
   passedOTP,
-  newBankAccountName,
-  bankNumber,
-  selectedBankName,
-  selectedBankCode
+  combinedPhone
 }) => {
   const { t } = useTranslation();
   const pathTranslationModal = 'danamart.offers.purchase.modals.otp';
-  const pathTranslation = 'danamart.setting.changeBankAccount';
+  const pathTranslation = 'danamart.setting.changePhoneNumber';
   const [countdown, setCountdown] = useState<number>(0);
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
   const isOTPComplete = otp?.every(value => value !== '');
@@ -95,33 +90,33 @@ const ModalOTP: React.FC<Props> = ({
     try {
       setIsLoading(true)
       const formData = new FormData();
-      formData.append('dm_penmit_07001', newBankAccountName);
-      formData.append('dm_penmit_07002', bankNumber);
-      formData.append('dm_penmit_07003', selectedBankName);
-      formData.append('dm_penmit_07006', selectedBankCode);
-      formData.append('encodeData', '');
       formData.append('otp', passedOTP);
+      formData.append('nohp', combinedPhone);
 
-      const response = await validateChangeBankOTP(formData);
-
+      const response = await validateChangePhoneNumberOTP(formData);
+      
       if (response?.status === 200) {
         setIsLoading(false)
       }
-      if (response?.data?.statusCode === 200) {
-        setIsShowOTP(false)
-        setIsShowSuccessValidate(true)
-      } else if (response?.data?.message === 'Kode verifkasi salah, silakan masukkan kode verifikasi yang valid.') {
-        toast.error(t(`${pathTranslation}.text4`));
-      } else if (response?.data?.message === 'Maaf, kode OTP salah! Yuk, cek kode OTP yang kamu dapat & coba input ulang. Kode OTP hanya berlaku 5 menit') {
-        toast.error(t(`${pathTranslation}.text4`));
+
+      if (response?.data?.message === 'Kami telah menerima permintaan perubahan data-mu, selanjutnya tim kami akan melakukan konfirmasi terkait permintaan perubahan data ini dengan cara menghubungi-mu, mohon ditunggu ya.') {
+        setIsShowOTP(false);
+        toast.success(t(`${pathTranslation}.validation.text5`))
+      } else {
+        toast.success(t(`${pathTranslation}.validation.text5`))
       }
     } catch (error: any) {
       setIsLoading(false)
-      if (error?.response?.data?.message === "Too many Hits") {
-        toast.error(t(`${pathTranslationModal}.tooManyAttempts`));
+
+      if (error?.response?.data?.messages?.message === 'Kode salah! Silakan ulangi input.') {
+        toast.error(t(`${pathTranslation}.validation.text6`))
+      } else if (error?.response?.data === 'Too many Hits') {
+        toast.error(t(`${pathTranslation}.validation.text2`));
       } else {
         toast.error(`Error validating OTP: ${error as string}`);
       }
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -155,7 +150,7 @@ const ModalOTP: React.FC<Props> = ({
 
       <Typography className="font-bold text-xl mb-4">
         {
-          isAllowedOTP ? t(`${pathTranslation}.text17`) : t(`${pathTranslation}.text18`)
+          isAllowedOTP ? t(`${pathTranslation}.text11`) : t(`${pathTranslation}.text12`)
         }
       </Typography>
 
@@ -170,12 +165,12 @@ const ModalOTP: React.FC<Props> = ({
                 disabled={countdown !== 0 || isLoading}
                 className="w-full bg-seeds-button-green rounded-full capitalize text-md"
               >
-                {t(`${pathTranslation}.text19`)}
+                {t(`${pathTranslation}.text13`)}
               </Button>
             ) : (
               <div className="mt-4">
                 <Typography className="text-red-600 text-sm font-medium mb-2">
-                  {`${t(`${pathTranslation}.text20`)}: ${formatTime(countdown)}`}
+                  {`${t(`${pathTranslation}.text14`)}: ${formatTime(countdown)}`}
                 </Typography>
 
                 {/* OTP Input Boxes */}
@@ -207,7 +202,7 @@ const ModalOTP: React.FC<Props> = ({
           :
           <div>
             <Typography className="font-poppins text-md text-[#262626] font-semibold">
-              {t(`${pathTranslation}.text21`)}
+              {t(`${pathTranslation}.text15`)}
             </Typography>
           </div>
       }

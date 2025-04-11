@@ -31,21 +31,25 @@ const ChangeEmail: React.FC<Props> = ({
     setShowPassword(!showPassword);
   };
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const value = e.target.value;
+    setNewEmail(value);
+    setNewEmailError(null);
+  };
+
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = e.target.value;
-    setNewEmail(value);
-
-    if ((value?.length > 0) && !validateEmail(value)) {
+  const handleValidateEmail = (): void => {
+    if ((newEmail?.length > 0) && !validateEmail(newEmail)) {
       setNewEmailError(t(`${pathTranslation}.text5`));
     } else {
       setNewEmailError(null);
+      setIsShowConfirm(true)
     }
-  };
+  }
   
   const handleChangeEmail = async (): Promise<void> => {
     try {
@@ -119,7 +123,7 @@ const ChangeEmail: React.FC<Props> = ({
             value={newEmail}
             onChange={handleEmailChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="your@email.com"
+            placeholder={`${t(`${pathTranslation}.text9`)}`}
           />
           {(newEmailError !== null) && (
             <p className="text-sm text-red-500 mt-1 font-poppins">{newEmailError}</p>
@@ -138,7 +142,7 @@ const ChangeEmail: React.FC<Props> = ({
               setConfirmPasswordError(null)
             }}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="********"
+            placeholder={`${t(`${pathTranslation}.text10`)}`}
           />
           <button
             type="button"
@@ -157,10 +161,10 @@ const ChangeEmail: React.FC<Props> = ({
       <div className="w-full mt-2 flex justify-center md:justify-start mb-16 md:mb-0">
         <Button
           onClick={() => {
-            setIsShowConfirm(true)
+            handleValidateEmail()
           }}
-          disabled={newEmailError !== null || password === ''}
-          className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
+          disabled={newEmailError !== null || password === '' || newEmail === ''}
+          className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-md disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
         >
           {t(`${pathTranslation}.text1`)}
         </Button>

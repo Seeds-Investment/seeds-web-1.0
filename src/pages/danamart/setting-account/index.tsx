@@ -1,7 +1,7 @@
 import ChangeBankAccount from '@/components/danamart/setting-account/change-bank-account/ChangeBankAccount';
 import ChangeEmail from '@/components/danamart/setting-account/change-email/ChangeEmail';
 import ChangePassword from '@/components/danamart/setting-account/change-password/ChangePassword';
-import ChangePhoneNumber from '@/components/danamart/setting-account/ChangePhoneNumber';
+import ChangePhoneNumber from '@/components/danamart/setting-account/change-phone-number/ChangePhoneNumber';
 import DeleteAccount from '@/components/danamart/setting-account/delete-account/DeleteAccount';
 import VerifyPhoneEmail from '@/components/danamart/setting-account/verify-phone-email/VerifyPhoneEmail';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -140,7 +140,9 @@ const SettingAccount = (): React.ReactElement => {
                         userProfileData={userProfileData}
                       />
                     : activeNavbar === 3
-                      ? <ChangePhoneNumber />
+                      ? <ChangePhoneNumber
+                          userProfileData={userProfileData}
+                        />
                       : activeNavbar === 4
                         ? <ChangeBankAccount />
                         : activeNavbar === 5

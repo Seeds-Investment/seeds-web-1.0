@@ -335,7 +335,7 @@ const ChangeBankAccount: React.FC = () => {
             setIsShowOTP(true)
           }}
           disabled={selectedBankCode === '' || bankNumber === '' || newBankAccountName === '' || password === '' || otpType === '' || bankList?.dataRek === ''}
-          className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
+          className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-md disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
         >
           {t(`${pathTranslation}.text16`)}
         </Button>

@@ -5,6 +5,9 @@ export default {
   greeting: 'Hello, {{name}}',
   header: { join: 'Join Us' },
   footer: {
+    disclaimer: 'Disclaimer:',
+    disclaimerContain:
+      'is not a licensed financial institution. All information provided is for informational purposes only and should not be considered financial advice.',
     description:
       'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice for you. If you are still unsure about investing, start communicating with a financial consultant Be careful before starting to invest!',
     download: 'Download Our App',
@@ -1003,7 +1006,8 @@ export default {
       warningCompletion: 'Complete payment in',
       minuteWarning: 'Less than 1 minute',
       expired: 'Payment expired',
-      minimumPaymentError: 'The minimum transaction amount for Virtual Account payments is IDR 10,000.',
+      minimumPaymentError:
+        'The minimum transaction amount for Virtual Account payments is IDR 10,000.',
       teamBattleFee: 'Team Battle Fee'
     }
   },
@@ -2056,8 +2060,9 @@ export default {
     seeQRCode: 'See QR Code',
     expired: {
       text1: 'Your QR Code has expired',
-      text2: 'Please make the purchase again and ensure that your payment has been completed in time',
-      text3: 'Payment expired',
+      text2:
+        'Please make the purchase again and ensure that your payment has been completed in time',
+      text3: 'Payment expired'
     },
     repeat: 'Repeat Purchase',
     completePayment: 'Complete the payment in',
@@ -2444,7 +2449,7 @@ export default {
       virtualAccountLabel: 'Virtual Account',
       eWalletLabel: 'E-Wallet',
       button: 'Pay',
-      eventFee: "Event Fee",
+      eventFee: 'Event Fee',
       howToPay: 'How to Pay',
       WalletForm: {
         title: 'Enter {{wallet}} Number',

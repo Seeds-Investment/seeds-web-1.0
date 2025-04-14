@@ -3,6 +3,9 @@ export default {
   header: { join: 'Yuk! Gabung' },
   // greeting: 'Hello, {{name}}',
   footer: {
+    disclaimer: 'Pernyataan:',
+    disclaimerContain:
+      'bukan entitas keuangan resmi. Informasi yang disediakan hanya bertujuan sebagai referensi dan bukan merupakan nasihat finansial.',
     description:
       'Situs ini tidak berisi rekomendasi untuk berinvestasi. Seeds tidak menawarkan konsultasi keuangan untuk kamu. Jika kamu masih ragu untuk  berinvestasi, mulailah berkomunikasi dengan konsultan keuangan. Tetap waspada sebelum mulai berinvetasi!',
     download: 'Unduh Aplikasi Kami',
@@ -922,7 +925,8 @@ export default {
       warningCompletion: 'Selesaikan pembayaran dalam',
       minuteWarning: 'Kurang dari 1 menit',
       expired: 'Pembayaran kadaluarsa',
-      minimumPaymentError: 'Jumlah transaksi minimum untuk pembayaran Virtual Account adalah Rp 10.000.',
+      minimumPaymentError:
+        'Jumlah transaksi minimum untuk pembayaran Virtual Account adalah Rp 10.000.',
       teamBattleFee: 'Biaya Team Battle'
     }
   },
@@ -1985,8 +1989,9 @@ export default {
     seeQRCode: 'Lihat Kode QR',
     expired: {
       text1: 'Kode QR Anda telah kadaluarsa',
-      text2: 'Lakukan pembelian ulang dan pastikan pembayaran anda selesai tepat waktu',
-      text3: 'Pembayaran telah kadaluarsa',
+      text2:
+        'Lakukan pembelian ulang dan pastikan pembayaran anda selesai tepat waktu',
+      text3: 'Pembayaran telah kadaluarsa'
     },
     repeat: 'Ulangi Pembelian',
     completePayment: 'Selesaikan pembayaran dalam',

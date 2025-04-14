@@ -6,7 +6,7 @@ const PHK = (): React.ReactElement => {
       <div className="flex flex-col justify-center items-center gap-2 md:gap-6 md:w-[85%]">
         <TagEvent text="Berita Terkini" />
         <p className="font-semibold lg:text-4xl text-base text-neutral-medium text-center">
-          Inovasi Crypto dan Web3 Lainnya
+          Inovasi Web3 Lainnya
         </p>
         <p className="text-sm lg:text-base text-neutral-soft text-left md:text-center">
           Beragam inovasi di sektor keuangan dan investasi terus berkembang,

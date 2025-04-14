@@ -4,9 +4,11 @@
 import AnswerButtonComponent from '@/components/quiz/answer-button.component';
 import QuizButton from '@/components/quiz/button.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import useSoundEffect from '@/hooks/useSoundEffects';
 import { getQuizReview } from '@/repository/quiz.repository';
+import { useAppSelector } from '@/store/redux/store';
 import i18n from '@/utils/common/i18n';
 import {
   type Option,
@@ -26,17 +28,23 @@ const Review = () => {
   const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [QuizReview, setQuizReview] = useState<QuizReviewDTO | null>(null);
+  const { dataUser } = useAppSelector(state => state.user);
   const fetchQuizReview = async (): Promise<void> => {
     try {
       const response = await getQuizReview(id as string);
       setQuizReview(response);
+      TrackerEvent({
+        event: 'SW_quiz_done_game',
+        quizData: { id },
+        userData: dataUser
+      });
     } catch (error) {
       toast(`ERROR fetch quiz review ${error as string}`);
     }
   };
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance';
   const audioConfig = {
     routeName: router.pathname,
     audioFiles: [

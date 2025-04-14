@@ -64,7 +64,7 @@ export default function ArticleDetailPage(): JSX.Element {
   const [formRequest, setFormRequest] =
     useState<FormRequestInterface>(initialFormRequest);
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance/';
 
   async function fetchArticles(): Promise<void> {
     try {

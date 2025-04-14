@@ -4,7 +4,7 @@ import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
 const socialService = baseAxios(
   `${
-    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
   }/post/`
 );
 

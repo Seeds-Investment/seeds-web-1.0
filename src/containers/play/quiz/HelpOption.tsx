@@ -49,7 +49,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
 
   const [verifyCompanionVisibility, setVerifyCompanionVisibility] =
     useState<boolean>(false);
-    
+
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
@@ -59,7 +59,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   }, [router.query.useCoins]);
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance';
   const audioConfig = {
     routeName: router.pathname,
     audioFiles: [
@@ -131,10 +131,15 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
 
     if (promoCodeValidationResult !== 0) {
       if (
-        (promoCodeValidationResult?.response?.final_price !== undefined && promoCodeValidationResult?.response?.total_discount === undefined) ||
-        (promoCodeValidationResult?.response?.final_price !== undefined && promoCodeValidationResult?.response?.total_discount !== undefined)
+        (promoCodeValidationResult?.response?.final_price !== undefined &&
+          promoCodeValidationResult?.response?.total_discount === undefined) ||
+        (promoCodeValidationResult?.response?.final_price !== undefined &&
+          promoCodeValidationResult?.response?.total_discount !== undefined)
       ) {
-        if (total + (Number(promoCodeValidationResult?.response?.final_price)) !== 0) {
+        if (
+          total + Number(promoCodeValidationResult?.response?.final_price) !==
+          0
+        ) {
           // Case 1
           onPay({
             payment: {
@@ -187,7 +192,12 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           }
         }
       } else {
-        if (total + ((detailQuiz?.admission_fee ?? 0) - Number(promoCodeValidationResult?.response?.total_discount)) !== 0) {
+        if (
+          total +
+            ((detailQuiz?.admission_fee ?? 0) -
+              Number(promoCodeValidationResult?.response?.total_discount)) !==
+          0
+        ) {
           // Case 3
           onPay({
             payment: {

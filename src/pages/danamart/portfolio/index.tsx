@@ -165,8 +165,12 @@ const Portfolio = (): React.ReactElement => {
       }
       
     } catch (error: any) {
-      toast.error(`Error cancelling purchase: ${error as string}`);
       setIsContinueProcess(false)
+      if (error?.message === 'Silahkan Masukan Kode verifikasi yang Valid') {
+        toast.error(t(`${pathTranslation}.text3`))
+      } else {
+        toast.error(`Error cancelling purchase: ${error as string}`);
+      }
     } finally {
       setIsContinueProcess(false)
       setTimeout(() => {

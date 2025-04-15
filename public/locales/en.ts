@@ -3674,6 +3674,7 @@ export default {
       title: 'Portfolio',
       text1: 'Are you sure you want to cancel the purchase?',
       text2: 'Even though your investment was successfully canceled, don’t worry — Danamart still offers many other investment opportunities. Go ahead and choose one!',
+      text3: 'Please enter a valid verification code',
       cancel: 'No',
       continue: 'Yes, cancel',
       filter: {

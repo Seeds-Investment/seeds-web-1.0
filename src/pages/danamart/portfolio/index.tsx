@@ -39,6 +39,7 @@ const Portfolio = (): React.ReactElement => {
   const [isShowOptions, setIsShowOptions] = useState<boolean>(false);
   const [selectedPortfolioIndex, setSelectedPortfolioIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingCancelPurchase, setIsLoadingCancelPurchase] = useState<boolean>(false);
   const [userProfileData, setUserProfileData] = useState<UserProfile>();
   const [isContinueProcess, setIsContinueProcess] = useState<boolean>(false);
   
@@ -148,6 +149,7 @@ const Portfolio = (): React.ReactElement => {
 
   const handleCancelPurchase = async (): Promise<void> => {
     try {
+      setIsLoadingCancelPurchase(true)
       const response = await cancelPurchase(
         portfolioData[selectedPortfolioIndex]?.batalPembelian?.kodePendanaan,
         userProfileData?.detailUser[0]?.user_pendana_id ?? '',
@@ -172,6 +174,7 @@ const Portfolio = (): React.ReactElement => {
         toast.error(`Error cancelling purchase: ${error as string}`);
       }
     } finally {
+      setIsLoadingCancelPurchase(true)
       setIsContinueProcess(false)
       setTimeout(() => {
         void (async () => {
@@ -676,6 +679,7 @@ const Portfolio = (): React.ReactElement => {
           setIsContinueProcess={setIsContinueProcess}
           setPassedOTP={setPassedOTP}
           isLoading={isLoading}
+          isLoadingCancelPurchase={isLoadingCancelPurchase}
         />
       )}
     </PageGradient>

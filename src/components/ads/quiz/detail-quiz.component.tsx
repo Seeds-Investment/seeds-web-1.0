@@ -4,7 +4,7 @@ import {
   getAllQuizNoToken,
   getQuizByIdNoToken
 } from '@/repository/quiz.repository';
-import { QuizStatus } from '@/utils/interfaces/quiz.interfaces';
+import { QuizStatus, type AllQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { Button, Card } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -25,21 +25,23 @@ const DetailQuiz = (): React.ReactElement => {
   const { queries } = queryList();
 
   const handleQuiz = useCallback(async () => {
-    const res = await getAllQuizNoToken({
-      limit: 5,
+    const res: AllQuiz = await getAllQuizNoToken({
+      limit: 10,
       page: 1,
       status: QuizStatus.STARTED
     });
     // eslint-disable-next-line prefer-const
     let counter = 0;
-
-    while (counter < (res?.data?.length ?? 0)) {
-      const resId: QuizIdRoot = await getQuizByIdNoToken({
-        id: res.data[counter].id as string,
-        currency: ''
-      });
-      setDataQuiz(prev => [...prev, resId]);
-      counter++;
+    const filterRes = res?.data?.filter(v => v.category !== 'CRYPTO');
+    if (filterRes !== undefined) {
+      while (counter < (filterRes.length > 5 ? 5 : filterRes.length)) {
+        const resId: QuizIdRoot = await getQuizByIdNoToken({
+          id: filterRes[counter].id,
+          currency: ''
+        });
+        setDataQuiz(prev => [...prev, resId]);
+        counter++;
+      }
     }
   }, []);
 

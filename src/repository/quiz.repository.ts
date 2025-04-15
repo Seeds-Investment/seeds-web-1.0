@@ -77,17 +77,19 @@ export const getAllQuizNoToken = async ({
   search = '',
   status = '',
   page = 1,
-  limit = 10
+  limit = 10,
+  category = ''
 }: {
   search?: string;
   status: QuizStatus | '';
   page?: number;
   limit?: number;
+  category?: string;
 }): Promise<any> => {
   try {
     const path = `/all`;
     return await quizService.get(path, {
-      params: { search, status, page, limit }
+      params: { search, status, page, limit, category }
     });
   } catch (error) {
     console.error('Error fetching trending play list:', error);

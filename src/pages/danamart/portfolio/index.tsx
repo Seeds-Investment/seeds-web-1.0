@@ -155,7 +155,7 @@ const Portfolio = (): React.ReactElement => {
         passedOTP
       );
 
-      if (response?.data?.StatusCode === '200') {
+      if (response?.data?.StatusCode === 200) {
         setIsShowOTP(false)
         if (response?.data?.message === 'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!') {
           toast.success('Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!')

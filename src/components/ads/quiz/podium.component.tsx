@@ -55,7 +55,7 @@ const PodiumQuiz = (): React.ReactElement => {
         <div className="relative">
           <div className="absolute flex justify-between w-full h-full ps-[11%] pe-[9%]">
             <div className="flex flex-col items-center w-[18%] mt-[3%]">
-              <p className="font-semibold text-neutral-medium text-xs sm:text-sm md:text-xl">
+              <p className="font-semibold text-neutral-medium text-xs sm:text-sm md:text-xl text-center">
                 {data.find(v => v?.current_rank === 2)?.name ?? 'Winner'}
               </p>
               <div className="relative w-full">
@@ -80,7 +80,7 @@ const PodiumQuiz = (): React.ReactElement => {
               </div>
             </div>
             <div className="flex flex-col items-center w-[21%] -mt-[5%]">
-              <p className="font-semibold text-neutral-medium text-xs sm:text-sm md:text-xl">
+              <p className="font-semibold text-neutral-medium text-xs sm:text-sm md:text-xl text-center">
                 {data.find(v => v?.current_rank === 1)?.name ?? 'Winner'}
               </p>
               <div className="relative w-full">
@@ -105,7 +105,7 @@ const PodiumQuiz = (): React.ReactElement => {
               </div>
             </div>
             <div className="flex flex-col items-center w-[18%] mt-[3%]">
-              <p className="font-semibold text-neutral-medium text-xs sm:text-sm md:text-xl">
+              <p className="font-semibold text-neutral-medium text-xs sm:text-sm md:text-xl text-center">
                 {data.find(v => v?.current_rank === 3)?.name ?? 'Winner'}
               </p>
               <div className="relative w-full">

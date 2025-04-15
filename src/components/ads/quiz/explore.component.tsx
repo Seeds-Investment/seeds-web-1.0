@@ -12,7 +12,7 @@ import React from 'react';
 const categoryQuiz = [
   { name: 'US Stocks', image },
   { name: 'Indo Stocks', image: image1 },
-  { name: 'Crypto', image: image2 },
+  { name: 'Web3', image: image2 },
   { name: 'Mutual Funds', image: image3 },
   { name: 'Forex', image: image4 },
   { name: 'Bonds', image: image5 },

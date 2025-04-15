@@ -29,7 +29,7 @@ const testimony = [
   {
     avatar: testi3,
     name: 'Ariandra',
-    title: 'Juara 3 Crypto',
+    title: 'Juara 3 Web3',
     comment:
       '“Seru! Bisa uji pengetahuan kripto sambil naik peringkat di leaderboard!”',
     star: 4

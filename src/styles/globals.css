@@ -369,7 +369,8 @@ li {
 }
 
 .custom-danamart-slider .slick-slide {
-  margin: 0 4px;
+  margin: 0 0px;
+  padding: 0 8px;
 }
 .custom-danamart-slider .slick-list {
   margin: 0 -4px;

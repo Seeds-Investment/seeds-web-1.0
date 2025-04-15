@@ -2915,7 +2915,8 @@ export default {
       incomeStocks: 'Pendapatan Saham',
       alternatives: 'Alternatif',
       errorGetUserDashboard: 'Gagal mendapatkan data dasbor',
-      errorGetUserProfile: 'Gagal mendapatkan data profile pengguna'
+      errorGetUserProfile: 'Gagal mendapatkan data profile pengguna',
+      mustVerify: 'Mohon verifikasi nomor handphone dan email anda terlebih dahulu.'
     },
     verification: {
       photoIdCardTitle: {
@@ -3589,7 +3590,7 @@ export default {
             verification: 'Verifikasi OTP',
             getOtp: 'Dapatkan Kode OTP',
             selectType: 'Pilih Jenis OTP',
-            tooManyAttempts: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
+            tooManyAttempts: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
             wrongPassword: 'Password salah, silakan coba kembali.',
             cancel: 'Tidak',
             yes: 'Ya',
@@ -3603,6 +3604,10 @@ export default {
         text1: 'Portofolio'
       },
       title: 'Portofolio',
+      text1: 'Apakah Anda yakin ingin membatalkan pembelian?',
+      text2: 'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!',
+      cancel: 'Tidak',
+      continue: 'Ya, batalkan',
       filter: {
         text1: 'Tampilkan 7 entri',
         text2: 'Tampilkan 10 entri',
@@ -3783,7 +3788,7 @@ export default {
             'Selamat, penarikan dana Anda diterima dan akan segera diproses!',
           pending:
             'Masih ada proses tarik dana yang belum diproses di akun Kamu. Silakan tunggu proses tarik dana hingga selesai, lalu coba kembali',
-          tooManyAttempts: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
+          tooManyAttempts: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit.',
           title: 'Permintaan Penarikan Dana',
           text1: 'Metode Tarik Dana',
           text2: 'Jumlah Dana Yang Akan Ditarik + Biaya Admin (Rp)',
@@ -3949,7 +3954,7 @@ export default {
         text3: 'Verifikasi OTP',
         text4: 'Akun anda berhasil dihapus',
         text5: 'Masukkan password akun danamart',
-        tooManyAttempts: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
+        tooManyAttempts: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
         disclaimer: `
           <p>Sesuai dengan <strong>Peraturan Menteri Komunikasi dan Informatika No. 20 Tahun 2016</strong> tentang <strong>Perlindungan Data Pribadi Dalam Sistem Elektronik</strong> Pasal 20, disebutkan bahwa: <em>“Jika Pemilik Data Pribadi meminta penghapusan Data Perseorangan Tertentu miliknya, permintaan penghapusan tersebut dilakukan sesuai dengan ketentuan peraturan perundang-undangan.”</em></p>
           <br>
@@ -4040,7 +4045,7 @@ export default {
           text5: 'No rekening salah atau tidak valid.',
           text6: 'Nama pemilik rekening tidak sesuai.',
           text7: 'Password salah, silakan coba kembali.',
-          text8: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
+          text8: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
           text9: 'Silahkan pilih metode pengiriman Kode Verifikasi.',
           text10: 'Terjadi kesalahan. Silakan login ulang akun Anda.',
         },
@@ -4067,7 +4072,7 @@ export default {
         continue: 'Lanjutkan',
         validation: {
           text1: 'Kode verifikasi Berhasil Dikirim. Silahkan Cek Handphone Anda!',
-          text2: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
+          text2: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
           text3: 'Password salah, silakan coba kembali.',
           text4: 'Nomor Handphone anda masih dalam proses pengajuan. Tunggu data selesai di konfirmasi oleh verifikator!',
           text5: 'Kami telah menerima permintaan perubahan data-mu, selanjutnya tim kami akan melakukan konfirmasi terkait permintaan perubahan data ini dengan cara menghubungi-mu, mohon ditunggu ya.',

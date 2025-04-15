@@ -329,7 +329,7 @@ const Prospectus = (): React.ReactElement => {
                 </div>
                 <Button
                   onClick={async () => {
-                    if (detailProspektus?.Data?.StatusListing === 'Pre-Listing') {
+                    if (detailProspektus?.Data?.StatusListing === 'Pre-Listing' && detailProspektus?.Data?.cekOmbak !== "1") {
                       setIsShowWaitListingModal(true);
                     } else {
                       await router.push(

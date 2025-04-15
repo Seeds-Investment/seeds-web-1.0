@@ -84,7 +84,7 @@ const ModalOTP: React.FC<Props> = ({
       formData.append('password', password);
       const response = await getDeleteAccountOTP(formData);
       if (response?.status === 200) {
-        setCountdown(230);
+        setCountdown(300);
         toast.success(response?.data?.message);
       }
     } catch (error: any) {

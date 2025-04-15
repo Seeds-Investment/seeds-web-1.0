@@ -80,7 +80,7 @@ const ModalOTP: React.FC<Props> = ({
       formData.append('kverif', 'Pverif');
       const response = await getPhoneVerificationOTP(formData);
       if (response?.data?.StatusCode === '200') {
-        setCountdown(230);
+        setCountdown(300);
         toast.success(response?.data?.message);
       }
     } catch (error: any) {

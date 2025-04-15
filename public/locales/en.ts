@@ -2983,7 +2983,8 @@ export default {
       incomeStocks: 'Income Stocks',
       alternatives: 'Alternatives',
       errorGetUserDashboard: 'Failed to get dashboard data',
-      errorGetUserProfile: 'Failed to get user profile'
+      errorGetUserProfile: 'Failed to get user profile',
+      mustVerify: 'Please verify your phone number and email address first.'
     },
     verification: {
       photoIdCardTitle: {
@@ -3657,7 +3658,7 @@ export default {
             verification: 'OTP Verification',
             getOtp: 'Get OTP',
             selectType: 'Select OTP Type',
-            tooManyAttempts: 'Too many OTP requests. Please wait 5 minutes before trying again.',
+            tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
             wrongPassword: 'Wrong password. Please try again.',
             cancel: 'Cancel',
             yes: 'Yes',
@@ -3671,6 +3672,10 @@ export default {
         text1: 'Portfolio'
       },
       title: 'Portfolio',
+      text1: 'Are you sure you want to cancel the purchase?',
+      text2: 'Even though your investment was successfully canceled, don’t worry — Danamart still offers many other investment opportunities. Go ahead and choose one!',
+      cancel: 'No',
+      continue: 'Yes, cancel',
       filter: {
         text1: 'Show 7 entries',
         text2: 'Show 10 entries',
@@ -3846,7 +3851,7 @@ export default {
             'Congratulations, your withdrawal request has been received and will be processed soon!',
           pending:
             'There is still an ongoing withdrawal process in your account. Please wait until the withdrawal is completed, then try again.',
-          tooManyAttempts: 'Too many OTP requests. Please wait 5 minutes before trying again.',
+          tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
           title: 'Withdrawal Request',
           text1: 'Withdrawal Method',
           text2: 'Total Amount to Withdraw + Admin Fee (Rp)',
@@ -4012,7 +4017,7 @@ export default {
         text3: 'Verify OTP',
         text4: 'Your account has been successfully deleted',
         text5: 'Enter your Danamart account password',
-        tooManyAttempts: 'Too many OTP requests. Please wait 5 minutes before trying again.',
+        tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
         disclaimer: `
           <p>In accordance with <strong>Regulation of the Minister of Communication and Informatics No. 20 of 2016</strong> on <strong>Personal Data Protection in Electronic Systems</strong>, Article 20 states: <em>“If the Owner of Personal Data requests the deletion of certain individual data, the deletion request shall be carried out in accordance with the provisions of applicable laws and regulations.”</em></p>
           <br>
@@ -4103,7 +4108,7 @@ export default {
           text5: 'The bank account number is incorrect or invalid.',
           text6: "The account holder's name does not match.",
           text7: 'Incorrect password, please try again.',
-          text8: 'Too many OTP requests. Please wait 5 minutes before trying again.',
+          text8: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
           text9: 'Please choose a verification code delivery method.',
           text10: 'An error occurred. Please log in to your account again.',
         },
@@ -4130,7 +4135,7 @@ export default {
         continue: 'Continue',
         validation: {
           text1: 'Verification code sent successfully. Please check your phone!',
-          text2: 'Too many OTP requests. Please wait 5 minutes before trying again.',
+          text2: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
           text3: 'Incorrect password, please try again.',
           text4: 'Your phone number is currently in the approval process. Please wait for confirmation from the verifier!',
           text5: 'We have received your data change request. Our team will contact you to confirm the request. Please wait.',

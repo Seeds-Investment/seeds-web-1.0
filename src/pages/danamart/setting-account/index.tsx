@@ -10,6 +10,7 @@ import withAuthDanamart from '@/helpers/withAuthDanamart';
 import { getProfileUser } from '@/repository/danamart/danamart.repository';
 import { type UserProfile } from '@/utils/interfaces/danamart.interface';
 import { Typography } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaRegCreditCard, FaRegTrashAlt } from 'react-icons/fa';
@@ -20,6 +21,10 @@ import { toast } from 'react-toastify';
 
 const SettingAccount = (): React.ReactElement => {
   const { t } = useTranslation();
+  const router = useRouter();
+  const verify = Array.isArray(router.query.verify)
+    ? router.query.verify[0]
+    : router.query.verify;
   const pathTranslation = 'danamart.setting';
   const [activeNavbar, setActiveNavbar] = useState<number>(1);
   const [userProfileData, setUserProfileData] = useState<UserProfile>();
@@ -87,6 +92,12 @@ const SettingAccount = (): React.ReactElement => {
       void fetchUserProfile()
     }
   }, [refetchProfile])
+
+  useEffect(() => {
+    if (verify !== undefined) {
+      setActiveNavbar(5)
+    }
+  }, [verify])
 
   return (
     <PageGradient defaultGradient className="w-full">

@@ -32,6 +32,7 @@ export { default as ProgressPrelistingGrey } from './progres-prelisting-grey.svg
 export { default as ProgressSigningGreen } from './progres-signing-green.svg';
 export { default as ProgressSigningGrey } from './progres-signing-grey.svg';
 export { default as PromoFailed } from './promo-failed.svg';
+export { default as SeedyCancelPurchase } from './seedy-cancel-purchase.svg';
 export { default as SeedyCancelTransaction } from './seedy-cancel-transaction.svg';
 export { default as SeedyPayment } from './seedy-payment.svg';
 export { default as SuccessValidate } from './seedy-success-validate.svg';

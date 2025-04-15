@@ -192,6 +192,7 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
       setValue('total_modal_imbal_hasil', `Rp ${totalModalImbalHasil}`);
       setValue('hasil_investasi_nett', `Rp ${hasilInvestasiNett}`);
     } else {
+      setValue('imbal_hasil_bulan_temp', 0);
       setValue('imbal_hasil_bulan', 0);
       setValue('pajak', 0);
       setValue('total_imbal_hasil', 0);

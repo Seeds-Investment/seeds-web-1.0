@@ -149,7 +149,7 @@ const ModalWithdraw: React.FC<Props> = ({
       if (response?.status === 200) {
         const encryptedData = response?.data;
         const decryptedData = decryptResponse(encryptedData);
-        setCountdown(230);
+        setCountdown(300);
 
         if (decryptedData !== null) {
           const decryptedDataObject = JSON.parse(decryptedData);

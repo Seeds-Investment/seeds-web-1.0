@@ -4,13 +4,18 @@ import {
   ArrowRightPaginationGray,
   ArrowRightPaginationGreen
 } from '@/assets/danamart';
+import ModalConfirmDelete from '@/components/danamart/portfolio/ModalConfirmDelete';
 import ModalCostReturn from '@/components/danamart/portfolio/ModalCostReturn';
 import ModalFinancingInformation from '@/components/danamart/portfolio/ModalFinancingInformation';
 import ModalOfferInformation from '@/components/danamart/portfolio/ModalOfferInformation';
+import ModalOTP from '@/components/danamart/portfolio/ModalOTP';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { decryptResponse } from '@/helpers/cryptoDecrypt';
 import { standartCurrency } from '@/helpers/currency';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
-import { getPortfolio } from '@/repository/danamart/portfolio.repository';
+import { getProfileUser } from '@/repository/danamart/danamart.repository';
+import { cancelPurchase, cancelPurchaseCO, getPortfolio } from '@/repository/danamart/portfolio.repository';
+import { type UserProfile } from '@/utils/interfaces/danamart.interface';
 import { type PortfolioData } from '@/utils/interfaces/danamart/portfolio.interface';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
@@ -32,14 +37,21 @@ const Portfolio = (): React.ReactElement => {
   const [sortColumn, setSortColumn] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [isShowOptions, setIsShowOptions] = useState<boolean>(false);
-  const [selectedPortfolio, setSelectedPortfolio] = useState<number>(0);
+  const [selectedPortfolioIndex, setSelectedPortfolioIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [userProfileData, setUserProfileData] = useState<UserProfile>();
+  const [isContinueProcess, setIsContinueProcess] = useState<boolean>(false);
+  
+  const [isShowOTP, setIsShowOTP] = useState<boolean>(false);
+  const [passedOTP, setPassedOTP] = useState<string>('');
 
   const [isShowModalOfferInformation, setIsShowModalOfferInformation] =
     useState<boolean>(false);
   const [isShowModalFinancingInformation, setIsShowModalFinancingInformation] =
     useState<boolean>(false);
   const [isShowModalCostReturn, setIsShowModalCostReturn] =
+    useState<boolean>(false);
+  const [isShowConfirmDelete, setIsShowConfirmDelete] =
     useState<boolean>(false);
 
   const menu = [
@@ -70,7 +82,7 @@ const Portfolio = (): React.ReactElement => {
     {
       id: 5,
       title: t(`${pathTranslation}.table.dropdown.text5`),
-      action: '',
+      action: setIsShowConfirmDelete,
       color: 'red'
     }
   ];
@@ -88,10 +100,99 @@ const Portfolio = (): React.ReactElement => {
       setIsLoading(false);
     }
   };
+    
+  const fetchUserProfile = async (): Promise<void> => {
+    try {
+      const profile = await getProfileUser();
+      if (profile?.status === 200) {
+        const decryptedProfile = JSON.parse(
+          decryptResponse(profile.data) !== null
+            ? decryptResponse(profile.data)
+            : profile.data
+        );
+        setUserProfileData(decryptedProfile);
+      }
+    } catch (error) {
+      toast.error(t('danamart.dashboard.errorGetUserProfile'));
+    }
+  };
+
+  const handleCancelPurchaseCO = async (): Promise<void> => {
+    try {
+      const response = await cancelPurchaseCO(
+        portfolioData[selectedPortfolioIndex]?.batalPembelian?.kodePendanaan,
+        userProfileData?.detailUser[0]?.user_pendana_id ?? '',
+        portfolioData[selectedPortfolioIndex]?.batalPembelian?.pinjamanId
+      );
+
+      if (response?.data?.StatusCode === '200') {
+        if (response?.data?.message === 'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!') {
+          toast.success(t(`${pathTranslation}.text2`))
+        } else {
+          toast.success(response?.data?.message ?? '')
+        }
+      }
+      
+    } catch (error: any) {
+      toast.error(`Error cancelling purchase: ${error as string}`);
+      setIsContinueProcess(false)
+    } finally {
+      setIsContinueProcess(false)
+      setTimeout(() => {
+        void (async () => {
+          void getPortfolioData()
+        })();
+      }, 4000);
+    }
+  };
+
+  const handleCancelPurchase = async (): Promise<void> => {
+    try {
+      const response = await cancelPurchase(
+        portfolioData[selectedPortfolioIndex]?.batalPembelian?.kodePendanaan,
+        userProfileData?.detailUser[0]?.user_pendana_id ?? '',
+        portfolioData[selectedPortfolioIndex]?.batalPembelian?.pinjamanId,
+        passedOTP
+      );
+
+      if (response?.data?.StatusCode === '200') {
+        setIsShowOTP(false)
+        if (response?.data?.message === 'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!') {
+          toast.success('Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!')
+        } else {
+          toast.success(response?.data?.message ?? '')
+        }
+      }
+      
+    } catch (error: any) {
+      toast.error(`Error cancelling purchase: ${error as string}`);
+      setIsContinueProcess(false)
+    } finally {
+      setIsContinueProcess(false)
+      setTimeout(() => {
+        void (async () => {
+          void getPortfolioData()
+        })();
+      }, 4000);
+    }
+  };
 
   useEffect(() => {
-    void getPortfolioData();
+    setIsLoading(true);
+    Promise.all([fetchUserProfile(), getPortfolioData()]).finally(() => {
+      setIsLoading(false);
+    });
   }, []);
+
+  useEffect(() => {
+    if (isContinueProcess && userProfileData !== undefined) {
+      if (portfolioData[selectedPortfolioIndex]?.is_co === '1') {
+        void handleCancelPurchaseCO()
+      } else {
+        void handleCancelPurchase()
+      }
+    }
+  }, [isContinueProcess])
 
   const handleSort = (column: keyof PortfolioData): void => {
     const newOrder =
@@ -403,14 +504,14 @@ const Portfolio = (): React.ReactElement => {
                         <td className="px-2 py-3 border border-gray-300 text-center">
                           <button
                             onClick={() => {
-                              setSelectedPortfolio(index);
+                              setSelectedPortfolioIndex(index);
                               setIsShowOptions(!isShowOptions);
                             }}
                             className="w-full flex justify-center items-center text-[#262626] hover:scale-125 duration-200"
                           >
                             <HiDotsVertical />
                           </button>
-                          {isShowOptions && selectedPortfolio === index && (
+                          {isShowOptions && selectedPortfolioIndex === index && (
                             <div
                               className={`absolute right-0 md:right-[50px] bottom-[${
                                 index * 40 + 80
@@ -432,7 +533,17 @@ const Portfolio = (): React.ReactElement => {
                                         if (
                                           typeof option?.action === 'function'
                                         )
-                                          option?.action(true);
+                                        {
+                                          if (option?.action === setIsShowConfirmDelete) {
+                                            if (portfolioData[selectedPortfolioIndex]?.is_co === '1') {
+                                              option?.action(true)
+                                            } else {
+                                              setIsShowOTP(true)
+                                            }
+                                          } else {
+                                            option?.action(true);
+                                          }
+                                        }
                                         if (option?.action === 'redirect') {
                                           await router.push(
                                             `/danamart/offer/prospectus/${portfolio?.pinjamanId}`
@@ -527,14 +638,14 @@ const Portfolio = (): React.ReactElement => {
       </div>
       {isShowModalOfferInformation && (
         <ModalOfferInformation
-          data={portfolioData[selectedPortfolio]?.informasiPenawaran}
+          data={portfolioData[selectedPortfolioIndex]?.informasiPenawaran}
           setIsShowModalOfferInformation={setIsShowModalOfferInformation}
           isShowModalOfferInformation={isShowModalOfferInformation}
         />
       )}
       {isShowModalFinancingInformation && (
         <ModalFinancingInformation
-          data={portfolioData[selectedPortfolio]?.modalInfoPendanaan}
+          data={portfolioData[selectedPortfolioIndex]?.modalInfoPendanaan}
           setIsShowModalFinancingInformation={
             setIsShowModalFinancingInformation
           }
@@ -543,9 +654,24 @@ const Portfolio = (): React.ReactElement => {
       )}
       {isShowModalCostReturn && (
         <ModalCostReturn
-          data={portfolioData[selectedPortfolio]?.modalInfoBiayaBunga}
+          data={portfolioData[selectedPortfolioIndex]?.modalInfoBiayaBunga}
           setIsShowModalCostReturn={setIsShowModalCostReturn}
           isShowModalCostReturn={isShowModalCostReturn}
+        />
+      )}
+      {isShowConfirmDelete && (
+        <ModalConfirmDelete
+          setIsShowConfirmDelete={setIsShowConfirmDelete}
+          setIsContinueProcess={setIsContinueProcess}
+        />
+      )}
+      {isShowOTP && (
+        <ModalOTP
+          setIsShowOTP={setIsShowOTP}
+          isShowOTP={isShowOTP}
+          setIsContinueProcess={setIsContinueProcess}
+          setPassedOTP={setPassedOTP}
+          isLoading={isLoading}
         />
       )}
     </PageGradient>

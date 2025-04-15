@@ -39,6 +39,7 @@ const Portfolio = (): React.ReactElement => {
   const [isShowOptions, setIsShowOptions] = useState<boolean>(false);
   const [selectedPortfolioIndex, setSelectedPortfolioIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingCancelPurchase, setIsLoadingCancelPurchase] = useState<boolean>(false);
   const [userProfileData, setUserProfileData] = useState<UserProfile>();
   const [isContinueProcess, setIsContinueProcess] = useState<boolean>(false);
   
@@ -148,6 +149,7 @@ const Portfolio = (): React.ReactElement => {
 
   const handleCancelPurchase = async (): Promise<void> => {
     try {
+      setIsLoadingCancelPurchase(true)
       const response = await cancelPurchase(
         portfolioData[selectedPortfolioIndex]?.batalPembelian?.kodePendanaan,
         userProfileData?.detailUser[0]?.user_pendana_id ?? '',
@@ -155,7 +157,7 @@ const Portfolio = (): React.ReactElement => {
         passedOTP
       );
 
-      if (response?.data?.StatusCode === '200') {
+      if (response?.data?.StatusCode === 200) {
         setIsShowOTP(false)
         if (response?.data?.message === 'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!') {
           toast.success('Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!')
@@ -165,9 +167,14 @@ const Portfolio = (): React.ReactElement => {
       }
       
     } catch (error: any) {
-      toast.error(`Error cancelling purchase: ${error as string}`);
       setIsContinueProcess(false)
+      if (error?.message === 'Silahkan Masukan Kode verifikasi yang Valid') {
+        toast.error(t(`${pathTranslation}.text3`))
+      } else {
+        toast.error(`Error cancelling purchase: ${error as string}`);
+      }
     } finally {
+      setIsLoadingCancelPurchase(true)
       setIsContinueProcess(false)
       setTimeout(() => {
         void (async () => {
@@ -672,6 +679,7 @@ const Portfolio = (): React.ReactElement => {
           setIsContinueProcess={setIsContinueProcess}
           setPassedOTP={setPassedOTP}
           isLoading={isLoading}
+          isLoadingCancelPurchase={isLoadingCancelPurchase}
         />
       )}
     </PageGradient>

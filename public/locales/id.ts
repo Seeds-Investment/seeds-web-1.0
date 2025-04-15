@@ -3606,6 +3606,7 @@ export default {
       title: 'Portofolio',
       text1: 'Apakah Anda yakin ingin membatalkan pembelian?',
       text2: 'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!',
+      text3: 'Silahkan Masukan Kode verifikasi yang Valid',
       cancel: 'Tidak',
       continue: 'Ya, batalkan',
       filter: {

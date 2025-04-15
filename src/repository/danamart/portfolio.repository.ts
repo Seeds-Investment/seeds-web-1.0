@@ -90,7 +90,7 @@ export const cancelPurchase = async (
       return await Promise.resolve('Access token Danamart not found');
     }
 
-    const response = await danamartApi.get(`/pemodal/pendanaan/delete_co/${pendanaan}/${userId}/${pinjamanId}/${kodeOtp}`, {
+    const response = await danamartApi.get(`/pemodal/pendanaan/delete/${pendanaan}/${userId}/${pinjamanId}/${kodeOtp}`, {
       headers: {
         Authorization: `Bearer ${accessTokenDanamart ?? ''}`
       }

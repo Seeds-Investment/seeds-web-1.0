@@ -13,6 +13,7 @@ interface Props {
   isShowOTP: boolean;
   setPassedOTP: React.Dispatch<React.SetStateAction<string>>;
   isLoading: boolean;
+  isLoadingCancelPurchase: boolean;
 }
 
 const ModalOTP: React.FC<Props> = ({
@@ -20,7 +21,8 @@ const ModalOTP: React.FC<Props> = ({
   setIsShowOTP,
   isShowOTP,
   setPassedOTP,
-  isLoading
+  isLoading,
+  isLoadingCancelPurchase
 }) => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.offers.purchase.modals.otp';
@@ -191,7 +193,7 @@ const ModalOTP: React.FC<Props> = ({
           onClick={() => {
             setIsContinueProcess(true);
           }}
-          disabled={!isOTPComplete || isLoading}
+          disabled={!isOTPComplete || isLoading || isLoadingCancelPurchase}
           className="w-[150px] text-sm font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
         >
           {t(`${pathTranslation}.process`)}

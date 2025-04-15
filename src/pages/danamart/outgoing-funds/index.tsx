@@ -86,7 +86,7 @@ const OutgoingFunds = (): React.ReactElement => {
 
   const filteredByDate = filteredData?.filter((outcome) => {
     const depositDate = new Date(outcome?.tgl_withdraw);
-    const start = (startDate?.length > 0) ? new Date(startDate) : null;
+    const start = (startDate?.length > 0) ? new Date(startDate + 'T00:00:00') : null;
     const end = (endDate?.length > 0) ? new Date(endDate + 'T23:59:59') : null;
 
     return (

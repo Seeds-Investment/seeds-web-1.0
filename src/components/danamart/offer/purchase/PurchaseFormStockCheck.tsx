@@ -61,6 +61,7 @@ const PurchaseFormStockCheck: React.FC<PurchaseFormProps> = ({
   const calculateTotalPayment = (): void => {
     const basePrice = lembarSaham * (formPurchaseDataCheckTesting?.dataForm?.hargaLembarSaham ?? 0);
     setValue('bid_cash', basePrice);
+    setValue('bid_cash_shown', basePrice);
   };
 
   useEffect(() => {
@@ -168,15 +169,27 @@ const PurchaseFormStockCheck: React.FC<PurchaseFormProps> = ({
         />
       </div>
       <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
-        <MInput
-          label={`${t(`${pathTranslation}.text29`)}`}
-          registerName="bid_cash"
-          type="number"
-          errors={errors}
-          control={control}
-          watch={watch}
-          disabled
-        />
+        {
+          bidCash === 0 ?
+          <MInput
+            label={`${t(`${pathTranslation}.text29`)}`}
+            registerName="bid_cash_shown"
+            register={register}
+            type="text"
+            errors={errors}
+            disabled
+          />
+          :
+          <MInput
+            label={`${t(`${pathTranslation}.text29`)}`}
+            registerName="bid_cash"
+            type="number"
+            errors={errors}
+            control={control}
+            watch={watch}
+            disabled
+          />
+        }
         <MInput
           label={`${t(`${pathTranslation}.text30`)}`}
           registerName="lembar_saham"
@@ -189,7 +202,7 @@ const PurchaseFormStockCheck: React.FC<PurchaseFormProps> = ({
       </div>
       <Button
         className="w-full text-base font-semibold bg-seeds-button-green mt-6 rounded-full capitalize"
-        disabled={lembarSaham === undefined || isLoading || bidCash > purchaseLimit}
+        disabled={lembarSaham === undefined || isLoading || bidCash > purchaseLimit || purchaseLimit <= 0}
         onClick={() => {
           if (watch('bid_cash') < 100000) {
             toast.error(t(`${pathTranslation}.formResponse.text5`));

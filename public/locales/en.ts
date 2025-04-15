@@ -2853,6 +2853,7 @@ export default {
         blank: 'You must fill in this field',
         error: 'There is an error. Check your password or connection!',
         serverError: 'A server error occurred. Kindly try again soon.',
+        limitEntry: 'You have entered the wrong password three times. Your login feature will be frozen for 5 minutes for security reasons.',
         password:
           'Password must contain 8 digit with upper case and lower case',
         wrongPassword:
@@ -2982,7 +2983,8 @@ export default {
       incomeStocks: 'Income Stocks',
       alternatives: 'Alternatives',
       errorGetUserDashboard: 'Failed to get dashboard data',
-      errorGetUserProfile: 'Failed to get user profile'
+      errorGetUserProfile: 'Failed to get user profile',
+      mustVerify: 'Please verify your phone number and email address first.'
     },
     verification: {
       photoIdCardTitle: {
@@ -3580,6 +3582,10 @@ export default {
             text5: 'Minimum purchase amount is Rp. 100,000,-',
             text6:
               'Please acknowledge that you are investing in Project Financing.',
+            text7: 'Sorry, your purchase amount exceeds the available slots.',
+            text8: 'Sorry, your purchase amount exceeds your in hand cash.',
+            text9: 'Sorry, your purchase amount exceeds the available slots',
+            text10: 'Sorry, your purchase amount exceeds your bank transfer limit',
           }
         },
         disclaimer: {
@@ -3652,9 +3658,11 @@ export default {
             verification: 'OTP Verification',
             getOtp: 'Get OTP',
             selectType: 'Select OTP Type',
-            tooManyAttempts: 'Too many OTP requests. Please wait 5 minutes before trying again.',
+            tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+            wrongPassword: 'Wrong password. Please try again.',
             cancel: 'Cancel',
-            yes: 'Yes'
+            yes: 'Yes',
+            timeRemaining: 'Time remaining'
           }
         }
       }
@@ -3664,6 +3672,10 @@ export default {
         text1: 'Portfolio'
       },
       title: 'Portfolio',
+      text1: 'Are you sure you want to cancel the purchase?',
+      text2: 'Even though your investment was successfully canceled, don’t worry — Danamart still offers many other investment opportunities. Go ahead and choose one!',
+      cancel: 'No',
+      continue: 'Yes, cancel',
       filter: {
         text1: 'Show 7 entries',
         text2: 'Show 10 entries',
@@ -3675,7 +3687,7 @@ export default {
       },
       table: {
         text1: 'No data in the table.',
-        text2: 'Displaying',
+        text2: 'Showing',
         text3: 'to',
         text4: 'of',
         text5: 'entries',
@@ -3839,7 +3851,7 @@ export default {
             'Congratulations, your withdrawal request has been received and will be processed soon!',
           pending:
             'There is still an ongoing withdrawal process in your account. Please wait until the withdrawal is completed, then try again.',
-          tooManyAttempts: 'Too many OTP requests. Please wait 5 minutes before trying again.',
+          tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
           title: 'Withdrawal Request',
           text1: 'Withdrawal Method',
           text2: 'Total Amount to Withdraw + Admin Fee (Rp)',
@@ -3975,6 +3987,160 @@ export default {
         text3: 'Sorry! Your code is invalid, the quota has been exhausted, the validity period has expired, or it does not meet the terms and conditions. Please try again with another code.',
         close: 'Close',
         ok: 'Ok',
+      }
+    },
+    setting: {
+      sidebar: {
+        text1: 'Setting'
+      },
+      title: 'Setting',
+      text1: 'Change Password',
+      text2: 'Change Email',
+      text3: 'Change Phone Number',
+      text4: 'Change Bank Account',
+      text5: 'Verification',
+      text6: 'Delete Account',
+      verifyPhoneAndEmail: {
+        text1: 'Phone number verification successful!',
+        text2: 'Request successful. Please check your email.',
+        text3: 'Verify Your Account',
+        text4: 'Email',
+        text5: 'Verified',
+        text6: 'A verification link will be sent to your email',
+        text7: 'Phone Number',
+        text8: 'A verification code will be sent to your phone number',
+        text9: 'Continue Verification',
+      },
+      deleteAccount: {
+        text1: 'Delete Account',
+        text2: 'Your Danamart Password',
+        text3: 'Verify OTP',
+        text4: 'Your account has been successfully deleted',
+        text5: 'Enter your Danamart account password',
+        tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+        disclaimer: `
+          <p>In accordance with <strong>Regulation of the Minister of Communication and Informatics No. 20 of 2016</strong> on <strong>Personal Data Protection in Electronic Systems</strong>, Article 20 states: <em>“If the Owner of Personal Data requests the deletion of certain individual data, the deletion request shall be carried out in accordance with the provisions of applicable laws and regulations.”</em></p>
+          <br>
+          <p>Danamart provides an <strong>"Delete Account"</strong> feature with the following conditions:</p>
+          <br>
+          <ol>
+            <li>The personal data to be deleted includes: Name, Email, Phone Number, Place/Date of Birth, Religion, Occupation, Address, Bank Account Number, and ID card data.</li>
+            <li>Ensure that there is no remaining <strong>DanaCash</strong> in the account.</li>
+            <li>If there is any <strong>DanaReward</strong>, it cannot be withdrawn, except through a funding process in accordance with the applicable DanaReward terms and conditions.</li>
+            <li>Ensure that there is no ongoing funding activity in the account.</li>
+            <li>The deleted data does not include investment transaction history. Transaction history will be retained in accordance with the applicable data retention policy.</li>
+          </ol>
+        `
+      },
+      changePassword: {
+        text1: 'Change Password',
+        text2: 'Current Password',
+        text3: 'New Password',
+        text4: 'Confirm New Password',
+        text5: 'Save Changes',
+        text6: 'Your account password has been successfully changed.',
+        text7: 'The old password is incorrect or does not match.',
+        text8: 'Password must be at least 8 characters and include lowercase, uppercase, and a number.',
+        text9: 'Password confirmation does not match.',
+        text10: 'Enter your Danamart current account password',
+        text11: 'Enter your Danamart new account password',
+        text12: 'Confirm your Danamart new account password',
+        passwordPolicy: `
+          <p><strong>Password Requirements:</strong></p>
+          <br>
+          <ol>
+            <li>Must be at least <strong>8 characters</strong> long.</li>
+            <li>Must include at least <strong>lowercase letters</strong>, <strong>uppercase letters</strong>, and <strong>numbers</strong>.</li>
+            <li>The <strong>maximum password usage period</strong> is <strong>90 days</strong>.</li>
+            <li>The <strong>minimum interval</strong> to reuse the same password is after <strong>5 password changes</strong>.</li>
+            <li>Incorrect passwords can be attempted up to <strong>3 times</strong> before the account is locked.</li>
+            <li>The account will remain locked for <strong>30 minutes</strong> before it can be reset.</li>
+          </ol>
+        `
+      },
+      changeEmail: {
+        text1: 'Change Email',
+        text2: 'Your current email address is',
+        text3: 'New Email',
+        text4: 'Danamart Account Password',
+        text5: 'Invalid email format',
+        text6: 'The password is incorrect or does not match.',
+        text7: 'Email address is already in use! Please use a different email.',
+        text8: 'Please check your email to verify the email change.',
+        text9: 'Enter new email address',
+        text10: 'Enter your Danamart account password',
+        modal: {
+          text1: 'Confirmation',
+          text2: 'Your email will be changed to',
+          text3: 'We will send a verification email to your new email address. Your account will be automatically logged out after this.',
+          text4: 'Do you want to continue?',
+          cancel: 'Cancel',
+          continue: 'Continue',
+        }
+      },
+      changeBankAccount: {
+        text1: 'Your Bank Account',
+        text2: 'New Bank Account',
+        text3: '* You have not filled in your bank account details',
+        text4: 'Select Bank',
+        text5: 'Choose a bank...',
+        text6: 'Search bank...',
+        text7: 'Bank not found',
+        text8: 'New Bank Account Number',
+        text9: 'Enter account number',
+        text10: 'Account Holder Name',
+        text11: 'Enter account holder name',
+        text12: 'Your Account Password',
+        text13: 'Enter your Danamart account password',
+        text14: 'Select OTP Method',
+        text15: 'Choose a verification method',
+        text16: 'Change Bank Account',
+        text17: 'OTP Code Verification',
+        text18: 'Bank Account Change',
+        text19: 'Resend OTP',
+        text20: 'Time remaining',
+        text21: 'Continue with the bank account change process?',
+        validation: {
+          text1: 'Thank you for your patience. We would like to inform you that there is still a data change request in progress. Please wait until this process is completed before submitting another request.',
+          text2: 'The OTP code has been sent to your number. Please check your phone.',
+          text3: 'We have received your data change request. Our team will proceed to confirm this request by contacting you. Please wait patiently.',
+          text4: 'The verification code is incorrect, please enter a valid verification code.',
+          text5: 'The bank account number is incorrect or invalid.',
+          text6: "The account holder's name does not match.",
+          text7: 'Incorrect password, please try again.',
+          text8: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+          text9: 'Please choose a verification code delivery method.',
+          text10: 'An error occurred. Please log in to your account again.',
+        },
+        close: 'Close',
+        continue: 'Continue'
+      },
+      changePhoneNumber: {
+        text1: 'Change Phone Number',
+        text2: 'Your phone number is',
+        text3: '* You have not provided a phone number',
+        text4: 'Phone Number',
+        text5: 'Enter your new phone number',
+        text6: 'Your Account Password',
+        text7: 'Enter your Danamart account password',
+        text8: 'Choose Verification Code Delivery Method',
+        text9: 'Select Verification Method',
+        text10: 'Send Verification',
+        text11: 'Verify OTP Code',
+        text12: 'Phone Number Change',
+        text13: 'Resend OTP',
+        text14: 'Time remaining',
+        text15: 'Continue the phone number change process?',
+        cancel: 'Cancel',
+        continue: 'Continue',
+        validation: {
+          text1: 'Verification code sent successfully. Please check your phone!',
+          text2: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+          text3: 'Incorrect password, please try again.',
+          text4: 'Your phone number is currently in the approval process. Please wait for confirmation from the verifier!',
+          text5: 'We have received your data change request. Our team will contact you to confirm the request. Please wait.',
+          text6: 'Incorrect code! Please re-enter.',
+        }
       }
     },
     idleLogout:

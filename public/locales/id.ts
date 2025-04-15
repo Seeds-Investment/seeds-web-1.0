@@ -2785,6 +2785,7 @@ export default {
         blank: 'Kamu harus mengisi kolom ini',
         error: 'Terjadi kesalahan. Cek kata sandi Anda atau koneksi Anda!',
         serverError: 'Terjadi kesalahan pada server. Mohon coba sesaat lagi.',
+        limitEntry: 'Anda telah salah memasukan password tiga kali. Fitur login anda akan dibekukan 5 menit demi keamanan.',
         password:
           'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
         wrongPassword:
@@ -2914,7 +2915,8 @@ export default {
       incomeStocks: 'Pendapatan Saham',
       alternatives: 'Alternatif',
       errorGetUserDashboard: 'Gagal mendapatkan data dasbor',
-      errorGetUserProfile: 'Gagal mendapatkan data profile pengguna'
+      errorGetUserProfile: 'Gagal mendapatkan data profile pengguna',
+      mustVerify: 'Mohon verifikasi nomor handphone dan email anda terlebih dahulu.'
     },
     verification: {
       photoIdCardTitle: {
@@ -3513,6 +3515,10 @@ export default {
             text5: 'Minimum pembelian adalah Rp. 100.000,-',
             text6:
               'Silakan setujui bahwa anda berinvestasi pada Project Financing',
+            text7: 'Maaf jumlah pembelian anda melebihi slot yang ada',
+            text8: 'Maaf jumlah pembelian anda melebihi deposit anda',
+            text9: 'Maaf jumlah pembelian anda melebihi slot yang tersedia',
+            text10: 'Maaf jumlah pembelian anda melebihi batas transfer bank anda',
           }
         },
         disclaimer: {
@@ -3584,9 +3590,11 @@ export default {
             verification: 'Verifikasi OTP',
             getOtp: 'Dapatkan Kode OTP',
             selectType: 'Pilih Jenis OTP',
-            tooManyAttempts: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
+            tooManyAttempts: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
+            wrongPassword: 'Password salah, silakan coba kembali.',
             cancel: 'Tidak',
-            yes: 'Ya'
+            yes: 'Ya',
+            timeRemaining: 'Waktu tersisa'
           }
         }
       }
@@ -3596,6 +3604,10 @@ export default {
         text1: 'Portofolio'
       },
       title: 'Portofolio',
+      text1: 'Apakah Anda yakin ingin membatalkan pembelian?',
+      text2: 'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!',
+      cancel: 'Tidak',
+      continue: 'Ya, batalkan',
       filter: {
         text1: 'Tampilkan 7 entri',
         text2: 'Tampilkan 10 entri',
@@ -3776,7 +3788,7 @@ export default {
             'Selamat, penarikan dana Anda diterima dan akan segera diproses!',
           pending:
             'Masih ada proses tarik dana yang belum diproses di akun Kamu. Silakan tunggu proses tarik dana hingga selesai, lalu coba kembali',
-          tooManyAttempts: 'Terlalu banyak permintaan OTP. Harap tunggu 5 menit sebelum mencoba lagi.',
+          tooManyAttempts: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit.',
           title: 'Permintaan Penarikan Dana',
           text1: 'Metode Tarik Dana',
           text2: 'Jumlah Dana Yang Akan Ditarik + Biaya Admin (Rp)',
@@ -3912,6 +3924,160 @@ export default {
         text3: 'Maaf! Kode-mu tidak valid, kuota sudah habis , masa berlakunya telah berakhir atau tidak memenuhi syarat dan ketentuan. Silakan coba lagi dengan kode lainnya ya.',
         close: 'Tutup',
         ok: 'Ok',
+      }
+    },
+    setting: {
+      sidebar: {
+        text1: 'Pengaturan'
+      },
+      title: 'Pengaturan',
+      text1: 'Ubah Password',
+      text2: 'Ubah Email',
+      text3: 'Ubah No Handphone',
+      text4: 'Ubah Rekening',
+      text5: 'Verifikasi',
+      text6: 'Hapus Akun',
+      verifyPhoneAndEmail: {
+        text1: 'Verifikasi nomor handphone berhasil!',
+        text2: 'Permintaan berhasil. Silakan cek email anda.',
+        text3: 'Verifikasi Akun Kamu',
+        text4: 'Email',
+        text5: 'Terverifikasi',
+        text6: 'Link verifikasi akan dikirim ke email',
+        text7: 'No Handphone',
+        text8: 'Kode verifikasi akan dikirim ke no handphone',
+        text9: 'Lanjutkan Verifikasi',
+      },
+      deleteAccount: {
+        text1: 'Hapus Akun',
+        text2: 'Password Akun Danamart Anda',
+        text3: 'Verifikasi OTP',
+        text4: 'Akun anda berhasil dihapus',
+        text5: 'Masukkan password akun danamart',
+        tooManyAttempts: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
+        disclaimer: `
+          <p>Sesuai dengan <strong>Peraturan Menteri Komunikasi dan Informatika No. 20 Tahun 2016</strong> tentang <strong>Perlindungan Data Pribadi Dalam Sistem Elektronik</strong> Pasal 20, disebutkan bahwa: <em>“Jika Pemilik Data Pribadi meminta penghapusan Data Perseorangan Tertentu miliknya, permintaan penghapusan tersebut dilakukan sesuai dengan ketentuan peraturan perundang-undangan.”</em></p>
+          <br>
+          <p>Dengan ini Danamart menyediakan fitur <strong>"Hapus Akun"</strong> dengan ketentuan sebagai berikut:</p>
+          <br>
+          <ol>
+            <li>Data pribadi yang akan dihapus meliputi: Nama, Email, No. Handphone, Tempat/Tanggal Lahir, Agama, Pekerjaan, Alamat, No. Rekening, dan data KTP.</li>
+            <li>Pastikan tidak terdapat <strong>DanaCash</strong> yang masih tersedia di dalam akun.</li>
+            <li>Jika terdapat <strong>DanaReward</strong>, maka DanaReward tersebut tidak dapat diambil kembali, kecuali melalui proses pendanaan terlebih dahulu sesuai dengan ketentuan yang berlaku pada DanaReward.</li>
+            <li>Pastikan tidak terdapat pendanaan yang sedang berjalan pada akun.</li>
+            <li>Data yang dihapus tidak mencakup riwayat transaksi Pemodal. Data transaksi akan tetap disimpan sesuai kebijakan penyimpanan data yang berlaku.</li>
+          </ol>
+        `
+      },
+      changePassword: {
+        text1: 'Ubah Password',
+        text2: 'Password Saat Ini',
+        text3: 'Password Baru',
+        text4: 'Konfirmasi Password Baru',
+        text5: 'Simpan Perubahan',
+        text6: 'Password akunkamu telah berhasil diubah.',
+        text7: 'Password lama salah atau tidak sesuai.',
+        text8: 'Password harus terdiri dari minimal 8 karakter dan mencakup huruf kecil, huruf kapital, serta angka.',
+        text9: 'Konfirmasi password tidak sesuai.',
+        text10: 'Masukkan password akun danamart',
+        text11: 'Masukkan password baru akun danamart',
+        text12: 'Konfirmasi password baru akun danamart',
+        passwordPolicy: `
+          <p><strong>Persyaratan Password:</strong></p>
+          <br>
+          <ol>
+            <li>Minimal terdiri dari <strong>8 karakter</strong>.</li>
+            <li>Setidaknya terdiri dari <strong>huruf kecil</strong>, <strong>huruf kapital</strong>, dan <strong>angka</strong>.</li>
+            <li><strong>Periode maksimum</strong> penggunaan password yang diperbolehkan adalah <strong>90 hari</strong>.</li>
+            <li><strong>Interval minimum</strong> untuk menggunakan password yang sama kembali adalah setelah <strong>5 kali</strong> pergantian password.</li>
+            <li>Password yang salah dapat dicoba ulang hingga <strong>3 kali</strong> sebelum akun terkunci.</li>
+            <li>Lama akun tetap terkunci adalah <strong>30 menit</strong> sampai bisa direset ulang.</li>
+          </ol>
+        `
+      },
+      changeEmail: {
+        text1: 'Ubah Email',
+        text2: 'Alamat email anda adalah',
+        text3: 'Email Baru',
+        text4: 'Password Akun Danamart',
+        text5: 'Format email tidak sesuai',
+        text6: 'Password salah atau tidak sesuai.',
+        text7: 'Alamat Email sudah digunakan! Silahkan Ganti Email yang lain',
+        text8: 'Silakan cek email Kamu untuk verifikasi perubahan email.',
+        text9: 'Masukkan email baru',
+        text10: 'Masukkan password akun danamart',
+        modal: {
+          text1: 'Konfirmasi',
+          text2: 'Email Kamu akan diubah menjadi',
+          text3: 'Kami akan mengirimkan email verifikasi ke alamat email Kamu yang baru. Akun kamu akan logout otomatis setelah ini.',
+          text4: 'Ingin melanjutkan?',
+          cancel: 'Batalkan',
+          continue: 'Lanjutkan',
+        }
+      },
+      changeBankAccount: {
+        text1: 'Rekening Kamu',
+        text2: 'Rekening Baru',
+        text3: '* Anda belum mengisi data akun bank',
+        text4: 'Pilih Bank',
+        text5: 'Pilih bank...',
+        text6: 'Cari bank...',
+        text7: 'Bank tidak ditemukan',
+        text8: 'Nomor Rekening Baru',
+        text9: 'Masukkan nomor rekening',
+        text10: 'Nama Pemilik Rekening',
+        text11: 'Masukkan nama rekening',
+        text12: 'Password Akun Kamu',
+        text13: 'Masukkan password akun danamart',
+        text14: 'Pilih Metode OTP',
+        text15: 'Pilih metode verifikasi',
+        text16: 'Ganti Rekening',
+        text17: 'Verifikasi Kode OTP',
+        text18: 'Perubahan Rekening',
+        text19: 'Resend OTP',
+        text20: 'Waktu tersisa',
+        text21: 'Lanjutkan proses perubahan rekening?',
+        validation: {
+          text1: 'Terima kasih atas kesabarannya. Kami ingin memberitahukan bahwa masih terdapat permintaan perubahan data yang masih dalam proses. Mohon tunggu sampai proses ini selesai dan Anda dapat mengajukannya kembali.',
+          text2: 'Kode OTP telah dikirim ke nomor anda. Silakan cek handphone anda.',
+          text3: 'Kami telah menerima permintaan perubahan data anda. Selanjutnya tim kami akan melakukan konfirmasi terkait permintaan perubahan data ini dengan cara menghubungimu. Mohon ditunggu ya.',
+          text4: 'Kode verifkasi salah, silakan masukkan kode verifikasi yang valid.',
+          text5: 'No rekening salah atau tidak valid.',
+          text6: 'Nama pemilik rekening tidak sesuai.',
+          text7: 'Password salah, silakan coba kembali.',
+          text8: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
+          text9: 'Silahkan pilih metode pengiriman Kode Verifikasi.',
+          text10: 'Terjadi kesalahan. Silakan login ulang akun Anda.',
+        },
+        close: 'Tutup',
+        continue: 'Lanjutkan'
+      },
+      changePhoneNumber: {
+        text1: 'Ubah Nomor Handphone',
+        text2: 'Nomor handphone anda adalah',
+        text3: '* Anda belum mengisi data nomor handphone',
+        text4: 'Nomor Telepon',
+        text5: 'Masukkan nomor handphone baru',
+        text6: 'Password Akun Kamu',
+        text7: 'Masukkan password akun danamart',
+        text8: 'Pilih Metode Pengiriman Kode Verifikasi',
+        text9: 'Pilih Metode Verifikasi',
+        text10: 'Kirim Verifikasi',
+        text11: 'Verifikasi Kode OTP',
+        text12: 'Perubahan Nomor Handphone',
+        text13: 'Resend OTP',
+        text14: 'Waktu tersisa',
+        text15: 'Lanjutkan proses perubahan nomor handphone?',
+        cancel: 'Batalkan',
+        continue: 'Lanjutkan',
+        validation: {
+          text1: 'Kode verifikasi Berhasil Dikirim. Silahkan Cek Handphone Anda!',
+          text2: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
+          text3: 'Password salah, silakan coba kembali.',
+          text4: 'Nomor Handphone anda masih dalam proses pengajuan. Tunggu data selesai di konfirmasi oleh verifikator!',
+          text5: 'Kami telah menerima permintaan perubahan data-mu, selanjutnya tim kami akan melakukan konfirmasi terkait permintaan perubahan data ini dengan cara menghubungi-mu, mohon ditunggu ya.',
+          text6: 'Kode salah! Silakan ulangi input.',
+        }
       }
     },
     idleLogout:

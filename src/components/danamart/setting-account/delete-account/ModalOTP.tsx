@@ -1,5 +1,4 @@
-import { decryptResponse } from '@/helpers/cryptoDecrypt';
-import { getPurchaseOTP } from '@/repository/danamart/offers.repository';
+import { getDeleteAccountOTP } from '@/repository/danamart/setting.repository';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Button, Option, Select, Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
@@ -13,6 +12,8 @@ interface Props {
   isShowOTP: boolean;
   setPassedOTP: React.Dispatch<React.SetStateAction<string>>;
   isLoading: boolean;
+  password: string;
+  isCloseModal: boolean;
 }
 
 const ModalOTP: React.FC<Props> = ({
@@ -20,7 +21,9 @@ const ModalOTP: React.FC<Props> = ({
   setIsShowOTP,
   isShowOTP,
   setPassedOTP,
-  isLoading
+  isLoading,
+  password,
+  isCloseModal
 }) => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.offers.purchase.modals.otp';
@@ -77,27 +80,29 @@ const ModalOTP: React.FC<Props> = ({
   const handleGetOTP = async (): Promise<void> => {
     try {
       const formData = new FormData();
-      formData.append('method', otpType);
-      formData.append('kverif', 'pembelian');
-      formData.append('type', '1');
-      const response = await getPurchaseOTP(formData);
-
+      formData.append('metode', otpType);
+      formData.append('password', password);
+      const response = await getDeleteAccountOTP(formData);
       if (response?.status === 200) {
-        const encryptedData = response?.data;
-        const decryptedData = decryptResponse(encryptedData);
         setCountdown(300);
-
-        if (decryptedData !== null) {
-          const decryptedDataObject = JSON.parse(decryptedData);
-          toast.success(decryptedDataObject?.message);
-        }
-      } else {
-        toast.error(t(`${pathTranslation}.tooManyAttempts`));
+        toast.success(response?.data?.message);
       }
-    } catch (error) {
-      toast.error(`Error getting OTP: ${error as string}`);
+    } catch (error: any) {
+      if (error?.response?.data?.message === "Too many Hits") {
+        toast.error(t(`${pathTranslation}.tooManyAttempts`));
+      } else if (error?.response?.data?.messages?.message === 'Password salah, silakan coba kembali.') {
+        toast.error(t(`${pathTranslation}.wrongPassword`));
+      } else {
+        toast.error(`Error getting OTP: ${error as string}`);
+      }
     }
   };
+
+  useEffect(() => {
+    if (isCloseModal) {
+      setIsShowOTP(!isShowOTP);
+    }
+  }, [isCloseModal])
 
   return (
     <Modal

@@ -18,6 +18,8 @@ interface LoginProps {
   ) => Promise<void>;
   isLoading: boolean;
   setPage: (value: string) => void;
+  errorType: number;
+  isError: boolean;
 }
 
 interface LoginFormInputs {
@@ -30,7 +32,9 @@ const Login: React.FC<LoginProps> = ({
   userEmail,
   handleLogin,
   isLoading,
-  setPage
+  setPage,
+  errorType,
+  isError
 }) => {
   const { t } = useTranslation();
   const RECAPTCHA_V2_SITE_KEY = '6LcXDqwqAAAAAOPdJX5A62B34yvSsezZwiWNRaEg';
@@ -101,6 +105,15 @@ const Login: React.FC<LoginProps> = ({
       {errors.password !== null && errors.password !== undefined && (
         <p className="text-red-500">{errors.password.message}</p>
       )}
+      {
+        isError && errorType === 1
+          ? <p className="text-red-500 w-full text-justify mt-2">{t('danamart.login.validation.limitEntry')}</p>
+          : isError && errorType === 2
+            ? <p className="text-red-500 w-full text-justify mt-2">{t('danamart.login.validation.wrongPassword')}</p>
+            : isError && errorType === 3
+              ? <p className="text-red-500 w-full text-justify mt-2">{t('danamart.login.validation.error')}</p>
+              : null
+      }
 
       <div className="w-full flex flex-col justify-center items-center mt-4">
         <ReCAPTCHA

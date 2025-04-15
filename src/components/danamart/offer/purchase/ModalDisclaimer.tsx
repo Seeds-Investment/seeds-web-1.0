@@ -58,7 +58,7 @@ const ModalDisclaimer: React.FC<Props> = ({
         </Button>
         <Button
           onClick={() => {
-            if (cekOmbak === undefined) {
+            if (cekOmbak === undefined || cekOmbak === 'false') {
               if (paymentMethod !== undefined) {
                 if (paymentMethod === 'DanaCash') {
                   setIsShowDisclaimer(!isShowDisclaimer);

@@ -5,7 +5,6 @@ import { type UserInfo } from '@/utils/interfaces/user.interface';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import Modal from '../ui/modal/Modal';
@@ -25,9 +24,10 @@ const ModalLogin: React.FC<Props> = ({
   setIsLoading,
   isLoading
 }) => {
-  const { t } = useTranslation();
   const router = useRouter();
   const [page, setPage] = useState<string>('login');
+  const [isError, setIsError] = useState<boolean>(false);
+  const [errorType, setErrorType] = useState<number>(0);
 
   const handleLogin = async (
     email: string,
@@ -58,21 +58,42 @@ const ModalLogin: React.FC<Props> = ({
       } else {
         const encryptedData = response?.data;
         const decryptedData = decryptResponse(encryptedData);
-
         if (decryptedData !== null) {
           const decryptedDataObject = JSON.parse(decryptedData);
           if (
-            decryptedDataObject?.freeze_time === null &&
-            decryptedDataObject?.attempt === null
+            decryptedDataObject?.freeze_time === undefined &&
+            decryptedDataObject?.attempt === undefined
           ) {
-            toast.error(t('danamart.login.validation.serverError'));
+            setIsError(true);
+            setErrorType(1);
+
+            setTimeout(() => {
+              setIsError(false);
+            }, 6000);
+
           } else if (
             decryptedDataObject?.freeze_time !== null &&
-            decryptedDataObject?.freeze_time !== null
+            decryptedDataObject?.freeze_time !== undefined &&
+            (
+              decryptedDataObject?.attempt === "0" ||
+              decryptedDataObject?.attempt === "1" ||
+              decryptedDataObject?.attempt === "2"
+            )
           ) {
-            toast.error(t('danamart.login.validation.wrongPassword'));
+            setIsError(true);
+            setErrorType(2);
+
+            setTimeout(() => {
+              setIsError(false);
+            }, 4000);
+
           } else {
-            toast.error(t('danamart.login.validation.error'));
+            setIsError(true);
+            setErrorType(3);
+
+            setTimeout(() => {
+              setIsError(false);
+            }, 4000);
           }
         }
       }
@@ -86,7 +107,7 @@ const ModalLogin: React.FC<Props> = ({
   return (
     <Modal
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/25 flex justify-start items-start"
-      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[50%] md:left-[35%] md:right-[-35%] mt-[-17rem] w-full h-fit md:w-[450px] p-4 md:rounded-3xl rounded-t-3xl bg-white"
+      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[48%] md:left-[35%] md:right-[-35%] mt-[-17rem] w-full h-fit md:w-[450px] p-4 md:rounded-3xl rounded-t-3xl bg-white"
     >
       <div className="p-4 md:py-5 flex flex-col items-center">
         <div className="w-full relative flex justify-center">
@@ -113,6 +134,8 @@ const ModalLogin: React.FC<Props> = ({
             handleLogin={handleLogin}
             isLoading={isLoading}
             setPage={setPage}
+            isError={isError}
+            errorType={errorType}
           />
         ) : (
           <ForgotPassword setPage={setPage} userEmail={userInfo?.email ?? ''} />

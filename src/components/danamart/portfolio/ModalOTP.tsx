@@ -1,11 +1,11 @@
+import Modal from '@/components/ui/modal/Modal';
 import { decryptResponse } from '@/helpers/cryptoDecrypt';
-import { getPurchaseOTP } from '@/repository/danamart/offers.repository';
+import { getCancelPurchaseVerificationOTP } from '@/repository/danamart/portfolio.repository';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Button, Option, Select, Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import Modal from '../../../ui/modal/Modal';
 
 interface Props {
   setIsContinueProcess: React.Dispatch<React.SetStateAction<boolean>>;
@@ -76,12 +76,8 @@ const ModalOTP: React.FC<Props> = ({
 
   const handleGetOTP = async (): Promise<void> => {
     try {
-      const formData = new FormData();
-      formData.append('method', otpType);
-      formData.append('kverif', 'pembelian');
-      formData.append('type', '1');
-      const response = await getPurchaseOTP(formData);
-
+      const response = await getCancelPurchaseVerificationOTP(otpType);
+      
       if (response?.status === 200) {
         const encryptedData = response?.data;
         const decryptedData = decryptResponse(encryptedData);
@@ -92,7 +88,11 @@ const ModalOTP: React.FC<Props> = ({
           toast.success(decryptedDataObject?.message);
         }
       } else {
-        toast.error(t(`${pathTranslation}.tooManyAttempts`));
+        if (response?.data?.error === 'Authentifikasi JWT gagal') {
+          toast.error('Authentifikasi JWT gagal')
+        } else if (response?.data?.message === 'too many hits') {
+          toast.error(t(`${pathTranslation}.tooManyAttempts`));
+        }
       }
     } catch (error) {
       toast.error(`Error getting OTP: ${error as string}`);
@@ -142,7 +142,7 @@ const ModalOTP: React.FC<Props> = ({
             void handleGetOTP();
           }}
           disabled={countdown !== 0 || isLoading}
-          className="w-full bg-seeds-button-green rounded-full capitalize"
+          className="w-full bg-seeds-button-green rounded-full text-sm capitalize"
         >
           {t(`${pathTranslation}.getOtp`)}
         </Button>

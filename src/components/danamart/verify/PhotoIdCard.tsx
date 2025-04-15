@@ -37,12 +37,16 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
   }, [step]);
 
   useEffect(() => {
-    if (photoIdCardData?.penmit?.dm_penmit_01011 !== '') {
+    if (
+      photoIdCardData?.penmit !== null && 
+      photoIdCardData?.penmit?.dm_penmit_01011 !== '' && 
+      photoIdCardData?.penmit?.dm_penmit_01011 !== undefined
+    ) {
       setIsIdCardUploaded(true);
     } else {
       setIsIdCardUploaded(false);
     }
-  }, [photoIdCardData?.penmit]);
+  }, [photoIdCardData, photoIdCardData?.penmit]);
 
   const fetchDataPhotoIdCard = async (): Promise<void> => {
     try {
@@ -62,10 +66,10 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
         isIdCardUploaded ? 'updateOcr' : 'simpan',
         imageData
       );
-      setPhotoIdCardData(response);
-      if (response?.status === 200) {
+      if (response?.data?.statusCode === 200) {
         toast.success(t(`${pathTranslation}.successMessage`));
         setStep(step + 1);
+        setPhotoIdCardData(response);
       }
     } catch (error) {
       toast.error(error as string);
@@ -101,7 +105,7 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
               />
             ) : (
               <>
-                {imageData.length > 0 ? (
+                {imageData?.length > 0 ? (
                   <div className="mt-4 flex flex-col items-center">
                     <div className="w-auto h-[208px] border-[1px] border-[#E9E9E9] rounded-lg overflow-hidden">
                       <img
@@ -118,13 +122,13 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
                     </div>
                   </div>
                 ) : isIdCardUploaded ? (
-                  <Image
+                  <img
                     src={
                       photoIdCardData?.penmit?.dm_penmit_01011 !== undefined
                         ? `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${photoIdCardData?.penmit?.dm_penmit_01011}`
                         : SeedyDetective
                     }
-                    alt="SeedyDetective"
+                    alt="photoIdCardData"
                     width={1000}
                     height={1000}
                     className="h-auto w-full"
@@ -248,23 +252,23 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
           </Button>
         )}
         {photoIdCardData?.info_4 !== '1' && (
-          <Button
-            disabled={isLoading}
-            onClick={async () => {
-              if (isIdCardUploaded && !isUsePhoto) {
-                handleNextPage();
-              } else {
-                await saveData();
-              }
-            }}
-            className="rounded-full px-4 py-2 w-[155px] h-[36px] bg-seeds-button-green"
-          >
-            {isIdCardUploaded
-              ? imageData !== ''
-                ? t('danamart.verification.buttonSave')
-                : t('danamart.verification.buttonNext')
-              : t('danamart.verification.buttonSave')}
-          </Button>
+        <Button
+          disabled={isLoading}
+          onClick={async () => {
+            if (isUsePhoto) {
+              await saveData();
+            } else {
+              handleNextPage();
+            }
+          }}
+          className="rounded-full px-4 py-2 w-[155px] h-[36px] bg-seeds-button-green"
+        >
+          {
+            imageData !== ''
+              ? t('danamart.verification.buttonSave') 
+              : t('danamart.verification.buttonNext')
+          }
+        </Button>
         )}
       </div>
     </div>

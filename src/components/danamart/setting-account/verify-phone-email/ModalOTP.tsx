@@ -1,5 +1,4 @@
-import { decryptResponse } from '@/helpers/cryptoDecrypt';
-import { getPurchaseOTP } from '@/repository/danamart/offers.repository';
+import { getPhoneVerificationOTP } from '@/repository/danamart/setting.repository';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Button, Option, Select, Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
@@ -77,25 +76,19 @@ const ModalOTP: React.FC<Props> = ({
   const handleGetOTP = async (): Promise<void> => {
     try {
       const formData = new FormData();
-      formData.append('method', otpType);
-      formData.append('kverif', 'pembelian');
-      formData.append('type', '1');
-      const response = await getPurchaseOTP(formData);
-
-      if (response?.status === 200) {
-        const encryptedData = response?.data;
-        const decryptedData = decryptResponse(encryptedData);
+      formData.append('metode', otpType);
+      formData.append('kverif', 'Pverif');
+      const response = await getPhoneVerificationOTP(formData);
+      if (response?.data?.StatusCode === '200') {
         setCountdown(300);
-
-        if (decryptedData !== null) {
-          const decryptedDataObject = JSON.parse(decryptedData);
-          toast.success(decryptedDataObject?.message);
-        }
-      } else {
-        toast.error(t(`${pathTranslation}.tooManyAttempts`));
+        toast.success(response?.data?.message);
       }
-    } catch (error) {
-      toast.error(`Error getting OTP: ${error as string}`);
+    } catch (error: any) {
+      if (error?.response?.data?.message === 'too many hits') {
+        toast.error(t(`${pathTranslation}.tooManyAttempts`));
+      } else {
+        toast.error(`Error getting OTP: ${error as string}`);
+      }
     }
   };
 
@@ -189,6 +182,7 @@ const ModalOTP: React.FC<Props> = ({
         </Button>
         <Button
           onClick={() => {
+            setIsShowOTP(!isShowOTP);
             setIsContinueProcess(true);
           }}
           disabled={!isOTPComplete || isLoading}

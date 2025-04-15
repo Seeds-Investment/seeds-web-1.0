@@ -38,7 +38,7 @@ const Purchase = (): React.ReactElement => {
   const cekOmbak = Array.isArray(router?.query?.co)
     ? router?.query?.co[0]
     : router?.query?.co;
-
+    
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isContinueProcess, setIsContinueProcess] = useState<boolean>(false);
@@ -274,6 +274,7 @@ const Purchase = (): React.ReactElement => {
                   setIsContinueProcess={setIsContinueProcess}
                   setIsPending={setIsPending}
                   isPending={isPending}
+                  setPaymentMethod={setPaymentMethod}
                 />
           ) : (
             router?.query?.co === 'true' ?

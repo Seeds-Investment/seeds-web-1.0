@@ -265,6 +265,8 @@ export interface DataFormCheckTesting {
   sisaPembelian: string
   hargaLembarSaham: number
   statuSimpan: string
+  BagiHasil?: string
+  jangkaWaktu?: string
 }
 
 export interface DataInputCheckTesting {

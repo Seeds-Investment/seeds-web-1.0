@@ -71,7 +71,10 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
   const totalPaid = watch('jumlah_pembelian');
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const cleanDanaRewerd = Number(
-    dashboardData?.dataSaldoUser?.danaRewerd.replace(/[^\d]/g, '')
+    dashboardData?.dataSaldoUser?.danaRewerd?.replace(/[^\d]/g, '')
+  );
+  const availableDanaCash = Number(
+    dashboardData?.dataSaldoUser?.danaCash?.replace(/[^\d]/g, '')
   );
 
   const calculateTotalPayment = (): void => {
@@ -142,6 +145,10 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
       'total_dana_reward',
       dashboardData?.dataSaldoUser?.TotalDanaRewerd
     );
+    setValue(
+      'total_dana_reward_shown',
+      dashboardData?.dataSaldoUser?.TotalDanaRewerd
+    );
     setValue('BagiHasil', formPurchaseData?.dataForm?.BagiHasil);
     setValue(
       'jenis',
@@ -185,6 +192,7 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
       setValue('total_modal_imbal_hasil', `Rp ${totalModalImbalHasil}`);
       setValue('hasil_investasi_nett', `Rp ${hasilInvestasiNett}`);
     } else {
+      setValue('imbal_hasil_bulan_temp', 0);
       setValue('imbal_hasil_bulan', 0);
       setValue('pajak', 0);
       setValue('total_imbal_hasil', 0);
@@ -258,10 +266,13 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
           ) {
             toast.error(t(`${pathTranslation}.formResponse.text4`));
             setIsPending(!isPending);
+          } else if (error?.response?.data?.messages?.message ===
+            "Maaf jumlah pembelian anda melebihi slot yang ada."
+          ) {
+            toast.error(t(`${pathTranslation}.formResponse.text7`));
           } else {
             toast.error(
-              'Error purchasing assets: ',
-              error?.response?.data?.messages?.message
+              `Error purchasing assets: ${error?.response?.data?.messages?.message as string}`,
             );
           }
           setIsContinueProcess(false);
@@ -314,15 +325,27 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
         />
       </div>
       <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
-        <MInput
-          label={`${t(`${pathTranslation}.text6`)}`}
-          registerName="total_dana_reward"
-          type="number"
-          errors={errors}
-          control={control}
-          watch={watch}
-          disabled
-        />
+        {
+          dashboardData?.dataSaldoUser?.TotalDanaRewerd === 0 ?
+            <MInput
+              label={`${t(`${pathTranslation}.text6`)}`}
+              registerName="total_dana_reward_shown"
+              register={register}
+              type="text"
+              errors={errors}
+              disabled
+            />
+            :
+            <MInput
+              label={`${t(`${pathTranslation}.text6`)}`}
+              registerName="total_dana_reward"
+              type="number"
+              errors={errors}
+              control={control}
+              watch={watch}
+              disabled
+            />
+        }
         <MInput
           label={`${t(`${pathTranslation}.sourceCash.text1`)}`}
           registerName="sumberDana"
@@ -457,7 +480,7 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
       </div>
       <Button
         className="w-full text-base font-semibold bg-seeds-button-green mt-6 rounded-full capitalize"
-        disabled={bidCash === undefined || sourceCash === '' || isLoading}
+        disabled={bidCash === undefined || sourceCash === '' || isLoading }
         onClick={() => {
           if (bidCash < 100000) {
             toast.error(t(`${pathTranslation}.formResponse.text5`));
@@ -466,11 +489,45 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
               toast.error(t(`${pathTranslation}.formResponse.text6`));
             } else {
               if (sourceCash === 'DanaCash') {
-                setIsShowDisclaimer(true);
-                setPaymentMethod('DanaCash')
+                if (availableDanaCash < bidCash) {
+                  toast.error(t(`${pathTranslation}.formResponse.text8`))
+                } else {
+                  if (bidCash > watch('jml_pinjaman_terbit_show')) {
+                    toast.error(t(`${pathTranslation}.formResponse.text9`))
+                  } else {
+                    setIsShowDisclaimer(true);
+                    setPaymentMethod('DanaCash')
+                  }
+                }
               } else {
-                setIsShowDisclaimer(true);
-                setPaymentMethod('TransferDana')
+                if (
+                  (watch('bank_code') === 'BCA') ||
+                  (watch('bank_code') === 'MANDIRI') ||
+                  (watch('bank_code') === 'BNI') ||
+                  (watch('bank_code') === 'BRI')
+                ) {
+                  if (totalPaid > 50000000) {
+                    toast.error(t(`${pathTranslation}.formResponse.text10`))
+                  } else {
+                    if (watch('bid_cash') > watch('jml_pinjaman_terbit_show')) {
+                      toast.error(t(`${pathTranslation}.formResponse.text9`))
+                    } else {
+                      setIsShowDisclaimer(true);
+                      setPaymentMethod('TransferDana')
+                    }
+                  }
+                } else if (watch('bank_code') === 'PERMATA') {
+                  if (totalPaid > 9000000) {
+                    toast.error(t(`${pathTranslation}.formResponse.text10`))
+                  } else {
+                    if (watch('bid_cash') > watch('jml_pinjaman_terbit_show')) {
+                      toast.error(t(`${pathTranslation}.formResponse.text9`))
+                    } else {
+                      setIsShowDisclaimer(true);
+                      setPaymentMethod('TransferDana')
+                    }
+                  }
+                }
               }
             }
           }

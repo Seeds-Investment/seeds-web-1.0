@@ -2793,7 +2793,8 @@ export default {
         recaptcha:
           'ReCAPTCHA tidak tersedia! Pastikan Anda telah mengisi ReCAPTCHA.'
       },
-      loginButton: 'Masuk'
+      loginButton: 'Masuk',
+      tooManyAttempts: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
     },
     forgotPassword: {
       forgotPasswordTitle: 'Lupa Kata Sandi 🔑',

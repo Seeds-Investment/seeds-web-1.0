@@ -2861,7 +2861,8 @@ export default {
         recaptcha:
           'ReCAPTCHA value is not available! Fill the ReCAPTCHA before logging in.'
       },
-      loginButton: 'Login'
+      loginButton: 'Login',
+      tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
     },
     forgotPassword: {
       forgotPasswordTitle: 'Forget Password 🔑',

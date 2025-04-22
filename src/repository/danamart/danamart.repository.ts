@@ -1,8 +1,7 @@
 import baseAxios from '@/utils/common/axios';
 import {
   type FinancialInfoFormPayload,
-  type RegisterLog,
-  type UpdateUserInfoForm
+  type RegisterLog
 } from '@/utils/interfaces/danamart.interface';
 import axios from 'axios';
 
@@ -135,8 +134,15 @@ export const updatePhotoSelfie = async (imageEncoded: string): Promise<any> => {
       return await Promise.resolve('Access token Danamart not found');
     }
 
+    const platform = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)
+      ? 'Mobile'
+      : 'Desktop';
+
     const formData = new FormData();
     formData.append('image_from_web_cam', imageEncoded);
+    formData.append('platform', platform);
+    formData.append('typeSubmit', 'updateOcr');
+    formData.append('pernyataan', 'true');
 
     const response = await danamartApi.post(
       '/pemodal/form_foto_selfie/updateForm',
@@ -174,7 +180,7 @@ export const getUserInformation = async (): Promise<any> => {
 };
 
 export const updateUserInformation = async (
-  formData: UpdateUserInfoForm
+  formData: FormData
 ): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
@@ -182,20 +188,24 @@ export const updateUserInformation = async (
     if (accessTokenDanamart === null || accessTokenDanamart === '') {
       return await Promise.resolve('Access token Danamart not found');
     }
+
     const response = await danamartUpdateUserInformation.post(
       `/pemodal/form_informasi_pribadi/updateForm`,
       formData,
       {
         headers: {
-          Authorization: `Bearer ${accessTokenDanamart}`
+          Authorization: `Bearer ${accessTokenDanamart}`,
+          'Content-Type': 'multipart/form-data' // 👈 Important
         }
       }
     );
+
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response.data.message);
+    await Promise.reject(error);
   }
 };
+
 
 export const getPhotoIdCard = async (): Promise<any> => {
   try {

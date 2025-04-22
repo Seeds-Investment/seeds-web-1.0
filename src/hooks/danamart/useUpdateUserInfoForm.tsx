@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
-import useFileToBase64 from './useFileToBase64';
+import { useBase64ToFile } from './useBase64ToFile';
 
 export interface UserInfoFormData {
   pernyataan: string;
@@ -31,7 +31,7 @@ export interface UserInfoFormData {
   dm_penmit_01036: string;
   dm_penmit_01035: string;
   dm_penmit_01034: string;
-  dm_penmit_01033: string;
+  dm_penmit_01033: number;
   dm_penmit_01017: string;
   masa_berlaku: boolean;
   dm_penmit_01018?: string;
@@ -135,7 +135,7 @@ const useUpdateUserInfoForm = (): any => {
       .string()
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
     dm_penmit_01033: yup
-      .string()
+      .number()
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
     dm_penmit_01017: yup
       .string()
@@ -170,7 +170,7 @@ const useUpdateUserInfoForm = (): any => {
       .string()
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
     dm_penmit_01012: yup.string().when('pernyataan_npwp', {
-      is: '0',
+      is: '1',
       then: schema =>
         schema
           .matches(
@@ -181,7 +181,7 @@ const useUpdateUserInfoForm = (): any => {
       otherwise: schema => schema.notRequired()
     }),
     dm_penmit_01045: yup.string().when('pernyataan_npwp', {
-      is: '0',
+      is: '1',
       then: schema =>
         schema.required(
           t(`${pathTranslation}.text1`) ?? 'This field is required'
@@ -189,7 +189,7 @@ const useUpdateUserInfoForm = (): any => {
       otherwise: schema => schema.notRequired()
     }),
     dm_penmit_01013: yup.string().when('pernyataan_npwp', {
-      is: '0',
+      is: '1',
       then: schema =>
         schema.required(
           t(`${pathTranslation}.text1`) ?? 'This field is required'
@@ -224,7 +224,7 @@ const useUpdateUserInfoForm = (): any => {
     dm_penmit_01036: '',
     dm_penmit_01035: '',
     dm_penmit_01034: '',
-    dm_penmit_01033: '',
+    dm_penmit_01033: 0,
     dm_penmit_01017: '',
     masa_berlaku: true,
     dm_penmit_01018: '',
@@ -251,24 +251,50 @@ const useUpdateUserInfoForm = (): any => {
     defaultValues
   });
 
-  const { convertFileToBase64 } = useFileToBase64();
+  const { base64ToFile } = useBase64ToFile();
+
   const onSubmit = async (data: UserInfoFormData): Promise<void> => {
     try {
-      let file: File | null = null;
+      const formData = new FormData();
 
-      if (data.dm_penmit_01013 instanceof FileList) {
-        file = data.dm_penmit_01013[0];
-      } else if (data.dm_penmit_01013 instanceof File) {
-        file = data.dm_penmit_01013;
+      const adjustedData = {
+        ...data,
+        masa_berlaku: data.masa_berlaku ? 'on' : '',
+      };
+
+      Object.entries(adjustedData).forEach(([key, value]) => {
+        if (key !== 'dm_penmit_01013' && value !== undefined && value !== null) {
+          formData.append(key, String(value));
+        }
+      });
+
+      const isBase64 = typeof data.dm_penmit_01013 === 'string' && data.dm_penmit_01013.startsWith('data:image');
+      const isOldFilename = (data.dm_penmit_01013).includes('npwp') && !isBase64;
+
+      // Upload new NPWP
+      if (isBase64) {
+        const file = base64ToFile(data.dm_penmit_01013, 'image.jpg');
+        formData.append('dm_penmit_01013', file);
       }
 
-      if (file != null) {
-        const base64 = await convertFileToBase64(file);
-        data.dm_penmit_01013 = base64;
+      // Keep existing NPWP
+      if (isOldFilename) {
+        formData.append('dm_penmit_01013_exist', data.dm_penmit_01013);
+
+        const imageUrl = `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${data.dm_penmit_01013 as string}`;
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const file = new File([blob], 'image.jpg', { type: blob.type });
+
+        formData.append('dm_penmit_01013', file);
       }
 
-      await updateUserInformation(data);
-      toast.success('User information updated successfully');
+      const response = await updateUserInformation(formData);
+
+      if (response?.message === 'Data Formulir Informasi Pribadi berhasil di-update') {
+        toast.success('User information updated successfully');
+      }
+      
     } catch (error) {
       toast.error('Failed to update user information');
     }

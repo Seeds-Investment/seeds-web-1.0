@@ -1,48 +1,25 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
-const useBase64ToFileList = (): [
-  FileList | null,
-  (base64String: string, fileName?: string) => void
-] => {
-  const [fileList, setFileList] = useState<FileList | null>(null);
+interface UseBase64ToFile {
+  base64ToFile: (base64String: string, filename: string) => File;
+}
 
-  const base64ToFileList = useCallback(
-    (base64String: string, fileName: string = 'image.png') => {
-      // Check if the base64 string has a valid format
-      const base64Regex = /^data:image\/[a-zA-Z]*;base64,/;
-      if (!base64Regex.test(base64String)) {
-        return;
-      }
+export const useBase64ToFile = (): UseBase64ToFile => {
+  const base64ToFile = useCallback((base64String: string, filename: string): File => {
+    const arr = base64String.split(',');
+    const mimeMatch: RegExpMatchArray | null = arr[0].match(/:(.*?);/);
+    const mime: string = mimeMatch !== null ? mimeMatch[1] : 'image/jpeg';
 
-      try {
-        // Remove "data:image/...;base64," prefix and decode
-        const byteString = atob(base64String.split(',')[1]);
-        const mimeType =
-          base64String.match(/data:(.*?);base64/)?.[1] ?? 'image/png';
+    const bstr: string = atob(arr[1]);
+    const length: number = bstr.length;
+    const u8arr: Uint8Array = new Uint8Array(length);
 
-        // Create an array of 8-bit unsigned integers
-        const byteArray = new Uint8Array(byteString.length);
-        for (let i = 0; i < byteString.length; i++) {
-          byteArray[i] = byteString.charCodeAt(i);
-        }
+    for (let i = 0; i < length; i++) {
+      u8arr[i] = bstr.charCodeAt(i);
+    }
 
-        // Create a File from the binary data
-        const file = new File([byteArray], fileName, { type: mimeType });
+    return new File([u8arr], filename, { type: mime });
+  }, []);
 
-        // Create a FileList using a DataTransfer object
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-
-        // Update state with the FileList
-        setFileList(dataTransfer.files);
-      } catch (error) {
-        console.error('Error decoding base64 string:', error);
-      }
-    },
-    []
-  );
-
-  return [fileList, base64ToFileList];
+  return { base64ToFile };
 };
-
-export default useBase64ToFileList;

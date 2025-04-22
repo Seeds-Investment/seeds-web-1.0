@@ -12,7 +12,7 @@ import {
   useReligion,
   useWorkingLength
 } from '@/components/form-input/multi-input/data/dropdown-data';
-import useBase64ToFileList from '@/hooks/danamart/useBase64ToFile';
+import useBase64ToFileList from '@/hooks/danamart/useBase64ToFileList';
 import useFilePreview from '@/hooks/danamart/useFilePreview';
 import useUpdateUserInfoForm, {
   type UserInfoFormData
@@ -130,7 +130,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
     setValue('dm_pen_08002', userInformation?.resiko?.dm_pen_08002);
     setValue('dm_pen_08009', userInformation?.resiko?.dm_pen_08009);
     setValue('pernyataan_npwp', userInformation?.penmit?.pernyataan_npwp);
-    if (userInformation?.penmit?.pernyataan_npwp === '0') {
+    if (userInformation?.penmit?.pernyataan_npwp === '1') {
       setValue('dm_penmit_01012', userInformation?.penmit?.dm_penmit_01012);
       setValue('dm_penmit_01045', userInformation?.penmit?.dm_penmit_01045);
       setValue('dm_penmit_01013', userInformation?.penmit?.dm_penmit_01013);
@@ -397,11 +397,12 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
         <MInput
           label={t(`${pathTranslation}.text38`)}
           registerName="dm_penmit_01033"
-          register={register}
-          type="text"
+          type="long-number"
           errors={errors}
           placeholder={t(`${pathTranslation}.text39`)}
-          className="rounded-lg px-3 border border-[#BDBDBD]"
+          control={control}
+          watch={watch}
+          maxLength={3}
         />
         <MInput
           label={t(`${pathTranslation}.text40`)}
@@ -526,7 +527,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           fullWidth={true}
         />
       </div>
-      {watch('pernyataan_npwp') === '0' && (
+      {watch('pernyataan_npwp') === '1' && (
         <div>
           <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
             <MInput
@@ -556,11 +557,11 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
               register={register}
               errors={errors}
               imageURLPreview={
-                imageURL === ''
+                (imageURL === '' || imageURL === undefined)
                   ? imageURLPreview
                   : userInformation?.penmit?.dm_penmit_01013 !== undefined
-                  ? `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${userInformation?.penmit?.dm_penmit_01013}`
-                  : imageURLPreview
+                    ? `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${userInformation?.penmit?.dm_penmit_01013}`
+                    : imageURLPreview
               }
               usePreview={true}
               setValue={setValue}

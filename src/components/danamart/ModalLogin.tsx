@@ -5,6 +5,7 @@ import { type UserInfo } from '@/utils/interfaces/user.interface';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import Modal from '../ui/modal/Modal';
@@ -25,6 +26,8 @@ const ModalLogin: React.FC<Props> = ({
   isLoading
 }) => {
   const router = useRouter();
+  const { t } = useTranslation();
+  const pathTranslation = 'danamart.login';
   const [page, setPage] = useState<string>('login');
   const [isError, setIsError] = useState<boolean>(false);
   const [errorType, setErrorType] = useState<number>(0);
@@ -55,6 +58,8 @@ const ModalLogin: React.FC<Props> = ({
           await router.push('/danamart/dashboard');
           setIsOpenModalLogin(false);
         }
+      } else if (response?.status === 429 && response?.data === 'Too many Hits') {
+        toast.error(t(`${pathTranslation}.tooManyAttempts`));
       } else {
         const encryptedData = response?.data;
         const decryptedData = decryptResponse(encryptedData);
@@ -85,7 +90,7 @@ const ModalLogin: React.FC<Props> = ({
 
             setTimeout(() => {
               setIsError(false);
-            }, 4000);
+            }, 6000);
 
           } else {
             setIsError(true);
@@ -93,12 +98,16 @@ const ModalLogin: React.FC<Props> = ({
 
             setTimeout(() => {
               setIsError(false);
-            }, 4000);
+            }, 6000);
           }
         }
       }
     } catch (error: any) {
-      toast(`Error login: ${error as string}`);
+      if (error === `SyntaxError: Unexpected token 'N', "N&j|Û" is not valid JSON`) {
+        toast.error(t(`${pathTranslation}.validation.error`));
+      } else {
+        toast.error(`Error login: ${error as string}`);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -136,6 +145,7 @@ const ModalLogin: React.FC<Props> = ({
             setPage={setPage}
             isError={isError}
             errorType={errorType}
+            setIsError={setIsError}
           />
         ) : (
           <ForgotPassword setPage={setPage} userEmail={userInfo?.email ?? ''} />

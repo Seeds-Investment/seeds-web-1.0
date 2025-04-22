@@ -3,7 +3,7 @@ import {
   type MultiProps,
   type Option
 } from '@/utils/interfaces/multi-input.interface';
-import { type ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import CurrencyInput from 'react-currency-input-field';
 import { FileInput, Toggle } from 'react-daisyui';
 import {
@@ -294,7 +294,8 @@ const ImageInput = <T extends FieldValues>(
 const ImageBase64Input = <T extends FieldValues>(
   props: MultiProps<T>
 ): JSX.Element | null => {
-  // Type narrowing: Check if props.type is 'image64'
+  const [localPreviewURL, setLocalPreviewURL] = useState<string | null>(null); // <-- moved to top
+
   if (props.type !== 'image64') {
     return null;
   }
@@ -314,13 +315,12 @@ const ImageBase64Input = <T extends FieldValues>(
           reader.readAsDataURL(file);
         });
 
-        // Use setValue to update the form value (with type assertion)
         props.setValue?.(
           props.registerName,
           base64String as PathValue<T, Path<T>>
         );
 
-        // Call additional handler if provided
+        setLocalPreviewURL(base64String);
         props.onFileChange?.(base64String);
       } catch (error) {
         toast.error('Failed to process the file');
@@ -330,15 +330,17 @@ const ImageBase64Input = <T extends FieldValues>(
     }
   };
 
+  const finalPreviewURL = localPreviewURL ?? props.imageURLPreview;
+
   return (
     <>
       {props.usePreview ? (
         <div className="w-full border-[#BDBDBD] border rounded-lg flex flex-col text-center items-center justify-center p-10 gap-3">
-          {props.imageURLPreview ? (
+          {finalPreviewURL ? (
             <img
               className="flex mx-auto w-[500px] h-[166px] object-contain"
-              src={props.imageURLPreview}
-              alt=""
+              src={finalPreviewURL}
+              alt="Preview"
             />
           ) : (
             <div className="text-seeds">Choose your image here</div>

@@ -50,12 +50,12 @@ export const useDeclarationsNPWP = (): ILabel[] => {
     {
       key: 1,
       label: t(`${pathTranslation}.yes`),
-      value: '0'
+      value: '1'
     },
     {
       key: 2,
       label: t(`${pathTranslation}.no`),
-      value: '1'
+      value: '0'
     }
   ];
 };
@@ -202,30 +202,23 @@ export const useWorkingLength = (): ILabel[] => {
   return [
     {
       key: 1,
-      label: `0 - 1 ${t(`${pathTranslation}.workingLength.text1`)}`,
-      value: '0 - 1 Tahun'
+      label: `<1 ${t(`${pathTranslation}.workingLength.text1`)}`,
+      value: '<1 year'
     },
     {
       key: 2,
-      label: `1 - 3 ${t(`${pathTranslation}.workingLength.text2`)}`,
-      value: '1 - 3 Tahun'
+      label: `1 - <2 ${t(`${pathTranslation}.workingLength.text2`)}`,
+      value: '1 - <2 years'
     },
     {
       key: 3,
-      label: `3 - 5 ${t(`${pathTranslation}.workingLength.text2`)}`,
-      value: '3 - 5 Tahun'
+      label: `2 - 2 ${t(`${pathTranslation}.workingLength.text2`)}`,
+      value: '2 - 3 years'
     },
     {
       key: 4,
-      label: `5 - 10 ${t(`${pathTranslation}.workingLength.text2`)}`,
-      value: '5 - 10 Tahun'
-    },
-    {
-      key: 5,
-      label: `${t(`${pathTranslation}.workingLength.text3`)} 10 ${t(
-        `${pathTranslation}.workingLength.text1`
-      )}`,
-      value: 'Lebih dari 10 Tahun'
+      label: `>3 ${t(`${pathTranslation}.workingLength.text2`)}`,
+      value: '>3 years'
     }
   ];
 };

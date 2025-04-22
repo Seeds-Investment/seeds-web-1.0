@@ -48,19 +48,6 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
     }
   };
 
-  const isButtonDisabled = (): boolean => {
-    if (photoSelfieData !== undefined && photoSelfieData !== null) {
-      return (
-        (photoSelfieData.info_1 !== '1' &&
-          photoSelfieData.info_2 !== '1' &&
-          photoSelfieData.info_3 !== '1') ||
-        !isUsePhoto
-      );
-    } else {
-      return true;
-    }
-  };
-
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
@@ -145,11 +132,8 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
         )}
         {photoSelfieData?.info_4 !== '1' && (
           <Button
-            disabled={isButtonDisabled()}
             onClick={saveData}
-            className={`${
-              isButtonDisabled() ? 'bg-[#BDBDBD]' : 'bg-seeds-button-green'
-            } capitalize font-poppins font-semibold text-sm rounded-full w-[155px] h-[36px] flex justify-center items-center`}
+            className={`bg-seeds-button-green capitalize font-poppins font-semibold text-sm rounded-full w-[155px] h-[36px] flex justify-center items-center`}
           >
             {t('danamart.verification.buttonSave')}
           </Button>

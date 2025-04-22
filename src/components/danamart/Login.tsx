@@ -20,6 +20,7 @@ interface LoginProps {
   setPage: (value: string) => void;
   errorType: number;
   isError: boolean;
+  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface LoginFormInputs {
@@ -34,7 +35,8 @@ const Login: React.FC<LoginProps> = ({
   isLoading,
   setPage,
   errorType,
-  isError
+  isError,
+  setIsError
 }) => {
   const { t } = useTranslation();
   const RECAPTCHA_V2_SITE_KEY = '6LcXDqwqAAAAAOPdJX5A62B34yvSsezZwiWNRaEg';
@@ -92,6 +94,7 @@ const Login: React.FC<LoginProps> = ({
         value={watch('password')}
         onChange={e => {
           setValue('password', e.target.value);
+          setIsError(false)
         }}
         error={Boolean(errors.password)}
         name="password"

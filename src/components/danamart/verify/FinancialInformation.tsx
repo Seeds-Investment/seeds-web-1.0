@@ -572,27 +572,16 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
       )}
       {(isLoading as boolean) && <Loading />}
       <div className="flex items-center justify-end">
-        {financialInformationData?.info_3 !== '1' ? (
-          <Button
-            className="w-[155.5px] h-[36px] px-4 py-2 text-sm font-semibold bg-seeds-button-green rounded-full capitalize mt-2"
-            onClick={() => {
-              handleSubmit((data: FinancialInfoForm) => {
-                onSubmit(data);
-              })();
-            }}
-          >
-            {t('danamart.verification.buttonSave')}
-          </Button>
-        ) : (
-          <Button
-            className="w-[155.5px] h-[36px] px-4 py-2 text-sm font-semibold bg-seeds-button-green rounded-full capitalize mt-2"
-            onClick={() => {
-              setStep(step + 1);
-            }}
-          >
-            {t('danamart.verification.buttonNext')}
-          </Button>
-        )}
+        <Button
+          className="w-[155.5px] h-[36px] px-4 py-2 text-sm font-semibold bg-seeds-button-green rounded-full capitalize mt-2"
+          onClick={() => {
+            handleSubmit((data: FinancialInfoForm) => {
+              onSubmit(data);
+            })();
+          }}
+        >
+          {t('danamart.verification.buttonSave')}
+        </Button>
       </div>
       {showModal && (
         <ModalConfirmationForm

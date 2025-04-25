@@ -1,14 +1,11 @@
 import { generateAssetCode } from '@/helpers/NFT';
 import withAuth from '@/helpers/withAuth';
 import useFilePreview from '@/hooks/useFilePreview';
-import { createSellOffer } from '@/lib/diamnet';
 import { UseUploadMedia } from '@/repository/circleDetail.repository';
 import { createNft } from '@/repository/nft.repository';
 import { Button, Card, Spinner } from '@material-tailwind/react';
-import { Asset } from 'diamnet-sdk';
 import { useRouter } from 'next/router';
 import { useState, type ReactElement } from 'react';
-import CurrencyInput from 'react-currency-input-field';
 import { FiImage } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
@@ -17,7 +14,7 @@ export interface FormData {
   description: string;
   metadata_cid: string;
   image_url: string;
-  price: number;
+  // price: number;
   owner_address: string;
   creator_address: string;
   status: 'TRUE' | 'FALSE';
@@ -37,17 +34,16 @@ const CreateNFT = (): ReactElement => {
     description: '',
     metadata_cid: '',
     image_url: '',
-    price: 0,
+    // price: 0,
     owner_address: '',
     creator_address: '',
-    status: 'TRUE'
+    status: 'FALSE'
   });
   const [error, setError] = useState<{
     name: boolean;
     desc: boolean;
     image: boolean;
-    price: boolean;
-  }>({ name: false, desc: false, image: false, price: false });
+  }>({ name: false, desc: false, image: false });
 
   const handleSubmit = async (): Promise<void> => {
     try {
@@ -55,8 +51,6 @@ const CreateNFT = (): ReactElement => {
       if (
         image !== null &&
         image.length !== 0 &&
-        !Number.isNaN(formData.price) &&
-        formData.price !== 0 &&
         formData.name !== '' &&
         formData.description !== ''
       ) {
@@ -65,31 +59,27 @@ const CreateNFT = (): ReactElement => {
         const assetCode = generateAssetCode({
           publicKey
         });
-        const status = await createSellOffer(publicKey, {
-          selling: new Asset(assetCode, publicKey),
-          buying: Asset.native(),
-          amount: '1',
-          price: String(formData.price)
+        // const status = await createSellOffer(publicKey, {
+        //   selling: new Asset(assetCode, publicKey),
+        //   buying: Asset.native(),
+        //   amount: '1',
+        //   price: String(formData.price)
+        // });
+        // if (status === 200) {
+        const imageUrl = await UseUploadMedia(image?.[0]);
+        await createNft({
+          ...formData,
+          image_url: imageUrl.data.path,
+          metadata_cid: assetCode,
+          owner_address: publicKey,
+          creator_address: publicKey
         });
-        if (status === 200) {
-          const imageUrl = await UseUploadMedia(image?.[0]);
-          await createNft({
-            ...formData,
-            image_url: imageUrl.data.path,
-            metadata_cid: assetCode,
-            owner_address: publicKey,
-            creator_address: publicKey
-          });
-          toast.success(
-            'NFT created successfully, redirectting to your profile'
-          );
-          await router.push('/my-profile');
-        }
+        toast.success('NFT created successfully, redirectting to your profile');
+        await router.push('/my-profile');
       } else {
         setError({
           desc: formData.description === '',
           image: image === null || image.length === 0,
-          price: Number.isNaN(formData.price) || formData.price === 0,
           name: formData.name === ''
         });
       }
@@ -187,7 +177,7 @@ const CreateNFT = (): ReactElement => {
             {error.desc && <ErrorMessage text="Description is required" />}
           </div>
         </div>
-        <div className="flex flex-col gap-4">
+        {/* <div className="flex flex-col gap-4">
           <label
             htmlFor="price"
             className="font-semibold text-neutral-medium text-base font-poppins"
@@ -211,7 +201,7 @@ const CreateNFT = (): ReactElement => {
             />
             {error.price && <ErrorMessage text="Price is required" />}
           </div>
-        </div>
+        </div> */}
         <Button
           className="text-lg flex justify-center font-semibold text-white bg-[#3AC4A0] rounded-full w-full normal-case font-poppins"
           type="submit"

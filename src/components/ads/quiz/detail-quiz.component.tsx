@@ -4,65 +4,47 @@ import {
   getAllQuizNoToken,
   getQuizByIdNoToken
 } from '@/repository/quiz.repository';
+import { QuizStatus, type AllQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { Button, Card } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import badge from 'public/assets/ads/badge.png';
-import cryptoAds from 'public/assets/ads/crypto-ads.jpg';
 import idAds from 'public/assets/ads/id-ads.jpg';
 import quizAds from 'public/assets/ads/quiz-ads.jpg';
 import usAds from 'public/assets/ads/us-ads.jpg';
 import React, { useCallback, useEffect, useState } from 'react';
 import CountdownTimer from './countdown.component';
 
-const ctaList = [
-  {
-    quiz: 'Smart ID Battle Quiz #2',
-    cta: 'https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=lead&msg=ID+%5B_gid_%5D+Hi+Min+Seeds%2C+%25break%25Saya+Tertarik+untuk+Ikutan+Kuis+Investasi+%25break%25Dapet+Hadiah+Rp+175.000%2C+ID_STOCK'
-  },
-  {
-    quiz: 'SEEDSTALK QUIZ SPECIAL INSPIRING JOURNEY #32',
-    cta: 'https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=lead&msg=ID+%5B_gid_%5D+Hi+Min+Seeds%2C+%25break%25Saya+Tertarik+untuk+Ikutan+Kuis+SEEDSTALK+QUIZ+SPECIAL+INSPIRING+JOURNEY+%2332+%25break%25Dapet+Hadiah+CASH+SPECIAL%2C+dari+Quiz+SEEDS'
-  },
-  {
-    quiz: 'CRYPTO QUIZ BATTLE COMPETITION #14',
-    cta: 'https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=lead&msg=ID+%5B_gid_%5D+Hi+Min+Seeds%2C+%25break%25Saya+Tertarik+untuk+Ikutan+Kuis+Investasi+%25break%25Dapet+Hadiah+CASH%2C+dari+Quiz+CRYPTO'
-  },
-  {
-    quiz: 'Seeds x Webull Community Quiz Championship',
-    cta: 'https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=lead&msg=ID+%5B_gid_%5D+Hi+Min+Seeds%2C+%25break%25Saya+Tertarik+untuk+Ikutan+Kuis+Investasi+%25break%25Dapet+Hadiah+Rp+135.000%2C+dari+Quiz+Webull+1'
-  },
-  {
-    quiz: 'Seeds x Webull Battle Quiz Competition #6',
-    cta: 'https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=lead&msg=ID+%5B_gid_%5D+Hi+Min+Seeds%2C+%25break%25Saya+Tertarik+untuk+Ikutan+Kuis+Investasi+%25break%25Dapet+Hadiah+Rp+135.000%2C+dari+Quiz+Webull+2'
-  }
-];
+const textCta = (title: string, prize: string): string => {
+  const text = `ID [_gid_] Hi Min Seeds, %break%Saya Tertarik untuk Ikutan Kuis ${title} %break%Dapet Hadiah ${prize}, dari Quiz ${title}`;
+  return encodeURIComponent(text);
+};
 
 const DetailQuiz = (): React.ReactElement => {
   const [dataQuiz, setDataQuiz] = useState<QuizIdRoot[]>([]);
   const { queries } = queryList();
 
   const handleQuiz = useCallback(async () => {
+    const res: AllQuiz = await getAllQuizNoToken({
+      limit: 10,
+      page: 1,
+      status: QuizStatus.STARTED
+    });
     // eslint-disable-next-line prefer-const
     let counter = 0;
-
-    while (counter < (ctaList?.length ?? 0)) {
-      const res = await getAllQuizNoToken({
-        limit: 1,
-        page: 1,
-        status: '',
-        search: ctaList[counter].quiz
-      });
-      if (res.data !== null) {
+    const filterRes = res?.data?.filter(v => v.category !== 'CRYPTO');
+    if (filterRes !== undefined) {
+      while (counter < (filterRes.length > 5 ? 5 : filterRes.length)) {
         const resId: QuizIdRoot = await getQuizByIdNoToken({
-          id: res.data[0].id as string,
+          id: filterRes[counter].id,
           currency: ''
         });
-        setDataQuiz(prev => [...prev, { ...resId, cta: ctaList[counter].cta }]);
+        setDataQuiz(prev => [...prev, resId]);
+        counter++;
       }
-      counter++;
     }
   }, []);
+
   useEffect(() => {
     if (
       queries?.type === 'wa' ||
@@ -123,8 +105,6 @@ const DetailQuiz = (): React.ReactElement => {
                         ? usAds
                         : v?.category === 'ID_STOCK'
                         ? idAds
-                        : v?.category === 'CRYPTO'
-                        ? cryptoAds
                         : quizAds
                     }
                     alt={v?.name}
@@ -259,7 +239,23 @@ const DetailQuiz = (): React.ReactElement => {
                 <div className="flex flex-col w-full sm:w-fit sm:self-end lg:self-auto">
                   <CountdownTimer targetDate={v?.ended_at} />
                   <Link
-                    href={queries?.type === 'wa' ? v.cta : `/auth?qi=${v?.id}`}
+                    target={queries.type === 'wa' ? '_blank' : '_self'}
+                    href={
+                      queries.type === 'wa'
+                        ? `https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=lead&msg=${textCta(
+                            v.name,
+                            v?.prizes.reduce((acc, val) => acc + val, 0) === 0
+                              ? 'Special Reward'
+                              : Intl.NumberFormat('id-ID', {
+                                  style: 'currency',
+                                  currency: 'IDR',
+                                  minimumFractionDigits: 0
+                                }).format(
+                                  v?.prizes.reduce((acc, val) => acc + val, 0)
+                                )
+                          )}`
+                        : `/auth?qi=${v?.id}`
+                    }
                     className="w-fit self-end"
                   >
                     <Button className="rounded-full bg-[#3AC4A0] capitalize font-poppins font-semibold text-xl w-full sm:w-[141px]">

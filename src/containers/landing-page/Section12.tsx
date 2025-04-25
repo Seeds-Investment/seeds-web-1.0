@@ -1,6 +1,4 @@
-import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
-import Link from 'next/link';
 import DiamanteLogo from 'public/assets/images/diamante.svg';
 import { useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
@@ -49,10 +47,10 @@ export default function Section12(): React.ReactElement {
                 className="w-full h-auto"
               />
             </div>
-            <span className="mt-4 text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-tr from-[#9A76FE] from-10% to-[#4FE6AF] to-100% md:text-4xl lg:text-5xl">
+            {/* <span className="mt-4 text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-tr from-[#9A76FE] from-10% to-[#4FE6AF] to-100% md:text-4xl lg:text-5xl">
               {t('landingV2.section12.text2')}
-            </span>
-            <Link
+            </span> */}
+            {/* <Link
               href={
                 'https://docs.google.com/forms/d/1-RI9IYyaO-5aPfS4BsTd2umTewQbh_kXVthWbys2Qdk/viewform?edit_requested=true'
               }
@@ -67,7 +65,7 @@ export default function Section12(): React.ReactElement {
                   {t('landingV2.section12.text3')}
                 </p>
               </Button>
-            </Link>
+            </Link> */}
           </div>
           <div>
             <div className="w-full hidden lg:block h-full">

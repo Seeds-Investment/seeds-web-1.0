@@ -47,7 +47,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   }, [router.query.useCoins]);
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance';
   const audioConfig = {
     routeName: router.pathname,
     audioFiles: [

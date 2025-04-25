@@ -15,7 +15,7 @@ export default function Section1(): React.ReactElement {
   const [dataLeaderboard, setDataLeaderboard] = useState<leaderboard[]>([]);
 
   const devUrl =
-    process?.env?.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance';
+    process?.env?.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance';
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       const url: string = devUrl ?? '';

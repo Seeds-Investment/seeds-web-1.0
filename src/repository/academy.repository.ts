@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 const academyService = baseAxios(
   `${
-    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
   }/academy/v1`
 );
 

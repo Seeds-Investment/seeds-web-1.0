@@ -58,7 +58,7 @@ export interface MetadataTrans {
 }
 
 const nftService = baseAxios(
-  `${process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'}/nft/`
+  `${process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'}/nft/`
 );
 
 export const connectSeeds = async (formData: {

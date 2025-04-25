@@ -42,7 +42,7 @@ const listReportPost = async (): Promise<any> => {
   try {
     const response = await fetch(
       `${
-        process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+        process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
       }/report/v1/questions`,
       {
         method: 'GET',
@@ -68,7 +68,7 @@ const listReportUser = async (): Promise<any> => {
   try {
     const response = await fetch(
       `${
-        process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+        process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
       }/report/v1/questions?type=user`,
       {
         method: 'GET',
@@ -242,7 +242,7 @@ const MoreOption = ({
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
         }/report/v1/post`,
         {
           method: 'POST',
@@ -266,7 +266,7 @@ const MoreOption = ({
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
         }/report/v1/user`,
         {
           method: 'POST',
@@ -291,7 +291,7 @@ const MoreOption = ({
     try {
       const response = await fetch(
         `${
-          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
         }/post/v2/delete/${postId}`,
         {
           method: 'DELETE',

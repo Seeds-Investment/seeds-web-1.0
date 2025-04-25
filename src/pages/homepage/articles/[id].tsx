@@ -131,7 +131,7 @@ export default function ArticleDetailPage(): JSX.Element {
   const [formRequest, setFormRequest] =
     useState<FormRequestInterface>(initialFormRequest);
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance/';
 
   async function fetchArticles(): Promise<void> {
     try {
@@ -483,7 +483,7 @@ export default function ArticleDetailPage(): JSX.Element {
           <div>
             <p className="font-bold text-md">People </p>
             <div className="flex flex-row gap-3">
-              {articleDetail?.peoples.map(people => (
+              {articleDetail?.peoples?.map(people => (
                 <p
                   key={people.id}
                   className="text-md flex underline text-[#3AC4A0]"
@@ -498,7 +498,7 @@ export default function ArticleDetailPage(): JSX.Element {
           <div>
             <p className="font-bold text-md">Circle </p>
             <div className="flex flex-row gap-3">
-              {articleDetail?.circles.map(circle => (
+              {articleDetail?.circles?.map(circle => (
                 <p
                   key={circle.id}
                   className="text-md flex flex-row underline text-[#3AC4A0]"
@@ -513,7 +513,7 @@ export default function ArticleDetailPage(): JSX.Element {
           <div>
             <p className="font-bold text-md">Assets </p>
             <div className="flex flex-row gap-3">
-              {articleDetail?.assets.map(assets => (
+              {articleDetail?.assets?.map(assets => (
                 <p
                   key={assets.id}
                   className="text-md flex underline text-[#3AC4A0]"
@@ -657,7 +657,7 @@ export default function ArticleDetailPage(): JSX.Element {
             }
           ]}
         >
-          {articles.map(article => (
+          {articles?.map(article => (
             <div
               key={article.id}
               className={` lg:pe-5 w-[200px] flex  cursor-pointer hover:shadow-lg transition-all  ${hotNewsItemClass}`}

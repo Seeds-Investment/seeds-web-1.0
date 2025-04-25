@@ -2,7 +2,7 @@ import { isGuest } from '@/helpers/guest';
 import baseAxios from '@/utils/common/axios';
 
 const articleService = baseAxios(
-  `${process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'}`
+  `${process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'}`
 );
 
 export const getArticle = async (params: {

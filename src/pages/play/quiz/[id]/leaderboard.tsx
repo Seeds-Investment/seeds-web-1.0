@@ -262,17 +262,19 @@ const LeaderBoardPage = (): React.ReactElement => {
                 {myRank !== undefined && (
                   <>
                     <img
-                      src={leaderBoard[myRank - 1]?.avatar}
-                      alt={leaderBoard[myRank - 1]?.name}
+                      src={leaderBoard?.find(v => v.rank === myRank)?.avatar}
+                      alt={leaderBoard?.find(v => v.rank === myRank)?.name}
                       className="w-10 h-10 rounded-full mx-5"
                     />
                     <div className="ml-3">
                       <h2 className="font-bold">
-                        {truncateText(leaderBoard[myRank - 1]?.name)}
+                        {truncateText(
+                          leaderBoard?.find(v => v.rank === myRank)?.name ?? ''
+                        )}
                       </h2>
                       <p>@{truncateText(dataUser?.seedsTag)}</p>
                       <p className="text-[#3AC4A0]">
-                        {leaderBoard[myRank - 1]?.score}
+                        {leaderBoard?.find(v => v.rank === myRank)?.score}
                       </p>
                     </div>
                   </>

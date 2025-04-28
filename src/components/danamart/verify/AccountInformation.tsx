@@ -12,8 +12,6 @@ import {
   useReligion,
   useWorkingLength
 } from '@/components/form-input/multi-input/data/dropdown-data';
-import useBase64ToFileList from '@/hooks/danamart/useBase64ToFileList';
-import useFilePreview from '@/hooks/danamart/useFilePreview';
 import useUpdateUserInfoForm, {
   type UserInfoFormData
 } from '@/hooks/danamart/useUpdateUserInfoForm';
@@ -23,6 +21,8 @@ import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { WarningGreenIcon } from 'public/assets/vector';
 import React, { useEffect, useState } from 'react';
+import { FaRegCheckCircle, FaRegTrashAlt } from 'react-icons/fa';
+import { IoDocumentTextOutline } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 
 interface AccountInformationProps {
@@ -44,10 +44,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
   const isMarried = watch('dm_penmit_01026');
   const pathTranslation = 'danamart.verification.accountInformation';
   const [userInformation, setUserInformation] = useState<AccountVerification>();
-  const [fileList, base64ToFileList] = useBase64ToFileList();
-  const [imageURLPreview] = useFilePreview(
-    fileList != null ? fileList : undefined
-  );
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploading, isUploading] = useState<boolean>(false);
 
   const handleSwitchChange = (): void => {
@@ -73,10 +70,6 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
       void fetchDataUserInformation();
     }
   }, [step, uploading]);
-
-  useEffect(() => {
-    base64ToFileList(imageURL);
-  }, [imageURL]);
 
   useEffect(() => {
     if (isMarried === 'single') {
@@ -136,6 +129,26 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
       setValue('dm_penmit_01013', userInformation?.penmit?.dm_penmit_01013);
     }
   }, [userInformation]);
+  
+  useEffect(() => {
+    if ((Boolean(imageURL)) && imageURL.length > 0) {
+      const file = imageURL[0];
+
+      if (file instanceof File) {
+        const objectUrl = URL.createObjectURL(file);
+        setPreviewUrl(objectUrl);
+
+        return () => {
+          URL.revokeObjectURL(objectUrl);
+        };
+      }
+    }
+  }, [imageURL]);
+
+  const handleRemoveAccessCard = (): void => {
+    setPreviewUrl(null)
+    setValue('dm_penmit_01013', userInformation?.penmit?.dm_penmit_01013);
+  }
 
   return (
     <div className="w-full flex flex-col rounded-lg">
@@ -549,23 +562,51 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
               className="rounded-lg px-3 border border-[#BDBDBD]"
             />
           </div>
-          <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
+          <div className="w-full mt-4">
             <MInput
               label={t(`${pathTranslation}.text61`)}
               registerName="dm_penmit_01013"
-              type="image64"
+              type="image"
               register={register}
+              usePreview={false}
+              fileType=".jpg,.jpeg"
               errors={errors}
-              imageURLPreview={
-                (imageURL === '' || imageURL === undefined)
-                  ? imageURLPreview
-                  : userInformation?.penmit?.dm_penmit_01013 !== undefined
-                    ? `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${userInformation?.penmit?.dm_penmit_01013}`
-                    : imageURLPreview
-              }
-              usePreview={true}
-              setValue={setValue}
+              extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
             />
+            {(
+              (previewUrl !== null) && (previewUrl !== undefined) || 
+              ((imageURL !== null) && (imageURL !== undefined))
+            ) && (
+              <div className='flex justify-between items-center'>
+                <div className='flex justify-start items-center gap-2 mt-2'>
+                  <a
+                    href={
+                      previewUrl !== null && previewUrl !== undefined
+                        ? previewUrl
+                        : `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${imageURL as string}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex justify-start items-center"
+                  >
+                    <div className="flex gap-2 bg-[#E5EDFC] py-2 px-3 w-fit rounded-md">
+                      <IoDocumentTextOutline className="w-6 h-6 flex-shrink-0 text-seeds-button-green" />
+                      <Typography className="font-poppins font-medium text-seeds-button-green">
+                        Preview document
+                      </Typography>
+                    </div>
+                  </a>
+                  <FaRegCheckCircle className="w-4 h-4 flex-shrink-0 text-seeds-button-green"/>
+                </div>
+                {
+                  (previewUrl !== null && previewUrl !== undefined) &&
+                    <FaRegTrashAlt
+                      onClick={() => { handleRemoveAccessCard() }}
+                      className="w-5 h-5 flex-shrink-0 text-[#DA2D1F] cursor-pointer"
+                    />
+                }
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -23,6 +23,11 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
   const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
   const [isUsePhoto, setIsUsePhoto] = useState<boolean>(false);
   const [imageData, setImageData] = useState<string>('');
+  const [isChecked, setIsChecked] = useState(false);
+
+  const toggleSwitch = (): void => {
+    setIsChecked(prev => !prev);
+  };
 
   useEffect(() => {
     if (step === 4) {
@@ -41,10 +46,24 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
 
   const saveData = async (): Promise<void> => {
     try {
-      const response = await updatePhotoSelfie(imageData);
+      const response = await updatePhotoSelfie(imageData, isChecked);
       setPhotoSelfieData(response);
     } catch (error) {
       toast(error as string);
+    }
+  };
+
+  const isButtonDisabled = (): boolean => {
+    if (photoSelfieData !== undefined && photoSelfieData !== null) {
+      return (
+        (photoSelfieData.info_1 !== '1' &&
+          photoSelfieData.info_2 !== '1' &&
+          photoSelfieData.info_3 !== '1') ||
+        !isUsePhoto ||
+        !isChecked
+      );
+    } else {
+      return true;
     }
   };
 
@@ -119,6 +138,24 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
           ))}
         </ul>
       </div>
+      <div className="flex items-center gap-2">
+        <button
+          onClick={toggleSwitch}
+          className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
+            isChecked ? '' : 'bg-gray-300'
+          }`}
+          style={{ backgroundColor: isChecked ? '#3AC4A0' : '#d1d5db' }}
+        >
+          <span
+            className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-md transform transition-transform duration-300 ${
+              isChecked ? 'translate-x-6' : 'translate-x-0'
+            }`}
+          />
+        </button>
+        <label className="text-sm font-medium font-poppins">
+          Setuju mengenai pernyataan foto selfie
+        </label>
+      </div>
       <div className="flex items-center justify-end gap-6">
         {imageData !== '' && isUsePhoto && (
           <Button
@@ -132,8 +169,11 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
         )}
         {photoSelfieData?.info_4 !== '1' && (
           <Button
+            disabled={isButtonDisabled()}
             onClick={saveData}
-            className={`bg-seeds-button-green capitalize font-poppins font-semibold text-sm rounded-full w-[155px] h-[36px] flex justify-center items-center`}
+            className={`${
+              isButtonDisabled() ? 'bg-[#BDBDBD]' : 'bg-seeds-button-green'
+            } capitalize font-poppins font-semibold text-sm rounded-full w-[155px] h-[36px] flex justify-center items-center`}
           >
             {t('danamart.verification.buttonSave')}
           </Button>

@@ -19,6 +19,8 @@ import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { WarningGreenIcon } from 'public/assets/vector';
 import React, { useEffect, useState } from 'react';
+import { FaRegCheckCircle, FaRegTrashAlt } from 'react-icons/fa';
+import { IoDocumentTextOutline } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 import ModalConfirmationForm from './ModalConfirmationForm';
 
@@ -54,6 +56,15 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
     setValue,
     isLoading
   } = useUpdateFinancialInfo();
+
+  const [previewUrlfileKartuAkses, setPreviewUrlfileKartuAkses] = useState<string | null>(null);
+  const fileKartuAkses = watch('fileKartuAkses');
+
+  const [previewUrlfileIdentitas, setPreviewUrlfileIdentitas] = useState<string | null>(null);
+  const fileIdentitas = watch('fileIdentitas');
+
+  const [previewUrlfileKtp, setPreviewUrlfileKtp] = useState<string | null>(null);
+  const fileKtp = watch('fileKtp');
 
   const fetchDataFinancial = async (): Promise<void> => {
     try {
@@ -92,6 +103,156 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
       setValue('cek_pendapatan_baru', '0');
     }
   };
+
+  useEffect(() => {
+    void assignImage();
+    setValue('dm_pen_06001', financialInformationData?.dana?.dm_pen_06001);
+    setValue('dm_pen_06002', financialInformationData?.dana?.dm_pen_06002);
+    if (watch('dm_pen_06002') !== '') {
+      setValue('validateSalary', true);
+    }
+    setValue('dm_penmit_07001', financialInformationData?.bank?.dm_penmit_07001);
+    setValue('dm_penmit_07002', financialInformationData?.bank?.dm_penmit_07002);
+    setValue('dm_penmit_07003', `${financialInformationData?.bank?.dm_penmit_07003 ?? ''}#${financialInformationData?.bank?.dm_penmit_07006 ?? ''}`);
+    setValue('pernyataan', financialInformationData?.bank?.pernyataan);
+    if (watch('pernyataan') === '1') {
+      setValue('dm_penmit_07008', financialInformationData?.bank?.dm_penmit_07008);
+      setValue('dm_penmit_07009', (financialInformationData?.bank?.dm_penmit_07009 ?? '')?.replace(/\//g, '-'));
+    }
+    if (financialInformationData?.penmit?.bo_confirm === 'Y') {
+      setValue('bo_confirm', 'Y');
+      setValue('bo_nama', financialInformationData?.penmit?.bo_nama);
+      setValue('bo_jns_kelamin', (financialInformationData?.penmit?.bo_jns_kelamin)?.toUpperCase());
+      setValue('bo_no_identitas', financialInformationData?.penmit?.bo_no_identitas);
+      setValue('bo_alamat', financialInformationData?.penmit?.bo_alamat);
+      setValue('bo_tmp_lahir', financialInformationData?.penmit?.bo_tmp_lahir);
+      setValue('bo_tgl_lahir', financialInformationData?.penmit?.bo_tgl_lahir);
+      setValue('bo_kewarganegaraan', financialInformationData?.penmit?.bo_kewarganegaraan);
+      setValue('bo_pekerjaan', financialInformationData?.penmit?.bo_pekerjaan);
+      setValue('bo_alamat_pekerjaan', financialInformationData?.penmit?.bo_alamat_pekerjaan);
+      setValue('bo_no_telp_pekerjaan', financialInformationData?.penmit?.bo_no_telp_pekerjaan);
+      setValue('bo_nama_ibu', financialInformationData?.penmit?.bo_nama_ibu);
+      setValue('bo_sumber_dana', financialInformationData?.penmit?.bo_sumber_dana);
+      setValue('bo_hasil_perbulan', Number((financialInformationData?.penmit?.bo_hasil_perbulan ?? 0).replace(/\./g, '')));
+      setValue('bo_tujuan_invest', financialInformationData?.penmit?.bo_tujuan_invest);
+      setValue('bo_hub_bo', financialInformationData?.penmit?.bo_hub_bo);
+      setValue('bo_status_perkawinan_bo', financialInformationData?.penmit?.bo_status_perkawinan_bo);
+      setValue('bo_relation_nama', financialInformationData?.penmit?.bo_relation_nama);
+      setValue('bo_relation_jns_kelamin', (financialInformationData?.penmit?.bo_relation_jns_kelamin)?.toUpperCase());
+      setValue('bo_relation_no_ktp', financialInformationData?.penmit?.bo_relation_no_ktp);
+      setValue('bo_relation_alamat', financialInformationData?.penmit?.bo_relation_alamat);
+      setValue('bo_relation_tempat_lahir', financialInformationData?.penmit?.bo_relation_tempat_lahir);
+      setValue('bo_relation_tgl_lahir', financialInformationData?.penmit?.bo_relation_tgl_lahir);
+      setValue('bo_relation_warga', financialInformationData?.penmit?.bo_relation_warga);
+      setValue('bo_relation_pekerjaan', financialInformationData?.penmit?.bo_relation_pekerjaan);
+      setValue('bo_relation_alamat_kerja', financialInformationData?.penmit?.bo_relation_alamat_kerja);
+      setValue('bo_relation_no_telp_kerja', financialInformationData?.penmit?.bo_relation_no_telp_kerja);
+    } else {
+      setValue('bo_confirm', 'N');
+    }
+  }, [financialInformationData])
+
+  const assignImage = async (): Promise<void> => {
+    if (financialInformationData != null && financialInformationData !== undefined) {
+      const fileKartuAksesTemp = await handleAssignImage(financialInformationData?.bank?.dm_penmit_07010 ?? '');
+      const fileIdentitasTemp = await handleAssignImage(financialInformationData?.penmit?.bo_file_identitas ?? '');
+      const fileKtpTemp = await handleAssignImage(financialInformationData?.penmit?.bo_relation_file_ktp ?? '');
+
+      if (watch('pernyataan') === '1') {
+        setValue('fileKartuAkses', [fileKartuAksesTemp]);
+      }
+
+      if (financialInformationData?.penmit?.bo_confirm === 'Y') {
+        setValue('fileIdentitas', [fileIdentitasTemp]);
+        setValue('fileKtp', [fileKtpTemp]);
+      }
+    }
+  };
+
+  const handleAssignImage = async (filename: string): Promise<File> => {
+    const fileUrl = `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${filename}`;
+    const response = await fetch(fileUrl);
+    if (!response.ok) {
+      throw new Error('Failed to fetch file');
+    }
+    const blob = await response.blob();
+    return new File([blob], filename, { type: blob.type });
+  }
+
+  const handleRemoveAccessCard = async(): Promise<void> => {
+    setPreviewUrlfileKartuAkses(null)
+    if (financialInformationData?.bank?.dm_penmit_07010 !== null && financialInformationData?.bank?.dm_penmit_07010 !== undefined) {
+      const fileKartuAksesTemp = await handleAssignImage(financialInformationData?.bank.dm_penmit_07010);
+      setValue('fileKartuAkses', [fileKartuAksesTemp]);
+    } else {
+      setValue('fileKartuAkses', null);
+    }
+  }
+
+  const handleRemoveIdentityCard = async(): Promise<void> => {
+    setPreviewUrlfileIdentitas(null)
+    if (financialInformationData?.penmit?.bo_file_identitas !== null && financialInformationData?.penmit?.bo_file_identitas !== undefined) {
+      const fileKartuAksesTemp = await handleAssignImage(financialInformationData?.penmit?.bo_file_identitas);
+      setValue('fileIdentitas', [fileKartuAksesTemp]);
+    } else {
+      setValue('fileIdentitas', null);
+    }
+  }
+
+  const handleRemoveIdCard = async(): Promise<void> => {
+    setPreviewUrlfileKtp(null)
+    if (financialInformationData?.penmit?.bo_relation_file_ktp !== null && financialInformationData?.penmit?.bo_relation_file_ktp !== undefined) {
+      const fileKartuAksesTemp = await handleAssignImage(financialInformationData?.penmit?.bo_relation_file_ktp);
+      setValue('fileKtp', [fileKartuAksesTemp]);
+    } else {
+      setValue('fileKtp', null);
+    }
+  }
+
+  useEffect(() => {
+    if ((Boolean(fileKartuAkses)) && fileKartuAkses.length > 0) {
+      const file = fileKartuAkses[0];
+
+      if (file instanceof File) {
+        const objectUrl = URL.createObjectURL(file);
+        setPreviewUrlfileKartuAkses(objectUrl);
+
+        return () => {
+          URL.revokeObjectURL(objectUrl);
+        };
+      }
+    }
+  }, [fileKartuAkses]);
+
+  useEffect(() => {
+    if ((Boolean(fileIdentitas)) && fileIdentitas.length > 0) {
+      const file = fileIdentitas[0];
+
+      if (file instanceof File) {
+        const objectUrl = URL.createObjectURL(file);
+        setPreviewUrlfileIdentitas(objectUrl);
+
+        return () => {
+          URL.revokeObjectURL(objectUrl);
+        };
+      }
+    }
+  }, [fileIdentitas]);
+
+  useEffect(() => {
+    if ((Boolean(fileKtp)) && fileKtp.length > 0) {
+      const file = fileKtp[0];
+
+      if (file instanceof File) {
+        const objectUrl = URL.createObjectURL(file);
+        setPreviewUrlfileKtp(objectUrl);
+
+        return () => {
+          URL.revokeObjectURL(objectUrl);
+        };
+      }
+    }
+  }, [fileKtp]);
 
   return (
     <div className="w-full flex flex-col gap-6 rounded-lg">
@@ -228,25 +389,63 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
         )}
       </div>
       {watch('pernyataan') === '1' && (
-        <div className="w-full flex flex-wrap md:flex-nowrap items-center gap-2">
-          <MInput
-            label={t('danamart.verification.financial.monthYearRegis')}
-            registerName="dm_penmit_07009"
-            type="date"
-            register={register}
-            errors={errors}
-            className="px-4 font-normal text-base text-[#201B1C] border border-[#BDBDBD] rounded-lg"
-          />
-          <MInput
-            label={t('danamart.verification.financial.accessCard')}
-            registerName="fileKartuAkses"
-            type="image"
-            register={register}
-            usePreview={false}
-            fileType=".jpg,.jpeg"
-            errors={errors}
-            extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
-          />
+        <div>
+          <div className="w-full flex flex-wrap md:flex-nowrap justify-center items-start gap-2">
+            <MInput
+              label={t('danamart.verification.financial.monthYearRegis')}
+              registerName="dm_penmit_07009"
+              type="date"
+              register={register}
+              errors={errors}
+              className="px-4 font-normal text-base text-[#201B1C] border border-[#BDBDBD] rounded-lg"
+            />
+            <div className="w-full">
+              <MInput
+                label={t('danamart.verification.financial.accessCard')}
+                registerName="fileKartuAkses"
+                type="image"
+                register={register}
+                usePreview={false}
+                fileType=".jpg,.jpeg"
+                errors={errors}
+                extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
+              />
+              {(
+                (previewUrlfileKartuAkses !== null) && (previewUrlfileKartuAkses !== undefined) || 
+                ((fileKartuAkses !== null) && (fileKartuAkses !== undefined))
+              ) && (
+                <div className='flex justify-between items-center'>
+                  <div className='flex justify-start items-center gap-2 mt-2'>
+                    <a
+                      href={
+                        previewUrlfileKartuAkses !== null && previewUrlfileKartuAkses !== undefined
+                          ? previewUrlfileKartuAkses
+                          : `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${fileKartuAkses as string}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex justify-start items-center"
+                    >
+                      <div className="flex gap-2 bg-[#E5EDFC] py-2 px-3 w-fit rounded-md">
+                        <IoDocumentTextOutline className="w-6 h-6 flex-shrink-0 text-seeds-button-green" />
+                        <Typography className="font-poppins font-medium text-seeds-button-green">
+                          Preview document
+                        </Typography>
+                      </div>
+                    </a>
+                    <FaRegCheckCircle className="w-4 h-4 flex-shrink-0 text-seeds-button-green"/>
+                  </div>
+                  {
+                    (previewUrlfileKartuAkses !== null && previewUrlfileKartuAkses !== undefined) &&
+                      <FaRegTrashAlt
+                        onClick={async() => { await handleRemoveAccessCard() }}
+                        className="w-5 h-5 flex-shrink-0 text-[#DA2D1F] cursor-pointer"
+                      />
+                  }
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
       <Typography className="font-poppins font-semibold md:text-xl text-base text-seeds-button-green">
@@ -298,16 +497,52 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
             />
           </div>
           <div className="w-full flex flex-wrap md:flex-nowrap gap-2">
-            <MInput
-              label={t('danamart.verification.financial.fileIdentity')}
-              registerName="fileIdentitas"
-              type="image"
-              register={register}
-              usePreview={false}
-              fileType=".jpg,.jpeg"
-              errors={errors}
-              extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
-            />
+            <div className="w-full">
+              <MInput
+                label={t('danamart.verification.financial.fileIdentity')}
+                registerName="fileIdentitas"
+                type="image"
+                register={register}
+                usePreview={false}
+                fileType=".jpg,.jpeg"
+                errors={errors}
+                extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
+              />
+              {(
+                (previewUrlfileIdentitas !== null) && (previewUrlfileIdentitas !== undefined) || 
+                ((fileIdentitas !== null) && (fileIdentitas !== undefined))
+              ) && (
+                <div className='flex justify-between items-center'>
+                  <div className='flex justify-start items-center gap-2 mt-2'>
+                    <a
+                      href={
+                        previewUrlfileIdentitas !== null && previewUrlfileIdentitas !== undefined
+                          ? previewUrlfileIdentitas
+                          : `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${fileIdentitas as string}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex justify-start items-center"
+                    >
+                      <div className="flex gap-2 bg-[#E5EDFC] py-2 px-3 w-fit rounded-md">
+                        <IoDocumentTextOutline className="w-6 h-6 flex-shrink-0 text-seeds-button-green" />
+                        <Typography className="font-poppins font-medium text-seeds-button-green">
+                          Preview document
+                        </Typography>
+                      </div>
+                    </a>
+                    <FaRegCheckCircle className="w-4 h-4 flex-shrink-0 text-seeds-button-green"/>
+                  </div>
+                  {
+                    (previewUrlfileIdentitas !== null && previewUrlfileIdentitas !== undefined) &&
+                      <FaRegTrashAlt
+                        onClick={async() => { await handleRemoveIdentityCard() }}
+                        className="w-5 h-5 flex-shrink-0 text-[#DA2D1F] cursor-pointer"
+                      />
+                  }
+                </div>
+              )}
+            </div>
             <MInput
               label={t('danamart.verification.financial.address')}
               registerName="bo_alamat"
@@ -485,16 +720,52 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
                 />
               </div>
               <div className="w-full flex flex-wrap md:flex-nowrap gap-2">
-                <MInput
-                  label={t('danamart.verification.financial.fileIdentity')}
-                  registerName="fileKtp"
-                  type="image"
-                  register={register}
-                  errors={errors}
-                  usePreview={false}
-                  fileType=".jpg,.jpeg"
-                  extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
-                />
+                <div className="w-full">
+                  <MInput
+                    label={t('danamart.verification.financial.fileIdentity')}
+                    registerName="fileKtp"
+                    type="image"
+                    register={register}
+                    errors={errors}
+                    usePreview={false}
+                    fileType=".jpg,.jpeg"
+                    extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
+                  />
+                  {(
+                    (previewUrlfileKtp !== null) && (previewUrlfileKtp !== undefined) || 
+                    ((fileKtp !== null) && (fileKtp !== undefined))
+                  ) && (
+                    <div className='flex justify-between items-center'>
+                      <div className='flex justify-start items-center gap-2 mt-2'>
+                        <a
+                          href={
+                            previewUrlfileKtp !== null && previewUrlfileKtp !== undefined
+                              ? previewUrlfileKtp
+                              : `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${fileKtp as string}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex justify-start items-center"
+                        >
+                          <div className="flex gap-2 bg-[#E5EDFC] py-2 px-3 w-fit rounded-md">
+                            <IoDocumentTextOutline className="w-6 h-6 flex-shrink-0 text-seeds-button-green" />
+                            <Typography className="font-poppins font-medium text-seeds-button-green">
+                              Preview document
+                            </Typography>
+                          </div>
+                        </a>
+                        <FaRegCheckCircle className="w-4 h-4 flex-shrink-0 text-seeds-button-green"/>
+                      </div>
+                      {
+                        (previewUrlfileKtp !== null && previewUrlfileKtp !== undefined) &&
+                          <FaRegTrashAlt
+                            onClick={async() => { await handleRemoveIdCard() }}
+                            className="w-5 h-5 flex-shrink-0 text-[#DA2D1F] cursor-pointer"
+                          />
+                      }
+                    </div>
+                  )}
+                </div>
                 <MInput
                   label={t('danamart.verification.financial.address')}
                   registerName="bo_relation_alamat"
@@ -574,9 +845,12 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
       <div className="flex items-center justify-end">
         <Button
           className="w-[155.5px] h-[36px] px-4 py-2 text-sm font-semibold bg-seeds-button-green rounded-full capitalize mt-2"
-          onClick={() => {
-            handleSubmit((data: FinancialInfoForm) => {
-              onSubmit(data);
+          onClick={async() => {
+            await handleSubmit(async (data: FinancialInfoForm) => {
+              const result = await onSubmit(data);
+              if (result?.statusCode === 200) {
+                setStep(4)
+              }
             })();
           }}
         >
@@ -599,3 +873,4 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
 };
 
 export default FinancialInformation;
+

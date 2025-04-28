@@ -54,7 +54,7 @@ const useUpdateFinancialInfo = (): any => {
               if (value === null || value === undefined) return true;
 
               const file = value[0];
-              return SUPPORTED_FORMATS.includes(file.type);
+              return SUPPORTED_FORMATS?.includes(file.type);
             })
             .test('fileSize', 'File size must be less than 4MB', value => {
               if (value === null || value === undefined) return true;
@@ -90,7 +90,7 @@ const useUpdateFinancialInfo = (): any => {
               if (value === null || value === undefined) return true;
 
               const file = value[0];
-              return SUPPORTED_FORMATS.includes(file.type);
+              return SUPPORTED_FORMATS?.includes(file.type);
             })
             .test('fileSize', 'File size must be less than 4MB', value => {
               if (value === null || value === undefined) return true;
@@ -191,7 +191,7 @@ const useUpdateFinancialInfo = (): any => {
                 return true;
               }
               const file = value[0];
-              return SUPPORTED_FORMATS.includes(file.type);
+              return SUPPORTED_FORMATS?.includes(file.type);
             })
             .test('fileSize', 'File size must be less than 4MB', value => {
               if (value === null || value === undefined) return true;
@@ -321,6 +321,7 @@ const useUpdateFinancialInfo = (): any => {
       const response = await updateFinancialInformation(updatedForm);
       if (response.statusCode === 200) {
         toast.success(response.message);
+        return response
       } else {
         toast.error(response.message);
       }

@@ -126,7 +126,7 @@ export const getPhotoSelfieData = async (): Promise<any> => {
   }
 };
 
-export const updatePhotoSelfie = async (imageEncoded: string): Promise<any> => {
+export const updatePhotoSelfie = async (imageEncoded: string, isChecked: boolean): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -142,7 +142,7 @@ export const updatePhotoSelfie = async (imageEncoded: string): Promise<any> => {
     formData.append('image_from_web_cam', imageEncoded);
     formData.append('platform', platform);
     formData.append('typeSubmit', 'updateOcr');
-    formData.append('pernyataan', 'true');
+    formData.append('pernyataan', isChecked?.toString());
 
     const response = await danamartApi.post(
       '/pemodal/form_foto_selfie/updateForm',

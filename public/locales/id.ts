@@ -3206,13 +3206,16 @@ export default {
         retake: 'Ambil Ulang',
         continue: 'Lanjutkan',
         cancel: 'Batalkan',
+        delete: 'Hapus',
         requirements: 'Ketentuan mengunggah Foto Selfie',
         requirements1: 'Mengambil foto langsung menggunakan kamera.',
         requirements2:
           'Pastikan wajah kamu terlihat dengan pencahayaan yang cukup.',
         requirements3:
           'Area wajah terlihat jelas tanpa menggunakan aksesori seperti kacamata, masker, topi, dan lain-lain.',
-        requirements4: 'Tidak perlu memegang e-KTP atau benda lainnya.'
+        requirements4: 'Tidak perlu memegang e-KTP atau benda lainnya.',
+        success: 'Terima kasih telah melengkapi Formulir Pengajuan Menjadi Pemodal, tim kami akan memverifikasi data Kamu.',
+        agreement: 'Setuju mengenai pernyataan foto selfie'
       },
       buttonSave: 'Simpan',
       buttonPrevious: 'Sebelumnya',

@@ -1,6 +1,7 @@
 import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import AuthPassword from '@/components/auth2/AuthPassword';
+import { swtracker } from '@/constants/swtracker';
 import {
   handleChangePhoneNumber,
   handleFormattedData
@@ -76,7 +77,7 @@ const AuthVerification: React.FC<AuthVerificationI> = ({
     await dispatch(fetchExpData());
     const responseUser = await getUserInfo();
     TrackerEvent({
-      event: 'SW_auth_login',
+      event: swtracker.auth.login,
       userData: responseUser
     });
     if (isQuery) {
@@ -84,7 +85,7 @@ const AuthVerification: React.FC<AuthVerificationI> = ({
     } else {
       await router.push('/homepage');
       TrackerEvent({
-        event: `SW_homepage_page`,
+        event: swtracker.homepage.page,
         userData: responseUser
       });
     }
@@ -93,6 +94,10 @@ const AuthVerification: React.FC<AuthVerificationI> = ({
   const handleRegister = async (): Promise<void> => {
     const response = await checkPhoneNumber(formattedData.phoneNumber);
     if (response === undefined && passTest) {
+      TrackerEvent({
+        event: swtracker.auth.registerStart,
+        userData: { phoneNumber: formattedData.phoneNumber }
+      });
       setGuest('register');
       await handleGetOTP(
         method,

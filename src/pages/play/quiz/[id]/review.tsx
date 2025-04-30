@@ -4,6 +4,7 @@
 import AnswerButtonComponent from '@/components/quiz/answer-button.component';
 import QuizButton from '@/components/quiz/button.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import { swtracker } from '@/constants/swtracker';
 import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import useSoundEffect from '@/hooks/useSoundEffects';
@@ -34,7 +35,7 @@ const Review = () => {
       const response = await getQuizReview(id as string);
       setQuizReview(response);
       TrackerEvent({
-        event: 'SW_quiz_done_game',
+        event: swtracker.quiz.doneGame,
         quizData: { id },
         userData: dataUser
       });

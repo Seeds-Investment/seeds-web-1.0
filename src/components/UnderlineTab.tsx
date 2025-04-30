@@ -4,6 +4,7 @@ import memberCircle from '@/assets/my-profile/circle/memberCircle.svg';
 import postCircle from '@/assets/my-profile/circle/postCircle.svg';
 import info from '@/assets/my-profile/play/info.svg';
 import { chrownCirclePremium } from '@/constants/assets/icons';
+import { swtracker } from '@/constants/swtracker';
 import PostSection from '@/containers/circle/[id]/PostSection';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
@@ -91,7 +92,7 @@ const UnderLineTab = ({
         if (page === 1) {
           setNftData(data);
         } else {
-          setNftData(prev => [...(prev as Data[])??[], ...data??[]]);
+          setNftData(prev => [...((prev as Data[]) ?? []), ...(data ?? [])]);
         }
         if (
           res.metadata.current_page === res.metadata.total_page ||
@@ -223,7 +224,7 @@ const UnderLineTab = ({
                       toast(error, { type: 'error' });
                     });
                   TrackerEvent({
-                    event: `SW__circle_page_detail`,
+                    event: swtracker.circle.pageDetail,
                     userData: myInfo,
                     circleData: item
                   });

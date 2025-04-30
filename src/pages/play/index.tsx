@@ -6,6 +6,7 @@ import IconNoData from '@/assets/play/tournament/noData.svg';
 import TournamentPagination from '@/components/TournmentPagination';
 import ModalTutorialTournament from '@/components/popup/ModalTutorialTournament';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { swtracker } from '@/constants/swtracker';
 import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import {
@@ -424,7 +425,7 @@ const Player = (): React.ReactElement => {
                   key={asset.id}
                   className="w-full relative"
                   onClick={() => {
-                    TrackerEvent({ event: 'SW_play_banner' });
+                    TrackerEvent({ event: swtracker.play.banner });
                   }}
                 >
                   <Image

@@ -11,6 +11,7 @@ import {
   Pin,
   ShareBlack
 } from '@/constants/assets/icons';
+import { swtracker } from '@/constants/swtracker';
 import ImageCarousel from '@/containers/circle/[id]/CarouselImage';
 import PieCirclePost from '@/containers/circle/[id]/PieCirclePost';
 import PollingView from '@/containers/circle/[id]/PollingView';
@@ -620,7 +621,7 @@ const PostSection: React.FC<props> = ({
                     el.total_upvote -= 1;
                     el.status_like = false;
                     TrackerEvent({
-                      event: `SW_social_btn_unliked_post`,
+                      event: swtracker.social.btnUnlikePost,
                       postData: dataPost,
                       userData: userInfo
                     });
@@ -628,7 +629,7 @@ const PostSection: React.FC<props> = ({
                     el.total_upvote++;
                     el.status_like = true;
                     TrackerEvent({
-                      event: `SW_social_btn_liked_post`,
+                      event: swtracker.social.btnLikePost,
                       postData: dataPost,
                       userData: userInfo
                     });

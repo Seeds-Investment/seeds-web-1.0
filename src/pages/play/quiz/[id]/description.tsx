@@ -3,6 +3,7 @@
 'use-client';
 import QuizButton from '@/components/quiz/button.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import { swtracker } from '@/constants/swtracker';
 import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import useSoundEffect from '@/hooks/useSoundEffects';
@@ -153,7 +154,7 @@ const DescriptionQuiz = () => {
           currency
         });
         TrackerEvent({
-          event: 'SW_quiz_start_game',
+          event: swtracker.quiz.startGame,
           quizData: detailQuiz,
           userData: dataUser
         });

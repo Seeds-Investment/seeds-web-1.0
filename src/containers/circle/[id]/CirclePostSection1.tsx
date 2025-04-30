@@ -2,6 +2,7 @@ import dot_menu from '@/assets/circle-page/3dot.svg';
 import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
 import Loading from '@/components/popup/Loading';
+import { swtracker } from '@/constants/swtracker';
 import { standartCurrency } from '@/helpers/currency';
 import TrackerEvent from '@/helpers/GTM';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
@@ -246,7 +247,7 @@ const CirclePostSection1: React.FC<props> = ({
                     onClick={async () => {
                       await handleJoin();
                       TrackerEvent({
-                        event: `SW_circle_btn_join_circle`,
+                        event: swtracker.circle.btnJoin,
                         userData: userInfo,
                         circleData: dataCircle
                       });

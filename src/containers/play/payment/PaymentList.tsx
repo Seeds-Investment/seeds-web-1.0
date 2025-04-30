@@ -6,6 +6,8 @@ import SubmitButton from '@/components/SubmitButton';
 import Loading from '@/components/popup/Loading';
 import Dialog from '@/components/ui/dialog/Dialog';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { swtracker } from '@/constants/swtracker';
+import TrackerEvent from '@/helpers/GTM';
 import { type PaymentData } from '@/pages/play/quiz/[id]/help-option';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import { getPaymentList } from '@/repository/payment.repository';
@@ -345,8 +347,11 @@ const PaymentList: React.FC<props> = ({
         }
       }
     } catch (error: any) {
-      setOpenDialog(false)
-      if (error?.response?.data?.message === "bad request, minimum transaction using VA is 10000") {
+      setOpenDialog(false);
+      if (
+        error?.response?.data?.message ===
+        'bad request, minimum transaction using VA is 10000'
+      ) {
         toast.error(t('PlayPayment.VirtualAccountGuide.minimumPaymentError'));
       } else {
         toast.error(`${error as string}`);
@@ -389,6 +394,11 @@ const PaymentList: React.FC<props> = ({
     } else {
       setOpenDialog(true);
     }
+    TrackerEvent({
+      event: swtracker.payment,
+      userData: userInfo,
+      paymentData: option
+    });
   };
 
   const renderLoading = (): JSX.Element => <Loading />;

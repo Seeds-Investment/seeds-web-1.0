@@ -3,6 +3,7 @@ import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import VirtualAccountStep from '@/components/VirtualAccountStep';
 import { CeklisCircle } from '@/constants/assets/icons';
+import { swtracker } from '@/constants/swtracker';
 import { standartCurrency } from '@/helpers/currency';
 import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
@@ -185,15 +186,26 @@ const SuccessPaymentPage: React.FC = () => {
     }
 
     const paymentSelected: PaymentList[] = [
-      ...eWalletList?.filter((el) => el?.payment_method === orderDetail?.paymentMethod),
-      ...vaList?.filter((el) => el?.payment_method === orderDetail?.paymentMethod),
-      ...qRisList?.filter((el) => el?.payment_method === orderDetail?.paymentMethod),
+      ...eWalletList?.filter(
+        el => el?.payment_method === orderDetail?.paymentMethod
+      ),
+      ...vaList?.filter(
+        el => el?.payment_method === orderDetail?.paymentMethod
+      ),
+      ...qRisList?.filter(
+        el => el?.payment_method === orderDetail?.paymentMethod
+      )
     ];
 
     return paymentSelected.length > 0 ? paymentSelected : [];
   };
 
-  const paymentSelected = getSelectedPayment(eWalletList, vaList, qRisList, orderDetail);
+  const paymentSelected = getSelectedPayment(
+    eWalletList,
+    vaList,
+    qRisList,
+    orderDetail
+  );
 
   return (
     <div className="pt-10">
@@ -253,7 +265,9 @@ const SuccessPaymentPage: React.FC = () => {
               <Typography className="text-2xl font-semibold text-white text-center">
                 {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
                 orderDetail?.transactionStatus !== 'SUCCESS'
-                  ? `${(orderDetail?.currency ?? 'IDR')?.toUpperCase()} ${standartCurrency(
+                  ? `${(
+                      orderDetail?.currency ?? 'IDR'
+                    )?.toUpperCase()} ${standartCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`
                   : t('quiz.payment.paymentSuccessful')}
@@ -297,7 +311,7 @@ const SuccessPaymentPage: React.FC = () => {
                         {orderDetail?.currency !== undefined &&
                         orderDetail?.grossAmount !== undefined
                           ? `${
-                              (orderDetail?.currency)?.toUpperCase() ?? 'IDR'
+                              orderDetail?.currency?.toUpperCase() ?? 'IDR'
                             } ${standartCurrency(
                               (orderDetail?.grossAmount ?? 0) === 0
                                 ? 0
@@ -323,7 +337,9 @@ const SuccessPaymentPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
-                        `${(orderDetail?.currency ?? 'IDR')?.toUpperCase()} ${standartCurrency(
+                        `${(
+                          orderDetail?.currency ?? 'IDR'
+                        )?.toUpperCase()} ${standartCurrency(
                           orderDetail?.admin_fee ?? 0
                         )}`}
                     </Typography>
@@ -342,7 +358,9 @@ const SuccessPaymentPage: React.FC = () => {
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
                       orderDetail.grossAmount !== undefined
-                        ? `${(orderDetail?.currency ?? 'IDR')?.toUpperCase()} ${standartCurrency(
+                        ? `${(
+                            orderDetail?.currency ?? 'IDR'
+                          )?.toUpperCase()} ${standartCurrency(
                             orderDetail?.service_fee ?? 0
                           )}`
                         : ''}
@@ -363,9 +381,9 @@ const SuccessPaymentPage: React.FC = () => {
                           </Typography>
                           <Typography className="text-sm font-semibold text-[#262626]">
                             {orderDetail?.currency !== undefined
-                              ? `- ${
-                                  (orderDetail?.currency ?? 'IDR')?.toUpperCase()
-                                } ${standartCurrency(
+                              ? `- ${(
+                                  orderDetail?.currency ?? 'IDR'
+                                )?.toUpperCase()} ${standartCurrency(
                                   orderDetail?.promo_price ?? 0
                                 )}`
                               : ''}
@@ -387,9 +405,11 @@ const SuccessPaymentPage: React.FC = () => {
                           {t('quiz.payment.discountCoins')}
                         </Typography>
                         <Typography className="text-sm font-semibold text-[#262626]">
-                          {`- ${
-                            (orderDetail?.currency ?? 'IDR')?.toUpperCase()
-                          } ${standartCurrency(orderDetail?.seeds_coin ?? 0)}`}
+                          {`- ${(
+                            orderDetail?.currency ?? 'IDR'
+                          )?.toUpperCase()} ${standartCurrency(
+                            orderDetail?.seeds_coin ?? 0
+                          )}`}
                         </Typography>
                       </div>
                     )}
@@ -403,7 +423,9 @@ const SuccessPaymentPage: React.FC = () => {
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
-                      `${(orderDetail?.currency ?? 'IDR')?.toUpperCase()} ${standartCurrency(
+                      `${(
+                        orderDetail?.currency ?? 'IDR'
+                      )?.toUpperCase()} ${standartCurrency(
                         orderDetail?.grossAmount ?? 0
                       )}`}
                   </Typography>
@@ -420,27 +442,25 @@ const SuccessPaymentPage: React.FC = () => {
                 </div>
               </Card>
 
-              {
-                orderDetail !== undefined &&
-                  <VirtualAccountStep
-                    setIsLoading={setIsLoading}
-                    orderDetail={orderDetail}
-                    id={id}
-                  />
-              }
+              {orderDetail !== undefined && (
+                <VirtualAccountStep
+                  setIsLoading={setIsLoading}
+                  orderDetail={orderDetail}
+                  id={id}
+                />
+              )}
 
               <div className="w-full flex flex-col items-center justify-center">
-                {
-                  (orderDetail?.paymentMethod?.includes('BNC') ?? false) &&
-                    <Button
-                      className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
-                      onClick={async () => {
-                        void handleViewQR();
-                      }}
-                    >
-                      {t('bnc.seeQRCode')}
-                    </Button>
-                }
+                {(orderDetail?.paymentMethod?.includes('BNC') ?? false) && (
+                  <Button
+                    className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
+                    onClick={async () => {
+                      void handleViewQR();
+                    }}
+                  >
+                    {t('bnc.seeQRCode')}
+                  </Button>
+                )}
                 <Button
                   className={`${
                     orderDetail?.paymentMethod?.includes('BNC') ?? false
@@ -454,7 +474,7 @@ const SuccessPaymentPage: React.FC = () => {
                         .replaceAll(/[^a-zA-Z0-9_-]/g, '_');
                     };
                     TrackerEvent({
-                      event: 'SW_quiz_payment',
+                      event: swtracker.quiz.payment,
                       userData: userInfo,
                       paymentData: {
                         ...orderDetail,

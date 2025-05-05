@@ -44,7 +44,8 @@ const pathsWithoutHeader = [
   'story-boarding',
   'term-condition',
   'social',
-  'ads'
+  'ads',
+  'forms'
 ];
 
 function App({

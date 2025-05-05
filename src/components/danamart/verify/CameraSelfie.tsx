@@ -71,7 +71,9 @@ const CameraSelfie: React.FC<Props> = ({
           {!isUsePhoto && (
             <div className="flex items-center gap-3">
               <Button
-                onClick={() => { setCaptureImage(null); }}
+                onClick={() => {
+                  setCaptureImage(null);
+                }}
                 className="flex items-center justify-center bg-white border border-seeds-button-green text-seeds-green capitalize text-sm font-poppins font-semibold rounded-full w-[155px] h-[36px]"
               >
                 {t('danamart.verification.photoSelfie.retake')}

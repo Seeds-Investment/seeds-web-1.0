@@ -142,7 +142,9 @@ const ModalOTP: React.FC<Props> = ({
       ) : (
         <div className="mt-4">
           <Typography className="text-red-600 text-sm font-medium mb-2">
-            {`${t(`${pathTranslation}.timeRemaining`)}: ${formatTime(countdown)}`}
+            {`${t(`${pathTranslation}.timeRemaining`)}: ${formatTime(
+              countdown
+            )}`}
           </Typography>
 
           {/* OTP Input Boxes */}

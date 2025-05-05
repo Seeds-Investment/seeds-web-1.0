@@ -7,14 +7,14 @@ import { toast } from 'react-toastify';
 import Modal from '../../../ui/modal/Modal';
 
 interface Props {
-  setIsAllowedOTP:  React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAllowedOTP: React.Dispatch<React.SetStateAction<boolean>>;
   setIsShowSuccessValidate: React.Dispatch<React.SetStateAction<boolean>>;
   setIsContinueProcess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsShowOTP: React.Dispatch<React.SetStateAction<boolean>>;
   isShowOTP: boolean;
   setPassedOTP: React.Dispatch<React.SetStateAction<string>>;
   isLoading: boolean;
-  setIsLoading:   React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   isAllowedOTP: boolean;
   passedOTP: string;
   newBankAccountName: string;
@@ -93,7 +93,7 @@ const ModalOTP: React.FC<Props> = ({
 
   const handleValidateOTP = async (): Promise<void> => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const formData = new FormData();
       formData.append('dm_penmit_07001', newBankAccountName);
       formData.append('dm_penmit_07002', bankNumber);
@@ -105,19 +105,25 @@ const ModalOTP: React.FC<Props> = ({
       const response = await validateChangeBankOTP(formData);
 
       if (response?.status === 200) {
-        setIsLoading(false)
+        setIsLoading(false);
       }
       if (response?.data?.statusCode === 200) {
-        setIsShowOTP(false)
-        setIsShowSuccessValidate(true)
-      } else if (response?.data?.message === 'Kode verifkasi salah, silakan masukkan kode verifikasi yang valid.') {
+        setIsShowOTP(false);
+        setIsShowSuccessValidate(true);
+      } else if (
+        response?.data?.message ===
+        'Kode verifkasi salah, silakan masukkan kode verifikasi yang valid.'
+      ) {
         toast.error(t(`${pathTranslation}.text4`));
-      } else if (response?.data?.message === 'Maaf, kode OTP salah! Yuk, cek kode OTP yang kamu dapat & coba input ulang. Kode OTP hanya berlaku 5 menit') {
+      } else if (
+        response?.data?.message ===
+        'Maaf, kode OTP salah! Yuk, cek kode OTP yang kamu dapat & coba input ulang. Kode OTP hanya berlaku 5 menit'
+      ) {
         toast.error(t(`${pathTranslation}.text4`));
       }
     } catch (error: any) {
-      setIsLoading(false)
-      if (error?.response?.data?.message === "Too many Hits") {
+      setIsLoading(false);
+      if (error?.response?.data?.message === 'Too many Hits') {
         toast.error(t(`${pathTranslationModal}.tooManyAttempts`));
       } else {
         toast.error(`Error validating OTP: ${error as string}`);
@@ -127,15 +133,15 @@ const ModalOTP: React.FC<Props> = ({
 
   useEffect(() => {
     if (isAllowedOTP) {
-      setCountdown(300)
+      setCountdown(300);
     }
-  }, [isAllowedOTP])
+  }, [isAllowedOTP]);
 
   useEffect(() => {
     if (countdown === 0) {
-      setIsContinueProcess(false)
+      setIsContinueProcess(false);
     }
-  }, [countdown])
+  }, [countdown]);
 
   return (
     <Modal
@@ -154,63 +160,62 @@ const ModalOTP: React.FC<Props> = ({
       </button>
 
       <Typography className="font-bold text-xl mb-4">
-        {
-          isAllowedOTP ? t(`${pathTranslation}.text17`) : t(`${pathTranslation}.text18`)
-        }
+        {isAllowedOTP
+          ? t(`${pathTranslation}.text17`)
+          : t(`${pathTranslation}.text18`)}
       </Typography>
 
-      {
-        isAllowedOTP ?
-          <>
-            {countdown === 0 ? (
-              <Button
-                onClick={() => {
-                  setIsContinueProcess(true)
-                }}
-                disabled={countdown !== 0 || isLoading}
-                className="w-full bg-seeds-button-green rounded-full capitalize text-md"
-              >
-                {t(`${pathTranslation}.text19`)}
-              </Button>
-            ) : (
-              <div className="mt-4">
-                <Typography className="text-red-600 text-sm font-medium mb-2">
-                  {`${t(`${pathTranslation}.text20`)}: ${formatTime(countdown)}`}
-                </Typography>
+      {isAllowedOTP ? (
+        <>
+          {countdown === 0 ? (
+            <Button
+              onClick={() => {
+                setIsContinueProcess(true);
+              }}
+              disabled={countdown !== 0 || isLoading}
+              className="w-full bg-seeds-button-green rounded-full capitalize text-md"
+            >
+              {t(`${pathTranslation}.text19`)}
+            </Button>
+          ) : (
+            <div className="mt-4">
+              <Typography className="text-red-600 text-sm font-medium mb-2">
+                {`${t(`${pathTranslation}.text20`)}: ${formatTime(countdown)}`}
+              </Typography>
 
-                {/* OTP Input Boxes */}
-                <div className="flex justify-between gap-2">
-                  {otp?.map((digit, index) => (
-                    <input
-                      key={index}
-                      id={`otp-${index}`}
-                      type="text"
-                      value={digit}
-                      maxLength={1}
-                      onChange={e => {
-                        handleOtpChange(e.target.value, index);
-                      }}
-                      onKeyDown={e => {
-                        handleKeyDown(e, index);
-                      }}
-                      onInput={(e: React.FormEvent<HTMLInputElement>) => {
-                        const target = e.target as HTMLInputElement;
-                        target.value = target.value.replace(/[^0-9]/g, '');
-                      }}
-                      className="w-12 h-12 text-center border border-gray-300 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-seeds-button-green"
-                    />
-                  ))}
-                </div>
+              {/* OTP Input Boxes */}
+              <div className="flex justify-between gap-2">
+                {otp?.map((digit, index) => (
+                  <input
+                    key={index}
+                    id={`otp-${index}`}
+                    type="text"
+                    value={digit}
+                    maxLength={1}
+                    onChange={e => {
+                      handleOtpChange(e.target.value, index);
+                    }}
+                    onKeyDown={e => {
+                      handleKeyDown(e, index);
+                    }}
+                    onInput={(e: React.FormEvent<HTMLInputElement>) => {
+                      const target = e.target as HTMLInputElement;
+                      target.value = target.value.replace(/[^0-9]/g, '');
+                    }}
+                    className="w-12 h-12 text-center border border-gray-300 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-seeds-button-green"
+                  />
+                ))}
               </div>
-            )}
-          </>
-          :
-          <div>
-            <Typography className="font-poppins text-md text-[#262626] font-semibold">
-              {t(`${pathTranslation}.text21`)}
-            </Typography>
-          </div>
-      }
+            </div>
+          )}
+        </>
+      ) : (
+        <div>
+          <Typography className="font-poppins text-md text-[#262626] font-semibold">
+            {t(`${pathTranslation}.text21`)}
+          </Typography>
+        </div>
+      )}
 
       <div className="w-full flex justify-end items-end gap-2">
         <Button
@@ -225,12 +230,16 @@ const ModalOTP: React.FC<Props> = ({
         <Button
           onClick={async () => {
             if (isAllowedOTP) {
-              await handleValidateOTP()
+              await handleValidateOTP();
             } else {
               setIsContinueProcess(true);
             }
           }}
-          disabled={isAllowedOTP ? (!isOTPComplete || isLoading || countdown === 0) : isLoading}
+          disabled={
+            isAllowedOTP
+              ? !isOTPComplete || isLoading || countdown === 0
+              : isLoading
+          }
           className="w-[150px] text-sm font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
         >
           {t(`${pathTranslation}.continue`)}

@@ -14,7 +14,11 @@ import { decryptResponse } from '@/helpers/cryptoDecrypt';
 import { standartCurrency } from '@/helpers/currency';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
 import { getProfileUser } from '@/repository/danamart/danamart.repository';
-import { cancelPurchase, cancelPurchaseCO, getPortfolio } from '@/repository/danamart/portfolio.repository';
+import {
+  cancelPurchase,
+  cancelPurchaseCO,
+  getPortfolio
+} from '@/repository/danamart/portfolio.repository';
 import { type UserProfile } from '@/utils/interfaces/danamart.interface';
 import { type PortfolioData } from '@/utils/interfaces/danamart/portfolio.interface';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -37,12 +41,14 @@ const Portfolio = (): React.ReactElement => {
   const [sortColumn, setSortColumn] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [isShowOptions, setIsShowOptions] = useState<boolean>(false);
-  const [selectedPortfolioIndex, setSelectedPortfolioIndex] = useState<number>(0);
+  const [selectedPortfolioIndex, setSelectedPortfolioIndex] =
+    useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isLoadingCancelPurchase, setIsLoadingCancelPurchase] = useState<boolean>(false);
+  const [isLoadingCancelPurchase, setIsLoadingCancelPurchase] =
+    useState<boolean>(false);
   const [userProfileData, setUserProfileData] = useState<UserProfile>();
   const [isContinueProcess, setIsContinueProcess] = useState<boolean>(false);
-  
+
   const [isShowOTP, setIsShowOTP] = useState<boolean>(false);
   const [passedOTP, setPassedOTP] = useState<string>('');
 
@@ -101,7 +107,7 @@ const Portfolio = (): React.ReactElement => {
       setIsLoading(false);
     }
   };
-    
+
   const fetchUserProfile = async (): Promise<void> => {
     try {
       const profile = await getProfileUser();
@@ -127,21 +133,23 @@ const Portfolio = (): React.ReactElement => {
       );
 
       if (response?.data?.StatusCode === '200') {
-        if (response?.data?.message === 'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!') {
-          toast.success(t(`${pathTranslation}.text2`))
+        if (
+          response?.data?.message ===
+          'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!'
+        ) {
+          toast.success(t(`${pathTranslation}.text2`));
         } else {
-          toast.success(response?.data?.message ?? '')
+          toast.success(response?.data?.message ?? '');
         }
       }
-      
     } catch (error: any) {
       toast.error(`Error cancelling purchase: ${error as string}`);
-      setIsContinueProcess(false)
+      setIsContinueProcess(false);
     } finally {
-      setIsContinueProcess(false)
+      setIsContinueProcess(false);
       setTimeout(() => {
         void (async () => {
-          void getPortfolioData()
+          void getPortfolioData();
         })();
       }, 4000);
     }
@@ -149,7 +157,7 @@ const Portfolio = (): React.ReactElement => {
 
   const handleCancelPurchase = async (): Promise<void> => {
     try {
-      setIsLoadingCancelPurchase(true)
+      setIsLoadingCancelPurchase(true);
       const response = await cancelPurchase(
         portfolioData[selectedPortfolioIndex]?.batalPembelian?.kodePendanaan,
         userProfileData?.detailUser[0]?.user_pendana_id ?? '',
@@ -158,27 +166,31 @@ const Portfolio = (): React.ReactElement => {
       );
 
       if (response?.data?.StatusCode === 200) {
-        setIsShowOTP(false)
-        if (response?.data?.message === 'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!') {
-          toast.success('Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!')
+        setIsShowOTP(false);
+        if (
+          response?.data?.message ===
+          'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!'
+        ) {
+          toast.success(
+            'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!'
+          );
         } else {
-          toast.success(response?.data?.message ?? '')
+          toast.success(response?.data?.message ?? '');
         }
       }
-      
     } catch (error: any) {
-      setIsContinueProcess(false)
+      setIsContinueProcess(false);
       if (error?.message === 'Silahkan Masukan Kode verifikasi yang Valid') {
-        toast.error(t(`${pathTranslation}.text3`))
+        toast.error(t(`${pathTranslation}.text3`));
       } else {
         toast.error(`Error cancelling purchase: ${error as string}`);
       }
     } finally {
-      setIsLoadingCancelPurchase(true)
-      setIsContinueProcess(false)
+      setIsLoadingCancelPurchase(true);
+      setIsContinueProcess(false);
       setTimeout(() => {
         void (async () => {
-          void getPortfolioData()
+          void getPortfolioData();
         })();
       }, 4000);
     }
@@ -194,12 +206,12 @@ const Portfolio = (): React.ReactElement => {
   useEffect(() => {
     if (isContinueProcess && userProfileData !== undefined) {
       if (portfolioData[selectedPortfolioIndex]?.is_co === '1') {
-        void handleCancelPurchaseCO()
+        void handleCancelPurchaseCO();
       } else {
-        void handleCancelPurchase()
+        void handleCancelPurchase();
       }
     }
-  }, [isContinueProcess])
+  }, [isContinueProcess]);
 
   const handleSort = (column: keyof PortfolioData): void => {
     const newOrder =
@@ -462,7 +474,9 @@ const Portfolio = (): React.ReactElement => {
                           <div className="flex justify-center items-center gap-1">
                             <div
                               className="inline-block"
-                              dangerouslySetInnerHTML={{ __html: portfolio.kodeEfek ?? '' }}
+                              dangerouslySetInnerHTML={{
+                                __html: portfolio.kodeEfek ?? ''
+                              }}
                             />
                             <div className="flex justify-start items-start h-full self-start mt-[-6px]">
                               <div
@@ -518,56 +532,63 @@ const Portfolio = (): React.ReactElement => {
                           >
                             <HiDotsVertical />
                           </button>
-                          {isShowOptions && selectedPortfolioIndex === index && (
-                            <div
-                              className={`absolute right-0 md:right-[50px] bottom-[${
-                                index * 40 + 80
-                              }px] md:bottom-[${
-                                index * 40 + 40
-                              }px] w-[300px] bg-white rounded-lg shadow-lg z-10 p-2`}
-                            >
-                              <div className="text-sm text-gray-700 text-left">
-                                {menu?.map((option, i) => (
-                                  <React.Fragment key={i}>
-                                    <div
-                                      className={`px-4 py-2 hover:bg-gray-100 cursor-pointer ${
-                                        option?.color === 'red'
-                                          ? 'text-[#DA2D1F]'
-                                          : 'text-[#7C7C7C]'
-                                      }`}
-                                      onClick={async () => {
-                                        setIsShowOptions(!isShowOptions);
-                                        if (
-                                          typeof option?.action === 'function'
-                                        )
-                                        {
-                                          if (option?.action === setIsShowConfirmDelete) {
-                                            if (portfolioData[selectedPortfolioIndex]?.is_co === '1') {
-                                              option?.action(true)
+                          {isShowOptions &&
+                            selectedPortfolioIndex === index && (
+                              <div
+                                className={`absolute right-0 md:right-[50px] bottom-[${
+                                  index * 40 + 80
+                                }px] md:bottom-[${
+                                  index * 40 + 40
+                                }px] w-[300px] bg-white rounded-lg shadow-lg z-10 p-2`}
+                              >
+                                <div className="text-sm text-gray-700 text-left">
+                                  {menu?.map((option, i) => (
+                                    <React.Fragment key={i}>
+                                      <div
+                                        className={`px-4 py-2 hover:bg-gray-100 cursor-pointer ${
+                                          option?.color === 'red'
+                                            ? 'text-[#DA2D1F]'
+                                            : 'text-[#7C7C7C]'
+                                        }`}
+                                        onClick={async () => {
+                                          setIsShowOptions(!isShowOptions);
+                                          if (
+                                            typeof option?.action === 'function'
+                                          ) {
+                                            if (
+                                              option?.action ===
+                                              setIsShowConfirmDelete
+                                            ) {
+                                              if (
+                                                portfolioData[
+                                                  selectedPortfolioIndex
+                                                ]?.is_co === '1'
+                                              ) {
+                                                option?.action(true);
+                                              } else {
+                                                setIsShowOTP(true);
+                                              }
                                             } else {
-                                              setIsShowOTP(true)
+                                              option?.action(true);
                                             }
-                                          } else {
-                                            option?.action(true);
                                           }
-                                        }
-                                        if (option?.action === 'redirect') {
-                                          await router.push(
-                                            `/danamart/offer/prospectus/${portfolio?.pinjamanId}`
-                                          );
-                                        }
-                                      }}
-                                    >
-                                      {option?.title}
-                                    </div>
-                                    {option.id === 4 && (
-                                      <hr className="my-1 border-t border-gray-300" />
-                                    )}
-                                  </React.Fragment>
-                                ))}
+                                          if (option?.action === 'redirect') {
+                                            await router.push(
+                                              `/danamart/offer/prospectus/${portfolio?.pinjamanId}`
+                                            );
+                                          }
+                                        }}
+                                      >
+                                        {option?.title}
+                                      </div>
+                                      {option.id === 4 && (
+                                        <hr className="my-1 border-t border-gray-300" />
+                                      )}
+                                    </React.Fragment>
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
                         </td>
                       </tr>
                     ))

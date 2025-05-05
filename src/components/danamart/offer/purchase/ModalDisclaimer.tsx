@@ -9,7 +9,7 @@ interface Props {
   setIsShowDisclaimer: React.Dispatch<React.SetStateAction<boolean>>;
   isShowDisclaimer: boolean;
   paymentMethod: string;
-  setIsContinueProcess:  React.Dispatch<React.SetStateAction<boolean>>;
+  setIsContinueProcess: React.Dispatch<React.SetStateAction<boolean>>;
   cekOmbak: string | undefined;
 }
 
@@ -65,12 +65,12 @@ const ModalDisclaimer: React.FC<Props> = ({
                   setIsShowOTP(true);
                 } else {
                   setIsShowDisclaimer(!isShowDisclaimer);
-                  setIsContinueProcess(true)
+                  setIsContinueProcess(true);
                 }
               }
             } else {
               setIsShowDisclaimer(!isShowDisclaimer);
-              setIsContinueProcess(true)
+              setIsContinueProcess(true);
             }
           }}
           className="w-[150px] text-sm font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"

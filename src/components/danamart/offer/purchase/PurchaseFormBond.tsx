@@ -130,7 +130,10 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
       'referral_id_lv2_pendana',
       formPurchaseData?.dataInput?.referral_id_lv2_pendana
     );
-    setValue('jml_pinjaman_terbit', formPurchaseData?.dataInput?.jml_pinjaman_terbit);
+    setValue(
+      'jml_pinjaman_terbit',
+      formPurchaseData?.dataInput?.jml_pinjaman_terbit
+    );
     setValue(
       'jml_pinjaman_terbit_show',
       formPurchaseData?.dataForm?.slotPembelian
@@ -164,7 +167,7 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
       const period = Number(formPurchaseData?.dataForm?.jangkaWaktu);
 
       // Imbal hasil per bulan
-      const imbalHasilBulanTemp = Math.round((bidCash * (imbalHasil / 12)));
+      const imbalHasilBulanTemp = Math.round(bidCash * (imbalHasil / 12));
       const imbalHasilBulan = (Number(bidCash) * imbalHasil) / 12;
 
       // Total imbal hasil
@@ -266,13 +269,16 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
           ) {
             toast.error(t(`${pathTranslation}.formResponse.text4`));
             setIsPending(!isPending);
-          } else if (error?.response?.data?.messages?.message ===
-            "Maaf jumlah pembelian anda melebihi slot yang ada."
+          } else if (
+            error?.response?.data?.messages?.message ===
+            'Maaf jumlah pembelian anda melebihi slot yang ada.'
           ) {
             toast.error(t(`${pathTranslation}.formResponse.text7`));
           } else {
             toast.error(
-              `Error purchasing assets: ${error?.response?.data?.messages?.message as string}`,
+              `Error purchasing assets: ${
+                error?.response?.data?.messages?.message as string
+              }`
             );
           }
           setIsContinueProcess(false);
@@ -325,27 +331,26 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
         />
       </div>
       <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
-        {
-          dashboardData?.dataSaldoUser?.TotalDanaRewerd === 0 ?
-            <MInput
-              label={`${t(`${pathTranslation}.text6`)}`}
-              registerName="total_dana_reward_shown"
-              register={register}
-              type="text"
-              errors={errors}
-              disabled
-            />
-            :
-            <MInput
-              label={`${t(`${pathTranslation}.text6`)}`}
-              registerName="total_dana_reward"
-              type="number"
-              errors={errors}
-              control={control}
-              watch={watch}
-              disabled
-            />
-        }
+        {dashboardData?.dataSaldoUser?.TotalDanaRewerd === 0 ? (
+          <MInput
+            label={`${t(`${pathTranslation}.text6`)}`}
+            registerName="total_dana_reward_shown"
+            register={register}
+            type="text"
+            errors={errors}
+            disabled
+          />
+        ) : (
+          <MInput
+            label={`${t(`${pathTranslation}.text6`)}`}
+            registerName="total_dana_reward"
+            type="number"
+            errors={errors}
+            control={control}
+            watch={watch}
+            disabled
+          />
+        )}
         <MInput
           label={`${t(`${pathTranslation}.sourceCash.text1`)}`}
           registerName="sumberDana"
@@ -480,7 +485,7 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
       </div>
       <Button
         className="w-full text-base font-semibold bg-seeds-button-green mt-6 rounded-full capitalize"
-        disabled={bidCash === undefined || sourceCash === '' || isLoading }
+        disabled={bidCash === undefined || sourceCash === '' || isLoading}
         onClick={() => {
           if (bidCash < 100000) {
             toast.error(t(`${pathTranslation}.formResponse.text5`));
@@ -490,41 +495,41 @@ const PurchaseFormBond: React.FC<PurchaseFormProps> = ({
             } else {
               if (sourceCash === 'DanaCash') {
                 if (availableDanaCash < bidCash) {
-                  toast.error(t(`${pathTranslation}.formResponse.text8`))
+                  toast.error(t(`${pathTranslation}.formResponse.text8`));
                 } else {
                   if (bidCash > watch('jml_pinjaman_terbit_show')) {
-                    toast.error(t(`${pathTranslation}.formResponse.text9`))
+                    toast.error(t(`${pathTranslation}.formResponse.text9`));
                   } else {
                     setIsShowDisclaimer(true);
-                    setPaymentMethod('DanaCash')
+                    setPaymentMethod('DanaCash');
                   }
                 }
               } else {
                 if (
-                  (watch('bank_code') === 'BCA') ||
-                  (watch('bank_code') === 'MANDIRI') ||
-                  (watch('bank_code') === 'BNI') ||
-                  (watch('bank_code') === 'BRI')
+                  watch('bank_code') === 'BCA' ||
+                  watch('bank_code') === 'MANDIRI' ||
+                  watch('bank_code') === 'BNI' ||
+                  watch('bank_code') === 'BRI'
                 ) {
                   if (totalPaid > 50000000) {
-                    toast.error(t(`${pathTranslation}.formResponse.text10`))
+                    toast.error(t(`${pathTranslation}.formResponse.text10`));
                   } else {
                     if (watch('bid_cash') > watch('jml_pinjaman_terbit_show')) {
-                      toast.error(t(`${pathTranslation}.formResponse.text9`))
+                      toast.error(t(`${pathTranslation}.formResponse.text9`));
                     } else {
                       setIsShowDisclaimer(true);
-                      setPaymentMethod('TransferDana')
+                      setPaymentMethod('TransferDana');
                     }
                   }
                 } else if (watch('bank_code') === 'PERMATA') {
                   if (totalPaid > 9000000) {
-                    toast.error(t(`${pathTranslation}.formResponse.text10`))
+                    toast.error(t(`${pathTranslation}.formResponse.text10`));
                   } else {
                     if (watch('bid_cash') > watch('jml_pinjaman_terbit_show')) {
-                      toast.error(t(`${pathTranslation}.formResponse.text9`))
+                      toast.error(t(`${pathTranslation}.formResponse.text9`));
                     } else {
                       setIsShowDisclaimer(true);
-                      setPaymentMethod('TransferDana')
+                      setPaymentMethod('TransferDana');
                     }
                   }
                 }

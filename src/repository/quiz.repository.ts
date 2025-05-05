@@ -73,6 +73,29 @@ export const getAllQuiz = async ({
   }
 };
 
+export const getAllQuizNoToken = async ({
+  search = '',
+  status = '',
+  page = 1,
+  limit = 10,
+  category = ''
+}: {
+  search?: string;
+  status: QuizStatus | '';
+  page?: number;
+  limit?: number;
+  category?: string;
+}): Promise<any> => {
+  try {
+    const path = `/all`;
+    return await quizService.get(path, {
+      params: { search, status, page, limit, category }
+    });
+  } catch (error) {
+    console.error('Error fetching trending play list:', error);
+  }
+};
+
 export const getQuizById = async ({
   id,
   currency
@@ -90,6 +113,21 @@ export const getQuizById = async ({
           isGuest() || accessToken === null ? '' : `Bearer ${accessToken ?? ''}`
       }
     });
+  } catch (error) {
+    console.error('Error fetching trending play list:', error);
+  }
+};
+
+export const getQuizByIdNoToken = async ({
+  id,
+  currency
+}: {
+  id: string;
+  currency: string;
+}): Promise<any> => {
+  try {
+    const path = `/${id}?currency=${currency}`;
+    return await quizService.get(path);
   } catch (error) {
     console.error('Error fetching trending play list:', error);
   }

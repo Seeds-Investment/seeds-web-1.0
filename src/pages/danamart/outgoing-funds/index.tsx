@@ -43,8 +43,11 @@ const OutgoingFunds = (): React.ReactElement => {
   const [dashboardData, setDashboardData] = useState<DashboardDataUser>();
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
-  
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'start' | 'end'): void => {
+
+  const handleDateChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: 'start' | 'end'
+  ): void => {
     if (type === 'start') {
       setStartDate(e.target.value);
     } else {
@@ -84,17 +87,18 @@ const OutgoingFunds = (): React.ReactElement => {
     return incomingFundString?.includes(searchQuery?.toLowerCase());
   });
 
-  const filteredByDate = filteredData?.filter((outcome) => {
+  const filteredByDate = filteredData?.filter(outcome => {
     const depositDate = new Date(outcome?.tgl_withdraw);
-    const start = (startDate?.length > 0) ? new Date(startDate + 'T00:00:00') : null;
-    const end = (endDate?.length > 0) ? new Date(endDate + 'T23:59:59') : null;
+    const start =
+      startDate?.length > 0 ? new Date(startDate + 'T00:00:00') : null;
+    const end = endDate?.length > 0 ? new Date(endDate + 'T23:59:59') : null;
 
     return (
-      ((start === null) || depositDate >= start) &&
-      ((end === null) || depositDate <= end)
+      (start === null || depositDate >= start) &&
+      (end === null || depositDate <= end)
     );
   });
-  
+
   const totalPages = Math.ceil(filteredByDate?.length / entries);
   const startIndex = (currentPage - 1) * entries;
   const paginatedData = filteredByDate?.slice(startIndex, startIndex + entries);
@@ -220,28 +224,42 @@ const OutgoingFunds = (): React.ReactElement => {
             </Typography>
             <div className="flex flex-col md:flex-row md:space-x-4 space-y-2 md:space-y-0 mb-4">
               <div className="flex flex-col">
-                <label htmlFor="startDate" className="text-[#262626] font-medium mb-1">{t(`${pathTranslation}.filter.text9`)}</label>
+                <label
+                  htmlFor="startDate"
+                  className="text-[#262626] font-medium mb-1"
+                >
+                  {t(`${pathTranslation}.filter.text9`)}
+                </label>
                 <input
                   id="startDate"
                   type="date"
                   value={startDate}
-                  onChange={(e) => { handleDateChange(e, 'start'); }}
+                  onChange={e => {
+                    handleDateChange(e, 'start');
+                  }}
                   className="p-2 border border-gray-300 rounded-full"
                 />
               </div>
-              
+
               <div className="flex flex-col">
-                <label htmlFor="endDate" className="text-[#262626] font-medium mb-1">{t(`${pathTranslation}.filter.text10`)}</label>
+                <label
+                  htmlFor="endDate"
+                  className="text-[#262626] font-medium mb-1"
+                >
+                  {t(`${pathTranslation}.filter.text10`)}
+                </label>
                 <input
                   id="endDate"
                   type="date"
                   value={endDate}
-                  onChange={(e) => { handleDateChange(e, 'end'); }}
+                  onChange={e => {
+                    handleDateChange(e, 'end');
+                  }}
                   className="p-2 border border-gray-300 rounded-full"
                 />
               </div>
             </div>
-            <hr className='hidden md:flex md:mb-4'/>
+            <hr className="hidden md:flex md:mb-4" />
             <div className="w-full flex flex-col md:flex-row justify-between items-center mb-4 gap-4 md:gap-0">
               <div className="relative w-full md:max-w-[200px]">
                 <input
@@ -407,7 +425,8 @@ const OutgoingFunds = (): React.ReactElement => {
                     {startIndex + entries < filteredByDate?.length
                       ? startIndex + entries
                       : filteredByDate?.length}{' '}
-                    {t(`${pathTranslation}.table.text4`)} {filteredByDate?.length}{' '}
+                    {t(`${pathTranslation}.table.text4`)}{' '}
+                    {filteredByDate?.length}{' '}
                     {t(`${pathTranslation}.table.text5`)}
                   </span>
                   <div className="flex justify-center items-center gap-2">

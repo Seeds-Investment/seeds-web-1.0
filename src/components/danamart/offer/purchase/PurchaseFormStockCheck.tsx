@@ -1,11 +1,7 @@
 import MInput from '@/components/form-input/multi-input';
-import {
-  type PurchaseFormDataI
-} from '@/hooks/danamart/usePurchaseFormStock';
+import { type PurchaseFormDataI } from '@/hooks/danamart/usePurchaseFormStock';
 import usePurchaseFormStockCheckTesting from '@/hooks/danamart/usePurchaseFormStockCheckTesting';
-import {
-  type FormPurchaseDataCheckTesting
-} from '@/utils/interfaces/danamart/offers.interface';
+import { type FormPurchaseDataCheckTesting } from '@/utils/interfaces/danamart/offers.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -56,32 +52,84 @@ const PurchaseFormStockCheck: React.FC<PurchaseFormProps> = ({
   const lembarSaham = watch('lembar_saham');
   const sourceCash = watch('sumberDana');
   const bidCash = watch('bid_cash');
-  const purchaseLimit = Number(formPurchaseDataCheckTesting?.dataForm?.slotPembelian?.replace(/\./g, ""));
+  const purchaseLimit = Number(
+    formPurchaseDataCheckTesting?.dataForm?.slotPembelian?.replace(/\./g, '')
+  );
 
   const calculateTotalPayment = (): void => {
-    const basePrice = lembarSaham * (formPurchaseDataCheckTesting?.dataForm?.hargaLembarSaham ?? 0);
+    const basePrice =
+      lembarSaham *
+      (formPurchaseDataCheckTesting?.dataForm?.hargaLembarSaham ?? 0);
     setValue('bid_cash', basePrice);
     setValue('bid_cash_shown', basePrice);
   };
 
   useEffect(() => {
-    setValue('user_peminjam_id', formPurchaseDataCheckTesting?.dataInput?.user_peminjam_id);
-    setValue('user_pendana_id', formPurchaseDataCheckTesting?.dataInput?.user_pendana_id);
-    setValue('pinjaman_id', formPurchaseDataCheckTesting?.dataInput?.pinjaman_id);
-    setValue('sektor_usaha', formPurchaseDataCheckTesting?.dataInput?.sektor_usaha);
-    setValue('bunga_persen', formPurchaseDataCheckTesting?.dataInput?.bunga_persen);
-    setValue('credit_rating', formPurchaseDataCheckTesting?.dataInput?.credit_rating);
-    setValue('dm_pem_02003', formPurchaseDataCheckTesting?.dataInput?.dm_pem_02003);
-    setValue('dm_pem_02004', formPurchaseDataCheckTesting?.dataInput?.dm_pem_02004);
-    setValue('jml_pinjaman_terbit', formPurchaseDataCheckTesting?.dataInput?.jml_pinjaman_terbit);
-    setValue('tgl_jatuh_tempo', formPurchaseDataCheckTesting?.dataInput?.tgl_jatuh_tempo);
-    setValue('referral_id_lv1_peminjam', formPurchaseDataCheckTesting?.dataInput?.referral_id_lv1_peminjam);
-    setValue('referral_id_lv1_pendana', formPurchaseDataCheckTesting?.dataInput?.referral_id_lv1_pendana);
-    setValue('referral_id_lv2_peminjam', formPurchaseDataCheckTesting?.dataInput?.referral_id_lv2_peminjam);
-    setValue('referral_id_lv2_pendana', formPurchaseDataCheckTesting?.dataInput?.referral_id_lv2_pendana);
-    setValue('sisa_lembar_saham', formPurchaseDataCheckTesting?.dataForm?.sisaPembelian);
+    setValue(
+      'user_peminjam_id',
+      formPurchaseDataCheckTesting?.dataInput?.user_peminjam_id
+    );
+    setValue(
+      'user_pendana_id',
+      formPurchaseDataCheckTesting?.dataInput?.user_pendana_id
+    );
+    setValue(
+      'pinjaman_id',
+      formPurchaseDataCheckTesting?.dataInput?.pinjaman_id
+    );
+    setValue(
+      'sektor_usaha',
+      formPurchaseDataCheckTesting?.dataInput?.sektor_usaha
+    );
+    setValue(
+      'bunga_persen',
+      formPurchaseDataCheckTesting?.dataInput?.bunga_persen
+    );
+    setValue(
+      'credit_rating',
+      formPurchaseDataCheckTesting?.dataInput?.credit_rating
+    );
+    setValue(
+      'dm_pem_02003',
+      formPurchaseDataCheckTesting?.dataInput?.dm_pem_02003
+    );
+    setValue(
+      'dm_pem_02004',
+      formPurchaseDataCheckTesting?.dataInput?.dm_pem_02004
+    );
+    setValue(
+      'jml_pinjaman_terbit',
+      formPurchaseDataCheckTesting?.dataInput?.jml_pinjaman_terbit
+    );
+    setValue(
+      'tgl_jatuh_tempo',
+      formPurchaseDataCheckTesting?.dataInput?.tgl_jatuh_tempo
+    );
+    setValue(
+      'referral_id_lv1_peminjam',
+      formPurchaseDataCheckTesting?.dataInput?.referral_id_lv1_peminjam
+    );
+    setValue(
+      'referral_id_lv1_pendana',
+      formPurchaseDataCheckTesting?.dataInput?.referral_id_lv1_pendana
+    );
+    setValue(
+      'referral_id_lv2_peminjam',
+      formPurchaseDataCheckTesting?.dataInput?.referral_id_lv2_peminjam
+    );
+    setValue(
+      'referral_id_lv2_pendana',
+      formPurchaseDataCheckTesting?.dataInput?.referral_id_lv2_pendana
+    );
+    setValue(
+      'sisa_lembar_saham',
+      formPurchaseDataCheckTesting?.dataForm?.sisaPembelian
+    );
     setValue('total_dana_reward', 0);
-    setValue('harga_perlembar_saham', formPurchaseDataCheckTesting?.dataForm?.hargaLembarSaham);
+    setValue(
+      'harga_perlembar_saham',
+      formPurchaseDataCheckTesting?.dataForm?.hargaLembarSaham
+    );
     setValue('kode_efek', formPurchaseDataCheckTesting?.dataForm?.kodeEfek);
   }, [formPurchaseDataCheckTesting]);
 
@@ -169,8 +217,7 @@ const PurchaseFormStockCheck: React.FC<PurchaseFormProps> = ({
         />
       </div>
       <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
-        {
-          bidCash === 0 ?
+        {bidCash === 0 ? (
           <MInput
             label={`${t(`${pathTranslation}.text29`)}`}
             registerName="bid_cash_shown"
@@ -179,7 +226,7 @@ const PurchaseFormStockCheck: React.FC<PurchaseFormProps> = ({
             errors={errors}
             disabled
           />
-          :
+        ) : (
           <MInput
             label={`${t(`${pathTranslation}.text29`)}`}
             registerName="bid_cash"
@@ -189,7 +236,7 @@ const PurchaseFormStockCheck: React.FC<PurchaseFormProps> = ({
             watch={watch}
             disabled
           />
-        }
+        )}
         <MInput
           label={`${t(`${pathTranslation}.text30`)}`}
           registerName="lembar_saham"
@@ -202,7 +249,12 @@ const PurchaseFormStockCheck: React.FC<PurchaseFormProps> = ({
       </div>
       <Button
         className="w-full text-base font-semibold bg-seeds-button-green mt-6 rounded-full capitalize"
-        disabled={lembarSaham === undefined || isLoading || bidCash > purchaseLimit || purchaseLimit <= 0}
+        disabled={
+          lembarSaham === undefined ||
+          isLoading ||
+          bidCash > purchaseLimit ||
+          purchaseLimit <= 0
+        }
         onClick={() => {
           if (watch('bid_cash') < 100000) {
             toast.error(t(`${pathTranslation}.formResponse.text5`));

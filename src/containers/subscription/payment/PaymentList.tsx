@@ -17,7 +17,6 @@ import {
 } from '@/repository/subscription.repository';
 import {
   type DataPlanI,
-  type PaymentStatus,
   type PlanI,
   type StatusSubscription
 } from '@/utils/interfaces/subscription.interface';
@@ -104,7 +103,6 @@ const PaymentList: React.FC = (): JSX.Element => {
   const [ccList, setCcList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [dataPlan, setDataPlan] = useState<PlanI>();
-  const [paymentStatus] = useState<PaymentStatus>();
   const [subscriptionStatus, setSubscriptionStatus] =
     useState<StatusSubscription | null>(null);
   const [subscriptionPlan, setSubscriptionPlan] = useState<PlanI>();
@@ -213,7 +211,7 @@ const PaymentList: React.FC = (): JSX.Element => {
     paymentGateway: string,
     paymentMethod: string,
     totalAmount: number,
-    phoneNumber: string
+    phoneNumber: string | undefined = userInfo?.phoneNumber
   ): Promise<void> => {
     try {
       setLoading(true);
@@ -235,19 +233,38 @@ const PaymentList: React.FC = (): JSX.Element => {
       });
 
       if (response) {
-        if (response?.payment_url) {
+        if (response.payment_url !== '' && paymentMethod !== 'BNC_QRIS') {
           window.open(response.payment_url as string, '_blank');
         }
+        const query =
+          response.payment_url !== ''
+            ? { paymentUrl: response.payment_url }
+            : undefined;
+
         await router
-          .replace(`/seedsplan/payment/receipt/${response.order_id as string}`)
+          .replace(
+            {
+              pathname:
+                `/seedsplan/payment/receipt/${response.order_id as string}` +
+                `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+              query
+            },
+            undefined,
+            { shallow: true }
+          )
           .catch(error => {
             toast.error(`${error as string}`);
           });
       }
     } catch (error: any) {
+      setOpenDialog(false);
       if (error?.response?.data?.message === 'you already have incoming plan') {
-        setOpenDialog(false);
         toast.error(t('seedsPlan.payment.warningIncoming'));
+      } else if (
+        error?.response?.data?.message ===
+        'bad request, minimum transaction using VA is 10000'
+      ) {
+        toast.error(t('PlayPayment.VirtualAccountGuide.minimumPaymentError'));
       } else {
         toast.error(`Payment failed: ${error?.message ?? error}`);
       }
@@ -268,13 +285,18 @@ const PaymentList: React.FC = (): JSX.Element => {
     _totalFee = _admissionFee + _adminFee;
 
     if (option?.payment_type === 'qris') {
-      void handlePay(
-        option?.payment_type,
-        'MIDTRANS',
-        'OTHER_QRIS',
-        _totalFee,
-        ''
-      );
+      if (option?.payment_gateway === 'BNC') {
+        void handlePay(option?.payment_type, 'BNC', 'BNC_QRIS', _totalFee);
+      } else {
+        void handlePay(
+          option?.payment_type,
+          'MIDTRANS',
+          'OTHER_QRIS',
+          _totalFee
+        );
+      }
+    } else if (option?.payment_type === 'cc') {
+      void handlePay(option?.payment_type, 'STRIPE', 'CC', _totalFee);
     } else {
       setOpenDialog(true);
     }
@@ -370,9 +392,7 @@ const PaymentList: React.FC = (): JSX.Element => {
                 <VirtualAccountGuide
                   payment={option}
                   handlePay={handlePay}
-                  userInfo={userInfo}
                   dataPlan={dataPlan}
-                  paymentStatus={paymentStatus}
                   subscriptionStatus={subscriptionStatus}
                   incomingSubscription={subscriptionPlan}
                 />

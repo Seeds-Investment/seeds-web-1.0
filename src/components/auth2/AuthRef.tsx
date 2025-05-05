@@ -119,6 +119,11 @@ const AuthRef: React.FC<AuthRefI> = ({
           throw new Error(response);
         }
       }
+      const { password, refCode, ...rest } = formData;
+      TrackerEvent({
+        event: 'SW_auth_register',
+        userData: rest
+      });
       await handleSubmit();
       setError(false);
     } catch (error: any) {
@@ -147,6 +152,11 @@ const AuthRef: React.FC<AuthRefI> = ({
           throw new Error(response);
         }
       }
+      const { password, ...rest } = formData;
+      TrackerEvent({
+        event: 'SW_auth_register',
+        userData: rest
+      });
       await handleSubmit();
       setError(false);
     } catch (error: any) {

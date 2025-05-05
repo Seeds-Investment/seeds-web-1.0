@@ -163,7 +163,7 @@ const WalletForm = ({
     <div className="">
       {renderPhoneInput()}
       <InlineText
-        label={'Join Tournament'}
+        label={`${t('tournament.payment.tournamentFee')}`}
         value={`${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
           admissionFee ?? 0
         )}`}

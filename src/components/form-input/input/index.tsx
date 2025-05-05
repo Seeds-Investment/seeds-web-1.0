@@ -37,6 +37,7 @@ const CInputInner = (
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         className={`w-full ${
           props.error !== undefined ? '!border-red-400' : ''
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         } ${props.className ?? ''}`}
         onWheel={handleWheel}
       />

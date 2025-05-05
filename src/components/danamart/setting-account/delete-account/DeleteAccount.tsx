@@ -1,18 +1,18 @@
-import { decryptResponse } from "@/helpers/cryptoDecrypt";
-import { postDeleteAccountRequest } from "@/repository/danamart/setting.repository";
-import { Button, Typography } from "@material-tailwind/react";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { FiEye, FiEyeOff } from "react-icons/fi";
-import { toast } from "react-toastify";
-import ModalOTP from "./ModalOTP";
+import { decryptResponse } from '@/helpers/cryptoDecrypt';
+import { postDeleteAccountRequest } from '@/repository/danamart/setting.repository';
+import { Button, Typography } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { toast } from 'react-toastify';
+import ModalOTP from './ModalOTP';
 
 const DeleteAccount: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const pathTranslation = 'danamart.setting.deleteAccount';
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isShowOTP, setIsShowOTP] = useState<boolean>(false);
   const [isContinueProcess, setIsContinueProcess] = useState<boolean>(false);
@@ -23,14 +23,14 @@ const DeleteAccount: React.FC = () => {
   const togglePasswordVisibility = (): void => {
     setShowPassword(!showPassword);
   };
-  
+
   const handleDeleteAccount = async (): Promise<void> => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const formData = new FormData();
       formData.append('otp', passedOTP);
       const response = await postDeleteAccountRequest(formData);
-      
+
       if (response?.status === 200) {
         const encryptedData = response?.data;
         const decryptedData = decryptResponse(encryptedData);
@@ -44,9 +44,8 @@ const DeleteAccount: React.FC = () => {
           }
         }
       }
-      
     } catch (error: any) {
-      setIsLoading(false)
+      setIsLoading(false);
       toast.error(`Error deleting account: ${error as string}`);
     } finally {
       setIsLoading(false);
@@ -60,12 +59,12 @@ const DeleteAccount: React.FC = () => {
       }, 3000);
     }
   };
-  
+
   useEffect(() => {
     if (isContinueProcess) {
-      void handleDeleteAccount()
+      void handleDeleteAccount();
     }
-  }, [isContinueProcess])
+  }, [isContinueProcess]);
 
   return (
     <div className="flex flex-col gap-4 mt-6 mb:mt-8 mb-2">
@@ -76,7 +75,7 @@ const DeleteAccount: React.FC = () => {
       <div
         className="font-poppins"
         dangerouslySetInnerHTML={{
-          __html: t("danamart.setting.deleteAccount.disclaimer") ?? "",
+          __html: t('danamart.setting.deleteAccount.disclaimer') ?? ''
         }}
       />
 
@@ -85,9 +84,11 @@ const DeleteAccount: React.FC = () => {
           {t(`${pathTranslation}.text2`)}
         </label>
         <input
-          type={showPassword ? "text" : "password"}
+          type={showPassword ? 'text' : 'password'}
           value={password}
-          onChange={(e) => { setPassword(e.target.value); }}
+          onChange={e => {
+            setPassword(e.target.value);
+          }}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder={`${t(`${pathTranslation}.text5`)}`}
         />
@@ -103,12 +104,12 @@ const DeleteAccount: React.FC = () => {
           )}
         </button>
       </div>
-      
+
       {/* Continue Button */}
       <div className="w-full mt-6 flex justify-center md:justify-start mb-16 md:mb-0">
         <Button
           onClick={() => {
-            setIsShowOTP(true)
+            setIsShowOTP(true);
           }}
           disabled={password === '' || isLoading}
           className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-md disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
@@ -116,7 +117,7 @@ const DeleteAccount: React.FC = () => {
           {t(`${pathTranslation}.text3`)}
         </Button>
       </div>
-      
+
       {isShowOTP && (
         <ModalOTP
           setIsShowOTP={setIsShowOTP}

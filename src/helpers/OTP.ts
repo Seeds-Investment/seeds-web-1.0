@@ -70,7 +70,7 @@ export const handleOTP = async (
     await dispatch(fetchExpData());
     const responseUser = await getUserInfo();
     TrackerEvent({
-      event: 'SW_auth_login',
+      event: 'SW_auth_guest_login',
       userData: responseUser
     });
     if (isQuery) {
@@ -102,7 +102,12 @@ export const handleOTP = async (
     await handleTracker();
   } else if (guest === 'guest-register') {
     const response = await quickRegister(guestRegistOTP);
+    const { method, otp, ...rest } = guestRegistOTP;
     AuthLocalStorage(response);
+    TrackerEvent({
+      event: 'SW_auth_guest_register',
+      userData: rest
+    });
     await handleTracker();
   } else if (guest === 'guest-normal-register') {
     const response = await quickLogin(guestLoginOTP);

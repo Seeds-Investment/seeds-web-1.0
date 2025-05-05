@@ -58,7 +58,10 @@ const ModalLogin: React.FC<Props> = ({
           await router.push('/danamart/dashboard');
           setIsOpenModalLogin(false);
         }
-      } else if (response?.status === 429 && response?.data === 'Too many Hits') {
+      } else if (
+        response?.status === 429 &&
+        response?.data === 'Too many Hits'
+      ) {
         toast.error(t(`${pathTranslation}.tooManyAttempts`));
       } else {
         const encryptedData = response?.data;
@@ -75,15 +78,12 @@ const ModalLogin: React.FC<Props> = ({
             setTimeout(() => {
               setIsError(false);
             }, 6000);
-
           } else if (
             decryptedDataObject?.freeze_time !== null &&
             decryptedDataObject?.freeze_time !== undefined &&
-            (
-              decryptedDataObject?.attempt === "0" ||
-              decryptedDataObject?.attempt === "1" ||
-              decryptedDataObject?.attempt === "2"
-            )
+            (decryptedDataObject?.attempt === '0' ||
+              decryptedDataObject?.attempt === '1' ||
+              decryptedDataObject?.attempt === '2')
           ) {
             setIsError(true);
             setErrorType(2);
@@ -91,7 +91,6 @@ const ModalLogin: React.FC<Props> = ({
             setTimeout(() => {
               setIsError(false);
             }, 6000);
-
           } else {
             setIsError(true);
             setErrorType(3);
@@ -103,7 +102,9 @@ const ModalLogin: React.FC<Props> = ({
         }
       }
     } catch (error: any) {
-      if (error === `SyntaxError: Unexpected token 'N', "N&j|Û" is not valid JSON`) {
+      if (
+        error === `SyntaxError: Unexpected token 'N', "N&j|Û" is not valid JSON`
+      ) {
         toast.error(t(`${pathTranslation}.validation.error`));
       } else {
         toast.error(`Error login: ${error as string}`);

@@ -4,10 +4,9 @@ import Divider from '@/containers/tournament/payment/components/Divider';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import {
   type PaymentOption,
-  type PaymentStatus,
   type TeamBattleDetail
 } from '@/utils/interfaces/team-battle.interface';
-import { Button, Typography } from '@material-tailwind/react';
+import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,8 +15,6 @@ import { useSelector } from 'react-redux';
 interface Props {
   payment: PaymentOption;
   detailBattle: TeamBattleDetail;
-  paymentStatus: PaymentStatus | undefined;
-  userName: string | undefined;
   newPromoCodeDiscount: number;
   handlePayBattle: (
     type: string,
@@ -31,8 +28,6 @@ interface Props {
 const VirtualAccountGuide: React.FC<Props> = ({
   payment,
   detailBattle,
-  paymentStatus,
-  userName,
   newPromoCodeDiscount,
   handlePayBattle
 }) => {
@@ -42,12 +37,12 @@ const VirtualAccountGuide: React.FC<Props> = ({
   );
   const [showOtherFees, setShowOtherFees] = useState<boolean>(false);
 
-  const accountNumber = paymentStatus?.vaNumber;
-  const accountName = '';
-
   const discount =
     promoCodeValidationResult !== 0
-      ? promoCodeValidationResult?.response?.total_discount
+      ? promoCodeValidationResult?.response?.total_discount !== undefined
+        ? promoCodeValidationResult?.response?.total_discount
+        : detailBattle?.admission_fee -
+          (promoCodeValidationResult?.response?.final_price ?? 0)
       : 0;
   const admissionFee = detailBattle?.admission_fee;
 
@@ -91,34 +86,8 @@ const VirtualAccountGuide: React.FC<Props> = ({
         </Typography>
       </div>
       <Divider />
-      <Typography className="text-[#201B1C] font-normal">
-        {t(`${translationsId}.accountNumberLabel`)}
-      </Typography>
-      <div className="flex justify-between mb-4">
-        <Typography className="text-[#7555DA] font-normal">
-          {accountNumber}
-        </Typography>
-        <Button
-          variant="text"
-          onClick={() => {}}
-          className="text-[#3AC4A0] text-md font-normal p-0 normal-case "
-        >
-          {t(`${translationsId}.copy`)}
-        </Button>
-      </div>
-      <Typography className="text-[#201B1C] font-normal">
-        {t(`${translationsId}.accountNameLabel`)}
-      </Typography>
-      <Typography className="text-[#7555DA] font-normal">
-        {accountName}
-      </Typography>
-      <Divider />
       <InlineText
-        label={
-          detailBattle !== undefined
-            ? 'Circle Membership'
-            : t(`${translationsId}.admissionFeeLabel`)
-        }
+        label={t(`${translationId}.teamBattleFee`)}
         value={`IDR ${admissionFee}`}
         className="mb-2"
       />
@@ -143,7 +112,8 @@ const VirtualAccountGuide: React.FC<Props> = ({
           ) : null}
         </>
       )}
-      {promoCodeValidationResult !== undefined ? (
+      {promoCodeValidationResult !== undefined &&
+      promoCodeValidationResult !== 0 ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}
           value={`- IDR ${
@@ -176,7 +146,7 @@ const VirtualAccountGuide: React.FC<Props> = ({
         2.
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step2.1`)} </a>
         {t(`${translationsId}.step2.2`)}
-        <a className="text-[#7555DA]"> {accountNumber}</a>
+        <a className="text-[#7555DA]"></a>
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step2.3`)} </a>
         {t(`${translationsId}.step2.4`)}
       </Typography>
@@ -185,7 +155,6 @@ const VirtualAccountGuide: React.FC<Props> = ({
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step3.1`)} </a>
         {t(`${translationsId}.step3.2`)}
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step3.3`)} </a>
-        {userName}.
         <a className="text-[#7C7C7C]"> {t(`${translationsId}.step3.4`)} </a>
         {t(`${translationsId}.step3.5`)}
       </Typography>
@@ -207,7 +176,7 @@ const VirtualAccountGuide: React.FC<Props> = ({
           );
         }}
       >
-        {paymentStatus?.vaNumber !== undefined ? 'Pay' : 'Cek No Rekening'}
+        {t(`${translationsId}.button`)}
       </SubmitButton>
       <Divider />
     </div>

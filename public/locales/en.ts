@@ -3189,9 +3189,10 @@ export default {
         },
         validationForm: {
           text1: 'This field is required',
-          text2: 'Must be exactly 16 digits long',
-          text3: 'Must be exactly 15-16 digits long',
-          text4: 'Must be exactly 3 digits long'
+          text2: 'Must contain exactly 16 digits',
+          text3: 'Must contain 15–16 digits/characters',
+          text4: 'Must contain exactly 3 digits',
+          text5: 'Must contain at least 7 digits',
         }
       },
       financialInformationTittle: 'Financial Information',

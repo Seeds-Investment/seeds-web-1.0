@@ -137,7 +137,7 @@ export const useReligion = (): ILabel[] => {
     {
       key: 4,
       label: t(`${pathTranslation}.religion.text4`),
-      value: 'HINDU'
+      value: 'Hindu'
     },
     {
       key: 5,

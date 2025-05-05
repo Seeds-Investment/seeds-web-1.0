@@ -12,6 +12,7 @@ import { WarningGreenIcon } from 'public/assets/vector';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import CameraSelfie from './CameraSelfie';
+import ModalLandscapeInformation from './ModalLandscapeInformation';
 
 interface PhotoIdCardProps {
   step: number;
@@ -29,6 +30,30 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isWebcamReady, setIsWebcamReady] = useState<boolean>(false);
   const pathTranslation = 'danamart.verification.photoIdCardTitle';
+  const [isShowLandscape, setIsShowLandscape] = useState(false);
+
+  const handleLandscapeClick = (): void => {
+    setIsShowLandscape(prev => !prev);
+  };
+
+  const renderText4 = (): JSX.Element => {
+    const baseText = t(`${pathTranslation}.uploadRequirement.text4`);
+    const parts = baseText.split('Landscape');
+
+    return (
+      <>
+        {parts[0]}
+        <button
+          type="button"
+          onClick={handleLandscapeClick}
+          className="text-seeds-button-green hover:text-seeds-green font-medium duration-200"
+        >
+          Landscape
+        </button>
+        {parts[1]}
+      </>
+    );
+  };
 
   useEffect(() => {
     if (step === 1) {
@@ -207,19 +232,27 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
           </div>
         </div>
       </div>
-      <div className="w-full flex justify-start items-center gap-2 my-4">
+      <div className="w-full flex justify-start items-center gap-2 my-4 relative">
         <Typography className="font-poppins font-semibold text-md">
           {t(`${pathTranslation}.uploadRequirement.title`)}
         </Typography>
-        <Image
-          src={WarningGreenIcon}
-          alt="WarningGreenIcon"
-          width={18}
-          height={18}
-        />
+
+        <div className="relative group">
+          <Image
+            src={WarningGreenIcon}
+            alt="WarningGreenIcon"
+            width={18}
+            height={18}
+            className="cursor-pointer"
+          />
+          
+          <Typography className="absolute z-10 left-1/2 -translate-x-1/2 top-full mt-2 w-56 p-2 text-sm text-white bg-gray-800 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity font-poppins">
+            {t(`${pathTranslation}.popUpRequirements`)}
+          </Typography>
+        </div>
       </div>
       <ul>
-        {[1, 2, 3, 4, 5].map(number => (
+        {[1, 2, 3].map(number => (
           <li
             key={number}
             className="font-poppins font-normal text-sm text-[#bdbdbd]"
@@ -227,6 +260,14 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
             {t(`${pathTranslation}.uploadRequirement.text${number}`)}
           </li>
         ))}
+        <li className="font-poppins font-normal text-sm text-[#bdbdbd]">
+          {renderText4()}
+        </li>
+        <li
+          className="font-poppins font-normal text-sm text-[#bdbdbd]"
+        >
+          {t(`${pathTranslation}.uploadRequirement.text5`)}
+        </li>
       </ul>
       <div className="flex items-center justify-end gap-6">
         {imageData !== '' && isUsePhoto && uploadType !== 'file' && (
@@ -269,6 +310,11 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
               : t('danamart.verification.buttonNext')
           }
         </Button>
+        )}
+        {isShowLandscape && (
+          <ModalLandscapeInformation
+            setIsShowLandscape={setIsShowLandscape}
+          />
         )}
       </div>
     </div>

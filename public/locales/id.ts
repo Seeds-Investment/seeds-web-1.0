@@ -2937,6 +2937,7 @@ export default {
         upload: 'Unggah',
         retake: 'Ambil Ulang',
         uploadTitle: 'Unggah Kartu Identitas Anda',
+        popUpRequirements: 'Foto KTP diperlukan untuk validasi data kamu dan untuk keperluan tanda tangan dokumen elektronik.',
         uploadDescription:
           'Untuk mengonfirmasi identitas Anda, harap unggah foto digital atau ambil foto.',
         uploadRequirement: {
@@ -2954,11 +2955,18 @@ export default {
       },
       accountInformation: {
         accountInformationTitle: 'Informasi Akun',
+        popUpInformation: 'Silakan isi Informasi Pribadi sesuai data KTP anda',
+        popUpAddress: 'Isi data alamat sesuai KTP anda',
+        popUpValidity: 'Jika masa berlaku KTP kamu seumur hidup kamu bisa langsung klik Seumur Hidup',
+        popUpMotherName: 'Nama Gadis Ibu Kandung kami butuhkan sebagai sandi keamanan jika suatu hari terjadi hal yang tidak di-inginkan.',
+        popUpBeneficiary: 'Ahli waris adalah orang yang mendapatkan bagian dari harta orang yang meninggal atau pewaris',
+        popUpValidityDate: 'Tanggal berlaku KTP harus sesuai dengan KTP anda',
         occupation: 'Pekerjaan',
         address: 'Alamat',
         validPeriod: 'Masa Berlaku KTP',
         others: 'Lainnya',
         fieldWarning: 'Anda harus mengisi kolom ini',
+        previewDocument: 'Lihat dokumen',
         text1: 'Apakah data di bawah sudah sesuai?',
         text2: 'No KTP (NIK)',
         text3: 'Masukan nomor KTP anda',
@@ -3138,6 +3146,40 @@ export default {
           husbandOrParent: 'Suami / Orang Tua',
           other: 'Lainnya'
         },
+        popUpLabel: {
+          clickForMore: 'Klik untuk info lebih lanjut',
+          sidInformation: 'Nomor Tunggal Identitas Pemodal atau Single Investor Identification (SID), yaitu merupakan kode tunggal dan khusus yang diterbitkan oleh PT Kustodian Sentral Efek Indonesia (KSEI). SID akan didapatkan apabila Anda menjadi investor di pasar modal Indonesia.',
+          monthlyIncomeTitle: 'Penjelasan mengenai Penghasilan per bulan',
+          monthlyInformation: `
+            Sesuai dengan POJK NOMOR 57 /POJK.04/2020 TENTANG PENAWARAN EFEK MELALUI LAYANAN URUN DANA BERBASIS TEKNOLOGI INFORMASI Pasal 56 dan 57 terkait <strong>kriteria Pemodal dan batasan pembelian Efek:</strong>
+            <br><br>
+            a. Setiap Pemodal dengan penghasilan sampai dengan Rp500.000.000,00 (lima ratus juta rupiah) per tahun, dapat membeli Efek melalui Layanan Urun Dana paling banyak sebesar 5% (lima persen) dari penghasilan per tahun;
+            <br><br>
+            b. Setiap Pemodal dengan penghasilan lebih dari Rp500.000.000,00 (lima ratus juta rupiah) per tahun, dapat membeli Efek melalui Layanan Urun Dana paling banyak sebesar 10% (sepuluh persen) dari penghasilan per tahun.
+            <br><br>
+            Maka dengan ini, Penyelenggara akan meminta data "penghasilan per bulan" untuk dijadikan batasan pembelian/investasi melalui platform Danamart. "Penghasilan per bulan" kamu akan dikalkulasi dengan mengkalikannya dengan 12 dan akan didapatkan "penghasilan per tahun".
+          `,
+          close: 'Tutup',
+          accessCardTitle: 'Penjelasan Terkait Kartu AKSes KSEI',
+          accessCardInformation: `
+            Sesuai dengan POJK NOMOR 57 /POJK.04/2020 TENTANG PENAWARAN EFEK MELALUI LAYANAN URUN DANA BERBASIS TEKNOLOGI INFORMASI Pasal 56 dan 57 terkait <strong>kriteria Pemodal dan batasan pembelian Efek:</strong>
+            <br><br>
+            a. Setiap Pemodal dengan penghasilan sampai dengan Rp500.000.000,00 (lima ratus juta rupiah) per tahun, dapat membeli Efek melalui Layanan Urun Dana paling banyak sebesar 5% (lima persen) dari penghasilan per tahun; dan
+            <br><br>
+            b. Setiap Pemodal dengan penghasilan lebih dari Rp500.000.000,00 (lima ratus juta rupiah) per tahun, dapat membeli Efek melalui Layanan Urun Dana paling banyak sebesar 10% (sepuluh persen) dari penghasilan per tahun.
+            <br><br>
+            Dalam hal Pemodal merupakan:
+            <br><br>
+            <ul style="list-style-type: decimal; padding-left: 20px; margin: 0;">
+              <li><strong>badan hukum</strong>; dan</li>
+              <li>pihak yang mempunyai pengalaman berinvestasi di pasar modal yang dibuktikan dengan <strong>kepemilikan rekening Efek paling sedikit 2 (dua) tahun</strong> sebelum penawaran Efek;</li>
+              <li>Dalam hal Efek yang diterbitkan melalui Layanan Urun Dana merupakan Efek bersifat utang atau Sukuk dijamin atau <strong>ditanggung dengan nilai penjaminan atau nilai penanggungan paling sedikit 125%</strong> (seratus dua puluh lima persen) dari nilai penghimpunan dana.</li>
+            </ul>
+            <br>
+            Maka, <strong>kriteria Pemodal dan batasan pembelian Efek oleh Pemodal tidak berlaku.</strong>
+          `
+        },
+        previewDocument: 'Lihat dokumen',
         incomeSource: 'Sumber Penghasilan',
         select: 'Pilih',
         incomePerMonth: 'Penghasilan per bulan',
@@ -3226,7 +3268,31 @@ export default {
           'Area wajah terlihat jelas tanpa menggunakan aksesori seperti kacamata, masker, topi, dan lain-lain.',
         requirements4: 'Tidak perlu memegang e-KTP atau benda lainnya.',
         success: 'Terima kasih telah melengkapi Formulir Pengajuan Menjadi Pemodal, tim kami akan memverifikasi data Kamu.',
-        agreement: 'Setuju mengenai pernyataan foto selfie'
+        agreement: 'Setuju mengenai pernyataan foto selfie',
+        popUpLabel: {
+          title: 'Kami bekerjasama dengan Digisign untuk proses tanda tangan dokumen, silakan baca pernyataan di bawah terlebih dahulu.',
+          reason: 'Foto Selfie diperlukan untuk validasi data kamu dan untuk keperluan tanda tangan dokumen elektronik.',
+          statement: {
+            read: 'Baca Pernyataan',
+            title: 'XI. SERTIFIKAT ELEKTRONIK DAN TANDA TANGAN ELEKTRONIK',
+            description: `
+              Anda akan menggunakan Sertifikat Elektronik dan Tanda Tangan Elektronik untuk menandatangani dokumen elektronik dengan PT. Dana Aguna Nusantara <strong>(Danamart)</strong>. PT. Dana Aguna Nusantara <strong>(Danamart)</strong> bekerja sama dengan PT. Solusi Net Internusa (Digisign.id) selaku penyelenggara Sertifikasi Elektronik Indonesia yang telah berinduk pada Kementrian Komunikasi dan Informatika Republik Indonesia dengan merk Digisign.id.
+              <br><br>
+              Dengan ini, Anda menyatakan setuju untuk mendaftar sebagai pengguna platform Digisign.id dan diterbitkan sertifikat elektronik oleh PT. Solusi Net Internusa (Digisign.id) sebagai penyelenggara Sertifikasi Elektronik Oleh PT Solusi Net Internusa (Digisign.id) atas nama Anda dalam rangka penggunaan layanan Tanda Tangan Elektronik di Platform Digisign.id untuk menandatangani dokumen elektronik.
+              <br><br>
+              Apabila data pribadi Anda terverifikasi kesesuaiannya, maka PT Solusi Net Internusa (Digisign.id) sebagai Penyelenggara Sertifikasi Elektronik berinduk oleh Kementerian Komunikasi dan Informatika Republik Indonesia, akan menerbitkan sertifikat elektronik sebagai bukti bahwa data pribadi Anda telah diverifikasi dan sesuai dengan data yang tercatat pada sistem instansi yang berhak mengeluarkan identitas tersebut.
+              <br><br>
+              Oleh karenanya, Anda menjamin keakuratan data pribadi yang Anda sediakan dan setuju atas pemrosesan data pribadi Anda untuk tujuan penerbitan sertifikat elektronik serta layanan lain dari PT Solusi Net Internusa (Digisign.id) yang melekat pada sertifikat elektronik tersebut.
+              <br><br>
+              Anda setuju untuk membebaskan PT Solusi Net Internusa (Digisign.id) dari tanggung jawab ganti kerugian, klaim atau gugatan atas hasil sertifikat elektronik yang diterbitkan apabila data yang diberikan yang tidak valid dan tidak benar.
+              <br><br>
+              Dengan ini, Anda menyatakan secara jelas dan tanpa adanya paksaan, akan memberikan kuasa kepada PT Dana Aguna Nusantara <strong>(Danamart)</strong> untuk meneruskan data KTP, swafoto, nomor ponsel dan alamat surel Anda sebagai data pendaftaran kepada PT Solusi Net Internusa (Digisign.id) guna memenuhi ketentuan Peraturan Perundang-undangan, yaitu Peraturan Pemerintah Nomor 71 Tahun 2019 tentang Penyelenggara Sistem dan Transaksi Elektronik, dan Peraturan Kementerian Informasi dan Komunikasi Nomor 11 Tahun 2018.
+              <br><br>
+              Dengan ini Anda telah membaca, memahami, dan setuju untuk terikat pada syarat dan ketentuan layanan Penyelenggara Sertifikat Elektronik yang terdapat pada Perjanjian Kepemilikan Sertifikat Elektronik (Subscriber Agreement), Kebijakan Privasi PSrE (CA Privacy Policy), serta Pernyataan Penyelenggaraan Sertifikat Elektronik (Certification Practice Statement) Digisign.id yang dapat diakses melalui <strong><a href="https://repository.digisign.id" style="color: #3AC4A0;" target="_blank">https://repository.digisign.id</a></strong>.
+            `,
+            close: 'Tutup'
+          }
+        }
       },
       buttonSave: 'Simpan',
       buttonPrevious: 'Sebelumnya',

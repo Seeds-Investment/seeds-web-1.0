@@ -3005,6 +3005,7 @@ export default {
         upload: 'Upload',
         retake: 'Retake',
         uploadTitle: 'Upload your ID Card',
+        popUpRequirements: "Your ID card photo is required to validate your data and for electronic document signing purposes.",
         uploadDescription:
           'To confirm you are, please upload digital photo or take a photo.',
         uploadRequirement: {
@@ -3018,17 +3019,24 @@ export default {
           text5:
             'Ensure the e-ID card photo is clear, not blurry, with sufficient lighting, and not cropped.'
         },
-        successMessage: 'ID Card photo updated successfully.'
+        successMessage: 'ID Card photo updated successfully.',
       },
       accountInformation: {
         accountInformationTitle: 'Account Information',
+        popUpInformation: 'Please fill in your personal information according to your ID card.',
+        popUpAddress: 'Fill in the address data according to your ID card',
+        popUpValidity: 'If your ID card is valid for a lifetime, you can simply click Lifetime',
+        popUpMotherName: "We need your biological mother's maiden name as a security question in case something unexpected happens in the future.",
+        popUpBeneficiary: "A beneficiary is someone who receives a portion of the estate or assets from a deceased person or testator.",
+        popUpValidityDate: "The ID card validity date must match the one on your ID card.",
         occupation: 'Occupation',
         address: 'Address',
         validPeriod: 'ID Validity Period',
         others: 'Others',
         fieldWarning: 'This field is required',
+        previewDocument: 'Preview document',
         text1: 'Is the data below correct?',
-        text2: 'ID Number',
+        text2: 'ID Number (NIK)',
         text3: 'Enter your ID number',
         text4: 'Full Name',
         text5: 'Enter your full name',
@@ -3206,6 +3214,40 @@ export default {
           husbandOrParent: 'Husband / Parent',
           other: 'Other'
         },
+        popUpLabel: {
+          clickForMore: 'Click for more information',
+          sidInformation: 'Single Investor Identification (SID) number is a unique code issued by the Indonesia Central Securities Depository (KSEI). You will receive a SID if you become an investor in the Indonesian capital market.',
+          monthlyIncomeTitle: 'Explanation of Monthly Income',
+          monthlyInformation: `
+            According to POJK NUMBER 57 /POJK.04/2020 ON SECURITIES OFFERING THROUGH CROWDFUNDING BASED ON INFORMATION TECHNOLOGY, Articles 56 and 57 regarding <strong>the criteria of Investors and the limitations on purchasing Securities:</strong>
+            <br><br>
+            a. Each Investor with an income up to Rp500,000,000.00 (five hundred million rupiah) per year may purchase Securities through the Crowdfunding Service with a maximum of 5% (five percent) of their annual income;
+            <br><br>
+            b. Each Investor with an income exceeding Rp500,000,000.00 (five hundred million rupiah) per year may purchase Securities through the Crowdfunding Service with a maximum of 10% (ten percent) of their annual income.
+            <br><br>
+            Therefore, the Organizer will request "monthly income" data to be used as a limit for purchasing/investing through the Danamart platform. Your "monthly income" will be calculated by multiplying it by 12 to obtain the "annual income".
+          `,
+          close: 'Close',
+          accessCardTitle: 'Explanation Regarding the KSEI AKSes Card',
+          accessCardInformation: `
+            In accordance with POJK NUMBER 57 /POJK.04/2020 ON SECURITIES OFFERING THROUGH CROWDFUNDING BASED ON INFORMATION TECHNOLOGY, Articles 56 and 57 regarding <strong>the criteria of Investors and the limitations on purchasing Securities:</strong>
+            <br><br>
+            a. Each Investor with an income up to Rp500,000,000.00 (five hundred million rupiah) per year may purchase Securities through the Crowdfunding Service with a maximum of 5% (five percent) of their annual income; and
+            <br><br>
+            b. Each Investor with an income exceeding Rp500,000,000.00 (five hundred million rupiah) per year may purchase Securities through the Crowdfunding Service with a maximum of 10% (ten percent) of their annual income.
+            <br><br>
+            In the case where the Investor is:
+            <br><br>
+            <ul style="list-style-type: decimal; padding-left: 20px; margin: 0;">
+              <li><strong>a legal entity</strong>; and</li>
+              <li>a party with investment experience in the capital market, as proven by <strong>owning a Securities account for at least 2 (two) years</strong> prior to the Securities offering;</li>
+              <li>and in the case where the Securities issued through the Crowdfunding Service are debt-based or Sukuk instruments that are <strong>guaranteed or backed with a collateral value of at least 125%</strong> of the total funds raised.</li>
+            </ul>
+            <br>
+            Then, <strong>the criteria and purchase limitations for Investors shall not apply.</strong>
+          `
+        },
+        previewDocument: 'Preview document',
         incomeSource: 'Income Source',
         select: 'Select',
         incomePerMonth: 'Income per month',
@@ -3293,7 +3335,31 @@ export default {
           'The facial area is clearly visible without using accessories such as glasses, masks, hats, etc.',
         requirements4: 'No need to hold e-KTP or other objects.',
         success: 'Thank you for completing the Investor Application Form. Our team will verify your data.',
-        agreement: 'I agree with the statement regarding the selfie photo'
+        agreement: 'I agree with the statement regarding the selfie photo',
+        popUpLabel: {
+          title: 'We collaborate with Digisign for the document signing process. Please read the statement below first.',
+          reason: 'A selfie photo is required to validate your data and for the purpose of signing electronic documents.',
+          statement: {
+            read: 'Read Statement',
+            title: 'XI. ELECTRONIC CERTIFICATE AND ELECTRONIC SIGNATURE',
+            description: `
+              You will use an Electronic Certificate and Electronic Signature to sign electronic documents with PT. Dana Aguna Nusantara <strong>(Danamart)</strong>. PT. Dana Aguna Nusantara <strong>(Danamart)</strong> collaborates with PT. Solusi Net Internusa (Digisign.id), an Indonesian Electronic Certification Provider registered under the Ministry of Communication and Information Technology of the Republic of Indonesia with the brand Digisign.id.
+              <br><br>
+              By agreeing to this, you consent to register as a user of the Digisign.id platform and have an electronic certificate issued by PT. Solusi Net Internusa (Digisign.id) as the Electronic Certification Provider on your behalf for the use of the Electronic Signature service on the Digisign.id Platform to sign electronic documents.
+              <br><br>
+              If your personal data is verified, PT. Solusi Net Internusa (Digisign.id), as the Electronic Certification Provider registered under the Ministry of Communication and Information Technology of the Republic of Indonesia, will issue an electronic certificate as proof that your personal data has been verified and is in accordance with the records of the institution authorized to issue the identity.
+              <br><br>
+              Therefore, you guarantee the accuracy of the personal data you provide and agree to the processing of your personal data for the purpose of issuing the electronic certificate and other services provided by PT. Solusi Net Internusa (Digisign.id) associated with the certificate.
+              <br><br>
+              You agree to release PT. Solusi Net Internusa (Digisign.id) from any liability for damages, claims, or lawsuits resulting from the issuance of an electronic certificate if the data provided is invalid or incorrect.
+              <br><br>
+              You hereby explicitly and voluntarily authorize PT. Dana Aguna Nusantara <strong>(Danamart)</strong> to forward your ID card data, selfie, phone number, and email address as registration data to PT. Solusi Net Internusa (Digisign.id) to comply with the legal provisions, namely Government Regulation No. 71 of 2019 concerning the Implementation of Electronic Systems and Transactions, and Regulation of the Ministry of Communication and Information Technology No. 11 of 2018.
+              <br><br>
+              By this, you confirm that you have read, understood, and agreed to be bound by the terms and conditions of the Electronic Certificate Provider service as stated in the Subscriber Agreement, the CA Privacy Policy, and the Certification Practice Statement of Digisign.id which can be accessed at <strong><a href="https://repository.digisign.id" style="color: #3AC4A0;" target="_blank">https://repository.digisign.id</a></strong>.
+            `,
+            close: 'Close'
+          }
+        }
       },
       buttonSave: 'Save',
       buttonPrevious: 'Previous',

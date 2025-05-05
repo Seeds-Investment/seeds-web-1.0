@@ -31,7 +31,7 @@ export interface UserInfoFormData {
   dm_penmit_01036: string;
   dm_penmit_01035: string;
   dm_penmit_01034: string;
-  dm_penmit_01033: number;
+  dm_penmit_01033: string;
   dm_penmit_01017: string;
   masa_berlaku: boolean;
   dm_penmit_01018?: string;
@@ -135,7 +135,7 @@ const useUpdateUserInfoForm = (): any => {
       .string()
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
     dm_penmit_01033: yup
-      .number()
+      .string()
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
     dm_penmit_01017: yup
       .string()
@@ -159,7 +159,8 @@ const useUpdateUserInfoForm = (): any => {
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
     dm_penmit_01042: yup
       .string()
-      .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+      .required(t(`${pathTranslation}.text1`) ?? 'This field is required')
+      .min(7, t(`${pathTranslation}.text1`) ?? 'Minimum 7 digits'),
     dm_pen_08002: yup
       .string()
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
@@ -224,7 +225,7 @@ const useUpdateUserInfoForm = (): any => {
     dm_penmit_01036: '',
     dm_penmit_01035: '',
     dm_penmit_01034: '',
-    dm_penmit_01033: 0,
+    dm_penmit_01033: '',
     dm_penmit_01017: '',
     masa_berlaku: true,
     dm_penmit_01018: '',
@@ -269,7 +270,7 @@ const useUpdateUserInfoForm = (): any => {
       });
 
       const isBase64 = typeof data.dm_penmit_01013 === 'string' && data.dm_penmit_01013.startsWith('data:image');
-      const isOldFilename = (data.dm_penmit_01013).includes('npwp') && !isBase64;
+      const isOldFilename = typeof data.dm_penmit_01013 === 'string' && data.dm_penmit_01013.includes('npwp') && !isBase64;
 
       // Upload new NPWP
       if (isBase64) {
@@ -295,8 +296,13 @@ const useUpdateUserInfoForm = (): any => {
         toast.success('User information updated successfully');
       }
       
-    } catch (error) {
-      toast.error('Failed to update user information');
+    } catch (error: any) {
+      if (error?.response?.data?.message === 'Terjadi kesalahan. Silakan coba lagi.') {
+        toast.error(error?.response?.data?.message as string);
+      } else {
+        toast.error('Failed to update user information');
+      }
+      throw error;
     }
   };
 

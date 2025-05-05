@@ -2846,6 +2846,1323 @@ export default {
       moreInfo: 'More Information'
     }
   },
+  danamart: {
+    login: {
+      welcome: 'Welcome 🙌',
+      welcomeDescription: 'Please login to your account',
+      email: 'Email',
+      password: 'Password',
+      passwordPlaceholder: 'Please input your password',
+      emailPlaceholder: 'Please input your email',
+      validation: {
+        login: 'Your phone number or password is wrong',
+        blank: 'You must fill in this field',
+        error: 'There is an error. Check your password or connection!',
+        serverError: 'A server error occurred. Kindly try again soon.',
+        limitEntry: 'You have entered the wrong password three times. Your login feature will be frozen for 5 minutes for security reasons.',
+        password:
+          'Password must contain 8 digit with upper case and lower case',
+        wrongPassword:
+          'Wrong password. Check your password before filling the form!',
+        recaptcha:
+          'ReCAPTCHA value is not available! Fill the ReCAPTCHA before logging in.'
+      },
+      loginButton: 'Login',
+      tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+    },
+    forgotPassword: {
+      forgotPasswordTitle: 'Forget Password 🔑',
+      forgotPasswordDescription:
+        'Enter your phone number, and we’ll send you an OTP to reset your password.',
+      forgotPasswordText: 'Forgot Password?',
+      sendLink: 'Send Link',
+      backLogin: 'Back to Login',
+      next: 'Next',
+      authOTP: {
+        title1: 'Input OTP Code',
+        title2: 'We have sent the OTP code via ',
+        title3: ' to',
+        resend: 'Resend OTP Code',
+        otherMethod1: `Didn't get the code? `,
+        otherMethod3: 'Try',
+        otherMethod4: ' sending it by',
+        validation: 'Incorrect OTP. Please Try again.',
+        blank: 'You must fill in this field'
+      },
+      createNewPassword: {
+        title1: 'Create New Password',
+        title2: 'Let’s create a secure password'
+      },
+      authForgotPass: {
+        title1: 'Input Phone Number',
+        title2: 'To get OTP Code',
+        title3: 'Create New Password',
+        title4: 'Let’s create a secure password',
+        validation: {
+          number: 'Oops, your phone number not registered',
+          password:
+            'Oops, password must be 8 characters long and have both uppercase and lowercase letters.',
+          match: 'Oops, password doesn’t match',
+          blank: 'You must fill in this field'
+        },
+        newPassword: {
+          label: 'Create a New Password',
+          placeholder: 'Please create your password'
+        },
+        matchPassword: {
+          label: 'Confirm New Password',
+          placeholder: 'Please confirm your password'
+        },
+        information:
+          'Password must be 8 characters long, have both uppercase and lowercase letters, and special character.',
+        modal: {
+          title1: 'Success',
+          title2: 'The new password has been successfully created.',
+          title3: 'Please check your email',
+          close: 'Close'
+        }
+      }
+    },
+    register: {
+      connectSeeds: 'Connect Seeds to Danamart',
+      connectDanamart: 'Connect Danamart to Seeds',
+      automate:
+        'Automate your investment journey by linking Seeds to Danamart effortlessly.',
+      notLinked: 'Not Linked',
+      linked: 'Linked',
+      linkAccount: 'Link Phone Number and Email',
+      connectExisting: 'Connect with Existing Danamart Account',
+      back: 'Back',
+      connectAccount: 'Connect Account',
+      completeData: 'Complete Email and Phone Number',
+      changeData: 'Change Email or Phone Number',
+      makeSure:
+        'Make sure the email and phone number of your Seeds account are the same as those of your Danamart account',
+      notRegistered:
+        'Account not registered. Make sure your email and phone number in Seeds and Danamart are the same!',
+      connectSucceed: 'Account connected successfully',
+      email: 'Email',
+      phoneNumber: 'Phone Number',
+      createAccountButton: 'Create Danamart Account',
+      createDanamartAccount: 'Create Danamart Account',
+      createDesc:
+        'Create a new Danamart account and unlock your investment potential.',
+      no: 'No',
+      yes: 'Yes',
+      createPasswordTitle: 'Create password for Danamart account',
+      createPassword: 'Create Password',
+      pleaseCreatePassword: 'Please create password',
+      confirmPassword: 'Confirm Password',
+      pleaseConfirmPassword: 'Please confirm password',
+      passwordContain: 'Passwords must contain:',
+      numbers: 'Numbers',
+      lowercase: 'Lowercase letters',
+      specialCharacters: 'Special characters',
+      characters: '8 characters',
+      capitalLetters: 'Capital letters',
+      passNotMatch: 'Password does not match',
+      createAccount: 'Create Account'
+    },
+    dashboard: {
+      title: 'Dashboard',
+      description: 'Your gateway to track and grow investments.',
+      verifyPhone: "Don't forget to verify your phone number",
+      verifyForm: "Don't forget to complete your personal data",
+      here: 'here',
+      topUp: 'Top Up',
+      cashInHand: 'Cash In-hand',
+      cashInHandDesc: 'Funds available for withdrawal or investment',
+      danaReward: 'Reward Funds',
+      danaRewardDesc: 'Promotional funds that can only be invested',
+      danaInterim: 'Interim Funds',
+      danaInterimDesc: 'Funds from interim dividends or referral commissions',
+      investableFunds: 'Investable Funds',
+      investableFundsDesc: 'Cash In-hand + Reward Fund + Interim Fund',
+      fundsSecurities: 'Funds in Securities',
+      fundsSecuritiesDesc: 'Funds invested in securities',
+      totalFunds: 'Total Funds',
+      totalFundsDesc: 'The overall total of funds held',
+      purchaseAllocationSecurities: 'Purchase allocation by securities',
+      shares: 'Shares',
+      bonds: 'Bonds',
+      purchaseAllocationBusiness: 'Purchase allocation by business sector',
+      growthStocks: 'Growth Stocks',
+      incomeStocks: 'Income Stocks',
+      alternatives: 'Alternatives',
+      errorGetUserDashboard: 'Failed to get dashboard data',
+      errorGetUserProfile: 'Failed to get user profile',
+      mustVerify: 'Please verify your phone number and email address first.'
+    },
+    verification: {
+      photoIdCardTitle: {
+        title: 'Photo ID Card',
+        camera: 'Camera',
+        upload: 'Upload',
+        retake: 'Retake',
+        uploadTitle: 'Upload your ID Card',
+        uploadDescription:
+          'To confirm you are, please upload digital photo or take a photo.',
+        uploadRequirement: {
+          title: 'ID Card Upload Requirements',
+          text1:
+            'Take a photo of the ID card directly through the camera or upload a photo of the ID card.',
+          text2:
+            'The uploaded file must be in JPG/JPEG format and a maximum of 4 MB.',
+          text3: 'The ID card must not be damaged such as cracks or breaks.',
+          text4: 'Take a photo of the ID card in Landscape position.',
+          text5:
+            'Ensure the e-ID card photo is clear, not blurry, with sufficient lighting, and not cropped.'
+        },
+        successMessage: 'ID Card photo updated successfully.'
+      },
+      accountInformation: {
+        accountInformationTitle: 'Account Information',
+        occupation: 'Occupation',
+        address: 'Address',
+        validPeriod: 'ID Validity Period',
+        others: 'Others',
+        fieldWarning: 'This field is required',
+        text1: 'Is the data below correct?',
+        text2: 'ID Number',
+        text3: 'Enter your ID number',
+        text4: 'Full Name',
+        text5: 'Enter your full name',
+        text6: 'Gender',
+        text7: 'Place of Birth',
+        text8: 'Enter your city of birth',
+        text9: 'Date of Birth',
+        text10: 'Religion',
+        text11: 'Last Education',
+        text12: 'Marital Status',
+        text13: "Spouse's Name",
+        text14: "Enter your spouse's name",
+        text15: 'Occupation',
+        text16: 'Enter your occupation',
+        text17: 'Field of Work',
+        text18: 'Enter your field of work',
+        text19: 'Length of Employment',
+        text20: 'Workplace Address',
+        text21: 'Enter your workplace address',
+        text22: 'Workplace Phone Number',
+        text23: 'Enter phone number',
+        text24: 'Address',
+        text25: 'Enter your address',
+        text26: 'RT',
+        text27: 'Enter RT number',
+        text28: 'RW',
+        text29: 'Enter RW number',
+        text30: 'Sub-district',
+        text31: 'Enter sub-district name',
+        text32: 'District',
+        text33: 'Enter district name',
+        text34: 'City / Regency',
+        text35: 'Enter city name',
+        text36: 'Province',
+        text37: 'Enter province name',
+        text38: 'Postal Code',
+        text39: 'Enter the postal code',
+        text40: 'ID Issuance City',
+        text41: 'ID issuance city',
+        text42: 'Citizenship',
+        text43: 'Enter citizenship',
+        text44: 'ID Validity Date',
+        text45: 'Enter the ID validity date',
+        text46: "Mother's Name",
+        text47: "Enter your mother's name",
+        text48: "Heir's Name",
+        text49: "Enter the heir's name",
+        text50: 'Phone Number',
+        text51: 'Enter phone number',
+        text52: 'Investment Purpose',
+        text53: 'Source of Danamart Information',
+        text54: 'Do you have a Tax ID Number (NPWP)?',
+        text55: 'Tax ID Number (NPWP)',
+        text56: 'Enter the Tax ID number',
+        text57: 'Tax ID Issuance Date',
+        text58: 'Enter the Tax ID issuance date',
+        text59: 'Save',
+        text60: 'Lifetime',
+        text61: 'File Tax ID (NPWP)',
+        text62: 'Enter your Tax ID (NPWP) file',
+        dropdown: {
+          yes: 'Yes',
+          no: 'No',
+          male: 'Male',
+          female: 'Female',
+          religion: {
+            text1: 'Islam',
+            text2: 'Catholic',
+            text3: 'Protestant',
+            text4: 'Hindu',
+            text5: 'Buddhist',
+            text6: 'Confucianism'
+          },
+          education: {
+            text1: 'Doctorate (Strata III)',
+            text2: 'Master’s Degree (Strata II)',
+            text3: 'Bachelor’s Degree / Diploma IV (Strata I)',
+            text4: 'Diploma III / Academy',
+            text5: 'High School / Equivalent (SLTA)',
+            text6: 'Junior High School / Equivalent (SLTP)',
+            text7: 'Elementary School / Equivalent (SD)'
+          },
+          marriage: {
+            text1: 'Single',
+            text2: 'Married',
+            text3: 'Divorced (Living)',
+            text4: 'Widowed (Deceased)'
+          },
+          workingLength: {
+            text1: 'Year',
+            text2: 'Years',
+            text3: 'More than'
+          },
+          plan: {
+            text1: 'Savings Fund',
+            text2: 'Retirement Fund',
+            text3: 'Emergency Fund',
+            text4: 'Business Capital',
+            text5: 'Others'
+          },
+          information: {
+            text1: 'Search Engine',
+            text2: 'Instagram',
+            text3: 'Facebook',
+            text4: 'Tiktok',
+            text5: 'Youtube',
+            text6: 'Referral',
+            text7: 'Event',
+            text8: 'News',
+            text9: 'Radio',
+            text10: 'Others'
+          },
+          jobDetailList: {
+            text1: 'Footwear',
+            text2: 'Insurance',
+            text3: 'Bank',
+            text4: 'Electronics and Components',
+            text5: 'Energy',
+            text6: 'Garments, Textiles',
+            text7: 'Advertising, Printing, and Media',
+            text8: 'Financial Institutions',
+            text9: 'Toll Roads, Airports, and Ports',
+            text10: 'Cables',
+            text11: 'Wood',
+            text12: 'Ceramics, Glass, or Porcelain',
+            text13: 'Paper',
+            text14: 'Chemicals',
+            text15: 'Building Construction',
+            text16: 'Non-Building Construction',
+            text17: 'Cosmetics and Household',
+            text18: 'Computer Services',
+            text19: 'Food and Beverages',
+            text20: 'Machinery and Heavy Equipment',
+            text21: 'Pharmaceuticals',
+            text22: 'Automotive and Components',
+            text23: 'Animal Feed',
+            text24: 'Tourism, Hotels, and Restaurants',
+            text25: 'Education',
+            text26: 'Household Appliances',
+            text27: 'Fisheries',
+            text28: 'Plantations',
+            text29: 'Stone/Sand Mining',
+            text30: 'Coal Mining',
+            text31: 'Natural Gas Mining',
+            text32: 'Metal and Mineral Mining',
+            text33: 'Housing and Property',
+            text34: 'Wholesale Companies',
+            text35: 'Investment Companies',
+            text36: 'Retail Companies',
+            text37: 'Securities Companies',
+            text38: 'Plastics and Packaging',
+            text39: 'Metal Products',
+            text40: 'Healthcare Centers',
+            text41: 'Cement',
+            text42: 'Plants',
+            text43: 'Telecommunications',
+            text44: 'Tobacco',
+            text45: 'Transportation',
+            text46: 'Others'
+          }
+        },
+        validationForm: {
+          text1: 'This field is required',
+          text2: 'Must be exactly 16 digits long',
+          text3: 'Must be exactly 15-16 digits long',
+          text4: 'Must be exactly 3 digits long'
+        }
+      },
+      financialInformationTittle: 'Financial Information',
+      financial: {
+        income: 'Income',
+        listIncome: {
+          salary: 'Salary',
+          profit: 'Profit',
+          husbandOrParent: 'Husband / Parent',
+          other: 'Other'
+        },
+        incomeSource: 'Income Source',
+        select: 'Select',
+        incomePerMonth: 'Income per month',
+        areYouAgree: 'Are you agree?',
+        validateInputForm:
+          'I declare that the income data that I fill in is true and accurate in accordance with my current financial condition.',
+        bankInformation: 'Bank Information',
+        nameOfAccount: 'Name of Account Owner',
+        accountNumber: 'Account Number',
+        accountNumberPlaceHolder: 'Account Number',
+        bankName: 'Bank Name',
+        sidInformation: 'SID Information',
+        doYouAlready: 'Do you already have a securities account?',
+        noSID: 'SID Number',
+        monthYearRegis: 'Month Year Registration',
+        accessCard: 'Access Card File (JPG Format Max 4MB)',
+        beneficialInformation: 'Beneficial Owner Information',
+        isThereBeneficial: 'Is there a beneficial owner?',
+        fullName: 'Full Name',
+        gender: 'Gender',
+        identityNumber: 'Identity Number',
+        fileIdentity: 'Identity File (JPG Format Max 4MB)',
+        address: 'Address',
+        birthPlace: 'Place of Birth',
+        birthDate: 'Date of Birth',
+        citizenship: 'Citizenship',
+        job: 'Occupation',
+        jobList: {
+          governmentEmployee: 'Civil Servant',
+          privateSectorEmployee: 'Private Sector Employee',
+          stateOwnedEnterpriseEmployee: 'SOE/BUMD Employee',
+          nationalMilitaryOrPoliceOfficer: 'Military/Police Officer',
+          businessOwner: 'Entrepreneur',
+          trader: 'Trader',
+          farmerOrFisherman: 'Farmer/Fisherman',
+          student: 'Student',
+          housewife: 'Housewife',
+          unemployed: 'Unemployed',
+          employee: 'Employee',
+          entrepreneur: 'Self-employed',
+          stateOfficial: 'Government Official',
+          accountant: 'Accountant',
+          lawyerOrNotary: 'Lawyer/Notary',
+          profession: 'Professional',
+          retiree: 'Retiree',
+          privateLecturerOrTeacher: 'Private Lecturer/Teacher',
+          publicLecturerOrTeacher: 'Public Lecturer/Teacher',
+          doctor: 'Doctor'
+        },
+        jobAddress: 'Job Address',
+        jobPhoneNumber: 'Job Phone Number',
+        biologicalMotherName: 'Maiden Name of Biological Mother',
+        sourceOfFunds: 'Source of Funds',
+        investmentGoals: 'Investment Goals',
+        investmentGoalsList: {
+          longTermInvest: 'Long Term Investment',
+          shortTermInvest: 'Short Term Investment',
+          speculation: 'Speculation',
+          income: 'Income',
+          other: 'Other'
+        },
+        relationshipWithBeneficial: 'Relationship with Beneficial Owner',
+        marriageStatus: 'Beneficial Owner Married Status',
+        marriageStatusList: {
+          single: 'Single',
+          married: 'Married'
+        },
+        partnerFullname: 'Partner Full Name',
+        ktpNumber: 'KTP Number'
+      },
+      photoSelfieTittle: 'Photo Selfie',
+      photoSelfie: {
+        previewSelfie: 'Preview Photo Selfie',
+        switchCamera: 'Switch Camera',
+        camera: 'Camera',
+        retake: 'Retake',
+        cancel: 'Cancel',
+        delete: 'Delete',
+        continue: 'Continue',
+        requirements: 'Selfie photo upload requirements',
+        requirements1: 'Take photos directly using the camera.',
+        requirements2:
+          'Make sure your face is visible with sufficient lighting.',
+        requirements3:
+          'The facial area is clearly visible without using accessories such as glasses, masks, hats, etc.',
+        requirements4: 'No need to hold e-KTP or other objects.',
+        success: 'Thank you for completing the Investor Application Form. Our team will verify your data.',
+        agreement: 'I agree with the statement regarding the selfie photo'
+      },
+      buttonSave: 'Save',
+      buttonPrevious: 'Previous',
+      buttonNext: 'Next'
+    },
+    offers: {
+      sidebar: {
+        text1: 'Offers'
+      },
+      dashboard: {
+        text1: 'Offers',
+        text2: 'Exclusive investment offers—grow your wealth now!',
+        text3: 'No suitable offers available',
+        filter: {
+          text1: 'Types of Securities',
+          text2: 'All',
+          text3: 'Stocks',
+          text4: 'Bonds',
+          text5: 'Offer Status',
+          text6: 'All',
+          text7: 'Listing',
+          text8: 'Prelisting',
+          text9: 'Filters',
+          text10: 'All',
+          text11: 'Largest Offer Amount',
+          text12: 'Smallest Offer Amount',
+          text13: 'Longest Term',
+          text14: 'Shortest Term',
+          text15: 'Highest Yield',
+          text16: 'Lowest Yield'
+        },
+        offerCard: {
+          text1: 'Investor',
+          text2: 'Type of Security',
+          text3: 'Financing',
+          text4: 'Coupon',
+          text5: 'Tenor',
+          text6: 'View Details',
+          text7: 'Share',
+          text8:
+            'Investment opportunity from <strong>completed projects</strong>, resulting in <strong>lower risk</strong>.',
+          text9:
+            'Investment opportunity from <strong>ongoing projects</strong>, resulting in <strong>higher risk</strong>.',
+          text10: 'Learn More',
+          text11: 'Testing',
+        },
+        prelisting:
+          'The prelisting phase is where you can only view the offers available on the Danamart platform, but <strong>you are not yet able to purchase</strong> these securities. The purpose is for you to study the offers first before making an investment or purchase decision. This prelisting phase lasts for <strong>2 days</strong> before proceeding to the listing phase.',
+        listing:
+          'The listing phase is where, in addition to viewing offer information, you <strong>are now able to purchase</strong> the available securities on the Danamart platform. This listing phase lasts for <strong>30 days</strong> after the prelisting period ends.',
+        shareOffer: {
+          text1: 'Offer link copied!',
+          text2: 'Share This Offer',
+          text3: 'Share Link'
+        },
+        detailOffer: {
+          text1: 'Minimum Investment',
+          text2: 'Security Code',
+          text3: 'Location',
+          text4: 'Purpose of Fund Usage',
+          text5: 'View Offer →'
+        }
+      },
+      detail: {
+        offer: 'Offer',
+        minimumInvest: 'Minimum Investment',
+        securitiesCode: 'Securities Code',
+        location: 'Location',
+        intendFund: 'Intended Use of Funds',
+        financier: 'Financier',
+        buy: 'Buy',
+        report: 'Report',
+        securitiesType: 'Type of Securities',
+        intendedUseOfFunds: 'Intended Use of Funds',
+        offeredAmount: 'Offered Amount',
+        minimumInvestmentAmount: 'Minimum Investment Amount',
+        coupon: 'Coupon',
+        tenor: 'Tenor',
+        guarantee: 'Guarantee',
+        offerType: 'Offer Type',
+        progress: {
+          text1: 'Pre-Listing',
+          text2: 'Listing',
+          text3: 'Funding Completed',
+          text4: 'Securities Handover',
+          text5: 'Agreement Signing',
+          text6: 'Fund Disbursement',
+          text7: 'Securities Distribution',
+          text8: 'Purchase Completed',
+          text9: 'Business Ongoing',
+          text10: 'Offer Canceled',
+          text11: 'Refund',
+          text12: 'Offer Revoked',
+          text13: 'Offering Progress',
+          popup: {
+            title: 'Offering Progress',
+            text1:
+              '<strong>Working Day</strong> is a day when a person is expected to work and perform activities according to the established work schedule. A working day only includes Monday to Friday, while Saturday, Sunday, and national holidays are considered as holidays.',
+            text2:
+              '<strong>Calendar Day</strong> is a day consisting of 24 hours and is used to calculate the duration of time in the calendar system. A calendar day is counted from midnight to the following midnight. In the calendar, each month has 28-31 days, except for February, which has 28 or 29 days every four years during a leap year.'
+          }
+        },
+        tab: {
+          title: {
+            text1: 'Overview',
+            text2: 'Investor Corner',
+            text3: 'News Update',
+            text4: 'Discuss',
+            text5: 'Factsheet',
+            text6: 'Report'
+          },
+          overview: {
+            title: 'Issuer Information',
+            proyek: {
+              title: 'Project',
+              text1: 'Project Value',
+              text2: 'Project Margin Projection',
+              text3: 'Project Type',
+              text4: 'Project Description'
+            },
+            bisnis: {
+              title: 'Business',
+              text1: 'Company',
+              text2: 'Company Address',
+              text3: 'Years in Operation',
+              text4: 'Business Sector',
+              text5: 'Number of Directors',
+              text6: 'Number of Commissioners',
+              text7: 'Number of Shareholders',
+              text8: 'Number of Employees'
+            },
+            keuangan: {
+              title: 'Finance',
+              text1: 'Sales',
+              text2: 'Operating Profit',
+              text3: 'Net Profit',
+              text4: 'Current Assets',
+              text5: 'Fixed Assets',
+              text6: 'Current Liabilities',
+              text7: 'Long-Term Liabilities',
+              text8: 'Equity'
+            },
+            penanggungJawab: {
+              title: 'Person in Charge',
+              text1: 'Full Name',
+              text2: 'Gender',
+              text3: 'Age (Years)',
+              text4: 'Last Education',
+              text5: 'Address',
+              text6: 'Position'
+            },
+            proyeksi: {
+              title: 'Projection',
+              text1: 'Monthly Sales Projection',
+              text2: 'Annual Sales Projection'
+            }
+          },
+          investorCorner: {
+            text1: 'Number of Investors',
+            text2: 'Largest Funding Amount',
+            text3: 'Smallest Funding Amount',
+            text4: 'Average Funding Amount'
+          },
+          discuss: {
+            text1: 'Join WhatsApp Group',
+            text2: 'Write comments...',
+            text3: 'Send'
+          },
+          news: {
+            text1: 'There is no new update yet'
+          },
+          factsheet: {
+            text1: 'There is no document yet'
+          },
+          report: {
+            filter: {
+              text1: 'Show 7 entries',
+              text2: 'Show 10 entries',
+              text3: 'Show 25 entries',
+              text4: 'Show 50 entries',
+              text5: 'Show 75 entries',
+              text6: 'Show 100 entries',
+              text7: 'Search...'
+            },
+            table: {
+              text1: 'Report Date',
+              text2: 'Report Type',
+              text3: 'No reports found.',
+              text4: 'Showing',
+              text5: 'to',
+              text6: 'of',
+              text7: 'entries'
+            },
+            modalDetail: {
+              title: 'Report Details',
+              text1: 'Report Type',
+              text2: 'Project Progress',
+              text3: 'Type',
+              text4: 'Download',
+              text5: 'View',
+              text6: 'Report Content',
+              text7: 'File',
+              text8: 'Realization of Fund Usage',
+              text9: 'Equity Change Report',
+              text10: 'Balance Sheet Report',
+              text11: 'Notes on Financial Statements',
+              text12: 'Profit/Loss Report',
+              text13: 'Board of Directors Member Name',
+              text14: 'Cash Flow Report',
+              text15: 'Board of Commissioners Member Name',
+              text16: 'General Meeting of Shareholders Result Report',
+              text17: 'Planned Dividend Distribution Date',
+              text18: 'Total Dividend Distribution (Rp)',
+              text19: 'Close'
+            }
+          }
+        },
+        reportForm: {
+          title: 'Report',
+          text1: 'Name',
+          text2: 'Enter your name',
+          text3: 'Email',
+          text4: 'Enter your email',
+          text5: 'Phone Number',
+          text6: 'Enter your phone number',
+          text7: 'Statement',
+          text8: 'Enter statement title',
+          text9: 'Content',
+          text10: 'Enter report content',
+          text11: 'Submit Report',
+          text12: 'Report successfully submitted.',
+          text13: 'Report submission failed! Try again.',
+          validationForm: {
+            text1: 'This field is required'
+          }
+        },
+        listingModal: {
+          warningText: "The purchase of securities is not yet available as it is still in Pre-Listing status. Please wait until the status changes to Listing.",
+          close: "Close"
+        }
+      },
+      purchase: {
+        title: 'Pembelian Efek',
+        type1: 'Obligasi',
+        type2: 'Saham',
+        card: {
+          text1: 'Cash In-hand',
+          text2: 'Investable Funds',
+          text3: 'Funds in Securities',
+          text4: 'Funds in Stocks',
+          text5: 'Remaining Purchase',
+          text6: 'Unlimited'
+        },
+        form: {
+          sourceCash: {
+            text1: 'Select Source of Funds',
+            text2: 'Cash In-hand',
+            text3: 'Transfer Cash'
+          },
+          titleObligasi: 'Bond Purchase',
+          titleSaham: 'Stock Purchase',
+          text1: 'Return on Investment',
+          text2: 'Purchase Slot',
+          text3: 'Investment Period (Months)',
+          text4: 'Purchase Amount (Rp)',
+          text5: 'Enter Purchase Amount (Rp)',
+          text6: 'Reward + Interim Funds (Rp)',
+          text7: 'Select Source of Funds',
+          text8: 'Use Reward + Interim Funds',
+          text9: 'Total Amount to Be Paid (Rp)',
+          text10: 'Select Payment Bank',
+          text11: 'Potential Profit',
+          text12: 'Monthly Return',
+          text13: '10% Tax',
+          text14: 'Total Return',
+          text15: '10% Administrative Fee',
+          text16: 'Total Capital + Return',
+          text17: 'Net Investment Return',
+          text18: 'Acknowledgment of Investing in PO Financing',
+          text19: 'Buy',
+          text20: 'Price Per Share (Rp)',
+          text21: 'Remaining Shares',
+          text22: 'Total Purchase (Rp)',
+          text23: 'Select Payment Bank',
+          text24: 'Purchase Quantity (Lot)',
+          text25: "Security Code",
+          text26: "Business Sector",
+          text27: "Remaining Shares",
+          text28: "Price Per Share (Rp)",
+          text29: "Total Purchase (Rp)",
+          text30: "Number of Shares Purchased",
+          text31: "Enter Number of Shares Purchased",
+          formResponse: {
+            text1: 'Purchase Successful',
+            text2:
+              'Almost there! Just a few more steps to complete your investment. Proceed with the next steps to continue the transaction.',
+            text3:
+              'Congratulations! Your investment purchase has been successfully completed!',
+            text4:
+              'Sorry, there is an unfinished transaction. Please complete your pending transaction first.',
+            text5: 'Minimum purchase amount is Rp. 100,000,-',
+            text6:
+              'Please acknowledge that you are investing in Project Financing.',
+            text7: 'Sorry, your purchase amount exceeds the available slots.',
+            text8: 'Sorry, your purchase amount exceeds your in hand cash.',
+            text9: 'Sorry, your purchase amount exceeds the available slots',
+            text10: 'Sorry, your purchase amount exceeds your bank transfer limit',
+          }
+        },
+        disclaimer: {
+          text: `
+            <p>PT Dana Aguna Nusantara is a limited liability company engaged in providing crowdfunding services based on information technology (“Organizer”) and developing crowdfunding business by connecting Investors and Issuers (hereinafter referred to jointly as “Users”). In this crowdfunding service, a civil relationship arises when the Investor agrees to purchase securities offered by the Issuer, thus all risks arising from this relationship will be the responsibility of each party. The risk arising from the Investor's right to receive a return from the Issuer is a risk that must be borne by the Investor according to the Issuer's return policy. Danamart only acts as a crowdfunding service connecting Investors and Issuers and does not act as a business entity managing related funds or investments (Issuer). In accordance with Article 27 of the Financial Services Authority Regulation No. 57 of 2020 on <strong>SECURITIES OFFERING THROUGH INFORMATION TECHNOLOGY-BASED CROWDFUNDING SERVICES (“POJK 57/2020”)</strong>, which states:</p>
+            <br>
+            <ol>
+              <li>THE FINANCIAL SERVICES AUTHORITY DOES NOT APPROVE THE ISSUER AND DOES NOT DECLARE APPROVAL OR DISAPPROVAL OF THESE SECURITIES, NOR DOES IT VERIFY THE TRUTH OR SUFFICIENCY OF THE INFORMATION IN THIS CROWDFUNDING SERVICE. ANY STATEMENT TO THE CONTRARY IS ILLEGAL.</li>
+              <li>INFORMATION IN THIS CROWDFUNDING SERVICE IS IMPORTANT AND REQUIRES IMMEDIATE ATTENTION. IF THERE IS ANY DOUBT ABOUT THE ACTION TO BE TAKEN, IT IS RECOMMENDED TO CONSULT WITH THE ORGANIZER.</li>
+              <li>THE ISSUER AND ORGANIZER, EITHER INDIVIDUALLY OR TOGETHER, ARE FULLY RESPONSIBLE FOR THE ACCURACY OF ALL INFORMATION PROVIDED IN THIS CROWDFUNDING SERVICE.</li>
+              <li>Danamart acts as a crowdfunding organizer connecting Investors and Issuers and not as a business entity (Issuer). The Financial Services Authority acts as a regulator and licensor, not as an investment guarantor.</li>
+              <li>The decision to purchase securities on Danamart is entirely the right and responsibility of the Investor. Investors who purchase securities have agreed to all terms and conditions and understand the risks of purchasing securities, including selling those securities quickly, canceling the purchase, or losing part or all of their capital.</li>
+              <li><strong>Business Risk:</strong> Purchases that have not or do not yield results are fully the responsibility of the Investor. It is recommended that Investors make proper calculations and analysis of the Issuer and its business before purchasing securities.</li>
+              <li><strong>Investment Risk:</strong> Investors have the right to receive returns on the business carried out by the Issuer. There is a possibility that no returns will be distributed if the Issuer’s business experiences a downturn.</li>
+              <li><strong>Liquidity Risk:</strong> There is a possibility that Investors may not easily sell the securities on the secondary market for the Issuer's securities.</li>
+              <li><strong>Electronic System Failure:</strong> There is a possibility that the electronic system may experience disruptions at any time due to technical errors.</li>
+              <li><strong>Risk of Dividend Scarcity and/or Shareholding Dilution:</strong> If the issued security is a share.</li>
+              <li><strong>Default Risk:</strong> The decision to purchase securities may result in the risk of losing part or all of the invested capital, including a business downturn by the Issuer and other related risks.</li>
+            </ol>
+          `,
+          yes: 'Yes',
+          cancel: 'Cancel'
+        },
+        validationForm: {
+          text1: 'This field is required'
+        },
+        payment: {
+          qris: {
+            steps: `
+              <ol>
+                <li>Scan or take a screenshot of the QR code displayed on the screen using a banking app, e-wallet, or any other payment application that supports QRIS payments.</li>
+                <li>Check the transaction details in the application, then click the Pay button.</li>
+                <li>Enter your PIN.</li>
+                <li>Once the transaction is complete, return to this page and you will be redirected to the portfolio page.</li>
+              </ol>
+            `
+          },
+          titleQR: 'Payment with QRIS',
+          titleVA: 'Payment with Virtual Account',
+          descriptionQR:
+            'We have also sent the QRIS payment instructions via email. Please check your email and proceed with the payment.',
+          descriptionVA:
+            'We have also sent the VA payment instructions via email. Please check your email and proceed with the payment.',
+          orderId: 'Order ID',
+          nominal: 'Nominal',
+          expiredDate: 'Valid Until',
+          status: 'Status',
+          numberVA: 'Virtual Account Number',
+          numberVACopied: 'VA Number copied!',
+          scan: 'Scan QRIS',
+          download: 'Download QR',
+          howToPayQR: 'How to pay via QRIS:',
+          howToPayVA1: 'How to pay via',
+          howToPayVA2: 'BANK',
+          refresh: 'Refresh Status',
+          cancel: 'Cancel Transaction',
+          cancelationSucceed: 'Payment transaction was successfully canceled!',
+          cancelationFailed:
+            'Payment transaction cancellation failed. Please try again.'
+        },
+        modals: {
+          cancel: {
+            text1: 'Transaction Cancelation',
+            text2: 'Are you sure you want to delete this transaction?',
+            cancel: 'Cancel',
+            yes: 'Yes'
+          },
+          otp: {
+            process: 'Process',
+            verification: 'OTP Verification',
+            getOtp: 'Get OTP',
+            selectType: 'Select OTP Type',
+            tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+            wrongPassword: 'Wrong password. Please try again.',
+            cancel: 'Cancel',
+            yes: 'Yes',
+            timeRemaining: 'Time remaining'
+          }
+        }
+      }
+    },
+    portfolio: {
+      sidebar: {
+        text1: 'Portfolio'
+      },
+      title: 'Portfolio',
+      text1: 'Are you sure you want to cancel the purchase?',
+      text2: 'Even though your investment was successfully canceled, don’t worry — Danamart still offers many other investment opportunities. Go ahead and choose one!',
+      text3: 'Please enter a valid verification code',
+      cancel: 'No',
+      continue: 'Yes, cancel',
+      filter: {
+        text1: 'Show 7 entries',
+        text2: 'Show 10 entries',
+        text3: 'Show 25 entries',
+        text4: 'Show 50 entries',
+        text5: 'Show 75 entries',
+        text6: 'Show 100 entries',
+        text7: 'Search...'
+      },
+      table: {
+        text1: 'No data in the table.',
+        text2: 'Showing',
+        text3: 'to',
+        text4: 'of',
+        text5: 'entries',
+        text6: 'Security Code',
+        text7: 'Offer ID',
+        text8: 'Stocks',
+        text9: 'Bonds',
+        text10: 'Purchase Amount',
+        text11: 'Price/Stock (Rp)',
+        text12: 'Stock Shares',
+        text13: 'Return (%)',
+        text14: 'Term (Months)',
+        text15: 'Maturity Date',
+        text16: 'Testing',
+        text17: 'Crowdfunding',
+        dropdown: {
+          text1: 'Offer Information',
+          text2: 'Purchase Information',
+          text3: 'Cost and Return Information',
+          text4: 'Factsheet',
+          text5: 'Cancel Purchase'
+        }
+      },
+      modal: {
+        offerInformation: {
+          text1: 'Offer Information',
+          text2: 'Issuer Name',
+          text3: 'Fund Transfer Date',
+          text4: 'Business Sector',
+          text5: 'Coupon/Dividend Payment Schedule',
+          text6: 'Percentage of Shares Released',
+          text7: 'Payment Status',
+          text8: 'Dividend Distribution Frequency',
+          text9: 'Dividend Distribution Percentage',
+          text10: 'Coupon',
+          text11: 'Tenor',
+          text12: 'Type of Offering'
+        },
+        financingInformation: {
+          text1: 'Purchase Information',
+          text2: 'Purchase Date',
+          text3: 'Purchase Amount',
+          text4: 'Contribution'
+        },
+        costReturn: {
+          text1: 'Cost and Return Information',
+          text2: 'Potential Return Income per Period',
+          text3: 'Potential Late Fee Income',
+          text4: 'Total Potential Return Income and Late Fee',
+          text5: 'Administrative Fee'
+        },
+        close: 'Close'
+      }
+    },
+    incomingFunds: {
+      sidebar: {
+        text1: 'Incoming Funds'
+      },
+      title: 'Incoming Funds',
+      filter: {
+        text1: 'Show 7 entries',
+        text2: 'Show 10 entries',
+        text3: 'Show 25 entries',
+        text4: 'Show 50 entries',
+        text5: 'Show 75 entries',
+        text6: 'Show 100 entries',
+        text7: 'Search...',
+        text8: 'Filter by Date',
+        text9: 'Start Date',
+        text10: 'End Date',
+      },
+      table: {
+        text1: 'No data in the table.',
+        text2: 'Showing',
+        text3: 'to',
+        text4: 'of',
+        text5: 'entries',
+        text6: 'Date',
+        text7: 'Amount (Rp)',
+        text8: 'Description'
+      },
+      text1: 'Fund Transfer Method',
+      text2: 'Other Banks',
+      text3: 'Download Transaction Report',
+      modal: {
+        detailBank: {
+          text1: 'Virtual Account number copied successfully!',
+          text2: 'Payment via',
+          text3: 'Bank Virtual Account',
+          text4: 'Account Name',
+          text5: '',
+          text6: 'Bank',
+          text7: 'Virtual Account Limit',
+          text8: 'Understood',
+          text9: 'VA Number',
+          text10: 'Other'
+        },
+        detailIncome: {
+          text1: 'Incoming Fund Details',
+          text2: 'Date',
+          text3: 'Amount',
+          text4: 'Description',
+          close: 'Close'
+        },
+        downloadReport: {
+          text1: 'Download Transaction Report',
+          text2: 'From',
+          text3: 'To',
+          text4: 'File Type',
+          cancel: 'Cancel',
+          yes: 'Download',
+          text7:
+            'Report download request successful. Please wait for the download process.',
+          text8: 'Report downloaded successfully.',
+          text9: 'Failed to download report.'
+        }
+      }
+    },
+    outgoingFunds: {
+      sidebar: {
+        text1: 'Outgoing Funds'
+      },
+      title: 'Outgoing Funds',
+      text1: 'Total Overall Funds',
+      text2: 'Owned Funds',
+      text3: 'Investable Funds',
+      text4: 'Cash In-hand + Reward Funds + Interim Funds',
+      text5: 'Withdrawable Funds',
+      text6: 'Funds that can be withdrawn to an account',
+      text7: 'Withdraw Funds',
+      filter: {
+        text1: 'Show 7 entries',
+        text2: 'Show 10 entries',
+        text3: 'Show 25 entries',
+        text4: 'Show 50 entries',
+        text5: 'Show 75 entries',
+        text6: 'Show 100 entries',
+        text7: 'Search...',
+        text8: 'Filter by Date',
+        text9: 'Start Date',
+        text10: 'End Date',
+      },
+      table: {
+        text1: 'No data available in the table.',
+        text2: 'Showing',
+        text3: 'to',
+        text4: 'of',
+        text5: 'entries',
+        text6: 'Date',
+        text7: 'Status',
+        text8: 'Amount',
+        text9: 'Description',
+        text10: 'Processing',
+        text11: 'Completed'
+      },
+      modal: {
+        withdrawRequest: {
+          steps:
+            '<ol> <li>Enter the withdrawal amount.</li> <li>Click the “Withdraw Funds” button to process your withdrawal.</li> <li>Danamart will process your withdrawal request within a maximum of 2 working days.</li> </ol>',
+          succeed:
+            'Congratulations, your withdrawal request has been received and will be processed soon!',
+          pending:
+            'There is still an ongoing withdrawal process in your account. Please wait until the withdrawal is completed, then try again.',
+          tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+          title: 'Withdrawal Request',
+          text1: 'Withdrawal Method',
+          text2: 'Total Amount to Withdraw + Admin Fee (Rp)',
+          text3: 'Minimum withdrawal Rp. 10,000,-',
+          text4: 'Admin Fee',
+          text5: 'Amount to be Received',
+          text6: 'Select OTP Verification',
+          text7: 'Get OTP',
+          text8: 'Time remaining:',
+          text9: 'Cancel',
+          text10: 'Back',
+          text11: 'Withdraw Funds',
+          text12: 'Process Withdrawal',
+          text13: 'Enter Withdrawal Amount'
+        },
+        detailOutcome: {
+          title: 'Outgoing Funds Details',
+          text1: 'Date',
+          text2: 'Status',
+          text3: 'Completed',
+          text4: 'Processing',
+          text5: 'Amount',
+          text6: 'Description',
+          text7: 'Close'
+        }
+      }
+    },
+    purchaseHistory: {
+      sidebar: {
+        text1: 'Purchase History'
+      },
+      title: 'Purchase History',
+      filter: {
+        text1: 'Show 7 entries',
+        text2: 'Show 10 entries',
+        text3: 'Show 25 entries',
+        text4: 'Show 50 entries',
+        text5: 'Show 75 entries',
+        text6: 'Show 100 entries',
+        text7: 'Search...'
+      },
+      table: {
+        text1: 'No data in table.',
+        text2: 'Showing',
+        text3: 'to',
+        text4: 'of',
+        text5: 'entries',
+        text6: 'Security Code',
+        text7: 'Offer ID',
+        text8: 'Purchase Amount',
+        text9: 'Purchase Date',
+        dropdown: {
+          text1: 'Offer Information',
+          text2: 'Purchase Information',
+          text3: 'Cost and Return Information',
+          text4: 'Factsheet'
+        }
+      },
+      modal: {
+        offerInformation: {
+          text1: 'Offer Information',
+          text2: 'Issuer Name',
+          text3: 'Offer ID',
+          text4: 'Maturity Date',
+          text5: 'Fund Submission Date',
+          text6: 'Coupon/Dividend Submission Schedule',
+          text7: 'Business Sector',
+          text8: 'Payment Status'
+        },
+        purchaseInformation: {
+          text1: 'Purchase Information',
+          text2: 'Purchase Date',
+          text3: 'Purchase Amount',
+          text4: 'Contribution (%)'
+        },
+        costReturn: {
+          text1: 'Cost and Return Information',
+          text2: 'Potential Return Per Period',
+          text3: 'Potential Late Fee Revenue',
+          text4: 'Total Potential Return and Late Fee Revenue',
+          text5: 'Administrative Fee'
+        },
+        close: 'Close'
+      }
+    },
+    userLog: {
+      sidebar: {
+        text1: 'User Log'
+      },
+      title: 'User Log',
+      filter: {
+        text1: 'Show 7 entries',
+        text2: 'Show 10 entries',
+        text3: 'Show 25 entries',
+        text4: 'Show 50 entries',
+        text5: 'Show 75 entries',
+        text6: 'Show 100 entries',
+        text7: 'Search...',
+        text8: 'Start Date',
+        text9: 'End Date',
+        text10: 'Apply',
+        text11: 'Reset'
+      },
+      table: {
+        text1: 'No data in table.',
+        text2: 'Showing',
+        text3: 'to',
+        text4: 'of',
+        text5: 'entries'
+      }
+    },
+    promotion: {
+      sidebar: {
+        text1: 'Promotion'
+      },
+      title: 'Promotion',
+      text1: 'Have a promo code? Enter your code here',
+      text2: 'Type of code you have',
+      text3: 'Select Type',
+      text4: 'Promo Code',
+      text5: 'Enter your code here',
+      text6: 'Enter promo code',
+      text7: 'Validate Code',
+      text8:
+        'Congratulations! Your code is valid and successfully claimed. You can now enjoy its benefits.',
+      text9:
+        'Sorry! Your code is invalid, the quota has been exhausted, the validity period has expired, or it does not meet the terms and conditions. Please try again with another code.',
+      modal: {
+        title: 'About Promo Codes and Referral Codes',
+        text1:
+          'A Promo Code is a unique code that you can use to get exciting offers.',
+        text2: 'Oops!',
+        text3: 'Sorry! Your code is invalid, the quota has been exhausted, the validity period has expired, or it does not meet the terms and conditions. Please try again with another code.',
+        close: 'Close',
+        ok: 'Ok',
+      }
+    },
+    setting: {
+      sidebar: {
+        text1: 'Setting'
+      },
+      title: 'Setting',
+      text1: 'Change Password',
+      text2: 'Change Email',
+      text3: 'Change Phone Number',
+      text4: 'Change Bank Account',
+      text5: 'Verification',
+      text6: 'Delete Account',
+      verifyPhoneAndEmail: {
+        text1: 'Phone number verification successful!',
+        text2: 'Request successful. Please check your email.',
+        text3: 'Verify Your Account',
+        text4: 'Email',
+        text5: 'Verified',
+        text6: 'A verification link will be sent to your email',
+        text7: 'Phone Number',
+        text8: 'A verification code will be sent to your phone number',
+        text9: 'Continue Verification',
+      },
+      deleteAccount: {
+        text1: 'Delete Account',
+        text2: 'Your Danamart Password',
+        text3: 'Verify OTP',
+        text4: 'Your account has been successfully deleted',
+        text5: 'Enter your Danamart account password',
+        tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+        disclaimer: `
+          <p>In accordance with <strong>Regulation of the Minister of Communication and Informatics No. 20 of 2016</strong> on <strong>Personal Data Protection in Electronic Systems</strong>, Article 20 states: <em>“If the Owner of Personal Data requests the deletion of certain individual data, the deletion request shall be carried out in accordance with the provisions of applicable laws and regulations.”</em></p>
+          <br>
+          <p>Danamart provides an <strong>"Delete Account"</strong> feature with the following conditions:</p>
+          <br>
+          <ol>
+            <li>The personal data to be deleted includes: Name, Email, Phone Number, Place/Date of Birth, Religion, Occupation, Address, Bank Account Number, and ID card data.</li>
+            <li>Ensure that there is no remaining <strong>DanaCash</strong> in the account.</li>
+            <li>If there is any <strong>DanaReward</strong>, it cannot be withdrawn, except through a funding process in accordance with the applicable DanaReward terms and conditions.</li>
+            <li>Ensure that there is no ongoing funding activity in the account.</li>
+            <li>The deleted data does not include investment transaction history. Transaction history will be retained in accordance with the applicable data retention policy.</li>
+          </ol>
+        `
+      },
+      changePassword: {
+        text1: 'Change Password',
+        text2: 'Current Password',
+        text3: 'New Password',
+        text4: 'Confirm New Password',
+        text5: 'Save Changes',
+        text6: 'Your account password has been successfully changed.',
+        text7: 'The old password is incorrect or does not match.',
+        text8: 'Password must be at least 8 characters and include lowercase, uppercase, and a number.',
+        text9: 'Password confirmation does not match.',
+        text10: 'Enter your Danamart current account password',
+        text11: 'Enter your Danamart new account password',
+        text12: 'Confirm your Danamart new account password',
+        passwordPolicy: `
+          <p><strong>Password Requirements:</strong></p>
+          <br>
+          <ol>
+            <li>Must be at least <strong>8 characters</strong> long.</li>
+            <li>Must include at least <strong>lowercase letters</strong>, <strong>uppercase letters</strong>, and <strong>numbers</strong>.</li>
+            <li>The <strong>maximum password usage period</strong> is <strong>90 days</strong>.</li>
+            <li>The <strong>minimum interval</strong> to reuse the same password is after <strong>5 password changes</strong>.</li>
+            <li>Incorrect passwords can be attempted up to <strong>3 times</strong> before the account is locked.</li>
+            <li>The account will remain locked for <strong>30 minutes</strong> before it can be reset.</li>
+          </ol>
+        `
+      },
+      changeEmail: {
+        text1: 'Change Email',
+        text2: 'Your current email address is',
+        text3: 'New Email',
+        text4: 'Danamart Account Password',
+        text5: 'Invalid email format',
+        text6: 'The password is incorrect or does not match.',
+        text7: 'Email address is already in use! Please use a different email.',
+        text8: 'Please check your email to verify the email change.',
+        text9: 'Enter new email address',
+        text10: 'Enter your Danamart account password',
+        modal: {
+          text1: 'Confirmation',
+          text2: 'Your email will be changed to',
+          text3: 'We will send a verification email to your new email address. Your account will be automatically logged out after this.',
+          text4: 'Do you want to continue?',
+          cancel: 'Cancel',
+          continue: 'Continue',
+        }
+      },
+      changeBankAccount: {
+        text1: 'Your Bank Account',
+        text2: 'New Bank Account',
+        text3: '* You have not filled in your bank account details',
+        text4: 'Select Bank',
+        text5: 'Choose a bank...',
+        text6: 'Search bank...',
+        text7: 'Bank not found',
+        text8: 'New Bank Account Number',
+        text9: 'Enter account number',
+        text10: 'Account Holder Name',
+        text11: 'Enter account holder name',
+        text12: 'Your Account Password',
+        text13: 'Enter your Danamart account password',
+        text14: 'Select OTP Method',
+        text15: 'Choose a verification method',
+        text16: 'Change Bank Account',
+        text17: 'OTP Code Verification',
+        text18: 'Bank Account Change',
+        text19: 'Resend OTP',
+        text20: 'Time remaining',
+        text21: 'Continue with the bank account change process?',
+        validation: {
+          text1: 'Thank you for your patience. We would like to inform you that there is still a data change request in progress. Please wait until this process is completed before submitting another request.',
+          text2: 'The OTP code has been sent to your number. Please check your phone.',
+          text3: 'We have received your data change request. Our team will proceed to confirm this request by contacting you. Please wait patiently.',
+          text4: 'The verification code is incorrect, please enter a valid verification code.',
+          text5: 'The bank account number is incorrect or invalid.',
+          text6: "The account holder's name does not match.",
+          text7: 'Incorrect password, please try again.',
+          text8: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+          text9: 'Please choose a verification code delivery method.',
+          text10: 'An error occurred. Please log in to your account again.',
+        },
+        close: 'Close',
+        continue: 'Continue'
+      },
+      changePhoneNumber: {
+        text1: 'Change Phone Number',
+        text2: 'Your phone number is',
+        text3: '* You have not provided a phone number',
+        text4: 'Phone Number',
+        text5: 'Enter your new phone number',
+        text6: 'Your Account Password',
+        text7: 'Enter your Danamart account password',
+        text8: 'Choose Verification Code Delivery Method',
+        text9: 'Select Verification Method',
+        text10: 'Send Verification',
+        text11: 'Verify OTP Code',
+        text12: 'Phone Number Change',
+        text13: 'Resend OTP',
+        text14: 'Time remaining',
+        text15: 'Continue the phone number change process?',
+        cancel: 'Cancel',
+        continue: 'Continue',
+        validation: {
+          text1: 'Verification code sent successfully. Please check your phone!',
+          text2: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+          text3: 'Incorrect password, please try again.',
+          text4: 'Your phone number is currently in the approval process. Please wait for confirmation from the verifier!',
+          text5: 'We have received your data change request. Our team will contact you to confirm the request. Please wait.',
+          text6: 'Incorrect code! Please re-enter.',
+        }
+      }
+    },
+    idleLogout:
+      'You have been idle for 30 minutes or more. Please log in again to Danamart.',
+    logout: {
+      text1: 'Logout',
+      description: 'Do you want to log out from Danamart?',
+      yes: 'Log Out',
+      cancel: 'Cancel'
+    }
+  },
   seedsPlan: {
     desc: 'Choose the package to get unlimited savings and fun!',
     button1: 'Terms & Conditions',
@@ -2950,5 +4267,26 @@ export default {
     },
     yes: 'Yes',
     no: 'No'
+  },
+  homepageSubcription: {
+    subscribeNow: {
+      tagText: 'Subscribe Now',
+      description: 'Get exclusive perks & premium benefits!',
+      title: 'Join MySeeds Plan Today'
+    },
+    silver: {
+      tagText: 'UPGRADE NOW!',
+      description: 'Get exclusive perks & premium benefits!',
+      title: 'Join MySeeds Plan Today'
+    },
+    gold: {
+      tagText: 'UPGRADE NOW!',
+      description: 'Exclusive perks and premium benefits are now yours!',
+      title: 'Welcome to Seeds Plan! ✨'
+    },
+    platinum: {
+      description: 'Exclusive perks and premium benefits are now yours!',
+      title: 'Welcome to Seeds Plan! ✨'
+    }
   }
 };

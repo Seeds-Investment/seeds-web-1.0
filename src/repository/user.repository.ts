@@ -3,7 +3,7 @@ import type { IChangePasswordPayload } from '@/utils/interfaces/payload.interfac
 
 const authService = baseAxios(
   `${
-    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
   }/user/v1`
 );
 

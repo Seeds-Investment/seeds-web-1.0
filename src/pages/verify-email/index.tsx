@@ -9,7 +9,7 @@ interface VerifyEmailResponse {
 
 const VerifyEmailPage = (): JSX.Element => {
   const urlService = `${
-    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
   }`;
   const router = useRouter();
   const [verificationStatus, setVerificationStatus] = useState<string | null>(

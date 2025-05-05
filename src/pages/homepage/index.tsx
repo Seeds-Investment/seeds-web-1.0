@@ -8,35 +8,19 @@ import SubcroptionSection from '@/containers/homepage/SubcriptionSection';
 import TopGainers from '@/containers/homepage/top-gainers/TopGainers.index';
 import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
-import { getUserInfo } from '@/repository/profile.repository';
-import { type UserInfo } from '@/utils/interfaces/tournament.interface';
+import { useAppSelector } from '@/store/redux/store';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import Section1New from './section1/index.section1';
 
 const Homepage: React.FC = () => {
-  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const { dataUser } = useAppSelector(state => state.user);
   const [popUpCurrency, setPopupCurrency] = useState<boolean>(false);
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
-
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
 
   useEffect(() => {
-    if (userInfo?.preferredCurrency?.length === 0) {
+    if (dataUser?.preferredCurrency?.length === 0) {
       setPopupCurrency(true);
     }
-  }, [userInfo]);
+  }, [dataUser]);
 
   const handleOpen = (): void => {
     setPopupCurrency(!popUpCurrency);
@@ -48,8 +32,8 @@ const Homepage: React.FC = () => {
       className="w-full bg-[#f8f8f8] md:bg-transparent"
     >
       <CCard className="w-full px-2 py-3 mb-5">
-        {userInfo !== undefined && (
-          <UserInfoPlaySimulation playerInfo={userInfo} />
+        {dataUser !== undefined && (
+          <UserInfoPlaySimulation playerInfo={dataUser} />
         )}
       </CCard>
 

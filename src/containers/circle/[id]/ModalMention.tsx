@@ -72,41 +72,6 @@ interface typeOfSelection {
   type: string;
 }
 
-interface UserData {
-  id: string;
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  preferredLanguage: string;
-  phone: string;
-  _pin: string;
-}
-
-interface Polling {
-  content_text: string;
-  media_url: string;
-}
-
-interface form {
-  content_text: string;
-  privacy: string;
-  media_urls: string[];
-  polling: {
-    options: Polling[];
-    isMultiVote: boolean;
-    canAddNewOption: boolean;
-    endDate: string;
-  };
-  pie_title: string;
-  pie_amount: any;
-  pie: [];
-  premium_fee: any;
-}
-
 interface AssetInterface {
   id: string;
   quote: string;
@@ -463,7 +428,7 @@ const ModalMention: React.FC<props> = ({
       const formattedValue = formatCurrency(value);
       setForm(prevForm => ({ ...prevForm, [name]: formattedValue }));
     } else if (name === 'premium_fee') {
-      setForm(prevForm => ({ ...prevForm, premium_fee: parseInt(value)}));
+      setForm(prevForm => ({ ...prevForm, premium_fee: parseInt(value) }));
     } else if (name === 'pie_title') {
       setForm(prevForm => ({ ...prevForm, pie_title: value }));
     } else {
@@ -722,10 +687,14 @@ const ModalMention: React.FC<props> = ({
       if (media.length > 0) {
         await postMedia(media);
       }
-
       if (audio !== undefined && audio !== null) {
+        // const convert = await convertAudioToWav(audio, {});
+        // const fileToUpload = new File([convert], 'test.wav', {
+        //   type: 'audio/wav'
+        // });
         await postMedia(audio);
       }
+
       if (document !== undefined && document !== null) {
         await postMedia(document);
       }
@@ -1284,7 +1253,7 @@ const ModalMention: React.FC<props> = ({
         <div className="md:my-4 mt-4 mb-2">
           <MentionsInput
             onChange={e => {
-              handleFormChange(e)
+              handleFormChange(e);
             }}
             ref={containerRef}
             value={form.content_text}
@@ -1342,13 +1311,13 @@ const ModalMention: React.FC<props> = ({
           {renderDollarSuggestion()}
           {renderUserHashtags()}
         </div>
-      )
+      );
     } else {
       return (
         <>
           <MentionsInput
             onChange={e => {
-              handleFormChange(e)
+              handleFormChange(e);
             }}
             ref={containerRef}
             value={form.content_text}
@@ -1382,7 +1351,7 @@ const ModalMention: React.FC<props> = ({
             />
           </MentionsInput>
         </>
-      )
+      );
     }
   };
 
@@ -1449,8 +1418,8 @@ const ModalMention: React.FC<props> = ({
         <Dialog
           open={open}
           handler={() => {
-            setPages('text')
-            handleOpen()
+            setPages('text');
+            handleOpen();
             setForm({
               content_text: '',
               privacy: 'public',
@@ -1465,13 +1434,13 @@ const ModalMention: React.FC<props> = ({
               pie_amount: 0,
               pie: [],
               premium_fee: ''
-            })
-            setAudio(null)
-            setMedia([])
-            setDocument(null)
-            setHashtags([])
-            setSelectedAsset([])
-            setChartData(initialChartData)
+            });
+            setAudio(null);
+            setMedia([]);
+            setDocument(null);
+            setHashtags([]);
+            setSelectedAsset([]);
+            setChartData(initialChartData);
 
             setOtherTagList({
               peopleList: [],
@@ -1479,9 +1448,9 @@ const ModalMention: React.FC<props> = ({
               playList: [],
               quizList: [],
               teamBattle: []
-            })
-            setDollarLists([])
-            setHashtags([])
+            });
+            setDollarLists([]);
+            setHashtags([]);
           }}
           size="lg"
           className="max-w-full w-[90%] md:w-[50%] lg:w-[40%]"
@@ -1498,14 +1467,14 @@ const ModalMention: React.FC<props> = ({
                 message={errorMessage}
                 show={isError}
                 onClose={(): void => {
-                  setIsError(false)
+                  setIsError(false);
                 }}
               />
               {pages !== 'gif' && pages !== 'talk' && (
                 <div className="flex justify-between">
                   <div
                     onClick={() => {
-                      setPages('text')
+                      setPages('text');
                     }}
                     className="cursor-pointer"
                   >
@@ -1520,7 +1489,7 @@ const ModalMention: React.FC<props> = ({
                   <div
                     className="flex flex-col justify-start cursor-pointer"
                     onClick={() => {
-                      handleOpen()
+                      handleOpen();
                       setForm({
                         content_text: '',
                         privacy: 'public',
@@ -1535,22 +1504,22 @@ const ModalMention: React.FC<props> = ({
                         pie_amount: 0,
                         pie: [],
                         premium_fee: ''
-                      })
-                      setAudio(null)
-                      setMedia([])
-                      setDocument(null)
-                      setHashtags([])
-                      setSelectedAsset([])
-                      setChartData(initialChartData)
+                      });
+                      setAudio(null);
+                      setMedia([]);
+                      setDocument(null);
+                      setHashtags([]);
+                      setSelectedAsset([]);
+                      setChartData(initialChartData);
                       setOtherTagList({
                         peopleList: [],
                         circleList: [],
                         playList: [],
                         quizList: [],
                         teamBattle: []
-                      })
-                      setDollarLists([])
-                      setHashtags([])
+                      });
+                      setDollarLists([]);
+                      setHashtags([]);
                     }}
                   >
                     <Image src={XIcon} alt="close" width={30} height={30} />
@@ -1575,8 +1544,9 @@ const ModalMention: React.FC<props> = ({
                       pages !== 'talk' && (
                         <PDFViewer
                           file={document}
+                          mode="edit"
                           handleRemove={() => {
-                            setDocument(null)
+                            setDocument(null);
                           }}
                         />
                       )}
@@ -1600,8 +1570,10 @@ const ModalMention: React.FC<props> = ({
                                       const newMedia = media.filter(
                                         (element, index) =>
                                           index !== i ? element : null
-                                      )
-                                      setMedia(media.length > 1 ? newMedia : [])
+                                      );
+                                      setMedia(
+                                        media.length > 1 ? newMedia : []
+                                      );
                                     }}
                                   >
                                     <IoCloseOutline
@@ -1630,8 +1602,10 @@ const ModalMention: React.FC<props> = ({
                                       const newMedia = media.filter(
                                         (element, index) =>
                                           index !== i ? element : null
-                                      )
-                                      setMedia(media.length > 1 ? newMedia : [])
+                                      );
+                                      setMedia(
+                                        media.length > 1 ? newMedia : []
+                                      );
                                     }}
                                   >
                                     <IoCloseOutline
@@ -1671,21 +1645,21 @@ const ModalMention: React.FC<props> = ({
                                     const newMedia = form.media_urls.filter(
                                       (element, index) => {
                                         if (index !== i) {
-                                          return element
+                                          return element;
                                         }
-                                        return null
+                                        return null;
                                       }
-                                    )
+                                    );
                                     if (form.media_urls.length > 1) {
                                       setForm(prevState => ({
                                         ...prevState,
                                         media_urls: newMedia
-                                      }))
+                                      }));
                                     } else {
                                       setForm(prevState => ({
                                         ...prevState,
                                         media_urls: []
-                                      }))
+                                      }));
                                     }
                                   }}
                                 >
@@ -1702,7 +1676,7 @@ const ModalMention: React.FC<props> = ({
                                 className="h-[230px] w-[230px] object-cover rounded-2xl"
                               />
                             </div>
-                          )
+                          );
                         })}
                     </div>
                   </div>
@@ -1715,7 +1689,7 @@ const ModalMention: React.FC<props> = ({
                         >
                           {el.content_text}
                         </div>
-                      )
+                      );
                     })
                   ) : (
                     <></>
@@ -1776,14 +1750,14 @@ const ModalMention: React.FC<props> = ({
                         message={errorMessage}
                         show={isError}
                         onClose={(): void => {
-                          setIsError(false)
+                          setIsError(false);
                         }}
                       />
                       {pages !== 'gif' && (
                         <div className="flex justify-between">
                           <div
                             onClick={() => {
-                              setPages('text')
+                              setPages('text');
                             }}
                             className="cursor-pointer"
                           >
@@ -1798,7 +1772,7 @@ const ModalMention: React.FC<props> = ({
                           <div
                             className="flex flex-col justify-start cursor-pointer"
                             onClick={() => {
-                              handleOpen()
+                              handleOpen();
                               setForm({
                                 content_text: '',
                                 privacy: 'public',
@@ -1813,22 +1787,22 @@ const ModalMention: React.FC<props> = ({
                                 pie_amount: 0,
                                 pie: [],
                                 premium_fee: ''
-                              })
-                              setAudio(null)
-                              setMedia([])
-                              setDocument(null)
-                              setHashtags([])
-                              setSelectedAsset([])
-                              setChartData(initialChartData)
+                              });
+                              setAudio(null);
+                              setMedia([]);
+                              setDocument(null);
+                              setHashtags([]);
+                              setSelectedAsset([]);
+                              setChartData(initialChartData);
                               setOtherTagList({
                                 peopleList: [],
                                 circleList: [],
                                 playList: [],
                                 quizList: [],
                                 teamBattle: []
-                              })
-                              setDollarLists([])
-                              setHashtags([])
+                              });
+                              setDollarLists([]);
+                              setHashtags([]);
                             }}
                           >
                             <div className="flex gap-2">
@@ -1869,7 +1843,9 @@ const ModalMention: React.FC<props> = ({
                           <div className="flex justify-center">
                             {document !== undefined &&
                               document !== null &&
-                              pages !== 'gif' && <PDFViewer file={document} />}
+                              pages !== 'gif' && (
+                                <PDFViewer mode="edit" file={document} />
+                              )}
                           </div>
 
                           <div className="flex items-center w-full">
@@ -1890,10 +1866,10 @@ const ModalMention: React.FC<props> = ({
                                               const newMedia = media.filter(
                                                 (element, index) =>
                                                   index !== i ? element : null
-                                              )
+                                              );
                                               setMedia(
                                                 media.length > 1 ? newMedia : []
-                                              )
+                                              );
                                             }}
                                           >
                                             <IoCloseOutline
@@ -1921,10 +1897,10 @@ const ModalMention: React.FC<props> = ({
                                               const newMedia = media.filter(
                                                 (element, index) =>
                                                   index !== i ? element : null
-                                              )
+                                              );
                                               setMedia(
                                                 media.length > 1 ? newMedia : []
-                                              )
+                                              );
                                             }}
                                           >
                                             <IoCloseOutline
@@ -1964,21 +1940,21 @@ const ModalMention: React.FC<props> = ({
                                               form.media_urls.filter(
                                                 (element, index) => {
                                                   if (index !== i) {
-                                                    return element
+                                                    return element;
                                                   }
-                                                  return null
+                                                  return null;
                                                 }
-                                              )
+                                              );
                                             if (form.media_urls.length > 1) {
                                               setForm(prevState => ({
                                                 ...prevState,
                                                 media_urls: newMedia
-                                              }))
+                                              }));
                                             } else {
                                               setForm(prevState => ({
                                                 ...prevState,
                                                 media_urls: []
-                                              }))
+                                              }));
                                             }
                                           }}
                                         >
@@ -1995,7 +1971,7 @@ const ModalMention: React.FC<props> = ({
                                         className="h-full w-full object-cover rounded-2xl"
                                       />
                                     </div>
-                                  )
+                                  );
                                 })}
                             </div>
                           </div>
@@ -2009,7 +1985,7 @@ const ModalMention: React.FC<props> = ({
                                 >
                                   {el.content_text}
                                 </div>
-                              )
+                              );
                             })
                           ) : (
                             <></>
@@ -2141,7 +2117,7 @@ const ModalMention: React.FC<props> = ({
         </>
       )}
     </>
-  )
+  );
 };
 
 export default ModalMention;

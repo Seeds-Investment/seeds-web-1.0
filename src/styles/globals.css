@@ -39,8 +39,8 @@ code {
     monospace;
 }
 
-div:has(> div > .DialogNft){
-   z-index: 60 !important;
+div:has(> div > .DialogNft) {
+  z-index: 60 !important;
 }
 
 /* Start Scrollbar */
@@ -247,7 +247,7 @@ div:has(> div > .DialogNft){
 }
 
 .widthPDF {
-  width: calc(100vw - 200px);
+  width: calc(100vw - 10%);
 }
 
 .MentionInputTextArea textarea {
@@ -368,4 +368,37 @@ li {
   scrollbar-color: #7555da #ffffff;
 }
 
+.custom-danamart-slider .slick-slide {
+  margin: 0 0px;
+  padding: 0 8px;
+}
+.custom-danamart-slider .slick-list {
+  margin: 0 -4px;
+  height: fit-content;
+}
 
+/* scrollbar-hide */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+/* spinner control */
+
+/* Remove spinner for Chrome, Safari, Edge */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove spinner for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

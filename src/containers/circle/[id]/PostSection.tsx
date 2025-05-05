@@ -30,6 +30,7 @@ import { getQuizById } from '@/repository/quiz.repository';
 import { getBattleDetail } from '@/repository/team-battle.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
+import { type UserInfoI } from '@/utils/interfaces/social.interfaces';
 import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import moment from 'moment';
@@ -60,7 +61,7 @@ import PDFViewer from './PDFViewer';
 interface props {
   dataPost: any;
   setData: any;
-  userInfo: UserData;
+  userInfo: UserInfoI;
   handleSubmitBlockUser?: any;
   myInfo?: any;
 }
@@ -71,20 +72,6 @@ interface ChartData {
     data: number[];
     backgroundColor: string[];
   }>;
-}
-
-interface UserData {
-  id: string;
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  phone: string;
-  _pin: string;
-  preferredCurrency: string;
 }
 
 interface ShareData {
@@ -584,21 +571,6 @@ const PostSection: React.FC<props> = ({
     }
   }, []);
 
-  function formatTime(inputDateString: any): string {
-    const date = new Date(inputDateString);
-    date.setUTCHours(date.getUTCHours() + 7);
-    let hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-
-    let ampm = 'AM';
-    if (hours >= 12) {
-      ampm = 'PM';
-      if (hours > 12) hours -= 12;
-    }
-    if (hours === 0) hours = 12;
-    return `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
-  }
-
   const media: string[] = [];
   const document: string[] = [];
   const voice: string[] = [];
@@ -881,28 +853,34 @@ const PostSection: React.FC<props> = ({
                 <div className="w-full">
                   <div className="flex justify-between h-full">
                     <div className="flex items-center h-full  gap-2">
-                        <Typography
+                      <Typography
                         className="font-bold text-black md:text-lg cursor-pointer"
                         onClick={async () => {
                           isGuest()
-                          ? await router.push('/auth')
-                          : dataPost.user_id === userInfo.id
-                          ? await router.push('/my-profile')
-                          : await router.push(
-                            `/social/${dataPost.user_id as string}`
-                            );
+                            ? await router.push('/auth')
+                            : dataPost.user_id === userInfo.id
+                            ? await router.push('/my-profile')
+                            : await router.push(
+                                `/social/${dataPost.user_id as string}`
+                              );
                         }}
-                        >
+                      >
                         {dataPost.owner !== undefined
                           ? dataPost.owner.seeds_tag !== undefined
-                          ? dataPost.owner.seeds_tag.length > 15
-                            ? `${String(dataPost.owner.seeds_tag).substring(0, 15)}...`
-                            : String(dataPost.owner.seeds_tag)
-                          : String(dataPost.owner.username).length > 15
-                          ? `${String(dataPost.owner.username).substring(0, 15)}...`
-                          : String(dataPost.owner.username)
+                            ? dataPost.owner.seeds_tag.length > 15
+                              ? `${String(dataPost.owner.seeds_tag).substring(
+                                  0,
+                                  15
+                                )}...`
+                              : String(dataPost.owner.seeds_tag)
+                            : String(dataPost.owner.username).length > 15
+                            ? `${String(dataPost.owner.username).substring(
+                                0,
+                                15
+                              )}...`
+                            : String(dataPost.owner.username)
                           : null}
-                        </Typography>
+                      </Typography>
                       <Image src={Dot.src} alt={Dot.alt} width={5} height={5} />
                       <div className="flex gap-1 items-center text-gray-500">
                         <Typography className="text-xs md:text-sm">
@@ -962,7 +940,9 @@ const PostSection: React.FC<props> = ({
                   )}
                   {categorizeURL(dataPost.media_urls)}
                   {voice.length > 0 && <ShowAudioPlayer src={voice[0]} />}
-                  {document.length > 0 && <PDFViewer file={document[0]} />}
+                  {document.length > 0 && (
+                    <PDFViewer mode="view" file={document[0]} />
+                  )}
                   {media.length > 0 && <ImageCarousel images={media} />}
                   {dataPost.pollings?.length > 0 && (
                     <PollingView
@@ -987,7 +967,9 @@ const PostSection: React.FC<props> = ({
                   )}
                   {categorizeURL(dataPost.media_urls)}
                   {voice.length > 0 && <ShowAudioPlayer src={voice[0]} />}
-                  {document.length > 0 && <PDFViewer file={document[0]} />}
+                  {document.length > 0 && (
+                    <PDFViewer mode="view" file={document[0]} />
+                  )}
                   {media.length > 0 && <ImageCarousel images={media} />}
                   {dataPost.pollings?.length > 0 && (
                     <PollingView
@@ -1290,7 +1272,7 @@ const PostSection: React.FC<props> = ({
                                 <div className="flex justify-center items-center text-xs font-semibold">
                                   {item?.admission_fee !== 0
                                     ? `${
-                                        userInfo?.preferredCurrency
+                                        userInfo?.preferredCurrency ?? 'IDR'
                                       }${standartCurrency(
                                         item?.admission_fee ?? 0
                                       ).replace('Rp', '')}`

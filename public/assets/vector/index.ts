@@ -7,6 +7,7 @@ export { default as ArrowRightCollapseIcon } from 'public/assets/vector/arrow-ri
 export { default as ArrowRight } from 'public/assets/vector/arrow-right.svg';
 export { default as ArrowTailessDown } from 'public/assets/vector/arrow-tailess-down.svg';
 export { default as ArrowTailessUp } from 'public/assets/vector/arrow-tailess-up.svg';
+export { default as ArrowTaillessLeft } from 'public/assets/vector/arrow-tailless-left.svg';
 export { default as ArrowTaillessRight } from 'public/assets/vector/arrow-tailless-right.svg';
 export { default as ArrowUp } from 'public/assets/vector/arrow-up.svg';
 export { default as Arrow } from 'public/assets/vector/arrow.svg';
@@ -96,5 +97,6 @@ export { default as UserIcon } from 'public/assets/vector/user.svg';
 export { default as Verified } from 'public/assets/vector/verified.svg';
 export { default as VoucherInvalid } from 'public/assets/vector/voucher-invalid.svg';
 export { default as Voucher } from 'public/assets/vector/voucher.svg';
+export { default as WarningGreenIcon } from 'public/assets/vector/warning-green.svg';
 export { default as XIconWhite } from 'public/assets/vector/x-icon-white.svg';
 export { default as XIcon } from 'public/assets/vector/x.svg';

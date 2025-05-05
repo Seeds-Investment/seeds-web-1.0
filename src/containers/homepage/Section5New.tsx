@@ -1,4 +1,3 @@
-import withAuth from '@/helpers/withAuth';
 import { type CircleInterface } from '@/pages/connect';
 import { getCircle } from '@/repository/circle.repository';
 import { getBanner } from '@/repository/discover.repository';
@@ -230,4 +229,4 @@ const Section5New: React.FC = () => {
   );
 };
 
-export default withAuth(Section5New);
+export default Section5New;

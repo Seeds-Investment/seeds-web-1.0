@@ -2,7 +2,7 @@ import baseAxios from '@/utils/common/axios';
 
 const promoService = baseAxios(
   `${
-    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
   }/promo-code/v1/`
 );
 

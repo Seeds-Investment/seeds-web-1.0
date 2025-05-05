@@ -33,9 +33,6 @@ const GifPost: React.FC<props> = ({
     searchGif: ''
   });
   const [isLoading, setIsLoading] = useState(false);
-  const cancelHandler = (): void => {
-    setPages('text');
-  };
 
   const fetchGif = async (): Promise<void> => {
     try {

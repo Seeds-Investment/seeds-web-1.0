@@ -160,6 +160,7 @@ const AuthLayout: React.FC<IAuthLayout> = ({
       }
     } else {
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('accessToken-danamart');
     }
   }, []);
   return (

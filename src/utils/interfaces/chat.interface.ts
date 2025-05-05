@@ -7,17 +7,19 @@ export interface GetListChatParams {
 }
 
 export interface Chat {
-  id: string;
-  name: string;
-  avatar: string;
-  content_text: string;
-  status: boolean;
-  status_joined: boolean;
-  total_unread: number;
-  created_at: string;
-  accept_at: string;
-  read_at: string;
-  last_sender_id: string;
+  id: string
+  name: string
+  avatar: string
+  content_text: string
+  status: boolean
+  status_joined: boolean
+  total_unread: number
+  created_at: string
+  accept_at: string
+  read_at: string
+  last_sender_id: string
+  chat_mute_date: string
+  chat_mute_status: string
 }
 
 export interface IChatBubble {
@@ -91,6 +93,8 @@ export interface IGroupChatDetail {
   updated_at: string;
   total_memberships: number;
   total_online: number;
+  chat_mute_date: string;
+  chat_mute_status: string;
 }
 
 export const initialGroupDetail = {

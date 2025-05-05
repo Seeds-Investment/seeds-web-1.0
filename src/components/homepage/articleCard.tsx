@@ -28,7 +28,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   isRefetch
 }) => {
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance/';
   const [open, setOpen] = useState(false);
   const [formRequest] = useState<FormRequestInterface>(initialFormRequest);
 

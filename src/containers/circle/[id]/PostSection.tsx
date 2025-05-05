@@ -174,7 +174,7 @@ const PostSection: React.FC<props> = ({
     window.open(link, '_blank');
   };
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance/';
 
   const handleCopyClick = async (text: string): Promise<void> => {
     const textToCopy = `${baseUrl}/connect/comment/${text}`;
@@ -1472,7 +1472,7 @@ const PostSection: React.FC<props> = ({
                                   ? `${
                                       process.env.NEXT_PUBLIC_DOMAIN
                                     }/connect/comment/${dataPost.id as string}`
-                                  : `https://user-dev-gcp.seeds.finance/connect/comment/${
+                                  : `https://user-dev-ali.seeds.finance/connect/comment/${
                                       dataPost.id as string
                                     }`
                               }
@@ -1484,7 +1484,7 @@ const PostSection: React.FC<props> = ({
                                       }/connect/comment/${
                                         dataPost.id as string
                                       }`
-                                    : `https://user-dev-gcp.seeds.finance/connect/comment/${
+                                    : `https://user-dev-ali.seeds.finance/connect/comment/${
                                         dataPost.id as string
                                       }`
                                 ).catch((err: any) => {
@@ -1509,7 +1509,7 @@ const PostSection: React.FC<props> = ({
                                           }/connect/comment/${
                                             dataPost.id as string
                                           }`
-                                        : `https://user-dev-gcp.seeds.finance/connect/comment/${
+                                        : `https://user-dev-ali.seeds.finance/connect/comment/${
                                             dataPost.id as string
                                           }`
                                     ).catch((err: any) => {
@@ -1547,7 +1547,7 @@ const PostSection: React.FC<props> = ({
                                           }/connect/comment/${
                                             dataPost.id as string
                                           }`
-                                        : `https://user-dev-gcp.seeds.finance/connect/comment/${
+                                        : `https://user-dev-ali.seeds.finance/connect/comment/${
                                             dataPost.id as string
                                           }`
                                     ).catch((err: any) => {

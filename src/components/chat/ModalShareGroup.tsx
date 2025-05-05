@@ -17,7 +17,7 @@ interface Props {
 const ModalShareGroup: React.FC<Props> = ({ onClose, groupId }) => {
   const { t } = useTranslation();
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance';
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     const textToCopy = `${baseUrl}/chat/group/${groupId}`;

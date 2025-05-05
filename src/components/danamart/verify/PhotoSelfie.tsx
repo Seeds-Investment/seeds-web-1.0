@@ -13,6 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { FiInfo } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import CameraSelfie from './CameraSelfie';
+import ModalElectronicCertificate from './ModalElectronicCertificate';
 
 interface Props {
   step: number;
@@ -28,6 +29,7 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
   const [imageData, setImageData] = useState<string>('');
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [isLoadingPostPhoto, setIsLoadingPostPhoto] = useState<boolean>(false);
+  const [isShowCertificate, setIsShowCertificate] = useState<boolean>(false);
 
   const toggleSwitch = (): void => {
     setIsChecked(prev => !prev);
@@ -80,13 +82,18 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
       {isLoadingPostPhoto && <Loading />}
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 relative group">
             <Typography className="font-poppins font-semibold text-base text-[#3ac4a0]">
               {isUsePhoto
                 ? t('danamart.verification.photoSelfie.previewSelfie')
                 : t('danamart.verification.photoSelfieTittle')}
             </Typography>
-            <FiInfo color="#3ac4a0" size={16} />
+            <div className="relative">
+              <FiInfo color="#3ac4a0" size={16} className="cursor-pointer" />
+              <Typography className="absolute left-1/2 -translate-x-1/2 top-6 z-10 hidden group-hover:block w-[240px] p-2 text-sm text-white bg-gray-800 rounded shadow-md font-poppins">
+                {t('danamart.verification.photoSelfie.popUpLabel.title')}
+              </Typography>
+            </div>
           </div>
           <div
             className={`flex justify-center items-center bg-[#F9F9F9] border-[1px] border-[#E9E9E9] rounded-lg p-5 w-full ${
@@ -147,11 +154,16 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 relative group">
             <Typography className="font-poppins font-semibold text-base text-[#262626]">
               {t('danamart.verification.photoSelfie.requirements')}
             </Typography>
-            <FiInfo color="#3ac4a0" size={16} />
+            <div className="relative">
+              <FiInfo color="#3ac4a0" size={16} className="cursor-pointer" />
+              <Typography className="absolute left-1/2 -translate-x-1/2 top-6 z-10 hidden group-hover:block w-[240px] p-2 text-sm text-white bg-gray-800 rounded shadow-md font-poppins">
+                {t('danamart.verification.photoSelfie.popUpLabel.reason')}
+              </Typography>
+            </div>
           </div>
           <ul>
             {[1, 2, 3, 4].map(number => (
@@ -164,6 +176,12 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
             ))}
           </ul>
         </div>
+        <Typography
+          onClick={() => { setIsShowCertificate(true); }}
+          className="font-poppins font-semibold text-base text-seeds-button-green cursor-pointer"
+        >
+          {t('danamart.verification.photoSelfie.popUpLabel.statement.read')}
+        </Typography>
         <div className="flex items-center gap-2">
           <button
             onClick={toggleSwitch}
@@ -234,6 +252,11 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
             </Button>
           )}
         </div>
+        {isShowCertificate && (
+          <ModalElectronicCertificate
+            setIsShowCertificate={setIsShowCertificate}
+          />
+        )}
       </div>
     </>
   );

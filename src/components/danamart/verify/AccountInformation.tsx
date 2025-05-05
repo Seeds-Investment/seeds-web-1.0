@@ -156,12 +156,18 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
         <Typography className="font-poppins font-semibold text-xl text-seeds-button-green">
           {t(`${pathTranslation}.accountInformationTitle`)}
         </Typography>
-        <Image
-          src={WarningGreenIcon}
-          alt="WarningGreenIcon"
-          width={20}
-          height={20}
-        />
+        <div className="relative group flex items-center">
+          <Image
+            src={WarningGreenIcon}
+            alt="WarningGreenIcon"
+            width={20}
+            height={20}
+            className="cursor-pointer"
+          />
+          <Typography className="absolute z-10 left-1/2 -translate-x-1/2 top-full mt-2 w-56 p-2 text-sm text-white bg-gray-800 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity font-poppins">
+            {t(`${pathTranslation}.popUpInformation`)}
+          </Typography>
+        </div>
       </div>
       <div className="w-full flex gap-2 mt-4">
         <MInput
@@ -328,12 +334,19 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
         <Typography className="font-poppins font-semibold text-xl text-seeds-button-green">
           {t(`${pathTranslation}.address`)}
         </Typography>
-        <Image
-          src={WarningGreenIcon}
-          alt="WarningGreenIcon"
-          width={20}
-          height={20}
-        />
+
+        <div className="relative group">
+          <Image
+            src={WarningGreenIcon}
+            alt="WarningGreenIcon"
+            width={20}
+            height={20}
+            className="cursor-pointer"
+          />
+          <Typography className="absolute z-10 left-1/2 -translate-x-1/2 top-full mt-2 w-56 p-2 text-sm text-white bg-gray-800 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity font-poppins">
+            {t(`${pathTranslation}.popUpAddress`)}
+          </Typography>
+        </div>
       </div>
       <div className="w-full flex gap-2 mt-4">
         <MInput
@@ -410,12 +423,11 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
         <MInput
           label={t(`${pathTranslation}.text38`)}
           registerName="dm_penmit_01033"
-          type="long-number"
+          register={register}
+          type="text"
           errors={errors}
           placeholder={t(`${pathTranslation}.text39`)}
-          control={control}
-          watch={watch}
-          maxLength={3}
+          className="rounded-lg px-3 border border-[#BDBDBD]"
         />
         <MInput
           label={t(`${pathTranslation}.text40`)}
@@ -437,16 +449,22 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
         />
       </div>
       <div className="w-full flex flex-col justify-start items-center gap-2 mt-4">
-        <div className="w-full flex justify-start items-center gap-2 mt-4">
+        <div className="w-full flex justify-start items-center gap-2 mt-4 relative group">
           <Typography className="font-poppins font-semibold text-xl text-seeds-button-green">
             {t(`${pathTranslation}.text44`)}
           </Typography>
-          <Image
-            src={WarningGreenIcon}
-            alt="WarningGreenIcon"
-            width={20}
-            height={20}
-          />
+          <div className="relative">
+            <Image
+              src={WarningGreenIcon}
+              alt="WarningGreenIcon"
+              width={20}
+              height={20}
+              className="cursor-pointer"
+            />
+            <Typography className="absolute z-10 left-[150px] -translate-x-1/2 -translate-y-[60px] top-full mt-2 w-56 p-2 text-sm text-white bg-gray-800 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity font-poppins">
+              {t(`${pathTranslation}.popUpValidity`)}
+            </Typography>
+          </div>
         </div>
         <div className="w-full flex justify-start items-end gap-2">
           <div className="w-auto">
@@ -471,6 +489,8 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
             type="date"
             errors={errors}
             className="rounded-lg px-3 border border-[#BDBDBD]"
+            tooltip={true}
+            tooltipContent={t(`${pathTranslation}.popUpValidityDate`)}
           />
         )}
       </div>
@@ -486,6 +506,8 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           errors={errors}
           placeholder={t(`${pathTranslation}.text47`)}
           className="rounded-lg px-3 border border-[#BDBDBD]"
+          tooltip={true}
+          tooltipContent={t(`${pathTranslation}.popUpMotherName`)}
         />
         <MInput
           label={t(`${pathTranslation}.text48`)}
@@ -495,6 +517,8 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           errors={errors}
           placeholder={t(`${pathTranslation}.text49`)}
           className="rounded-lg px-3 border border-[#BDBDBD]"
+          tooltip={true}
+          tooltipContent={t(`${pathTranslation}.popUpBeneficiary`)}
         />
       </div>
       <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
@@ -506,6 +530,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           placeholder={t(`${pathTranslation}.text51`)}
           control={control}
           watch={watch}
+          minLength={7}
         />
         <MInput
           label={t(`${pathTranslation}.text52`)}
@@ -592,7 +617,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
                     <div className="flex gap-2 bg-[#E5EDFC] py-2 px-3 w-fit rounded-md">
                       <IoDocumentTextOutline className="w-6 h-6 flex-shrink-0 text-seeds-button-green" />
                       <Typography className="font-poppins font-medium text-seeds-button-green">
-                        Preview document
+                        {t(`${pathTranslation}.previewDocument`)}
                       </Typography>
                     </div>
                   </a>
@@ -614,11 +639,12 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
         className="w-full text-base font-semibold bg-seeds-button-green mt-6 rounded-full capitalize"
         disabled={watch('pernyataan') !== '1'}
         onClick={() => {
-          handleSubmit((data: UserInfoFormData) => {
-            onSubmit(data).then(() => {
+          handleSubmit(async (data: UserInfoFormData) => {
+            try {
+              await onSubmit(data);
               setStep(step + 1);
               isUploading(!uploading);
-            });
+            } catch {}
           })();
         }}
       >

@@ -122,32 +122,32 @@ export const useReligion = (): ILabel[] => {
     {
       key: 1,
       label: t(`${pathTranslation}.religion.text1`),
-      value: 'Islam'
+      value: 'ISLAM'
     },
     {
       key: 2,
       label: t(`${pathTranslation}.religion.text2`),
-      value: 'Katolik'
+      value: 'KATOLIK'
     },
     {
       key: 3,
       label: t(`${pathTranslation}.religion.text3`),
-      value: 'Protestan'
+      value: 'PROTESTAN'
     },
     {
       key: 4,
       label: t(`${pathTranslation}.religion.text4`),
-      value: 'Hindu'
+      value: 'HINDU'
     },
     {
       key: 5,
       label: t(`${pathTranslation}.religion.text5`),
-      value: 'Budha'
+      value: 'BUDHA'
     },
     {
       key: 6,
       label: t(`${pathTranslation}.religion.text6`),
-      value: 'Konghucu'
+      value: 'KONGHUCU'
     }
   ];
 };
@@ -212,7 +212,7 @@ export const useWorkingLength = (): ILabel[] => {
     },
     {
       key: 3,
-      label: `2 - 2 ${t(`${pathTranslation}.workingLength.text2`)}`,
+      label: `2 - 3 ${t(`${pathTranslation}.workingLength.text2`)}`,
       value: '2 - 3 years'
     },
     {

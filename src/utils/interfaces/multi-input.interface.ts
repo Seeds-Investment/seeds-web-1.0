@@ -24,6 +24,10 @@ interface CommonProps<T extends FieldValues> {
   label?: string;
   errors?: FieldErrors<T>;
   extraElement?: React.ReactNode;
+  tooltip?: boolean;
+  tooltipContent?: string;
+  clickAction?: boolean;
+  onIconClick?: () => void;
 }
 
 interface CommonIProps<T extends FieldValues> extends CommonProps<T> {
@@ -103,6 +107,7 @@ interface LongNumberIProps<T extends FieldValues> extends CommonProps<T> {
   disabled?: boolean;
   placeholder?: string;
   maxLength?: number;
+  minLength?: number;
   extraClasses?: string;
 }
 

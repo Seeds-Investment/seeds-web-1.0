@@ -3,6 +3,8 @@ import {
   type MultiProps,
   type Option
 } from '@/utils/interfaces/multi-input.interface';
+import Image from 'next/image';
+import { WarningGreenIcon } from 'public/assets/vector';
 import { useState, type ChangeEvent } from 'react';
 import CurrencyInput from 'react-currency-input-field';
 import { FileInput, Toggle } from 'react-daisyui';
@@ -21,24 +23,54 @@ const getNestedValue = (obj: any, path: string) => {
   return path.split('.').reduce((o, i) => (o ? o[i] : undefined), obj);
 };
 
+const Tooltip = ({ content }: { content: string }): JSX.Element => (
+  <div className="font-poppins absolute z-10 top-full left-0 mt-1 w-max max-w-xs p-2 bg-gray-800 text-white text-sm rounded shadow-lg">
+    {content}
+  </div>
+);
+
 export default function MInput<T extends FieldValues>(
   props: MultiProps<T>
 ): JSX.Element {
-  const { label, registerName, errors, extraElement } = props;
+  const { label, registerName, errors, extraElement, tooltip, clickAction, onIconClick } = props;
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+
+  const handleClick = (): void => {
+    if (clickAction && typeof onIconClick === 'function') {
+      onIconClick();
+    }
+  };
 
   return (
     <div className="flex flex-col gap-2 w-full">
       {label !== null && (
-        <label
-          className={`font-semibold font-poppins text-base text-[#262626] ${
-            props.type === 'radio' || props.type === 'checkbox'
-              ? ''
-              : 'cursor-pointer'
-          }`}
-          htmlFor={`${registerName}-label`}
-        >
-          {label}
-        </label>
+        <div className="relative w-fit">
+          <label
+            className={`flex gap-2 font-semibold font-poppins text-base text-[#262626] ${
+              props.type === 'radio' || props.type === 'checkbox'
+                ? ''
+                : 'cursor-pointer'
+            }`}
+            htmlFor={`${registerName}-label`}
+          >
+            {label}
+            {tooltip && (
+              <Image
+                src={WarningGreenIcon}
+                alt="WarningGreenIcon"
+                width={20}
+                height={20}
+                className="cursor-pointer"
+                onMouseEnter={() => { setShowPopup(true); }}
+                onMouseLeave={() => { setShowPopup(false); }}
+                onClick={handleClick}
+              />
+            )}
+          </label>
+          {showPopup && tooltip && (
+            <Tooltip content={props.tooltipContent ?? 'This is a tooltip'} />
+          )}
+        </div>
       )}
       <CommonInput {...props} />
       <NumberInput {...props} />
@@ -151,6 +183,7 @@ const LongNumberInput = <T extends FieldValues>(
             }
           }}
           maxLength={props.maxLength ?? 16}
+          minLength={props.minLength ?? 0}
           placeholder={props.placeholder ?? 'Enter a 16-digit number'}
           disabled={props.disabled}
           className={`w-full py-[11px] font-normal text-base text-[#201B1C] border border-[#BDBDBD] rounded-lg px-3 font-poppins ${

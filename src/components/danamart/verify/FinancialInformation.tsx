@@ -22,7 +22,9 @@ import React, { useEffect, useState } from 'react';
 import { FaRegCheckCircle, FaRegTrashAlt } from 'react-icons/fa';
 import { IoDocumentTextOutline } from 'react-icons/io5';
 import { toast } from 'react-toastify';
+import ModalAccessCardInformation from './ModalAccessCardInformation';
 import ModalConfirmationForm from './ModalConfirmationForm';
+import ModalMonthlyIncomeInformation from './ModalMonthlyIncomeInformation';
 
 interface FinancialInformationProps {
   step: number;
@@ -39,6 +41,8 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
     useState<AccountVerification>();
   const [isSwitchActive, setIsSwitchActive] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [isShowMonthlyIncomeInfo, setIsShowMonthlyIncomeInfo] = useState<boolean>(false);
+  const [isShowAccessCardInfo, setIsShowAccessCardInfo] = useState<boolean>(false);
 
   const gender = useGender();
   const income = useIncome();
@@ -169,15 +173,20 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
     }
   };
 
-  const handleAssignImage = async (filename: string): Promise<File> => {
+  const handleAssignImage = async (filename: string): Promise<File | null> => {
+    if (filename === '') {
+      return null;
+    }
+
     const fileUrl = `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${filename}`;
     const response = await fetch(fileUrl);
     if (!response.ok) {
       throw new Error('Failed to fetch file');
     }
+
     const blob = await response.blob();
     return new File([blob], filename, { type: blob.type });
-  }
+  };
 
   const handleRemoveAccessCard = async(): Promise<void> => {
     setPreviewUrlfileKartuAkses(null)
@@ -260,12 +269,6 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
         <Typography className="font-poppins font-semibold md:text-xl text-base text-seeds-button-green">
           {t('danamart.verification.financial.income')}
         </Typography>
-        <Image
-          src={WarningGreenIcon}
-          alt="WarningGreenIcon"
-          width={20}
-          height={20}
-        />
       </div>
       <div className="w-full flex flex-wrap md:flex-nowrap items-center gap-2">
         <MInput
@@ -287,6 +290,10 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
           errors={errors}
           prefix="Rp"
           placeholder="Rp"
+          tooltip={true}
+          tooltipContent={t('danamart.verification.financial.popUpLabel.clickForMore')}
+          clickAction={true}
+          onIconClick={() => { setIsShowMonthlyIncomeInfo(true); }}
         />
       </div>
       <div className="w-full flex items-center flex-wrap md:flex-nowrap gap-4">
@@ -349,12 +356,18 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
         <Typography className="font-poppins font-semibold md:text-xl text-base text-seeds-button-green">
           {t('danamart.verification.financial.sidInformation')}
         </Typography>
-        <Image
-          src={WarningGreenIcon}
-          alt="WarningGreenIcon"
-          width={20}
-          height={20}
-        />
+        <div className="relative group">
+          <Image
+            src={WarningGreenIcon}
+            alt="WarningGreenIcon"
+            width={20}
+            height={20}
+            className="cursor-pointer"
+          />
+          <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 p-3 text-sm text-white bg-gray-800 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 font-poppins">
+            {t('danamart.verification.financial.popUpLabel.sidInformation')}
+          </div>
+        </div>
       </div>
       <div
         className={
@@ -409,6 +422,10 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
                 fileType=".jpg,.jpeg"
                 errors={errors}
                 extraClasses="border border-[#BDBDBD] rounded-lg p-2 w-full"
+                tooltip={true}
+                tooltipContent={t('danamart.verification.financial.popUpLabel.clickForMore')}
+                clickAction={true}
+                onIconClick={() => { setIsShowAccessCardInfo(true); }}
               />
               {(
                 (previewUrlfileKartuAkses !== null) && (previewUrlfileKartuAkses !== undefined) || 
@@ -429,7 +446,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
                       <div className="flex gap-2 bg-[#E5EDFC] py-2 px-3 w-fit rounded-md">
                         <IoDocumentTextOutline className="w-6 h-6 flex-shrink-0 text-seeds-button-green" />
                         <Typography className="font-poppins font-medium text-seeds-button-green">
-                          Preview document
+                          {t('danamart.verification.financial.previewDocument')}
                         </Typography>
                       </div>
                     </a>
@@ -527,7 +544,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
                       <div className="flex gap-2 bg-[#E5EDFC] py-2 px-3 w-fit rounded-md">
                         <IoDocumentTextOutline className="w-6 h-6 flex-shrink-0 text-seeds-button-green" />
                         <Typography className="font-poppins font-medium text-seeds-button-green">
-                          Preview document
+                          {t('danamart.verification.financial.previewDocument')}
                         </Typography>
                       </div>
                     </a>
@@ -620,7 +637,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
               register={register}
               errors={errors}
               className="px-4 font-normal text-base text-[#201B1C] border border-[#BDBDBD] rounded-lg"
-              placeholder="John Doi"
+              placeholder="John Doe"
             />
           </div>
           <div className="w-full flex flex-wrap md:flex-nowrap gap-2">
@@ -750,7 +767,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
                           <div className="flex gap-2 bg-[#E5EDFC] py-2 px-3 w-fit rounded-md">
                             <IoDocumentTextOutline className="w-6 h-6 flex-shrink-0 text-seeds-button-green" />
                             <Typography className="font-poppins font-medium text-seeds-button-green">
-                              Preview document
+                              {t('danamart.verification.financial.previewDocument')}
                             </Typography>
                           </div>
                         </a>
@@ -866,6 +883,16 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
             handleModalResponse(false);
           }}
           t={t}
+        />
+      )}
+      {isShowMonthlyIncomeInfo && (
+        <ModalMonthlyIncomeInformation
+          setIsShowMonthlyIncomeInfo={setIsShowMonthlyIncomeInfo}
+        />
+      )}
+      {isShowAccessCardInfo && (
+        <ModalAccessCardInformation
+          setIsShowAccessCardInfo={setIsShowAccessCardInfo}
         />
       )}
     </div>

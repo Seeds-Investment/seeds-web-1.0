@@ -1,3 +1,4 @@
+export { default as AccessCard } from './AKSes-SID.png';
 export { default as ArrowTailRightGreen } from './arrow-tail-right-green.svg';
 export { default as BankBRI } from './bank-bri.svg';
 export { default as BankBCA } from './bank_bca.svg';
@@ -12,6 +13,7 @@ export { default as CardUser } from './card-user.svg';
 export { default as Clock } from './clock.svg';
 export { default as DanamartLogo } from './danamart-logo.png';
 export { default as DownloadIcon } from './download-icon.svg';
+export { default as LandscapeInformation } from './guideKtp_new.png';
 export { default as NoData } from './noData.svg';
 export { default as ArrowLeftPaginationGray } from './pagination-left-gray.svg';
 export { default as ArrowLeftPaginationGreen } from './pagination-left-green.svg';

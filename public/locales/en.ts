@@ -3289,6 +3289,7 @@ export default {
         camera: 'Camera',
         retake: 'Retake',
         cancel: 'Cancel',
+        delete: 'Delete',
         continue: 'Continue',
         requirements: 'Selfie photo upload requirements',
         requirements1: 'Take photos directly using the camera.',
@@ -3296,7 +3297,9 @@ export default {
           'Make sure your face is visible with sufficient lighting.',
         requirements3:
           'The facial area is clearly visible without using accessories such as glasses, masks, hats, etc.',
-        requirements4: 'No need to hold e-KTP or other objects.'
+        requirements4: 'No need to hold e-KTP or other objects.',
+        success: 'Thank you for completing the Investor Application Form. Our team will verify your data.',
+        agreement: 'I agree with the statement regarding the selfie photo'
       },
       buttonSave: 'Save',
       buttonPrevious: 'Previous',

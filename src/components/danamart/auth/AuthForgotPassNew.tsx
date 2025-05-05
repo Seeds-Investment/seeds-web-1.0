@@ -62,7 +62,9 @@ const AuthForgotPassNew: React.FC<Props> = ({
     checkValidation(value);
 
     if (!regex.test(value)) {
-      setErrorPassMsg("Oops, password must be 8 characters long and have both uppercase and lowercase letters.");
+      setErrorPassMsg(
+        'Oops, password must be 8 characters long and have both uppercase and lowercase letters.'
+      );
     } else {
       setErrorPassMsg(null);
     }
@@ -73,9 +75,11 @@ const AuthForgotPassNew: React.FC<Props> = ({
     setFormDataNewPassword({ ...formDataNewPassword, [e.target.name]: value });
 
     if (!regex.test(value)) {
-      setErrorRepassMsg("Oops, password must be 8 characters long and have both uppercase and lowercase letters.");
+      setErrorRepassMsg(
+        'Oops, password must be 8 characters long and have both uppercase and lowercase letters.'
+      );
     } else if (value !== passwordTemp) {
-      setErrorRepassMsg("Oops, password doesn’t match.");
+      setErrorRepassMsg('Oops, password doesn’t match.');
     } else {
       setErrorRepassMsg(null);
     }
@@ -108,9 +112,11 @@ const AuthForgotPassNew: React.FC<Props> = ({
   useEffect(() => {
     if (formDataNewPassword.password) {
       if (!regex.test(formDataNewPassword.password)) {
-        setErrorRepassMsg("Oops, password must be 8 characters long and have both uppercase and lowercase letters.");
+        setErrorRepassMsg(
+          'Oops, password must be 8 characters long and have both uppercase and lowercase letters.'
+        );
       } else if (formDataNewPassword.password !== passwordTemp) {
-        setErrorRepassMsg("Oops, password doesn’t match.");
+        setErrorRepassMsg('Oops, password doesn’t match.');
       } else {
         setErrorRepassMsg(null);
       }
@@ -164,12 +170,11 @@ const AuthForgotPassNew: React.FC<Props> = ({
               }
             }}
           />
-          {
-            passwordTemp !== '' &&
-              <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-                {errorPassMsg ?? <br />}
-              </Typography>
-          }
+          {passwordTemp !== '' && (
+            <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
+              {errorPassMsg ?? <br />}
+            </Typography>
+          )}
         </div>
         <div className={`w-full ${errorPassMsg === null ? '' : 'mt-5'}`}>
           <AuthPassword
@@ -189,12 +194,11 @@ const AuthForgotPassNew: React.FC<Props> = ({
               }
             }}
           />
-          {
-            formDataNewPassword?.password !== '' &&
-              <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-                {errorRepassMsg ?? <br />}
-              </Typography>
-          }
+          {formDataNewPassword?.password !== '' && (
+            <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
+              {errorRepassMsg ?? <br />}
+            </Typography>
+          )}
         </div>
       </div>
       <div

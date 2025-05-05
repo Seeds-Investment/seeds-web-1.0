@@ -260,7 +260,7 @@ const SuccessPaymentPageQR: React.FC = () => {
               <Button
                 className="w-full md:w-[300px] text-sm font-semibold bg-seeds-button-green rounded-full capitalize mb-4"
                 onClick={async () => {
-                  await router.push(`/play/quiz/${orderDetail?.itemId}`);
+                  await router.push(`/play/tournament/${orderDetail?.itemId}`);
                 }}
               >
                 {t('bnc.repeat')}

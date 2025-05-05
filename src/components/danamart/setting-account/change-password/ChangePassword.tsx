@@ -1,24 +1,27 @@
-import { changePassword } from "@/repository/danamart/setting.repository";
-import { Button, Typography } from "@material-tailwind/react";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { FiEye, FiEyeOff } from "react-icons/fi";
-import { toast } from "react-toastify";
+import { changePassword } from '@/repository/danamart/setting.repository';
+import { Button, Typography } from '@material-tailwind/react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 const ChangePassword: React.FC = () => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.setting.changePassword';
 
-  const [oldPassword, setOldPassword] = useState<string>("");
+  const [oldPassword, setOldPassword] = useState<string>('');
   const [showOldPassword, setShowOldPassword] = useState<boolean>(false);
-  const [newPassword, setNewPassword] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>('');
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
-  const [confirmNewPassword, setConfirmNewPassword] = useState<string>("");
-  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState<boolean>(false);
+  const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
+  const [showConfirmNewPassword, setShowConfirmNewPassword] =
+    useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [oldPasswordError, setOldPasswordError] = useState<string | null>(null);
   const [newPasswordError, setNewPasswordError] = useState<string | null>(null);
-  const [confirmNewPasswordError, setConfirmNewPasswordError] = useState<string | null>(null);
+  const [confirmNewPasswordError, setConfirmNewPasswordError] = useState<
+    string | null
+  >(null);
 
   const toggleOldPasswordVisibility = (): void => {
     setShowOldPassword(!showOldPassword);
@@ -65,13 +68,16 @@ const ChangePassword: React.FC = () => {
 
       if (response?.status === 200) {
         toast.success(t(`${pathTranslation}.text6`));
-        setOldPassword('')
-        setNewPassword('')
-        setConfirmNewPassword('')
+        setOldPassword('');
+        setNewPassword('');
+        setConfirmNewPassword('');
       }
     } catch (error: any) {
-      if (error?.response?.data?.messages?.error === 'Password lama salah/tidak sesuai.') {
-        setOldPasswordError(t(`${pathTranslation}.text7`))
+      if (
+        error?.response?.data?.messages?.error ===
+        'Password lama salah/tidak sesuai.'
+      ) {
+        setOldPasswordError(t(`${pathTranslation}.text7`));
       } else {
         toast.error(`Error changing password: ${error as string}`);
       }
@@ -92,9 +98,11 @@ const ChangePassword: React.FC = () => {
           {t(`${pathTranslation}.text2`)}
         </label>
         <input
-          type={showOldPassword ? "text" : "password"}
+          type={showOldPassword ? 'text' : 'password'}
           value={oldPassword}
-          onChange={(e) => { setOldPassword(e.target.value); }}
+          onChange={e => {
+            setOldPassword(e.target.value);
+          }}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder={`${t(`${pathTranslation}.text10`)}`}
         />
@@ -103,10 +111,16 @@ const ChangePassword: React.FC = () => {
           onClick={toggleOldPasswordVisibility}
           className="absolute top-9 right-3 text-gray-500"
         >
-          {showOldPassword ? <FiEyeOff className="h-5 w-5 md:mr-2" /> : <FiEye className="h-5 w-5 md:mr-2" />}
+          {showOldPassword ? (
+            <FiEyeOff className="h-5 w-5 md:mr-2" />
+          ) : (
+            <FiEye className="h-5 w-5 md:mr-2" />
+          )}
         </button>
-        {(oldPasswordError !== null) && (
-          <p className="text-sm text-red-500 mt-1 font-poppins">{oldPasswordError}</p>
+        {oldPasswordError !== null && (
+          <p className="text-sm text-red-500 mt-1 font-poppins">
+            {oldPasswordError}
+          </p>
         )}
       </div>
 
@@ -117,9 +131,11 @@ const ChangePassword: React.FC = () => {
             {t(`${pathTranslation}.text3`)}
           </label>
           <input
-            type={showNewPassword ? "text" : "password"}
+            type={showNewPassword ? 'text' : 'password'}
             value={newPassword}
-            onChange={(e) => { setNewPassword(e.target.value); }}
+            onChange={e => {
+              setNewPassword(e.target.value);
+            }}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder={`${t(`${pathTranslation}.text11`)}`}
           />
@@ -128,10 +144,16 @@ const ChangePassword: React.FC = () => {
             onClick={toggleNewPasswordVisibility}
             className="absolute top-9 right-3 text-gray-500"
           >
-            {showNewPassword ? <FiEyeOff className="h-5 w-5" /> : <FiEye className="h-5 w-5" />}
+            {showNewPassword ? (
+              <FiEyeOff className="h-5 w-5" />
+            ) : (
+              <FiEye className="h-5 w-5" />
+            )}
           </button>
-          {(newPasswordError !== null) && (
-            <p className="text-sm text-red-500 mt-1 font-poppins">{newPasswordError}</p>
+          {newPasswordError !== null && (
+            <p className="text-sm text-red-500 mt-1 font-poppins">
+              {newPasswordError}
+            </p>
           )}
         </div>
 
@@ -140,9 +162,11 @@ const ChangePassword: React.FC = () => {
             {t(`${pathTranslation}.text4`)}
           </label>
           <input
-            type={showConfirmNewPassword ? "text" : "password"}
+            type={showConfirmNewPassword ? 'text' : 'password'}
             value={confirmNewPassword}
-            onChange={(e) => { setConfirmNewPassword(e.target.value); }}
+            onChange={e => {
+              setConfirmNewPassword(e.target.value);
+            }}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder={`${t(`${pathTranslation}.text12`)}`}
           />
@@ -151,10 +175,16 @@ const ChangePassword: React.FC = () => {
             onClick={toggleConfirmNewPasswordVisibility}
             className="absolute top-9 right-3 text-gray-500"
           >
-            {showConfirmNewPassword ? <FiEyeOff className="h-5 w-5" /> : <FiEye className="h-5 w-5" />}
+            {showConfirmNewPassword ? (
+              <FiEyeOff className="h-5 w-5" />
+            ) : (
+              <FiEye className="h-5 w-5" />
+            )}
           </button>
-          {(confirmNewPasswordError !== null) && (
-            <p className="text-sm text-red-500 mt-1 font-poppins">{confirmNewPasswordError}</p>
+          {confirmNewPasswordError !== null && (
+            <p className="text-sm text-red-500 mt-1 font-poppins">
+              {confirmNewPasswordError}
+            </p>
           )}
         </div>
       </div>
@@ -163,7 +193,7 @@ const ChangePassword: React.FC = () => {
       <div
         className="font-poppins mt-2"
         dangerouslySetInnerHTML={{
-          __html: t("danamart.setting.changePassword.passwordPolicy") ?? "",
+          __html: t('danamart.setting.changePassword.passwordPolicy') ?? ''
         }}
       />
 
@@ -171,7 +201,12 @@ const ChangePassword: React.FC = () => {
       <div className="w-full flex justify-center md:justify-start mb-16 md:mb-0">
         <Button
           onClick={handleChangePassword}
-          disabled={isLoading || (oldPassword === '' || newPassword === '' || confirmNewPassword === '')}
+          disabled={
+            isLoading ||
+            oldPassword === '' ||
+            newPassword === '' ||
+            confirmNewPassword === ''
+          }
           className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-md disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
         >
           {t(`${pathTranslation}.text5`)}

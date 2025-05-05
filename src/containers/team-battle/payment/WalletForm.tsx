@@ -73,7 +73,7 @@ const WalletForm: React.FC<Props> = ({
       ? coinsDiscount
       : 0;
     if (promoCodeValidationResult !== undefined) {
-      _discount += newPromoCodeDiscount;
+      _discount += newPromoCodeDiscount ?? 0;
     }
 
     if (detailBattle !== undefined) {
@@ -150,7 +150,7 @@ const WalletForm: React.FC<Props> = ({
     <div className="">
       {renderPhoneInput()}
       <InlineText
-        label={'Join Team Battle'}
+        label={t(`${translationId}.teamBattleFee`)}
         value={`${userInfo?.preferredCurrency} ${admissionFee}`}
         className="mb-2"
       />
@@ -175,10 +175,13 @@ const WalletForm: React.FC<Props> = ({
           ) : null}
         </>
       )}
-      {promoCodeValidationResult !== undefined ? (
+      {promoCodeValidationResult !== undefined &&
+      promoCodeValidationResult !== 0 ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}
-          value={`- ${userInfo?.preferredCurrency} ${newPromoCodeDiscount}`}
+          value={`- ${userInfo?.preferredCurrency} ${
+            newPromoCodeDiscount ?? 0
+          }`}
           className="mb-2"
         />
       ) : null}

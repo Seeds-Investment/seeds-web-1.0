@@ -7,19 +7,19 @@ import { toast } from 'react-toastify';
 import Modal from '../../../ui/modal/Modal';
 
 interface Props {
-  setIsAllowedOTP:  React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAllowedOTP: React.Dispatch<React.SetStateAction<boolean>>;
   setIsContinueProcess: React.Dispatch<React.SetStateAction<boolean>>;
   setIsShowOTP: React.Dispatch<React.SetStateAction<boolean>>;
   isShowOTP: boolean;
   setPassedOTP: React.Dispatch<React.SetStateAction<string>>;
   isLoading: boolean;
-  setIsLoading:   React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   isAllowedOTP: boolean;
   passedOTP: string;
   combinedPhone: string;
-  setPhoneNumber:  React.Dispatch<React.SetStateAction<string>>;
-  setPassword:  React.Dispatch<React.SetStateAction<string>>;
-  setOtpType:  React.Dispatch<React.SetStateAction<string>>;
+  setPhoneNumber: React.Dispatch<React.SetStateAction<string>>;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  setOtpType: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ModalOTP: React.FC<Props> = ({
@@ -88,49 +88,55 @@ const ModalOTP: React.FC<Props> = ({
 
   const handleValidateOTP = async (): Promise<void> => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const formData = new FormData();
       formData.append('otp', passedOTP);
       formData.append('nohp', combinedPhone);
 
       const response = await validateChangePhoneNumberOTP(formData);
-      
+
       if (response?.status === 200) {
-        setIsLoading(false)
+        setIsLoading(false);
       }
 
-      if (response?.data?.message === 'Kami telah menerima permintaan perubahan data-mu, selanjutnya tim kami akan melakukan konfirmasi terkait permintaan perubahan data ini dengan cara menghubungi-mu, mohon ditunggu ya.') {
+      if (
+        response?.data?.message ===
+        'Kami telah menerima permintaan perubahan data-mu, selanjutnya tim kami akan melakukan konfirmasi terkait permintaan perubahan data ini dengan cara menghubungi-mu, mohon ditunggu ya.'
+      ) {
         setIsShowOTP(false);
-        toast.success(t(`${pathTranslation}.validation.text5`))
+        toast.success(t(`${pathTranslation}.validation.text5`));
       } else {
-        toast.success(t(`${pathTranslation}.validation.text5`))
+        toast.success(t(`${pathTranslation}.validation.text5`));
       }
     } catch (error: any) {
-      setIsLoading(false)
+      setIsLoading(false);
 
-      if (error?.response?.data?.messages?.message === 'Kode salah! Silakan ulangi input.') {
-        toast.error(t(`${pathTranslation}.validation.text6`))
+      if (
+        error?.response?.data?.messages?.message ===
+        'Kode salah! Silakan ulangi input.'
+      ) {
+        toast.error(t(`${pathTranslation}.validation.text6`));
       } else if (error?.response?.data === 'Too many Hits') {
         toast.error(t(`${pathTranslation}.validation.text2`));
       } else {
         toast.error(`Error validating OTP: ${error as string}`);
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     if (isAllowedOTP) {
-      setCountdown(300)
+      setCountdown(300);
     }
-  }, [isAllowedOTP])
+  }, [isAllowedOTP]);
 
   useEffect(() => {
     if (countdown === 0) {
-      setIsContinueProcess(false)
+      setIsContinueProcess(false);
     }
-  }, [countdown])
+  }, [countdown]);
 
   return (
     <Modal
@@ -149,63 +155,62 @@ const ModalOTP: React.FC<Props> = ({
       </button>
 
       <Typography className="font-bold text-xl mb-4">
-        {
-          isAllowedOTP ? t(`${pathTranslation}.text11`) : t(`${pathTranslation}.text12`)
-        }
+        {isAllowedOTP
+          ? t(`${pathTranslation}.text11`)
+          : t(`${pathTranslation}.text12`)}
       </Typography>
 
-      {
-        isAllowedOTP ?
-          <>
-            {countdown === 0 ? (
-              <Button
-                onClick={() => {
-                  setIsContinueProcess(true)
-                }}
-                disabled={countdown !== 0 || isLoading}
-                className="w-full bg-seeds-button-green rounded-full capitalize text-md"
-              >
-                {t(`${pathTranslation}.text13`)}
-              </Button>
-            ) : (
-              <div className="mt-4">
-                <Typography className="text-red-600 text-sm font-medium mb-2">
-                  {`${t(`${pathTranslation}.text14`)}: ${formatTime(countdown)}`}
-                </Typography>
+      {isAllowedOTP ? (
+        <>
+          {countdown === 0 ? (
+            <Button
+              onClick={() => {
+                setIsContinueProcess(true);
+              }}
+              disabled={countdown !== 0 || isLoading}
+              className="w-full bg-seeds-button-green rounded-full capitalize text-md"
+            >
+              {t(`${pathTranslation}.text13`)}
+            </Button>
+          ) : (
+            <div className="mt-4">
+              <Typography className="text-red-600 text-sm font-medium mb-2">
+                {`${t(`${pathTranslation}.text14`)}: ${formatTime(countdown)}`}
+              </Typography>
 
-                {/* OTP Input Boxes */}
-                <div className="flex justify-between gap-2">
-                  {otp?.map((digit, index) => (
-                    <input
-                      key={index}
-                      id={`otp-${index}`}
-                      type="text"
-                      value={digit}
-                      maxLength={1}
-                      onChange={e => {
-                        handleOtpChange(e.target.value, index);
-                      }}
-                      onKeyDown={e => {
-                        handleKeyDown(e, index);
-                      }}
-                      onInput={(e: React.FormEvent<HTMLInputElement>) => {
-                        const target = e.target as HTMLInputElement;
-                        target.value = target.value.replace(/[^0-9]/g, '');
-                      }}
-                      className="w-12 h-12 text-center border border-gray-300 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-seeds-button-green"
-                    />
-                  ))}
-                </div>
+              {/* OTP Input Boxes */}
+              <div className="flex justify-between gap-2">
+                {otp?.map((digit, index) => (
+                  <input
+                    key={index}
+                    id={`otp-${index}`}
+                    type="text"
+                    value={digit}
+                    maxLength={1}
+                    onChange={e => {
+                      handleOtpChange(e.target.value, index);
+                    }}
+                    onKeyDown={e => {
+                      handleKeyDown(e, index);
+                    }}
+                    onInput={(e: React.FormEvent<HTMLInputElement>) => {
+                      const target = e.target as HTMLInputElement;
+                      target.value = target.value.replace(/[^0-9]/g, '');
+                    }}
+                    className="w-12 h-12 text-center border border-gray-300 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-seeds-button-green"
+                  />
+                ))}
               </div>
-            )}
-          </>
-          :
-          <div>
-            <Typography className="font-poppins text-md text-[#262626] font-semibold">
-              {t(`${pathTranslation}.text15`)}
-            </Typography>
-          </div>
-      }
+            </div>
+          )}
+        </>
+      ) : (
+        <div>
+          <Typography className="font-poppins text-md text-[#262626] font-semibold">
+            {t(`${pathTranslation}.text15`)}
+          </Typography>
+        </div>
+      )}
 
       <div className="w-full flex justify-end items-end gap-2">
         <Button
@@ -220,12 +225,16 @@ const ModalOTP: React.FC<Props> = ({
         <Button
           onClick={async () => {
             if (isAllowedOTP) {
-              await handleValidateOTP()
+              await handleValidateOTP();
             } else {
               setIsContinueProcess(true);
             }
           }}
-          disabled={isAllowedOTP ? (!isOTPComplete || isLoading || countdown === 0) : isLoading}
+          disabled={
+            isAllowedOTP
+              ? !isOTPComplete || isLoading || countdown === 0
+              : isLoading
+          }
           className="w-[150px] text-sm font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
         >
           {t(`${pathTranslation}.continue`)}

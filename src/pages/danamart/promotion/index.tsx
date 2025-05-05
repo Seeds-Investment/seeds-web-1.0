@@ -16,7 +16,8 @@ const Promotion = (): React.ReactElement => {
   const [kodePromo, setKodePromo] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isShowPromoGuide, setIsShowPromoGuide] = useState<boolean>(false);
-  const [isShowPromoRejection, setIsShowPromoRejection] = useState<boolean>(false);
+  const [isShowPromoRejection, setIsShowPromoRejection] =
+    useState<boolean>(false);
 
   const handleValidatePromoCode = async (): Promise<void> => {
     try {
@@ -41,9 +42,9 @@ const Promotion = (): React.ReactElement => {
         error?.response?.data?.message ===
         'Maaf! Kode-mu tidak valid, kuota sudah habis , masa berlakunya telah berakhir atau tidak memenuhi syarat dan ketentuan. Silakan coba lagi dengan kode lainnya ya.'
       ) {
-        setIsShowPromoRejection(true)
+        setIsShowPromoRejection(true);
       } else {
-        setIsShowPromoRejection(true)
+        setIsShowPromoRejection(true);
       }
     } finally {
       setIsLoading(false);

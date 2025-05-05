@@ -34,7 +34,7 @@ const usePurchaseFormStockCheckTesting = (): any => {
   const schema = yup.object().shape({
     lembar_saham: yup
       .string()
-      .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+      .required(t(`${pathTranslation}.text1`) ?? 'This field is required')
   });
 
   const defaultValues: PurchaseFormDataI = {
@@ -55,7 +55,7 @@ const usePurchaseFormStockCheckTesting = (): any => {
     total_dana_reward: '',
     bid_cash: '',
     harga_perlembar_saham: '',
-    lembar_saham: '',
+    lembar_saham: ''
   };
 
   const {

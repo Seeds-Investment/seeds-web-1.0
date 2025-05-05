@@ -169,7 +169,7 @@ const ChooseSubs: React.FC<props> = ({ dataPost, setPages }) => {
           {dataPost?.type === 'lifetime' ? (
             <></>
           ) : (
-            monthSubscription.map((el, i) => (
+            monthSubscription?.map((el, i) => (
               <label className="cursor-default" key={i}>
                 <input
                   type="radio"
@@ -227,7 +227,7 @@ const ChooseSubs: React.FC<props> = ({ dataPost, setPages }) => {
                 : 'bg-seeds-button-green text-white shadow-seeds-green/20 hover:shadow-seeds-green/40 focus:outline-seeds-button-green shadow-md hover:shadow-lg'
             } ${
               height !== undefined && height < 760 ? 'text-xs' : 'text-sm'
-            }transition-all duration-300 active:opacity-80 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}
+            } transition-all duration-300 active:opacity-80 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}
             label={'Next'}
           />
         </div>

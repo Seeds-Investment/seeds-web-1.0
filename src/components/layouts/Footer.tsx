@@ -85,6 +85,17 @@ export default function Footer(): React.ReactElement {
               {t('footer.description')}
             </Typography>
           </div>
+          <div className="flex flex-col gap-2">
+            <Typography className="font-semibold font-poppins text-base lg:text-lg text-[#201B1C]">
+              {t('footer.disclaimer')}
+            </Typography>
+            <Typography className="font-normal font-poppins text-sm lg:text-base text-[#7C7C7C] text-justify">
+              <span className="font-semibold text-[#106B6E]">
+                Seeds.finance{' '}
+              </span>
+              {t('footer.disclaimerContain')}
+            </Typography>
+          </div>
           <div className="flex gap-4">
             {socialMedia.map((item, key) => (
               <Link

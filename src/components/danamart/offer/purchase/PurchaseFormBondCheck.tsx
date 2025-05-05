@@ -1,9 +1,7 @@
 import MInput from '@/components/form-input/multi-input';
 import usePurchaseFormBondCheckTesting from '@/hooks/danamart/usePurchaseFormBondCheckTesting';
 import { type PurchaseFormDataI } from '@/hooks/danamart/usePurchaseFormStock';
-import {
-  type FormPurchaseDataCheckTesting
-} from '@/utils/interfaces/danamart/offers.interface';
+import { type FormPurchaseDataCheckTesting } from '@/utils/interfaces/danamart/offers.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -35,7 +33,7 @@ const PurchaseFormBondCheck: React.FC<PurchaseFormProps> = ({
   isContinueProcess,
   setIsContinueProcess,
   setIsPending,
-  isPending,
+  isPending
 }) => {
   const { t } = useTranslation();
   const {
@@ -52,16 +50,25 @@ const PurchaseFormBondCheck: React.FC<PurchaseFormProps> = ({
   const pathTranslation = 'danamart.offers.purchase.form';
   const bidReward = watch('bid_reward');
   const bidCash = watch('bid_cash');
-  
+
   const calculateTotalPayment = (): void => {
     setValue('bid_cash', bidCash);
     setValue('lembar_saham', bidCash / 1000);
   };
-  
+
   useEffect(() => {
-    setValue('user_peminjam_id', formPurchaseDataCheckTesting?.dataInput?.user_peminjam_id);
-    setValue('user_pendana_id', formPurchaseDataCheckTesting?.dataInput?.user_pendana_id);
-    setValue('tgl_jatuh_tempo', formPurchaseDataCheckTesting?.dataInput?.tgl_jatuh_tempo);
+    setValue(
+      'user_peminjam_id',
+      formPurchaseDataCheckTesting?.dataInput?.user_peminjam_id
+    );
+    setValue(
+      'user_pendana_id',
+      formPurchaseDataCheckTesting?.dataInput?.user_pendana_id
+    );
+    setValue(
+      'tgl_jatuh_tempo',
+      formPurchaseDataCheckTesting?.dataInput?.tgl_jatuh_tempo
+    );
     setValue(
       'referral_id_lv1_peminjam',
       formPurchaseDataCheckTesting?.dataInput?.referral_id_lv1_peminjam
@@ -78,27 +85,52 @@ const PurchaseFormBondCheck: React.FC<PurchaseFormProps> = ({
       'referral_id_lv2_pendana',
       formPurchaseDataCheckTesting?.dataInput?.referral_id_lv2_pendana
     );
-    setValue('jml_pinjaman_terbit', formPurchaseDataCheckTesting?.dataInput?.jml_pinjaman_terbit);
+    setValue(
+      'jml_pinjaman_terbit',
+      formPurchaseDataCheckTesting?.dataInput?.jml_pinjaman_terbit
+    );
     setValue(
       'jml_pinjaman_terbit_show',
       formPurchaseDataCheckTesting?.dataForm?.slotPembelian
     );
-    setValue('pinjaman_id', formPurchaseDataCheckTesting?.dataInput?.pinjaman_id);
-    setValue('bunga_persen', formPurchaseDataCheckTesting?.dataInput?.bunga_persen);
-    setValue('sektor_usaha', formPurchaseDataCheckTesting?.dataInput?.sektor_usaha);
-    setValue('credit_rating', formPurchaseDataCheckTesting?.dataInput?.credit_rating);
-    setValue('dm_pem_02003', formPurchaseDataCheckTesting?.dataInput?.dm_pem_02003);
-    setValue('dm_pem_02004', formPurchaseDataCheckTesting?.dataForm?.jangkaWaktu);
+    setValue(
+      'pinjaman_id',
+      formPurchaseDataCheckTesting?.dataInput?.pinjaman_id
+    );
+    setValue(
+      'bunga_persen',
+      formPurchaseDataCheckTesting?.dataInput?.bunga_persen
+    );
+    setValue(
+      'sektor_usaha',
+      formPurchaseDataCheckTesting?.dataInput?.sektor_usaha
+    );
+    setValue(
+      'credit_rating',
+      formPurchaseDataCheckTesting?.dataInput?.credit_rating
+    );
+    setValue(
+      'dm_pem_02003',
+      formPurchaseDataCheckTesting?.dataInput?.dm_pem_02003
+    );
+    setValue(
+      'dm_pem_02004',
+      formPurchaseDataCheckTesting?.dataForm?.jangkaWaktu
+    );
     setValue('BagiHasil', formPurchaseDataCheckTesting?.dataForm?.BagiHasil);
   }, [formPurchaseDataCheckTesting]);
 
   useEffect(() => {
     if (bidCash >= 100000) {
-      const imbalHasil = Number(formPurchaseDataCheckTesting?.dataInput?.bunga_persen);
-      const period = Number(formPurchaseDataCheckTesting?.dataForm?.jangkaWaktu);
+      const imbalHasil = Number(
+        formPurchaseDataCheckTesting?.dataInput?.bunga_persen
+      );
+      const period = Number(
+        formPurchaseDataCheckTesting?.dataForm?.jangkaWaktu
+      );
 
       // Imbal hasil per bulan
-      const imbalHasilBulanTemp = Math.round((bidCash * (imbalHasil / 12)));
+      const imbalHasilBulanTemp = Math.round(bidCash * (imbalHasil / 12));
       const imbalHasilBulan = (Number(bidCash) * imbalHasil) / 12;
 
       // Total imbal hasil
@@ -139,7 +171,7 @@ const PurchaseFormBondCheck: React.FC<PurchaseFormProps> = ({
   useEffect(() => {
     calculateTotalPayment();
   }, [bidCash, bidReward]);
-  
+
   useEffect(() => {
     if (isContinueProcess) {
       handleSubmit(async (data: PurchaseFormDataI) => {

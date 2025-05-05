@@ -67,7 +67,7 @@ const ModalConfirm: React.FC<Props> = ({
         </Button>
         <Button
           onClick={() => {
-            setIsContinueProcess(true)
+            setIsContinueProcess(true);
           }}
           disabled={isLoading}
           className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"

@@ -1,12 +1,13 @@
 import Loading from '@/components/popup/Loading';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import VirtualAccountStep from '@/components/VirtualAccountStep';
 import { CeklisCircle } from '@/constants/assets/icons';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { type ReceiptDetail } from '@/pages/play/payment/receipt/[orderId]';
 import {
-  getHowToPay,
   getPaymentDetail,
   getPaymentList
 } from '@/repository/payment.repository';
@@ -37,22 +38,6 @@ interface PaymentList {
   service_fee: number;
 }
 
-interface ReceiptDetail {
-  currency: string;
-  grossAmount: number;
-  howToPayApi?: string;
-  itemId: string;
-  itemName: string;
-  merchantId: string;
-  orderId: string;
-  paymentGateway: string;
-  paymentMethod: string;
-  quantity: number;
-  transactionId: string;
-  transactionStatus: string;
-  vaNumber?: string;
-}
-
 export interface QRList {
   admin_fee: number;
   id: string;
@@ -79,9 +64,7 @@ const SuccessPaymentPage: React.FC = () => {
   const id = router.query.orderId as string;
   const paymentUrl = router.query.paymentUrl as string;
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [eWalletList, setEWalletList] = useState([]);
-  const [steps, setSteps] = useState<string[]>([]);
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
   const [qRisList, setQRisList] = useState<QRList[]>([]);
   const [vaList, setVaList] = useState<QRList[]>([]);
@@ -115,35 +98,6 @@ const SuccessPaymentPage: React.FC = () => {
     }
   };
 
-  const fetchHowToPay = async (url: string): Promise<void> => {
-    try {
-      setIsLoading(true);
-      const data = await getHowToPay(url);
-      setSteps(data.payment_instruction[0].step);
-    } catch (error) {
-      toast.error(`Error fetching Payment List ${error as string}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  function parseStrongText(text: string): React.ReactNode[] {
-    const regex = /"(.*?)"/g;
-    const splitText = text.split(regex);
-
-    return splitText.map((part: string, index: number) => {
-      if (index % 2 === 1) {
-        return (
-          <strong className="font-semibold font-poppins" key={index}>
-            {part}
-          </strong>
-        );
-      } else {
-        return part;
-      }
-    });
-  }
-
   useEffect(() => {
     if (orderDetail?.itemId !== undefined) {
       void fetchTournamentData(orderDetail?.itemId);
@@ -151,52 +105,39 @@ const SuccessPaymentPage: React.FC = () => {
     void fetchOrderDetail();
     void fetchPaymentList();
     dispatch(setPromoCodeValidationResult(0));
-    if (
-      orderDetail?.howToPayApi !== undefined &&
-      orderDetail?.howToPayApi !== ''
-    ) {
-      void fetchHowToPay(orderDetail.howToPayApi);
-    }
   }, [id, orderDetail?.itemId, orderDetail?.howToPayApi]);
 
   const getSelectedPayment = (
     eWalletList: PaymentList[],
     vaList: PaymentList[],
+    qRisList: PaymentList[],
     orderDetail: OrderDetail | undefined
   ): PaymentList[] => {
     if (orderDetail === null) {
       return [];
     }
 
-    const paymentSelectedEWallet: PaymentList[] = eWalletList.filter(
-      (el: PaymentList | undefined): boolean => {
-        return el?.payment_method === orderDetail?.paymentMethod;
-      }
-    );
+    const paymentSelected: PaymentList[] = [
+      ...eWalletList?.filter(
+        el => el?.payment_method === orderDetail?.paymentMethod
+      ),
+      ...vaList?.filter(
+        el => el?.payment_method === orderDetail?.paymentMethod
+      ),
+      ...qRisList?.filter(
+        el => el?.payment_method === orderDetail?.paymentMethod
+      )
+    ];
 
-    const paymentSelectedVA: PaymentList[] = vaList.filter(
-      (el: PaymentList | undefined): boolean => {
-        return el?.payment_method === orderDetail?.paymentMethod;
-      }
-    );
-
-    if (paymentSelectedEWallet.length === 0 && paymentSelectedVA.length !== 0) {
-      return paymentSelectedVA;
-    } else if (
-      paymentSelectedVA.length === 0 &&
-      paymentSelectedEWallet.length !== 0
-    ) {
-      return paymentSelectedEWallet;
-    } else {
-      return [];
-    }
+    return paymentSelected.length > 0 ? paymentSelected : [];
   };
 
-  const paymentSelected = getSelectedPayment(eWalletList, vaList, orderDetail);
-
-  const toggleDropdown = (): void => {
-    setIsOpen(!isOpen);
-  };
+  const paymentSelected = getSelectedPayment(
+    eWalletList,
+    vaList,
+    qRisList,
+    orderDetail
+  );
 
   const fetchTournamentData = async (itemId: string): Promise<void> => {
     try {
@@ -320,17 +261,7 @@ const SuccessPaymentPage: React.FC = () => {
                     ? t('tournament.payment.virtualNumber')
                     : t('tournament.payment.paymentMethod')}
                 </Typography>
-                {orderDetail?.paymentMethod === 'OTHER_QRIS' && (
-                  <div className="flex items-center justify-center mb-9 mt-3">
-                    <Image
-                      src={qRisList[0]?.logo_url}
-                      alt="AVATAR"
-                      width={90}
-                      height={90}
-                    />
-                  </div>
-                )}
-                {paymentSelected.length > 0 && (
+                {paymentSelected?.length > 0 && (
                   <div className="flex items-center justify-center mb-9 mt-3">
                     <Image
                       src={paymentSelected[0]?.logo_url}
@@ -602,51 +533,26 @@ const SuccessPaymentPage: React.FC = () => {
                   </Typography>
                 </div>
               </Card>
-              {orderDetail?.vaNumber !== undefined && steps.length > 0 && (
-                <Card className="p-5 mt-8 bg-white">
-                  <div className="flex justify-between">
-                    <h1 className="text-xl font-bold mb-4">How to Pay</h1>
-                    <button className="ml-2" onClick={toggleDropdown}>
-                      {isOpen ? '▲' : '▼'}
-                    </button>
-                  </div>
-                  <div
-                    className={`overflow-hidden transition-max-height duration-700 ${
-                      isOpen ? 'max-h-[1000px]' : 'max-h-0'
-                    }`}
-                  >
-                    {steps.map((step: string, index: number) => (
-                      <div
-                        className="flex items-start mb-3 relative"
-                        key={index}
-                      >
-                        <div className="flex-shrink-0 w-6 h-6 z-50 rounded-full bg-seeds-purple-2 text-white flex items-center justify-center mr-3">
-                          {index + 1}
-                        </div>
-                        <Typography className="font-poppins text-black">
-                          {parseStrongText(step)}
-                        </Typography>
-                        {index < steps.length - 1 && (
-                          <div
-                            className="w-0.5 bg-seeds-purple-2 absolute left-3"
-                            style={{ height: 'calc(100% + 1.5rem)' }}
-                          ></div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </Card>
+
+              {orderDetail !== undefined && (
+                <VirtualAccountStep
+                  setIsLoading={setIsLoading}
+                  orderDetail={orderDetail}
+                  id={id}
+                />
               )}
 
               <div className="w-full flex flex-col items-center justify-center">
-                <Button
-                  className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
-                  onClick={async () => {
-                    void handleViewQR();
-                  }}
-                >
-                  {t('bnc.seeQRCode')}
-                </Button>
+                {(orderDetail?.paymentMethod?.includes('BNC') ?? false) && (
+                  <Button
+                    className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
+                    onClick={async () => {
+                      void handleViewQR();
+                    }}
+                  >
+                    {t('bnc.seeQRCode')}
+                  </Button>
+                )}
                 <Button
                   className={`${
                     orderDetail?.paymentMethod?.includes('BNC') ?? false

@@ -193,7 +193,7 @@ const WalletForm = ({
       <InlineText
         label={
           dataPost.quiz
-            ? 'Join Quiz'
+            ? t(`quiz.payment.quizFee`)
             : dataPost !== undefined
             ? 'Circle Membership'
             : t(`${translationId}.admissionFeeLabel`)

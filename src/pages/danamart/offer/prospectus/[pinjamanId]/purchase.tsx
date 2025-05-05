@@ -38,14 +38,15 @@ const Purchase = (): React.ReactElement => {
   const cekOmbak = Array.isArray(router?.query?.co)
     ? router?.query?.co[0]
     : router?.query?.co;
-    
+
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isContinueProcess, setIsContinueProcess] = useState<boolean>(false);
   const [isShowDisclaimer, setIsShowDisclaimer] = useState<boolean>(false);
   const [isShowOTP, setIsShowOTP] = useState<boolean>(false);
   const [formPurchaseData, setFormPurchaseData] = useState<FormPurchaseData>();
-  const [formPurchaseDataCheckTesting, setFormPurchaseDataCheckTesting] = useState<FormPurchaseDataCheckTesting>();
+  const [formPurchaseDataCheckTesting, setFormPurchaseDataCheckTesting] =
+    useState<FormPurchaseDataCheckTesting>();
   const [dashboardData, setDashboardData] = useState<DashboardDataUser>();
   const [passedOTP, setPassedOTP] = useState<string>('');
   const [isPurchased, setIsPurchased] = useState<boolean>(false);
@@ -118,17 +119,11 @@ const Purchase = (): React.ReactElement => {
 
   useEffect(() => {
     if (pinjamanId !== undefined && userPinjamanId !== undefined) {
-      void Promise.all([
-        getDashboardDataById(pinjamanId)
-      ]);
+      void Promise.all([getDashboardDataById(pinjamanId)]);
       if (router?.query?.co === 'true') {
-        void Promise.all([
-          getFormCheckTestingData(pinjamanId, userPinjamanId)
-        ]);
+        void Promise.all([getFormCheckTestingData(pinjamanId, userPinjamanId)]);
       } else {
-        void Promise.all([
-          getFormPurchaseData(pinjamanId, userPinjamanId)
-        ]);
+        void Promise.all([getFormPurchaseData(pinjamanId, userPinjamanId)]);
       }
     }
   }, [pinjamanId, userPinjamanId, isPurchased]);
@@ -204,19 +199,21 @@ const Purchase = (): React.ReactElement => {
       icon: <PiCoinsLight size={26} color="#9A76FE" />,
       title: t('danamart.offers.purchase.card.text5'),
       value: (() => {
-        const sisaPembelian: string | number | undefined = dashboardData?.dataSaldoUser?.sisaPembelian;
+        const sisaPembelian: string | number | undefined =
+          dashboardData?.dataSaldoUser?.sisaPembelian;
 
-        if (sisaPembelian === "Tidak Terbatas") {
+        if (sisaPembelian === 'Tidak Terbatas') {
           return `${t('danamart.offers.purchase.card.text6')}`;
         }
 
-        if (typeof sisaPembelian === "number") {
-          return `Rp. ${(Number(sisaPembelian)).toLocaleString("id-ID")}`;
+        if (typeof sisaPembelian === 'number') {
+          return `Rp. ${Number(sisaPembelian).toLocaleString('id-ID')}`;
         }
 
-        return "-";
+        return '-';
       })(),
-      background: "bg-gradient-to-br from-[#9A76FE]/20 via-white to-[#FFC782]/20"
+      background:
+        'bg-gradient-to-br from-[#9A76FE]/20 via-white to-[#FFC782]/20'
     }
   ];
 
@@ -228,22 +225,22 @@ const Purchase = (): React.ReactElement => {
           {router?.query?.type === 'stock' ? 'Saham' : 'Obligasi'}
         </Typography>
         <div className="flex flex-col lg:flex-row items-center justify-center gap-4 w-full place-items-center">
-          {
-            (router?.query?.co === 'true'
-              ? dashboardCardDataCheckTesting
-              : dashboardCardData
-            )?.map(item => (
-              <DetailCashCard key={item?.id} data={item} />
-            ))
-          }
+          {(router?.query?.co === 'true'
+            ? dashboardCardDataCheckTesting
+            : dashboardCardData
+          )?.map(item => (
+            <DetailCashCard key={item?.id} data={item} />
+          ))}
         </div>
         {dashboardData !== undefined &&
         pinjamanId !== undefined &&
         userPinjamanId !== undefined &&
-        (router?.query?.co === 'true' ? formPurchaseDataCheckTesting : formPurchaseData) !== undefined ? (
+        (router?.query?.co === 'true'
+          ? formPurchaseDataCheckTesting
+          : formPurchaseData) !== undefined ? (
           router?.query?.type === 'stock' ? (
-            router?.query?.co === 'true' ?
-              formPurchaseDataCheckTesting !== undefined &&
+            router?.query?.co === 'true' ? (
+              formPurchaseDataCheckTesting !== undefined && (
                 <PurchaseFormStockCheck
                   formPurchaseDataCheckTesting={formPurchaseDataCheckTesting}
                   setIsShowDisclaimer={setIsShowDisclaimer}
@@ -257,8 +254,9 @@ const Purchase = (): React.ReactElement => {
                   setIsPending={setIsPending}
                   isPending={isPending}
                 />
-              :
-              formPurchaseData !== undefined &&
+              )
+            ) : (
+              formPurchaseData !== undefined && (
                 <PurchaseFormStock
                   formPurchaseData={formPurchaseData}
                   pinjamanId={pinjamanId}
@@ -276,41 +274,44 @@ const Purchase = (): React.ReactElement => {
                   isPending={isPending}
                   setPaymentMethod={setPaymentMethod}
                 />
+              )
+            )
+          ) : router?.query?.co === 'true' ? (
+            formPurchaseDataCheckTesting !== undefined && (
+              <PurchaseFormBondCheck
+                formPurchaseDataCheckTesting={formPurchaseDataCheckTesting}
+                setIsShowDisclaimer={setIsShowDisclaimer}
+                isContinueProcess={isContinueProcess}
+                setIsLoading={setIsLoading}
+                isLoading={isLoading}
+                setIsShowOTP={setIsShowOTP}
+                setIsPurchased={setIsPurchased}
+                isPurchased={isPurchased}
+                setIsContinueProcess={setIsContinueProcess}
+                setIsPending={setIsPending}
+                isPending={isPending}
+              />
+            )
           ) : (
-            router?.query?.co === 'true' ?
-              formPurchaseDataCheckTesting !== undefined &&
-                <PurchaseFormBondCheck
-                  formPurchaseDataCheckTesting={formPurchaseDataCheckTesting}
-                  setIsShowDisclaimer={setIsShowDisclaimer}
-                  isContinueProcess={isContinueProcess}
-                  setIsLoading={setIsLoading}
-                  isLoading={isLoading}
-                  setIsShowOTP={setIsShowOTP}
-                  setIsPurchased={setIsPurchased}
-                  isPurchased={isPurchased}
-                  setIsContinueProcess={setIsContinueProcess}
-                  setIsPending={setIsPending}
-                  isPending={isPending}
-                />
-              :
-              formPurchaseData !== undefined &&
-                <PurchaseFormBond
-                  formPurchaseData={formPurchaseData}
-                  pinjamanId={pinjamanId}
-                  dashboardData={dashboardData}
-                  setIsShowDisclaimer={setIsShowDisclaimer}
-                  isContinueProcess={isContinueProcess}
-                  passedOTP={passedOTP}
-                  setIsLoading={setIsLoading}
-                  isLoading={isLoading}
-                  setIsShowOTP={setIsShowOTP}
-                  setIsPurchased={setIsPurchased}
-                  isPurchased={isPurchased}
-                  setIsContinueProcess={setIsContinueProcess}
-                  setIsPending={setIsPending}
-                  isPending={isPending}
-                  setPaymentMethod={setPaymentMethod}
-                />
+            formPurchaseData !== undefined && (
+              <PurchaseFormBond
+                formPurchaseData={formPurchaseData}
+                pinjamanId={pinjamanId}
+                dashboardData={dashboardData}
+                setIsShowDisclaimer={setIsShowDisclaimer}
+                isContinueProcess={isContinueProcess}
+                passedOTP={passedOTP}
+                setIsLoading={setIsLoading}
+                isLoading={isLoading}
+                setIsShowOTP={setIsShowOTP}
+                setIsPurchased={setIsPurchased}
+                isPurchased={isPurchased}
+                setIsContinueProcess={setIsContinueProcess}
+                setIsPending={setIsPending}
+                isPending={isPending}
+                setPaymentMethod={setPaymentMethod}
+              />
+            )
           )
         ) : (
           <div className="w-full flex justify-center h-fit my-8">

@@ -1,12 +1,15 @@
-import { getEmailVerification, postPhoneVerificationOTP } from "@/repository/danamart/setting.repository";
-import { type UserProfile } from "@/utils/interfaces/danamart.interface";
-import { Button, Typography } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { FiPhone } from "react-icons/fi";
-import { MdOutlineEmail, MdOutlineVerified } from "react-icons/md";
-import { toast } from "react-toastify";
-import ModalOTP from "./ModalOTP";
+import {
+  getEmailVerification,
+  postPhoneVerificationOTP
+} from '@/repository/danamart/setting.repository';
+import { type UserProfile } from '@/utils/interfaces/danamart.interface';
+import { Button, Typography } from '@material-tailwind/react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FiPhone } from 'react-icons/fi';
+import { MdOutlineEmail, MdOutlineVerified } from 'react-icons/md';
+import { toast } from 'react-toastify';
+import ModalOTP from './ModalOTP';
 
 interface Props {
   userProfileData: UserProfile;
@@ -18,7 +21,7 @@ const VerifyPhoneEmail: React.FC<Props> = ({
   setRefetchProfile
 }) => {
   const { t } = useTranslation();
-  const pathTranslation = 'danamart.setting.verifyPhoneAndEmail'
+  const pathTranslation = 'danamart.setting.verifyPhoneAndEmail';
   const [selected, setSelected] = useState<string>('');
   const [isShowOTP, setIsShowOTP] = useState<boolean>(false);
   const [isContinueProcess, setIsContinueProcess] = useState<boolean>(false);
@@ -35,45 +38,43 @@ const VerifyPhoneEmail: React.FC<Props> = ({
 
   const handlePostOTP = async (): Promise<void> => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const formData = new FormData();
       formData.append('otp', passedOTP);
       const response = await postPhoneVerificationOTP(formData);
       if (response?.data?.StatusCode === '200') {
-        toast.success(t(`${pathTranslation}.text1`))
+        toast.success(t(`${pathTranslation}.text1`));
       }
-      setRefetchProfile(true)
-      
+      setRefetchProfile(true);
     } catch (error: any) {
-      setIsLoading(false)
+      setIsLoading(false);
       toast.error(`Error validating phone number: ${error as string}`);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
   const handleVerificationEmail = async (): Promise<void> => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const response = await getEmailVerification();
 
       if (response?.status === 200) {
-        toast.success(t(`${pathTranslation}.text2`))
+        toast.success(t(`${pathTranslation}.text2`));
       }
-      
     } catch (error: any) {
-      setIsLoading(false)
+      setIsLoading(false);
       toast.error(`Error validating email: ${error as string}`);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     if (isContinueProcess) {
-      void handlePostOTP()
+      void handlePostOTP();
     }
-  }, [isContinueProcess])
+  }, [isContinueProcess]);
 
   return (
     <div className="flex flex-col gap-4 mb:mt-8 mb-2">
@@ -82,7 +83,6 @@ const VerifyPhoneEmail: React.FC<Props> = ({
       </Typography>
 
       <div className="flex flex-col gap-6 lg:flex-row md:justify-around">
-
         {/* Email Option */}
         {isEmailVerified ? (
           <div className="flex gap-6 p-6 rounded-xl border-2 border-gray-300 items-center bg-gray-50 w-full lg:w-[48%] overflow-hidden">
@@ -120,20 +120,26 @@ const VerifyPhoneEmail: React.FC<Props> = ({
             />
             <MdOutlineEmail
               className={`w-[30px] h-auto shrink-0 ${
-                selected === 'option1' ? 'text-seeds-button-green' : 'text-[#262626]'
+                selected === 'option1'
+                  ? 'text-seeds-button-green'
+                  : 'text-[#262626]'
               }`}
             />
             <div className="flex flex-col gap-2">
               <Typography
                 className={`font-poppins text-md font-medium ${
-                  selected === 'option1' ? 'text-seeds-button-green' : 'text-[#262626]'
+                  selected === 'option1'
+                    ? 'text-seeds-button-green'
+                    : 'text-[#262626]'
                 }`}
               >
                 {t(`${pathTranslation}.text4`)}
               </Typography>
               <Typography
                 className={`font-poppins text-md ${
-                  selected === 'option1' ? 'text-seeds-button-green' : 'text-[#262626]'
+                  selected === 'option1'
+                    ? 'text-seeds-button-green'
+                    : 'text-[#262626]'
                 }`}
               >
                 {t(`${pathTranslation}.text6`)}{' '}
@@ -182,20 +188,26 @@ const VerifyPhoneEmail: React.FC<Props> = ({
             />
             <FiPhone
               className={`w-[30px] h-auto shrink-0 ${
-                selected === 'option2' ? 'text-seeds-button-green' : 'text-[#262626]'
+                selected === 'option2'
+                  ? 'text-seeds-button-green'
+                  : 'text-[#262626]'
               }`}
             />
             <div className="flex flex-col gap-2">
               <Typography
                 className={`font-poppins text-md font-medium ${
-                  selected === 'option2' ? 'text-seeds-button-green' : 'text-[#262626]'
+                  selected === 'option2'
+                    ? 'text-seeds-button-green'
+                    : 'text-[#262626]'
                 }`}
               >
                 {t(`${pathTranslation}.text7`)}
               </Typography>
               <Typography
                 className={`font-poppins text-md ${
-                  selected === 'option2' ? 'text-seeds-button-green' : 'text-[#262626]'
+                  selected === 'option2'
+                    ? 'text-seeds-button-green'
+                    : 'text-[#262626]'
                 }`}
               >
                 {t(`${pathTranslation}.text8`)}{' '}
@@ -211,11 +223,11 @@ const VerifyPhoneEmail: React.FC<Props> = ({
       {/* Continue Button */}
       <div className="w-full mt-6 flex justify-center md:justify-start">
         <Button
-          onClick={async() => {
+          onClick={async () => {
             if (selected === 'option1') {
-              await handleVerificationEmail()
+              await handleVerificationEmail();
             } else if (selected === 'option2') {
-              setIsShowOTP(true)
+              setIsShowOTP(true);
             }
           }}
           disabled={isAllVerified || selected === '' || isLoading}
@@ -224,7 +236,7 @@ const VerifyPhoneEmail: React.FC<Props> = ({
           {t(`${pathTranslation}.text9`)}
         </Button>
       </div>
-      
+
       {isShowOTP && (
         <ModalOTP
           setIsShowOTP={setIsShowOTP}

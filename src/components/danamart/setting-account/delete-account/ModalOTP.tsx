@@ -88,9 +88,12 @@ const ModalOTP: React.FC<Props> = ({
         toast.success(response?.data?.message);
       }
     } catch (error: any) {
-      if (error?.response?.data?.message === "Too many Hits") {
+      if (error?.response?.data?.message === 'Too many Hits') {
         toast.error(t(`${pathTranslation}.tooManyAttempts`));
-      } else if (error?.response?.data?.messages?.message === 'Password salah, silakan coba kembali.') {
+      } else if (
+        error?.response?.data?.messages?.message ===
+        'Password salah, silakan coba kembali.'
+      ) {
         toast.error(t(`${pathTranslation}.wrongPassword`));
       } else {
         toast.error(`Error getting OTP: ${error as string}`);
@@ -102,7 +105,7 @@ const ModalOTP: React.FC<Props> = ({
     if (isCloseModal) {
       setIsShowOTP(!isShowOTP);
     }
-  }, [isCloseModal])
+  }, [isCloseModal]);
 
   return (
     <Modal
@@ -154,7 +157,9 @@ const ModalOTP: React.FC<Props> = ({
       ) : (
         <div className="mt-4">
           <Typography className="text-red-600 text-sm font-medium mb-2">
-            {`${t(`${pathTranslation}.timeRemaining`)}: ${formatTime(countdown)}`}
+            {`${t(`${pathTranslation}.timeRemaining`)}: ${formatTime(
+              countdown
+            )}`}
           </Typography>
 
           {/* OTP Input Boxes */}

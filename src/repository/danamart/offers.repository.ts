@@ -1,6 +1,9 @@
 import { type ReportFormI } from '@/hooks/danamart/usePostReport';
 import baseAxios from '@/utils/common/axios';
-import { type PurchaseCheckTestingI, type PurchaseI } from '@/utils/interfaces/danamart/offers.interface';
+import {
+  type PurchaseCheckTestingI,
+  type PurchaseI
+} from '@/utils/interfaces/danamart/offers.interface';
 import axios from 'axios';
 
 const danamartApi = axios.create({
@@ -189,7 +192,9 @@ export const purchaseItem = async (formData: PurchaseI): Promise<any> => {
   }
 };
 
-export const purchaseItemCheckTesting = async (formData: PurchaseCheckTestingI): Promise<any> => {
+export const purchaseItemCheckTesting = async (
+  formData: PurchaseCheckTestingI
+): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 

@@ -94,7 +94,7 @@ const Login: React.FC<LoginProps> = ({
         value={watch('password')}
         onChange={e => {
           setValue('password', e.target.value);
-          setIsError(false)
+          setIsError(false);
         }}
         error={Boolean(errors.password)}
         name="password"
@@ -108,15 +108,19 @@ const Login: React.FC<LoginProps> = ({
       {errors.password !== null && errors.password !== undefined && (
         <p className="text-red-500">{errors.password.message}</p>
       )}
-      {
-        isError && errorType === 1
-          ? <p className="text-red-500 w-full text-justify mt-2">{t('danamart.login.validation.limitEntry')}</p>
-          : isError && errorType === 2
-            ? <p className="text-red-500 w-full text-justify mt-2">{t('danamart.login.validation.wrongPassword')}</p>
-            : isError && errorType === 3
-              ? <p className="text-red-500 w-full text-justify mt-2">{t('danamart.login.validation.error')}</p>
-              : null
-      }
+      {isError && errorType === 1 ? (
+        <p className="text-red-500 w-full text-justify mt-2">
+          {t('danamart.login.validation.limitEntry')}
+        </p>
+      ) : isError && errorType === 2 ? (
+        <p className="text-red-500 w-full text-justify mt-2">
+          {t('danamart.login.validation.wrongPassword')}
+        </p>
+      ) : isError && errorType === 3 ? (
+        <p className="text-red-500 w-full text-justify mt-2">
+          {t('danamart.login.validation.error')}
+        </p>
+      ) : null}
 
       <div className="w-full flex flex-col justify-center items-center mt-4">
         <ReCAPTCHA

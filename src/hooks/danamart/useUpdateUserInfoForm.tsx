@@ -259,17 +259,23 @@ const useUpdateUserInfoForm = (): any => {
 
       const adjustedData = {
         ...data,
-        masa_berlaku: data.masa_berlaku ? 'on' : '',
+        masa_berlaku: data.masa_berlaku ? 'on' : ''
       };
 
       Object.entries(adjustedData).forEach(([key, value]) => {
-        if (key !== 'dm_penmit_01013' && value !== undefined && value !== null) {
+        if (
+          key !== 'dm_penmit_01013' &&
+          value !== undefined &&
+          value !== null
+        ) {
           formData.append(key, String(value));
         }
       });
 
-      const isBase64 = typeof data.dm_penmit_01013 === 'string' && data.dm_penmit_01013.startsWith('data:image');
-      const isOldFilename = (data.dm_penmit_01013).includes('npwp') && !isBase64;
+      const isBase64 =
+        typeof data.dm_penmit_01013 === 'string' &&
+        data.dm_penmit_01013.startsWith('data:image');
+      const isOldFilename = data.dm_penmit_01013.includes('npwp') && !isBase64;
 
       // Upload new NPWP
       if (isBase64) {
@@ -281,7 +287,9 @@ const useUpdateUserInfoForm = (): any => {
       if (isOldFilename) {
         formData.append('dm_penmit_01013_exist', data.dm_penmit_01013);
 
-        const imageUrl = `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${data.dm_penmit_01013 as string}`;
+        const imageUrl = `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${
+          data.dm_penmit_01013 as string
+        }`;
         const response = await fetch(imageUrl);
         const blob = await response.blob();
         const file = new File([blob], 'image.jpg', { type: blob.type });
@@ -291,10 +299,12 @@ const useUpdateUserInfoForm = (): any => {
 
       const response = await updateUserInformation(formData);
 
-      if (response?.message === 'Data Formulir Informasi Pribadi berhasil di-update') {
+      if (
+        response?.message ===
+        'Data Formulir Informasi Pribadi berhasil di-update'
+      ) {
         toast.success('User information updated successfully');
       }
-      
     } catch (error) {
       toast.error('Failed to update user information');
     }

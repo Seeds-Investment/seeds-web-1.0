@@ -38,8 +38,8 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
 
   useEffect(() => {
     if (
-      photoIdCardData?.penmit !== null && 
-      photoIdCardData?.penmit?.dm_penmit_01011 !== '' && 
+      photoIdCardData?.penmit !== null &&
+      photoIdCardData?.penmit?.dm_penmit_01011 !== '' &&
       photoIdCardData?.penmit?.dm_penmit_01011 !== undefined
     ) {
       setIsIdCardUploaded(true);
@@ -252,23 +252,21 @@ const PhotoIdCard: React.FC<PhotoIdCardProps> = ({ step, setStep, t }) => {
           </Button>
         )}
         {photoIdCardData?.info_4 !== '1' && (
-        <Button
-          disabled={isLoading}
-          onClick={async () => {
-            if (isUsePhoto) {
-              await saveData();
-            } else {
-              handleNextPage();
-            }
-          }}
-          className="rounded-full px-4 py-2 w-[155px] h-[36px] bg-seeds-button-green"
-        >
-          {
-            imageData !== ''
-              ? t('danamart.verification.buttonSave') 
-              : t('danamart.verification.buttonNext')
-          }
-        </Button>
+          <Button
+            disabled={isLoading}
+            onClick={async () => {
+              if (isUsePhoto) {
+                await saveData();
+              } else {
+                handleNextPage();
+              }
+            }}
+            className="rounded-full px-4 py-2 w-[155px] h-[36px] bg-seeds-button-green"
+          >
+            {imageData !== ''
+              ? t('danamart.verification.buttonSave')
+              : t('danamart.verification.buttonNext')}
+          </Button>
         )}
       </div>
     </div>

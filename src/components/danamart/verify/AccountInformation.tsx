@@ -557,11 +557,11 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
               register={register}
               errors={errors}
               imageURLPreview={
-                (imageURL === '' || imageURL === undefined)
+                imageURL === '' || imageURL === undefined
                   ? imageURLPreview
                   : userInformation?.penmit?.dm_penmit_01013 !== undefined
-                    ? `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${userInformation?.penmit?.dm_penmit_01013}`
-                    : imageURLPreview
+                  ? `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${userInformation?.penmit?.dm_penmit_01013}`
+                  : imageURLPreview
               }
               usePreview={true}
               setValue={setValue}

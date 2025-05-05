@@ -48,21 +48,20 @@ const OfferListCard: React.FC<Props> = ({
           height={1000}
           className="object-cover w-full h-full rounded-t-lg"
         />
-        {
-          offer?.is_co === "1" ? (
-            <Typography className="font-poppins absolute top-0 left-0 bg-[#B14FAB] opacity-90 text-white text-sm px-2 py-1 rounded-tl-lg rounded-br-lg">
-              {t(`${pathTranslation}.text11`)}
-            </Typography>
-          ) : offer?.status_sla === "Bisnis Berjalan" ? null : offer?.isPrelisting === "PreListing" ? (
-            <Typography className="font-poppins absolute top-0 left-0 bg-[#FF7F27] opacity-95 text-white text-sm px-2 py-1 rounded-tl-lg rounded-br-lg">
-              Pre-Listing
-            </Typography>
-          ) : offer?.isPrelisting === "Listing" ? (
-            <Typography className="font-poppins absolute top-0 left-0 bg-[#B0D44C] opacity-95 text-white text-sm px-2 py-1 rounded-tl-lg rounded-br-lg">
-              Listing
-            </Typography>
-          ) : null
-        }
+        {offer?.is_co === '1' ? (
+          <Typography className="font-poppins absolute top-0 left-0 bg-[#B14FAB] opacity-90 text-white text-sm px-2 py-1 rounded-tl-lg rounded-br-lg">
+            {t(`${pathTranslation}.text11`)}
+          </Typography>
+        ) : offer?.status_sla ===
+          'Bisnis Berjalan' ? null : offer?.isPrelisting === 'PreListing' ? (
+          <Typography className="font-poppins absolute top-0 left-0 bg-[#FF7F27] opacity-95 text-white text-sm px-2 py-1 rounded-tl-lg rounded-br-lg">
+            Pre-Listing
+          </Typography>
+        ) : offer?.isPrelisting === 'Listing' ? (
+          <Typography className="font-poppins absolute top-0 left-0 bg-[#B0D44C] opacity-95 text-white text-sm px-2 py-1 rounded-tl-lg rounded-br-lg">
+            Listing
+          </Typography>
+        ) : null}
       </div>
       <div className="p-2">
         <div className="w-full flex justify-between">
@@ -84,7 +83,14 @@ const OfferListCard: React.FC<Props> = ({
           {offer?.nama_perusahaan}
         </Typography>
         <div className="w-full flex flex-wrap justify-between items-center bg-[#F7F7F7] p-2 rounded-sm line-clamp-2 h-[140px]">
-          <div className={`flex items-center gap-2 ${offer?.dm_pem_05001 !== 'Invoice Financing' && offer?.dm_pem_05001 !== 'Project Financing' ? 'w-full' : 'w-1/2'}`}>
+          <div
+            className={`flex items-center gap-2 ${
+              offer?.dm_pem_05001 !== 'Invoice Financing' &&
+              offer?.dm_pem_05001 !== 'Project Financing'
+                ? 'w-full'
+                : 'w-1/2'
+            }`}
+          >
             <Image alt="CardClock" src={CardClock} width={18} height={18} />
             <div>
               <p className="text-gray-600 text-sm">
@@ -95,9 +101,9 @@ const OfferListCard: React.FC<Props> = ({
               </p>
             </div>
           </div>
-          {offer?.dm_pem_05001 !== 'Modal Usaha' && (
-            (offer?.dm_pem_05001 === 'Invoice Financing' || 
-            offer?.dm_pem_05001 === 'Project Financing') &&
+          {offer?.dm_pem_05001 !== 'Modal Usaha' &&
+            (offer?.dm_pem_05001 === 'Invoice Financing' ||
+              offer?.dm_pem_05001 === 'Project Financing') && (
               <div className="flex items-center gap-2 w-1/2">
                 <Image alt="CardCoins" src={CardCoins} width={20} height={20} />
                 <div
@@ -120,7 +126,7 @@ const OfferListCard: React.FC<Props> = ({
                   ) : null}
                 </div>
               </div>
-          )}
+            )}
           <div className="flex items-center gap-2 w-1/2 mt-4">
             <Image alt="CardTag" src={CardTag} width={18} height={18} />
             <div>

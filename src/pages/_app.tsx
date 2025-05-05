@@ -2,6 +2,7 @@
 import BattleLayout from '@/components/layouts/BattleLayout';
 import Header from '@/components/layouts/Header';
 import LoginLayout from '@/components/layouts/LoginLayout';
+import SeedsPosthog from '@/components/SeedsPosthog/seeds-posthog';
 import ErrorBEProvider from '@/store/error-be/ErrorBEProvider';
 import LanguageProvider from '@/store/language/LanguageProvider';
 import LoadingProvider from '@/store/loading/LoadingProvider';
@@ -16,6 +17,8 @@ import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
+import posthog from 'posthog-js';
+import { PostHogProvider } from 'posthog-js/react';
 import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -75,42 +78,46 @@ function App({
     router.pathname.startsWith('/danamart') ||
     router.pathname.startsWith('/microsite-quiz');
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance';
+
   if (loginLayouts) {
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <TrackingHeadScript id={GA_TRACKING_ID} isGTM={true} />
-          <iframe
-            src={`${baseUrl}/assets/quiz/sound/silent.mp3`}
-            allow="autoplay"
-            id="audio"
-            style={{ display: 'none' }}
-          ></iframe>
-          <LanguageProvider>
-            <LoadingProvider>
-              <ErrorBEProvider>
-                <SessionProvider session={pageProps.session}>
-                  {router.pathname.startsWith('/microsite-quiz') ? (
-                    <>
-                      {getLayout(<Component {...pageProps} />)}
-                      <ToastContainer />
-                    </>
-                  ) : router.pathname.startsWith('/play/team-battle') ? (
-                    <BattleLayout>
-                      {getLayout(<Component {...pageProps} />)}
-                      <ToastContainer />
-                    </BattleLayout>
-                  ) : (
-                    <LoginLayout>
-                      {getLayout(<Component {...pageProps} />)}
-                      <ToastContainer />
-                    </LoginLayout>
-                  )}
-                </SessionProvider>
-              </ErrorBEProvider>
-            </LoadingProvider>
-          </LanguageProvider>
+          <PostHogProvider client={posthog}>
+            <SeedsPosthog />
+            <TrackingHeadScript id={GA_TRACKING_ID} isGTM={true} />
+            <iframe
+              src={`${baseUrl}/assets/quiz/sound/silent.mp3`}
+              allow="autoplay"
+              id="audio"
+              style={{ display: 'none' }}
+            ></iframe>
+            <LanguageProvider>
+              <LoadingProvider>
+                <ErrorBEProvider>
+                  <SessionProvider session={pageProps.session}>
+                    {router.pathname.startsWith('/microsite-quiz') ? (
+                      <>
+                        {getLayout(<Component {...pageProps} />)}
+                        <ToastContainer />
+                      </>
+                    ) : router.pathname.startsWith('/play/team-battle') ? (
+                      <BattleLayout>
+                        {getLayout(<Component {...pageProps} />)}
+                        <ToastContainer />
+                      </BattleLayout>
+                    ) : (
+                      <LoginLayout>
+                        {getLayout(<Component {...pageProps} />)}
+                        <ToastContainer />
+                      </LoginLayout>
+                    )}
+                  </SessionProvider>
+                </ErrorBEProvider>
+              </LoadingProvider>
+            </LanguageProvider>
+          </PostHogProvider>
         </PersistGate>
       </Provider>
     );
@@ -119,23 +126,26 @@ function App({
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <TrackingHeadScript id={GA_TRACKING_ID} isGTM={true} />
-        <LanguageProvider>
-          <LoadingProvider>
-            <ErrorBEProvider>
-              <SuccessProvider>
-                <SessionProvider session={pageProps.session}>
-                  {renderHeader && <Header className={`-mt-20`} />}
-                  <ThemeProvider>
-                    {getLayout(<Component {...pageProps} />)}
-                    <ToastContainer />
-                  </ThemeProvider>
-                </SessionProvider>
-              </SuccessProvider>
-            </ErrorBEProvider>
-          </LoadingProvider>
-        </LanguageProvider>
-        <ToastContainer />
+        <PostHogProvider client={posthog}>
+          <TrackingHeadScript id={GA_TRACKING_ID} isGTM={true} />
+          <SeedsPosthog />
+          <LanguageProvider>
+            <LoadingProvider>
+              <ErrorBEProvider>
+                <SuccessProvider>
+                  <SessionProvider session={pageProps.session}>
+                    {renderHeader && <Header className={`-mt-20`} />}
+                    <ThemeProvider>
+                      {getLayout(<Component {...pageProps} />)}
+                      <ToastContainer />
+                    </ThemeProvider>
+                  </SessionProvider>
+                </SuccessProvider>
+              </ErrorBEProvider>
+            </LoadingProvider>
+          </LanguageProvider>
+          <ToastContainer />
+        </PostHogProvider>
       </PersistGate>
     </Provider>
   );

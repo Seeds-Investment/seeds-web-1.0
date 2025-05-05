@@ -182,7 +182,7 @@ export const CardSlideQuiz: React.FC<props> = ({ data, loading = true }) => {
                             await router.push(
                               `${
                                 process.env.NEXT_PUBLIC_DOMAIN ??
-                                'https://user-dev-gcp.seeds.finance'
+                                'https://user-dev-ali.seeds.finance'
                               }/play/quiz/${item.id}`
                             )
                           }

@@ -4,7 +4,9 @@ import back_nav from '@/assets/circle-page/back_nav.svg';
 import more_vertical from '@/assets/more-option/more_vertical.svg';
 import CCard from '@/components/CCard';
 import MediaItem from '@/components/chat/MediaItem';
+import ModalCamera from '@/components/chat/ModalCamera';
 import ModalNewChat from '@/components/chat/ModalNewChat';
+import ModalRecordVideo from '@/components/chat/ModalRecordVideo';
 import MutePopUp from '@/components/chat/MutePopup';
 import DeleteChatPopUp from '@/components/chat/PopUpDelete';
 import LeaveCommunityPopUp from '@/components/chat/PopUpLeave';
@@ -12,12 +14,8 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { ChatVoiceRecorder } from '@/containers/chat/ChatVoiceRecording';
 import ContactList from '@/containers/chat/ContactList';
 import GifChat from '@/containers/chat/GifChat';
-import withAuth from '@/helpers/withAuth';
-import LeaveButton from '../../../public/assets/chat/logout-icon.svg';
-// import useGetOnlineStatus from '@/hooks/useGetOnlineStatus';
-import ModalCamera from '@/components/chat/ModalCamera';
-import ModalRecordVideo from '@/components/chat/ModalRecordVideo';
 import { getChatDate } from '@/helpers/dateFormat';
+import withAuth from '@/helpers/withAuth';
 import {
   acceptRequest,
   deleteGroupChat,
@@ -36,7 +34,9 @@ import {
   readGroupMessage,
   readPersonalMessage,
   rejectRequest,
-  sendPersonalMessage
+  sendPersonalMessage,
+  unmuteGroupChat,
+  unmutePersonalChat
 } from '@/repository/chat.repository';
 import { UseUploadMedia } from '@/repository/circleDetail.repository';
 import { getOtherUser } from '@/repository/profile.repository';
@@ -103,6 +103,7 @@ import {
 } from 'react-icons/bs';
 import {
   CiBellOff,
+  CiBellOn,
   CiCamera,
   CiSearch,
   CiTrash,
@@ -111,6 +112,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import defaultAvatar from '../../../public/assets/chat/default-avatar.svg';
+import LeaveButton from '../../../public/assets/chat/logout-icon.svg';
 
 const initialFilter: GetListChatParams = {
   page: 1,
@@ -148,6 +150,7 @@ const ChatPages: React.FC = () => {
   const [isShowMediaOption, setIsShowMediaOption] = useState<boolean>(false);
   const [isModalCameraOpen, setIsModalCameraOpen] = useState<boolean>(false);
   const [isModalRecordOpen, setIsModalRecordOpen] = useState<boolean>(false);
+  const [isRefetch, setIsRefetch] = useState<boolean>(false);
   const [messageList, setMessageList] = useState<IChatBubble[] | []>([]);
   const [message, setMessage] = useState<string>('');
   const [chatRequest, setChatRequest] = useState<number>(0);
@@ -181,6 +184,11 @@ const ChatPages: React.FC = () => {
     'PERSONAL' | 'COMMUNITY' | 'REQUEST'
   >('PERSONAL');
   const { t } = useTranslation();
+
+  const isMuted = 
+    activeTab === 'COMMUNITY'
+      ? groupData?.chat_mute_status === 'eight_hours' || groupData?.chat_mute_status === 'one_week' || (groupData?.chat_mute_status === 'always' && groupData?.chat_mute_date !== '0001-01-01T00:00:00Z')
+      : otherUserData?.chat_mute_status === 'eight_hours' || otherUserData?.chat_mute_status === 'one_week' || (otherUserData?.chat_mute_status === 'always' && otherUserData?.chat_mute_date !== '0001-01-01T00:00:00Z')
 
   const handleChangeTab = (
     value: 'PERSONAL' | 'COMMUNITY' | 'REQUEST'
@@ -432,10 +440,36 @@ const ChatPages: React.FC = () => {
       } else {
         toast.success(t('chat.muted.text3'))
       }
+      setIsRefetch(!isRefetch)
     } catch (error: any) {
       toast.error(t('chat.muted.text4'))
     } finally {
       setIsMutePopupOpen(false);
+      if (activeTab === 'PERSONAL') {
+        void fetchOtherUser();
+      } else {
+        void fetchGroup();
+      }
+    }
+  };
+
+  const unmuteChat = async (): Promise<void> => {
+    try {
+      activeTab === 'PERSONAL'
+        ? await unmutePersonalChat({ user_id: roomId as string })
+        : await unmuteGroupChat({ group_id: roomId as string });
+      toast.success(t('chat.unmuted.text1'))
+      setIsRefetch(!isRefetch)
+    } catch (error: any) {
+      toast.error(t('chat.unmuted.text2'))
+    } finally {
+      setIsMutePopupOpen(false);
+      setIsDropdownOpen(false);
+      if (activeTab === 'PERSONAL') {
+        void fetchOtherUser();
+      } else {
+        void fetchGroup();
+      }
     }
   };
 
@@ -493,7 +527,8 @@ const ChatPages: React.FC = () => {
 
   useEffect(() => {
     void fetchListChat();
-  }, [filter, isChatActive]);
+  }, [filter, isChatActive, isRefetch]);
+
   const fetchOtherUser = async (): Promise<void> => {
     try {
       const userData = await getOtherUser(roomId as string);
@@ -1565,16 +1600,30 @@ const ChatPages: React.FC = () => {
                                 </div>
                                 <div
                                   className="dropdown-option flex items-center p-2 gap-2 hover:bg-gray-100 cursor-pointer"
-                                  onClick={() => {
-                                    handleDropdownOptionClick('Mute');
+                                  onClick={async() => {
+                                    if (isMuted) {
+                                      await unmuteChat()
+                                    } else {
+                                      handleDropdownOptionClick('Mute');
+                                    }
                                   }}
                                 >
-                                  <CiBellOff
-                                    size={24}
-                                    className="text-[#201B1C]"
-                                  />
+                                  {
+                                    isMuted ?
+                                      <CiBellOn
+                                        size={24}
+                                        className="text-[#201B1C]"
+                                      />
+                                      :
+                                      <CiBellOff
+                                        size={24}
+                                        className="text-[#201B1C]"
+                                      />
+                                  }
                                   <h1 className="text-sm font-poppins font-normal text-[#201B1C]">
-                                    {t('chat.mute')}
+                                    {
+                                      isMuted ? t('chat.unmute') : t('chat.mute')
+                                    }
                                   </h1>
                                 </div>
                                 <div
@@ -1631,7 +1680,7 @@ const ChatPages: React.FC = () => {
                               <div className="relative w-full">
                                 <input
                                   type="text"
-                                  className="py-2 px-4 border-2 w-full rounded-full my-2 pr-16" // Added pr-16 for spacing
+                                  className="py-2 px-4 border-2 w-full rounded-full my-2 pr-16"
                                   value={searchText}
                                   onChange={handleSearchTextChange}
                                   placeholder="Search..."

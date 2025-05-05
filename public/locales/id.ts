@@ -2617,6 +2617,7 @@ export default {
       'Jika kamu  mengklik ya, riwayat obrolanmu  tidak dapat ditelusuri kembali setelah menghapus obrolan',
     search: 'Telusuri',
     mute: 'Bisukan Notifikasi',
+    unmute: 'Aktifkan Notifikasi',
     deleteChat: 'Hapus Pesan',
     participants: 'Peserta',
     notes: 'Catatan',
@@ -2629,6 +2630,10 @@ export default {
       text2: 'Notifikasi dibisukan selama satu minggu',
       text3: 'Notifikasi dibisukan',
       text4: 'Ups! Terjadi kesalahan. Mohon coba lagi!'
+    },
+    unmuted: {
+      text1: 'Notifikasi telah diaktifkan',
+      text2: 'Ups! Terjadi kesalahan. Mohon coba lagi!'
     },
     setPhoto: 'Atur Gambar',
     btnCreateGroup: 'Buat Obrolan Grup',

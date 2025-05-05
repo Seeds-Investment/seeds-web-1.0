@@ -13,7 +13,7 @@ interface Props {
 const ModalShareCourse: React.FC<Props> = ({ onClose, url }) => {
   const { t } = useTranslation();
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance';
 
   const handleCopyClick = async (): Promise<void> => {
     const textToCopy = `${baseUrl}/academy/course/${url}`;

@@ -15,7 +15,7 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
   );
   const [open, setOpen] = useState(false);
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance/';
 
   function copyValueWithUrl(valueToCopy: number): boolean {
     const textToCopy = `${baseUrl}/article/${valueToCopy}`;

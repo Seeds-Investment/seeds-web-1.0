@@ -2688,6 +2688,7 @@ export default {
       'If you click yes, your chat history can not be retrace after delete the chat',
     search: 'Search',
     mute: 'Mute Notification',
+    unmute: 'Unmute Notification',
     deleteChat: 'Delete chat',
     participants: 'Participants',
     notes: 'Notes',
@@ -2700,6 +2701,10 @@ export default {
       text2: 'Notifications Muted for one week',
       text3: 'Notifications Muted',
       text4: 'Oops! Error when try to mute chat'
+    },
+    unmuted: {
+      text1: 'Notifications Unmuted',
+      text2: 'Oops! Error when try to unmute chat'
     },
     setPhoto: 'Set Photo',
     btnCreateGroup: 'Create Group Chat',

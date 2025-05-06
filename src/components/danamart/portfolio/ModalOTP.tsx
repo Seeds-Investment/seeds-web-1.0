@@ -79,7 +79,7 @@ const ModalOTP: React.FC<Props> = ({
   const handleGetOTP = async (): Promise<void> => {
     try {
       const response = await getCancelPurchaseVerificationOTP(otpType);
-      
+
       if (response?.status === 200) {
         const encryptedData = response?.data;
         const decryptedData = decryptResponse(encryptedData);
@@ -91,7 +91,7 @@ const ModalOTP: React.FC<Props> = ({
         }
       } else {
         if (response?.data?.error === 'Authentifikasi JWT gagal') {
-          toast.error('Authentifikasi JWT gagal')
+          toast.error('Authentifikasi JWT gagal');
         } else if (response?.data?.message === 'too many hits') {
           toast.error(t(`${pathTranslation}.tooManyAttempts`));
         }
@@ -151,7 +151,9 @@ const ModalOTP: React.FC<Props> = ({
       ) : (
         <div className="mt-4">
           <Typography className="text-red-600 text-sm font-medium mb-2">
-            {`${t(`${pathTranslation}.timeRemaining`)}: ${formatTime(countdown)}`}
+            {`${t(`${pathTranslation}.timeRemaining`)}: ${formatTime(
+              countdown
+            )}`}
           </Typography>
 
           {/* OTP Input Boxes */}

@@ -5,6 +5,9 @@ export default {
   greeting: 'Hello, {{name}}',
   header: { join: 'Join Us' },
   footer: {
+    disclaimer: 'Disclaimer:',
+    disclaimerContain:
+      'is not a licensed financial institution. All information provided is for informational purposes only and should not be considered financial advice.',
     description:
       'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice for you. If you are still unsure about investing, start communicating with a financial consultant Be careful before starting to invest!',
     download: 'Download Our App',
@@ -961,7 +964,8 @@ export default {
       adminFeeDiscountLabel: 'Admin Fee Discount ',
       promoCodeDiscountLabel: 'Promo Code Discount',
       button: 'Pay',
-      seedsCoin: 'Seeds Coin Redeemed'
+      seedsCoin: 'Seeds Coin Redeemed',
+      teamBattleFee: 'Team Battle Fee'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -980,21 +984,31 @@ export default {
       },
       step2: {
         1: 'Enter',
-        2: 'nomor Virtual Account',
+        2: 'Virtual Account number',
         3: 'and choose',
         4: 'Send'
       },
       step3: {
         1: 'Check the information shown on the screen. Make sure the Merchant is',
-        2: 'Seeds, Total bill',
-        3: 'is correct and your username',
+        2: 'Seeds and total bill',
+        3: 'and your username are correct.',
         4: 'If true, Select',
         5: 'Ya'
       },
       step4: {
         1: 'Enter your m-{{provider}} PIN and select',
         2: 'OK'
-      }
+      },
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Redeemed',
+      howToPay: 'How to Pay',
+      choosePayment: 'Choose Payment Method:',
+      warningCompletion: 'Complete payment in',
+      minuteWarning: 'Less than 1 minute',
+      expired: 'Payment expired',
+      minimumPaymentError:
+        'The minimum transaction amount for Virtual Account payments is IDR 10,000.',
+      teamBattleFee: 'Team Battle Fee'
     }
   },
   promo: {
@@ -2047,7 +2061,8 @@ export default {
     expired: {
       text1: 'Your QR Code has expired',
       text2:
-        'Please make the purchase again and ensure that your payment has been completed in time'
+        'Please make the purchase again and ensure that your payment has been completed in time',
+      text3: 'Payment expired'
     },
     repeat: 'Repeat Purchase',
     completePayment: 'Complete the payment in',
@@ -2434,7 +2449,7 @@ export default {
       virtualAccountLabel: 'Virtual Account',
       eWalletLabel: 'E-Wallet',
       button: 'Pay',
-      eventFee: "Event's Fee",
+      eventFee: 'Event Fee',
       howToPay: 'How to Pay',
       WalletForm: {
         title: 'Enter {{wallet}} Number',
@@ -2473,8 +2488,8 @@ export default {
         },
         step3: {
           1: 'Check the information shown on the screen. Make sure the Merchant is',
-          2: 'Seeds, Total bill',
-          3: 'is correct and your username',
+          2: 'Seeds and total bill',
+          3: 'and your username are correct.',
           4: 'If true, Select',
           5: 'Ya'
         },
@@ -2864,7 +2879,8 @@ export default {
         blank: 'You must fill in this field',
         error: 'There is an error. Check your password or connection!',
         serverError: 'A server error occurred. Kindly try again soon.',
-        limitEntry: 'You have entered the wrong password three times. Your login feature will be frozen for 5 minutes for security reasons.',
+        limitEntry:
+          'You have entered the wrong password three times. Your login feature will be frozen for 5 minutes for security reasons.',
         password:
           'Password must contain 8 digit with upper case and lower case',
         wrongPassword:
@@ -2873,7 +2889,8 @@ export default {
           'ReCAPTCHA value is not available! Fill the ReCAPTCHA before logging in.'
       },
       loginButton: 'Login',
-      tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+      tooManyAttempts:
+        "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes."
     },
     forgotPassword: {
       forgotPasswordTitle: 'Forget Password 🔑',
@@ -3405,7 +3422,7 @@ export default {
           text9:
             'Investment opportunity from <strong>ongoing projects</strong>, resulting in <strong>higher risk</strong>.',
           text10: 'Learn More',
-          text11: 'Testing',
+          text11: 'Testing'
         },
         prelisting:
           'The prelisting phase is where you can only view the offers available on the Danamart platform, but <strong>you are not yet able to purchase</strong> these securities. The purpose is for you to study the offers first before making an investment or purchase decision. This prelisting phase lasts for <strong>2 days</strong> before proceeding to the listing phase.',
@@ -3598,8 +3615,9 @@ export default {
           }
         },
         listingModal: {
-          warningText: "The purchase of securities is not yet available as it is still in Pre-Listing status. Please wait until the status changes to Listing.",
-          close: "Close"
+          warningText:
+            'The purchase of securities is not yet available as it is still in Pre-Listing status. Please wait until the status changes to Listing.',
+          close: 'Close'
         }
       },
       purchase: {
@@ -3646,13 +3664,13 @@ export default {
           text22: 'Total Purchase (Rp)',
           text23: 'Select Payment Bank',
           text24: 'Purchase Quantity (Lot)',
-          text25: "Security Code",
-          text26: "Business Sector",
-          text27: "Remaining Shares",
-          text28: "Price Per Share (Rp)",
-          text29: "Total Purchase (Rp)",
-          text30: "Number of Shares Purchased",
-          text31: "Enter Number of Shares Purchased",
+          text25: 'Security Code',
+          text26: 'Business Sector',
+          text27: 'Remaining Shares',
+          text28: 'Price Per Share (Rp)',
+          text29: 'Total Purchase (Rp)',
+          text30: 'Number of Shares Purchased',
+          text31: 'Enter Number of Shares Purchased',
           formResponse: {
             text1: 'Purchase Successful',
             text2:
@@ -3667,7 +3685,8 @@ export default {
             text7: 'Sorry, your purchase amount exceeds the available slots.',
             text8: 'Sorry, your purchase amount exceeds your in hand cash.',
             text9: 'Sorry, your purchase amount exceeds the available slots',
-            text10: 'Sorry, your purchase amount exceeds your bank transfer limit',
+            text10:
+              'Sorry, your purchase amount exceeds your bank transfer limit'
           }
         },
         disclaimer: {
@@ -3740,7 +3759,8 @@ export default {
             verification: 'OTP Verification',
             getOtp: 'Get OTP',
             selectType: 'Select OTP Type',
-            tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+            tooManyAttempts:
+              "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
             wrongPassword: 'Wrong password. Please try again.',
             cancel: 'Cancel',
             yes: 'Yes',
@@ -3755,7 +3775,8 @@ export default {
       },
       title: 'Portfolio',
       text1: 'Are you sure you want to cancel the purchase?',
-      text2: 'Even though your investment was successfully canceled, don’t worry — Danamart still offers many other investment opportunities. Go ahead and choose one!',
+      text2:
+        'Even though your investment was successfully canceled, don’t worry — Danamart still offers many other investment opportunities. Go ahead and choose one!',
       text3: 'Please enter a valid verification code',
       cancel: 'No',
       continue: 'Yes, cancel',
@@ -3840,7 +3861,7 @@ export default {
         text7: 'Search...',
         text8: 'Filter by Date',
         text9: 'Start Date',
-        text10: 'End Date',
+        text10: 'End Date'
       },
       table: {
         text1: 'No data in the table.',
@@ -3911,7 +3932,7 @@ export default {
         text7: 'Search...',
         text8: 'Filter by Date',
         text9: 'Start Date',
-        text10: 'End Date',
+        text10: 'End Date'
       },
       table: {
         text1: 'No data available in the table.',
@@ -3934,7 +3955,8 @@ export default {
             'Congratulations, your withdrawal request has been received and will be processed soon!',
           pending:
             'There is still an ongoing withdrawal process in your account. Please wait until the withdrawal is completed, then try again.',
-          tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+          tooManyAttempts:
+            "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
           title: 'Withdrawal Request',
           text1: 'Withdrawal Method',
           text2: 'Total Amount to Withdraw + Admin Fee (Rp)',
@@ -4067,9 +4089,10 @@ export default {
         text1:
           'A Promo Code is a unique code that you can use to get exciting offers.',
         text2: 'Oops!',
-        text3: 'Sorry! Your code is invalid, the quota has been exhausted, the validity period has expired, or it does not meet the terms and conditions. Please try again with another code.',
+        text3:
+          'Sorry! Your code is invalid, the quota has been exhausted, the validity period has expired, or it does not meet the terms and conditions. Please try again with another code.',
         close: 'Close',
-        ok: 'Ok',
+        ok: 'Ok'
       }
     },
     setting: {
@@ -4092,7 +4115,7 @@ export default {
         text6: 'A verification link will be sent to your email',
         text7: 'Phone Number',
         text8: 'A verification code will be sent to your phone number',
-        text9: 'Continue Verification',
+        text9: 'Continue Verification'
       },
       deleteAccount: {
         text1: 'Delete Account',
@@ -4100,7 +4123,8 @@ export default {
         text3: 'Verify OTP',
         text4: 'Your account has been successfully deleted',
         text5: 'Enter your Danamart account password',
-        tooManyAttempts: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+        tooManyAttempts:
+          "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
         disclaimer: `
           <p>In accordance with <strong>Regulation of the Minister of Communication and Informatics No. 20 of 2016</strong> on <strong>Personal Data Protection in Electronic Systems</strong>, Article 20 states: <em>“If the Owner of Personal Data requests the deletion of certain individual data, the deletion request shall be carried out in accordance with the provisions of applicable laws and regulations.”</em></p>
           <br>
@@ -4123,7 +4147,8 @@ export default {
         text5: 'Save Changes',
         text6: 'Your account password has been successfully changed.',
         text7: 'The old password is incorrect or does not match.',
-        text8: 'Password must be at least 8 characters and include lowercase, uppercase, and a number.',
+        text8:
+          'Password must be at least 8 characters and include lowercase, uppercase, and a number.',
         text9: 'Password confirmation does not match.',
         text10: 'Enter your Danamart current account password',
         text11: 'Enter your Danamart new account password',
@@ -4155,10 +4180,11 @@ export default {
         modal: {
           text1: 'Confirmation',
           text2: 'Your email will be changed to',
-          text3: 'We will send a verification email to your new email address. Your account will be automatically logged out after this.',
+          text3:
+            'We will send a verification email to your new email address. Your account will be automatically logged out after this.',
           text4: 'Do you want to continue?',
           cancel: 'Cancel',
-          continue: 'Continue',
+          continue: 'Continue'
         }
       },
       changeBankAccount: {
@@ -4184,16 +4210,21 @@ export default {
         text20: 'Time remaining',
         text21: 'Continue with the bank account change process?',
         validation: {
-          text1: 'Thank you for your patience. We would like to inform you that there is still a data change request in progress. Please wait until this process is completed before submitting another request.',
-          text2: 'The OTP code has been sent to your number. Please check your phone.',
-          text3: 'We have received your data change request. Our team will proceed to confirm this request by contacting you. Please wait patiently.',
-          text4: 'The verification code is incorrect, please enter a valid verification code.',
+          text1:
+            'Thank you for your patience. We would like to inform you that there is still a data change request in progress. Please wait until this process is completed before submitting another request.',
+          text2:
+            'The OTP code has been sent to your number. Please check your phone.',
+          text3:
+            'We have received your data change request. Our team will proceed to confirm this request by contacting you. Please wait patiently.',
+          text4:
+            'The verification code is incorrect, please enter a valid verification code.',
           text5: 'The bank account number is incorrect or invalid.',
           text6: "The account holder's name does not match.",
           text7: 'Incorrect password, please try again.',
-          text8: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+          text8:
+            "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
           text9: 'Please choose a verification code delivery method.',
-          text10: 'An error occurred. Please log in to your account again.',
+          text10: 'An error occurred. Please log in to your account again.'
         },
         close: 'Close',
         continue: 'Continue'
@@ -4217,12 +4248,16 @@ export default {
         cancel: 'Cancel',
         continue: 'Continue',
         validation: {
-          text1: 'Verification code sent successfully. Please check your phone!',
-          text2: "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
+          text1:
+            'Verification code sent successfully. Please check your phone!',
+          text2:
+            "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes.",
           text3: 'Incorrect password, please try again.',
-          text4: 'Your phone number is currently in the approval process. Please wait for confirmation from the verifier!',
-          text5: 'We have received your data change request. Our team will contact you to confirm the request. Please wait.',
-          text6: 'Incorrect code! Please re-enter.',
+          text4:
+            'Your phone number is currently in the approval process. Please wait for confirmation from the verifier!',
+          text5:
+            'We have received your data change request. Our team will contact you to confirm the request. Please wait.',
+          text6: 'Incorrect code! Please re-enter.'
         }
       }
     },

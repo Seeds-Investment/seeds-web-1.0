@@ -8,7 +8,14 @@ import { checkPhoneNumber } from '@/repository/auth.repository';
 import type { ForgotPassData } from '@/utils/interfaces/auth.interface';
 import { type Country } from '@/utils/interfaces/guest.interface';
 import { type OTPDataI } from '@/utils/interfaces/otp.interface';
-import { Button, Menu, MenuHandler, MenuItem, MenuList, Typography } from '@material-tailwind/react';
+import {
+  Button,
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList,
+  Typography
+} from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -166,7 +173,9 @@ const AuthForgotPassNumber: React.FC<Props> = ({
                   variant="text"
                   className="w-full flex items-center justify-between px-4 py-2 text-[#7C7C7C] font-poppins font-normal text-base hover:bg-transparent focus:border-none"
                 >
-                  <Typography>{method === "sms" ? "SMS" : "WhatsApp"}</Typography>
+                  <Typography>
+                    {method === 'sms' ? 'SMS' : 'WhatsApp'}
+                  </Typography>
                   <IoIosArrowDown className="text-gray-500" />
                 </Button>
               </MenuHandler>
@@ -174,8 +183,8 @@ const AuthForgotPassNumber: React.FC<Props> = ({
                 <MenuItem
                   className="flex items-center gap-2 px-4 py-2 text-base text-[#262626] font-poppins hover:bg-gray-100"
                   onClick={() => {
-                    setMethod("sms");
-                    setOTPForm(prev => ({ ...prev, method: "sms" }));
+                    setMethod('sms');
+                    setOTPForm(prev => ({ ...prev, method: 'sms' }));
                   }}
                 >
                   SMS
@@ -183,8 +192,8 @@ const AuthForgotPassNumber: React.FC<Props> = ({
                 <MenuItem
                   className="flex items-center gap-2 px-4 py-2 text-base text-[#262626] font-poppins hover:bg-gray-100"
                   onClick={() => {
-                    setMethod("whatsapp");
-                    setOTPForm(prev => ({ ...prev, method: "whatsapp" }));
+                    setMethod('whatsapp');
+                    setOTPForm(prev => ({ ...prev, method: 'whatsapp' }));
                   }}
                 >
                   WhatsApp

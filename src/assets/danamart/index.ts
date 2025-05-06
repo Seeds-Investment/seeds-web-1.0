@@ -55,4 +55,3 @@ export { default as TabOverviewGray } from './tab-overview-gray.svg';
 export { default as TabOverviewGreen } from './tab-overview-green.svg';
 export { default as TabReportGray } from './tab-report-gray.svg';
 export { default as TabReportGreen } from './tab-report-green.svg';
-

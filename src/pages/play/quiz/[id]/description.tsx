@@ -3,10 +3,12 @@
 'use-client';
 import QuizButton from '@/components/quiz/button.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import useSoundEffect from '@/hooks/useSoundEffects';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById, getQuizCategoryById } from '@/repository/quiz.repository';
+import { useAppSelector } from '@/store/redux/store';
 import {
   type IDetailQuiz,
   type QuizCategoryI
@@ -23,6 +25,7 @@ const DescriptionQuiz = () => {
   const id = router.query.id;
   const { t, i18n } = useTranslation();
   const [categoryDetail, setCategoryDetail] = useState<QuizCategoryI>();
+  const { dataUser } = useAppSelector(state => state.user);
   const [userInfo, setUserInfo] = useState<any>();
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -148,6 +151,11 @@ const DescriptionQuiz = () => {
         const detailQuiz: IDetailQuiz = await getQuizById({
           id: id as string,
           currency
+        });
+        TrackerEvent({
+          event: 'SW_quiz_start_game',
+          quizData: detailQuiz,
+          userData: dataUser
         });
         const resCategory: QuizCategoryI = await getQuizCategoryById(
           detailQuiz.category

@@ -10,7 +10,9 @@ const danamartApi = axios.create({
   }
 });
 
-export const getPhoneVerificationOTP = async (formData: FormData): Promise<any> => {
+export const getPhoneVerificationOTP = async (
+  formData: FormData
+): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -35,7 +37,9 @@ export const getPhoneVerificationOTP = async (formData: FormData): Promise<any> 
   }
 };
 
-export const postPhoneVerificationOTP = async (formData: FormData): Promise<any> => {
+export const postPhoneVerificationOTP = async (
+  formData: FormData
+): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -68,15 +72,12 @@ export const getEmailVerification = async (): Promise<any> => {
       return await Promise.resolve('Access token Danamart not found');
     }
 
-    const response = await danamartApi.get(
-      `/pemodal/Setting/statusEmail`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessTokenDanamart}`,
-          'Content-Type': 'multipart/form-data'
-        }
+    const response = await danamartApi.get(`/pemodal/Setting/statusEmail`, {
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart}`,
+        'Content-Type': 'multipart/form-data'
       }
-    );
+    });
 
     return { ...response, status: 200 };
   } catch (error: any) {
@@ -109,7 +110,9 @@ export const getDeleteAccountOTP = async (formData: FormData): Promise<any> => {
   }
 };
 
-export const postDeleteAccountRequest = async (formData: FormData): Promise<any> => {
+export const postDeleteAccountRequest = async (
+  formData: FormData
+): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -192,15 +195,12 @@ export const getBankList = async (): Promise<any> => {
       return await Promise.resolve('Access token Danamart not found');
     }
 
-    const response = await danamartApi.get(
-      `/pemodal/setting/getRekening`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessTokenDanamart}`,
-          'Content-Type': 'multipart/form-data'
-        }
+    const response = await danamartApi.get(`/pemodal/setting/getRekening`, {
+      headers: {
+        Authorization: `Bearer ${accessTokenDanamart}`,
+        'Content-Type': 'multipart/form-data'
       }
-    );
+    });
 
     return { ...response, status: 200 };
   } catch (error: any) {
@@ -233,7 +233,9 @@ export const changeBankAccount = async (formData: FormData): Promise<any> => {
   }
 };
 
-export const validateChangeBankOTP = async (formData: FormData): Promise<any> => {
+export const validateChangeBankOTP = async (
+  formData: FormData
+): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -258,7 +260,10 @@ export const validateChangeBankOTP = async (formData: FormData): Promise<any> =>
   }
 };
 
-export const changePhoneNumber = async (method: string, formData: FormData): Promise<any> => {
+export const changePhoneNumber = async (
+  method: string,
+  formData: FormData
+): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -283,7 +288,9 @@ export const changePhoneNumber = async (method: string, formData: FormData): Pro
   }
 };
 
-export const validateChangePhoneNumberOTP = async (formData: FormData): Promise<any> => {
+export const validateChangePhoneNumberOTP = async (
+  formData: FormData
+): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 

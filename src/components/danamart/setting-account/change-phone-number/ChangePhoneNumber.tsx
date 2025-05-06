@@ -1,9 +1,16 @@
 import countries from '@/constants/countries.json';
 import { changePhoneNumber } from '@/repository/danamart/setting.repository';
-import { type UserProfile } from "@/utils/interfaces/danamart.interface";
-import { Button, Menu, MenuHandler, MenuItem, MenuList, Typography } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { type UserProfile } from '@/utils/interfaces/danamart.interface';
+import {
+  Button,
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList,
+  Typography
+} from '@material-tailwind/react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import ModalOTP from './ModalOTP';
@@ -19,21 +26,25 @@ interface Props {
   userProfileData: UserProfile;
 }
 
-const ChangePhoneNumber: React.FC<Props> = ({
-  userProfileData,
-}) => {
+const ChangePhoneNumber: React.FC<Props> = ({ userProfileData }) => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.setting.changePhoneNumber';
 
-  const [selectedCountry, setSelectedCountry] = useState<Country>(countries[101]);
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
-  const [combinedPhone, setCombinedPhone] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [selectedCountry, setSelectedCountry] = useState<Country>(
+    countries[101]
+  );
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [combinedPhone, setCombinedPhone] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<
+    string | null
+  >(null);
 
   const [otpType, setOtpType] = useState<string>('');
-  const [confirmOtpTypeError, setConfirmOtpTypeError] = useState<string | null>(null);
+  const [confirmOtpTypeError, setConfirmOtpTypeError] = useState<string | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isShowOTP, setIsShowOTP] = useState<boolean>(false);
   const [isContinueProcess, setIsContinueProcess] = useState<boolean>(false);
@@ -41,14 +52,14 @@ const ChangePhoneNumber: React.FC<Props> = ({
   const [passedOTP, setPassedOTP] = useState<string>('');
 
   const handlePhoneChange = (value: string): void => {
-    const cleaned = value.startsWith("0") ? value.slice(1) : value;
+    const cleaned = value.startsWith('0') ? value.slice(1) : value;
     setPhoneNumber(cleaned);
   };
 
   const togglePasswordVisibility = (): void => {
     setShowPassword(!showPassword);
   };
-    
+
   const handleChangePhoneNumber = async (): Promise<void> => {
     try {
       setIsLoading(true);
@@ -57,19 +68,27 @@ const ChangePhoneNumber: React.FC<Props> = ({
       formData.append('password', password);
       const response = await changePhoneNumber(otpType, formData);
 
-      if (response?.data?.message === 'Kode verifikasi Berhasil Dikirim. Silahkan Cek Handphone Anda!') {
-        toast.success(t(`${pathTranslation}.validation.text1`))
-        setIsAllowedOTP(true)
+      if (
+        response?.data?.message ===
+        'Kode verifikasi Berhasil Dikirim. Silahkan Cek Handphone Anda!'
+      ) {
+        toast.success(t(`${pathTranslation}.validation.text1`));
+        setIsAllowedOTP(true);
         setIsLoading(false);
       }
-
     } catch (error: any) {
       if (error?.response?.data?.message === 'too many hits') {
-        toast.error(t(`${pathTranslation}.validation.text2`))
-      } else if (error?.response?.data?.messages?.message === 'Password salah, silakan coba kembali.') {
-        toast.error(t(`${pathTranslation}.validation.text3`))
-      } else if (error?.response?.data?.messages?.message === 'Nomor Handphone anda masih dalam proses pengajuan tunggu data selesai di konfirmasi oleh verifikator!') {
-        toast.warning(t(`${pathTranslation}.validation.text4`))
+        toast.error(t(`${pathTranslation}.validation.text2`));
+      } else if (
+        error?.response?.data?.messages?.message ===
+        'Password salah, silakan coba kembali.'
+      ) {
+        toast.error(t(`${pathTranslation}.validation.text3`));
+      } else if (
+        error?.response?.data?.messages?.message ===
+        'Nomor Handphone anda masih dalam proses pengajuan tunggu data selesai di konfirmasi oleh verifikator!'
+      ) {
+        toast.warning(t(`${pathTranslation}.validation.text4`));
       } else {
         toast.error(`Error getting OTP: ${error as string}`);
       }
@@ -84,13 +103,13 @@ const ChangePhoneNumber: React.FC<Props> = ({
   useEffect(() => {
     const dialCodeWithoutPlus = selectedCountry?.dialCode.replace('+', '');
     setCombinedPhone(`${dialCodeWithoutPlus}${phoneNumber}`);
-  }, [selectedCountry, phoneNumber])
+  }, [selectedCountry, phoneNumber]);
 
   useEffect(() => {
     if (isContinueProcess) {
-      void handleChangePhoneNumber()
+      void handleChangePhoneNumber();
     }
-  }, [isContinueProcess])
+  }, [isContinueProcess]);
 
   return (
     <div className="flex flex-col gap-4 mt-6 mb:mt-8 mb-2">
@@ -98,23 +117,25 @@ const ChangePhoneNumber: React.FC<Props> = ({
         {t(`${pathTranslation}.text1`)}
       </Typography>
 
-      {
-        ((userProfileData?.User?.nohp !== '') && (userProfileData?.User?.nohp !== null)) ?
-          <div className="flex flex-col gap-2">
-            <Typography className="font-poppins text-md text-[#262626]">
-              {t(`${pathTranslation}.text2`)}{' '}
-              <span className="font-bold">{userProfileData?.User?.nohp ?? ''}</span>
-            </Typography>
-            <hr className="mt-2" />
-          </div>
-          :
-          <div className="flex flex-col gap-2">
-            <Typography className="font-poppins text-md text-[#262626] italic">
-              {t(`${pathTranslation}.text3`)}
-            </Typography>
-            <hr className="mt-2"/>
-          </div>
-      }
+      {userProfileData?.User?.nohp !== '' &&
+      userProfileData?.User?.nohp !== null ? (
+        <div className="flex flex-col gap-2">
+          <Typography className="font-poppins text-md text-[#262626]">
+            {t(`${pathTranslation}.text2`)}{' '}
+            <span className="font-bold">
+              {userProfileData?.User?.nohp ?? ''}
+            </span>
+          </Typography>
+          <hr className="mt-2" />
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          <Typography className="font-poppins text-md text-[#262626] italic">
+            {t(`${pathTranslation}.text3`)}
+          </Typography>
+          <hr className="mt-2" />
+        </div>
+      )}
 
       <div className="w-full md:w-1/2">
         <Typography className="block mb-1 text-md font-medium font-poppins text-gray-700">
@@ -130,17 +151,21 @@ const ChangePhoneNumber: React.FC<Props> = ({
                   alt={selectedCountry.name}
                   className="h-5 w-5 object-cover"
                 />
-                <span className="text-sm font-poppins">{selectedCountry.dialCode}</span>
+                <span className="text-sm font-poppins">
+                  {selectedCountry.dialCode}
+                </span>
               </button>
             </MenuHandler>
             <MenuList className="max-h-[20rem] max-w-[18rem] overflow-auto">
               {countries
                 .sort((a, b) => a.name.localeCompare(b.name))
-                .map((country) => (
+                .map(country => (
                   <MenuItem
                     key={country.code}
                     className="flex items-center gap-2 font-poppins"
-                    onClick={() => { setSelectedCountry(country); }}
+                    onClick={() => {
+                      setSelectedCountry(country);
+                    }}
                   >
                     <img
                       src={`https://flagcdn.com/${country.code.toLowerCase()}.svg`}
@@ -148,7 +173,9 @@ const ChangePhoneNumber: React.FC<Props> = ({
                       className="h-5 w-5 object-cover"
                     />
                     <span>{country.name}</span>
-                    <span className="ml-auto text-gray-500">{country.dialCode}</span>
+                    <span className="ml-auto text-gray-500">
+                      {country.dialCode}
+                    </span>
                   </MenuItem>
                 ))}
             </MenuList>
@@ -160,7 +187,9 @@ const ChangePhoneNumber: React.FC<Props> = ({
             inputMode="numeric"
             placeholder={`${t(`${pathTranslation}.text5`)}`}
             value={phoneNumber}
-            onChange={(e) => { handlePhoneChange(e.target.value); }}
+            onChange={e => {
+              handlePhoneChange(e.target.value);
+            }}
             className="flex-1 px-4 py-2 outline-none font-poppins text-sm appearance-none [-moz-appearance:textfield]"
           />
         </div>
@@ -172,11 +201,11 @@ const ChangePhoneNumber: React.FC<Props> = ({
             {t(`${pathTranslation}.text6`)}
           </Typography>
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             value={password}
-            onChange={(e) => {
+            onChange={e => {
               setPassword(e.target.value);
-              setConfirmPasswordError(null)
+              setConfirmPasswordError(null);
             }}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder={`${t(`${pathTranslation}.text7`)}`}
@@ -186,10 +215,16 @@ const ChangePhoneNumber: React.FC<Props> = ({
             onClick={togglePasswordVisibility}
             className="absolute top-9 right-3 text-gray-500"
           >
-            {showPassword ? <FiEyeOff className="h-5 w-5" /> : <FiEye className="h-5 w-5" />}
+            {showPassword ? (
+              <FiEyeOff className="h-5 w-5" />
+            ) : (
+              <FiEye className="h-5 w-5" />
+            )}
           </button>
-          {(confirmPasswordError !== null) && (
-            <p className="text-sm text-red-500 mt-1 font-poppins">{confirmPasswordError}</p>
+          {confirmPasswordError !== null && (
+            <p className="text-sm text-red-500 mt-1 font-poppins">
+              {confirmPasswordError}
+            </p>
           )}
         </div>
       </div>
@@ -201,27 +236,31 @@ const ChangePhoneNumber: React.FC<Props> = ({
           </label>
           <select
             value={otpType}
-            onChange={(e) => {
+            onChange={e => {
               setOtpType(e.target.value);
-              setConfirmOtpTypeError(null)
+              setConfirmOtpTypeError(null);
             }}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="" disabled>{t(`${pathTranslation}.text9`)}</option>
+            <option value="" disabled>
+              {t(`${pathTranslation}.text9`)}
+            </option>
             <option value="wa">WhatsApp</option>
             <option value="sms">SMS</option>
           </select>
-          {(confirmOtpTypeError !== null) && (
-            <p className="text-sm text-red-500 mt-1 font-poppins">{confirmOtpTypeError}</p>
+          {confirmOtpTypeError !== null && (
+            <p className="text-sm text-red-500 mt-1 font-poppins">
+              {confirmOtpTypeError}
+            </p>
           )}
         </div>
       </div>
-            
+
       {/* Submit Button */}
       <div className="w-full mt-2 flex justify-center md:justify-start mb-16 md:mb-0">
         <Button
-          onClick={async() => {
-            setIsShowOTP(true)
+          onClick={async () => {
+            setIsShowOTP(true);
           }}
           disabled={phoneNumber === '' || password === '' || otpType === ''}
           className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-md disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"
@@ -229,7 +268,7 @@ const ChangePhoneNumber: React.FC<Props> = ({
           {t(`${pathTranslation}.text10`)}
         </Button>
       </div>
-      
+
       {isShowOTP && (
         <ModalOTP
           setIsShowOTP={setIsShowOTP}
@@ -247,7 +286,6 @@ const ChangePhoneNumber: React.FC<Props> = ({
           setOtpType={setOtpType}
         />
       )}
-      
     </div>
   );
 };

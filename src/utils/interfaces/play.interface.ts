@@ -433,3 +433,41 @@ export interface ArticleDetail {
   meta_description: string;
   updated_at: string;
 }
+
+export interface PaymentInstruction {
+  client: Client;
+  order: Order;
+  virtual_account_info: VirtualAccountInfo;
+  customer: Customer;
+  payment_instruction?: PaymentInstructionI;
+}
+
+export interface Client {
+  id: string;
+  name: string;
+}
+
+export interface Order {
+  invoice_number: string;
+  amount: number;
+}
+
+export interface VirtualAccountInfo {
+  virtual_account_number: string;
+  status: string;
+  created_date: string;
+  expired_date: string;
+  expired_in: string;
+}
+
+export interface Customer {
+  name: string;
+}
+
+export type PaymentInstructionI = PaymentInstructionDataI[];
+
+export interface PaymentInstructionDataI {
+  channel: string;
+  language: string;
+  step: string[];
+}

@@ -41,11 +41,14 @@ export const cancelPurchaseCO = async (
       return await Promise.resolve('Access token Danamart not found');
     }
 
-    const response = await danamartApi.get(`/pemodal/pendanaan/delete_co/${pendanaan}/${userId}/${pinjamanId}`, {
-      headers: {
-        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+    const response = await danamartApi.get(
+      `/pemodal/pendanaan/delete_co/${pendanaan}/${userId}/${pinjamanId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+        }
       }
-    });
+    );
 
     return response;
   } catch (error: any) {
@@ -53,7 +56,9 @@ export const cancelPurchaseCO = async (
   }
 };
 
-export const getCancelPurchaseVerificationOTP = async (otpType: string): Promise<any> => {
+export const getCancelPurchaseVerificationOTP = async (
+  otpType: string
+): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
 
@@ -63,12 +68,12 @@ export const getCancelPurchaseVerificationOTP = async (otpType: string): Promise
 
     const response = await danamartApi.get('/pemodal/dashboard/sendOtp', {
       headers: {
-        Authorization: `Bearer ${accessTokenDanamart}`,
+        Authorization: `Bearer ${accessTokenDanamart}`
       },
       params: {
         method: otpType,
-        kverif: 'pemodal',
-      },
+        kverif: 'pemodal'
+      }
     });
 
     return { ...response, status: 200 };
@@ -81,7 +86,7 @@ export const cancelPurchase = async (
   pendanaan: string,
   userId: string,
   pinjamanId: string,
-  kodeOtp: string,
+  kodeOtp: string
 ): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');
@@ -90,11 +95,14 @@ export const cancelPurchase = async (
       return await Promise.resolve('Access token Danamart not found');
     }
 
-    const response = await danamartApi.get(`/pemodal/pendanaan/delete/${pendanaan}/${userId}/${pinjamanId}/${kodeOtp}`, {
-      headers: {
-        Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+    const response = await danamartApi.get(
+      `/pemodal/pendanaan/delete/${pendanaan}/${userId}/${pinjamanId}/${kodeOtp}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessTokenDanamart ?? ''}`
+        }
       }
-    });
+    );
 
     return response;
   } catch (error: any) {

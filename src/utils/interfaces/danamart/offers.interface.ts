@@ -254,53 +254,53 @@ export interface InputObligasi {
 //
 
 export interface FormPurchaseDataCheckTesting {
-  dataForm: DataFormCheckTesting
-  dataInput: DataInputCheckTesting
+  dataForm: DataFormCheckTesting;
+  dataInput: DataInputCheckTesting;
 }
 
 export interface DataFormCheckTesting {
-  kodeEfek: string
-  sektorUsaha: string
-  slotPembelian: string
-  sisaPembelian: string
-  hargaLembarSaham: number
-  statuSimpan: string
-  BagiHasil?: string
-  jangkaWaktu?: string
+  kodeEfek: string;
+  sektorUsaha: string;
+  slotPembelian: string;
+  sisaPembelian: string;
+  hargaLembarSaham: number;
+  statuSimpan: string;
+  BagiHasil?: string;
+  jangkaWaktu?: string;
 }
 
 export interface DataInputCheckTesting {
-  user_peminjam_id: string
-  user_pendana_id: string
-  pinjaman_id: string
-  sektor_usaha: string
-  bunga_persen: string
-  credit_rating: string
-  dm_pem_02003: string
-  dm_pem_02004: string
-  jml_pinjaman_terbit: string
-  tgl_jatuh_tempo: string
-  referral_id_lv1_peminjam: string
-  referral_id_lv2_peminjam: string
-  referral_id_lv1_pendana: string
-  referral_id_lv2_pendana: string
-  total_dana_reward: string
-  statusPembayaran: string
-  statusKeuangan: string
-  inputSaham: InputSahamCheckTesting
-  inputObligasi: InputObligasiCheckTesting
+  user_peminjam_id: string;
+  user_pendana_id: string;
+  pinjaman_id: string;
+  sektor_usaha: string;
+  bunga_persen: string;
+  credit_rating: string;
+  dm_pem_02003: string;
+  dm_pem_02004: string;
+  jml_pinjaman_terbit: string;
+  tgl_jatuh_tempo: string;
+  referral_id_lv1_peminjam: string;
+  referral_id_lv2_peminjam: string;
+  referral_id_lv1_pendana: string;
+  referral_id_lv2_pendana: string;
+  total_dana_reward: string;
+  statusPembayaran: string;
+  statusKeuangan: string;
+  inputSaham: InputSahamCheckTesting;
+  inputObligasi: InputObligasiCheckTesting;
 }
 
 export interface InputSahamCheckTesting {
-  harga_perlembar_saham: string
-  lembar_saham: string
+  harga_perlembar_saham: string;
+  lembar_saham: string;
 }
 
 export interface InputObligasiCheckTesting {
-  bid_cash: string
+  bid_cash: string;
 }
 
-// 
+//
 
 export interface PurchaseI {
   user_peminjam_id?: string;

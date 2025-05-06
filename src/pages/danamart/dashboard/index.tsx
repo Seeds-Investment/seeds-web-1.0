@@ -88,11 +88,14 @@ const Dashboard = (): React.ReactElement => {
       <div className="w-full bg-[#DA2D1F33] px-4 py-3">
         <Typography
           onClick={async () => {
-            if (userProfileData?.detailUser[0]?.status_email === '0' || userProfileData?.detailUser[0]?.status_hp === '0') {
-              await router.push('/danamart/setting-account?verify=true')
-              toast.warning(t('danamart.dashboard.mustVerify'))
+            if (
+              userProfileData?.detailUser[0]?.status_email === '0' ||
+              userProfileData?.detailUser[0]?.status_hp === '0'
+            ) {
+              await router.push('/danamart/setting-account?verify=true');
+              toast.warning(t('danamart.dashboard.mustVerify'));
             } else {
-              await router.push('/danamart/dashboard/verify')
+              await router.push('/danamart/dashboard/verify');
             }
           }}
           className="text-[#DA2D1F] font-poppins font-normal text-sm"

@@ -206,7 +206,6 @@ export const updateUserInformation = async (
   }
 };
 
-
 export const getPhotoIdCard = async (): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');

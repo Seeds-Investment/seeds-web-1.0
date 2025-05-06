@@ -327,3 +327,41 @@ export interface OptionI {
   id: number;
   option: string;
 }
+
+export interface AllQuiz {
+  data: AllQuizData[];
+  meta: Meta;
+}
+
+export interface AllQuizData {
+  id: string;
+  quiz_unique_id: string;
+  name: string;
+  banner: Banner;
+  questions: number;
+  participants: number;
+  category: string;
+  status: string;
+  privacy: string;
+  featured_link: string;
+  admission_fee: number;
+  is_played: boolean;
+  is_recommended: boolean;
+  is_free_voucher_claimed: boolean;
+  started_at: string;
+  ended_at: string;
+  company_id: string;
+  created_at: string;
+  rank: number;
+}
+
+export interface Banner {
+  image_link: string;
+  image_url?: string;
+}
+
+export interface Meta {
+  page: number;
+  per_page: number;
+  total: number;
+}

@@ -70,7 +70,13 @@ const AuthOTP: React.FC<Props> = ({
     setInput(['', '', '', '']);
     const newMethod = method === 'whatsapp' ? 'sms' : 'whatsapp';
     setMethod(newMethod);
-    await handleGetOTP(newMethod, setCountdown, setSelect, formattedData, setOTPForm);
+    await handleGetOTP(
+      newMethod,
+      setCountdown,
+      setSelect,
+      formattedData,
+      setOTPForm
+    );
     inputRefs.current[0]?.focus();
     setOTPForm(prev => ({ ...prev, method: newMethod }));
   };

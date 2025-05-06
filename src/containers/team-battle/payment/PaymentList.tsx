@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import Loading from '@/components/popup/Loading';
 import SubmitButton from '@/components/SubmitButton';
 import Dialog from '@/components/ui/dialog/Dialog';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getPaymentList } from '@/repository/payment.repository';
-import { getPaymentById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { promoValidate } from '@/repository/promo.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
@@ -16,7 +16,6 @@ import {
   type PaymentOption,
   type PaymentOptionList,
   type PaymentResult,
-  type PaymentStatus,
   type TeamBattleDetail
 } from '@/utils/interfaces/team-battle.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -40,7 +39,6 @@ const PaymentList: React.FC = (): JSX.Element => {
   const [virtualList, setVirtualList] = useState<PaymentOption[]>([]);
   const [eWalletList, setEWalletList] = useState<PaymentOption[]>([]);
   const [option, setOption] = useState<PaymentOption>();
-  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>();
 
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [detailBattle, setDetailBattle] = useState<TeamBattleDetail>();
@@ -185,7 +183,7 @@ const PaymentList: React.FC = (): JSX.Element => {
           paymentGateway,
           paymentMethod,
           phoneNumber: `+62${phoneNumber as string}`,
-          promoCode: promoCodeValidationResult?.promo_code ?? '',
+          promoCode: promoCodeValidationResult?.response?.promo_code ?? '',
           isUseCoins,
           successUrl: `${
             process.env.NEXT_PUBLIC_DOMAIN as string
@@ -195,27 +193,42 @@ const PaymentList: React.FC = (): JSX.Element => {
           }/play/team-battle/${detailBattle.id}/`
         });
 
-        const resp = await getPaymentById(response.order_id);
-        setPaymentStatus(resp);
-
         if (response !== undefined) {
-          if (response?.payment_url !== '') {
-            window.open(response?.payment_url, '_blank');
+          if (response?.payment_url !== '' && paymentMethod !== 'BNC_QRIS') {
+            window.open(response?.payment_url as string, '_blank');
           }
+          const query =
+            response.payment_url !== ''
+              ? { paymentUrl: response.payment_url }
+              : undefined;
+
           await router
             .replace(
-              `/play/team-battle/${id as string}/payment/receipt/${
-                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                response.order_id
-              }`
+              {
+                pathname:
+                  `/play/team-battle/${id as string}/payment/receipt/${
+                    response?.order_id as string
+                  }` + `${paymentMethod?.includes('BNC') ? '/qris' : ''}`,
+                query
+              },
+              undefined,
+              { shallow: true }
             )
             .catch(error => {
               toast.error(`${error as string}`);
             });
         }
       }
-    } catch (error) {
-      toast.error(`${error as string}`);
+    } catch (error: any) {
+      setIsOpenDialog(false);
+      if (
+        error?.response?.data?.message ===
+        'bad request, minimum transaction using VA is 10000'
+      ) {
+        toast.error(t('PlayPayment.VirtualAccountGuide.minimumPaymentError'));
+      } else {
+        toast.error(`${error as string}`);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -264,15 +277,6 @@ const PaymentList: React.FC = (): JSX.Element => {
         {t('PlayPayment.title')}
       </Typography>
       <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
-        {virtualList?.length > 0 && (
-          <PaymentOptions
-            labelOptions="Virtual Account"
-            options={virtualList}
-            onChange={setOption}
-            currentOption={option}
-            userInfo={userInfo}
-          />
-        )}
         {qRList?.length > 0 && (
           <PaymentOptions
             labelOptions="QRIS"
@@ -286,6 +290,15 @@ const PaymentList: React.FC = (): JSX.Element => {
           <PaymentOptions
             labelOptions={t('PlayPayment.eWalletLabel')}
             options={eWalletList}
+            onChange={setOption}
+            currentOption={option}
+            userInfo={userInfo}
+          />
+        )}
+        {virtualList?.length > 0 && (
+          <PaymentOptions
+            labelOptions="Virtual Account"
+            options={virtualList}
             onChange={setOption}
             currentOption={option}
             userInfo={userInfo}
@@ -352,8 +365,6 @@ const PaymentList: React.FC = (): JSX.Element => {
                 payment={option}
                 handlePayBattle={handlePayBattle}
                 detailBattle={detailBattle}
-                paymentStatus={paymentStatus}
-                userName={userInfo?.name}
                 newPromoCodeDiscount={newPromoCodeDiscount}
               />
             )}

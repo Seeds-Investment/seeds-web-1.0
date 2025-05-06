@@ -22,7 +22,7 @@ const ModalConfirmDelete: React.FC<Props> = ({
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/25 flex justify-start items-start"
       modalClasses="z-50 animate-slide-down fixed left-0 transform -translate-x-1/2 -translate-y-1/2 top-[60%] md:left-[35%] md:right-[-35%] mt-[-17rem] w-full h-fit md:w-[450px] p-6 rounded-lg bg-white"
     >
-      <div className='w-full flex justify-center items-center'>
+      <div className="w-full flex justify-center items-center">
         <Image
           src={SeedyCancelPurchase}
           alt="ArrowRight"
@@ -48,7 +48,7 @@ const ModalConfirmDelete: React.FC<Props> = ({
         </Button>
         <Button
           onClick={() => {
-            setIsContinueProcess(true)
+            setIsContinueProcess(true);
             setIsShowConfirmDelete(false);
           }}
           className="rounded-full w-full md:w-fit md:px-16 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"

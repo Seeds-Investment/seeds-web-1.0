@@ -35,35 +35,35 @@ const SettingAccount = (): React.ReactElement => {
     {
       id: 1,
       title: t(`${pathTranslation}.text1`),
-      iconActive: IoLockOpenOutline,
+      iconActive: IoLockOpenOutline
     },
     {
       id: 2,
       title: t(`${pathTranslation}.text2`),
-      iconActive: MdOutlineEmail,
+      iconActive: MdOutlineEmail
     },
     {
       id: 3,
       title: t(`${pathTranslation}.text3`),
-      iconActive: RiSmartphoneLine,
+      iconActive: RiSmartphoneLine
     },
     {
       id: 4,
       title: t(`${pathTranslation}.text4`),
-      iconActive: FaRegCreditCard,
+      iconActive: FaRegCreditCard
     },
     {
       id: 5,
       title: t(`${pathTranslation}.text5`),
-      iconActive: RiUser3Line,
+      iconActive: RiUser3Line
     },
     {
       id: 6,
       title: t(`${pathTranslation}.text6`),
-      iconActive: FaRegTrashAlt,
-    },
-  ]
-  
+      iconActive: FaRegTrashAlt
+    }
+  ];
+
   const fetchUserProfile = async (): Promise<void> => {
     try {
       const profile = await getProfileUser();
@@ -79,7 +79,7 @@ const SettingAccount = (): React.ReactElement => {
       toast.error(t('danamart.dashboard.errorGetUserProfile'));
     }
   };
-  
+
   useEffect(() => {
     setIsLoading(true);
     Promise.all([fetchUserProfile()]).finally(() => {
@@ -89,15 +89,15 @@ const SettingAccount = (): React.ReactElement => {
 
   useEffect(() => {
     if (refetchProfile) {
-      void fetchUserProfile()
+      void fetchUserProfile();
     }
-  }, [refetchProfile])
+  }, [refetchProfile]);
 
   useEffect(() => {
     if (verify !== undefined) {
-      setActiveNavbar(5)
+      setActiveNavbar(5);
     }
-  }, [verify])
+  }, [verify]);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -106,66 +106,75 @@ const SettingAccount = (): React.ReactElement => {
           {t(`${pathTranslation}.title`)}
         </Typography>
 
-        <div className='flex justify-start items-center gap-2 flex-wrap'>
-          {
-            navigation?.map((nav, index) => {
-              const IconComponent = nav.iconActive;
-              return (
-                <div
-                  key={index}
-                  className={`
+        <div className="flex justify-start items-center gap-2 flex-wrap">
+          {navigation?.map((nav, index) => {
+            const IconComponent = nav.iconActive;
+            return (
+              <div
+                key={index}
+                className={`
                     flex justify-center items-center gap-2 px-3 py-2 rounded-lg cursor-pointer
-                    ${activeNavbar === nav?.id ? 'bg-seeds-button-green hover:bg-[#34AF90] duration-200' : 'hover:bg-[#7BE1C3] duration-200'}
-                  `}
-                  onClick={() => { setActiveNavbar(nav?.id); }}
-                >
-                  <div className='flex justify-center items-center'>
-                    {
-                      IconComponent !== undefined &&
-                        <IconComponent className={`${activeNavbar === nav?.id ? 'text-white' : 'text-[#262626]'}`} />
+                    ${
+                      activeNavbar === nav?.id
+                        ? 'bg-seeds-button-green hover:bg-[#34AF90] duration-200'
+                        : 'hover:bg-[#7BE1C3] duration-200'
                     }
-                  </div>
-                  <Typography
-                    className={`
-                      font-poppins text-md font-normal
-                      ${activeNavbar === nav?.id ? 'text-white' : 'text-[#262626]'}
-                    `}
-                  >
-                    {nav?.title}
-                  </Typography>
+                  `}
+                onClick={() => {
+                  setActiveNavbar(nav?.id);
+                }}
+              >
+                <div className="flex justify-center items-center">
+                  {IconComponent !== undefined && (
+                    <IconComponent
+                      className={`${
+                        activeNavbar === nav?.id
+                          ? 'text-white'
+                          : 'text-[#262626]'
+                      }`}
+                    />
+                  )}
                 </div>
-              )
-            })
-          }
+                <Typography
+                  className={`
+                      font-poppins text-md font-normal
+                      ${
+                        activeNavbar === nav?.id
+                          ? 'text-white'
+                          : 'text-[#262626]'
+                      }
+                    `}
+                >
+                  {nav?.title}
+                </Typography>
+              </div>
+            );
+          })}
         </div>
       </div>
-      {
-        isLoading || userProfileData !== undefined &&
+      {isLoading ||
+        (userProfileData !== undefined && (
           <div className="w-full bg-white flex flex-col px-5 py-6 rounded-lg mt-5">
             <div>
-              {
-                activeNavbar === 1
-                  ? <ChangePassword />
-                  : activeNavbar === 2
-                    ? <ChangeEmail
-                        userProfileData={userProfileData}
-                      />
-                    : activeNavbar === 3
-                      ? <ChangePhoneNumber
-                          userProfileData={userProfileData}
-                        />
-                      : activeNavbar === 4
-                        ? <ChangeBankAccount />
-                        : activeNavbar === 5
-                          ? <VerifyPhoneEmail
-                              userProfileData={userProfileData}
-                              setRefetchProfile={setRefetchProfile}
-                            />
-                          : <DeleteAccount />
-              }
+              {activeNavbar === 1 ? (
+                <ChangePassword />
+              ) : activeNavbar === 2 ? (
+                <ChangeEmail userProfileData={userProfileData} />
+              ) : activeNavbar === 3 ? (
+                <ChangePhoneNumber userProfileData={userProfileData} />
+              ) : activeNavbar === 4 ? (
+                <ChangeBankAccount />
+              ) : activeNavbar === 5 ? (
+                <VerifyPhoneEmail
+                  userProfileData={userProfileData}
+                  setRefetchProfile={setRefetchProfile}
+                />
+              ) : (
+                <DeleteAccount />
+              )}
             </div>
-        </div>
-      }
+          </div>
+        ))}
     </PageGradient>
   );
 };

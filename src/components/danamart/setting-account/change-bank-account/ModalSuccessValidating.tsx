@@ -10,7 +10,7 @@ interface Props {
 }
 
 const ModalSuccessValidating: React.FC<Props> = ({
-  setIsShowSuccessValidate,
+  setIsShowSuccessValidate
 }) => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.setting.changeBankAccount';
@@ -35,7 +35,7 @@ const ModalSuccessValidating: React.FC<Props> = ({
       <div className="w-full flex justify-center items-center gap-2">
         <Button
           onClick={async () => {
-            setIsShowSuccessValidate(false)
+            setIsShowSuccessValidate(false);
           }}
           className="w-[150px] text-sm font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
         >

@@ -3,6 +3,9 @@ export default {
   header: { join: 'Yuk! Gabung' },
   // greeting: 'Hello, {{name}}',
   footer: {
+    disclaimer: 'Pernyataan:',
+    disclaimerContain:
+      'bukan entitas keuangan resmi. Informasi yang disediakan hanya bertujuan sebagai referensi dan bukan merupakan nasihat finansial.',
     description:
       'Situs ini tidak berisi rekomendasi untuk berinvestasi. Seeds tidak menawarkan konsultasi keuangan untuk kamu. Jika kamu masih ragu untuk  berinvestasi, mulailah berkomunikasi dengan konsultan keuangan. Tetap waspada sebelum mulai berinvetasi!',
     download: 'Unduh Aplikasi Kami',
@@ -880,7 +883,8 @@ export default {
       adminFeeDiscountLabel: 'Diskon Biaya Admin ',
       promoCodeDiscountLabel: 'Diskon Kode Promo',
       button: 'Pay',
-      seedsCoin: 'Seeds Coin Digunakan'
+      seedsCoin: 'Seeds Coin Digunakan',
+      teamBattleFee: 'Biaya Team Battle'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -891,8 +895,8 @@ export default {
       admissionFeeLabel: 'Play Membership',
       promoCodeDiscountLabel: 'Diskon Kode Promo',
       adminFeeLabel: 'Admin',
-      note: 'Please complete your payment in 24 hours. Your order will be cancelled automatically if you do not make any payments in 24 hours',
-      instructionLabel: 'mBanking Transfer Instructions',
+      note: 'Selesaikan pembayaran Anda dalam 24 jam. Pesanan Anda akan dibatalkan secara otomatis jika pembayaran tidak dilakukan dalam 24 jam.',
+      instructionLabel: 'Instruksi Transfer mBanking',
       step1: {
         1: 'Pilih',
         2: 'm-Transfer > {{provider}} Virtual Account.'
@@ -904,16 +908,26 @@ export default {
         4: 'Send'
       },
       step3: {
-        1: 'Periksa Informasi yang tertera. pastikan Merchant tertulis adalah',
-        2: 'Seeds, Total bill',
-        3: 'dan username',
+        1: 'Periksa Informasi yang tertera. Pastikan Merchant tertulis adalah',
+        2: 'Seeds dan total bill',
+        3: 'dan username telah benar.',
         4: 'Jika benar, Pilih',
         5: 'Ya'
       },
       step4: {
         1: 'Masukan m-{{provider}} PIN kamu dan pilih',
         2: 'OK'
-      }
+      },
+      button: 'Bayar',
+      seedsCoin: 'Seeds Coin Digunakan',
+      howToPay: 'Cara Pembayaran',
+      choosePayment: 'Pilih Metode Pembayaran:',
+      warningCompletion: 'Selesaikan pembayaran dalam',
+      minuteWarning: 'Kurang dari 1 menit',
+      expired: 'Pembayaran kadaluarsa',
+      minimumPaymentError:
+        'Jumlah transaksi minimum untuk pembayaran Virtual Account adalah Rp 10.000.',
+      teamBattleFee: 'Biaya Team Battle'
     }
   },
   promo: {
@@ -1976,7 +1990,8 @@ export default {
     expired: {
       text1: 'Kode QR Anda telah kadaluarsa',
       text2:
-        'Lakukan pembelian ulang dan pastikan pembayaran anda selesai tepat waktu'
+        'Lakukan pembelian ulang dan pastikan pembayaran anda selesai tepat waktu',
+      text3: 'Pembayaran telah kadaluarsa'
     },
     repeat: 'Ulangi Pembelian',
     completePayment: 'Selesaikan pembayaran dalam',
@@ -2388,7 +2403,7 @@ export default {
         note: 'Selesaikan pembayaran dalam 24 jam. Pesanan akan otomatis dibatalkan jika pembayaran tidak diselesaikan dalam 24 jam kedepan.',
         instructionMessage:
           'Klik "Lanjutkan" untuk melanjutkan proses dan melihat instruksi pembayaran.',
-        instructionLabel: 'mBanking Transfer Instructions',
+        instructionLabel: 'Instruksi Transfer mBanking',
         step1: {
           1: 'Pilih',
           2: 'm-Transfer > {{provider}} Virtual Account.'
@@ -2401,8 +2416,8 @@ export default {
         },
         step3: {
           1: 'Periksa Informasi yang tertera. pastikan Merchant tertulis adalah',
-          2: 'Seeds, Total bill',
-          3: 'dan username',
+          2: 'Seeds dan total bill',
+          3: 'dan username telah benar.',
           4: 'Jika benar, Pilih',
           5: 'Ya'
         },
@@ -2796,7 +2811,8 @@ export default {
         blank: 'Kamu harus mengisi kolom ini',
         error: 'Terjadi kesalahan. Cek kata sandi Anda atau koneksi Anda!',
         serverError: 'Terjadi kesalahan pada server. Mohon coba sesaat lagi.',
-        limitEntry: 'Anda telah salah memasukan password tiga kali. Fitur login anda akan dibekukan 5 menit demi keamanan.',
+        limitEntry:
+          'Anda telah salah memasukan password tiga kali. Fitur login anda akan dibekukan 5 menit demi keamanan.',
         password:
           'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
         wrongPassword:
@@ -2805,7 +2821,8 @@ export default {
           'ReCAPTCHA tidak tersedia! Pastikan Anda telah mengisi ReCAPTCHA.'
       },
       loginButton: 'Masuk',
-      tooManyAttempts: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
+      tooManyAttempts:
+        'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.'
     },
     forgotPassword: {
       forgotPasswordTitle: 'Lupa Kata Sandi 🔑',
@@ -2928,7 +2945,8 @@ export default {
       alternatives: 'Alternatif',
       errorGetUserDashboard: 'Gagal mendapatkan data dasbor',
       errorGetUserProfile: 'Gagal mendapatkan data profile pengguna',
-      mustVerify: 'Mohon verifikasi nomor handphone dan email anda terlebih dahulu.'
+      mustVerify:
+        'Mohon verifikasi nomor handphone dan email anda terlebih dahulu.'
     },
     verification: {
       photoIdCardTitle: {
@@ -3339,7 +3357,7 @@ export default {
           text9:
             'Peluang investasi dari proyek yang <strong>sedang berjalan</strong> sehingga memiliki <strong>risiko lebih tinggi</strong>.',
           text10: 'Selengkapnya',
-          text11: 'Cek Ombak',
+          text11: 'Cek Ombak'
         },
         prelisting:
           'Tahapan sebelum listing, yaitu di mana kamu hanya bisa melihat penawaran yang tersedia di platform Danamart, tetapi <strong>masih belum bisa membeli</strong> penawaran efek tersebut. Tujuannya agar kamu mempelajari terlebih dahulu sebelum memutuskan pembelian/investasi pada penawaran efek yang tersedia. Tahapan prelisting ini berlangsung selama <strong>2 hari</strong>, sebelum berlanjut ke tahap listing.',
@@ -3532,7 +3550,8 @@ export default {
           }
         },
         listingModal: {
-          warningText: 'Pembelian efek belum tersedia karena masih dalam status Pre-Listing. Silakan tunggu hingga status berubah menjadi Listing.',
+          warningText:
+            'Pembelian efek belum tersedia karena masih dalam status Pre-Listing. Silakan tunggu hingga status berubah menjadi Listing.',
           close: 'Tutup'
         }
       },
@@ -3600,7 +3619,8 @@ export default {
             text7: 'Maaf jumlah pembelian anda melebihi slot yang ada',
             text8: 'Maaf jumlah pembelian anda melebihi deposit anda',
             text9: 'Maaf jumlah pembelian anda melebihi slot yang tersedia',
-            text10: 'Maaf jumlah pembelian anda melebihi batas transfer bank anda',
+            text10:
+              'Maaf jumlah pembelian anda melebihi batas transfer bank anda'
           }
         },
         disclaimer: {
@@ -3672,7 +3692,8 @@ export default {
             verification: 'Verifikasi OTP',
             getOtp: 'Dapatkan Kode OTP',
             selectType: 'Pilih Jenis OTP',
-            tooManyAttempts: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
+            tooManyAttempts:
+              'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
             wrongPassword: 'Password salah, silakan coba kembali.',
             cancel: 'Tidak',
             yes: 'Ya',
@@ -3687,7 +3708,8 @@ export default {
       },
       title: 'Portofolio',
       text1: 'Apakah Anda yakin ingin membatalkan pembelian?',
-      text2: 'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!',
+      text2:
+        'Walau investasi berhasil dibatalin, tapi kamu gak usah bingung Danamart masih menyediakan banyak investasi lain. Yuk pilih salah satunya!',
       text3: 'Silahkan Masukan Kode verifikasi yang Valid',
       cancel: 'Tidak',
       continue: 'Ya, batalkan',
@@ -3772,7 +3794,7 @@ export default {
         text7: 'Cari...',
         text8: 'Filter Berdasarkan Tanggal',
         text9: 'Tanggal Mulai',
-        text10: 'Tanggal Berakhir',
+        text10: 'Tanggal Berakhir'
       },
       table: {
         text1: 'Tidak ada data dalam tabel.',
@@ -3843,7 +3865,7 @@ export default {
         text7: 'Cari...',
         text8: 'Filter Berdasarkan Tanggal',
         text9: 'Tanggal Mulai',
-        text10: 'Tanggal Berakhir',
+        text10: 'Tanggal Berakhir'
       },
       table: {
         text1: 'Tidak ada data dalam tabel.',
@@ -3871,7 +3893,8 @@ export default {
             'Selamat, penarikan dana Anda diterima dan akan segera diproses!',
           pending:
             'Masih ada proses tarik dana yang belum diproses di akun Kamu. Silakan tunggu proses tarik dana hingga selesai, lalu coba kembali',
-          tooManyAttempts: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit.',
+          tooManyAttempts:
+            'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit.',
           title: 'Permintaan Penarikan Dana',
           text1: 'Metode Tarik Dana',
           text2: 'Jumlah Dana Yang Akan Ditarik + Biaya Admin (Rp)',
@@ -4004,9 +4027,10 @@ export default {
         text1:
           'Kode Promo adalah kode unik yang dapat digunakan oleh-mu untuk mendapatkan penawaran menarik ya.',
         text2: 'Ups!',
-        text3: 'Maaf! Kode-mu tidak valid, kuota sudah habis , masa berlakunya telah berakhir atau tidak memenuhi syarat dan ketentuan. Silakan coba lagi dengan kode lainnya ya.',
+        text3:
+          'Maaf! Kode-mu tidak valid, kuota sudah habis , masa berlakunya telah berakhir atau tidak memenuhi syarat dan ketentuan. Silakan coba lagi dengan kode lainnya ya.',
         close: 'Tutup',
-        ok: 'Ok',
+        ok: 'Ok'
       }
     },
     setting: {
@@ -4029,7 +4053,7 @@ export default {
         text6: 'Link verifikasi akan dikirim ke email',
         text7: 'No Handphone',
         text8: 'Kode verifikasi akan dikirim ke no handphone',
-        text9: 'Lanjutkan Verifikasi',
+        text9: 'Lanjutkan Verifikasi'
       },
       deleteAccount: {
         text1: 'Hapus Akun',
@@ -4037,7 +4061,8 @@ export default {
         text3: 'Verifikasi OTP',
         text4: 'Akun anda berhasil dihapus',
         text5: 'Masukkan password akun danamart',
-        tooManyAttempts: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
+        tooManyAttempts:
+          'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
         disclaimer: `
           <p>Sesuai dengan <strong>Peraturan Menteri Komunikasi dan Informatika No. 20 Tahun 2016</strong> tentang <strong>Perlindungan Data Pribadi Dalam Sistem Elektronik</strong> Pasal 20, disebutkan bahwa: <em>“Jika Pemilik Data Pribadi meminta penghapusan Data Perseorangan Tertentu miliknya, permintaan penghapusan tersebut dilakukan sesuai dengan ketentuan peraturan perundang-undangan.”</em></p>
           <br>
@@ -4060,7 +4085,8 @@ export default {
         text5: 'Simpan Perubahan',
         text6: 'Password akunkamu telah berhasil diubah.',
         text7: 'Password lama salah atau tidak sesuai.',
-        text8: 'Password harus terdiri dari minimal 8 karakter dan mencakup huruf kecil, huruf kapital, serta angka.',
+        text8:
+          'Password harus terdiri dari minimal 8 karakter dan mencakup huruf kecil, huruf kapital, serta angka.',
         text9: 'Konfirmasi password tidak sesuai.',
         text10: 'Masukkan password akun danamart',
         text11: 'Masukkan password baru akun danamart',
@@ -4092,10 +4118,11 @@ export default {
         modal: {
           text1: 'Konfirmasi',
           text2: 'Email Kamu akan diubah menjadi',
-          text3: 'Kami akan mengirimkan email verifikasi ke alamat email Kamu yang baru. Akun kamu akan logout otomatis setelah ini.',
+          text3:
+            'Kami akan mengirimkan email verifikasi ke alamat email Kamu yang baru. Akun kamu akan logout otomatis setelah ini.',
           text4: 'Ingin melanjutkan?',
           cancel: 'Batalkan',
-          continue: 'Lanjutkan',
+          continue: 'Lanjutkan'
         }
       },
       changeBankAccount: {
@@ -4121,16 +4148,21 @@ export default {
         text20: 'Waktu tersisa',
         text21: 'Lanjutkan proses perubahan rekening?',
         validation: {
-          text1: 'Terima kasih atas kesabarannya. Kami ingin memberitahukan bahwa masih terdapat permintaan perubahan data yang masih dalam proses. Mohon tunggu sampai proses ini selesai dan Anda dapat mengajukannya kembali.',
-          text2: 'Kode OTP telah dikirim ke nomor anda. Silakan cek handphone anda.',
-          text3: 'Kami telah menerima permintaan perubahan data anda. Selanjutnya tim kami akan melakukan konfirmasi terkait permintaan perubahan data ini dengan cara menghubungimu. Mohon ditunggu ya.',
-          text4: 'Kode verifkasi salah, silakan masukkan kode verifikasi yang valid.',
+          text1:
+            'Terima kasih atas kesabarannya. Kami ingin memberitahukan bahwa masih terdapat permintaan perubahan data yang masih dalam proses. Mohon tunggu sampai proses ini selesai dan Anda dapat mengajukannya kembali.',
+          text2:
+            'Kode OTP telah dikirim ke nomor anda. Silakan cek handphone anda.',
+          text3:
+            'Kami telah menerima permintaan perubahan data anda. Selanjutnya tim kami akan melakukan konfirmasi terkait permintaan perubahan data ini dengan cara menghubungimu. Mohon ditunggu ya.',
+          text4:
+            'Kode verifkasi salah, silakan masukkan kode verifikasi yang valid.',
           text5: 'No rekening salah atau tidak valid.',
           text6: 'Nama pemilik rekening tidak sesuai.',
           text7: 'Password salah, silakan coba kembali.',
-          text8: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
+          text8:
+            'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
           text9: 'Silahkan pilih metode pengiriman Kode Verifikasi.',
-          text10: 'Terjadi kesalahan. Silakan login ulang akun Anda.',
+          text10: 'Terjadi kesalahan. Silakan login ulang akun Anda.'
         },
         close: 'Tutup',
         continue: 'Lanjutkan'
@@ -4154,12 +4186,16 @@ export default {
         cancel: 'Batalkan',
         continue: 'Lanjutkan',
         validation: {
-          text1: 'Kode verifikasi Berhasil Dikirim. Silahkan Cek Handphone Anda!',
-          text2: 'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
+          text1:
+            'Kode verifikasi Berhasil Dikirim. Silahkan Cek Handphone Anda!',
+          text2:
+            'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.',
           text3: 'Password salah, silakan coba kembali.',
-          text4: 'Nomor Handphone anda masih dalam proses pengajuan. Tunggu data selesai di konfirmasi oleh verifikator!',
-          text5: 'Kami telah menerima permintaan perubahan data-mu, selanjutnya tim kami akan melakukan konfirmasi terkait permintaan perubahan data ini dengan cara menghubungi-mu, mohon ditunggu ya.',
-          text6: 'Kode salah! Silakan ulangi input.',
+          text4:
+            'Nomor Handphone anda masih dalam proses pengajuan. Tunggu data selesai di konfirmasi oleh verifikator!',
+          text5:
+            'Kami telah menerima permintaan perubahan data-mu, selanjutnya tim kami akan melakukan konfirmasi terkait permintaan perubahan data ini dengan cara menghubungi-mu, mohon ditunggu ya.',
+          text6: 'Kode salah! Silakan ulangi input.'
         }
       }
     },

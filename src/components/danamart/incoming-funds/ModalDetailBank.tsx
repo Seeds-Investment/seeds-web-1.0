@@ -55,7 +55,10 @@ const ModalDetailBank: React.FC<Props> = ({
       </button>
 
       <Typography className="font-bold text-lg font-poppins md:w-[90%]">
-        {t(`${pathTranslation}.text2`)} {bankList[selectedBankIndex]?.name === 'LAIN' ? t(`${pathTranslation}.text10`) : bankList[selectedBankIndex]?.name}{' '}
+        {t(`${pathTranslation}.text2`)}{' '}
+        {bankList[selectedBankIndex]?.name === 'LAIN'
+          ? t(`${pathTranslation}.text10`)
+          : bankList[selectedBankIndex]?.name}{' '}
         {t(`${pathTranslation}.text3`)}
       </Typography>
 

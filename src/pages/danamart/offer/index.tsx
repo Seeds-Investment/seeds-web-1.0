@@ -32,10 +32,14 @@ const NextArrow = (props: ArrowProps): React.ReactElement => {
         background: '#3AC4A0',
         borderRadius: '50%',
         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-        transition: 'background-color 200ms ease-in-out',
+        transition: 'background-color 200ms ease-in-out'
       }}
-      onMouseEnter={(e) => { e.currentTarget.style.background = '#4FE6AF'; }}
-      onMouseLeave={(e) => { e.currentTarget.style.background = '#3AC4A0'; }}
+      onMouseEnter={e => {
+        e.currentTarget.style.background = '#4FE6AF';
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.background = '#3AC4A0';
+      }}
       onClick={onClick}
     >
       <FaChevronRight size={24} color="#fff" />
@@ -54,10 +58,14 @@ const PrevArrow = (props: ArrowProps): React.ReactElement => {
         background: '#3AC4A0',
         borderRadius: '50%',
         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-        transition: 'background-color 300ms ease-in-out',
+        transition: 'background-color 300ms ease-in-out'
       }}
-      onMouseEnter={(e) => { e.currentTarget.style.background = '#4FE6AF'; }}
-      onMouseLeave={(e) => { e.currentTarget.style.background = '#3AC4A0'; }}
+      onMouseEnter={e => {
+        e.currentTarget.style.background = '#4FE6AF';
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.background = '#3AC4A0';
+      }}
       onClick={onClick}
     >
       <FaChevronLeft size={24} color="#fff" />

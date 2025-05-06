@@ -1,5 +1,6 @@
 import { trackEvent } from '@phntms/next-gtm';
 import DeviceDetector from 'device-detector-js';
+import posthog from 'posthog-js';
 
 interface Tracker {
   event: string;
@@ -20,6 +21,18 @@ const TrackerEvent = ({ event, ...additionalData }: Tracker): void => {
   dataList.forEach(key => {
     if (additionalData[key] === undefined) {
       dynamicData[key] = undefined;
+    }
+  });
+
+  posthog.capture(event, {
+    data: {
+      ...additionalData,
+      created_at: new Date().toString(),
+      device: {
+        user_device: detector.parse(navigator.userAgent).device?.type,
+        user_type: detector.parse(navigator.userAgent).client?.type,
+        user_os: detector.parse(navigator.userAgent).os?.name
+      }
     }
   });
 

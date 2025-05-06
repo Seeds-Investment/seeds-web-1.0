@@ -151,7 +151,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
         )
       );
     } catch (error) {
-      toast(`Error fetching Payment List: ${error as string}`);
+      toast.error(`Error fetching Payment List: ${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -162,7 +162,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       const response = await getUserInfo();
       setUserInfo(response);
     } catch (error) {
-      toast(`ERROR fetch user info ${error as string}`);
+      toast.error(`ERROR fetch user info ${error as string}`);
     }
   };
 
@@ -216,7 +216,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
 
       setDetailTournament(resp);
     } catch (error) {
-      toast(`ERROR fetch tournament ${error as string}`);
+      toast.error(`ERROR fetch tournament ${error as string}`);
     }
   }, [id]);
 
@@ -297,12 +297,20 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
               { shallow: true }
             )
             .catch(error => {
-              toast(`${error as string}`);
+              toast.error(`${error as string}`);
             });
         }
       }
-    } catch (error) {
-      toast.error(`${error as string}`);
+    } catch (error: any) {
+      setOpenDialog(false);
+      if (
+        error?.response?.data?.message ===
+        'bad request, minimum transaction using VA is 10000'
+      ) {
+        toast.error(t('PlayPayment.VirtualAccountGuide.minimumPaymentError'));
+      } else {
+        toast.error(`${error as string}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -346,15 +354,6 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
         {t('PlayPayment.title')}
       </Typography>
       <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
-        {virtualList?.length > 0 && (
-          <PaymentOptions
-            label="Virtual Account"
-            options={virtualList}
-            onChange={setOption}
-            currentValue={option}
-            userInfo={userInfo ?? userDefault}
-          />
-        )}
         {qRisList?.length > 0 && (
           <PaymentOptions
             label="QRIS"
@@ -368,6 +367,15 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
           <PaymentOptions
             label={t('PlayPayment.eWalletLabel')}
             options={eWalletList}
+            onChange={setOption}
+            currentValue={option}
+            userInfo={userInfo ?? userDefault}
+          />
+        )}
+        {virtualList?.length > 0 && (
+          <PaymentOptions
+            label="Virtual Account"
+            options={virtualList}
             onChange={setOption}
             currentValue={option}
             userInfo={userInfo ?? userDefault}
@@ -428,7 +436,6 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={detailTournament ?? defaultTournament}
             paymentStatus={paymentStatus}
-            user_name={userInfo?.name}
             newPromoCodeDiscount={newPromoCodeDiscount}
           />
         )}

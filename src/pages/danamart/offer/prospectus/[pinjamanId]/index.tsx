@@ -41,7 +41,8 @@ const Prospectus = (): React.ReactElement => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const thumbnailRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [isShowReportForm, setIsShowReportForm] = useState<boolean>(false);
-  const [isShowWaitListingModal, setIsShowWaitListingModal] = useState<boolean>(false);
+  const [isShowWaitListingModal, setIsShowWaitListingModal] =
+    useState<boolean>(false);
 
   const fetchDetailProspektus = async (): Promise<void> => {
     try {
@@ -130,12 +131,15 @@ const Prospectus = (): React.ReactElement => {
   };
 
   const isButtonDisabled = (): boolean => {
-    if (detailProspektus?.Data?.StatusListing === "Pembelian Selesai" && detailProspektus?.Data?.cekOmbak !== "1") {
-      return true
+    if (
+      detailProspektus?.Data?.StatusListing === 'Pembelian Selesai' &&
+      detailProspektus?.Data?.cekOmbak !== '1'
+    ) {
+      return true;
     } else {
-      return false
+      return false;
     }
-  }
+  };
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -329,7 +333,10 @@ const Prospectus = (): React.ReactElement => {
                 </div>
                 <Button
                   onClick={async () => {
-                    if (detailProspektus?.Data?.StatusListing === 'Pre-Listing' && detailProspektus?.Data?.cekOmbak !== "1") {
+                    if (
+                      detailProspektus?.Data?.StatusListing === 'Pre-Listing' &&
+                      detailProspektus?.Data?.cekOmbak !== '1'
+                    ) {
                       setIsShowWaitListingModal(true);
                     } else {
                       await router.push(
@@ -337,11 +344,12 @@ const Prospectus = (): React.ReactElement => {
                           prospectusId as string
                         }/purchase?UserPeminjamId=${
                           detailProspektus?.Data?.BeliEfek?.UserPinjamanId
-                        }&type=${
-                          getSecurityType(detailProspektus?.Data?.jenisEfek)
-                        }${detailProspektus?.Data?.cekOmbak === '1'
-                          ? `&co=true`
-                          : `&co=false`
+                        }&type=${getSecurityType(
+                          detailProspektus?.Data?.jenisEfek
+                        )}${
+                          detailProspektus?.Data?.cekOmbak === '1'
+                            ? `&co=true`
+                            : `&co=false`
                         }`
                       );
                     }

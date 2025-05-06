@@ -139,7 +139,7 @@ const UserLog = (): React.ReactElement => {
                     start_date: '',
                     end_date: ''
                   });
-                  void getUserLogData({start_date: '', end_date: ''})
+                  void getUserLogData({ start_date: '', end_date: '' });
                 }}
                 disabled={params?.start_date === '' && params?.end_date === ''}
                 className="shrink-0 md:mt-5 rounded-full w-full md:w-fit md:px-8 px-5 py-3 capitalize font-medium text-sm disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-white font-poppins"

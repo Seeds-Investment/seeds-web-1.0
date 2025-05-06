@@ -136,6 +136,7 @@ const Dev = (): React.ReactElement => {
           body: JSON.stringify({ ...data, id: visitorId })
         }
       );
+      handleOpen();
     } catch (e) {}
   };
   return (
@@ -155,7 +156,7 @@ const Dev = (): React.ReactElement => {
         <Link
           href="https://chat.whatsapp.com/HWHfXyQH5uT9aRhWgeg3wm"
           target="_blank"
-          className="w-1/2"
+          className="w-full"
           onClick={handleOpen}
         >
           <Button className="bg-seeds-button-green text-white font-poppins font-semibold rounded-full px-4 py-2 w-full text-center capitalize text-base">

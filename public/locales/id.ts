@@ -2632,6 +2632,7 @@ export default {
       'Jika kamu  mengklik ya, riwayat obrolanmu  tidak dapat ditelusuri kembali setelah menghapus obrolan',
     search: 'Telusuri',
     mute: 'Bisukan Notifikasi',
+    unmute: 'Aktifkan Notifikasi',
     deleteChat: 'Hapus Pesan',
     participants: 'Peserta',
     notes: 'Catatan',
@@ -2639,6 +2640,16 @@ export default {
     muteNotificationTitle: 'Yakin mau membisukan notifikasi ini?',
     muteNotificationSubtitle:
       'Peserta lain tidak akan tau jika kamu membisukan chat ini',
+    muted: {
+      text1: 'Notifikasi dibisukan selama 8 jam',
+      text2: 'Notifikasi dibisukan selama satu minggu',
+      text3: 'Notifikasi dibisukan',
+      text4: 'Ups! Terjadi kesalahan. Mohon coba lagi!'
+    },
+    unmuted: {
+      text1: 'Notifikasi telah diaktifkan',
+      text2: 'Ups! Terjadi kesalahan. Mohon coba lagi!'
+    },
     setPhoto: 'Atur Gambar',
     btnCreateGroup: 'Buat Obrolan Grup',
     btnYes: 'Ya',
@@ -3140,8 +3151,9 @@ export default {
         validationForm: {
           text1: 'Kolom ini wajib diisi',
           text2: 'Harus berisi 16 digit angka',
-          text3: 'Harus berisi 15-16 digit angka',
-          text4: 'Harus berisi 3 digit angka'
+          text3: 'Harus berisi 15-16 digit angka / karakter',
+          text4: 'Harus berisi 3 digit angka',
+          text5: 'Harus berisi minimal 7 digit angka',
         }
       },
       financialInformationTittle: 'Informasi Keuangan',

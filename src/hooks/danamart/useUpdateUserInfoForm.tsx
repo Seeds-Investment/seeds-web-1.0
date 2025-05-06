@@ -159,8 +159,8 @@ const useUpdateUserInfoForm = (): any => {
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
     dm_penmit_01042: yup
       .string()
-      .required(t(`${pathTranslation}.text1`) ?? 'This field is required')
-      .min(7, t(`${pathTranslation}.text1`) ?? 'Minimum 7 digits'),
+      .min(7, t(`${pathTranslation}.text5`) ?? 'Minimum 7 digits')
+      .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
     dm_pen_08002: yup
       .string()
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
@@ -178,7 +178,7 @@ const useUpdateUserInfoForm = (): any => {
             /^\d{15,16}$/,
             t(`${pathTranslation}.text3`) ?? 'This field is required'
           )
-          .required(t(`${pathTranslation}.text3`) ?? 'This field is required'),
+          .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
       otherwise: schema => schema.notRequired()
     }),
     dm_penmit_01045: yup.string().when('pernyataan_npwp', {

@@ -4,7 +4,9 @@ import back_nav from '@/assets/circle-page/back_nav.svg';
 import more_vertical from '@/assets/more-option/more_vertical.svg';
 import CCard from '@/components/CCard';
 import MediaItem from '@/components/chat/MediaItem';
+import ModalCamera from '@/components/chat/ModalCamera';
 import ModalNewChat from '@/components/chat/ModalNewChat';
+import ModalRecordVideo from '@/components/chat/ModalRecordVideo';
 import MutePopUp from '@/components/chat/MutePopup';
 import DeleteChatPopUp from '@/components/chat/PopUpDelete';
 import LeaveCommunityPopUp from '@/components/chat/PopUpLeave';
@@ -12,12 +14,8 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { ChatVoiceRecorder } from '@/containers/chat/ChatVoiceRecording';
 import ContactList from '@/containers/chat/ContactList';
 import GifChat from '@/containers/chat/GifChat';
-import withAuth from '@/helpers/withAuth';
-import LeaveButton from '../../../public/assets/chat/logout-icon.svg';
-// import useGetOnlineStatus from '@/hooks/useGetOnlineStatus';
-import ModalCamera from '@/components/chat/ModalCamera';
-import ModalRecordVideo from '@/components/chat/ModalRecordVideo';
 import { getChatDate } from '@/helpers/dateFormat';
+import withAuth from '@/helpers/withAuth';
 import {
   acceptRequest,
   deleteGroupChat,
@@ -36,7 +34,9 @@ import {
   readGroupMessage,
   readPersonalMessage,
   rejectRequest,
-  sendPersonalMessage
+  sendPersonalMessage,
+  unmuteGroupChat,
+  unmutePersonalChat
 } from '@/repository/chat.repository';
 import { UseUploadMedia } from '@/repository/circleDetail.repository';
 import { getOtherUser } from '@/repository/profile.repository';
@@ -103,6 +103,7 @@ import {
 } from 'react-icons/bs';
 import {
   CiBellOff,
+  CiBellOn,
   CiCamera,
   CiSearch,
   CiTrash,
@@ -111,6 +112,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import defaultAvatar from '../../../public/assets/chat/default-avatar.svg';
+import LeaveButton from '../../../public/assets/chat/logout-icon.svg';
 
 const initialFilter: GetListChatParams = {
   page: 1,
@@ -148,10 +150,15 @@ const ChatPages: React.FC = () => {
   const [isShowMediaOption, setIsShowMediaOption] = useState<boolean>(false);
   const [isModalCameraOpen, setIsModalCameraOpen] = useState<boolean>(false);
   const [isModalRecordOpen, setIsModalRecordOpen] = useState<boolean>(false);
+  const [isRefetch, setIsRefetch] = useState<boolean>(false);
   const [messageList, setMessageList] = useState<IChatBubble[] | []>([]);
   const [message, setMessage] = useState<string>('');
   const [chatRequest, setChatRequest] = useState<number>(0);
   const [searchText, setSearchText] = useState<string>('');
+  const [foundLength, setFoundLength] = useState<number>(0);
+  const [foundIndexes, setFoundIndexes] = useState<number[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const messageRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [limit, setLimit] = useState<number>(10);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [personalMediaData, setPersonalMediaData] = useState<
@@ -177,6 +184,11 @@ const ChatPages: React.FC = () => {
     'PERSONAL' | 'COMMUNITY' | 'REQUEST'
   >('PERSONAL');
   const { t } = useTranslation();
+
+  const isMuted = 
+    activeTab === 'COMMUNITY'
+      ? groupData?.chat_mute_status === 'eight_hours' || groupData?.chat_mute_status === 'one_week' || (groupData?.chat_mute_status === 'always' && groupData?.chat_mute_date !== '0001-01-01T00:00:00Z')
+      : otherUserData?.chat_mute_status === 'eight_hours' || otherUserData?.chat_mute_status === 'one_week' || (otherUserData?.chat_mute_status === 'always' && otherUserData?.chat_mute_date !== '0001-01-01T00:00:00Z')
 
   const handleChangeTab = (
     value: 'PERSONAL' | 'COMMUNITY' | 'REQUEST'
@@ -232,6 +244,9 @@ const ChatPages: React.FC = () => {
   };
 
   const handleSendMessage = async (): Promise<void> => {
+    setIsSearchActive(false)
+    setSearchText('')
+    setIsDropdownOpen(false);
     const data =
       activeTab === 'COMMUNITY'
         ? { content_text: message, group_id: roomId as string }
@@ -267,6 +282,37 @@ const ChatPages: React.FC = () => {
     setSearchText(value);
   };
 
+  useEffect(() => {
+    if (searchText === '') {
+      setFoundLength(0);
+      setFoundIndexes([]);
+    } else {
+      const indexes: number[] = [];
+
+      messageList?.forEach((message, index) => {
+        if (message?.content_text?.length > 0 && message?.content_text?.includes(searchText)) {
+          indexes.push(index);
+        }
+      });
+
+      setFoundIndexes(indexes);
+      setFoundLength(indexes.length);
+    }
+  }, [searchText, messageList]);
+
+    useEffect(() => {
+      setCurrentIndex(foundIndexes[foundIndexes?.length - 1])
+    }, [foundIndexes])
+
+    useEffect(() => {
+      if (currentIndex !== null && (messageRefs.current[currentIndex] != null)) {
+        messageRefs.current[currentIndex]?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, [currentIndex]);
+
   const handleFilterUnreadChange = (): void => {
     setFilter((prevState: GetListChatParams) => ({
       ...prevState,
@@ -278,7 +324,9 @@ const ChatPages: React.FC = () => {
     setIsDropdownOpen(!isDropdownOpen);
     setIsSearchActive(false);
   };
+
   const handleDropdownOptionClick = (option: string): void => {
+    setIsDropdownOpen(false);
     switch (option) {
       case 'Search':
         setIsSearchActive(true);
@@ -385,10 +433,43 @@ const ChatPages: React.FC = () => {
       activeTab === 'PERSONAL'
         ? await mutePersonalChat({ user_id: roomId as string, type })
         : await muteGroupChat({ group_id: roomId as string, type });
+      if (type === 'eight_hours') {
+        toast.success(t('chat.muted.text1'))
+      } else if (type === 'one_week') {
+        toast.success(t('chat.muted.text2'))
+      } else {
+        toast.success(t('chat.muted.text3'))
+      }
+      setIsRefetch(!isRefetch)
     } catch (error: any) {
-      toast('Oops! Error when try to mute chat');
+      toast.error(t('chat.muted.text4'))
     } finally {
       setIsMutePopupOpen(false);
+      if (activeTab === 'PERSONAL') {
+        void fetchOtherUser();
+      } else {
+        void fetchGroup();
+      }
+    }
+  };
+
+  const unmuteChat = async (): Promise<void> => {
+    try {
+      activeTab === 'PERSONAL'
+        ? await unmutePersonalChat({ user_id: roomId as string })
+        : await unmuteGroupChat({ group_id: roomId as string });
+      toast.success(t('chat.unmuted.text1'))
+      setIsRefetch(!isRefetch)
+    } catch (error: any) {
+      toast.error(t('chat.unmuted.text2'))
+    } finally {
+      setIsMutePopupOpen(false);
+      setIsDropdownOpen(false);
+      if (activeTab === 'PERSONAL') {
+        void fetchOtherUser();
+      } else {
+        void fetchGroup();
+      }
     }
   };
 
@@ -446,7 +527,8 @@ const ChatPages: React.FC = () => {
 
   useEffect(() => {
     void fetchListChat();
-  }, [filter, isChatActive]);
+  }, [filter, isChatActive, isRefetch]);
+
   const fetchOtherUser = async (): Promise<void> => {
     try {
       const userData = await getOtherUser(roomId as string);
@@ -1399,71 +1481,19 @@ const ChatPages: React.FC = () => {
             >
               {roomId !== undefined && isChatActive && (
                 <>
-                  {isSearchActive ? (
-                    <div className="flex w-full justify-around">
-                      <Image
-                        src={XIcon}
-                        alt="X"
-                        width={30}
-                        height={30}
-                        onClick={() => {
-                          setIsSearchActive(false);
-                        }}
-                        className="mx-2 w-1/8 hover:scale-110 transition ease-out cursor-pointer"
-                      />
-                      <input
-                        type="text"
-                        className="p-2 border-2 w-full rounded-xl m-2"
-                        value={searchText}
-                        onChange={handleSearchTextChange}
-                        placeholder="Search..."
-                      />
-                      <div className="justify-center items-center  w-1/8 mx-2 my-auto">
-                        <svg
-                          width="14"
-                          height="8"
-                          viewBox="0 0 14 8"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M13 7L7 1L1 7"
-                            stroke="#262626"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </div>
-                      <div className="justify-center my-auto items-center mx-2 w-1/8">
-                        <svg
-                          width="14"
-                          height="8"
-                          viewBox="0 0 14 8"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M1 1L7 7L13 1"
-                            stroke="#262626"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  ) : (
-                    <div
-                      style={{
-                        backgroundImage: "url('/assets/chat/bg-chat.svg')"
-                      }}
-                      className={`w-full bg-cover flex rounded-t-xl border-b border-solid ${
-                        isLoading ? 'justify-center' : 'justify-between'
-                      } items-center lg:h-[150px] h-[130px]`}
-                    >
-                      {isLoading ? (
-                        <div className="animate-spinner w-8 h-8 border-8 border-seeds-green border-t-gray-200 rounded-full"></div>
-                      ) : (
-                        <div className="w-full flex justify-between items-center mx-[18px]">
+                  <div
+                    style={{
+                      backgroundImage: "url('/assets/chat/bg-chat.svg')"
+                    }}
+                    className={`w-full bg-cover flex rounded-t-xl border-b border-solid ${
+                      isLoading ? 'justify-center' : 'justify-between'
+                    } items-center lg:h-[150px] h-[130px]`}
+                  >
+                    {isLoading ? (
+                      <div className="animate-spinner w-8 h-8 border-8 border-seeds-green border-t-gray-200 rounded-full"></div>
+                    ) : (
+                      <div className='w-full flex flex-col items-center mx-[18px] md:gap-2'>
+                        <div className='w-full flex justify-between items-center mx-[18px]'>
                           <div className="w-fit flex justify-between items-center">
                             <Image
                               src={ArrowBackwardIconWhite}
@@ -1474,6 +1504,7 @@ const ChatPages: React.FC = () => {
                               onClick={async () => {
                                 await router.push('/chat');
                                 setIsChatActive(false);
+                                setIsSearchActive(false);
                               }}
                             />
                           </div>
@@ -1569,16 +1600,30 @@ const ChatPages: React.FC = () => {
                                 </div>
                                 <div
                                   className="dropdown-option flex items-center p-2 gap-2 hover:bg-gray-100 cursor-pointer"
-                                  onClick={() => {
-                                    handleDropdownOptionClick('Mute');
+                                  onClick={async() => {
+                                    if (isMuted) {
+                                      await unmuteChat()
+                                    } else {
+                                      handleDropdownOptionClick('Mute');
+                                    }
                                   }}
                                 >
-                                  <CiBellOff
-                                    size={24}
-                                    className="text-[#201B1C]"
-                                  />
+                                  {
+                                    isMuted ?
+                                      <CiBellOn
+                                        size={24}
+                                        className="text-[#201B1C]"
+                                      />
+                                      :
+                                      <CiBellOff
+                                        size={24}
+                                        className="text-[#201B1C]"
+                                      />
+                                  }
                                   <h1 className="text-sm font-poppins font-normal text-[#201B1C]">
-                                    {t('chat.mute')}
+                                    {
+                                      isMuted ? t('chat.unmute') : t('chat.mute')
+                                    }
                                   </h1>
                                 </div>
                                 <div
@@ -1617,9 +1662,90 @@ const ChatPages: React.FC = () => {
                             )}
                           </div>
                         </div>
-                      )}
-                    </div>
-                  )}
+                        {
+                          isSearchActive &&
+                            <div className="flex w-full justify-around gap-2 md:gap-4">
+                              <Image
+                                src={XIcon}
+                                alt="X"
+                                width={30}
+                                height={30}
+                                onClick={() => {
+                                  setIsSearchActive(false);
+                                  setSearchText('');
+                                  setIsDropdownOpen(false);
+                                }}
+                                className="w-1/8 hover:scale-110 transition ease-out cursor-pointer"
+                              />
+                              <div className="relative w-full">
+                                <input
+                                  type="text"
+                                  className="py-2 px-4 border-2 w-full rounded-full my-2 pr-16"
+                                  value={searchText}
+                                  onChange={handleSearchTextChange}
+                                  placeholder="Search..."
+                                />
+                                {searchText !== '' && foundLength > 0 && (
+                                  <div className="absolute inset-y-0 right-5 flex items-center gap-2">
+                                    <div
+                                      onClick={() => {
+                                        const currentPos = foundIndexes.indexOf(currentIndex);
+                                        if (currentPos > 0) {
+                                          setCurrentIndex(foundIndexes[currentPos - 1]);
+                                        }
+                                      }}
+                                      className="cursor-pointer"
+                                    >
+                                      <svg
+                                        width="14"
+                                        height="8"
+                                        viewBox="0 0 14 8"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M13 7L7 1L1 7"
+                                          stroke="#262626"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        />
+                                      </svg>
+                                    </div>
+                                    <div className="shrink-0 flex justify-center items-center">
+                                      {(foundIndexes?.indexOf(currentIndex)) + 1} / {foundLength}
+                                    </div>
+                                    <div
+                                      onClick={() => {
+                                        const currentPos = foundIndexes.indexOf(currentIndex);
+                                        if (currentPos < foundIndexes.length - 1) {
+                                          setCurrentIndex(foundIndexes[currentPos + 1]);
+                                        }
+                                      }}
+                                      className="cursor-pointer"
+                                    >
+                                      <svg
+                                        width="14"
+                                        height="8"
+                                        viewBox="0 0 14 8"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M1 1L7 7L13 1"
+                                          stroke="#262626"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                        }
+                      </div>
+                    )}
+                  </div>
                   <div
                     ref={containerRef}
                     className={`relative bg-white shadow-sm flex-grow w-full min-h-[420px] py-4 max-h-[70vh] overflow-y-scroll`}
@@ -1658,7 +1784,7 @@ const ChatPages: React.FC = () => {
                                         message.content_text.includes(
                                           searchText
                                         ) && searchText !== ''
-                                          ? 'font-poppins break-all text-black bg-[#FBF719]'
+                                          ? 'font-poppins break-all font-semibold text-[#1A857D]'
                                           : 'font-poppins break-all text-black'
                                       }`}
                                     >
@@ -1772,7 +1898,7 @@ const ChatPages: React.FC = () => {
                                           message?.content_text.includes(
                                             searchText
                                           ) && searchText !== ''
-                                            ? 'font-poppins break-all text-black bg-[#FBF719]'
+                                            ? 'font-poppins break-all font-semibold text-[#1A857D]'
                                             : 'font-poppins break-all text-black'
                                         }`}
                                       >
@@ -1856,17 +1982,23 @@ const ChatPages: React.FC = () => {
                                   )}
                                   <div className="mt-2">
                                     {message?.content_text?.length > 0 && (
-                                      <Typography
-                                        className={`${
-                                          message?.content_text.includes(
-                                            searchText
-                                          ) && searchText !== ''
-                                            ? 'font-poppins break-all text-black bg-[#FBF719]'
-                                            : 'font-poppins break-all text-black'
-                                        }`}
-                                      >
-                                        {message?.content_text}
-                                      </Typography>
+                                      <div ref={(el) => (messageRefs.current[index] = el)}>
+                                        <Typography className="font-poppins break-all text-black">
+                                          {searchText !== "" ? (
+                                            message?.content_text?.split(new RegExp(`(${searchText})`, "gi"))?.map((part, i) =>
+                                              part?.toLowerCase() === searchText?.toLowerCase() ? (
+                                                <span key={i} className={`${index === currentIndex ? 'font-semibold text-[#1A857D]' : ''}`}>
+                                                  {part}
+                                                </span>
+                                              ) : (
+                                                part
+                                              )
+                                            )
+                                          ) : (
+                                            message.content_text
+                                          )}
+                                        </Typography>
+                                      </div>
                                     )}
                                     <div className="w-full flex justify-end items-center gap-2">
                                       <Typography className="text-xs text-[#7C7C7C]">
@@ -1918,7 +2050,7 @@ const ChatPages: React.FC = () => {
                                         message.content_text.includes(
                                           searchText
                                         ) && searchText !== ''
-                                          ? 'font-poppins break-all text-black bg-[#FBF719]'
+                                          ? 'font-poppins break-all font-semibold text-[#1A857D]'
                                           : 'font-poppins break-all text-black'
                                       }
                                     >
@@ -2025,7 +2157,7 @@ const ChatPages: React.FC = () => {
                                             message?.content_text.includes(
                                               searchText
                                             ) && searchText !== ''
-                                              ? 'font-poppins break-all text-black bg-[#FBF719]'
+                                              ? 'font-poppins break-all font-semibold text-[#1A857D]'
                                               : 'font-poppins break-all text-black'
                                           }`}
                                         >
@@ -2114,17 +2246,21 @@ const ChatPages: React.FC = () => {
                                     )}
                                     <div className="mt-2">
                                       {message?.content_text?.length > 0 && (
-                                        <Typography
-                                          className={`${
-                                            message?.content_text.includes(
-                                              searchText
-                                            ) && searchText !== ''
-                                              ? 'font-poppins break-all text-black bg-[#FBF719]'
-                                              : 'font-poppins break-all text-black'
-                                          }`}
-                                        >
-                                          {message?.content_text}
-                                        </Typography>
+                                        <div ref={(el) => (messageRefs.current[index] = el)}>
+                                          <Typography className="font-poppins break-all text-black">
+                                            {searchText !== "" ? (
+                                              message?.content_text?.split(new RegExp(`(${searchText})`, "gi"))?.map((part, i) =>
+                                                part?.toLowerCase() === searchText?.toLowerCase() ? (
+                                                  <span key={i} className={`${index === currentIndex ? 'font-semibold text-[#1A857D]' : ''}`}>{part}</span>
+                                                ) : (
+                                                  part
+                                                )
+                                              )
+                                            ) : (
+                                              message.content_text
+                                            )}
+                                          </Typography>
+                                        </div>
                                       )}
                                       <div className="w-full flex justify-end items-center gap-2">
                                         <Typography className="text-xs text-[#7C7C7C]">

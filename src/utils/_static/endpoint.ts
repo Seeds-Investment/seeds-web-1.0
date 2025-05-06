@@ -7,8 +7,10 @@ export default class Endpoints {
     sendPersonalChat: '/chat/v1/message/create',
     groupDetail: '/chat/v1/group', // :id
     mutePersonalChat: '/chat/v1/message/mute/personal',
+    unmutePersonalChat: '/chat/v1/message/unmute/personal',
     deletePersonalChat: '/chat/v1/message/:id/personal',
     muteGroupChat: '/chat/v1/message/mute/group',
+    unmuteGroupChat: '/chat/v1/message/unmute/group',
     deleteGroupChat: '/chat/v1/message/:id/group',
     leaveGroupChat: '/chat/v1/group/:id/leave',
     sendNoteChat: '/chat/v1/note/create',

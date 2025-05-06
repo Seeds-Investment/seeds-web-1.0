@@ -44,6 +44,8 @@ interface NumberIProps<T extends FieldValues> extends CommonProps<T> {
   type: 'number';
   watch: UseFormWatch<T>;
   control: Control<T, any>;
+  allowNegativeValue?: boolean;
+  disableGroupSeparators?: boolean;
   locale?: string;
   disabled?: boolean;
   placeholder?: string;

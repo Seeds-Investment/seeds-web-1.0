@@ -142,6 +142,8 @@ const NumberInput = <T extends FieldValues>(
           intlConfig={{ locale }}
           decimalsLimit={props.decimalsLimit !== null ? props.decimalsLimit : 0}
           disableAbbreviations
+          allowNegativeValue={props.allowNegativeValue}
+          disableGroupSeparators={props.disableGroupSeparators}
           prefix={props.prefix ? `${props.prefix} ` : ''}
           suffix={props.suffix}
           placeholder={props.placeholder}
@@ -407,24 +409,22 @@ const DropdownInput = <T extends FieldValues>(
     props.control != null &&
     props.options != null &&
     props.options.length > 0 ? (
-    <div className="flex flex-wrap">
-      <Controller
-        control={props.control}
-        name={props.registerName}
-        render={({ field: { value, onChange } }) => (
-          <Select
-            value={value}
-            options={props.options ?? []}
-            onChange={(e: Option) => {
-              onChange(e.value);
-            }}
-            disabled={props.disabled}
-            rounded={props.rounded}
-            fullWidth={props.fullWidth}
-          />
-        )}
-      />
-    </div>
+    <Controller
+      control={props.control}
+      name={props.registerName}
+      render={({ field: { value, onChange } }) => (
+        <Select
+          value={value}
+          options={props.options ?? []}
+          onChange={(e: Option) => {
+            onChange(e.value);
+          }}
+          disabled={props.disabled}
+          rounded={props.rounded}
+          fullWidth={props.fullWidth}
+        />
+      )}
+    />
   ) : null;
 };
 

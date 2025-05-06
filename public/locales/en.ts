@@ -2703,6 +2703,7 @@ export default {
       'If you click yes, your chat history can not be retrace after delete the chat',
     search: 'Search',
     mute: 'Mute Notification',
+    unmute: 'Unmute Notification',
     deleteChat: 'Delete chat',
     participants: 'Participants',
     notes: 'Notes',
@@ -2710,6 +2711,16 @@ export default {
     muteNotificationTitle: 'Are you sure to mute notifications?',
     muteNotificationSubtitle:
       'Other participants will not see that you muted this chat',
+    muted: {
+      text1: 'Notifications Muted for 8 hours',
+      text2: 'Notifications Muted for one week',
+      text3: 'Notifications Muted',
+      text4: 'Oops! Error when try to mute chat'
+    },
+    unmuted: {
+      text1: 'Notifications Unmuted',
+      text2: 'Oops! Error when try to unmute chat'
+    },
     setPhoto: 'Set Photo',
     btnCreateGroup: 'Create Group Chat',
     btnYes: 'Yes',
@@ -3206,9 +3217,10 @@ export default {
         },
         validationForm: {
           text1: 'This field is required',
-          text2: 'Must be exactly 16 digits long',
-          text3: 'Must be exactly 15-16 digits long',
-          text4: 'Must be exactly 3 digits long'
+          text2: 'Must contain exactly 16 digits',
+          text3: 'Must contain 15–16 digits/characters',
+          text4: 'Must contain exactly 3 digits',
+          text5: 'Must contain at least 7 digits',
         }
       },
       financialInformationTittle: 'Financial Information',

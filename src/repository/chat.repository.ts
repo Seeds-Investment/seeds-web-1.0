@@ -172,6 +172,44 @@ export const muteGroupChat = async (
   });
 };
 
+export const unmutePersonalChat = async (
+  data: { 
+    user_id: string 
+  }
+): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.unmutePersonalChat;
+  await baseUrl.post(path, data, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const unmuteGroupChat = async (
+  data: { 
+    group_id: string 
+  }
+): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.unmuteGroupChat;
+  await baseUrl.post(path, data, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
 export const deletePersonalChat = async (id: string): Promise<void> => {
   const accessToken = localStorage.getItem('accessToken');
 

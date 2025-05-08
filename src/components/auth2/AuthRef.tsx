@@ -1,4 +1,5 @@
 import SeedyAuthRef from '@/assets/auth/SeedyAuthRef.png';
+import { swtracker } from '@/constants/swtracker';
 import Toast from '@/containers/circle/[id]/Toast';
 import { AuthLocalStorage } from '@/helpers/authLocalStorage';
 import TrackerEvent from '@/helpers/GTM';
@@ -55,7 +56,7 @@ const AuthRef: React.FC<AuthRefI> = ({
     await dispatch(fetchExpData());
     const responseUser = await getUserInfo();
     TrackerEvent({
-      event: 'SW_auth_login',
+      event: swtracker.auth.login,
       userData: responseUser
     });
     handleOpen();
@@ -64,7 +65,7 @@ const AuthRef: React.FC<AuthRefI> = ({
     } else {
       await router.push('/homepage');
       TrackerEvent({
-        event: `SW_homepage_page`,
+        event: swtracker.homepage.page,
         userData: responseUser
       });
     }
@@ -121,7 +122,7 @@ const AuthRef: React.FC<AuthRefI> = ({
       }
       const { password, refCode, ...rest } = formData;
       TrackerEvent({
-        event: 'SW_auth_register',
+        event: swtracker.auth.register,
         userData: rest
       });
       await handleSubmit();
@@ -154,7 +155,7 @@ const AuthRef: React.FC<AuthRefI> = ({
       }
       const { password, ...rest } = formData;
       TrackerEvent({
-        event: 'SW_auth_register',
+        event: swtracker.auth.register,
         userData: rest
       });
       await handleSubmit();

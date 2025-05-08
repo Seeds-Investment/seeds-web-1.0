@@ -1,3 +1,4 @@
+import { swtracker } from '@/constants/swtracker';
 import TrackerEvent from '@/helpers/GTM';
 import withRedirect from '@/helpers/withRedirect';
 import {
@@ -69,7 +70,7 @@ export const handleOTP = async (
     await dispatch(fetchExpData());
     const responseUser = await getUserInfo();
     TrackerEvent({
-      event: 'SW_auth_guest_login',
+      event: swtracker.auth.loginGuest,
       userData: responseUser
     });
     if (isQuery) {
@@ -77,7 +78,7 @@ export const handleOTP = async (
     } else {
       await router.push('/homepage');
       TrackerEvent({
-        event: `SW_homepage_page`,
+        event: swtracker.homepage.page,
         userData: responseUser
       });
     }
@@ -98,7 +99,7 @@ export const handleOTP = async (
     const { method, otp, ...rest } = guestRegistOTP;
     AuthLocalStorage(response);
     TrackerEvent({
-      event: 'SW_auth_guest_register',
+      event: swtracker.auth.registerGuest,
       userData: rest
     });
     await handleTracker();

@@ -1,7 +1,9 @@
+import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import LanguageContext from '@/store/language/language-context';
+import { useAppSelector } from '@/store/redux/store';
 import { getLocalStorage } from '@/utils/common/localStorage';
 import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
@@ -58,6 +60,7 @@ const SidebarLoginResponsive: React.FC<props> = ({
   handleOpen,
   handleLogout
 }) => {
+  const { dataUser } = useAppSelector(state => state.user);
   const width = useWindowInnerWidth();
   const [accessToken, setAccessToken] = useState('');
   const router = useRouter();
@@ -114,7 +117,13 @@ const SidebarLoginResponsive: React.FC<props> = ({
                   className={isLinkActive(data.url)}
                   href={data.url}
                   key={idx}
-                  onClick={handleOpen}
+                  onClick={() => {
+                    handleOpen();
+                    TrackerEvent({
+                      event: `SW_${data.title.toLowerCase()}_page`,
+                      userData: dataUser
+                    });
+                  }}
                 >
                   <Image width={20} height={20} src={data.image} alt="" />
                   <h1>{data.title}</h1>

@@ -14,6 +14,7 @@ import QuizDetail from '@/components/microsite-quiz/quizDetail';
 import QuizSponsor from '@/components/microsite-quiz/quizSponsor';
 import WinQuizTable from '@/components/microsite-quiz/winQuizTable';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { swtracker } from '@/constants/swtracker';
 import TrackerEvent from '@/helpers/GTM';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
@@ -183,7 +184,7 @@ const MicrositeQuiz = (): React.ReactElement => {
       count.current === 0
     ) {
       TrackerEvent({
-        event: 'SW_micorsite_quiz_page_detail',
+        event: swtracker.microsite.pageQuizDetail,
         quizData: detailQuiz,
         userData: userInfo
       });

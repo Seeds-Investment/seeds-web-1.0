@@ -1,4 +1,5 @@
 import { chrownCirclePremium } from '@/constants/assets/icons';
+import { swtracker } from '@/constants/swtracker';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import {
@@ -53,7 +54,7 @@ export default function CardCircle({
                 toast(error, { type: 'error' });
               });
             TrackerEvent({
-              event: `SW_circle_page_detail`,
+              event: swtracker.circle.pageDetail,
               userData: userInfo,
               circleData: data
             });

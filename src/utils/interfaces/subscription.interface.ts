@@ -20,6 +20,7 @@ export interface PlanI {
   is_subscribe: boolean;
   created_at: string;
   updated_at: string;
+  payment_method: string;
 }
 
 export interface ListPlan {

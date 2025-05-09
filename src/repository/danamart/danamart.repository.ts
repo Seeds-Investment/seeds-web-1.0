@@ -68,6 +68,25 @@ export const registerLog = async (data: RegisterLog): Promise<any> => {
   }
 };
 
+export const deleteLog = async (): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await danamartService.delete('danamart-information', {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
 export const getProfileUser = async (): Promise<any> => {
   try {
     const accessTokenDanamart = localStorage.getItem('accessToken-danamart');

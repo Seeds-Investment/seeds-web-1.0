@@ -1,4 +1,5 @@
 import { decryptResponse } from '@/helpers/cryptoDecrypt';
+import { deleteLog } from '@/repository/danamart/danamart.repository';
 import { postDeleteAccountRequest } from '@/repository/danamart/setting.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -42,6 +43,9 @@ const DeleteAccount: React.FC = () => {
           } else {
             toast.success(decryptedDataObject?.message);
           }
+          try {
+            await deleteLog();
+          } catch {}
         }
       }
     } catch (error: any) {

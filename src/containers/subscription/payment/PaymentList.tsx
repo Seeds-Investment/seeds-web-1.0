@@ -128,12 +128,44 @@ const PaymentList: React.FC = (): JSX.Element => {
       const data = await getPaymentList(
         userInfo?.preferredCurrency?.toUpperCase()
       );
-      setQRisList(data.type_qris);
-      setEWalletList(data.type_ewallet);
-      setVirtualAccountList(data.type_va);
-      setCcList(data.type_cc);
-    } catch (error: any) {
-      toast(`Error fetching Payment List: ${error.message as string}`);
+
+      if (dataPlan?.payment_method === null) {
+        setQRisList(data.type_qris);
+        setEWalletList(data.type_ewallet);
+        setVirtualAccountList(data.type_va);
+        setCcList(data.type_cc);
+      } else {
+        setQRisList(
+          data?.type_qris?.filter((item: { payment_method: string }) =>
+            dataPlan !== undefined
+              ? dataPlan?.payment_method?.includes(item?.payment_method)
+              : item?.payment_method
+          )
+        );
+        setEWalletList(
+          data?.type_ewallet?.filter((item: { payment_method: string }) =>
+            dataPlan !== undefined
+              ? dataPlan?.payment_method?.includes(item?.payment_method)
+              : item?.payment_method
+          )
+        );
+        setCcList(
+          data?.type_cc?.filter((item: { payment_method: string }) =>
+            dataPlan !== undefined
+              ? dataPlan?.payment_method?.includes(item?.payment_method)
+              : item?.payment_method
+          )
+        );
+        setVirtualAccountList(
+          data?.type_va?.filter((item: { payment_method: string }) =>
+            dataPlan !== undefined
+              ? dataPlan?.payment_method?.includes(item?.payment_method)
+              : item?.payment_method
+          )
+        );
+      }
+    } catch (error) {
+      toast.error(`Error fetching Payment List: ${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -204,7 +236,7 @@ const PaymentList: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     void fetchPaymentList();
-  }, [userInfo?.preferredCurrency]);
+  }, [userInfo?.preferredCurrency, dataPlan]);
 
   const handlePay = async (
     type: string,
@@ -310,34 +342,42 @@ const PaymentList: React.FC = (): JSX.Element => {
         {t('PlayPayment.title')}
       </Typography>
       <div className="bg-white max-w-[600px] w-full h-fit flex flex-col items-center p-8 rounded-xl">
-        <PaymentOptions
-          label="QRIS"
-          options={qRisList}
-          onChange={setOption}
-          currentValue={option ?? defaultOption}
-          userInfo={userInfo ?? userDefault}
-        />
-        <PaymentOptions
-          label={t('PlayPayment.eWalletLabel')}
-          options={eWalletList}
-          onChange={setOption}
-          currentValue={option ?? defaultOption}
-          userInfo={userInfo ?? userDefault}
-        />
-        <PaymentOptions
-          label={t('PlayPayment.virtualAccountLabel')}
-          options={virtualAccountList}
-          onChange={setOption}
-          currentValue={option ?? defaultOption}
-          userInfo={userInfo ?? userDefault}
-        />
-        <PaymentOptions
-          label={t('PlayPayment.creditCardLabel')}
-          options={ccList}
-          onChange={setOption}
-          currentValue={option ?? defaultOption}
-          userInfo={userInfo ?? userDefault}
-        />
+        {qRisList?.length > 0 && (
+          <PaymentOptions
+            label="QRIS"
+            options={qRisList}
+            onChange={setOption}
+            currentValue={option ?? defaultOption}
+            userInfo={userInfo ?? userDefault}
+          />
+        )}
+        {eWalletList?.length > 0 && (
+          <PaymentOptions
+            label={t('PlayPayment.eWalletLabel')}
+            options={eWalletList}
+            onChange={setOption}
+            currentValue={option ?? defaultOption}
+            userInfo={userInfo ?? userDefault}
+          />
+        )}
+        {virtualAccountList?.length > 0 && (
+          <PaymentOptions
+            label={t('PlayPayment.virtualAccountLabel')}
+            options={virtualAccountList}
+            onChange={setOption}
+            currentValue={option ?? defaultOption}
+            userInfo={userInfo ?? userDefault}
+          />
+        )}
+        {ccList?.length > 0 && (
+          <PaymentOptions
+            label={t('PlayPayment.creditCardLabel')}
+            options={ccList}
+            onChange={setOption}
+            currentValue={option ?? defaultOption}
+            userInfo={userInfo ?? userDefault}
+          />
+        )}
         <SubmitButton
           disabled={option?.id == null}
           fullWidth

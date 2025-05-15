@@ -2889,6 +2889,12 @@ export default {
           'ReCAPTCHA value is not available! Fill the ReCAPTCHA before logging in.'
       },
       loginButton: 'Login',
+      disconnectAccount: 'Disconnect Account',
+      disconnectAccountConfirm1: "Are you sure you want to disconnect your Danamart account from your Seeds account?",
+      disconnectAccountConfirm2: "If you want to reconnect, make sure your Seeds email matches the new email you're using on the Danamart platform.",
+      cancel: 'Cancel',
+      process: 'Disconnect Account',
+      disconnectSucceed: 'Account successfully disconnected',
       tooManyAttempts:
         "Sorry, you've just requested a verification code. For your account's security, please request a new code after 5 minutes."
     },

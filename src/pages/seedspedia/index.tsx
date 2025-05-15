@@ -21,7 +21,7 @@ const SeedsPedia: React.FC = () => {
     <div className="flex items-center justify-center mt-20">
       <Tabs value={activeTab}>
         <TabsHeader
-          className="w-[15%] text-center justify-center mx-auto  rounded-none bg-transparent p-0"
+          className="w-full md:w-[30%] text-center justify-center mx-auto rounded-none bg-transparent p-0"
           indicatorProps={{
             className: 'shadow-none rounded-none'
           }}
@@ -31,7 +31,7 @@ const SeedsPedia: React.FC = () => {
             onClick={() => {
               handleTabChange('article');
             }}
-            className={`text-end text-xl bg-transparent mt-3 xl:mt-5 ${
+            className={`text-end text-xl bg-transparent mt-3 xl:mt-5 font-poppins ${
               activeTab === 'article'
                 ? 'text-[#9A76FE] to-[#4FE6AF] font-semibold border-b-4 border-b-[#9A76FE]'
                 : 'text-[#7C7C7C] text-xl font-normal'
@@ -44,7 +44,7 @@ const SeedsPedia: React.FC = () => {
             onClick={() => {
               handleTabChange('news');
             }}
-            className={`text-start text-xl bg-transparent mt-3 xl:mt-5 ${
+            className={`text-start text-xl bg-transparent mt-3 xl:mt-5 font-poppins ${
               activeTab === 'news'
                 ? 'text-[#9A76FE] to-[#4FE6AF] font-semibold border-b-4 border-b-[#9A76FE]'
                 : 'text-[#7C7C7C] text-xl font-normal'
@@ -55,10 +55,10 @@ const SeedsPedia: React.FC = () => {
         </TabsHeader>
         <TabsBody>
           <TabPanel value="article">
-            <ArticleList />
+            <ArticleList activeTab={activeTab}/>
           </TabPanel>
           <TabPanel value="news">
-            <NewsList />
+            <NewsList activeTab={activeTab}/>
           </TabPanel>
         </TabsBody>
       </Tabs>

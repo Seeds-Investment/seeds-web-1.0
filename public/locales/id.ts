@@ -1234,6 +1234,13 @@ export default {
     text6: 'Kamu mungkin suka',
     text7: 'Daftar Berita',
     text8: 'lihat semua',
+    text9: 'Tidak ada artikel dalam kategori',
+    text10: 'Tidak ditemukan artikel',
+    text11: 'pada kategori',
+    text12: '',
+    text13: 'Semua',
+    text14: 'Tidak ada berita dalam kategori',
+    text15: 'Tidak ditemukan berita',
     article: {
       sort: {
         all: 'Semua',

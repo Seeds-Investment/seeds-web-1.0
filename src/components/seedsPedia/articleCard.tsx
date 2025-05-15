@@ -165,13 +165,13 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             <img
               src={imageUrl}
               alt={articleDetail?.title}
-              className="w-full h-[238px] rounded-t-[18px]"
+              className="w-full h-auto rounded-t-[18px]"
             />
           ) : (
             <img
               src={defaultNews}
               alt={articleDetail?.title}
-              className="w-full h-[238px] rounded-t-[18px]"
+              className="w-full h-auto rounded-t-[18px]"
             />
           )}
         </Link>

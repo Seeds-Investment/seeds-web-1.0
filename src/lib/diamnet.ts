@@ -21,7 +21,7 @@ interface SuccessConnect {
   message: {
     title: string;
     data: Array<{
-      diamPublicKey: string;
+      publicKey: string;
     }>;
   };
 }
@@ -55,6 +55,7 @@ export const connectWallet = async (): Promise<ConnectWallet | undefined> => {
   try {
     if ('diam' in window) {
       const response: ConnectWallet = await (window as any).diam.connect();
+      console.log(response);
       if (response.status === 200) {
         const isConnected = await getUserAddress();
         if (
@@ -63,11 +64,11 @@ export const connectWallet = async (): Promise<ConnectWallet | undefined> => {
           !('wallet_address' in isConnected)
         ) {
           await connectSeeds({
-            wallet_address: response.message.data[0].diamPublicKey
+            wallet_address: response.message.data[0].publicKey
           });
         } else if (
           typeof isConnected === 'object' &&
-          isConnected.wallet_address !== response.message.data[0].diamPublicKey
+          isConnected.wallet_address !== response.message.data[0].publicKey
         ) {
           throw new Error(
             'Oops! Please use the wallet address linked to this account'
@@ -75,9 +76,9 @@ export const connectWallet = async (): Promise<ConnectWallet | undefined> => {
         }
         sessionStorage.setItem(
           'diamPublicKey',
-          response?.message.data[0].diamPublicKey
+          response?.message.data[0].publicKey
         );
-        await checkBalance(response?.message.data[0].diamPublicKey);
+        await checkBalance(response?.message.data[0].publicKey);
         return response;
       } else {
         throw new Error(

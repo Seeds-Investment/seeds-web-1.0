@@ -54,8 +54,7 @@ interface BuyOffer {
 export const connectWallet = async (): Promise<ConnectWallet | undefined> => {
   try {
     if ('diam' in window) {
-      const response: ConnectWallet = await (window as any).diam.connect();
-      console.log(response);
+      const response: ConnectWallet = await(window as any).diam.connect();
       if (response.status === 200) {
         const isConnected = await getUserAddress();
         if (

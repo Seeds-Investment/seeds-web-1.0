@@ -176,16 +176,20 @@ export const getHotNews = async (
   }
 };
 
-export const getArticleCategories = async ({
-  page,
-  limit
-}: {
-  page: number;
-  limit: number;
-}): Promise<any> => {
+export const getArticleCategories = async (
+  options?: { 
+    page?: number; 
+    limit?: number 
+  }
+): Promise<any> => {
   try {
+    const params: any = {};
+
+    if (options?.page !== undefined) params.page = options.page;
+    if (options?.limit !== undefined) params.limit = options.limit;
+
     return await articleService.get(`/news/v1/category`, {
-      params: { page, limit },
+      params,
       headers: {
         Accept: 'application/json',
       }

@@ -60,7 +60,7 @@ export default function ArticleList({
   
   const fetchArticleCategory = async (): Promise<void> => {
     try {
-      const response = await getArticleCategories({ page: 1, limit: 100 });
+      const response = await getArticleCategories();
       setCategories(response?.data)
 
     } catch (error) {

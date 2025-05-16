@@ -80,6 +80,7 @@ export { default as SeedIcon } from 'public/assets/vector/seed-icon.svg';
 export { default as SeedlingIcon } from 'public/assets/vector/seedling-icon.svg';
 export { default as SeedyBattleLeft } from 'public/assets/vector/seedy-battle-left.svg';
 export { default as SeedyBattleRight } from 'public/assets/vector/seedy-battle-right.svg';
+export { default as SeedyEmptyData } from 'public/assets/vector/seedy-empty-data.svg';
 export { default as SendOTPEmail } from 'public/assets/vector/send-otp-email.svg';
 export { default as SendOTPSms } from 'public/assets/vector/send-otp-sms.svg';
 export { default as SendOTPWhatsApp } from 'public/assets/vector/send-otp-whatsapp.svg';
@@ -98,3 +99,4 @@ export { default as VoucherInvalid } from 'public/assets/vector/voucher-invalid.
 export { default as Voucher } from 'public/assets/vector/voucher.svg';
 export { default as XIconWhite } from 'public/assets/vector/x-icon-white.svg';
 export { default as XIcon } from 'public/assets/vector/x.svg';
+

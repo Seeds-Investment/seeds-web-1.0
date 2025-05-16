@@ -1,12 +1,18 @@
 import ArtPagination from '@/components/ArtPagination';
 import NewsCard from '@/components/homepage/newsCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { getArticle } from '@/repository/article.repository';
+import { getArticle, getArticleCategories } from '@/repository/article.repository';
 import LanguageContext from '@/store/language/language-context';
+import { type ArticleMetadataI, type CategoryI } from '@/utils/interfaces/article.interface';
+import { Typography } from '@material-tailwind/react';
+import Image from 'next/image';
 import Link from 'next/link';
-import React, { useContext, useEffect, useState } from 'react';
+import { SeedyEmptyData } from 'public/assets/vector';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
+import { toast } from 'react-toastify';
+
 export interface ArticleListRoot {
   promoCodeList: Article[];
   metadata: Metadata;
@@ -41,12 +47,14 @@ export default function ArticleList(): React.ReactElement {
   const [articles, setArticles] = useState<Article[]>([]);
   const [hotNews, setHotNews] = useState<Article[]>([]);
   const [searchInput, setSearchInput] = useState('');
-
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [articleMetadata, setArticleMetadata] = useState<ArticleMetadataI>();
+  const [categories, setCategories] = useState<CategoryI[]>([]);
+  const sliderRef = useRef<Slider | null>(null);
 
   const [params, setParams] = useState({
     page: 1,
-    limit: 9,
+    limit: 10,
     source: 'news',
     language: languageCtx?.language === 'ID' ? 'indonesian' : 'english',
     search: '',
@@ -71,7 +79,8 @@ export default function ArticleList(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setArticles(response.data);
+        setArticles(response?.data);
+        setArticleMetadata(response?.metadata)
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -79,6 +88,16 @@ export default function ArticleList(): React.ReactElement {
       console.error('Error fetching articles:', error);
     }
   }
+      
+  const fetchArticleCategory = async (): Promise<void> => {
+    try {
+      const response = await getArticleCategories();
+      setCategories(response?.data)
+
+    } catch (error) {
+      toast.error(`Error fetching category: ${error as string}`);
+    }
+  };
 
   useEffect(() => {
     setParams(prevParams => ({
@@ -89,6 +108,30 @@ export default function ArticleList(): React.ReactElement {
 
     void fetchArticles();
   }, [searchInput]);
+    
+  useEffect(() => {
+    void fetchArticles();
+  }, [params]);
+    
+  useEffect(() => {
+    setParams(prevParams => ({
+      ...prevParams,
+      page: 1
+    }));
+  }, [activeCategory]);
+
+  useEffect(() => {
+    void fetchArticleCategory();
+
+    setActiveCategory('all')
+    setParams(prevParams => ({
+      ...prevParams,
+      category: 'all'
+    }));
+    if (sliderRef.current !== null) {
+      sliderRef.current.slickGoTo(0);
+    }
+  }, []);
 
   async function fetchHotNews(): Promise<void> {
     try {
@@ -136,19 +179,6 @@ export default function ArticleList(): React.ReactElement {
 
   const categoryItemClass = 'py-1 rounded-full text-center w-full text-md px-2';
 
-  const categories = [
-    'All',
-    'Business',
-    'Entertainment',
-    'Health',
-    'Politics',
-    'Science',
-    'Sports',
-    'Technology',
-    'Top',
-    'World'
-  ];
-
   const customGradient = (
     <>
       <span className="-z-10 lg:fixed hidden lg:block bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
@@ -160,11 +190,16 @@ export default function ArticleList(): React.ReactElement {
   function isImageUrlValid(url: string): boolean {
     return url?.startsWith('http://') || url?.startsWith('https://');
   }
+
+  const capitalizeWords = (str: string): string => {
+    return str.replace(/\b\w/g, char => char.toUpperCase());
+  }
+
   return (
     <>
       <PageGradient
         customGradient={customGradient}
-        className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20"
+        className="z-0 relative overflow-hidden flex flex-col justify-center mx-5"
       >
         <div className="flex z-10 flex-col lg:flex-row justify-between">
           <div className="flex flex-col">
@@ -175,7 +210,7 @@ export default function ArticleList(): React.ReactElement {
               {t('articleList.text5')}
             </div>
           </div>
-          <div className="lg:flex-col  justify-end mt-4 ">
+          <div className="lg:flex-col  justify-end mt-4">
             <div className="w-full lg:w-[300px] lg:h-[40px] bg-white rounded-3xl flex border-black border-[1px] px-[8px] justify-between ">
               <input
                 type="search"
@@ -243,166 +278,111 @@ export default function ArticleList(): React.ReactElement {
             </option>
           </select>
         </div>
-        <div className="lg:hidden mt-4 ">
+        <div className="lg:hidden mt-4">
           <Slider
-            slidesToShow={4}
+            ref={sliderRef}
+            slidesToShow={2}
             speed={500}
             initialSlide={0}
+            infinite={true}
+            swipeToSlide={true}
             responsive={[
               {
                 breakpoint: 768,
                 settings: {
                   dots: false,
+                  slidesToShow: 2,
+                  slidesToScroll: 1,
+                  infinite: true
+                }
+              },
+              {
+                breakpoint: 1024,
+                settings: {
+                  dots: false,
                   slidesToShow: 4,
-                  slidesToScroll: 1
+                  slidesToScroll: 1,
+                  infinite: true
                 }
               }
             ]}
           >
-            {categories.map((category, key) => (
-              <div
-                key={key}
-                className={`${categoryItemClass} ${
-                  activeCategory === category
-                    ? 'bg-[#3AC4A0] text-white'
-                    : 'text-[#3AC4A0] bg-[#F9F9F9]'
-                }`}
-                onClick={() => {
-                  updateCategory(category);
-                }}
-              >
-                {category}
-              </div>
+            {categories?.map((item, index) => (
+              item?.category !== 'crime' &&
+                <div key={index} className="px-2 h-full">
+                  <div
+                    className={`${categoryItemClass} ${
+                      activeCategory === item.category
+                        ? 'bg-[#3AC4A0] text-white'
+                        : 'text-[#3AC4A0] bg-[#DCFCE4]'
+                    } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
+                    onClick={() => {
+                      setActiveCategory(item.category);
+                      updateCategory(item.category);
+                    }}
+                  >
+                    {item?.category === 'all' ? t('articleList.text13') : capitalizeWords(item.category)}
+                  </div>
+                </div>
             ))}
           </Slider>
         </div>
-        <div className="hidden lg:flex  justify-center mt-4 gap-2 ">
-          <button
-            className={`py-1 rounded-full text-md px-4 ${
-              activeCategory === 'All'
-                ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
-            }`}
-            onClick={() => {
-              updateCategory('All');
-            }}
-          >
-            All
-          </button>
-          <button
-            className={`py-1 rounded-full text-md px-2 ${
-              activeCategory === 'business'
-                ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
-            }`}
-            onClick={() => {
-              updateCategory('business');
-            }}
-          >
-            Business
-          </button>
-          <button
-            className={`py-1 rounded-full text-md px-2 ${
-              activeCategory === 'entertainment'
-                ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
-            }`}
-            onClick={() => {
-              updateCategory('entertainment');
-            }}
-          >
-            Entertainment
-          </button>
 
-          <button
-            className={`py-1 rounded-full text-md px-2 ${
-              activeCategory === 'health'
-                ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
-            }`}
-            onClick={() => {
-              updateCategory('health');
-            }}
+        <div className="hidden lg:block mt-4">
+          <Slider
+            ref={sliderRef}
+            slidesToShow={6}
+            speed={500}
+            initialSlide={0}
+            infinite={true}
+            swipeToSlide={true}
+            responsive={[
+              {
+                breakpoint: 1024,
+                settings: {
+                  dots: false,
+                  slidesToShow: 6,
+                  slidesToScroll: 4,
+                  infinite: true
+                }
+              },
+              {
+                breakpoint: 1280,
+                settings: {
+                  dots: false,
+                  slidesToShow: 6,
+                  slidesToScroll: 4,
+                  infinite: true
+                }
+              }
+            ]}
           >
-            Health
-          </button>
-          <button
-            className={`py-1 rounded-full text-md px-2 ${
-              activeCategory === 'politics'
-                ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
-            }`}
-            onClick={() => {
-              updateCategory('politics');
-            }}
-          >
-            Politics
-          </button>
-          <button
-            className={`py-1 rounded-full text-md px-2 ${
-              activeCategory === 'science'
-                ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
-            }`}
-            onClick={() => {
-              updateCategory('science');
-            }}
-          >
-            Science
-          </button>
-          <button
-            className={`py-1 rounded-full text-md px-2 ${
-              activeCategory === 'sports'
-                ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
-            }`}
-            onClick={() => {
-              updateCategory('sports');
-            }}
-          >
-            Sports
-          </button>
-          <button
-            className={`py-1 rounded-full text-md px-2 ${
-              activeCategory === 'technology'
-                ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
-            }`}
-            onClick={() => {
-              updateCategory('technology');
-            }}
-          >
-            Technology
-          </button>
-          <button
-            className={`py-1 rounded-full text-md px-2 ${
-              activeCategory === 'top'
-                ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
-            }`}
-            onClick={() => {
-              updateCategory('top');
-            }}
-          >
-            Top
-          </button>
-          <button
-            className={`py-1 rounded-full text-md px-2 ${
-              activeCategory === 'world'
-                ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
-            }`}
-            onClick={() => {
-              updateCategory('world');
-            }}
-          >
-            World
-          </button>
+            {categories?.map((item, index) => (
+              item?.category !== 'crime' &&
+                <div key={index} className="px-2 h-full">
+                  <div
+                    className={`${categoryItemClass} ${
+                      activeCategory === item.category
+                        ? 'bg-[#3AC4A0] text-white'
+                        : 'text-[#3AC4A0] bg-[#F9F9F9] shadow-lg'
+                    } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
+                    onClick={() => {
+                      setActiveCategory(item.category);
+                      updateCategory(item.category);
+                    }}
+                  >
+                    {item?.category === 'all' ? t('articleList.text13') : capitalizeWords(item.category)}
+                  </div>
+                </div>
+            ))}
+          </Slider>
         </div>
+
         <Slider
+          ref={sliderRef}
           slidesToShow={2.4}
           speed={500}
-          className="my-12"
+          className={`${hotNews !== undefined ? "my-12" : ''}`}
           initialSlide={0}
           // slidesToScroll={1}
           responsive={[
@@ -460,16 +440,55 @@ export default function ArticleList(): React.ReactElement {
             </div>
           ))}
         </Slider>
+        
+        {
+          articles?.length > 0 ?
+            <div className="grid z-10 lg:grid-cols-4 gap-4 mt-8">
+              {
+                articles?.map((article, index) => {
+                  return (
+                    <NewsCard key={article.id} articles={articles[index]} />
+                  );
+                })
+              }
+            </div>
+            :
+            (
+              <div className='w-full flex flex-col justify-center items-center mt-12'>
+                <Image
+                  alt=""
+                  src={SeedyEmptyData}
+                  width={1000}
+                  height={1000}
+                  className="w-[200px] md:w-[250px] h-auto object-cover"
+                />
+                <div className="flex flex-wrap mt-4 gap-[4px] text-[#262626] font-poppins text-sm md:text-lg text-center justify-center items-center">
+                  {
+                    searchInput === '' &&
+                      <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
+                        {t('articleList.text9')}{' '}
+                      </Typography>
+                  }
+                  {
+                    searchInput !== '' &&
+                      <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
+                        {t('articleList.text10')}{' '}<strong>{`"${searchInput}"`}</strong>{' '}{t('articleList.text11')}{' '}
+                      </Typography>
+                  }
+                  {((params?.category)?.length > 0)
+                    ? <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center font-medium">
+                        {`${params.category.charAt(0).toUpperCase() + params.category.slice(1)}`}
+                      </Typography>
+                    : ""}{t('articleList.text12')}
+                </div>
+              </div>
+            )
+        }
 
-        <div className="grid z-10 lg:grid-cols-4 gap-4 mt-8">
-          {articles?.map((article, index) => {
-            return <NewsCard key={article.id} articles={articles[index]} />;
-          })}
-        </div>
-        <div className="hidden lg:flex  justify-center mx-auto my-8">
+        <div className="hidden lg:flex justify-center mx-auto my-8">
           <ArtPagination
             currentPage={params.page}
-            totalPages={params.totalPage}
+            totalPages={articleMetadata?.total_page ?? 0}
             onPageChange={page => {
               setParams({ ...params, page });
             }}

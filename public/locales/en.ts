@@ -1312,6 +1312,13 @@ export default {
     text6: 'You may like',
     text7: 'News',
     text8: 'See all',
+    text9: "No article found in",
+    text10: 'There is no keyword',
+    text11: 'in the',
+    text12: 'category',
+    text13: 'All',
+    text14: "No news found in",
+    text15: "",
     article: {
       sort: {
         all: 'All',

@@ -175,3 +175,26 @@ export const getHotNews = async (
     return error.response;
   }
 };
+
+export const getArticleCategories = async (
+  options?: { 
+    page?: number; 
+    limit?: number 
+  }
+): Promise<any> => {
+  try {
+    const params: any = {};
+
+    if (options?.page !== undefined) params.page = options.page;
+    if (options?.limit !== undefined) params.limit = options.limit;
+
+    return await articleService.get(`/news/v1/category`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+      }
+    });
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+};

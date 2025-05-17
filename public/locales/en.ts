@@ -1312,13 +1312,13 @@ export default {
     text6: 'You may like',
     text7: 'News',
     text8: 'See all',
-    text9: "No article found in",
+    text9: 'No article found in',
     text10: 'There is no keyword',
     text11: 'in the',
     text12: 'category',
     text13: 'All',
-    text14: "No news found in",
-    text15: "",
+    text14: 'No news found in',
+    text15: '',
     article: {
       sort: {
         all: 'All',
@@ -2987,5 +2987,60 @@ export default {
       description: 'Exclusive perks and premium benefits are now yours!',
       title: 'Welcome to Seeds Plan! ✨'
     }
+  },
+  demo: {
+    text1: 'Learn Investing Like a Game—Try Demo Now!',
+    text2:
+      'Make smart decisions in the stock market - without stress, without boredom. Perfect for beginners.',
+    text3: '✨ Ready to Try Something Different?',
+    text4:
+      'Break free from boring lessons—explore investing through interactive simulations, game-like learning, and zero-risk decisions. Perfect for beginners who want to have fun while learning.',
+    text5: 'Learn through simulation',
+    text6:
+      'Experience hands-on learning by making investment decisions in a simulated environment—skip the lectures and jump straight into action.',
+    text7: 'Game-Like, Fun Learning',
+    text8:
+      'Designed like a casual mobile game, the interface is playful and intuitive—making complex topics feel simple and fun.',
+    text9: 'No Real Money, No Risk',
+    text10:
+      'Explore, experiment, and learn from mistakes without any financial risk. It’s the perfect training ground for first-time investors.',
+    text11: 'Perfect for Beginners',
+    text12:
+      'We keep things jargon-free, with simple explanations and guided steps made just for beginners.',
+    text13: 'See It in Action',
+    text14:
+      'Preview the app interface and features—get a feel for how fun and easy investing can be.',
+    text15: 'Play Daily Quizzes & Win Rewards',
+    text16: 'Spin & Win Prizes',
+    text17: 'Track & Claim Your Rewards',
+    text18: 'Interactive Features to Explore',
+    text19:
+      'Ready to test your skills? Our app is designed with features to make learning fun and easy.',
+    text20: '🎯 Ready to Test Your Skills?',
+    text21: 'Get Started in',
+    text22: 'Less Than 3 Minutes! No sign-up',
+    text23: 'needed—simply click',
+    text24: `"Play Demo"`,
+    text25:
+      'and dive right in. It’s quick, engaging, and you’ll gain practical skills for real-world investing.',
+    text26: 'Said it finally made investing make sense',
+    text27: 'people',
+    text28: 'Hit “Try Demo” just today',
+    text29: ' users',
+    text30: 'Already on the waitlist—don’t get left behind',
+    text31: ' minutes',
+    text32: 'Understand investing in just 3 minutes',
+    text33: 'Thanks for joining us!',
+    text34: 'Be the First to Try the Investing Game!',
+    text35:
+      'We’ve got you on our list — stay tuned for the next steps. Let’s start learning by doing and have some fun along the way!',
+    text36: 'Demo coming soon — register your contact to join the waitlist!',
+    text37: 'Subscribe using your',
+    text38: 'phone number',
+    text39: 'Enter email address',
+    text40: '🔒 We respect your privacy. No spam, only updates on the demo.',
+    text41: 'Real-Time Impact',
+    text42:
+      'See whats happening in real-time! Thousands are joining every day and making progress.'
   }
 };

@@ -14,8 +14,10 @@ import Image from 'next/image';
 import cheerleader from 'public/assets/ads/cheerleader.png';
 import icon from 'public/assets/ads/icon-demo-play.png';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const LiveCount = (): React.ReactElement => {
+  const { t } = useTranslation();
   const [country, setCountry] = useState<number>(101);
   const [formData, setFormData] = useState<{
     phoneNumber: string;
@@ -44,22 +46,22 @@ const LiveCount = (): React.ReactElement => {
     {
       upper: '96%',
       lower: '',
-      desc: 'Said it finally made investing make sense'
+      desc: t('demo.text26')
     },
     {
       upper: '9,317',
-      lower: 'people',
-      desc: 'Hit “Try Demo” just today'
+      lower: t('demo.text27'),
+      desc: t('demo.text28')
     },
     {
       upper: '3,254',
-      lower: ' users',
-      desc: 'Already on the waitlist—don’t get left behind'
+      lower: t('demo.text29'),
+      desc: t('demo.text30')
     },
     {
       upper: '3',
-      lower: ' minutes',
-      desc: 'Understand investing in just 3 minutes'
+      lower: t('demo.text31'),
+      desc: t('demo.text32')
     }
   ];
   return (
@@ -67,18 +69,14 @@ const LiveCount = (): React.ReactElement => {
       <Image src={disabled ? cheerleader : icon} alt="icon" />
       <div className="flex flex-col justify-center items-center gap-2 md:gap-6 text-seeds-button-green">
         <p className="font-semibold text-base sm:text-xl md:text-3xl lg:text-4xl text-center">
-          {disabled
-            ? 'Thanks for joining us!'
-            : 'Be the First to Try the Investing Game!'}
+          {disabled ? t('demo.text33') : t('demo.text34')}
         </p>
         <p
           className={`text-sm sm:text-base md:text-xl ${
             disabled ? 'w-2/3' : ''
           } text-center`}
         >
-          {disabled
-            ? 'We’ve got you on our list — stay tuned for the next steps. Let’s start learning by doing and have some fun along the way!'
-            : 'Demo coming soon — register your contact to join the waitlist!'}
+          {disabled ? t('demo.text35') : t('demo.text36')}
         </p>
       </div>
       <div className="flex flex-col w-full lg:w-1/2 justify-center items-center gap-2 md:gap-4">
@@ -98,7 +96,7 @@ const LiveCount = (): React.ReactElement => {
             }
           }}
         >
-          Subscribe using your {change ? 'phone number' : 'email'}
+          {t('demo.text37')} {change ? t('demo.text38') : 'email'}
         </p>
         <form
           className={`w-full flex flex-col sm:flex-row items-center justify-center ${
@@ -114,7 +112,7 @@ const LiveCount = (): React.ReactElement => {
               type="email"
               disabled={disabled}
               className=" h-11 bg-[#F8F8F8] sm:bg-white w-full rounded-full focus:outline-none px-4 py-5 placeholder:text-[#BDBDBD] text-sm sm:text-base disabled:text-neutral-soft"
-              placeholder="Enter email address"
+              placeholder={t('demo.text39') ?? 'Enter email address'}
               onChange={e => {
                 setFormData({
                   ...formData,
@@ -220,17 +218,16 @@ const LiveCount = (): React.ReactElement => {
           </button>
         </form>
         <p className="text-sm text-[#5263F9] p-2 bg-[#DCE1FE4D] rounded-lg w-fit">
-          🔒 We respect your privacy. No spam, only updates on the demo.
+          {t('demo.text40')}
         </p>
       </div>
       <div className="flex flex-col w-full sm:w-[90%] justify-center gap-10 py-11 sm:px-4 sm:py-16 sm:border-[#5263F9] sm:border-[3px] rounded-3xl">
         <div className="flex flex-col justify-center items-center gap-4">
           <p className="font-semibold text-base sm:text-xl md:text-3xl text-neutral-medium">
-            Real-Time Impact
+            {t('demo.text41')}
           </p>
           <p className="text-sm sm:text-base text-center text-neutral-soft">
-            See whats happening in real-time! Thousands are joining every day
-            and making progress.
+            {t('demo.text42')}
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full gap-4 xl:gap-0">

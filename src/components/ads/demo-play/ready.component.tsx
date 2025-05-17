@@ -5,41 +5,40 @@ import graph from 'public/assets/ads/graph.png';
 import iphone from 'public/assets/ads/iPhones.png';
 import play from 'public/assets/ads/play.png';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Ready = (): React.ReactElement => {
+  const { t } = useTranslation();
+
   const data = [
     {
       img: book,
-      title: 'Learn through simulation',
-      desc: 'Experience hands-on learning by making investment decisions in a simulated environment—skip the lectures and jump straight into action.'
+      title: t('demo.text5'),
+      desc: t('demo.text6')
     },
     {
       img: graph,
-      title: 'Game-Like, Fun Learning',
-      desc: 'Designed like a casual mobile game, the interface is playful and intuitive—making complex topics feel simple and fun.'
+      title: t('demo.text7'),
+      desc: t('demo.text8')
     },
     {
       img: play,
-      title: 'No Real Money, No Risk',
-      desc: 'Explore, experiment, and learn from mistakes without any financial risk. It’s the perfect training ground for first-time investors.'
+      title: t('demo.text9'),
+      desc: t('demo.text10')
     },
     {
       img: check,
-      title: 'Perfect for Beginners',
-      desc: 'We keep things jargon-free, with simple explanations and guided steps made just for beginners.'
+      title: t('demo.text11'),
+      desc: t('demo.text12')
     }
   ];
   return (
     <div className="flex flex-col justify-center items-center py-12 px-4 md:px-0 gap-8">
       <div className="w-full lg:w-2/3 xl:w-1/2 flex flex-col gap-4">
         <p className="font-semibold text-base sm:text-xl md:text-2xl  lg:text-3xl text-neutral-medium text-center">
-          ✨ Ready to Try Something Different?
+          {t('demo.text3')}
         </p>
-        <p className="text-neutral-soft text-center">
-          Break free from boring lessons—explore investing through interactive
-          simulations, game-like learning, and zero-risk decisions. Perfect for
-          beginners who want to have fun while learning.
-        </p>
+        <p className="text-neutral-soft text-center">{t('demo.text4')}</p>
       </div>
       <div className="grid gap-4 sm:gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 text-white">
         <div className="flex flex-col gap-5 bg-[radial-gradient(circle_at_25%_25%,_#79F0B8,_#7B8BFC)] rounded-3xl px-5 py-7 w-full sm:w-[323px] h-full sm:h-[295px]">
@@ -51,11 +50,10 @@ const Ready = (): React.ReactElement => {
         </div>
         <div className="flex flex-col justify-between gap-5 bg-gradient-to-br from-[#79F0B8] to-[#7B8BFC] to-[100%] rounded-3xl px-8 pt-20 row-span-2 w-full sm:w-[323px] h-full">
           <div className="flex flex-col gap-5">
-            <p className="font-semibold text-lg uppercase">See It in Action</p>
-            <p>
-              Preview the app interface and features—get a feel for how fun and
-              easy investing can be.
+            <p className="font-semibold text-lg uppercase">
+              {t('demo.text13')}
             </p>
+            <p>{t('demo.text14')}</p>
           </div>
           <Image src={iphone} alt="image" className="w-fit" />
         </div>

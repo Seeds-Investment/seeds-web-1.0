@@ -1,10 +1,12 @@
 'use client';
 import Coin1080 from '@/constants/Coin1080.json';
-import Lottie from 'lottie-react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
+// eslint-disable-next-line @typescript-eslint/promise-function-async
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 export default function Section5(): React.ReactElement {
   const { t } = useTranslation();
@@ -26,13 +28,12 @@ export default function Section5(): React.ReactElement {
       className="h-auto min-w-full cursor-default relative font-poppins text-center"
     >
       <div
-        className={`h-auto min-w-full my-20 cursor-default font-poppins text-center z-10 ${
-          inView && isBottom >= measurement
-            ? 'animate-fade-in-slide'
-            : isBottom >= measurement
+        className={`h-auto min-w-full my-20 cursor-default font-poppins text-center z-10 ${inView && isBottom >= measurement
+          ? 'animate-fade-in-slide'
+          : isBottom >= measurement
             ? 'animate-fade-out-slide'
             : ''
-        }`}
+          }`}
       >
         <Image
           src={

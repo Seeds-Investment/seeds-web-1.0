@@ -1,7 +1,7 @@
 import animationAppsSeedsWeb from '@/constants/animationAppsSeedsWeb.json';
 import { downloadOurApp } from '@/utils/_static';
 import { Button, Typography } from '@material-tailwind/react';
-import dynamic from 'next/dynamic';
+import Lottie from 'lottie-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -12,9 +12,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-// eslint-disable-next-line @typescript-eslint/promise-function-async
-const Lottie = dynamic(() => import('lottie-react'), { ssr: false })
-
 
 export default function Section1(): React.ReactElement {
   const { t } = useTranslation();

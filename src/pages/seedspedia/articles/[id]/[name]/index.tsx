@@ -753,7 +753,7 @@ export default function ArticleDetailPage(): JSX.Element {
                 <div>
                   <p className="font-bold text-md">People </p>
                   <div className="flex flex-row gap-3">
-                    {articleDetail?.peoples.map(people => (
+                    {articleDetail?.peoples?.map(people => (
                       <p
                         key={people.id}
                         className="text-md flex underline text-[#3AC4A0]"
@@ -768,7 +768,7 @@ export default function ArticleDetailPage(): JSX.Element {
                 <div>
                   <p className="font-bold text-md">Circle </p>
                   <div className="flex flex-row gap-3">
-                    {articleDetail?.circles.map(circle => (
+                    {articleDetail?.circles?.map(circle => (
                       <p
                         key={circle.id}
                         className="text-md flex flex-row underline text-[#3AC4A0]"
@@ -783,7 +783,7 @@ export default function ArticleDetailPage(): JSX.Element {
                 <div>
                   <p className="font-bold text-md">Assets </p>
                   <div className="flex flex-row gap-3">
-                    {articleDetail?.assets.map(assets => (
+                    {articleDetail?.assets?.map(assets => (
                       <p
                         key={assets.id}
                         className="text-md flex underline text-[#3AC4A0]"
@@ -836,7 +836,7 @@ export default function ArticleDetailPage(): JSX.Element {
                 </h1>
                 {articleDetail.total_comments !== 0 ? (
                   <div className="flex flex-col">
-                    {articleComment.map(article => (
+                    {articleComment?.map(article => (
                       <div
                         key={article?.id}
                         className="flex flex-col mt-5 bg-[#E9E9E94D]/30 p-4 gap-3 rounded-xl"

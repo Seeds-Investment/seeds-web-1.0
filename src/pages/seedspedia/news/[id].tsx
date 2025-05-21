@@ -568,7 +568,7 @@ export default function ArticleDetailPage(): JSX.Element {
             </div>
             <div className="z-10 flex flex-col text-justify w-full md:w-2/3 md:mt-4 md:pl-10">
               <div className="flex flex-col">
-                {contentParagraphs.map((paragraph, index) => (
+                {contentParagraphs?.map((paragraph, index) => (
                   <div key={index} className=" py-4">
                     <p className="w-full">{paragraph}</p>
                   </div>
@@ -615,7 +615,7 @@ export default function ArticleDetailPage(): JSX.Element {
                 </h1>
                 {articleDetail.total_comments !== 0 ? (
                   <div className="flex flex-col">
-                    {articleComment.map(article => (
+                    {articleComment?.map(article => (
                       <div
                         key={article?.id}
                         className="flex flex-col mt-5 bg-[#E9E9E94D]/30 p-4 gap-3 rounded-xl"

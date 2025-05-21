@@ -368,4 +368,10 @@ li {
   scrollbar-color: #7555da #ffffff;
 }
 
-
+.scrollbar-article-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-article-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

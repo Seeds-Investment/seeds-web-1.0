@@ -1,67 +1,74 @@
-import {
-  Tab,
-  TabPanel,
-  Tabs,
-  TabsBody,
-  TabsHeader
-} from '@material-tailwind/react';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import ArticleList from './articles';
 import NewsList from './news';
 
 const SeedsPedia: React.FC = () => {
+  const router = useRouter();
+  const activeTabParam = Array.isArray(router.query.activeTabParams)
+    ? router.query.activeTabParams[0]
+    : router.query.activeTabParams;
+
   const [activeTab, setActiveTab] = useState('article');
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleTabChange = (tab: string) => {
+  useEffect(() => {
+    if (activeTabParam === 'news') {
+      setActiveTab('news');
+    } else {
+      setActiveTab('article');
+    }
+  }, [activeTabParam]);
+
+  const handleTabChange = (tab: string): void => {
     setActiveTab(tab);
-  };
+  };  
 
   return (
-    <div className="flex items-center justify-center mt-20">
-      <Tabs value={activeTab}>
-        <TabsHeader
-          className="w-full md:w-[30%] text-center justify-center mx-auto rounded-none bg-transparent p-0"
-          indicatorProps={{
-            className: 'shadow-none rounded-none'
+    <div className="flex flex-col items-center justify-center mt-20">
+      <div className="w-full md:w-[30%] flex justify-center items-center mb-6 border-b border-gray-300">
+        <button
+          onClick={async() => {
+            handleTabChange('article');
+            await router.replace(router.pathname, undefined, { shallow: true })
           }}
+          className={`w-full text-xl px-4 py-2 font-poppins transition-all ${
+            activeTab === 'article'
+              ? 'text-[#9A76FE] font-semibold border-b-4 border-[#9A76FE]'
+              : 'text-[#7C7C7C] font-normal'
+          }`}
         >
-          <Tab
-            value="article"
-            onClick={() => {
-              handleTabChange('article');
-            }}
-            className={`text-end text-xl bg-transparent mt-3 xl:mt-5 font-poppins ${
-              activeTab === 'article'
-                ? 'text-[#9A76FE] to-[#4FE6AF] font-semibold border-b-4 border-b-[#9A76FE]'
-                : 'text-[#7C7C7C] text-xl font-normal'
-            }`}
-          >
-            Article
-          </Tab>
-          <Tab
-            value="news"
-            onClick={() => {
-              handleTabChange('news');
-            }}
-            className={`text-start text-xl bg-transparent mt-3 xl:mt-5 font-poppins ${
-              activeTab === 'news'
-                ? 'text-[#9A76FE] to-[#4FE6AF] font-semibold border-b-4 border-b-[#9A76FE]'
-                : 'text-[#7C7C7C] text-xl font-normal'
-            }`}
-          >
-            News
-          </Tab>
-        </TabsHeader>
-        <TabsBody>
-          <TabPanel value="article">
-            <ArticleList activeTab={activeTab}/>
-          </TabPanel>
-          <TabPanel value="news">
-            <NewsList activeTab={activeTab}/>
-          </TabPanel>
-        </TabsBody>
-      </Tabs>
+          Article
+        </button>
+        <button
+          onClick={async() => { 
+            handleTabChange('news');
+            await router.replace(router.pathname, undefined, { shallow: true })
+          }}
+          className={`w-full text-xl px-4 py-2 font-poppins transition-all ${
+            activeTab === 'news'
+              ? 'text-[#9A76FE] font-semibold border-b-4 border-[#9A76FE]'
+              : 'text-[#7C7C7C] font-normal'
+          }`}
+        >
+          News
+        </button>
+      </div>
+
+      <div className="w-full">
+        {activeTab === 'article' ? (
+          <ArticleList
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            handleTabChange={handleTabChange}
+          />
+        ) : (
+          <NewsList
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            handleTabChange={handleTabChange}
+          />
+        )}
+      </div>
     </div>
   );
 };

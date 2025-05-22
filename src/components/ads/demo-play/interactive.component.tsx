@@ -34,11 +34,7 @@ const Interactive = (): React.ReactElement => {
           ))}
         </div>
       </div>
-      <Image
-        src={phone2}
-        alt="phone2"
-        className="h-2/3 sm:h-fit sm:w-1/2 xl:w-2/3"
-      />
+      <Image src={phone2} alt="phone2" className="sm:w-1/2 xl:w-2/3" />
     </div>
   );
 };

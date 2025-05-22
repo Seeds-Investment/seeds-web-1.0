@@ -12,8 +12,10 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import cheerleader from 'public/assets/ads/cheerleader.png';
-import icon from 'public/assets/ads/icon-demo-play.png';
+import icon from 'public/assets/ads/kol.png';
+import vector from 'public/assets/ads/vectorBack.svg';
 import React, { useState } from 'react';
+import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
 
 const LiveCount = (): React.ReactElement => {
@@ -27,7 +29,7 @@ const LiveCount = (): React.ReactElement => {
     email: ''
   });
 
-  const [change, setChange] = useState(false);
+  const [change, setChange] = useState(true);
   const [disabled, setDisabled] = useState(false);
   const handleSubmit = (): void => {
     setDisabled(true);
@@ -49,12 +51,14 @@ const LiveCount = (): React.ReactElement => {
       desc: t('demo.text26')
     },
     {
-      upper: '9,317',
+      number: 9317,
+      upper: '',
       lower: t('demo.text27'),
       desc: t('demo.text28')
     },
     {
-      upper: '3,254',
+      number: 3254,
+      upper: '',
       lower: t('demo.text29'),
       desc: t('demo.text30')
     },
@@ -65,8 +69,15 @@ const LiveCount = (): React.ReactElement => {
     }
   ];
   return (
-    <div className="flex flex-col justify-center items-center gap-6 md:gap-10 p-4 sm:p-16 w-full">
-      <Image src={disabled ? cheerleader : icon} alt="icon" />
+    <div className="flex flex-col justify-center items-center gap-6 md:gap-10 p-4 sm:p-16 w-full bg-dot">
+      <div className="relative flex items-center justify-center">
+        <Image src={vector} alt="background" className="absolute" />
+        <Image
+          src={disabled ? cheerleader : icon}
+          alt="icon"
+          className={`${disabled ? '' : 'w-[80%]'} z-10`}
+        />
+      </div>
       <div className="flex flex-col justify-center items-center gap-2 md:gap-6 text-seeds-button-green">
         <p className="font-semibold text-base sm:text-xl md:text-3xl lg:text-4xl text-center">
           {disabled ? t('demo.text33') : t('demo.text34')}
@@ -244,6 +255,9 @@ const LiveCount = (): React.ReactElement => {
             >
               <div className="flex flex-col gap-3 w-full md:w-[200px]">
                 <p className="text-[#7B8BFC] text-5xl">
+                  {index !== 0 && index !== 3 && (
+                    <CountUp end={item.number ?? 0} duration={5} />
+                  )}
                   {item.upper}
                   <span className="text-base">{item.lower}</span>
                 </p>

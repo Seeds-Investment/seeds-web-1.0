@@ -1,22 +1,30 @@
 'use-client';
 import Footer from '@/components/layouts/Footer';
 import Button from '@/components/ui/button/Button';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { generateArticleDate } from '@/helpers/dateFormat';
+import { isGuest } from '@/helpers/guest';
 import {
   getArticle,
-  getArticleById,
+  getArticleByIdHome,
+  getArticleCategories,
   getArticleComment,
-  postComment
+  postComment,
+  postLike
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { Input } from '@material-tailwind/react';
+import { type CategoryI } from '@/utils/interfaces/article.interface';
+import { Input, Typography } from '@material-tailwind/react';
 import { format, parseISO } from 'date-fns';
 import { id as ID } from 'date-fns/locale';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
+import author from '../../../../public/assets/author.png';
+import profile from '../../../../public/assets/profile.png';
+import SeedyEmpty from '../../../../public/assets/seedy-empty.svg';
 
 interface UserData {
   name: string;
@@ -103,6 +111,16 @@ const params = {
   category: 'all'
 };
 
+const recentParams = {
+  page: 1,
+  limit: 3,
+  search: '',
+  language: '',
+  source: 'news',
+  sort_by: 'recent',
+  category: 'all'
+};
+
 export default function ArticleDetailPage(): JSX.Element {
   const router = useRouter();
   const { id } = router.query;
@@ -119,19 +137,35 @@ export default function ArticleDetailPage(): JSX.Element {
   const { t } = useTranslation();
   const [articleComment, setArticleComment] = useState<ArticleComment[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
+  const [recentArticles, setRecentArticles] = useState<Article[]>([]);
   const [open, setOpen] = useState(false);
   const [formRequest, setFormRequest] =
     useState<FormRequestInterface>(initialFormRequest);
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance/';
+  const [categories, setCategories] = useState<CategoryI[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const filteredCategories = useMemo(() => {
+    return categories?.filter(
+      item =>
+        item?.category !== 'crime' &&
+        item?.category.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm, categories]);
 
-  async function fetchArticles(): Promise<void> {
+  const fetchArticles = async (): Promise<void> => {
     try {
       const response = await getArticle(params);
+      const responseRecent = await getArticle(recentParams);
       if (response.status === 200) {
         setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
+      }
+      if (responseRecent.status === 200) {
+        setRecentArticles(responseRecent?.data);
+      } else {
+        console.error('Failed to fetch articles:', responseRecent);
       }
     } catch (error) {
       console.error('Error fetching articles:', error);
@@ -147,6 +181,20 @@ export default function ArticleDetailPage(): JSX.Element {
   };
 
   const hotNewsItemClass = 'mb-2 me-12';
+  
+  const fetchArticleCategory = async (): Promise<void> => {
+    try {
+      const response = await getArticleCategories();
+      setCategories(response?.data)
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const capitalizeWords = (str: string): string => {
+    return str.replace(/\b\w/g, char => char.toUpperCase());
+  }
 
   const stripHtmlTags = (html: any): string => {
     const tempElement = document.createElement('div');
@@ -177,33 +225,25 @@ export default function ArticleDetailPage(): JSX.Element {
   }
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      await fetchArticles();
-    };
-
-    fetchData().catch(error => {
-      console.error('Error in fetchData:', error);
-    });
+    void fetchArticles();
+    void fetchDataUser();
+    void fetchArticleCategory();
   }, []);
 
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response = await getUserInfo();
-        setUserInfo(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    void fetchData();
-  }, []);
+  const fetchDataUser = async (): Promise<void> => {
+    try {
+      const response = await getUserInfo();
+      setUserInfo(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (typeof id === 'string') {
       // Check if id is a valid string
       const fetchArticleDetail = (): void => {
-        getArticleById(id)
+        getArticleByIdHome(id)
           .then(response => {
             if (response.status === 200) {
               setArticleDetail(response.news);
@@ -286,10 +326,6 @@ export default function ArticleDetailPage(): JSX.Element {
       const response = await postComment(formRequest, articleId);
       if (response.status === 200) {
         setLoading(false);
-        setOpen(true);
-        setTimeout(() => {
-          setOpen(false);
-        }, 3000);
         setComment('');
         setFormRequest(prevState => ({
           ...prevState,
@@ -330,21 +366,6 @@ export default function ArticleDetailPage(): JSX.Element {
     articleDetail?.content ?? ''
   );
 
-  function formatDate(inputDate: string): string {
-    const date = new Date(inputDate);
-
-    date.setMilliseconds(0);
-
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    };
-    return date.toLocaleDateString('en-US', options).replace(',', '');
-  }
-
   function isImageUrlValid(url: string): boolean {
     return url?.startsWith('http://') || url?.startsWith('https://');
   }
@@ -353,58 +374,161 @@ export default function ArticleDetailPage(): JSX.Element {
     return <p>Loading...</p>;
   }
 
-  const customGradient = (
-    <>
-      <span className="-z-0 absolute top-0 mt-[50%] -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
-      <span className="-z-0 absolute top-0 mt-[55%] left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
-      {/* <span className="-z-0 absolute -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
-      <span className="-z-0 absolute top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
-      <span className="-z-0 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
-    </>
-  );
-
   const defaultNews = '/assets/default-news.png';
   const imageUrl = articleDetail?.imageUrl;
   const isImageValid = isImageUrlValid(imageUrl);
+  
+  const likeArticle = async (articleId: number): Promise<void> => {
+    try {
+      const response = await postLike(formRequest, articleId);
+      if (response.status === 200) {
+        if (response.is_liked === true) {
+          setArticleDetail(prevArticleDetail => {
+            if (prevArticleDetail !== null) {
+              return {
+                ...prevArticleDetail,
+                total_likes: prevArticleDetail?.total_likes + 1,
+                is_liked: true
+              };
+            }
+            return prevArticleDetail;
+          });
+        } else {
+          setArticleDetail(prevArticleDetail => {
+            if (prevArticleDetail !== null) {
+              return {
+                ...prevArticleDetail,
+                total_likes: prevArticleDetail?.total_likes - 1,
+                is_liked: false
+              };
+            }
+            return prevArticleDetail;
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
-      <PageGradient customGradient={customGradient} className="z-0">
-        <div className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
-          {open && (
-            <div
-              id="myToast"
-              className="fixed right-10 z-50 bottom-10 px-5 py-4 border-r-8 border-blue-500 bg-white drop-shadow-lg"
-            >
-              <p className="text-sm">
-                <span className="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">
-                  i
-                </span>
-                Link copied to clipboard
-              </p>
-            </div>
+      <div className="relative overflow-hidden flex flex-col justify-center rounded-lg md:bg-white">
+        {open && (
+          <div
+            id="myToast"
+            className="fixed right-10 z-50 top-10 px-5 py-4 border-r-8 border-seeds-button-green bg-white drop-shadow-lg rounded-tl-full rounded-bl-full"
+          >
+            <p className="text-md font-poppins">
+              <span className="mr-2 inline-block px-3 py-1 rounded-full bg-seeds-button-green text-white font-extrabold">
+                i
+              </span>
+              {t('articleList.text16')}
+            </p>
+          </div>
+        )}
+        <Typography className="my-4 text-lg lg:text-5xl font-semibold bg-clip-text text-black px-5 font-poppins md:text-center">
+          {articleDetail.title}
+        </Typography>
+
+        <div className='flex mb-6 px-5 md:justify-center'>
+          <div className='flex justify-center text-sm md:text-lg items-center text-seeds-button-green border border-[#f2f2f2] rounded-full px-4 py-2'>
+            {articleDetail?.category}
+          </div>
+        </div>
+
+        <div className="w-full md:px-5">
+          {isImageValid ? (
+            <img src={imageUrl} alt="Image" className="w-full md:rounded-md" />
+          ) : (
+            <img src={defaultNews} alt="Image" className="w-full" />
           )}
-          <h1 className="my-8 text-lg lg:text-5xl py-3 font-semibold bg-clip-text text-black">
-            {articleDetail.title}
-          </h1>
-          <div className="flex flex-row justify-between my-4">
-            <div className="flex flex-col">
-              <h4 className="text-xl font-semibold text-[#262626]">
-                {articleDetail.author}
-              </h4>
-              <p className="text-sm font-semibold text-[#8A8A8A]">
-                {formatDateToIndonesian(articleDetail?.publicationDate)}
-              </p>
+        </div>
+
+        <div className='px-5 md:flex'>
+          <div className='hidden md:flex w-1/3 flex-col pt-4 pr-4'>
+            <Typography className='font-poppins text-sm text-[#7C7C7C] mb-2'>
+              {t('articleList.text17')}
+            </Typography>
+            <div className="flex gap-3 justify-start items-center pb-4 mb-4 border-b border-[#BDBDBD]">
+              <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0">
+                <Image 
+                  src={
+                    articleDetail?.author === 'No Author'
+                      ? profile
+                      : author
+                  } 
+                  alt="Author" 
+                  layout="fill" 
+                  objectFit="cover" 
+                />
+              </div>
+              <div className="flex flex-col">
+                <Typography className="text-sm font-semibold text-[#262626] mt-2">
+                  {articleDetail.author}
+                </Typography>
+                <p className="text-sm font-semibold text-[#8A8A8A]">
+                  {formatDateToIndonesian(articleDetail?.publicationDate)}
+                </p>
+              </div>
             </div>
-            <div className="flex flex-row gap-3">
+            <div className="flex flex-row justify-between items-center">
+              <div className='flex gap-2'>
+                {articleDetail?.is_liked !== undefined && articleDetail.is_liked ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    viewBox="0 0 25 25"
+                    fill="#3AC4A0"
+                    className="cursor-pointer"
+                    onClick={async () => {
+                      await likeArticle(articleDetail?.id ?? 0);
+                    }}
+                  >
+                    <path
+                      d="M7.00293 11.0779L11.0029 2.07788C11.7986 2.07788 12.5616 2.39395 13.1243 2.95656C13.6869 3.51917 14.0029 4.28223 14.0029 5.07788V9.07788H19.6629C19.9528 9.0746 20.24 9.13438 20.5045 9.2531C20.769 9.37181 21.0045 9.54661 21.1948 9.76539C21.385 9.98417 21.5254 10.2417 21.6063 10.5201C21.6871 10.7986 21.7064 11.0912 21.6629 11.3779L20.2829 20.3779C20.2106 20.8548 19.9684 21.2895 19.6008 21.6019C19.2333 21.9143 18.7653 22.0833 18.2829 22.0779H7.00293M7.00293 11.0779V22.0779M7.00293 11.0779H4.00293C3.4725 11.0779 2.96379 11.2886 2.58872 11.6637C2.21364 12.0387 2.00293 12.5474 2.00293 13.0779V20.0779C2.00293 20.6083 2.21364 21.117 2.58872 21.4921C2.96379 21.8672 3.4725 22.0779 4.00293 22.0779H7.00293"
+                      stroke="#3AC4A0"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    viewBox="0 0 25 25"
+                    fill="none"
+                    className="cursor-pointer"
+                    onClick={async () => {
+                      await likeArticle(articleDetail?.id ?? 0);
+                    }}
+                  >
+                    <path
+                      d="M7.00293 11.0779L11.0029 2.07788C11.7986 2.07788 12.5616 2.39395 13.1243 2.95656C13.6869 3.51917 14.0029 4.28223 14.0029 5.07788V9.07788H19.6629C19.9528 9.0746 20.24 9.13438 20.5045 9.2531C20.769 9.37181 21.0045 9.54661 21.1948 9.76539C21.385 9.98417 21.5254 10.2417 21.6063 10.5201C21.6871 10.7986 21.7064 11.0912 21.6629 11.3779L20.2829 20.3779C20.2106 20.8548 19.9684 21.2895 19.6008 21.6019C19.2333 21.9143 18.7653 22.0833 18.2829 22.0779H7.00293M7.00293 11.0779V22.0779M7.00293 11.0779H4.00293C3.4725 11.0779 2.96379 11.2886 2.58872 11.6637C2.21364 12.0387 2.00293 12.5474 2.00293 13.0779V20.0779C2.00293 20.6083 2.21364 21.117 2.58872 21.4921C2.96379 21.8672 3.4725 22.0779 4.00293 22.0779H7.00293"
+                      stroke="#262626"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+                <span className="mx-2 text-[#3AC4A0]">
+                  +{articleDetail?.total_likes}
+                </span>
+              </div>
               <svg
                 width="32"
                 height="32"
                 viewBox="0 0 32 32"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                onClick={() => {
-                  copyValueWithUrl(articleDetail?.id ?? 0);
+                onClick={async () => {
+                  isGuest()
+                    ? await router.push('/auth')
+                    : copyValueWithUrl(articleDetail?.id ?? 0);
                 }}
+                className='cursor-pointer'
               >
                 <path
                   d="M21.5612 19.6496C20.8499 19.6496 20.1936 19.8897 19.6795 20.2907L14.5087 16.6916C14.5953 16.2344 14.5953 15.7659 14.5087 15.3087L19.6795 11.7096C20.1936 12.1106 20.8499 12.3507 21.5612 12.3507C23.2132 12.3507 24.5558 11.059 24.5558 9.46953C24.5558 7.8801 23.2132 6.58838 21.5612 6.58838C19.9091 6.58838 18.5665 7.8801 18.5665 9.46953C18.5665 9.74804 18.6064 10.0145 18.6838 10.2691L13.7726 13.6904C13.0439 12.7612 11.8859 12.1586 10.5808 12.1586C8.3747 12.1586 6.58789 13.8777 6.58789 16.0001C6.58789 18.1226 8.3747 19.8417 10.5808 19.8417C11.8859 19.8417 13.0439 19.239 13.7726 18.3099L18.6838 21.7312C18.6064 21.9857 18.5665 22.2546 18.5665 22.5308C18.5665 24.1202 19.9091 25.4119 21.5612 25.4119C23.2132 25.4119 24.5558 24.1202 24.5558 22.5308C24.5558 20.9413 23.2132 19.6496 21.5612 19.6496ZM21.5612 8.22103C22.2774 8.22103 22.8588 8.78046 22.8588 9.46953C22.8588 10.1586 22.2774 10.718 21.5612 10.718C20.8449 10.718 20.2635 10.1586 20.2635 9.46953C20.2635 8.78046 20.8449 8.22103 21.5612 8.22103ZM10.5808 18.113C9.37042 18.113 8.38468 17.1646 8.38468 16.0001C8.38468 14.8357 9.37042 13.8873 10.5808 13.8873C11.7911 13.8873 12.7768 14.8357 12.7768 16.0001C12.7768 17.1646 11.7911 18.113 10.5808 18.113ZM21.5612 23.7793C20.8449 23.7793 20.2635 23.2198 20.2635 22.5308C20.2635 21.8417 20.8449 21.2823 21.5612 21.2823C22.2774 21.2823 22.8588 21.8417 22.8588 22.5308C22.8588 23.2198 22.2774 23.7793 21.5612 23.7793Z"
@@ -412,220 +536,311 @@ export default function ArticleDetailPage(): JSX.Element {
                 />
               </svg>
             </div>
-          </div>
+          
+            <div className='mt-12'>
+              <input
+                type='text'
+                placeholder={`${t('articleList.text23')}`}
+                value={searchTerm}
+                onChange={e => { setSearchTerm(e.target.value); }}
+                className='w-full px-4 py-2 mb-3 border border-gray-400 text-gray-800 placeholder-gray-500 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-seeds-button-green focus:border-seeds-button-green transition duration-200'
+              />
 
-          <div className="w-full">
-            {isImageValid ? (
-              <img src={imageUrl} alt="Image" className="w-full" />
-            ) : (
-              <img src={defaultNews} alt="Image" className="w-full" />
-            )}
-          </div>
-          <div className="flex flex-col border-b-4 pb-5 border-[#7555DA]">
-            {contentParagraphs.map((paragraph, index) => (
-              <div key={index} className=" py-4">
-                <p className="w-full">{paragraph}</p>
-              </div>
-            ))}
-          </div>
-          <div className="flex flex-col px-2">
-            {accessToken !== null && userInfo !== null ? (
-              <div className="flex flex-row gap-3 my-6 w-full">
-                <img
-                  src={userInfo.avatar}
-                  className="xl:w-[75px] w-[48px] h-[48px] xl:h-full rounded-full"
-                  alt=""
-                />
-                <div className="flex flex-col gap-2 w-full">
-                  <h1 className="text-[#201B1C] text-lg font-semibold">
-                    {userInfo.name}
-                  </h1>
-                  <div className="w-full">
-                    <Input
-                      label="Type your comment.."
-                      onChange={e => {
-                        updateComment(e.target.value);
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="pt-7">
-                  <Button
-                    disabled={comment === '' && loading}
-                    variant="purple"
-                    label="Comment"
-                    containerClasses="xl:w-[196px] h-full p-1 rounded-full"
-                    onClick={async () => {
-                      await submitComment(articleDetail.id);
-                    }}
-                  />
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
-            <h1 className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] w-max">
-              {articleDetail.total_comments} Comments
-            </h1>
-            {articleDetail.total_comments !== 0 ? (
-              <div className="flex flex-col">
-                {displayedComments?.map(article => (
-                  <div
-                    key={article?.id}
-                    className="flex flex-col mt-5 bg-[#E9E9E94D]/30 p-4 gap-3 rounded-xl"
-                  >
-                    <div className="flex flex-row">
-                      <img
-                        src={article?.avatar}
-                        alt=""
-                        className="xl:w-[48px] xl:h-[48px] w-[48px] h-[48px] rounded-full"
-                      />
-                      <div className="xl:ml-4">
-                        <h1 className="text-[#201B1C] text-lg font-semibold">
-                          {article?.name}
-                        </h1>
-                        <p className="text-[#7C7C7C] text-sm font-normal">
-                          {formatDate(article?.created_at)}
-                        </p>
-                      </div>
-                    </div>
-                    <p className="text-[#201B1C] text-base font-normal">
-                      {article?.comment}
-                    </p>
-                  </div>
-                ))}
-                {articleDetail?.total_comments > 3 && (
-                  <button
-                    className="mt-5 flex w-[130px] items-center mx-auto justify-center text-center text-white bg-gradient-to-r to-[#4FE6AF] from-[#9A76FE] rounded-full text-base font-normal font-poppins p-2 cursor-pointer"
-                    onClick={handleSeeAllComments}
-                  >
-                    {seeAllClicked ? 'close' : 'see all'}{' '}
-                    <span className="ms-2">
-                      <svg
-                        width="13"
-                        height="8"
-                        viewBox="0 0 13 8"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
+              <Typography className='text-xl font-semibold font-poppins mb-3'>
+                {t('articleList.text18')}
+              </Typography>
+
+              <div className='h-[300px] overflow-y-auto scrollbar-article-hide'>
+                <div>
+                  {
+                    filteredCategories?.length > 0 ?filteredCategories?.map((item, index) => (
+                      <div
+                        key={index}
+                        className='h-full hover:bg-[#E9E9E9] duration-200'
                       >
-                        <path
-                          d="M12.5 0.999999L6.5 7L0.5 1"
-                          stroke="white"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                )}
+                        <div
+                          className='flex justify-start items-start border-t border-[#7C7C7C] py-2 text-sm text-[#7C7C7C] gap-2 cursor-pointer'
+                          onClick={async () => {
+                            await router.push(`/homepage/news?category=${item?.category}`);
+                          }}
+                        >
+                          <Typography className='font-poppins text-xs w-[24px] text-center'>
+                            {index < 9 ? `0${index + 1}` : `${index + 1}`}
+                          </Typography>
+                          <Typography className='font-poppins text-sm truncate'>
+                            {item?.category === 'all' ? t('articleList.text13') : capitalizeWords(item.category)}
+                          </Typography>
+                        </div>
+                      </div>
+                    ))
+                    :
+                    (
+                      <div className='flex flex-col justify-center items-center gap-2'>
+                        <div className='w-[250px] h-auto mt-4'>
+                          <Image
+                            alt={'SeedyEmpty'}
+                            src={SeedyEmpty}
+                            width={1000}
+                            height={1000}
+                            className='w-full h-auto'
+                          />
+                        </div>
+                        <Typography className="font-poppins text-md italic">
+                          {t('articleList.text19')} <span className="font-semibold italic">{`"${searchTerm}"`}</span> {t('articleList.text20')}
+                        </Typography>
+                      </div>
+                    )
+                  }
+                </div>
               </div>
-            ) : (
-              <></>
-            )}
-          </div>
-          <div className="mt-12 flex justify-between">
-            <p className="text-3xl font-bold ">{t('articleList.text6')} </p>
-          </div>
-          <div className="">
-            <Slider
-              slidesToShow={2}
-              slidesToScroll={1}
-              speed={500}
-              className="my-12 "
-              initialSlide={1}
-              // slidesToScroll={1}
-              responsive={[
-                {
-                  breakpoint: 1024,
-                  settings: {
-                    dots: true,
-                    slidesToShow: 2
-                    // slidesToScroll: 1
-                  }
-                },
-                {
-                  breakpoint: 768,
-                  settings: {
-                    dots: true,
-                    slidesToShow: 2
-                    // slidesToScroll: 1
-                  }
-                },
-                {
-                  breakpoint: 480,
-                  settings: {
-                    dots: true,
-                    slidesToShow: 1
-                  }
-                }
-              ]}
-            >
-              {articles.map(article => (
-                <div
-                  key={article.id}
-                  className={` lg:pe-5 w-[200px] flex  cursor-pointer hover:shadow-lg transition-all  ${hotNewsItemClass}`}
-                >
-                  <Link href={`/homepage/news/${article.id}`}>
-                    <div className="flex justify-between bg-[#E9E9E980] rounded-2xl">
-                      <div className="flex-row">
-                        <div className="flex justify-between flex-col">
-                          <div className="p-2">
-                            <h1 className="bg-[#DCFCE4] text-xs font-semibold w-[65px] text-center text-[#3AC4A0] p-1 rounded-full">
-                              {article?.category}
-                            </h1>
-                            <h1 className="text-base font-semibold text-[#000] my-1">
-                              {article?.title !== undefined &&
-                              article.title.length > 45
-                                ? `${article.title.slice(0, 45)}...`
-                                : article?.title}
-                            </h1>
-                            <Link
-                              className="text-sm"
-                              href={`/homepage/articles/${article?.id ?? 0}`}
-                            >
-                              <LimitString
-                                text={stripHtmlTags(article?.content ?? '')}
-                                limit={80}
-                              />
-                            </Link>
-                          </div>
+            </div>
 
-                          <div>
-                            <div className="flex  justify-between">
-                              <p className="font-normal text-sm text-[#8A8A8A]">
+            <div className='mt-8'>
+              <Typography className='text-xl font-semibold font-poppins mb-3'>
+                {t('articleList.text21')}
+              </Typography>
+              <div>
+                {recentArticles?.map(recent => (
+                  <div
+                    key={recent.id}
+                    className={`w-full flex cursor-pointer transition-all ${hotNewsItemClass} border-t border-[#7C7C7C] font-poppins`}
+                  >
+                    <Link href={`/homepage/news/${recent.id}`} className='w-full rounded-lg hover:shadow-lg duration-300'>
+                      <div className="flex justify-between gap-2 p-2">
+                        <div className="flex-row">
+                          <div className="h-full flex justify-between flex-col">
+                            <div className="">
+                              <h1 className="text-[#7C7C7C] text-xs rounded-full">
+                                {recent?.category}
+                              </h1>
+                              <h1 className="text-base font-semibold text-[#000] my-1">
+                                {recent?.title !== undefined &&
+                                recent.title.length > 45
+                                  ? `${recent.title.slice(0, 45)}...`
+                                  : recent?.title}
+                              </h1>
+                            </div>
+
+                            <div className='flex justify-between items-center mt-2'>
+                              <Typography className='text-xs font-poppins truncate max-w-[60%]'>
+                                {
+                                  recent?.author === 'No Author'
+                                    ? ``
+                                    : `${t('articleList.text22')} ${recent?.author}`
+                                }
+                              </Typography>
+                              <Typography className="font-normal font-poppins text-xs text-[#8A8A8A]">
                                 {formatDateToIndonesian(
-                                  articleDetail?.publicationDate
+                                  recent?.publicationDate
                                 )}
-                              </p>
+                              </Typography>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div>
-                        <div className="mt-1 w-[120px] h-[120px]">
-                          {isImageUrlValid(article.imageUrl) ? (
-                            <img
-                              src={article?.imageUrl}
-                              alt=""
-                              className="w-[100px] h-full object-cover rounded-2xl"
-                            />
-                          ) : (
-                            <img
-                              src={defaultNews}
-                              alt=""
-                              className="w-[100px] h-full object-cover rounded-2xl"
-                            />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col text-justify w-full md:w-2/3 mt-4 md:pl-5">
+            <div className="flex flex-col text-justify">
+              {contentParagraphs?.map((paragraph, index) => (
+                <div key={index} className="pb-8">
+                  <p className="w-full">{paragraph}</p>
                 </div>
               ))}
-            </Slider>
+            </div>
+            <div className="flex flex-col border-t-4 pb-5 border-[#7555DA] mt-2">
+              {accessToken !== null && userInfo !== null ? (
+                <div className="flex flex-row gap-3 my-5 w-full">
+                  <img
+                    src={userInfo.avatar}
+                    className="xl:w-[75px] w-[48px] h-[48px] xl:h-full rounded-full shrink-0"
+                    alt=""
+                  />
+                  <div className="flex justify-start items-center w-full">
+                    <h1 className="text-[#201B1C] text-lg font-semibold">
+                      {userInfo.name}
+                    </h1>
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
+              <div className="w-full flex justify-start items-center gap-2 mb-4">
+                <Input
+                  label={`${t('articleList.text27')}`}
+                  onChange={e => {
+                    updateComment(e.target.value);
+                  }}
+                  className='w-fit'
+                />
+                <Button
+                  disabled={comment === '' && loading}
+                  variant="purple"
+                  label={`${t('articleList.text24')}`}
+                  containerClasses="xl:w-[196px] h-full py-3 px-4 rounded-full"
+                  onClick={async () => {
+                    await submitComment(articleDetail.id);
+                  }}
+                />
+              </div>
+              <h1 className="text-lg md:text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] w-full">
+                {articleDetail?.total_comments} {articleDetail?.total_comments > 1 ? t('articleList.text26') : t('articleList.text25')}
+              </h1>
+              {articleDetail.total_comments !== 0 ? (
+                <div className="flex flex-col">
+                  {displayedComments?.map(article => (
+                    <div
+                      key={article?.id}
+                      className="flex flex-col mt-5 bg-[#E9E9E94D]/30 p-4 gap-3 rounded-xl"
+                    >
+                      <div className="flex flex-row gap-2">
+                        <img
+                          src={article?.avatar}
+                          alt=""
+                          className="xl:w-[48px] xl:h-[48px] w-[48px] h-[48px] rounded-full"
+                        />
+                        <div className="xl:ml-4">
+                          <h1 className="text-[#201B1C] text-lg font-semibold">
+                            {article?.name}
+                          </h1>
+                          <p className="text-[#7C7C7C] text-sm font-normal">
+                            {generateArticleDate(article?.created_at)}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-[#201B1C] text-base font-normal">
+                        {article?.comment}
+                      </p>
+                    </div>
+                  ))}
+                  {articleDetail?.total_comments > 3 && (
+                    <button
+                      className="mt-5 flex w-[130px] items-center mx-auto justify-center text-center text-white bg-gradient-to-r to-[#4FE6AF] from-[#9A76FE] rounded-full text-base font-normal font-poppins p-2 cursor-pointer"
+                      onClick={handleSeeAllComments}
+                    >
+                      {seeAllClicked ? 'close' : 'see all'}{' '}
+                      <span className="ms-2">
+                        <svg
+                          width="13"
+                          height="8"
+                          viewBox="0 0 13 8"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M12.5 0.999999L6.5 7L0.5 1"
+                            stroke="white"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="mt-6 flex justify-between">
+              <p className="text-2xl md:text-3xl font-bold ">{t('articleList.text6')} </p>
+            </div>
+            <div className="">
+              <Slider
+                slidesToShow={2}
+                slidesToScroll={1}
+                speed={500}
+                className="mb-12 mt-6"
+                initialSlide={1}
+                responsive={[
+                  {
+                    breakpoint: 1920,
+                    settings: {
+                      dots: true,
+                      slidesToShow: 2
+                    }
+                  },
+                  {
+                    breakpoint: 1280,
+                    settings: {
+                      dots: true,
+                      slidesToShow: 1
+                    }
+                  },
+                ]}
+              >
+                {articles?.map(article => (
+                  <div
+                    key={article.id}
+                    className={` lg:px-5 w-[200px] flex cursor-pointer ${hotNewsItemClass}`}
+                  >
+                    <Link href={`/homepage/news/${article.id}`}>
+                      <div className="flex justify-between bg-[#E9E9E980] rounded-2xl p-2 gap-2 hover:shadow-lg transition-all">
+                        <div className="flex-row">
+                          <div className="h-full flex justify-between flex-col">
+                            <div className="">
+                              <h1 className="bg-[#DCFCE4] text-xs font-semibold w-fit truncate text-center text-[#3AC4A0] py-1 px-2 rounded-full">
+                                {article?.category}
+                              </h1>
+                              <h1 className="text-base font-semibold text-[#000] my-1">
+                                {article?.title !== undefined &&
+                                article.title.length > 45
+                                  ? `${article.title.slice(0, 45)}...`
+                                  : article?.title}
+                              </h1>
+                              <Link
+                                className="text-sm hidden md:flex"
+                                href={`/homepage/news/${article?.id ?? 0}`}
+                              >
+                                <LimitString
+                                  text={stripHtmlTags(article?.content ?? '')}
+                                  limit={80}
+                                />
+                              </Link>
+                            </div>
+
+                            <div>
+                              <div className="flex justify-between">
+                                <p className="font-normal text-sm text-[#8A8A8A]">
+                                  {formatDateToIndonesian(
+                                    articleDetail?.publicationDate
+                                  )}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="w-auto min-w-[100px] h-[120px]">
+                            {isImageUrlValid(article.imageUrl) ? (
+                              <img
+                                src={article?.imageUrl}
+                                alt=""
+                                className="w-[100px] h-full object-cover rounded-2xl"
+                              />
+                            ) : (
+                              <img
+                                src={defaultNews}
+                                alt=""
+                                className="w-[100px] h-full object-cover rounded-2xl"
+                              />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </Slider>
+            </div>
           </div>
         </div>
-      </PageGradient>
+      </div>
       <Footer />{' '}
     </>
   );

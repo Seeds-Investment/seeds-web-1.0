@@ -8,6 +8,7 @@ import { type ArticleMetadataI, type CategoryI } from '@/utils/interfaces/articl
 import { type ArticleDetail } from '@/utils/interfaces/play.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { SeedyEmptyData } from 'public/assets/vector';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,18 +17,31 @@ import { toast } from 'react-toastify';
 
 interface ArticleListProps {
   activeTab: string;
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  handleTabChange: (tab: string) => void;
 };
 
 export default function ArticleList({
-  activeTab
+  activeTab,
+  setActiveTab,
+  handleTabChange,
 }: ArticleListProps): React.ReactElement {
   const { t } = useTranslation();
+  const router = useRouter();
+  const activeTabParam = Array.isArray(router.query.activeTabParams)
+    ? router.query.activeTabParams[0]
+    : router.query.activeTabParams;
+  const categoryParam = Array.isArray(router.query.category)
+    ? router.query.category[0]
+    : router.query.category;
   const [articles, setArticles] = useState<ArticleDetail[]>([]);
   const [articleMetadata, setArticleMetadata] = useState<ArticleMetadataI>();
   const [searchInput, setSearchInput] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [categories, setCategories] = useState<CategoryI[]>([]);
   const sliderRef = useRef<Slider | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isReloaded, setIsReloaded] = useState<boolean>(false);
   const [params, setParams] = useState({
     page: 1,
     limit: 9,
@@ -39,22 +53,28 @@ export default function ArticleList({
   });
 
   async function fetchArticles(): Promise<void> {
+    setLoading(true);
     try {
       const response = await getArticle({
         ...params,
         source: params.source,
-        category: params.category,
+        category: categoryParam !== undefined ? categoryParam : params.category,
         language: i18n.language
       });
 
       if (response.status === 200) {
         setArticles(response.data);
         setArticleMetadata(response?.metadata)
+        setTimeout(() => {
+          setLoading(false);
+        }, 250);
       } else {
         console.error('Failed to fetch articles:', response);
+        setLoading(false);
       }
     } catch (error) {
       console.error('Error fetching articles:', error);
+      setLoading(false);
     }
   }
     
@@ -91,8 +111,10 @@ export default function ArticleList({
   }, [activeCategory]);
 
   useEffect(() => {
+    setIsReloaded(true)
     void fetchArticleCategory();
   }, []);
+  
   
   useEffect(() => {
     setActiveCategory('all')
@@ -104,6 +126,19 @@ export default function ArticleList({
       sliderRef.current.slickGoTo(0);
     }
   }, [activeTab]);
+    
+  useEffect(() => {
+    if (typeof categoryParam === 'string' && categoryParam !== '') {
+      setActiveCategory(categoryParam);
+      setParams(prevParams => ({
+        ...prevParams,
+        category: categoryParam
+      }));
+    }
+    if (sliderRef.current !== null) {
+      sliderRef.current.slickGoTo(0);
+    }
+  }, [router?.query]);
 
   const updateCategory = (newCategory: string): void => {
     setParams(prevParams => ({
@@ -120,6 +155,26 @@ export default function ArticleList({
   const capitalizeWords = (str: string): string => {
     return str.replace(/\b\w/g, char => char.toUpperCase());
   }
+
+  const isShowss = (): boolean => {
+    const isInitialState = activeTabParam === undefined || categoryParam === undefined;
+  
+    if (isInitialState) {
+      return isReloaded;
+    }
+  
+    return !loading;
+  }
+
+  const handleRemoveCategory = async(): Promise<void> => {
+    const query = { ...router.query };
+    delete query.category;
+
+    await router.push({
+      pathname: router.pathname,
+      query,
+    }, undefined, { shallow: true });
+  };
 
   return (
     <>
@@ -179,123 +234,127 @@ export default function ArticleList({
             </div>
           </div>
         </div>
-        <div className="lg:hidden mt-4">
-          <Slider
-            ref={sliderRef}
-            slidesToShow={2}
-            speed={500}
-            initialSlide={0}
-            infinite={true}
-            swipeToSlide={true}
-            responsive={[
-              {
-                breakpoint: 768,
-                settings: {
-                  dots: false,
-                  slidesToShow: 2,
-                  slidesToScroll: 1,
-                  infinite: true
-                }
-              },
-              {
-                breakpoint: 1024,
-                settings: {
-                  dots: false,
-                  slidesToShow: 4,
-                  slidesToScroll: 1,
-                  infinite: true
-                }
-              }
-            ]}
-          >
-            {categories?.map((item, index) => (
-              item?.category !== 'crime' &&
-                <div key={index} className="px-2 h-full">
-                  <div
-                    className={`${categoryItemClass} ${
-                      activeCategory === item.category
-                        ? 'bg-[#3AC4A0] text-white'
-                        : 'text-[#3AC4A0] bg-[#DCFCE4]'
-                    } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
-                    onClick={() => {
-                      setActiveCategory(item.category);
-                      updateCategory(item.category);
-                    }}
-                  >
-                    {item?.category === 'all' ? t('articleList.text13') : capitalizeWords(item.category)}
-                  </div>
-                </div>
-            ))}
-          </Slider>
-        </div>
-
-        <div className="hidden lg:block mt-4">
-          <Slider
-            ref={sliderRef}
-            slidesToShow={6}
-            speed={500}
-            initialSlide={0}
-            infinite={true}
-            swipeToSlide={true}
-            responsive={[
-              {
-                breakpoint: 1024,
-                settings: {
-                  dots: false,
-                  slidesToShow: 6,
-                  slidesToScroll: 4,
-                  infinite: true
-                }
-              },
-              {
-                breakpoint: 1280,
-                settings: {
-                  dots: false,
-                  slidesToShow: 8,
-                  slidesToScroll: 4,
-                  infinite: true
-                }
-              }
-            ]}
-          >
-            {categories?.map((item, index) => (
-              item?.category !== 'crime' &&
-                <div key={index} className="px-2 h-full">
-                  <div
-                    className={`${categoryItemClass} ${
-                      activeCategory === item.category
-                        ? 'bg-[#3AC4A0] text-white'
-                        : 'text-[#3AC4A0] bg-[#DCFCE4]'
-                    } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
-                    onClick={() => {
-                      setActiveCategory(item.category);
-                      updateCategory(item.category);
-                    }}
-                  >
-                    {item?.category === 'all' ? t('articleList.text13') : capitalizeWords(item.category)}
-                  </div>
-                </div>
-            ))}
-          </Slider>
-        </div>
+        {
+          (Boolean(isShowss())) &&
+            <>
+              <div className="lg:hidden mt-4">
+                <Slider
+                  ref={sliderRef}
+                  slidesToShow={2}
+                  speed={500}
+                  initialSlide={0}
+                  infinite={true}
+                  swipeToSlide={true}
+                  cssEase={'linear'}
+                  focusOnSelect={true}
+                  responsive={[
+                    {
+                      breakpoint: 768,
+                      settings: {
+                        dots: false,
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        cssEase: 'linear',
+                        focusOnSelect: true
+                      }
+                    },
+                    {
+                      breakpoint: 1024,
+                      settings: {
+                        dots: false,
+                        slidesToShow: 4,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        cssEase: 'linear',
+                        focusOnSelect: true
+                      }
+                    }
+                  ]}
+                >
+                  {categories?.map((item, index) => (
+                    item?.category !== 'crime' &&
+                      <div key={index} className="px-2 h-full">
+                        <div
+                          className={`${categoryItemClass} ${
+                            activeCategory === item.category
+                              ? 'bg-[#3AC4A0] text-white'
+                              : 'text-[#3AC4A0] bg-[#DCFCE4]'
+                          } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
+                          onClick={async() => {
+                            await handleRemoveCategory()
+                            setActiveCategory(item.category);
+                            updateCategory(item.category);
+                          }}
+                        >
+                          {item?.category === 'all' ? t('articleList.text13') : capitalizeWords(item.category)}
+                        </div>
+                      </div>
+                  ))}
+                </Slider>
+              </div>
+      
+              <div className="hidden lg:block mt-4">
+                <Slider
+                  ref={sliderRef}
+                  slidesToShow={6}
+                  speed={500}
+                  initialSlide={0}
+                  infinite={true}
+                  swipeToSlide={true}
+                  cssEase={'linear'}
+                  focusOnSelect={true}
+                  responsive={[
+                    {
+                      breakpoint: 1024,
+                      settings: {
+                        dots: false,
+                        slidesToShow: 6,
+                        slidesToScroll: 6,
+                        infinite: true,
+                        cssEase: 'linear',
+                        focusOnSelect: true
+                      }
+                    }
+                  ]}
+                >
+                  {categories?.map((item, index) => (
+                    item?.category !== 'crime' &&
+                      <div key={index} className="px-2 h-full">
+                        <div
+                          className={`${categoryItemClass} ${
+                            activeCategory === item.category
+                              ? 'bg-[#3AC4A0] text-white'
+                              : 'text-[#3AC4A0] bg-[#DCFCE4]'
+                          } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
+                          onClick={async() => {
+                            await handleRemoveCategory()
+                            setActiveCategory(item.category);
+                            updateCategory(item.category);
+                          }}
+                        >
+                          {item?.category === 'all' ? t('articleList.text13') : capitalizeWords(item.category)}
+                        </div>
+                      </div>
+                  ))}
+                </Slider>
+              </div>
+            </>
+        }
         
         {
-          articles?.length > 0 ?
-            <div className="grid z-10 lg:grid-cols-6 gap-4 mt-8">
-              {
-                articles?.map(article => {
-                  return (
-                    <NewsCard
-                      key={article.id}
-                      articleId={article.id}
-                      data={article}
-                    />
-                  );
-                })
-              }
-            </div>
-            :
-            (
+          !loading ? (
+            articles?.length > 0 ? (
+              <div className="grid z-10 lg:grid-cols-6 gap-4 mt-8">
+                {articles?.map(article => (
+                  <NewsCard
+                    key={article.id}
+                    articleId={article.id}
+                    data={article}
+                  />
+                ))}
+              </div>
+            ) : (
               <div className='w-full flex flex-col justify-center items-center mt-12'>
                 <Image
                   alt=""
@@ -307,35 +366,46 @@ export default function ArticleList({
                 <div className="flex flex-wrap mt-4 gap-[4px] text-[#262626] font-poppins text-sm md:text-lg text-center justify-center items-center">
                   {
                     searchInput === '' &&
-                      <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
-                        {t('articleList.text14')}{' '}
-                      </Typography>
+                    <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
+                      {t('articleList.text14')}{' '}
+                    </Typography>
                   }
                   {
                     searchInput !== '' &&
-                      <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
-                        {t('articleList.text10')}{' '}<strong>{`"${searchInput}"`}</strong>{' '}{t('articleList.text11')}{' '}
-                      </Typography>
+                    <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
+                      {t('articleList.text10')}{' '}<strong>{`"${searchInput}"`}</strong>{' '}{t('articleList.text11')}{' '}
+                    </Typography>
                   }
                   {((params?.category)?.length > 0)
                     ? <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center font-medium">
-                        {`${params.category.charAt(0).toUpperCase() + params.category.slice(1)}`}
-                      </Typography>
-                    : ""}{t('articleList.text12')}
+                      {`${params.category.charAt(0).toUpperCase() + params.category.slice(1)}`}
+                    </Typography>
+                    : ""}
+                  {t('articleList.text12')}
                 </div>
               </div>
             )
+          ) : (
+            <div className="w-full flex justify-center h-fit my-16">
+              <div className="h-[60px]">
+                <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-green rounded-full" />
+              </div>
+            </div>
+          )
         }
 
-        <div className="hidden lg:flex justify-center mx-auto my-8">
-          <ArtPagination
-            currentPage={params.page}
-            totalPages={articleMetadata?.total_page ?? 0}
-            onPageChange={page => {
-              setParams({ ...params, page });
-            }}
-          />
-        </div>
+        {
+          !loading &&
+            <div className="hidden lg:flex justify-center mx-auto my-8">
+              <ArtPagination
+                currentPage={params.page}
+                totalPages={articleMetadata?.total_page ?? 0}
+                onPageChange={page => {
+                  setParams({ ...params, page });
+                }}
+              />
+            </div>
+        }
       </PageGradient>
       <Footer />
     </>

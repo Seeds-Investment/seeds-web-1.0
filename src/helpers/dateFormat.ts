@@ -215,3 +215,9 @@ export const getSubscriptionDate = (
 export const getChatClock = (date: string): string => {
   return moment(date).format('HH:mm');
 };
+
+export const generateArticleDate = (dateString: string): string => {
+  const startDate = moment.utc(dateString);
+  const result = startDate.format('D/MM/YYYY, hh:mm A');
+  return result;
+};

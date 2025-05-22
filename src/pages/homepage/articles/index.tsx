@@ -6,6 +6,7 @@ import LanguageContext from '@/store/language/language-context';
 import { type ArticleMetadataI, type CategoryI } from '@/utils/interfaces/article.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { SeedyEmptyData } from 'public/assets/vector';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -42,6 +43,10 @@ export interface Metadata {
 }
 
 export default function ArticleList(): React.ReactElement {
+  const router = useRouter();
+  const categoryParam = Array.isArray(router.query.category)
+    ? router.query.category[0]
+    : router.query.category;
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
   const [articles, setArticles] = useState<Article[]>([]);
@@ -75,7 +80,7 @@ export default function ArticleList(): React.ReactElement {
       const response = await getArticleHome({
         ...params,
         source: params.source,
-        category: params.category,
+        category: categoryParam !== undefined ? categoryParam : params.category,
         sort_by: params.sort_by
       });
 
@@ -124,7 +129,7 @@ export default function ArticleList(): React.ReactElement {
   
   useEffect(() => {
     void fetchArticles();
-  }, [params]);
+  }, [params, router?.query]);
       
   useEffect(() => {
     setParams(prevParams => ({
@@ -146,6 +151,19 @@ export default function ArticleList(): React.ReactElement {
     }
   }, []);
 
+  useEffect(() => {
+    if (typeof categoryParam === 'string' && categoryParam !== '') {
+      setActiveCategory(categoryParam);
+      setParams(prevParams => ({
+        ...prevParams,
+        category: categoryParam
+      }));
+    }
+    if (sliderRef.current !== null) {
+      sliderRef.current.slickGoTo(0);
+    }
+  }, [router?.query]);
+  
   const updateCategory = (newCategory: string): void => {
     setParams(prevParams => ({
       ...prevParams,
@@ -256,6 +274,8 @@ export default function ArticleList(): React.ReactElement {
             initialSlide={0}
             infinite={true}
             swipeToSlide={true}
+            cssEase={'linear'}
+            focusOnSelect={true}
             responsive={[
               {
                 breakpoint: 768,
@@ -263,7 +283,9 @@ export default function ArticleList(): React.ReactElement {
                   dots: false,
                   slidesToShow: 2,
                   slidesToScroll: 1,
-                  infinite: true
+                  infinite: true,
+                  cssEase: 'linear',
+                  focusOnSelect: true
                 }
               },
               {
@@ -272,7 +294,9 @@ export default function ArticleList(): React.ReactElement {
                   dots: false,
                   slidesToShow: 4,
                   slidesToScroll: 1,
-                  infinite: true
+                  infinite: true,
+                  cssEase: 'linear',
+                  focusOnSelect: true
                 }
               }
             ]}
@@ -286,7 +310,8 @@ export default function ArticleList(): React.ReactElement {
                         ? 'bg-[#3AC4A0] text-white'
                         : 'text-[#3AC4A0] bg-[#DCFCE4]'
                     } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
-                    onClick={() => {
+                    onClick={async() => {
+                      await router.replace(router.pathname, undefined, { shallow: true })
                       setActiveCategory(item.category);
                       updateCategory(item.category);
                     }}
@@ -306,6 +331,8 @@ export default function ArticleList(): React.ReactElement {
             initialSlide={0}
             infinite={true}
             swipeToSlide={true}
+            cssEase={'linear'}
+            focusOnSelect={true}
             responsive={[
               {
                 breakpoint: 1024,
@@ -313,7 +340,9 @@ export default function ArticleList(): React.ReactElement {
                   dots: false,
                   slidesToShow: 6,
                   slidesToScroll: 4,
-                  infinite: true
+                  infinite: true,
+                  cssEase: 'linear',
+                  focusOnSelect: true
                 }
               },
               {
@@ -322,7 +351,9 @@ export default function ArticleList(): React.ReactElement {
                   dots: false,
                   slidesToShow: 6,
                   slidesToScroll: 4,
-                  infinite: true
+                  infinite: true,
+                  cssEase: 'linear',
+                  focusOnSelect: true
                 }
               }
             ]}
@@ -336,7 +367,8 @@ export default function ArticleList(): React.ReactElement {
                         ? 'bg-[#3AC4A0] text-white'
                         : 'text-[#3AC4A0] bg-[#F9F9F9] shadow-lg'
                     } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
-                    onClick={() => {
+                    onClick={async() => {
+                      await router.replace(router.pathname, undefined, { shallow: true })
                       setActiveCategory(item.category);
                       updateCategory(item.category);
                     }}

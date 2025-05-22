@@ -41,6 +41,7 @@ export default function ArticleList({
   const [categories, setCategories] = useState<CategoryI[]>([]);
   const sliderRef = useRef<Slider | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isReloaded, setIsReloaded] = useState<boolean>(false);
   const [params, setParams] = useState({
     page: 1,
     limit: 9,
@@ -110,18 +111,10 @@ export default function ArticleList({
   }, [activeCategory]);
 
   useEffect(() => {
+    setIsReloaded(true)
     void fetchArticleCategory();
   }, []);
   
-  useEffect(() => {
-    if (activeTabParam === 'article') {
-      setActiveTab('article')
-      handleTabChange('article')
-    } else if (activeTabParam === 'news'){
-      setActiveTab('news')
-      handleTabChange('news')
-    }
-  }, [activeTabParam]);
   
   useEffect(() => {
     setActiveCategory('all')
@@ -162,6 +155,26 @@ export default function ArticleList({
   const capitalizeWords = (str: string): string => {
     return str.replace(/\b\w/g, char => char.toUpperCase());
   }
+
+  const isShowss = (): boolean => {
+    const isInitialState = activeTabParam === undefined || categoryParam === undefined;
+  
+    if (isInitialState) {
+      return isReloaded;
+    }
+  
+    return !loading;
+  }
+
+  const handleRemoveCategory = async(): Promise<void> => {
+    const query = { ...router.query };
+    delete query.category;
+
+    await router.push({
+      pathname: router.pathname,
+      query,
+    }, undefined, { shallow: true });
+  };
 
   return (
     <>
@@ -222,7 +235,7 @@ export default function ArticleList({
           </div>
         </div>
         {
-          !loading &&
+          (Boolean(isShowss())) &&
             <>
               <div className="lg:hidden mt-4">
                 <Slider
@@ -232,6 +245,8 @@ export default function ArticleList({
                   initialSlide={0}
                   infinite={true}
                   swipeToSlide={true}
+                  cssEase={'linear'}
+                  focusOnSelect={true}
                   responsive={[
                     {
                       breakpoint: 768,
@@ -239,7 +254,9 @@ export default function ArticleList({
                         dots: false,
                         slidesToShow: 2,
                         slidesToScroll: 1,
-                        infinite: true
+                        infinite: true,
+                        cssEase: 'linear',
+                        focusOnSelect: true
                       }
                     },
                     {
@@ -248,7 +265,9 @@ export default function ArticleList({
                         dots: false,
                         slidesToShow: 4,
                         slidesToScroll: 1,
-                        infinite: true
+                        infinite: true,
+                        cssEase: 'linear',
+                        focusOnSelect: true
                       }
                     }
                   ]}
@@ -263,7 +282,7 @@ export default function ArticleList({
                               : 'text-[#3AC4A0] bg-[#DCFCE4]'
                           } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
                           onClick={async() => {
-                            await router.replace(router.pathname, undefined, { shallow: true })
+                            await handleRemoveCategory()
                             setActiveCategory(item.category);
                             updateCategory(item.category);
                           }}
@@ -283,14 +302,18 @@ export default function ArticleList({
                   initialSlide={0}
                   infinite={true}
                   swipeToSlide={true}
+                  cssEase={'linear'}
+                  focusOnSelect={true}
                   responsive={[
                     {
-                      breakpoint: 1280,
+                      breakpoint: 1024,
                       settings: {
                         dots: false,
                         slidesToShow: 6,
                         slidesToScroll: 6,
-                        infinite: true
+                        infinite: true,
+                        cssEase: 'linear',
+                        focusOnSelect: true
                       }
                     }
                   ]}
@@ -305,7 +328,7 @@ export default function ArticleList({
                               : 'text-[#3AC4A0] bg-[#DCFCE4]'
                           } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
                           onClick={async() => {
-                            await router.replace(router.pathname, undefined, { shallow: true })
+                            await handleRemoveCategory()
                             setActiveCategory(item.category);
                             updateCategory(item.category);
                           }}

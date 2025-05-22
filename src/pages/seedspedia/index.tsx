@@ -8,6 +8,9 @@ const SeedsPedia: React.FC = () => {
   const activeTabParam = Array.isArray(router.query.activeTabParams)
     ? router.query.activeTabParams[0]
     : router.query.activeTabParams;
+  const categoryParam = Array.isArray(router.query.category)
+    ? router.query.category[0]
+    : router.query.category;
 
   const [activeTab, setActiveTab] = useState('article');
 
@@ -21,6 +24,32 @@ const SeedsPedia: React.FC = () => {
 
   const handleTabChange = (tab: string): void => {
     setActiveTab(tab);
+  };
+
+  const handleRemoveCategory = async (activeTab: string): Promise<void> => {
+    const query = { ...router.query };
+    delete query.category;
+  
+    if (activeTab === 'news') {
+      query.activeTabParams = 'article';
+      if (categoryParam !== undefined) {
+        query.category = 'all';
+      }
+    } else if (activeTab === 'article') {
+      query.activeTabParams = 'news';
+      if (categoryParam !== undefined) {
+        query.category = 'all';
+      }
+    }
+  
+    await router.push(
+      {
+        pathname: router.pathname,
+        query,
+      },
+      undefined,
+      { shallow: true }
+    );
   };  
 
   return (
@@ -29,7 +58,9 @@ const SeedsPedia: React.FC = () => {
         <button
           onClick={async() => {
             handleTabChange('article');
-            await router.replace(router.pathname, undefined, { shallow: true })
+            if (activeTab === 'news') {
+              await handleRemoveCategory('news')
+            }
           }}
           className={`w-full text-xl px-4 py-2 font-poppins transition-all ${
             activeTab === 'article'
@@ -42,7 +73,9 @@ const SeedsPedia: React.FC = () => {
         <button
           onClick={async() => { 
             handleTabChange('news');
-            await router.replace(router.pathname, undefined, { shallow: true })
+            if (activeTab === 'article') {
+              await handleRemoveCategory('article')
+            }
           }}
           className={`w-full text-xl px-4 py-2 font-poppins transition-all ${
             activeTab === 'news'

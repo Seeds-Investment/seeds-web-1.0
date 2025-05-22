@@ -16,7 +16,7 @@ const ReadyTo = ({
       <Image
         src={bottomPhone}
         alt="bottomPhone"
-        className="md:hidden h-2/3 sm:h-fit sm:w-1/2"
+        className="md:hidden sm:w-1/2"
       />
       <div className="flex flex-col gap-4 sm:gap-6">
         <p className="font-semibold text-base sm:text-lg md:text-2xl lg:text-4xl">

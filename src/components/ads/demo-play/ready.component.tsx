@@ -48,7 +48,7 @@ const Ready = (): React.ReactElement => {
             <p>{data[0].desc}</p>
           </div>
         </div>
-        <div className="flex flex-col justify-between gap-5 bg-gradient-to-br from-[#79F0B8] to-[#7B8BFC] to-[100%] rounded-3xl px-8 pt-20 row-span-2 w-full sm:w-[323px] h-full">
+        <div className="flex flex-col justify-between items-center gap-5 bg-gradient-to-br from-[#79F0B8] to-[#7B8BFC] to-[100%] rounded-3xl px-8 pt-20 row-span-2 w-full sm:w-[323px] h-full">
           <div className="flex flex-col gap-5">
             <p className="font-semibold text-lg uppercase">
               {t('demo.text13')}

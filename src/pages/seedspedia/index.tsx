@@ -91,14 +91,10 @@ const SeedsPedia: React.FC = () => {
         {activeTab === 'article' ? (
           <ArticleList
             activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            handleTabChange={handleTabChange}
           />
         ) : (
           <NewsList
             activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            handleTabChange={handleTabChange}
           />
         )}
       </div>

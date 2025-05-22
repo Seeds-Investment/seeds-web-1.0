@@ -142,10 +142,10 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
       {open && (
         <div
           id="myToast"
-          className="fixed right-10 z-50 bottom-10 px-5 py-4 border-r-8 border-blue-500 bg-white drop-shadow-lg"
+          className="fixed right-10 z-50 bottom-10 px-5 py-4 border-r-8 border-seeds-button-green bg-white drop-shadow-lg"
         >
           <p className="text-sm">
-            <span className="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">
+            <span className="mr-2 inline-block px-3 py-1 rounded-full bg-seeds-button-green text-white font-extrabold">
               i
             </span>
             Article copied to Clipboard

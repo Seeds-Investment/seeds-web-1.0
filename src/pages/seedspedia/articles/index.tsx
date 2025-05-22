@@ -40,7 +40,7 @@ export default function ArticleList({
   const [activeCategory, setActiveCategory] = useState('all');
   const [categories, setCategories] = useState<CategoryI[]>([]);
   const sliderRef = useRef<Slider | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [params, setParams] = useState({
     page: 1,
     limit: 9,

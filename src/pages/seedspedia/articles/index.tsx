@@ -17,14 +17,10 @@ import { toast } from 'react-toastify';
 
 interface ArticleListProps {
   activeTab: string;
-  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
-  handleTabChange: (tab: string) => void;
 };
 
 export default function ArticleList({
   activeTab,
-  setActiveTab,
-  handleTabChange,
 }: ArticleListProps): React.ReactElement {
   const { t } = useTranslation();
   const router = useRouter();
@@ -404,7 +400,7 @@ export default function ArticleList({
 
         {
           !loading &&
-            <div className="flex justify-center mx-auto my-8">
+            <div className="flex justify-center mx-auto mt-8 mb-16">
               <ArtPagination
                 currentPage={params.page}
                 totalPages={articleMetadata?.total_page ?? 0}

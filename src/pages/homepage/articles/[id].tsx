@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import author from '../../../../public/assets/author.png';
 import profile from '../../../../public/assets/profile.png';
-import SeedyEmpty from '../../../../public/assets/seedy-empty.svg';
+import SeedyEmpty from '../../../../public/assets/seedy-empty.png';
 
 interface UserData {
   name: string;

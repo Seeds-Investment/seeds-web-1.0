@@ -108,7 +108,13 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   }
 
   function copyValueWithUrl(valueToCopy: number): boolean {
-    const textToCopy = `${baseUrl}/article/${valueToCopy}`;
+    const formattedName = articleName
+      ?.replace(/[^\w\s-]/gi, '')
+      .split(' ')
+      .filter(Boolean)
+      .join('-');
+
+    const textToCopy = `${baseUrl}/seedspedia/articles/${valueToCopy}/${formattedName ?? ''}`;
 
     const textArea = document.createElement('textarea');
     textArea.value = textToCopy;

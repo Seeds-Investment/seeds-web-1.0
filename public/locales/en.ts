@@ -2557,7 +2557,7 @@ export default {
     withdrawal: 'Withdrawal',
     withdraw: 'Withdraw',
     completed: 'Completed',
-    onProgress: 'On Progress',
+    onProgress: 'Pending',
     rejected: 'Rejected',
     myEarnings: 'Total Balance',
     earningHistory: 'Earning History',

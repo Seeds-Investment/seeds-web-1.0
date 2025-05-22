@@ -122,7 +122,7 @@ const MyEarnings = (): React.ReactElement => {
     status: string,
     sourceId: string
   ): Promise<void> => {
-    if (status === 'Need Approval') {
+    if (status === 'pending') {
       await router.push(`/my-profile/my-earnings/withdraw-status/${sourceId}`);
     }
   };
@@ -260,18 +260,18 @@ const MyEarnings = (): React.ReactElement => {
                       </Typography>
                       <Typography
                         className={`${
-                          (item?.status ?? 'Completed') === 'Completed'
+                          (item?.status ?? 'completed') === 'completed'
                             ? 'text-[#4DA81C]'
-                            : (item?.status ?? 'Completed') === 'Need Approval'
+                            : (item?.status ?? 'completed') === 'pending'
                             ? 'text-[#D89918]'
                             : 'text-[#DA2D1F]'
                         } text-xs md:text-base font-poppins font-semibold`}
                       >
-                        {(item?.status ?? 'Loading...') === 'Completed'
+                        {(item?.status ?? 'Loading...') === 'completed'
                           ? t('earning.completed')
-                          : (item?.status ?? 'Loading...') === 'Need Approval'
+                          : (item?.status ?? 'Loading...') === 'pending'
                           ? t('earning.onProgress')
-                          : (item?.status ?? 'Loading...') === 'Rejected'
+                          : (item?.status ?? 'Loading...') === 'rejected'
                           ? t('earning.rejected')
                           : 'Loading...'}
                       </Typography>

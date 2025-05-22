@@ -2487,7 +2487,7 @@ export default {
     withdrawal: 'Pendapatan',
     withdraw: 'Penarikan',
     completed: 'Selesai',
-    onProgress: 'Disetujui',
+    onProgress: 'Sedang diproses',
     rejected: 'Ditolak',
     myEarnings: 'Penghasilan Saya',
     earningHistory: 'Riwayat Penghasilan',

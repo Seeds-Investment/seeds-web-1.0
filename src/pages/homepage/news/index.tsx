@@ -7,6 +7,7 @@ import { type ArticleMetadataI, type CategoryI } from '@/utils/interfaces/articl
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { SeedyEmptyData } from 'public/assets/vector';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -43,6 +44,10 @@ export interface Metadata {
 }
 
 export default function ArticleList(): React.ReactElement {
+  const router = useRouter();
+  const categoryParam = Array.isArray(router.query.category)
+    ? router.query.category[0]
+    : router.query.category;
   const languageCtx = useContext(LanguageContext);
   const [articles, setArticles] = useState<Article[]>([]);
   const [hotNews, setHotNews] = useState<Article[]>([]);
@@ -51,6 +56,7 @@ export default function ArticleList(): React.ReactElement {
   const [articleMetadata, setArticleMetadata] = useState<ArticleMetadataI>();
   const [categories, setCategories] = useState<CategoryI[]>([]);
   const sliderRef = useRef<Slider | null>(null);
+  const [isReloaded, setIsReloaded] = useState<boolean>(false);
 
   const [params, setParams] = useState({
     page: 1,
@@ -58,7 +64,7 @@ export default function ArticleList(): React.ReactElement {
     source: 'news',
     language: languageCtx?.language === 'ID' ? 'indonesian' : 'english',
     search: '',
-    category: 'All',
+    category: 'all',
     totalPage: 9,
     sort_by: 'all'
   });
@@ -70,12 +76,12 @@ export default function ArticleList(): React.ReactElement {
     }));
   }, [languageCtx.language]);
 
-  async function fetchArticles(): Promise<void> {
+  const fetchArticles = async (): Promise<void> => {
     try {
       const response = await getArticle({
         ...params,
         source: params.source,
-        category: params.category
+        category: categoryParam !== undefined ? categoryParam : params.category,
       });
 
       if (response.status === 200) {
@@ -111,7 +117,7 @@ export default function ArticleList(): React.ReactElement {
     
   useEffect(() => {
     void fetchArticles();
-  }, [params]);
+  }, [params, router?.query]);
     
   useEffect(() => {
     setParams(prevParams => ({
@@ -131,17 +137,28 @@ export default function ArticleList(): React.ReactElement {
     if (sliderRef.current !== null) {
       sliderRef.current.slickGoTo(0);
     }
+    setIsReloaded(true)
   }, []);
+  
+  useEffect(() => {
+    if (typeof categoryParam === 'string' && categoryParam !== '') {
+      setActiveCategory(categoryParam);
+      setParams(prevParams => ({
+        ...prevParams,
+        category: categoryParam
+      }));
+    }
+    if (sliderRef.current !== null) {
+      sliderRef.current.slickGoTo(0);
+    }
+  }, [router?.query]);
 
-  async function fetchHotNews(): Promise<void> {
+  const fetchHotNews = async (): Promise<void> => {
     try {
       const response = await getArticle({
-        page: 1,
-        limit: 9,
-        source: 'news',
-        language: '',
-        search: '',
-        category: 'All'
+        ...params,
+        source: params.source,
+        category: categoryParam !== undefined ? categoryParam : params.category,
       });
 
       if (response.status === 200) {
@@ -195,6 +212,10 @@ export default function ArticleList(): React.ReactElement {
     return str.replace(/\b\w/g, char => char.toUpperCase());
   }
 
+  const isShowss = (): boolean => {
+    return isReloaded;
+  }
+
   return (
     <>
       <PageGradient
@@ -203,7 +224,7 @@ export default function ArticleList(): React.ReactElement {
       >
         <div className="flex z-10 flex-col lg:flex-row justify-between">
           <div className="flex flex-col">
-            <div className="text-3xl font-semibold bg-clip-text text-black">
+            <div className="mt-4 md:mt-2 text-3xl font-semibold bg-clip-text text-black">
               {t('articleList.text7')}
             </div>
             <div className=" text-md font-normal text-gray-500">
@@ -278,105 +299,113 @@ export default function ArticleList(): React.ReactElement {
             </option>
           </select>
         </div>
-        <div className="lg:hidden mt-4">
-          <Slider
-            ref={sliderRef}
-            slidesToShow={2}
-            speed={500}
-            initialSlide={0}
-            infinite={true}
-            swipeToSlide={true}
-            responsive={[
-              {
-                breakpoint: 768,
-                settings: {
-                  dots: false,
-                  slidesToShow: 2,
-                  slidesToScroll: 1,
-                  infinite: true
-                }
-              },
-              {
-                breakpoint: 1024,
-                settings: {
-                  dots: false,
-                  slidesToShow: 4,
-                  slidesToScroll: 1,
-                  infinite: true
-                }
-              }
-            ]}
-          >
-            {categories?.map((item, index) => (
-              item?.category !== 'crime' &&
-                <div key={index} className="px-2 h-full">
-                  <div
-                    className={`${categoryItemClass} ${
-                      activeCategory === item.category
-                        ? 'bg-[#3AC4A0] text-white'
-                        : 'text-[#3AC4A0] bg-[#DCFCE4]'
-                    } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
-                    onClick={() => {
-                      setActiveCategory(item.category);
-                      updateCategory(item.category);
-                    }}
-                  >
-                    {item?.category === 'all' ? t('articleList.text13') : capitalizeWords(item.category)}
-                  </div>
-                </div>
-            ))}
-          </Slider>
-        </div>
-
-        <div className="hidden lg:block mt-4">
-          <Slider
-            ref={sliderRef}
-            slidesToShow={6}
-            speed={500}
-            initialSlide={0}
-            infinite={true}
-            swipeToSlide={true}
-            responsive={[
-              {
-                breakpoint: 1024,
-                settings: {
-                  dots: false,
-                  slidesToShow: 6,
-                  slidesToScroll: 4,
-                  infinite: true
-                }
-              },
-              {
-                breakpoint: 1280,
-                settings: {
-                  dots: false,
-                  slidesToShow: 6,
-                  slidesToScroll: 4,
-                  infinite: true
-                }
-              }
-            ]}
-          >
-            {categories?.map((item, index) => (
-              item?.category !== 'crime' &&
-                <div key={index} className="px-2 h-full">
-                  <div
-                    className={`${categoryItemClass} ${
-                      activeCategory === item.category
-                        ? 'bg-[#3AC4A0] text-white'
-                        : 'text-[#3AC4A0] bg-[#F9F9F9] shadow-lg'
-                    } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
-                    onClick={() => {
-                      setActiveCategory(item.category);
-                      updateCategory(item.category);
-                    }}
-                  >
-                    {item?.category === 'all' ? t('articleList.text13') : capitalizeWords(item.category)}
-                  </div>
-                </div>
-            ))}
-          </Slider>
-        </div>
+        {
+          (Boolean(isShowss())) &&
+            <>
+              <div className="lg:hidden mt-4">
+                <Slider
+                  ref={sliderRef}
+                  slidesToShow={2}
+                  speed={500}
+                  initialSlide={0}
+                  infinite={true}
+                  swipeToSlide={true}
+                  cssEase={'linear'}
+                  focusOnSelect={true}
+                  responsive={[
+                    {
+                      breakpoint: 768,
+                      settings: {
+                        dots: false,
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        cssEase: 'linear',
+                        focusOnSelect: true
+                      }
+                    },
+                    {
+                      breakpoint: 1024,
+                      settings: {
+                        dots: false,
+                        slidesToShow: 4,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        cssEase: 'linear',
+                        focusOnSelect: true
+                      }
+                    }
+                  ]}
+                >
+                  {categories?.map((item, index) => (
+                    item?.category !== 'crime' &&
+                      <div key={index} className="px-2 h-full">
+                        <div
+                          className={`${categoryItemClass} ${
+                            activeCategory === item.category
+                              ? 'bg-[#3AC4A0] text-white'
+                              : 'text-[#3AC4A0] bg-[#DCFCE4]'
+                          } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
+                          onClick={async() => {
+                            await router.replace(router.pathname, undefined, { shallow: true })
+                            setActiveCategory(item.category);
+                            updateCategory(item.category);
+                          }}
+                        >
+                          {item?.category === 'all' ? t('articleList.text13') : capitalizeWords(item.category)}
+                        </div>
+                      </div>
+                  ))}
+                </Slider>
+              </div>
+      
+              <div className="hidden lg:block mt-4">
+                <Slider
+                  ref={sliderRef}
+                  slidesToShow={6}
+                  speed={500}
+                  initialSlide={0}
+                  infinite={true}
+                  swipeToSlide={true}
+                  cssEase={'linear'}
+                  focusOnSelect={true}
+                  responsive={[
+                    {
+                      breakpoint: 1024,
+                      settings: {
+                        dots: false,
+                        slidesToShow: 6,
+                        slidesToScroll: 6,
+                        infinite: true,
+                        cssEase: 'linear',
+                        focusOnSelect: true
+                      }
+                    }
+                  ]}
+                >
+                  {categories?.map((item, index) => (
+                    item?.category !== 'crime' &&
+                      <div key={index} className="px-2 h-full">
+                        <div
+                          className={`${categoryItemClass} ${
+                            activeCategory === item.category
+                              ? 'bg-[#3AC4A0] text-white'
+                              : 'text-[#3AC4A0] bg-[#F9F9F9] shadow-lg'
+                          } py-2 h-full flex rounded-full items-center justify-center text-sm font-medium cursor-pointer font-poppins`}
+                          onClick={async() => {
+                            await router.replace(router.pathname, undefined, { shallow: true })
+                            setActiveCategory(item.category);
+                            updateCategory(item.category);
+                          }}
+                        >
+                          {item?.category === 'all' ? t('articleList.text13') : capitalizeWords(item.category)}
+                        </div>
+                      </div>
+                  ))}
+                </Slider>
+              </div>
+            </>
+        }
 
         <Slider
           ref={sliderRef}
@@ -384,14 +413,17 @@ export default function ArticleList(): React.ReactElement {
           speed={500}
           className={`${hotNews !== undefined ? "my-12" : ''}`}
           initialSlide={0}
-          // slidesToScroll={1}
+          cssEase={'linear'}
+          focusOnSelect={true}
           responsive={[
             {
               breakpoint: 1024,
               settings: {
                 dots: true,
                 slidesToShow: 2.4,
-                slidesToScroll: 1
+                slidesToScroll: 1,
+                cssEase: 'linear',
+                focusOnSelect: true
               }
             },
             {
@@ -399,14 +431,18 @@ export default function ArticleList(): React.ReactElement {
               settings: {
                 dots: true,
                 slidesToShow: 2.4,
-                slidesToScroll: 1
+                slidesToScroll: 1,
+                cssEase: 'linear',
+                focusOnSelect: true
               }
             },
             {
               breakpoint: 480,
               settings: {
                 dots: true,
-                slidesToShow: 1
+                slidesToShow: 1,
+                cssEase: 'linear',
+                focusOnSelect: true
               }
             }
           ]}
@@ -485,7 +521,7 @@ export default function ArticleList(): React.ReactElement {
             )
         }
 
-        <div className="hidden lg:flex justify-center mx-auto my-8">
+        <div className="flex justify-center mx-auto mt-8 mb-16">
           <ArtPagination
             currentPage={params.page}
             totalPages={articleMetadata?.total_page ?? 0}

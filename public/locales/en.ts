@@ -1319,6 +1319,18 @@ export default {
     text13: 'All',
     text14: 'No news found in',
     text15: '',
+    text16: 'Link copied to clipboard',
+    text17: 'Contributor',
+    text18: 'Categories',
+    text19: 'Category',
+    text20: 'not found',
+    text21: 'Latest Post',
+    text22: 'by',
+    text23: 'Search category...',
+    text24: 'Comment',
+    text25: 'Comment',
+    text26: 'Comments',
+    text27: 'Type your comment...',
     article: {
       sort: {
         all: 'All',

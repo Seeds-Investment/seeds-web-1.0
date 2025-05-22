@@ -2559,7 +2559,7 @@ export default {
     completed: 'Completed',
     onProgress: 'On Progress',
     rejected: 'Rejected',
-    myEarnings: 'My Earnings',
+    myEarnings: 'Total Balance',
     earningHistory: 'Earning History',
     bankTransfer: 'Bank Transfer',
     accountName: 'Account Name',

@@ -3,6 +3,7 @@
 'use-client';
 
 import EarningCoin from '@/assets/my-profile/earning/earningCoin.svg';
+import GreenBackground from '@/assets/my-profile/earning/green-background.png';
 import PaymentProcess from '@/assets/my-profile/earning/paymentProcess.svg';
 import WithdrawCoin from '@/assets/my-profile/earning/withdrawCoin.svg';
 
@@ -130,13 +131,20 @@ const MyEarnings = (): React.ReactElement => {
     <>
       {isLoadingEarn && isLoadingHistory && <Loading />}
       <div className="w-full flex flex-col justify-center items-center rounded-xl p-5 bg-white">
-        <div className="w-full bg-gradient-to-r from-[#36AB8D] to-[#A1FFE7] p-2 md:p-4 rounded-xl">
-          <div className="bg-white flex flex-col justify-between items-center rounded-md p-2 md:p-4">
-            <Typography className="w-full font-semibold font-poppins text-sm md:text-base">
+        <div
+          className="w-full p-2 md:p-4 rounded-xl"
+          style={{
+            backgroundImage: `url(${GreenBackground.src})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+        >
+          <div className="flex flex-col justify-between items-center rounded-md p-2 md:p-4">
+            <Typography className="w-full font-medium md:font-semibold font-poppins text-sm md:text-lg text-white">
               {t('earning.myEarnings')}
             </Typography>
             <div className="w-full flex justify-between items-center">
-              <Typography className="font-semibold font-poppins text-[#3AC4A0] text-base md:text-lg">
+              <Typography className="font-semibold font-poppins text-white text-base md:text-xl">
                 {userInfo?.preferredCurrency !== undefined
                   ? userInfo?.preferredCurrency
                   : 'IDR'}
@@ -146,7 +154,7 @@ const MyEarnings = (): React.ReactElement => {
                 onClick={async () =>
                   await router.push('/my-profile/my-earnings/withdraw')
                 }
-                className="px-4 md:px-8 lg:px-16 py-1 font-poppins bg-[#3AC4A0] text-white text-xs md:text-sm rounded-full cursor-pointer hover:shadow-lg duration-300"
+                className="px-4 md:px-8 lg:px-16 py-1 font-poppins text-[#3AC4A0] bg-white text-xs md:text-sm rounded-full cursor-pointer hover:shadow-lg duration-300 font-medium"
               >
                 {t('earning.withdraw')}
               </Typography>

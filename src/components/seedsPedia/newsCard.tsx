@@ -13,36 +13,35 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
-  const [open, setOpen] = useState(false);
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance/';
 
-  function copyValueWithUrl(valueToCopy: number): boolean {
-    const textToCopy = `${baseUrl}/article/${valueToCopy}`;
+  // function copyValueWithUrl(valueToCopy: number): boolean {
+  //   const textToCopy = `${baseUrl}/article/${valueToCopy}`;
 
-    const textArea = document.createElement('textarea');
-    textArea.value = textToCopy;
-    document.body.appendChild(textArea);
-    textArea.select();
+  //   const textArea = document.createElement('textarea');
+  //   textArea.value = textToCopy;
+  //   document.body.appendChild(textArea);
+  //   textArea.select();
 
-    try {
-      const copied = document.execCommand('copy');
-      if (copied) {
-        setOpen(true);
-        setTimeout(() => {
-          setOpen(false);
-        }, 3000);
-        return true;
-      } else {
-        return false;
-      }
-    } catch (err) {
-      console.error('Error copying text: ', err);
-      return false;
-    } finally {
-      document.body.removeChild(textArea);
-    }
-  }
+  //   try {
+  //     const copied = document.execCommand('copy');
+  //     if (copied) {
+  //       setOpen(true);
+  //       setTimeout(() => {
+  //         setOpen(false);
+  //       }, 3000);
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   } catch (err) {
+  //     console.error('Error copying text: ', err);
+  //     return false;
+  //   } finally {
+  //     document.body.removeChild(textArea);
+  //   }
+  // }
 
   useEffect(() => {
     if (data !== undefined) {
@@ -82,7 +81,7 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
   const isImageValid = isImageUrlValid(imageUrl);
   return (
     <>
-      {open && (
+      {/* {open && (
         <div
           id="myToast"
           className="fixed right-10 z-50 bottom-10 px-5 py-4 border-r-8 border-blue-500 bg-white drop-shadow-lg"
@@ -94,7 +93,7 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
             Article copied to Clipboard
           </p>
         </div>
-      )}
+      )} */}
       <div className="bg-[#FFF] lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
         <Link href={`/seedspedia/news/${articleDetail?.id ?? 0}`}>
           {isImageValid ? (
@@ -138,9 +137,28 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
               viewBox="0 0 25 25"
               fill="none"
               className="cursor-pointer"
-              onClick={() => {
-                copyValueWithUrl(articleDetail?.id ?? 0);
-              }}
+              // onClick={() => {
+              //   copyValueWithUrl(articleDetail?.id ?? 0);
+              // }}
+              onClick={async () => {
+                const articleId = articleDetail?.id ?? 0;
+                const articleName = articleDetail?.title ?? 'Untitled';
+                const shareUrl = `${baseUrl}/seedspedia/news/${articleId}`;
+              
+                if (navigator?.share !== undefined && navigator?.share !== null) {
+                  try {
+                    await navigator.share({
+                      title: articleName,
+                      text: 'Check out this article on SeedsPedia!',
+                      url: shareUrl,
+                    });
+                  } catch (err) {
+                    console.error('Sharing failed:', err);
+                  }
+                } else {
+                  alert('Share not supported. Link copied instead!');
+                }
+              }}              
             >
               <path
                 d="M18.0059 8.07788C19.6627 8.07788 21.0059 6.73474 21.0059 5.07788C21.0059 3.42103 19.6627 2.07788 18.0059 2.07788C16.349 2.07788 15.0059 3.42103 15.0059 5.07788C15.0059 6.73474 16.349 8.07788 18.0059 8.07788Z"

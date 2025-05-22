@@ -224,7 +224,7 @@ export default function ArticleList(): React.ReactElement {
       >
         <div className="flex z-10 flex-col lg:flex-row justify-between">
           <div className="flex flex-col">
-            <div className="text-3xl font-semibold bg-clip-text text-black">
+            <div className="mt-4 md:mt-2 text-3xl font-semibold bg-clip-text text-black">
               {t('articleList.text7')}
             </div>
             <div className=" text-md font-normal text-gray-500">

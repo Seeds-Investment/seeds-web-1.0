@@ -1253,6 +1253,9 @@ export default {
     text25: 'Komentar',
     text26: 'Komentar',
     text27: 'Ketik komentarmu...',
+    text28: 'Lihat artikel ini di SeedsPedia!',
+    text29: 'Lihat berita ini di SeedsPedia!',
+    text30: 'Fitur berbagi tidak mendukung. Tautan telah disalin!',
     article: {
       sort: {
         all: 'Semua',
@@ -2266,6 +2269,10 @@ export default {
       members: 'peserta',
       description: 'Temukan ahlinya untuk informasi yang lebih banyak',
       seeAll: 'Lihat Lebih'
+    },
+    share: {
+      text1: 'Lihat',
+      text2: 'Fitur berbagi tidak mendukung. Tautan telah disalin!',
     }
   },
   academy: {

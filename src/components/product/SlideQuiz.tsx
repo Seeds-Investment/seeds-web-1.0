@@ -24,6 +24,7 @@ export const SlideQuiz: React.FC = () => {
   const router = useRouter();
   const [activeSlide, setActiveSlide] = useState(0);
   const [quizData, setQuizData] = useState<TopQuiz[]>([]);
+  const baseUrl = process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance/';
 
   const [isChange, setChange] = useState(true);
 
@@ -166,7 +167,23 @@ export const SlideQuiz: React.FC = () => {
                         <Typography className="text-white font-bold lg:text-xl text-[17px]">
                           {item.name}
                         </Typography>
-                        <button>
+                        <button
+                          onClick={async () => {
+                            const shareUrl = `${baseUrl}/play/quiz/${item.id}`;
+                            if (navigator?.share !== null && navigator?.share !== undefined) {
+                              try {
+                                await navigator.share({
+                                  title: item.name,
+                                  text: `${t('tournament.share.text1')} ${item?.name}`,
+                                  url: shareUrl,
+                                });
+                              } catch {}
+                            } else {
+                              await navigator.clipboard.writeText(shareUrl);
+                              alert(t('tournament.share.text2'));
+                            }
+                          }}
+                        >
                           <Image src={shareButton} alt="share" />
                         </button>
                       </div>

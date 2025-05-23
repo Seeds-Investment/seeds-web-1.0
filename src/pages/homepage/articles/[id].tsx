@@ -1,7 +1,6 @@
 'use-client';
 import Button from '@/components/ui/button/Button';
 import { generateArticleDate } from '@/helpers/dateFormat';
-import { isGuest } from '@/helpers/guest';
 import {
   getArticle,
   getArticleByIdHome,
@@ -145,7 +144,6 @@ export default function ArticleDetailPage(): JSX.Element {
   const [articleComment, setArticleComment] = useState<ArticleComment[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [recentArticles, setRecentArticles] = useState<Article[]>([]);
-  const [open, setOpen] = useState(false);
   const [formRequest, setFormRequest] =
     useState<FormRequestInterface>(initialFormRequest);
   const baseUrl =
@@ -270,33 +268,6 @@ export default function ArticleDetailPage(): JSX.Element {
     }
   }, [id]);
 
-  function copyValueWithUrl(valueToCopy: number): boolean {
-    const textToCopy = `${baseUrl}/homepage/articles/${valueToCopy}`;
-
-    const textArea = document.createElement('textarea');
-    textArea.value = textToCopy;
-    document.body.appendChild(textArea);
-    textArea.select();
-
-    try {
-      const copied = document.execCommand('copy');
-      if (copied) {
-        setOpen(true);
-        setTimeout(() => {
-          setOpen(false);
-        }, 3000);
-        return true;
-      } else {
-        return false;
-      }
-    } catch (err) {
-      console.error('Error copying text: ', err);
-      return false;
-    } finally {
-      document.body.removeChild(textArea);
-    }
-  }
-
   function formatDateToIndonesian(dateStr: string): string {
     try {
       const parsedDate = parseISO(dateStr);
@@ -396,19 +367,6 @@ export default function ArticleDetailPage(): JSX.Element {
 
   return (
     <div className="relative overflow-hidden flex flex-col justify-center rounded-lg md:bg-white">
-      {open && (
-        <div
-          id="myToast"
-          className="fixed right-10 z-50 top-10 px-5 py-4 border-r-8 border-seeds-button-green bg-white drop-shadow-lg rounded-tl-full rounded-bl-full"
-        >
-          <p className="text-md font-poppins">
-            <span className="mr-2 inline-block px-3 py-1 rounded-full bg-seeds-button-green text-white font-extrabold">
-              i
-            </span>
-            {t('articleList.text16')}
-          </p>
-        </div>
-      )}
       <Typography className="my-4 text-lg lg:text-5xl font-semibold bg-clip-text text-black px-5 font-poppins md:text-center">
         {articleDetail.title}
       </Typography>
@@ -500,9 +458,18 @@ export default function ArticleDetailPage(): JSX.Element {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             onClick={async () => {
-              isGuest()
-                ? await router.push('/auth')
-                : copyValueWithUrl(articleDetail?.id ?? 0);
+              const shareUrl = `${baseUrl}/homepage/articles/${articleDetail?.id}`;
+              if (navigator?.share !== null && navigator?.share !== undefined) {
+                try {
+                  await navigator.share({
+                    title: articleDetail?.title ?? '',
+                    text: `${t('articleList.text28')}`,
+                    url: shareUrl,
+                  });
+                } catch {}
+              } else {
+                alert(t('articleList.text30'));
+              }
             }}
             className='cursor-pointer'
           >
@@ -584,9 +551,18 @@ export default function ArticleDetailPage(): JSX.Element {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               onClick={async () => {
-                isGuest()
-                  ? await router.push('/auth')
-                  : copyValueWithUrl(articleDetail?.id ?? 0);
+                const shareUrl = `${baseUrl}/homepage/articles/${articleDetail?.id}`;
+                if (navigator?.share !== null && navigator?.share !== undefined) {
+                  try {
+                    await navigator.share({
+                      title: articleDetail?.title ?? '',
+                      text: `${t('articleList.text28')}`,
+                      url: shareUrl,
+                    });
+                  } catch {}
+                } else {
+                  alert(t('articleList.text30'));
+                }
               }}
               className='cursor-pointer'
             >
@@ -645,7 +621,7 @@ export default function ArticleDetailPage(): JSX.Element {
                   :
                   (
                     <div className='flex flex-col justify-center items-center gap-2'>
-                      <div className='w-[100px] h-auto mt-4'>
+                      <div className='w-[100px] h-auto'>
                         <Image
                           alt={'SeedyEmpty'}
                           src={SeedyEmpty}

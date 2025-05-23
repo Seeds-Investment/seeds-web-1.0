@@ -6,6 +6,7 @@ import { id } from 'date-fns/locale';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ArticleCardProps {
   articleId: number;
@@ -25,12 +26,12 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   articleName,
   data
 }) => {
+  const { t } = useTranslation();
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance/';
-  const [open, setOpen] = useState(false);
   const [formRequest] = useState<FormRequestInterface>(initialFormRequest);
 
   function formatDateToIndonesian(dateStr: string): string {
@@ -107,57 +108,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
     return url?.startsWith('http://') || url?.startsWith('https://');
   }
 
-  function copyValueWithUrl(valueToCopy: number): boolean {
-    const formattedName = articleName
-      ?.replace(/[^\w\s-]/gi, '')
-      .split(' ')
-      .filter(Boolean)
-      .join('-');
-
-    const textToCopy = `${baseUrl}/seedspedia/articles/${valueToCopy}/${formattedName ?? ''}`;
-
-    const textArea = document.createElement('textarea');
-    textArea.value = textToCopy;
-    document.body.appendChild(textArea);
-    textArea.select();
-
-    try {
-      const copied = document.execCommand('copy');
-      if (copied) {
-        setOpen(true);
-        setTimeout(() => {
-          setOpen(false);
-        }, 3000);
-        return true;
-      } else {
-        return false;
-      }
-    } catch (err) {
-      console.error('Error copying text: ', err);
-      return false;
-    } finally {
-      document.body.removeChild(textArea);
-    }
-  }
-
   const defaultNews = '/assets/default-news.png';
   const imageUrl = articleDetail?.imageUrl ?? defaultNews;
   const isImageValid = isImageUrlValid(imageUrl);
   return (
     <>
-      {open && (
-        <div
-          id="myToast"
-          className="fixed right-10 z-50 bottom-10 px-5 py-4 border-r-8 border-seeds-button-green bg-white drop-shadow-lg"
-        >
-          <p className="text-sm">
-            <span className="mr-2 inline-block px-3 py-1 rounded-full bg-seeds-button-green text-white font-extrabold">
-              i
-            </span>
-            Article copied to Clipboard
-          </p>
-        </div>
-      )}
       <div className="bg-[#FFF] lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
         <Link
           href={`/seedspedia/articles/${articleDetail?.id ?? 0}/${
@@ -258,8 +213,24 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
               viewBox="0 0 25 25"
               fill="none"
               className="cursor-pointer"
-              onClick={() => {
-                copyValueWithUrl(articleDetail?.id ?? 0);
+              onClick={async () => {
+                const formattedName = (articleName ?? '')
+                  .replace(/[^\w\s-]/gi, '')
+                  .split(' ')
+                  .filter(Boolean)
+                  .join('-');
+                const shareUrl = `${baseUrl}/seedspedia/articles/${articleId}/${formattedName ?? ''}`;
+                if (navigator?.share !== null && navigator?.share !== undefined) {
+                  try {
+                    await navigator.share({
+                      title: articleName,
+                      text: `${t('articleList.text28')}`,
+                      url: shareUrl,
+                    });
+                  } catch {}
+                } else {
+                  alert(t('articleList.text30'));
+                }
               }}
             >
               <path

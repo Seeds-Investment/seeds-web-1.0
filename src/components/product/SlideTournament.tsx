@@ -28,8 +28,8 @@ export const SlideTournament: React.FC = () => {
   const [tournament, setTournament] = useState<TopTournament[]>([]);
   const [buttonChange, setButtonChange] = useState(true);
   const { t } = useTranslation();
-
   const router = useRouter();
+  const baseUrl = process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance/';
 
   const HandlePrev: React.FC = () => {
     const swiper = useSwiper();
@@ -267,26 +267,22 @@ export const SlideTournament: React.FC = () => {
                               <div
                                 className="flex gap-2 items-center cursor-pointer"
                                 onClick={async () => {
-                                  await navigator.clipboard.writeText(
-                                    item.id === null
-                                      ? `Arena's over`
-                                      : `https://seeds.finance/play/tournament`
-                                  );
+                                  const shareUrl = `${baseUrl}/play/tournament/${item.id}`;
+                                  if (navigator?.share !== null && navigator?.share !== undefined) {
+                                    try {
+                                      await navigator.share({
+                                        title: item.name,
+                                        text: `${t('tournament.share.text1')} ${item?.name}`,
+                                        url: shareUrl,
+                                      });
+                                    } catch {}
+                                  } else {
+                                    await navigator.clipboard.writeText(shareUrl);
+                                    alert(t('tournament.share.text2'));
+                                  }
                                 }}
                               >
-                                <button
-                                  onClick={() => {
-                                    toast.success(
-                                      `${item.name} succesful copied`,
-                                      {
-                                        position: 'top-center',
-                                        draggable: true,
-                                        autoClose: 2000
-                                      }
-                                    );
-                                  }}
-                                  className="border-none flex items-center p-2 rounded-full w-7 h-6 bg-[#DCFCE4] "
-                                >
+                                <button className="border-none flex items-center p-2 rounded-full w-7 h-6 bg-[#DCFCE4] ">
                                   <Image
                                     src={share}
                                     alt={share}
@@ -294,19 +290,7 @@ export const SlideTournament: React.FC = () => {
                                     height={30}
                                   />
                                 </button>
-                                <Typography
-                                  className="text-[#262626] text-[12px] md:text-[14px] font-normal font-poppins capitalize"
-                                  onClick={() => {
-                                    toast.success(
-                                      `${item.name} succesful copied`,
-                                      {
-                                        position: 'top-center',
-                                        draggable: true,
-                                        autoClose: 2000
-                                      }
-                                    );
-                                  }}
-                                >
+                                <Typography className="text-[#262626] text-[12px] md:text-[14px] font-normal font-poppins capitalize">
                                   {t('tournament.tournamentCard.share')}
                                 </Typography>
                               </div>

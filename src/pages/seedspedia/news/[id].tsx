@@ -79,7 +79,6 @@ export default function ArticleDetailPage(): JSX.Element {
   const [articleComment, setArticleComment] = useState<ArticleComment[]>([]);
   const [articles, setArticles] = useState<ArticleDetail[]>([]);
   const [recentArticles, setRecentArticles] = useState<Article[]>([]);
-  const [open, setOpen] = useState(false);
   const [formRequest, setFormRequest] =
     useState<FormRequestInterface>(initialFormRequest);
   const baseUrl =
@@ -181,33 +180,6 @@ export default function ArticleDetailPage(): JSX.Element {
     }
   }, [id]);
 
-  function copyValueWithUrl(valueToCopy: number): boolean {
-    const textToCopy = `${baseUrl}/seedspedia/news/${valueToCopy}`;
-
-    const textArea = document.createElement('textarea');
-    textArea.value = textToCopy;
-    document.body.appendChild(textArea);
-    textArea.select();
-
-    try {
-      const copied = document.execCommand('copy');
-      if (copied) {
-        setOpen(true);
-        setTimeout(() => {
-          setOpen(false);
-        }, 3000);
-        return true;
-      } else {
-        return false;
-      }
-    } catch (err) {
-      console.error('Error copying text: ', err);
-      return false;
-    } finally {
-      document.body.removeChild(textArea);
-    }
-  }
-
   function formatDateToIndonesian(dateStr: string): string {
     try {
       const parsedDate = parseISO(dateStr);
@@ -237,10 +209,6 @@ export default function ArticleDetailPage(): JSX.Element {
       const response = await postComment(formRequest, articleId);
       if (response.status === 200) {
         setLoading(false);
-        setOpen(true);
-        setTimeout(() => {
-          setOpen(false);
-        }, 3000);
         setComment('');
         setFormRequest(prevState => ({
           ...prevState,
@@ -342,20 +310,6 @@ export default function ArticleDetailPage(): JSX.Element {
     <>
       <PageGradient className="z-0 flex justify-center mt-20">
         <div className="z-20 relative overflow-hidden flex flex-col justify-center max-w-[1024px]">
-          {open && (
-            <div
-              id="myToast"
-              className="fixed right-10 z-50 bottom-10 px-5 py-4 border-r-8 border-seeds-button-green bg-white drop-shadow-lg rounded-tl-full rounded-bl-full"
-            >
-              <p className="text-md font-poppins">
-                <span className="mr-2 inline-block px-3 py-1 rounded-full bg-seeds-button-green text-white font-extrabold">
-                  i
-                </span>
-                {t('articleList.text16')}
-              </p>
-            </div>
-          )}
-          
           <Typography className="mt-5 md:mt-8 mb-4 text-2xl lg:text-5xl font-semibold bg-clip-text text-black px-5 font-poppins md:text-center">
             {articleDetail.title}
           </Typography>
@@ -412,8 +366,20 @@ export default function ArticleDetailPage(): JSX.Element {
                 viewBox="0 0 32 32"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                onClick={() => {
-                  copyValueWithUrl(articleDetail?.id ?? 0);
+                onClick={async () => {
+                  const articleName = articleDetail?.title
+                  const shareUrl = `${baseUrl}/seedspedia/news/${articleDetail?.id}`;
+                  if (navigator?.share !== null && navigator?.share !== undefined) {
+                    try {
+                      await navigator.share({
+                        title: articleName,
+                        text: `${t('articleList.text29')}`,
+                        url: shareUrl,
+                      });
+                    } catch {}
+                  } else {
+                    alert(t('articleList.text30'));
+                  }
                 }}
               >
                 <path
@@ -449,8 +415,20 @@ export default function ArticleDetailPage(): JSX.Element {
                   viewBox="0 0 32 32"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  onClick={() => {
-                    copyValueWithUrl(articleDetail?.id ?? 0);
+                  onClick={async () => {
+                    const articleName = articleDetail?.title
+                    const shareUrl = `${baseUrl}/seedspedia/news/${articleDetail?.id}`;
+                    if (navigator?.share !== null && navigator?.share !== undefined) {
+                      try {
+                        await navigator.share({
+                          title: articleName,
+                          text: `${t('articleList.text29')}`,
+                          url: shareUrl,
+                        });
+                      } catch {}
+                    } else {
+                      alert(t('articleList.text30'));
+                    }
                   }}
                   className='cursor-pointer'
                 >
@@ -509,7 +487,7 @@ export default function ArticleDetailPage(): JSX.Element {
                       :
                       (
                         <div className='flex flex-col justify-center items-center gap-2'>
-                          <div className='w-[100px] h-auto mt-4'>
+                          <div className='w-[100px] h-auto'>
                             <Image
                               alt={'SeedyEmpty'}
                               src={SeedyEmpty}

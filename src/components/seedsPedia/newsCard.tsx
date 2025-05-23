@@ -1,48 +1,24 @@
 'use-client';
+import { getErrorMessage } from '@/utils/error/errorHandler';
 import { type ArticleDetail } from '@/utils/interfaces/play.interface';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 interface ArticleCardProps {
   articleId: number;
   data?: ArticleDetail;
 }
 
 const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
+  const { t } = useTranslation();
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
-  const [open, setOpen] = useState(false);
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance/';
-
-  function copyValueWithUrl(valueToCopy: number): boolean {
-    const textToCopy = `${baseUrl}/seedspedia/news/${valueToCopy}`;
-
-    const textArea = document.createElement('textarea');
-    textArea.value = textToCopy;
-    document.body.appendChild(textArea);
-    textArea.select();
-
-    try {
-      const copied = document.execCommand('copy');
-      if (copied) {
-        setOpen(true);
-        setTimeout(() => {
-          setOpen(false);
-        }, 3000);
-        return true;
-      } else {
-        return false;
-      }
-    } catch (err) {
-      console.error('Error copying text: ', err);
-      return false;
-    } finally {
-      document.body.removeChild(textArea);
-    }
-  }
 
   useEffect(() => {
     if (data !== undefined) {
@@ -82,19 +58,6 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
   const isImageValid = isImageUrlValid(imageUrl);
   return (
     <>
-      {open && (
-        <div
-          id="myToast"
-          className="fixed right-10 z-50 bottom-10 px-5 py-4 border-r-8 border-seeds-button-green bg-white drop-shadow-lg"
-        >
-          <p className="text-sm">
-            <span className="mr-2 inline-block px-3 py-1 rounded-full bg-seeds-button-green text-white font-extrabold">
-              i
-            </span>
-            Article copied to Clipboard
-          </p>
-        </div>
-      )}
       <div className="bg-[#FFF] lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
         <Link href={`/seedspedia/news/${articleDetail?.id ?? 0}`}>
           {isImageValid ? (
@@ -138,8 +101,21 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
               viewBox="0 0 25 25"
               fill="none"
               className="cursor-pointer"
-              onClick={() => {
-                copyValueWithUrl(articleDetail?.id ?? 0);
+              onClick={async () => {
+                const shareUrl = `${baseUrl}/seedspedia/news/${articleId}`;
+                if (navigator?.share !== null && navigator?.share !== undefined) {
+                  try {
+                    await navigator.share({
+                      title: articleDetail?.title ?? '',
+                      text: `${t('articleList.text29')}`,
+                      url: shareUrl,
+                    });
+                  } catch (error: any) {
+                    toast.error(getErrorMessage(error));
+                  }
+                } else {
+                  alert(t('articleList.text30'));
+                }
               }}
             >
               <path

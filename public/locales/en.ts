@@ -1331,6 +1331,9 @@ export default {
     text25: 'Comment',
     text26: 'Comments',
     text27: 'Type your comment...',
+    text28: 'Check out this article on SeedsPedia!',
+    text29: 'Check out this news on SeedsPedia!',
+    text30: 'Share not supported. Link copied instead!',
     article: {
       sort: {
         all: 'All',
@@ -2221,7 +2224,7 @@ export default {
       totalCash: 'Total Cash',
       assetTypeWarning: 'This asset type is not allowed in this tournament!',
       noAsset: 'Asset not found',
-      noAssetMessage: 'Try another sub category find some asset'
+      noAssetMessage: 'Try another sub category find some asset',
     },
     portfolio: {
       investmentValue: 'Investment Value',
@@ -2337,6 +2340,10 @@ export default {
       members: 'members',
       description: 'Discover the experts for more insights',
       seeAll: 'See All'
+    },
+    share: {
+      text1: 'Check out',
+      text2: 'Share not supported. Link copied instead!',
     }
   },
   academy: {

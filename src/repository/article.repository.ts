@@ -82,18 +82,23 @@ export const getArticleById = async (id: number): Promise<any> => {
 
 export const getArticleByIdHome = async (id: string): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
+  const headers: Record<string, string> = {};
+
+  if (!isGuest() && (accessToken !== null && accessToken !== '')) {
+    headers.Authorization = `Bearer ${accessToken}`;
+  }
 
   try {
     const response = await articleService.get(`/news/v1/${id}`, {
-      headers: {
-        Authorization: isGuest() ? '' : `Bearer ${accessToken ?? ''}`
-      }
+      headers
     });
+
     return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;
   }
 };
+
 export const getArticleComment = async (id: string): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 

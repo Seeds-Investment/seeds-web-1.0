@@ -2,7 +2,6 @@
 import Footer from '@/components/layouts/Footer';
 import Button from '@/components/ui/button/Button';
 import { generateArticleDate } from '@/helpers/dateFormat';
-import { isGuest } from '@/helpers/guest';
 import {
   getArticle,
   getArticleByIdHome,
@@ -13,6 +12,7 @@ import {
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import i18n from '@/utils/common/i18n';
+import { getErrorMessage } from '@/utils/error/errorHandler';
 import { type CategoryI } from '@/utils/interfaces/article.interface';
 import { Input, Typography } from '@material-tailwind/react';
 import { format, parseISO } from 'date-fns';
@@ -24,6 +24,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineClose } from 'react-icons/ai';
 import Slider from 'react-slick';
+import { toast } from 'react-toastify';
 import author from '../../../../public/assets/author.png';
 import profile from '../../../../public/assets/profile.png';
 import SeedyEmpty from '../../../../public/assets/seedy-empty.svg';
@@ -140,7 +141,6 @@ export default function ArticleDetailPage(): JSX.Element {
   const [articleComment, setArticleComment] = useState<ArticleComment[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [recentArticles, setRecentArticles] = useState<Article[]>([]);
-  const [open, setOpen] = useState(false);
   const [formRequest, setFormRequest] =
     useState<FormRequestInterface>(initialFormRequest);
   const baseUrl =
@@ -272,33 +272,6 @@ export default function ArticleDetailPage(): JSX.Element {
     }
   }, [id]);
 
-  function copyValueWithUrl(valueToCopy: number): boolean {
-    const textToCopy = `${baseUrl}/homepage/news/${valueToCopy}`;
-
-    const textArea = document.createElement('textarea');
-    textArea.value = textToCopy;
-    document.body.appendChild(textArea);
-    textArea.select();
-
-    try {
-      const copied = document.execCommand('copy');
-      if (copied) {
-        setOpen(true);
-        setTimeout(() => {
-          setOpen(false);
-        }, 3000);
-        return true;
-      } else {
-        return false;
-      }
-    } catch (err) {
-      console.error('Error copying text: ', err);
-      return false;
-    } finally {
-      document.body.removeChild(textArea);
-    }
-  }
-
   function formatDateToIndonesian(dateStr: string): string {
     try {
       const parsedDate = parseISO(dateStr);
@@ -416,19 +389,6 @@ export default function ArticleDetailPage(): JSX.Element {
   return (
     <>
       <div className="relative overflow-hidden flex flex-col justify-center rounded-lg md:bg-white">
-        {open && (
-          <div
-            id="myToast"
-            className="fixed right-10 z-50 top-10 px-5 py-4 border-r-8 border-seeds-button-green bg-white drop-shadow-lg rounded-tl-full rounded-bl-full"
-          >
-            <p className="text-md font-poppins">
-              <span className="mr-2 inline-block px-3 py-1 rounded-full bg-seeds-button-green text-white font-extrabold">
-                i
-              </span>
-              {t('articleList.text16')}
-            </p>
-          </div>
-        )}
         <Typography className="my-4 text-lg lg:text-5xl font-semibold bg-clip-text text-black px-5 font-poppins md:text-center">
           {articleDetail.title}
         </Typography>
@@ -445,6 +405,62 @@ export default function ArticleDetailPage(): JSX.Element {
           ) : (
             <img src={defaultNews} alt="Image" className="w-full" />
           )}
+        </div>
+
+        <div className="flex flex-row justify-between items-center my-4 px-5 md:hidden">
+          <div className="flex gap-3 justify-center items-center">
+            <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden shrink-0">
+              <Image 
+                src={
+                  articleDetail?.author === 'No Author'
+                    ? profile
+                    : author
+                } 
+                alt="Author" 
+                layout="fill" 
+                objectFit="cover" 
+              />
+            </div>
+            <div className="flex flex-col">
+              <Typography className="text-sm md:text-xl font-semibold text-[#262626] mt-2">
+                {articleDetail.author}
+              </Typography>
+              <p className="text-sm font-semibold text-[#8A8A8A]">
+                {formatDateToIndonesian(articleDetail?.publicationDate)}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-row justify-center items-center">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              onClick={async () => {
+                const articleName = articleDetail?.title
+                const shareUrl = `${baseUrl}/homepage/news/${articleDetail?.id}`;
+                if (navigator?.share !== null && navigator?.share !== undefined) {
+                  try {
+                    await navigator.share({
+                      title: articleName,
+                      text: `${t('articleList.text29')}`,
+                      url: shareUrl,
+                    });
+                  } catch (error: any) {
+                    toast.error(getErrorMessage(error));
+                  }
+                } else {
+                  alert(t('articleList.text30'));
+                }
+              }}
+            >
+              <path
+                d="M21.5612 19.6496C20.8499 19.6496 20.1936 19.8897 19.6795 20.2907L14.5087 16.6916C14.5953 16.2344 14.5953 15.7659 14.5087 15.3087L19.6795 11.7096C20.1936 12.1106 20.8499 12.3507 21.5612 12.3507C23.2132 12.3507 24.5558 11.059 24.5558 9.46953C24.5558 7.8801 23.2132 6.58838 21.5612 6.58838C19.9091 6.58838 18.5665 7.8801 18.5665 9.46953C18.5665 9.74804 18.6064 10.0145 18.6838 10.2691L13.7726 13.6904C13.0439 12.7612 11.8859 12.1586 10.5808 12.1586C8.3747 12.1586 6.58789 13.8777 6.58789 16.0001C6.58789 18.1226 8.3747 19.8417 10.5808 19.8417C11.8859 19.8417 13.0439 19.239 13.7726 18.3099L18.6838 21.7312C18.6064 21.9857 18.5665 22.2546 18.5665 22.5308C18.5665 24.1202 19.9091 25.4119 21.5612 25.4119C23.2132 25.4119 24.5558 24.1202 24.5558 22.5308C24.5558 20.9413 23.2132 19.6496 21.5612 19.6496ZM21.5612 8.22103C22.2774 8.22103 22.8588 8.78046 22.8588 9.46953C22.8588 10.1586 22.2774 10.718 21.5612 10.718C20.8449 10.718 20.2635 10.1586 20.2635 9.46953C20.2635 8.78046 20.8449 8.22103 21.5612 8.22103ZM10.5808 18.113C9.37042 18.113 8.38468 17.1646 8.38468 16.0001C8.38468 14.8357 9.37042 13.8873 10.5808 13.8873C11.7911 13.8873 12.7768 14.8357 12.7768 16.0001C12.7768 17.1646 11.7911 18.113 10.5808 18.113ZM21.5612 23.7793C20.8449 23.7793 20.2635 23.2198 20.2635 22.5308C20.2635 21.8417 20.8449 21.2823 21.5612 21.2823C22.2774 21.2823 22.8588 21.8417 22.8588 22.5308C22.8588 23.2198 22.2774 23.7793 21.5612 23.7793Z"
+                fill="#262626"
+              />
+            </svg>
+          </div>
         </div>
 
         <div className='px-5 md:flex'>
@@ -526,9 +542,21 @@ export default function ArticleDetailPage(): JSX.Element {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 onClick={async () => {
-                  isGuest()
-                    ? await router.push('/auth')
-                    : copyValueWithUrl(articleDetail?.id ?? 0);
+                  const articleName = articleDetail?.title
+                  const shareUrl = `${baseUrl}/homepage/news/${articleDetail?.id}`;
+                  if (navigator?.share !== null && navigator?.share !== undefined) {
+                    try {
+                      await navigator.share({
+                        title: articleName,
+                        text: `${t('articleList.text29')}`,
+                        url: shareUrl,
+                      });
+                    } catch (error: any) {
+                      toast.error(getErrorMessage(error));
+                    }
+                  } else {
+                    alert(t('articleList.text30'));
+                  }
                 }}
                 className='cursor-pointer'
               >
@@ -587,7 +615,7 @@ export default function ArticleDetailPage(): JSX.Element {
                     :
                     (
                       <div className='flex flex-col justify-center items-center gap-2'>
-                        <div className='w-[100px] h-auto mt-4'>
+                        <div className='w-[100px] h-auto'>
                           <Image
                             alt={'SeedyEmpty'}
                             src={SeedyEmpty}

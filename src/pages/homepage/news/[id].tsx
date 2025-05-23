@@ -12,6 +12,7 @@ import {
   postLike
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import i18n from '@/utils/common/i18n';
 import { type CategoryI } from '@/utils/interfaces/article.interface';
 import { Input, Typography } from '@material-tailwind/react';
 import { format, parseISO } from 'date-fns';
@@ -21,10 +22,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AiOutlineClose } from 'react-icons/ai';
 import Slider from 'react-slick';
 import author from '../../../../public/assets/author.png';
 import profile from '../../../../public/assets/profile.png';
-import SeedyEmpty from '../../../../public/assets/seedy-empty.png';
+import SeedyEmpty from '../../../../public/assets/seedy-empty.svg';
 
 interface UserData {
   name: string;
@@ -155,8 +157,8 @@ export default function ArticleDetailPage(): JSX.Element {
 
   const fetchArticles = async (): Promise<void> => {
     try {
-      const response = await getArticle(params);
-      const responseRecent = await getArticle(recentParams);
+      const response = await getArticle({ ...params, language: i18n.language });
+      const responseRecent = await getArticle({ ...recentParams, language: i18n.language });
       if (response.status === 200) {
         setArticles(response.data);
       } else {
@@ -538,13 +540,22 @@ export default function ArticleDetailPage(): JSX.Element {
             </div>
           
             <div className='mt-12'>
-              <input
-                type='text'
-                placeholder={`${t('articleList.text23')}`}
-                value={searchTerm}
-                onChange={e => { setSearchTerm(e.target.value); }}
-                className='w-full px-4 py-2 mb-3 border border-gray-400 text-gray-800 placeholder-gray-500 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-seeds-button-green focus:border-seeds-button-green transition duration-200'
-              />
+              <div className="relative w-full mb-3">
+                <input
+                  type="text"
+                  placeholder={`${t('articleList.text23')}`}
+                  value={searchTerm}
+                  onChange={e => { setSearchTerm(e.target.value); }}
+                  className="w-full px-4 py-2 pr-10 border border-gray-400 text-gray-800 placeholder-gray-500 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-seeds-button-green focus:border-seeds-button-green transition duration-200"
+                />
+                {searchTerm !== '' && (
+                  <AiOutlineClose
+                    onClick={() => { setSearchTerm(''); }}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer hover:text-red-500"
+                    size={18}
+                  />
+                )}
+              </div>
 
               <Typography className='text-xl font-semibold font-poppins mb-3'>
                 {t('articleList.text18')}
@@ -576,7 +587,7 @@ export default function ArticleDetailPage(): JSX.Element {
                     :
                     (
                       <div className='flex flex-col justify-center items-center gap-2'>
-                        <div className='w-[250px] h-auto mt-4'>
+                        <div className='w-[100px] h-auto mt-4'>
                           <Image
                             alt={'SeedyEmpty'}
                             src={SeedyEmpty}
@@ -585,8 +596,11 @@ export default function ArticleDetailPage(): JSX.Element {
                             className='w-full h-auto'
                           />
                         </div>
-                        <Typography className="font-poppins text-md italic">
-                          {t('articleList.text19')} <span className="font-semibold italic">{`"${searchTerm}"`}</span> {t('articleList.text20')}
+                        <Typography className="font-poppins font-medium text-md text-[#7C7C7C] text-center">
+                          {t('articleList.text19')}
+                        </Typography>
+                        <Typography className="font-poppins text-sm text-center">
+                          {t('articleList.text20')}
                         </Typography>
                       </div>
                     )

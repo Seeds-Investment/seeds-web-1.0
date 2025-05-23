@@ -2,6 +2,7 @@ import GrayArrow from '@/assets/product/GrayArrow.svg';
 import WhiteArrow from '@/assets/product/WhiteArrow.svg';
 import shareButton from '@/assets/shareButton.svg';
 import { getQuizTrending } from '@/repository/quiz.repository';
+import { getErrorMessage } from '@/utils/error/errorHandler';
 import type { TopQuiz } from '@/utils/interfaces/quiz.interfaces';
 import {
   Button,
@@ -15,6 +16,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import 'swiper/css';
 import { Autoplay, EffectCoverflow } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
@@ -177,7 +179,9 @@ export const SlideQuiz: React.FC = () => {
                                   text: `${t('tournament.share.text1')} ${item?.name}`,
                                   url: shareUrl,
                                 });
-                              } catch {}
+                              } catch (error: any) {
+                                toast.error(getErrorMessage(error));
+                              }
                             } else {
                               await navigator.clipboard.writeText(shareUrl);
                               alert(t('tournament.share.text2'));

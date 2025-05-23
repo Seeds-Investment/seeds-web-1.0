@@ -12,6 +12,7 @@ import {
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import i18n from '@/utils/common/i18n';
+import { getErrorMessage } from '@/utils/error/errorHandler';
 import { type CategoryI } from '@/utils/interfaces/article.interface';
 import { type ArticleDetail } from '@/utils/interfaces/play.interface';
 import { type IOtherUserProfile } from '@/utils/interfaces/user.interface';
@@ -25,6 +26,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineClose } from 'react-icons/ai';
 import Slider from 'react-slick';
+import { toast } from 'react-toastify';
 import author from '../../../../public/assets/author.png';
 import profile from '../../../../public/assets/profile.png';
 import SeedyEmpty from '../../../../public/assets/seedy-empty.svg';
@@ -376,7 +378,9 @@ export default function ArticleDetailPage(): JSX.Element {
                         text: `${t('articleList.text29')}`,
                         url: shareUrl,
                       });
-                    } catch {}
+                    } catch (error: any) {
+                      toast.error(getErrorMessage(error));
+                    }
                   } else {
                     alert(t('articleList.text30'));
                   }
@@ -425,7 +429,9 @@ export default function ArticleDetailPage(): JSX.Element {
                           text: `${t('articleList.text29')}`,
                           url: shareUrl,
                         });
-                      } catch {}
+                      } catch (error: any) {
+                        toast.error(getErrorMessage(error));
+                      }
                     } else {
                       alert(t('articleList.text30'));
                     }

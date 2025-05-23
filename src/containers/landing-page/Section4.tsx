@@ -2,8 +2,7 @@
 import { getBanner } from '@/repository/discover.repository';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
+import { useCallback, useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
@@ -52,31 +51,21 @@ const NextArrow = (props: ArrowProps): React.ReactElement => {
   );
 };
 
-const Section1 = (): React.ReactElement => {
+const Section4 = (): React.ReactElement => {
   const router = useRouter();
-  const [isBottom, setBottom] = useState(0);
-  const measurement = 900;
 
-  const { ref, inView, entry } = useInView({
-    threshold: 0.2
-  });
-
-  useEffect(() => {
-    const bottom = entry?.boundingClientRect.bottom ?? 0;
-    setBottom(bottom);
-  }, [entry]);
   const [bannerAsset, setBannerAsset] = useState<Banner[]>([]);
 
-  useEffect(() => {
-    const fetchBannerAsset = async (): Promise<void> => {
-      try {
-        const res = await getBanner({ page: 1, limit: 10, type: 'main' });
-        setBannerAsset(res.data);
-      } catch (error) {
-        console.error('Error fetching trending assets:', error);
-      }
-    };
+  const fetchBannerAsset = useCallback(async (): Promise<void> => {
+    try {
+      const res = await getBanner({ page: 1, limit: 10, type: 'main' });
+      setBannerAsset(res.data);
+    } catch (error) {
+      console.error('Error fetching trending assets:', error);
+    }
+  }, []);
 
+  useEffect(() => {
     void fetchBannerAsset();
   }, []);
 
@@ -95,14 +84,7 @@ const Section1 = (): React.ReactElement => {
 
   return (
     <section
-      ref={ref}
-      className={`h-auto min-w-full cursor-default relative mt-5 lg:mt-20 font-poppins text-center ${
-        inView && isBottom >= measurement
-          ? 'animate-fade-in-slide'
-          : isBottom >= measurement
-          ? 'animate-fade-out-slide'
-          : ''
-      }`}
+      className={`h-auto min-w-full cursor-default relative mt-5 lg:mt-20 font-poppins text-center`}
     >
       <div className="w-full h-auto font-poppins cursor-default">
         <Slider {...sliderSettings}>
@@ -126,4 +108,4 @@ const Section1 = (): React.ReactElement => {
   );
 };
 
-export default Section1;
+export default Section4;

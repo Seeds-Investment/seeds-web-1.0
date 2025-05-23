@@ -1,38 +1,14 @@
 'use client';
-import Coin1080 from '@/constants/Coin1080.json';
-import Lottie from 'lottie-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useInView } from 'react-intersection-observer';
 
 export default function Section5(): React.ReactElement {
   const { t } = useTranslation();
-  //   const width = useWindowInnerWidth();
-  const [isBottom, setBottom] = useState(0);
-  const measurement = 900;
-
-  const { ref, inView, entry } = useInView({
-    threshold: 0.2
-  });
-  useEffect(() => {
-    const bottom = entry?.boundingClientRect.bottom ?? 0;
-    setBottom(bottom);
-  }, [entry]);
 
   return (
-    <section
-      ref={ref}
-      className="h-auto min-w-full cursor-default relative font-poppins text-center"
-    >
+    <section className="h-auto min-w-full cursor-default relative font-poppins text-center">
       <div
-        className={`h-auto min-w-full my-20 cursor-default font-poppins text-center z-10 ${
-          inView && isBottom >= measurement
-            ? 'animate-fade-in-slide'
-            : isBottom >= measurement
-            ? 'animate-fade-out-slide'
-            : ''
-        }`}
+        className={`h-auto min-w-full my-20 cursor-default font-poppins text-center z-10`}
       >
         <Image
           src={
@@ -59,7 +35,18 @@ export default function Section5(): React.ReactElement {
           </div>
         </div>
         <div className="flex justify-center">
-          <Lottie animationData={Coin1080} className="lg:w-[350px] w-[200px]" />
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="lg:w-[350px] w-[200px]"
+          >
+            <source
+              src="/assets/landing-page/Coin1080.webm"
+              type="video/webm"
+            />
+          </video>
         </div>
       </div>
     </section>

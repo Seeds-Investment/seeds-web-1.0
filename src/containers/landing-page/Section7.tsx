@@ -1,8 +1,6 @@
-import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useEffect, useState, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useInView } from 'react-intersection-observer';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import { Autoplay, Pagination } from 'swiper/modules';
@@ -18,18 +16,6 @@ interface badges {
 }
 export default function Section6(): React.ReactElement {
   const { t } = useTranslation();
-
-  const [isBottom, setBottom] = useState(0);
-  const measurement = 900;
-
-  const { ref, inView, entry } = useInView({
-    threshold: 0.2
-  });
-  useEffect(() => {
-    const bottom = entry?.boundingClientRect.bottom ?? 0;
-    setBottom(bottom);
-    return () => {};
-  }, [entry]);
 
   const persons = [
     {
@@ -69,30 +55,17 @@ export default function Section6(): React.ReactElement {
     return (
       <div className="flex rounded-b-[25px] p-8 h-24 bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF] py-3 px-2">
         <div className="flex flex-col items-start justify-center text-start py-3 px-2">
-          <Typography className="font-poppins text-white font-bold">
-            {name}
-          </Typography>
-          <Typography className="font-poppins text-white font-bold">
-            {desc}
-          </Typography>
+          <p className="font-poppins text-white font-bold">{name}</p>
+          <p className="font-poppins text-white font-bold">{desc}</p>
         </div>
       </div>
     );
   };
 
   return (
-    <section
-      ref={ref}
-      className="h-auto min-w-full cursor-default relative font-poppins text-center"
-    >
+    <section className="h-auto min-w-full cursor-default relative font-poppins text-center">
       <div
-        className={`h-auto min-w-full mt-20 font-poppins cursor-default text-center ${
-          inView && isBottom >= measurement
-            ? 'animate-fade-in-slide'
-            : isBottom >= measurement
-            ? 'animate-fade-out-slide'
-            : ''
-        }`}
+        className={`h-auto min-w-full mt-20 font-poppins cursor-default text-center`}
       >
         <div className="justify-center items-center text-center">
           <div className=" w-full z-10 mt-5">

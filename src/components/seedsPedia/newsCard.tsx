@@ -18,7 +18,7 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-ali.seeds.finance/';
 
   function copyValueWithUrl(valueToCopy: number): boolean {
-    const textToCopy = `${baseUrl}/article/${valueToCopy}`;
+    const textToCopy = `${baseUrl}/seedspedia/news/${valueToCopy}`;
 
     const textArea = document.createElement('textarea');
     textArea.value = textToCopy;

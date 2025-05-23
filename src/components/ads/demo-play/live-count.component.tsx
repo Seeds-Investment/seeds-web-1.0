@@ -2,6 +2,7 @@ import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
 import countries from '@/constants/countries.json';
 import { handleChangePhoneNumber } from '@/helpers/authFormData';
 import TrackerEvent from '@/helpers/GTM';
+import { gassPost } from '@/repository/gass.repository';
 import {
   Button,
   Input,
@@ -14,7 +15,7 @@ import Image from 'next/image';
 import cheerleader from 'public/assets/ads/cheerleader.png';
 import icon from 'public/assets/ads/kol.png';
 import vector from 'public/assets/ads/vectorBack.svg';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
 
@@ -28,13 +29,13 @@ const LiveCount = (): React.ReactElement => {
     phoneNumber: '',
     email: ''
   });
-
+  const [visitorId, setVisitorId] = useState('');
   const [change, setChange] = useState(true);
   const [disabled, setDisabled] = useState(false);
-  const handleSubmit = (): void => {
+  const handleSubmit = async (): Promise<void> => {
     setDisabled(true);
     TrackerEvent({
-      event: 'SW_click_rate',
+      event: 'SW_submit_form',
       data: {
         ...formData,
         phoneNumber:
@@ -43,7 +44,24 @@ const LiveCount = (): React.ReactElement => {
             : ''
       }
     });
+    await gassPost({
+      act: 'form_trigger_custom',
+      phone:
+        formData.phoneNumber.length !== 0
+          ? `${countries[country].dialCode}${formData.phoneNumber}`
+          : '',
+      email: formData.email,
+      event: 'prospek',
+      visitor_id: visitorId
+    });
   };
+  useEffect(() => {
+    const visitorId = document.cookie
+      .split('; ')
+      .find(cookie => cookie.startsWith('visitor_id='))
+      ?.split('=')[1];
+    setVisitorId(visitorId ?? '');
+  }, []);
   const data = [
     {
       upper: '96%',
@@ -115,7 +133,7 @@ const LiveCount = (): React.ReactElement => {
           } rounded-full p-0 sm:p-2 gap-4`}
           onSubmit={e => {
             e.preventDefault();
-            handleSubmit();
+            void handleSubmit();
           }}
         >
           {change ? (

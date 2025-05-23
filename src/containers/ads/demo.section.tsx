@@ -3,11 +3,17 @@ import Interactive from '@/components/ads/demo-play/interactive.component';
 import LiveCount from '@/components/ads/demo-play/live-count.component';
 import Ready from '@/components/ads/demo-play/ready.component';
 import ReadyTo from '@/components/ads/demo-play/readyTo.component';
+import TrackerEvent from '@/helpers/GTM';
 import React, { useState } from 'react';
 
 const Demo = (): React.ReactElement => {
-  const [state,setState]=useState(0)
-  const handleState=():void=>{setState(1)}
+  const [state, setState] = useState(0);
+  const handleState = (): void => {
+    setState(1);
+    TrackerEvent({
+      event: 'SW_click_rate'
+    });
+  };
   return (
     <div className="flex flex-col font-poppins justify-center items-center">
       {state !== 0 ? (

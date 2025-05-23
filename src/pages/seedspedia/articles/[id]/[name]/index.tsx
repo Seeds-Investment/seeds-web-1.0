@@ -23,10 +23,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AiOutlineClose } from 'react-icons/ai';
 import Slider from 'react-slick';
 import author from '../../../../../../public/assets/author.png';
 import profile from '../../../../../../public/assets/profile.png';
-import SeedyEmpty from '../../../../../../public/assets/seedy-empty.png';
+import SeedyEmpty from '../../../../../../public/assets/seedy-empty.svg';
 
 export interface ArticleListRoot {
   promoCodeList: Article[];
@@ -411,12 +412,12 @@ export default function ArticleDetailPage(): JSX.Element {
             pageTitle={articleDetail.meta_title}
           />
         )}
-      <PageGradient className="z-0 flex justify-center">
+      <PageGradient className="z-0 flex justify-center mt-20">
         <div className="z-20 relative overflow-hidden flex flex-col justify-center max-w-[1024px]">
           {open && (
             <div
               id="myToast"
-              className="fixed right-10 z-50 top-10 px-5 py-4 border-r-8 border-seeds-button-green bg-white drop-shadow-lg rounded-tl-full rounded-bl-full"
+              className="fixed right-10 z-50 bottom-10 px-5 py-4 border-r-8 border-seeds-button-green bg-white drop-shadow-lg rounded-tl-full rounded-bl-full"
             >
               <p className="text-md font-poppins">
                 <span className="mr-2 inline-block px-3 py-1 rounded-full bg-seeds-button-green text-white font-extrabold">
@@ -427,7 +428,7 @@ export default function ArticleDetailPage(): JSX.Element {
             </div>
           )}
 
-          <Typography className="mt-5 md:mt-16 mb-4 text-2xl lg:text-5xl font-semibold bg-clip-text text-black px-5 font-poppins md:text-center">
+          <Typography className="mt-5 md:mt-8 mb-4 text-2xl lg:text-5xl font-semibold bg-clip-text text-black px-5 font-poppins md:text-center bg-orange-300">
             {articleDetail.title}
           </Typography>
 
@@ -634,13 +635,22 @@ export default function ArticleDetailPage(): JSX.Element {
               </div>
               
               <div className='mt-12'>
-                <input
-                  type='text'
-                  placeholder={`${t('articleList.text23')}`}
-                  value={searchTerm}
-                  onChange={e => { setSearchTerm(e.target.value); }}
-                  className='w-full px-4 py-2 mb-3 border border-gray-400 text-gray-800 placeholder-gray-500 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-seeds-button-green focus:border-seeds-button-green transition duration-200'
-                />
+                <div className="relative w-full mb-3">
+                  <input
+                    type="text"
+                    placeholder={`${t('articleList.text23')}`}
+                    value={searchTerm}
+                    onChange={e => { setSearchTerm(e.target.value); }}
+                    className="w-full px-4 py-2 pr-10 border border-gray-400 text-gray-800 placeholder-gray-500 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-seeds-button-green focus:border-seeds-button-green transition duration-200"
+                  />
+                  {searchTerm !== '' && (
+                    <AiOutlineClose
+                      onClick={() => { setSearchTerm(''); }}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer hover:text-red-500"
+                      size={18}
+                    />
+                  )}
+                </div>
 
                 <Typography className='text-xl font-semibold font-poppins mb-3'>
                   {t('articleList.text18')}
@@ -672,7 +682,7 @@ export default function ArticleDetailPage(): JSX.Element {
                       :
                       (
                         <div className='flex flex-col justify-center items-center gap-2'>
-                          <div className='w-[250px] h-auto mt-4'>
+                          <div className='w-[100px] h-auto mt-4'>
                             <Image
                               alt={'SeedyEmpty'}
                               src={SeedyEmpty}
@@ -681,8 +691,11 @@ export default function ArticleDetailPage(): JSX.Element {
                               className='w-full h-auto'
                             />
                           </div>
-                          <Typography className="font-poppins text-md italic">
-                            {t('articleList.text19')} <span className="font-semibold italic">{`"${searchTerm}"`}</span> {t('articleList.text20')}
+                          <Typography className="font-poppins font-medium text-md text-[#7C7C7C] text-center">
+                            {t('articleList.text19')}
+                          </Typography>
+                          <Typography className="font-poppins text-sm text-center">
+                            {t('articleList.text20')}
                           </Typography>
                         </div>
                       )

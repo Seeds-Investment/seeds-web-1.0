@@ -2556,6 +2556,8 @@ export default {
     earnings: 'Earnings',
     withdrawal: 'Withdrawal',
     withdraw: 'Withdraw',
+    all: 'All',
+    search: 'Search...',
     completed: 'Completed',
     onProgress: 'Pending',
     rejected: 'Rejected',

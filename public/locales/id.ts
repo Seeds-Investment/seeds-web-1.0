@@ -2486,6 +2486,8 @@ export default {
     earnings: 'Penghasilan',
     withdrawal: 'Pendapatan',
     withdraw: 'Penarikan',
+    all: 'Semua',
+    search: 'Cari...',
     completed: 'Selesai',
     onProgress: 'Sedang diproses',
     rejected: 'Ditolak',

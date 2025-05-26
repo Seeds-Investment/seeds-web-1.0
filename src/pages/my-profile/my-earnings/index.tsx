@@ -26,6 +26,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FiX } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 interface EarningHistory {
@@ -60,8 +61,12 @@ const MyEarnings = (): React.ReactElement => {
   const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(false);
   const [earningHistoryParams, setEarningHistoryParams] = useState({
     limit: 8,
-    page: 1
+    page: 1,
+    search: '',
+    group: ''
   });
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     fetchData()
@@ -79,7 +84,7 @@ const MyEarnings = (): React.ReactElement => {
     if (id !== null && userInfo !== undefined) {
       void fetchEarningHistory(userInfo?.preferredCurrency);
     }
-  }, [id, userInfo, earningHistoryParams.page]);
+  }, [id, userInfo, earningHistoryParams]);
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -163,6 +168,91 @@ const MyEarnings = (): React.ReactElement => {
           <Typography className="text-lg md:text-xl font-semibold font-poppins">
             {t('earning.earningHistory')}
           </Typography>
+        </div>
+        <div className='w-full mt-4'>
+          <div className="relative w-full">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={e => { 
+                setSearchTerm(e.target.value);
+
+                if (debounceTimeout) {
+                  clearTimeout(debounceTimeout);
+                }
+            
+                const timeout = setTimeout(() => {
+                  setEarningHistoryParams((prev) => ({
+                    ...prev,
+                    page: 1,
+                    search: e.target.value
+                  }));
+                }, 500);
+            
+                setDebounceTimeout(timeout);
+              }}
+              placeholder={`${t('earning.search')}`}
+              className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-seeds-button-green"
+            />
+            {earningHistoryParams?.search !== '' && (
+              <button
+                onClick={() => { setEarningHistoryParams({ ...earningHistoryParams, search: '' }) }}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                <FiX size={18} />
+              </button>
+            )}
+          </div>
+          <div className='w-full flex gap-2 mt-4'>
+            <Typography 
+              className={`
+                w-full py-2 px-4 cursor-pointer rounded-lg text-center font-medium text-sm
+                ${
+                  earningHistoryParams?.group === ''
+                    ? 'bg-seeds-button-green text-white hover:bg-seeds-green duration-200'
+                    : 'bg-white text-[#BDBDBD] border border-[#BDBDBD]'
+                }
+              `}
+              onClick={() => { 
+                setEarningHistoryParams({ ...earningHistoryParams, group: '', page: 1, search: '' })
+                setSearchTerm('')
+              }}
+            >
+              {t('earning.all')}
+            </Typography>
+            <Typography
+              className={`
+                w-full py-2 px-4 cursor-pointer rounded-lg text-center font-medium text-sm
+                ${
+                  earningHistoryParams?.group === 'OUT'
+                    ? 'bg-seeds-button-green text-white hover:bg-seeds-green duration-300'
+                    : 'bg-white text-[#BDBDBD] border border-[#BDBDBD]'
+                }
+              `}
+              onClick={() => { 
+                setEarningHistoryParams({ ...earningHistoryParams, group: 'OUT', page: 1, search: '' })
+                setSearchTerm('')
+              }}
+            >
+              {t('earning.withdrawal')}
+            </Typography>
+            <Typography
+              className={`
+                w-full py-2 px-4 cursor-pointer rounded-lg text-center font-medium text-sm
+                ${
+                  earningHistoryParams?.group === 'IN'
+                    ? 'bg-seeds-button-green text-white hover:bg-seeds-green duration-300'
+                    : 'bg-white text-[#BDBDBD] border border-[#BDBDBD]'
+                }
+              `}
+              onClick={() => { 
+                setEarningHistoryParams({ ...earningHistoryParams, group: 'IN', page: 1, search: '' }) 
+                setSearchTerm('')
+              }}
+            >
+              {t('earning.earnings')}
+            </Typography>
+          </div>
         </div>
 
         {/* Earnings and Withdraws */}

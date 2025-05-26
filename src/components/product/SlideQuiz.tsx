@@ -2,7 +2,6 @@ import GrayArrow from '@/assets/product/GrayArrow.svg';
 import WhiteArrow from '@/assets/product/WhiteArrow.svg';
 import shareButton from '@/assets/shareButton.svg';
 import { getQuizTrending } from '@/repository/quiz.repository';
-import { getErrorMessage } from '@/utils/error/errorHandler';
 import type { TopQuiz } from '@/utils/interfaces/quiz.interfaces';
 import {
   Button,
@@ -179,8 +178,8 @@ export const SlideQuiz: React.FC = () => {
                                   text: `${t('tournament.share.text1')} ${item?.name}`,
                                   url: shareUrl,
                                 });
-                              } catch (error: any) {
-                                toast.error(getErrorMessage(error));
+                              } catch {
+                                toast(t('articleList.text31'));
                               }
                             } else {
                               await navigator.clipboard.writeText(shareUrl);

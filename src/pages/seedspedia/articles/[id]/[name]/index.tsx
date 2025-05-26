@@ -13,7 +13,6 @@ import {
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import i18n from '@/utils/common/i18n';
-import { getErrorMessage } from '@/utils/error/errorHandler';
 import { type CategoryI } from '@/utils/interfaces/article.interface';
 import { type IOtherUserProfile } from '@/utils/interfaces/user.interface';
 import { Input, Typography } from '@material-tailwind/react';
@@ -507,8 +506,8 @@ export default function ArticleDetailPage(): JSX.Element {
                         text: `${t('articleList.text28')}`,
                         url: shareUrl,
                       });
-                    } catch (error: any) {
-                      toast.error(getErrorMessage(error));
+                    } catch {
+                      toast(t('articleList.text31'));
                     }
                   } else {
                     alert(t('articleList.text30'));
@@ -612,8 +611,8 @@ export default function ArticleDetailPage(): JSX.Element {
                           text: `${t('articleList.text28')}`,
                           url: shareUrl,
                         });
-                      } catch (error: any) {
-                        toast.error(getErrorMessage(error));
+                      } catch {
+                        toast(t('articleList.text31'));
                       }
                     } else {
                       alert(t('articleList.text30'));

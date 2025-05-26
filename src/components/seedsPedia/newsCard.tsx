@@ -1,5 +1,4 @@
 'use-client';
-import { getErrorMessage } from '@/utils/error/errorHandler';
 import { type ArticleDetail } from '@/utils/interfaces/play.interface';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
@@ -110,8 +109,8 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
                       text: `${t('articleList.text29')}`,
                       url: shareUrl,
                     });
-                  } catch (error: any) {
-                    toast.error(getErrorMessage(error));
+                  } catch {
+                    toast(t('articleList.text31'));
                   }
                 } else {
                   alert(t('articleList.text30'));

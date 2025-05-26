@@ -1256,6 +1256,7 @@ export default {
     text28: 'Lihat artikel ini di SeedsPedia!',
     text29: 'Lihat berita ini di SeedsPedia!',
     text30: 'Fitur berbagi tidak mendukung. Tautan telah disalin!',
+    text31: 'Berbagi dibatalkan',
     article: {
       sort: {
         all: 'Semua',

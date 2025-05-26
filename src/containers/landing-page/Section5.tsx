@@ -1,4 +1,5 @@
 'use client';
+import coin from '@/assets/landing-page/illustrasi.png';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
@@ -35,7 +36,8 @@ export default function Section5(): React.ReactElement {
           </div>
         </div>
         <div className="flex justify-center">
-          <video
+          <Image src={coin} alt="coin" />
+          {/* <video
             autoPlay
             muted
             loop
@@ -46,7 +48,7 @@ export default function Section5(): React.ReactElement {
               src="/assets/landing-page/Coin1080.webm"
               type="video/webm"
             />
-          </video>
+          </video> */}
         </div>
       </div>
     </section>

@@ -4,6 +4,7 @@ import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 interface ArticleCardProps {
   articleId: number;
   data?: ArticleDetail;
@@ -152,8 +153,9 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
                       text: 'Check out this article on SeedsPedia!',
                       url: shareUrl,
                     });
-                  } catch (err) {
-                    console.error('Sharing failed:', err);
+                  } catch (error: any) {
+                    // toast.error(getErrorMessage(error));
+                    toast.error('Sharing failed');
                   }
                 } else {
                   alert('Share not supported. Link copied instead!');

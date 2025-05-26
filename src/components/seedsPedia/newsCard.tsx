@@ -155,7 +155,9 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
                     });
                   } catch (error: any) {
                     // toast.error(getErrorMessage(error));
-                    toast.error('Sharing failed');
+                    // toast.error('Sharing failed');
+                    toast.error(error);
+                    alert(error)
                   }
                 } else {
                   alert('Share not supported. Link copied instead!');

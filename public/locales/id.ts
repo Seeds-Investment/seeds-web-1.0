@@ -2529,7 +2529,20 @@ export default {
       'Permintaan penarikanmu sedang diproses. Mohon tunggu.',
     enterAccountName: 'Masukan nama rekening anda...',
     enterBankAccount: 'Masukan rekening anda...',
-    enterAccountNumber: 'Masukan nomor rekening anda...'
+    enterAccountNumber: 'Masukan nomor rekening anda...',
+    earningDetail: {
+      text1: 'Selesai',
+      text2: 'Menunggu',
+      text3: 'Ditolak',
+      text4: 'Penghasilan Anda telah disetujui dan kini tersedia di akun Anda.',
+      text5: 'Penghasilan Anda sedang ditahan dan menunggu persetujuan admin.',
+      text6: 'Permintaan penghasilan Anda ditolak. Silakan periksa alasan yang diberikan oleh admin untuk detail lebih lanjut.',
+      text7: 'Jumlah',
+      text8: 'Kategori Permainan',
+      text9: 'Nama Permainan',
+      text10: 'Tanggal',
+      text11: 'Oke',
+    }    
   },
   buyAsset: {
     text1: 'Aset yang akan di beli',

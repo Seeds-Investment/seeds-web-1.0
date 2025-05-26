@@ -114,3 +114,22 @@ export const getWithdrawalStatus = async (id: string): Promise<any> => {
     await Promise.reject(error);
   }
 };
+
+export const getEarningHistoryById = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await earningService.get(`/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};

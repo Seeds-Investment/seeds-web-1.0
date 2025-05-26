@@ -2598,7 +2598,20 @@ export default {
       'Your withdrawal request is being processed, please wait.',
     enterAccountName: 'Enter your account name...',
     enterBankAccount: 'Enter your bank account...',
-    enterAccountNumber: 'Enter your account number...'
+    enterAccountNumber: 'Enter your account number...',
+    earningDetail: {
+      text1: 'Completed',
+      text2: 'Pending',
+      text3: 'Rejected',
+      text4: 'Your earnings have been approved and are now available in your account.',
+      text5: 'Your earnings are currently on hold and waiting for admin approval.',
+      text6: 'Your earnings request has been rejected. Please review the reason provided by the admin for more details.',
+      text7: 'Amount',
+      text8: 'Play Category',
+      text9: 'Play Name',
+      text10: 'Date',
+      text11: 'Ok',
+    }
   },
   buyAsset: {
     text1: 'Assets to be purchased',

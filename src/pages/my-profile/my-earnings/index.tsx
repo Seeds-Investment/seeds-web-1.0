@@ -120,11 +120,9 @@ const MyEarnings = (): React.ReactElement => {
 
   const handleRouteWithdrawStatus = async (
     status: string,
-    sourceId: string
+    id: string
   ): Promise<void> => {
-    if (status === 'pending') {
-      await router.push(`/my-profile/my-earnings/withdraw-status/${sourceId}`);
-    }
+    await router.push(`/my-profile/my-earnings/withdraw-status/${id}`);
   };
 
   return (
@@ -178,7 +176,7 @@ const MyEarnings = (): React.ReactElement => {
                     onClick={() => {
                       handleRouteWithdrawStatus(
                         item?.status ?? '',
-                        item?.source_id ?? '0'
+                        item?.id ?? '0'
                       );
                     }}
                     className="w-full flex justify-between items-center p-2 md:p-4 cursor-pointer rounded-lg hover:bg-[#F9F9F9] hover:shadow-lg duration-300"

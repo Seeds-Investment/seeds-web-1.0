@@ -157,7 +157,6 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId, data }) => {
                     // toast.error(getErrorMessage(error));
                     // toast.error('Sharing failed');
                     toast.error(error);
-                    console.log('error nagivator ', error)
                     alert(error)
                   }
                 } else {

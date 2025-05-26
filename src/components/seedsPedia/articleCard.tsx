@@ -274,7 +274,6 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
                     });
                   } catch (err: any) {
                     console.error('Sharing failed:', err);
-                    console.log('error nagivator ', err)
                     alert(err)
                     toast.error(err);
                   }

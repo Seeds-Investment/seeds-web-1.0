@@ -282,7 +282,11 @@ const AuthVerification: React.FC<AuthVerificationI> = ({
       >
         {isLoading ? <Spinner className=" h-6 w-6" /> : t('authLogin.next')}
       </Button>
-      <AuthSSO setSelect={setSelect} setGuest={setGuest} />
+      <AuthSSO
+        setSelect={setSelect}
+        setGuest={setGuest}
+        visitorId={loginForm.visitor_id}
+      />
     </div>
   );
 };

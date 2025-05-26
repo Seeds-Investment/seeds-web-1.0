@@ -58,8 +58,8 @@ export default function Footer(): React.ReactElement {
       },
       {
         icon: whatsapp,
-        name: '08118883519',
-        url: 'https://api.whatsapp.com/send?phone=628118883519'
+        name: '081387473392',
+        url: 'https://api.whatsapp.com/send?phone=6281387473392'
       }
     ]
   };

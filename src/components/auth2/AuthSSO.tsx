@@ -3,6 +3,7 @@ import AuthGoogle from '@/assets/auth/AuthGoogle.png';
 import queryList from '@/helpers/queryList';
 import withRedirect from '@/helpers/withRedirect';
 import { loginSSO } from '@/repository/auth.repository';
+import { gassPost } from '@/repository/gass.repository';
 import { fetchExpData } from '@/store/redux/features/exp';
 import { fetchUserData } from '@/store/redux/features/user';
 import { useAppDispatch } from '@/store/redux/store';
@@ -15,7 +16,11 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-const AuthSSO: React.FC<AuthSSOI> = ({ setSelect, setGuest }: AuthSSOI) => {
+const AuthSSO: React.FC<AuthSSOI> = ({
+  setSelect,
+  setGuest,
+  visitorId
+}: AuthSSOI) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -33,9 +38,19 @@ const AuthSSO: React.FC<AuthSSOI> = ({ setSelect, setGuest }: AuthSSOI) => {
           window.localStorage.setItem('refreshToken', response.refreshToken);
           window.localStorage.setItem('expiresAt', response.expiresAt);
           window.localStorage.setItem('isBannerOpen', 'true');
-
           await dispatch(fetchUserData());
           await dispatch(fetchExpData());
+          await gassPost({
+            act: 'form_update',
+            email: data.user?.email ?? '',
+            visitor_id: visitorId
+          });
+          await gassPost({
+            act: 'form_trigger_custom',
+            email: data.user?.email ?? '',
+            event: 'prospek',
+            visitor_id: visitorId
+          });
           if (totalQueries > 0) {
             await withRedirect(router, queries);
           } else {

@@ -6,6 +6,7 @@ import { id } from 'date-fns/locale';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface ArticleCardProps {
   articleId: number;
@@ -271,8 +272,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
                       text: 'Check out this article on SeedsPedia!',
                       url: shareUrl,
                     });
-                  } catch (err) {
+                  } catch (err: any) {
                     console.error('Sharing failed:', err);
+                    console.log('error nagivator ', err)
+                    alert(err)
+                    toast.error(err);
                   }
                 } else {
                   alert('Share not supported. Link copied instead!');

@@ -1,7 +1,6 @@
 'use-client';
 import Button from '@/components/ui/button/Button';
 import { generateArticleDate } from '@/helpers/dateFormat';
-import { isGuest } from '@/helpers/guest';
 import {
   getArticle,
   getArticleByIdHome,
@@ -11,6 +10,8 @@ import {
   postLike
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import i18n from '@/utils/common/i18n';
+import { getErrorMessage } from '@/utils/error/errorHandler';
 import { type CategoryI } from '@/utils/interfaces/article.interface';
 import { Input, Typography } from '@material-tailwind/react';
 import { format, parseISO } from 'date-fns';
@@ -20,10 +21,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AiOutlineClose } from 'react-icons/ai';
 import Slider from 'react-slick';
+import { toast } from 'react-toastify';
 import author from '../../../../public/assets/author.png';
 import profile from '../../../../public/assets/profile.png';
-import SeedyEmpty from '../../../../public/assets/seedy-empty.png';
+import SeedyEmpty from '../../../../public/assets/seedy-empty.svg';
 
 interface UserData {
   name: string;
@@ -143,7 +146,6 @@ export default function ArticleDetailPage(): JSX.Element {
   const [articleComment, setArticleComment] = useState<ArticleComment[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [recentArticles, setRecentArticles] = useState<Article[]>([]);
-  const [open, setOpen] = useState(false);
   const [formRequest, setFormRequest] =
     useState<FormRequestInterface>(initialFormRequest);
   const baseUrl =
@@ -160,8 +162,8 @@ export default function ArticleDetailPage(): JSX.Element {
 
   const fetchArticles = async (): Promise<void> => {
     try {
-      const response = await getArticle(params);
-      const responseRecent = await getArticle(recentParams);
+      const response = await getArticle({ ...params, language: i18n.language });
+      const responseRecent = await getArticle({ ...recentParams, language: i18n.language });
       if (response.status === 200) {
         setArticles(response?.data);
       } else {
@@ -268,33 +270,6 @@ export default function ArticleDetailPage(): JSX.Element {
     }
   }, [id]);
 
-  function copyValueWithUrl(valueToCopy: number): boolean {
-    const textToCopy = `${baseUrl}/homepage/articles/${valueToCopy}`;
-
-    const textArea = document.createElement('textarea');
-    textArea.value = textToCopy;
-    document.body.appendChild(textArea);
-    textArea.select();
-
-    try {
-      const copied = document.execCommand('copy');
-      if (copied) {
-        setOpen(true);
-        setTimeout(() => {
-          setOpen(false);
-        }, 3000);
-        return true;
-      } else {
-        return false;
-      }
-    } catch (err) {
-      console.error('Error copying text: ', err);
-      return false;
-    } finally {
-      document.body.removeChild(textArea);
-    }
-  }
-
   function formatDateToIndonesian(dateStr: string): string {
     try {
       const parsedDate = parseISO(dateStr);
@@ -394,19 +369,6 @@ export default function ArticleDetailPage(): JSX.Element {
 
   return (
     <div className="relative overflow-hidden flex flex-col justify-center rounded-lg md:bg-white">
-      {open && (
-        <div
-          id="myToast"
-          className="fixed right-10 z-50 top-10 px-5 py-4 border-r-8 border-seeds-button-green bg-white drop-shadow-lg rounded-tl-full rounded-bl-full"
-        >
-          <p className="text-md font-poppins">
-            <span className="mr-2 inline-block px-3 py-1 rounded-full bg-seeds-button-green text-white font-extrabold">
-              i
-            </span>
-            {t('articleList.text16')}
-          </p>
-        </div>
-      )}
       <Typography className="my-4 text-lg lg:text-5xl font-semibold bg-clip-text text-black px-5 font-poppins md:text-center">
         {articleDetail.title}
       </Typography>
@@ -498,9 +460,20 @@ export default function ArticleDetailPage(): JSX.Element {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             onClick={async () => {
-              isGuest()
-                ? await router.push('/auth')
-                : copyValueWithUrl(articleDetail?.id ?? 0);
+              const shareUrl = `${baseUrl}/homepage/articles/${articleDetail?.id}`;
+              if (navigator?.share !== null && navigator?.share !== undefined) {
+                try {
+                  await navigator.share({
+                    title: articleDetail?.title ?? '',
+                    text: `${t('articleList.text28')}`,
+                    url: shareUrl,
+                  });
+                } catch (error: any) {
+                  toast.error(getErrorMessage(error));
+                }
+              } else {
+                alert(t('articleList.text30'));
+              }
             }}
             className='cursor-pointer'
           >
@@ -582,9 +555,20 @@ export default function ArticleDetailPage(): JSX.Element {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               onClick={async () => {
-                isGuest()
-                  ? await router.push('/auth')
-                  : copyValueWithUrl(articleDetail?.id ?? 0);
+                const shareUrl = `${baseUrl}/homepage/articles/${articleDetail?.id}`;
+                if (navigator?.share !== null && navigator?.share !== undefined) {
+                  try {
+                    await navigator.share({
+                      title: articleDetail?.title ?? '',
+                      text: `${t('articleList.text28')}`,
+                      url: shareUrl,
+                    });
+                  } catch (error: any) {
+                    toast.error(getErrorMessage(error));
+                  }
+                } else {
+                  alert(t('articleList.text30'));
+                }
               }}
               className='cursor-pointer'
             >
@@ -596,13 +580,22 @@ export default function ArticleDetailPage(): JSX.Element {
           </div>
           
           <div className='mt-12'>
-            <input
-              type='text'
-              placeholder={`${t('articleList.text23')}`}
-              value={searchTerm}
-              onChange={e => { setSearchTerm(e.target.value); }}
-              className='w-full px-4 py-2 mb-3 border border-gray-400 text-gray-800 placeholder-gray-500 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-seeds-button-green focus:border-seeds-button-green transition duration-200'
-            />
+            <div className="relative w-full mb-3">
+              <input
+                type="text"
+                placeholder={`${t('articleList.text23')}`}
+                value={searchTerm}
+                onChange={e => { setSearchTerm(e.target.value); }}
+                className="w-full px-4 py-2 pr-10 border border-gray-400 text-gray-800 placeholder-gray-500 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-seeds-button-green focus:border-seeds-button-green transition duration-200"
+              />
+              {searchTerm !== '' && (
+                <AiOutlineClose
+                  onClick={() => { setSearchTerm(''); }}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer hover:text-red-500"
+                  size={18}
+                />
+              )}
+            </div>
 
             <Typography className='text-xl font-semibold font-poppins mb-3'>
               {t('articleList.text18')}
@@ -634,7 +627,7 @@ export default function ArticleDetailPage(): JSX.Element {
                   :
                   (
                     <div className='flex flex-col justify-center items-center gap-2'>
-                      <div className='w-[250px] h-auto mt-4'>
+                      <div className='w-[100px] h-auto'>
                         <Image
                           alt={'SeedyEmpty'}
                           src={SeedyEmpty}
@@ -643,8 +636,11 @@ export default function ArticleDetailPage(): JSX.Element {
                           className='w-full h-auto'
                         />
                       </div>
-                      <Typography className="font-poppins text-md italic">
-                        {t('articleList.text19')} <span className="font-semibold italic">{`"${searchTerm}"`}</span> {t('articleList.text20')}
+                      <Typography className="font-poppins font-medium text-md text-[#7C7C7C] text-center">
+                        {t('articleList.text19')}
+                      </Typography>
+                      <Typography className="font-poppins text-sm text-center">
+                        {t('articleList.text20')}
                       </Typography>
                     </div>
                   )

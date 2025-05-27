@@ -83,3 +83,7 @@ export interface IEarningById {
   created_at: string
 }
 
+export interface IKYCStatus {
+  status: string
+  reject_reason: string
+}

@@ -14,11 +14,12 @@ import { getEarningDate } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import {
   getEarningBalance,
-  getEarningHistory
+  getEarningHistory,
+  getWithdrawKYCStatus
 } from '@/repository/earning.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
-import { type Result } from '@/utils/interfaces/earning.interfaces';
+import { type IKYCStatus, type Result } from '@/utils/interfaces/earning.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import moment from 'moment';
@@ -54,6 +55,7 @@ const MyEarnings = (): React.ReactElement => {
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
   const [earning, setEarning] = useState<Result>();
+  const [kyc, setKyc] = useState<IKYCStatus>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [earningHistory, setEarningHistory] = useState<EarningHistory[]>([]);
   const [earningMetadata, setEarningMetadata] = useState<EarningMetadata>();
@@ -77,6 +79,7 @@ const MyEarnings = (): React.ReactElement => {
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
       void fetchMyEarningsData(userInfo?.preferredCurrency);
+      void fetchWithdrawKYCStatus();
     }
   }, [id, userInfo]);
 
@@ -123,6 +126,15 @@ const MyEarnings = (): React.ReactElement => {
     }
   };
 
+  const fetchWithdrawKYCStatus = async (): Promise<void> => {
+    try {
+      const response = await getWithdrawKYCStatus();
+      setKyc(response)
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
   const handleRouteWithdrawStatus = async (
     status: string,
     id: string
@@ -154,9 +166,13 @@ const MyEarnings = (): React.ReactElement => {
                 {standartCurrency(earning?.balance ?? 0).replace('Rp', '')}
               </Typography>
               <Typography
-                onClick={async () =>
-                  await router.push('/my-profile/my-earnings/withdraw')
-                }
+                onClick={async () => {
+                  if (kyc?.status === 'approve') {
+                    await router.push('/my-profile/my-earnings/withdraw')
+                  } else {
+                    await router.push('/my-profile/my-earnings/withdraw-kyc')
+                  }
+                }}
                 className="px-4 md:px-8 lg:px-16 py-1 font-poppins text-[#3AC4A0] bg-white text-xs md:text-sm rounded-full cursor-pointer hover:shadow-lg duration-300 font-medium"
               >
                 {t('earning.withdraw')}

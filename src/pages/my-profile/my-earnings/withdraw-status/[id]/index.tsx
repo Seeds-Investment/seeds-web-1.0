@@ -62,7 +62,7 @@ const WithdrawStatus = (): React.ReactElement => {
     } else if (source === 'TEAM_BATTLE') {
       return 'Team Battle';
     } else {
-      return '';
+      return source?.charAt(0)?.toUpperCase() + source?.slice(1)?.toLowerCase();
     }
   };  
 
@@ -89,9 +89,9 @@ const WithdrawStatus = (): React.ReactElement => {
         src={
           earningData?.status === 'completed'
             ? IconCompleted
-            : earningData?.status === 'pending'
-            ? IconProcessed
-            : IconRejected
+            : earningData?.status === 'rejected'
+            ? IconRejected
+            : IconProcessed
         }
         width={1000}
         height={1000}
@@ -100,16 +100,16 @@ const WithdrawStatus = (): React.ReactElement => {
       <p className="text-xl font-semibold text-black">
         {earningData?.status === 'completed'
           ? t(`${pathTranslation}.text1`)
-          : earningData?.status === 'pending'
-          ? t(`${pathTranslation}.text2`)
-          : t(`${pathTranslation}.text3`)}
+          : earningData?.status === 'rejected'
+          ? t(`${pathTranslation}.text3`)
+          : t(`${pathTranslation}.text2`)}
       </p>
       <p className="text-[#7C7C7C] text-center">
         {earningData?.status === 'completed'
           ? t(`${pathTranslation}.text4`)
-          : earningData?.status === 'pending'
-          ? t(`${pathTranslation}.text5`)
-          : t(`${pathTranslation}.text6`)}
+          : earningData?.status === 'rejected'
+          ? t(`${pathTranslation}.text6`)
+          : t(`${pathTranslation}.text5`)}
       </p>
 
       <div className="w-full md:w-fit md:min-w-[400px] flex flex-col gap-2 bg-[#F9F9F9] border border-[#E9E9E9] rounded-lg p-4 mt-8">

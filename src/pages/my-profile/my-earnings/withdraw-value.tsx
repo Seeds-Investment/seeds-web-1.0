@@ -161,7 +161,7 @@ const WithdrawValue = (): React.ReactElement => {
                 type="text"
                 name="search"
                 value={withdrawValue}
-                placeholder={`${userInfo?.preferredCurrency ?? 'IDR'} - ${t(
+                placeholder={`${(withdrawValue !== undefined && withdrawValue !== 0) ? userInfo?.preferredCurrency ?? 'IDR' : ''}${t(
                   'earning.nominalTransfer'
                 )}`}
                 onChange={e => {

@@ -17,13 +17,15 @@ interface Props {
   setIsOpenModalLogin: React.Dispatch<React.SetStateAction<boolean>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading: boolean;
+  setIsShowConfirmUnlink: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ModalLogin: React.FC<Props> = ({
   userInfo,
   setIsOpenModalLogin,
   setIsLoading,
-  isLoading
+  isLoading,
+  setIsShowConfirmUnlink
 }) => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -117,27 +119,30 @@ const ModalLogin: React.FC<Props> = ({
   return (
     <Modal
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/25 flex justify-start items-start"
-      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[48%] md:left-[35%] md:right-[-35%] mt-[-17rem] w-full h-fit md:w-[450px] p-4 md:rounded-3xl rounded-t-3xl bg-white"
+      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[44%] md:left-[35%] md:right-[-35%] mt-[-17rem] w-full h-fit md:w-[450px] p-4 md:rounded-3xl rounded-t-3xl bg-white"
     >
       <div className="p-4 md:py-5 flex flex-col items-center">
-        <div className="w-full relative flex justify-center">
-          {!isLoading && (
-            <div
-              onClick={async () => {
-                await router.push('/homepage');
-              }}
-              className="absolute right-0 cursor-pointer hover:scale-110 duration-150"
-            >
-              <IoMdClose size={20} />
+        {
+          page === 'login' &&
+            <div className="w-full relative flex justify-center">
+              {!isLoading && (
+                <div
+                  onClick={async () => {
+                    await router.push('/homepage');
+                  }}
+                  className="absolute right-0 cursor-pointer hover:scale-110 duration-150"
+                >
+                  <IoMdClose size={20} />
+                </div>
+              )}
+              <Image
+                src={SeedsXDanamart}
+                alt="SeedsXDanamart Logo"
+                width={168}
+                height={80}
+              />
             </div>
-          )}
-          <Image
-            src={SeedsXDanamart}
-            alt="SeedsXDanamart Logo"
-            width={168}
-            height={80}
-          />
-        </div>
+        }
         {page === 'login' ? (
           <Login
             userEmail={userInfo?.email ?? ''}
@@ -147,6 +152,8 @@ const ModalLogin: React.FC<Props> = ({
             isError={isError}
             errorType={errorType}
             setIsError={setIsError}
+            setIsShowConfirmUnlink={setIsShowConfirmUnlink}
+            setIsOpenModalLogin={setIsOpenModalLogin}
           />
         ) : (
           <ForgotPassword setPage={setPage} userEmail={userInfo?.email ?? ''} />

@@ -21,6 +21,8 @@ interface LoginProps {
   errorType: number;
   isError: boolean;
   setIsError: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShowConfirmUnlink: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenModalLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface LoginFormInputs {
@@ -36,7 +38,9 @@ const Login: React.FC<LoginProps> = ({
   setPage,
   errorType,
   isError,
-  setIsError
+  setIsError,
+  setIsShowConfirmUnlink,
+  setIsOpenModalLogin
 }) => {
   const { t } = useTranslation();
   const RECAPTCHA_V2_SITE_KEY = '6LcXDqwqAAAAAOPdJX5A62B34yvSsezZwiWNRaEg';
@@ -145,6 +149,7 @@ const Login: React.FC<LoginProps> = ({
         <Typography
           onClick={() => {
             setPage('forgot');
+            
           }}
           className="w-fit font-poppins font-semibold text-base text-[#DA2D1F] text-right cursor-pointer"
         >
@@ -155,9 +160,20 @@ const Login: React.FC<LoginProps> = ({
       <Button
         type="submit"
         disabled={capchaToken === '' || watch('password') === '' || isLoading}
-        className="w-full text-base font-semibold bg-seeds-button-green mt-4 rounded-full capitalize"
+        className="w-full text-base font-semibold bg-seeds-button-green mt-4 rounded-full capitalize font-poppins"
       >
         {t('danamart.login.loginButton')}
+      </Button>
+
+      <Button
+        onClick={() => {
+          setIsOpenModalLogin(false)
+          setIsShowConfirmUnlink(true)
+        }}
+        disabled={isLoading}
+        className="w-full text-base font-semibold bg-white text-seeds-button-green mt-4 rounded-full capitalize font-poppins"
+      >
+        {t('danamart.login.disconnectAccount')}
       </Button>
     </form>
   );

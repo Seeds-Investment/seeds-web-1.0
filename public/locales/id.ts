@@ -2880,6 +2880,12 @@ export default {
           'ReCAPTCHA tidak tersedia! Pastikan Anda telah mengisi ReCAPTCHA.'
       },
       loginButton: 'Masuk',
+      disconnectAccount: 'Putuskan Akun',
+      disconnectAccountConfirm1: 'Apakah anda yakin ingin memutuskan koneksi akun Danamart dengan akun Seeds anda?',
+      disconnectAccountConfirm2: 'Jika anda ingin menghubungkan kembali, pastikan email Seeds anda telah sama dan sesuai dengan email baru yang anda gunakan pada platform Danamart.',
+      cancel: 'Batalkan',
+      process: 'Putuskan Akun',
+      disconnectSucceed: 'Akun berhasil diputuskan',
       tooManyAttempts:
         'Maaf, Anda baru saja meminta kode verifikasi. Demi keamanan akun, silakan meminta kode verifikasi ulang setelah 5 menit ya.'
     },

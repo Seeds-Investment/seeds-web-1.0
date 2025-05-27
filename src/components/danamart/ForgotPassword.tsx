@@ -2,7 +2,6 @@ import SeedySMSOTP from '@/assets/danamart/SeedySMSOTP.png';
 import SeedyWAOTP from '@/assets/danamart/SeedyWAOTP.png';
 import countries from '@/constants/countries.json';
 import React, { useEffect, useState } from 'react';
-import Modal from '../ui/modal/Modal';
 import AuthForgotPassNew from './auth/AuthForgotPassNew';
 import AuthForgotPassNumber from './auth/AuthForgotPassNumber';
 import AuthModalPass from './auth/AuthModalPass';
@@ -53,11 +52,8 @@ const ForgotPassword: React.FC<Props> = ({ setPage, userEmail }) => {
   }, [countdown]);
 
   return (
-    <Modal
-      backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/25 flex justify-start items-start"
-      modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[50%] md:left-[35%] md:right-[-35%] mt-[-18rem] w-full h-fit md:w-[450px] p-4 md:rounded-3xl rounded-t-3xl bg-white"
-    >
-      <div className="p-8 md:px-4 md:py-5 flex flex-col items-center">
+    <div>
+      <div className="flex flex-col items-center">
         <AuthForgotPassNumber
           setPage={setPage}
           setSelect={setSelect}
@@ -96,7 +92,7 @@ const ForgotPassword: React.FC<Props> = ({ setPage, userEmail }) => {
         />
         <AuthModalPass setPage={setPage} handleOpen={handleOpen} open={open} />
       </div>
-    </Modal>
+    </div>
   );
 };
 

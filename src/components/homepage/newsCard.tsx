@@ -1,6 +1,5 @@
 'use-client';
 import { type Article } from '@/containers/homepage/news/NewsPage';
-import { getErrorMessage } from '@/utils/error/errorHandler';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Link from 'next/link';
@@ -84,8 +83,8 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articles }) => {
                       text: `${t('articleList.text29')}`,
                       url: shareUrl,
                     });
-                  } catch (error: any) {
-                    toast.error(getErrorMessage(error));
+                  } catch {
+                    toast(t('articleList.text31'));
                   }
                 } else {
                   alert(t('articleList.text30'));

@@ -17,12 +17,8 @@ export default function Section1(): React.ReactElement {
   ];
 
   return (
-    <section
-      className="flex md:flex-row w-full justify-end sm:justify-center 2xl:justify-between"
-    >
-      <div
-        className={`w-full lg:m-12 h-auto font-poppins cursor-default`}
-      >
+    <section className="flex md:flex-row w-full justify-end sm:justify-center 2xl:justify-between">
+      <div className={`w-full lg:m-12 h-auto font-poppins cursor-default`}>
         <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[150px] w-[350px] h-[350px] left-[-10rem] top-[14rem] rounded-full z-0"></div>
         <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[180px] w-[650px] h-[650px] right-[-20rem] top-[-15rem] rounded-full z-0"></div>
         <div className="hidden lg:block absolute bg-[#C5ACFF] blur-[450px] w-[750px] h-[750px] left-[-18rem] top-[-15rem] rounded-full z-0"></div>
@@ -99,7 +95,7 @@ export default function Section1(): React.ReactElement {
                       key={key}
                       className="flex flex-col items-center md:mr-5"
                     >
-                      <Link key={key} href={data.url}>
+                      <Link key={key} href={data.url} prefetch={false}>
                         <Image alt="" src={data.icon} />
                       </Link>
                     </div>

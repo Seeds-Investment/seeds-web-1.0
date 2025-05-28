@@ -34,9 +34,9 @@ export default function Section11(): React.ReactElement {
               {t('landingV2.section11.text2')}
             </h1>
             <Link
-              href={
-                'https://linktr.ee/Seedsmarketing?utm_source=linktree_admin_share'
-              }
+              prefetch={false}
+              href={'https://linktr.ee/seeds.finance'}
+              target="_blank"
             >
               <Button className="mt-5 px-16 lg:px-20 py-3 capitalize bg-[#3AC4A0] rounded-full">
                 <p className="text-xl font-semibold">

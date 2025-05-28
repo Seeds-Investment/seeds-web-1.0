@@ -162,7 +162,10 @@ export default function Section3(): React.ReactElement {
                 key={key}
                 className={` lg:pe-5 w-[200px] flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ${hotNewsItemClass}`}
               >
-                <Link href={`/seedspedia/news/${data?.id ?? 0}`}>
+                <Link
+                  prefetch={false}
+                  href={`/seedspedia/news/${data?.id ?? 0}`}
+                >
                   {isImageUrlValid(data.imageUrl) ? (
                     <img
                       src={data.imageUrl}

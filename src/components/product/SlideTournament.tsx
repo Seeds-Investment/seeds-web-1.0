@@ -6,7 +6,6 @@ import WhiteArrow from '@/assets/product/WhiteArrow.svg';
 import user from '@/assets/usericon_toptournament.svg';
 import { standartCurrency } from '@/helpers/currency';
 import { getTrendingPlayList } from '@/repository/play.repository';
-import { getErrorMessage } from '@/utils/error/errorHandler';
 import { type TopTournament } from '@/utils/interfaces/tournament.interface';
 import {
   Button,
@@ -276,8 +275,8 @@ export const SlideTournament: React.FC = () => {
                                         text: `${t('tournament.share.text1')} ${item?.name}`,
                                         url: shareUrl,
                                       });
-                                    } catch (error: any) {
-                                      toast.error(getErrorMessage(error));
+                                    } catch {
+                                      toast(t('articleList.text31'));
                                     }
                                   } else {
                                     await navigator.clipboard.writeText(shareUrl);

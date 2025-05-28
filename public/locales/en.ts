@@ -1334,6 +1334,7 @@ export default {
     text28: 'Check out this article on SeedsPedia!',
     text29: 'Check out this news on SeedsPedia!',
     text30: 'Share not supported. Link copied instead!',
+    text31: 'Sharing canceled',
     article: {
       sort: {
         all: 'All',

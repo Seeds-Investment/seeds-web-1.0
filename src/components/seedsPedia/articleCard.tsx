@@ -1,6 +1,5 @@
 'use-client';
 import { postLike } from '@/repository/article.repository';
-import { getErrorMessage } from '@/utils/error/errorHandler';
 import { type ArticleDetail } from '@/utils/interfaces/play.interface';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
@@ -229,8 +228,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
                       text: `${t('articleList.text28')}`,
                       url: shareUrl,
                     });
-                  } catch (error: any) {
-                    toast.error(getErrorMessage(error));
+                  } catch {
+                    toast(t('articleList.text31'));
                   }
                 } else {
                   alert(t('articleList.text30'));

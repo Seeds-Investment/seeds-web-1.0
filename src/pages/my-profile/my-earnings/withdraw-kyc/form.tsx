@@ -33,13 +33,18 @@ const WithdrawKYCForm = (): React.ReactElement => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+  const [isShowEmailError, setIsShowEmailError] = useState<boolean>(true);
+  const [isShowPhoneError, setIsShowPhoneError] = useState<boolean>(true);
+
   const [phone, setPhone] = useState<string>('');
   const [selectedCountry, setSelectedCountry] = useState<Country>(
     countries[101]
   );
 
   useEffect(() => {
+    setIsShowEmailError(false);
     if (email === '') {
       setIsEmailValid(true);
       return;
@@ -52,9 +57,10 @@ const WithdrawKYCForm = (): React.ReactElement => {
     return () => {
       clearTimeout(handler);
     };
-  }, [email]);  
+  }, [email]);
 
   const handlePhoneChange = (value: string): void => {
+    setIsShowPhoneError(false);
     const numericValue = value.replace(/\D/g, '');
   
     if (numericValue.startsWith('0')) {
@@ -65,31 +71,41 @@ const WithdrawKYCForm = (): React.ReactElement => {
   };  
 
   const handleSubmit = async (): Promise<void> => {
-    const payload = {
-      name,
-      email,
-      phone_number: `${selectedCountry?.dialCode}${phone}`,
-      id_card_image: idCardImageData,
-      user_image: selfieImageData,
-    };
-
-    try {
-      setIsLoading(true);
-      const response = await kycSubmitData(payload);
-      if (response?.message === 'success') {
-        toast.success(t('earning.withdrawKyc.text5'));
-        setTimeout(() => {
-          void router.push('/my-profile/my-earnings');
-        }, 3000);
+    if (!isEmailValid || phone?.length < 7) {
+      setIsShowEmailError(!isEmailValid);
+      setIsShowPhoneError(phone?.length < 7);
+    
+      setTimeout(() => {
+        setIsShowEmailError(false);
+        setIsShowPhoneError(false);
+      }, 5000);
+    } else {
+      const payload = {
+        name,
+        email,
+        phone_number: `${selectedCountry?.dialCode}${phone}`,
+        id_card_image: idCardImageData,
+        user_image: selfieImageData,
+      };
+  
+      try {
+        setIsLoading(true);
+        const response = await kycSubmitData(payload);
+        if (response?.message === 'success') {
+          toast.success(t('earning.withdrawKyc.text5'));
+          setTimeout(() => {
+            void router.push('/my-profile/my-earnings');
+          }, 3000);
+        }
+      } catch (error: any) {
+        if (error?.response?.data?.message === 'kyc already submitted') {
+          toast.error(t('earning.withdrawKyc.text6'));
+        } else {
+          toast.error(t('earning.withdrawKyc.text7'));
+        }
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error: any) {
-      if (error?.response?.data?.message === 'kyc already submitted') {
-        toast.error(t('earning.withdrawKyc.text6'));
-      } else {
-        toast.error(t('earning.withdrawKyc.text7'));
-      }
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -175,9 +191,14 @@ const WithdrawKYCForm = (): React.ReactElement => {
                     placeholder={`${t('earning.withdrawKyc.text21')}`}
                     value={phone}
                     onChange={(e) => { handlePhoneChange(e.target.value); }}
-                    className="flex-1 px-4 py-2 outline-none font-poppins text-sm appearance-none [-moz-appearance:textfield]"
+                    className={`flex-1 px-4 py-2 outline-none font-poppins text-sm appearance-none [-moz-appearance:textfield] ${isShowPhoneError ? 'focus:ring-seeds-button-green' : 'border-red-500 focus:ring-red-500'}`}
                   />
                 </div>
+                {isShowPhoneError && (
+                  <span className="text-xs text-red-500 mt-1">
+                    {t('earning.withdrawKyc.text43')}
+                  </span>
+                )}
               </div>
 
               {/* Email */}
@@ -190,9 +211,9 @@ const WithdrawKYCForm = (): React.ReactElement => {
                   value={email}
                   onChange={(e) => { setEmail(e.target.value); }}
                   placeholder={`${t('earning.withdrawKyc.text22')}`}
-                  className={`mt-1 p-2 border rounded-md focus:outline-none ${isEmailValid ? 'focus:ring-seeds-button-green' : 'border-red-500 focus:ring-red-500'}`}
+                  className={`mt-1 p-2 border rounded-md focus:outline-none ${isShowEmailError ? 'border-red-500 focus:ring-red-500' : 'focus:ring-seeds-button-green'}`}
                 />
-                {!isEmailValid && (
+                {isShowEmailError && (
                   <span className="text-xs text-red-500 mt-1">
                     {t('earning.withdrawKyc.text41')}
                   </span>
@@ -277,7 +298,6 @@ const WithdrawKYCForm = (): React.ReactElement => {
             disabled={
               name?.length === 0 ||
               email?.length === 0 ||
-              !isEmailValid ||
               phone?.length === 0 ||
               idCardImageData?.length === 0 ||
               selfieImageData?.length === 0 ||

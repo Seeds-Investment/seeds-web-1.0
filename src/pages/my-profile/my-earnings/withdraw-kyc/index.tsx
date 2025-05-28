@@ -4,6 +4,7 @@ import AmbienceRejected from '@/assets/my-profile/earning/ambience-rejected.svg'
 import Ambience from '@/assets/my-profile/earning/ambience.svg';
 import WithdrawRejected from '@/assets/my-profile/earning/withdrawRejected.png';
 import WithdrawUnavailable from '@/assets/my-profile/earning/withdrawUnavailable.svg';
+import ModalWithdrawRejected from '@/components/popup/ModalWithdrawRejected';
 import withAuth from '@/helpers/withAuth';
 import { getWithdrawKYCStatus } from '@/repository/earning.repository';
 import { type IKYCStatus } from '@/utils/interfaces/earning.interfaces';
@@ -18,6 +19,7 @@ const WithdrawKYC = (): React.ReactElement => {
   const router = useRouter();
   const { t } = useTranslation();
   const [kyc, setKyc] = useState<IKYCStatus>();
+  const [isShowRejectReason, setIsShowRejectReason] = useState<boolean>(false);
   
   const fetchWithdrawKYCStatus = async (): Promise<void> => {
     try {
@@ -78,7 +80,7 @@ const WithdrawKYC = (): React.ReactElement => {
               kyc?.status === 'none'
                 ? t('earning.withdrawKyc.text2')
                 : kyc?.status === 'reject'
-                  ? `${kyc?.reject_reason}`
+                  ? t('earning.withdrawKyc.text32')
                   : kyc?.status === 'pending'
                     ? t('earning.withdrawKyc.text33')
                     : t('earning.withdrawKyc.text35')
@@ -95,6 +97,15 @@ const WithdrawKYC = (): React.ReactElement => {
                     : t('earning.withdrawKyc.text36')
             }
           </Typography>
+          {
+            kyc?.status === 'reject' &&
+              <Button
+                onClick={async() => { setIsShowRejectReason(true) }}
+                className="w-full md:w-[275px] py-2 md:py-4 flex justify-center items-center bg-white hover:shadow-lg text-seeds-button-green duration-300 cursor-pointer rounded-full font-poppins text-md capitalize mt-6"
+              >
+                {t('earning.withdrawKyc.text38')}
+              </Button>
+          }
           <Button
             onClick={async() => {
               if (kyc?.status === 'none' || kyc?.status === 'reject') {
@@ -103,7 +114,7 @@ const WithdrawKYC = (): React.ReactElement => {
                 await router.push('/my-profile/my-earnings')
               }
             }}
-            className="w-full md:w-[275px] py-2 md:py-4 flex justify-center items-center bg-seeds-button-green hover:shadow-lg text-white duration-300 cursor-pointer rounded-full font-poppins text-md capitalize mt-6"
+            className="w-full md:w-[275px] py-2 md:py-4 flex justify-center items-center bg-seeds-button-green hover:shadow-lg text-white duration-300 cursor-pointer rounded-full font-poppins text-md capitalize mt-4"
           >
             {
               kyc?.status === 'none'
@@ -115,6 +126,15 @@ const WithdrawKYC = (): React.ReactElement => {
           </Button>
         </div>
       </div>
+
+      {isShowRejectReason && (
+        <ModalWithdrawRejected
+          onClose={() => {
+            setIsShowRejectReason(prev => !prev);
+          }}
+          rejectReason={kyc?.reject_reason ?? ''}
+        />
+      )}
     </>
   );
 };

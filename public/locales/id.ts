@@ -2588,6 +2588,9 @@ export default {
       text35: 'Verifikasi identitas Anda telah berhasil.',
       text36: '✅ Dana Anda kini dapat ditarik dengan aman dan mudah. Terima kasih telah melakukan verifikasi.',
       text37: 'Ayo Perbaiki!',
+      text38: 'Lihat Alasan',
+      text39: 'Alasan Penolakan',
+      text40: 'Ajukan Ulang Permintaan',
     }    
   },
   buyAsset: {

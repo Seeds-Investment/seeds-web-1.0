@@ -2657,6 +2657,9 @@ export default {
       text35: 'Your identity verification has been successful.',
       text36: '✅ Your funds can now be withdrawn safely and easily. Thank you for completing the verification.',   
       text37: "Let's Fix It!",
+      text38: 'View Reason',
+      text39: 'Rejection Reason',
+      text40: 'Re-Submit Request',
     }
   },
   buyAsset: {

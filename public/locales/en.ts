@@ -2661,7 +2661,8 @@ export default {
       text39: 'Rejection Reason',
       text40: 'Re-Submit Request',
       text41: 'Please enter a valid email address.',
-      text42: 'Upload failed, please try again'
+      text42: 'Upload failed, please try again',
+      text43: 'The minimum phone number length is 7 digits.',
     }
   },
   buyAsset: {

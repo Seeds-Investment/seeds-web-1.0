@@ -2592,7 +2592,8 @@ export default {
       text39: 'Alasan Penolakan',
       text40: 'Ajukan Ulang Permintaan',
       text41: 'Tolong masukan alamat email yang valid',
-      text42: 'Pengunggahan foto gagal, silakan coba lagi'
+      text42: 'Pengunggahan foto gagal, silakan coba lagi',
+      text43: 'Panjang minimum nomor telepon adalah 7 digit.'
     }    
   },
   buyAsset: {

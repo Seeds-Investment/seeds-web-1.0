@@ -2660,6 +2660,8 @@ export default {
       text38: 'View Reason',
       text39: 'Rejection Reason',
       text40: 'Re-Submit Request',
+      text41: 'Please enter a valid email address.',
+      text42: 'Upload failed, please try again'
     }
   },
   buyAsset: {

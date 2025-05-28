@@ -1,5 +1,6 @@
 import ModalLogin from '@/components/danamart/ModalLogin';
 import ModalRegister from '@/components/danamart/ModalRegister';
+import ModalUnlinkAccount from '@/components/danamart/ModalUnlinkAccount';
 import withAuthDanamart from '@/helpers/withAuthDanamart';
 import { getAccountInformation } from '@/repository/danamart/danamart.repository';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -18,6 +19,7 @@ const Danamart = (): React.ReactElement => {
   const [isOpenModalRegister, setIsOpenModalRegister] =
     useState<boolean>(false);
   const [isOpenModalLogin, setIsOpenModalLogin] = useState<boolean>(false);
+  const [isShowConfirmUnlink, setIsShowConfirmUnlink] = useState<boolean>(false);
 
   const fetchUserInfo = async (): Promise<void> => {
     try {
@@ -75,8 +77,17 @@ const Danamart = (): React.ReactElement => {
           setIsOpenModalLogin={setIsOpenModalLogin}
           setIsLoading={setIsLoading}
           isLoading={isLoading}
+          setIsShowConfirmUnlink={setIsShowConfirmUnlink}
         />
       )}
+      {
+        isShowConfirmUnlink &&
+          <ModalUnlinkAccount
+            setIsShowConfirmUnlink={setIsShowConfirmUnlink}
+            setIsOpenModalLogin={setIsOpenModalLogin}
+            setIsOpenModalRegister={setIsOpenModalRegister}
+          />
+      }
     </div>
   );
 };

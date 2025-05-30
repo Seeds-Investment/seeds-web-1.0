@@ -96,7 +96,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
       <Redirecting open={open} handleOpen={handleOpen} />
       {/* TODO: NEW HEADER */}
       <section className="xl:flex hidden justify-evenly h-20 items-center">
-        <Link href="https://seeds.finance">
+        <Link prefetch={false} href="https://seeds.finance">
           <Image
             alt="SeedsLogo"
             src={SeedLogo}
@@ -109,6 +109,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
           {pathUrl.map((item, index) => {
             return (
               <Link
+                prefetch={false}
                 className={`${
                   router.pathname === `${item.url}`
                     ? 'text-[#3AC4A0] underline-offset-8 underline'
@@ -188,7 +189,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
       </section>
       {/* TODO: END NEW HEADER */}
       <section className="flex xl:hidden justify-between mx-4 items-center h-20">
-        <Link href="https://seeds.finance">
+        <Link prefetch={false} href="https://seeds.finance">
           <Image alt="SeedsLogo" src={SeedLogo} height={46} />
         </Link>
         <Menu
@@ -215,6 +216,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
                   className="hover:bg-transparent focus:bg-transparent"
                 >
                   <Link
+                    prefetch={false}
                     href={item.url}
                     className={` font-poppins font-normal text-base ${
                       router.pathname === item.url

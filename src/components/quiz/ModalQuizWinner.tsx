@@ -48,9 +48,9 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
       open={open}
       handler={handleOpen}
       size="md"
-      className="h-[500px] md:h-screen overflow-y-auto md:p-5 flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-b-none md:rounded-2xl min-w-full"
+      className="h-fit overflow-y-auto md:p-5 flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-b-none md:rounded-2xl min-w-full bg-white"
     >
-      <DialogBody className="flex flex-col items-center md:gap-5 gap-4 p-0 h-full w-full">
+      <DialogBody className="flex flex-col items-center md:gap-5 gap-4 p-0 h-fit w-full">
         <div className="flex flex-row-reverse justify-between items-center w-full">
           <Image
             src={CloseButtonWithdrawal}
@@ -62,7 +62,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
           />
         </div>
 
-        <div className="overflow-auto flex flex-col items-center h-full w-full">
+        <div className="overflow-auto flex flex-col items-center h-fit w-full">
           <Typography className="block font-poppins font-semibold text-xl text-center text-wrap text-[#262626] mb-2">
             {t('quiz.winnerModalTitle')}
           </Typography>
@@ -172,11 +172,11 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
                 </a>
               </div>
             )}
-          <div className="px-4 md:px-0 w-full md:w-2/3 gap-4 flex flex-row md:flex-col py-4 mb-32">
+          <div className="px-4 md:px-0 w-full md:w-2/3 gap-4 flex flex-row md:flex-col py-4 mb-16 md:mb-0">
             {prizeType === 'CASH' || prizeType === '' ? (
               <button
                 onClick={() => {
-                  router.push(`/withdrawal?quizId=${quizId}`).catch(err => {
+                  router.push(`/play/withdraw/${quizId}?playType=QUIZ`).catch(err => {
                     toast(`Error: ${err as string}`);
                   });
                 }}

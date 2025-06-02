@@ -115,7 +115,12 @@ const AuthRef: React.FC<AuthRefI> = ({
           throw new Error(response);
         }
       } else if (guest === 'register') {
-        const response = await register(formData);
+        const response = await register({
+          ...formData,
+          utm_source: router.query.utm_source,
+          utm_medium: router.query.utm_medium,
+          utm_campaign: router.query.utm_campaign
+        });
         if (response === null) {
           throw new Error(response);
         }
@@ -148,7 +153,12 @@ const AuthRef: React.FC<AuthRefI> = ({
           throw new Error(response);
         }
       } else if (guest === 'register') {
-        const response = await register(formData);
+        const response = await register({
+          ...formData,
+          utm_source: router.query.utm_source,
+          utm_medium: router.query.utm_medium,
+          utm_campaign: router.query.utm_campaign
+        });
         if (response === null) {
           throw new Error(response);
         }

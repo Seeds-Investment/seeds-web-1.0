@@ -2594,7 +2594,18 @@ export default {
       text41: 'Tolong masukan alamat email yang valid',
       text42: 'Pengunggahan foto gagal, silakan coba lagi',
       text43: 'Panjang minimum nomor telepon adalah 7 digit.'
-    }    
+    },
+    withdrawQuestion: {
+      text1: 'Tidak ada pertanyaan yang ditemukan dalam permainan ini.',
+      text2: 'Unggahan gagal, silakan coba lagi',
+      text3: 'Harap jawab semua pertanyaan sebelum mengirim!',
+      text4: 'Jawaban berhasil dikirim!',
+      text5: 'Hadiah sudah pernah dikirim',
+      text6: 'Pertanyaan Penarikan',
+      text7: 'Ketik jawaban Anda',
+      text8: 'Kirim',      
+      text9: 'Kembali',
+    }
   },
   buyAsset: {
     text1: 'Aset yang akan di beli',

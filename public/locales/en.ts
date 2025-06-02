@@ -2663,6 +2663,17 @@ export default {
       text41: 'Please enter a valid email address.',
       text42: 'Upload failed, please try again',
       text43: 'The minimum phone number length is 7 digits.',
+    },
+    withdrawQuestion: {
+      text1: 'No questions were found in this game.',
+      text2: 'Upload failed, please try again',
+      text3: 'Please answer every question before submitting!',
+      text4: 'Answers submitted successfully!',
+      text5: 'Reward has already been submitted',
+      text6: 'Withdrawal Questions',
+      text7: 'Type your answer',
+      text8: 'Submit',
+      text9: 'Back',
     }
   },
   buyAsset: {

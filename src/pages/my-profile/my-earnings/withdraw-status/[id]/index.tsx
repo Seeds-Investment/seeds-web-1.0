@@ -32,7 +32,6 @@ const WithdrawStatus = (): React.ReactElement => {
     ? router.query.id[0]
     : router.query.id;
   
-  
   const fetchEarningById = async (id: string): Promise<void> => {
     try {
       setIsLoading(true);

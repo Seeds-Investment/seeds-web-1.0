@@ -2618,6 +2618,7 @@ export default {
       text9: 'Play Name',
       text10: 'Date',
       text11: 'Ok',
+      text12: 'Date Rejected',
     },
     withdrawKyc: {
       text1: 'Withdraw Not Available Yet...',
@@ -2677,6 +2678,9 @@ export default {
       text10: 'Image size exceeds the limit',
       text11: 'File size is too large. Maximum allowed is',
       text12: 'Maximum allowed image size is',
+      text13: 'Claim prize to My Earning?',
+      text14: 'Proceed',
+      text15: 'Cancel',
     }
   },
   buyAsset: {

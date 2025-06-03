@@ -224,7 +224,7 @@ export const getWithdrawQuestions = async (
 export const postWithdrawAnswer = async (
   playId: string,
   playType: string,
-  body: { questions: Array<{ question: string; answer: string }> }
+  body?: { questions: Array<{ question: string; answer: string }> }
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');

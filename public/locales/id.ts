@@ -2605,6 +2605,9 @@ export default {
       text7: 'Ketik jawaban Anda',
       text8: 'Kirim',      
       text9: 'Kembali',
+      text10: 'Ukuran gambar melebihi batas',
+      text11: 'Ukuran file terlalu besar. Maksimum',
+      text12: 'Ukuran gambar maksimum adalah',
     }
   },
   buyAsset: {

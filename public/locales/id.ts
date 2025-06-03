@@ -2549,6 +2549,7 @@ export default {
       text9: 'Nama Permainan',
       text10: 'Tanggal',
       text11: 'Oke',
+      text12: 'Tanggal Penolakan',
     },
     withdrawKyc: {
       text1: 'Penarikan Belum Tersedia...',
@@ -2608,6 +2609,9 @@ export default {
       text10: 'Ukuran gambar melebihi batas',
       text11: 'Ukuran file terlalu besar. Maksimum',
       text12: 'Ukuran gambar maksimum adalah',
+      text13: 'Klaim hadiah sebagai pendapatan?',
+      text14: 'Lanjutkan',
+      text15: 'Batalkan',
     }
   },
   buyAsset: {

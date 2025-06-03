@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 interface WithdrawQuestion {
   question: string;
   type: 'FREETEXT' | 'IMAGE';
+	max_size: number;
 }
 
 const WithdrawQuiz: React.FC = () => {
@@ -28,6 +29,7 @@ const WithdrawQuiz: React.FC = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [questions, setQuestions] = useState<WithdrawQuestion[]>([]);
 	const [answers, setAnswers] = useState<Record<string, string>>({});
+	const [sizeWarnings, setSizeWarnings] = useState<Record<string, string>>({});
 
 	const fetchQuestionData = async (id: string, playType: string, language: string): Promise<void> => {
 		try {
@@ -56,6 +58,16 @@ const WithdrawQuiz: React.FC = () => {
 			void fetchQuestionData(id, playType, language);
 		}
 	}, [id, playType, language]);
+    
+	useEffect(() => {
+		if (Object?.keys(sizeWarnings)?.length > 0) {
+			const timeout = setTimeout(() => {
+				setSizeWarnings({});
+			}, 4000);
+	
+			return () => { clearTimeout(timeout); };
+		}
+	}, [sizeWarnings]);	
 
 	const handleTextChange = (question: string, value: string): void => {
 		setAnswers(prev => ({ ...prev, [question]: value }));
@@ -168,26 +180,71 @@ const WithdrawQuiz: React.FC = () => {
 											onChange={(e) => {
 												const file = e.target.files?.[0];
 												if (file != null) {
+													const maxSizeKB = Number(q?.max_size ?? 0);
+													const fileSizeKB = file?.size / 1024;
+													
+													const formattedMaxSize = maxSizeKB >= 1024
+														? `${(maxSizeKB / 1024).toFixed(0)}MB`
+														: `${maxSizeKB}KB`;
+													
+													if (fileSizeKB > maxSizeKB) {
+														toast.error(`${t('earning.withdrawQuestion.text10')} ${formattedMaxSize}!`);
+														e.target.value = '';
+														setSizeWarnings(prev => ({
+															...prev,
+															[q?.question]: `${t('earning.withdrawQuestion.text11')} ${formattedMaxSize}!`,
+														}));
+														return;
+													}																									
+
+													setSizeWarnings(prev => ({
+														...prev,
+														[q?.question]: '',
+													}));
+
 													void handleImageUpload(q?.question, file);
 												}
 											}}
 										/>
-										{(answers[q.question]?.length > 0) && (
-											<div className='flex justify-between items-center'>
-												<img 
-													src={answers[q?.question]} 
-													alt="Uploaded" 
-													className="mt-2 w-full max-w-[280px] rounded" 
+
+										{(answers[q?.question]?.length > 0) && (
+											<div className="flex justify-between items-center">
+												<img
+													src={answers[q?.question]}
+													alt="Uploaded"
+													className="mt-2 w-full max-w-[280px] rounded"
 												/>
-												<IoMdClose 
+												<IoMdClose
 													size={20}
-													onClick={() => { handleImageDelete(q?.question); }}
-													className='text-[#DA2D1F] cursor-pointer hover:scale-125 duration-200 shrink-0'
+													onClick={() => {
+														handleImageDelete(q?.question);
+														setSizeWarnings(prev => ({
+															...prev,
+															[q?.question]: '',
+														}));
+													}}
+													className="text-[#DA2D1F] cursor-pointer hover:scale-125 duration-200 shrink-0"
 												/>
 											</div>
 										)}
+
+										{
+											(sizeWarnings[q?.question]?.length > 0) ? (
+												<Typography className="text-md text-red-600 mt-1 font-medium font-poppins">
+													{sizeWarnings[q?.question]}
+												</Typography>
+											)
+											: (
+												<Typography className="text-md text-seeds-button-green font-medium font-poppins mt-2">
+													{t('earning.withdrawQuestion.text12')} {Number(q?.max_size) >= 1024 
+														? `${(Number(q?.max_size) / 1024)?.toFixed(0)}MB.` 
+														: `${Number(q?.max_size)}KB.`}
+												</Typography>
+											)
+										}
 									</div>
 								)}
+
 							</div>
 						))}
 					</div>

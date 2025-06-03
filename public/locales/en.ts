@@ -2674,6 +2674,9 @@ export default {
       text7: 'Type your answer',
       text8: 'Submit',
       text9: 'Back',
+      text10: 'Image size exceeds the limit',
+      text11: 'File size is too large. Maximum allowed is',
+      text12: 'Maximum allowed image size is',
     }
   },
   buyAsset: {

@@ -1,30 +1,14 @@
-import animationAppsSeedsWeb from '@/constants/animationAppsSeedsWeb.json';
 import { downloadOurApp } from '@/utils/_static';
-import { Button, Typography } from '@material-tailwind/react';
-import Lottie from 'lottie-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useInView } from 'react-intersection-observer';
-import 'slick-carousel/slick/slick-theme.css';
-import 'slick-carousel/slick/slick.css';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 export default function Section1(): React.ReactElement {
   const { t } = useTranslation();
   const router = useRouter();
-  const measurement = 400;
-  const [isBottom, setBottom] = useState(0);
-  const { ref, inView, entry } = useInView({
-    threshold: 0
-  });
-  useEffect(() => {
-    const bottom = entry?.boundingClientRect.bottom ?? 0;
-    setBottom(bottom);
-  }, [entry]);
 
   const titles = [
     t('landingV2.section1.text7'),
@@ -33,31 +17,28 @@ export default function Section1(): React.ReactElement {
   ];
 
   return (
-    <section
-      ref={ref}
-      className="flex md:flex-row w-full justify-end sm:justify-center 2xl:justify-between"
-    >
-      <div
-        className={`w-full lg:m-12 h-auto font-poppins cursor-default ${
-          inView && isBottom >= measurement
-            ? 'animate-fade-in-slide'
-            : isBottom >= measurement
-            ? 'animate-fade-out-slide'
-            : ''
-        }`}
-      >
+    <section className="flex md:flex-row w-full justify-end sm:justify-center 2xl:justify-between">
+      <div className={`w-full lg:m-12 h-auto font-poppins cursor-default`}>
         <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[150px] w-[350px] h-[350px] left-[-10rem] top-[14rem] rounded-full z-0"></div>
         <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[180px] w-[650px] h-[650px] right-[-20rem] top-[-15rem] rounded-full z-0"></div>
         <div className="hidden lg:block absolute bg-[#C5ACFF] blur-[450px] w-[750px] h-[750px] left-[-18rem] top-[-15rem] rounded-full z-0"></div>
         <div className="hidden lg:block absolute bg-[#C5ACFF] blur-[150px] w-[350px] h-[350px] right-[-10rem] top-[14rem] rounded-full z-0"></div>
 
-        <div className="flex flex-col md:flex-row ">
-          <div className="lg:hidden  ">
-            <div className="lg:flex lg:min-w-full lg:justify-center lg:h-auto flex justify-center w-min-full h-auto">
-              <Lottie
-                animationData={animationAppsSeedsWeb}
-                className="h-[450px]"
-              />
+        <div className="relative flex flex-col md:flex-row z-10">
+          <div className="lg:hidden">
+            <div className="lg:flex lg:min-w-full lg:justify-center flex justify-center w-min-full h-[350px] overflow-hidden">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="h-[450px] object-cover sm:object-contain"
+              >
+                <source
+                  src="/assets/landing-page/animationAppsSeedsWeb.webm"
+                  type="video/webm"
+                />
+              </video>
             </div>
           </div>
 
@@ -89,24 +70,22 @@ export default function Section1(): React.ReactElement {
                     ? titles.map((title, index) => {
                         return (
                           <SwiperSlide key={index} className="">
-                            <Typography className="font-poppins md:text-xl text-base lg:w-full w-full lg:text-4xl font-semibold text-[#3AC4A0] break-words whitespace-normal overflow-hidden">
+                            <p className="font-poppins md:text-xl text-base lg:w-full w-full lg:text-4xl font-semibold text-[#3AC4A0]">
                               {title}
-                            </Typography>
+                            </p>
                           </SwiperSlide>
                         );
                       })
                     : null}
                 </Swiper>
-                <Button
-                  className="text-xs w-1/2 z-10 font-semibold capitalize text-md bg-[#3AC4A0] rounded-full"
+                <button
+                  className="text-lg py-2 px-3 w-1/2 z-10 font-semibold text-md bg-[#3AC4A0] rounded-full text-white"
                   onClick={() => {
                     void router.push('/auth');
                   }}
                 >
-                  <Typography className="w-full">
-                    {t('landingV2.section1.text6')}
-                  </Typography>
-                </Button>
+                  {t('landingV2.section1.text6')}
+                </button>
               </div>
               <div className="flex py-5 lg:z-10 justify-around items-center lg:justify-start lg:items-start">
                 {downloadOurApp
@@ -116,7 +95,7 @@ export default function Section1(): React.ReactElement {
                       key={key}
                       className="flex flex-col items-center md:mr-5"
                     >
-                      <Link key={key} href={data.url}>
+                      <Link key={key} href={data.url} prefetch={false}>
                         <Image alt="" src={data.icon} />
                       </Link>
                     </div>
@@ -125,11 +104,13 @@ export default function Section1(): React.ReactElement {
             </div>
           </div>
           <div className="hidden lg:block lg:w-1/2">
-            <div className="lg:flex lg:min-w-full lg:justify-center lg:h-auto w-min-full h-auto">
-              <Lottie
-                animationData={animationAppsSeedsWeb}
-                className="h-[450px]"
-              />
+            <div className="lg:flex lg:min-w-full lg:justify-center w-min-full h-96">
+              <video autoPlay muted loop playsInline className="h-[450px]">
+                <source
+                  src="/assets/landing-page/animationAppsSeedsWeb.webm"
+                  type="video/webm"
+                />
+              </video>
             </div>
           </div>
         </div>

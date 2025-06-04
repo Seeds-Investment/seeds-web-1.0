@@ -2,7 +2,9 @@ import BurgerMenu from '@/assets/landing-page/header/BurgerMenu.svg';
 import ChevronDown from '@/assets/landing-page/header/ChevronDown.svg';
 import SeedLogo from '@/assets/landing-page/header/SeedsLogo.svg';
 import TrackerEvent from '@/helpers/GTM';
+import queryList from '@/helpers/queryList';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
+import withRedirect from '@/helpers/withRedirect';
 import LanguageContext from '@/store/language/language-context';
 import { getLocalStorage } from '@/utils/common/localStorage';
 import {
@@ -41,6 +43,8 @@ const languageList = [
 ];
 
 const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
+  const { queries } = queryList();
+  const queriesString = new URLSearchParams(queries).toString();
   const { t } = useTranslation();
   const [openMenu, setOpenMenu] = useState(false);
   const [open, setOpen] = useState(false);
@@ -97,7 +101,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
       <Redirecting open={open} handleOpen={handleOpen} />
       {/* TODO: NEW HEADER */}
       <section className="xl:flex hidden justify-evenly h-20 items-center">
-        <Link href="https://seeds.finance">
+        <Link prefetch={false} href="https://seeds.finance">
           <Image
             alt="SeedsLogo"
             src={SeedLogo}
@@ -110,12 +114,13 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
           {pathUrl.map((item, index) => {
             return (
               <Link
+                prefetch={false}
                 className={`${
                   router.pathname === `${item.url}`
                     ? 'text-[#3AC4A0] underline-offset-8 underline'
                     : 'text-[#7C7C7C]'
                 } px-3`}
-                href={`${item.url}`}
+                href={`${item.url}?${queriesString}`}
                 key={item.id}
                 onClick={() => {
                   TrackerEvent({
@@ -131,12 +136,14 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
           })}
         </section>
         <section className="flex items-center gap-8">
-          <Link
-            href="/auth"
-            className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[140px] h-[42px] bg-[#3AC4A0] rounded-full"
+          <Button
+            onClick={async () => {
+              await withRedirect(router, router.query, '/auth');
+            }}
+            className="text-base capitalize font-semibold font-poppins text-white w-[140px] h-[42px] p-0 bg-[#3AC4A0] rounded-full"
           >
             {t('header.join')}
-          </Link>
+          </Button>
 
           <Menu>
             <MenuHandler>
@@ -189,7 +196,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
       </section>
       {/* TODO: END NEW HEADER */}
       <section className="flex xl:hidden justify-between mx-4 items-center h-20">
-        <Link href="https://seeds.finance">
+        <Link prefetch={false} href="https://seeds.finance">
           <Image alt="SeedsLogo" src={SeedLogo} height={46} />
         </Link>
         <Menu
@@ -216,16 +223,19 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
                   className="hover:bg-transparent focus:bg-transparent"
                 >
                   <Link
-                    href={item.url}
+                    prefetch={false}
+                    href={`${item.url}?${queriesString}`}
                     className={` font-poppins font-normal text-base ${
                       router.pathname === item.url
                         ? 'text-[#3AC4A0]'
                         : 'text-[#7C7C7C]'
                     }`}
-                    onClick={async () => {
+                    onClick={() => {
                       setOpenMenu(false);
                       TrackerEvent({
-                        event: `SW_landing_${item.name.toLowerCase()}_page`
+                        event: `SW_landing_${item.name
+                          .toLowerCase()
+                          .replace(' ', '_')}_page`
                       });
                     }}
                   >

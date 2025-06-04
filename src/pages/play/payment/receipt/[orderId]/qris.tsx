@@ -1,6 +1,7 @@
 import CountdownTimer from '@/components/payment/CountdownTimer';
 import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { swtracker } from '@/constants/swtracker';
 import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import { getPaymentDetail } from '@/repository/payment.repository';
@@ -225,7 +226,7 @@ const SuccessPaymentPageQR: React.FC = () => {
                         .replaceAll(/[^a-zA-Z0-9_-]/g, '_');
                     };
                     TrackerEvent({
-                      event: 'SW_quiz_payment',
+                      event: swtracker.quiz.payment,
                       userData: userInfo,
                       paymentData: {
                         ...orderDetail,

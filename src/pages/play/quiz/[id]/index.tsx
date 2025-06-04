@@ -5,6 +5,7 @@
 import ModalQuizWinnerAlert from '@/components/popup/ModalQuizWinnerAlert';
 import ModalShareQuiz from '@/components/popup/ModalShareQuiz';
 import PromoCode from '@/components/promocode/promoCode';
+import { swtracker } from '@/constants/swtracker';
 import { standartCurrency } from '@/helpers/currency';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
@@ -182,7 +183,7 @@ const QuizDetail = (): React.ReactElement => {
         return text.replaceAll(/[^a-zA-Z0-9_-]/g, '_');
       };
       TrackerEvent({
-        event: 'SW_quiz_page_detail',
+        event: swtracker.quiz.pageDetail,
         quizData: {
           ...detailQuiz,
           name: formattedText(detailQuiz?.name)

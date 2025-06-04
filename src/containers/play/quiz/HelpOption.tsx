@@ -5,6 +5,7 @@ import HelpBox from '@/components/quiz/help-box.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import VerifyCompanion from '@/components/quiz/verify-companion.component';
 import Modal from '@/components/ui/modal/Modal';
+import { swtracker } from '@/constants/swtracker';
 import TrackerEvent from '@/helpers/GTM';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import useSoundEffect from '@/hooks/useSoundEffects';
@@ -177,7 +178,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
               return text.replaceAll(/[^a-zA-Z0-9_-]/g, '_');
             };
             TrackerEvent({
-              event: 'SW_quiz_payment',
+              event: swtracker.quiz.payment,
               userData: userInfo,
               quizData: {
                 ...detailQuiz,
@@ -235,7 +236,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
               return text.replaceAll(/[^a-zA-Z0-9_-]/g, '_');
             };
             TrackerEvent({
-              event: 'SW_quiz_payment',
+              event: swtracker.quiz.payment,
               userData: userInfo,
               quizData: {
                 ...detailQuiz,
@@ -287,7 +288,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
             return text.replaceAll(/[^a-zA-Z0-9_-]/g, '_');
           };
           TrackerEvent({
-            event: 'SW_quiz_payment',
+            event: swtracker.quiz.payment,
             userData: userInfo,
             quizData: {
               ...detailQuiz,

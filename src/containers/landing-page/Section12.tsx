@@ -1,37 +1,15 @@
 import Image from 'next/image';
 import DiamanteLogo from 'public/assets/images/diamante.svg';
-import { useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
 import { useTranslation } from 'react-i18next';
-import { useInView } from 'react-intersection-observer';
 
 export default function Section12(): React.ReactElement {
   const { t } = useTranslation();
-  const [isBottom, setBottom] = useState(0);
-  const measurement = 900;
-
-  const { ref, inView, entry } = useInView({
-    threshold: 0.2
-  });
-
-  useEffect(() => {
-    const bottom = entry?.boundingClientRect.bottom ?? 0;
-    setBottom(bottom);
-  }, [entry]);
 
   return (
-    <section
-      ref={ref}
-      className="h-auto min-w-full cursor-default relative font-poppins text-center"
-    >
+    <section className="h-auto min-w-full cursor-default relative font-poppins text-center">
       <div
-        className={`min-w-full h-auto cursor-default md:mt-4 text-start xl:text-center lg:mb-10 font-poppins bg-gradient-to-b from-[#EDF2F700]  to-[#E2E8F0] ${
-          inView && isBottom >= measurement
-            ? 'animate-fade-in-slide'
-            : isBottom >= measurement
-            ? 'animate-fade-out-slide'
-            : ''
-        }`}
+        className={`min-w-full h-auto cursor-default md:mt-4 text-start xl:text-center lg:mb-10 font-poppins bg-gradient-to-b from-[#EDF2F700]  to-[#E2E8F0]`}
       >
         <div className="mt-12 flex flex-col bg-white">
           <div className="flex flex-col w-full items-center text-center px-8 justify-center gap-5 lg:gap-4 font-poppins">

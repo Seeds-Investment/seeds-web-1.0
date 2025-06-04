@@ -22,6 +22,7 @@ interface IModalQuizWinner {
   preferredCurrency: string;
   winningImageSrc: string;
   quizName: string;
+  isSubmitted: boolean;
 }
 
 const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
@@ -38,7 +39,8 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
   prizeType,
   preferredCurrency,
   winningImageSrc,
-  quizName
+  quizName,
+  isSubmitted
 }: IModalQuizWinner) => {
   const { dataUser } = useAppSelector(state => state.user);
   const router = useRouter();
@@ -116,12 +118,12 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
             <Typography className="font-poppins font-semibold text-md md:text-lg text-[#262626]">
               {dataUser?.name}
             </Typography>
-            <Typography className="font-poppins text-md md:text-lg text-[#262626]">
+            <Typography className="font-poppins text-md md:text-lg text-[#262626] text-center">
               {t('quiz.score')} {score}
             </Typography>
           </div>
           {(prizeType === 'CASH' || prizeType === '') && (
-            <Typography className="font-poppins font-semibold text-md md:text-lg text-[#262626] mb-4">
+            <Typography className="font-poppins font-semibold text-center text-md md:text-lg text-[#262626] mb-4">
               {t('quiz.earn')} {preferredCurrency}{' '}
               {prize?.toLocaleString('id-ID')}
             </Typography>
@@ -172,13 +174,17 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
                 </a>
               </div>
             )}
-          <div className="px-4 md:px-0 w-full md:w-2/3 gap-4 flex flex-row md:flex-col py-4 mb-16 md:mb-0">
+          <div className="px-4 md:px-0 w-full md:w-2/3 gap-4 flex flex-col md:flex-row py-4 mb-16 md:mb-0">
             {prizeType === 'CASH' || prizeType === '' ? (
               <button
-                onClick={() => {
-                  router.push(`/play/withdraw/${quizId}?playType=QUIZ`).catch(err => {
-                    toast(`Error: ${err as string}`);
-                  });
+                onClick={async() => {
+                  if (isSubmitted) {
+                    await router.push(`/my-profile/my-earnings`)
+                  } else {
+                    await router.push(`/play/withdraw/${quizId}?playType=QUIZ`).catch(err => {
+                      toast(`Error: ${err as string}`);
+                    });
+                  }
                 }}
                 className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-12 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
               >

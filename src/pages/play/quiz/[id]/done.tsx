@@ -380,6 +380,7 @@ const DoneQuiz: React.FC = () => {
           prizeType={detailQuiz?.prize_type ?? 'CASH'}
           preferredCurrency={userInfo?.preferredCurrency ?? 'IDR'}
           quizName={detailQuiz?.name ?? ''}
+          isSubmitted={QuizReview?.is_submitted ?? false}
         />
       </QuizLayoutComponent>
     </PageGradient>

@@ -244,3 +244,26 @@ export const postWithdrawAnswer = async (
     await Promise.reject(error);
   }
 };
+
+export const resubmitWithdrawAnswer = async (
+  submissionId: string,
+  body?: { questions: Array<{ question: string; answer: string }> }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await earningService.post(`${submissionId}/resubmit`,
+      body, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};

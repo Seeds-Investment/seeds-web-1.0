@@ -40,6 +40,7 @@ interface PlayResult {
   rank: number;
   medal: string;
   prize: number;
+  is_submitted: boolean;
 }
 
 const NotificationWinner: React.FC = () => {
@@ -61,7 +62,8 @@ const NotificationWinner: React.FC = () => {
     gain: 0,
     rank: 10,
     medal: '',
-    prize: 0
+    prize: 0,
+    is_submitted: false
   });
   const [tournamentParams, setTournamentParams] = useState({
     search: '',
@@ -181,24 +183,28 @@ const NotificationWinner: React.FC = () => {
       }
     }
   };
-    
+
   const handleWithdrawPrize = async (id: string, playType: string): Promise<void> => {
-    try {
-      const response = await postWithdrawAnswer(id, playType);
-      if (response?.status === 'pending') {
-        toast.success(t('earning.withdrawQuestion.text4'));
-        setTimeout(() => {
-          void router.push('/play')
-        }, 3000);
+    if (dataResult?.is_submitted) {
+      void router.push('/my-profile/my-earnings')
+    } else {
+      try {
+        const response = await postWithdrawAnswer(id, playType);
+        if (response?.status === 'pending') {
+          toast.success(t('earning.withdrawQuestion.text4'));
+          setTimeout(() => {
+            void router.push('/my-profile/my-earnings')
+          }, 3000);
+        }
+      } catch (error: any) {
+        if (error?.response?.data?.message === 'reward has already been submitted') {
+          toast.error(t('earning.withdrawQuestion.text5'))
+        } else {
+          toast.error(`Failed to submit answers: ${error?.response?.data?.message as string}`);
+        }
+      } finally {
+        setIsProceedCashout(false)
       }
-    } catch (error: any) {
-      if (error?.response?.data?.message === 'reward has already been submitted') {
-        toast.error(t('earning.withdrawQuestion.text5'))
-      } else {
-        toast.error(`Failed to submit answers: ${error?.response?.data?.message as string}`);
-      }
-    } finally {
-      setIsProceedCashout(false)
     }
   };
 

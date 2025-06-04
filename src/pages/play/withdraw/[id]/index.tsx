@@ -2,7 +2,7 @@ import { NoData } from '@/assets/danamart';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import { postCloud } from '@/repository/cloud.repository';
-import { getWithdrawQuestions, postWithdrawAnswer } from '@/repository/earning.repository';
+import { getWithdrawQuestions, postWithdrawAnswer, resubmitWithdrawAnswer } from '@/repository/earning.repository';
 import LanguageContext from '@/store/language/language-context';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -23,6 +23,8 @@ const WithdrawQuiz: React.FC = () => {
 	const router = useRouter();
 	const id = Array.isArray(router?.query?.id) ? router?.query?.id[0] : router?.query?.id;
 	const playType = Array.isArray(router?.query?.playType) ? router?.query?.playType[0] : router?.query?.playType;
+	const sourceId = Array.isArray(router?.query?.sourceId) ? router?.query?.sourceId[0] : router?.query?.sourceId;
+	const isResubmit = router?.query?.resubmit === 'true';
 	const languageCtx = useContext(LanguageContext);
 	const language = languageCtx?.language === 'ID' ? 'id' : 'en';
 
@@ -110,16 +112,34 @@ const WithdrawQuiz: React.FC = () => {
 		if (typeof id !== 'string' || typeof playType !== 'string') return;
 	
 		try {
-			const response = await postWithdrawAnswer(id, playType, body);
-			if (response?.status === 'pending') {
-				toast.success(t('earning.withdrawQuestion.text4'));
-				setTimeout(() => {
-					void router.push('/play')
-				}, 3000);
+			if (isResubmit) {
+				const response = await resubmitWithdrawAnswer(sourceId ?? '', body);
+				if (response?.message === 'Earning submission succesfully resubmitted') {
+					toast.success(t('earning.withdrawQuestion.text17'));
+					setTimeout(() => {
+						void router.push('/my-profile/my-earnings')
+					}, 3000);
+				}
+			} else {
+				const response = await postWithdrawAnswer(id, playType, body);
+				if (response?.status === 'pending') {
+					toast.success(t('earning.withdrawQuestion.text4'));
+					setTimeout(() => {
+						void router.push('/my-profile/my-earnings')
+					}, 3000);
+				}
 			}
 		} catch (error: any) {
 			if (error?.response?.data?.message === 'reward has already been submitted') {
 				toast.error(t('earning.withdrawQuestion.text5'))
+				setTimeout(() => {
+					void router.push('/my-profile/my-earnings')
+				}, 3000);
+			} else if (error?.response?.data?.message === "can't resubmit, status not rejected") {
+				toast.error(t('earning.withdrawQuestion.text16'))
+				setTimeout(() => {
+					void router.push('/my-profile/my-earnings')
+				}, 3000);
 			} else {
 				toast.error(`Failed to submit answers: ${error?.response?.data?.message as string}`);
 			}

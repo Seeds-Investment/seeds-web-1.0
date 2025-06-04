@@ -261,13 +261,6 @@ const SidebarLoginResponsive: React.FC<props> = ({
                 //       className={isLinkActive(data.url)}
                 //       href={data.url}
                 //       key={idx}
-                //       onClick={() => {
-                //         handleOpen();
-                //         TrackerEvent({
-                //           event: `SW_${data.title.toLowerCase()}_page`,
-                //           userData: dataUser
-                //         });
-                //       }}
                 //     >
                 //       <Image width={20} height={20} src={data.image} alt="" />
                 //       <h1>{data.title}</h1>

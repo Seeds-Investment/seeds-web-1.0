@@ -151,20 +151,34 @@ const WithdrawStatus = (): React.ReactElement => {
           </Typography>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-2 justify-start md:justify-between items-center">
-          <Typography className="text-[#7C7C7C] text-sm font-poppins">{t(`${pathTranslation}.text12`)}</Typography>
-          <Typography className="text-[#262626] text-sm font-medium font-poppins">
-            {languageCtx.language === 'ID'
-              ? getEventDate(
-                  new Date(earningData?.action_at ?? '2024-12-31T23:59:00Z'),
-                  'id-ID'
-                )
-              : getEventDate(
-                  new Date(earningData?.action_at ?? '2024-12-31T23:59:00Z'),
-                  'en-US'
-                )}
-          </Typography>
-        </div>
+        {
+          !((earningData?.action_at)?.includes('0001-01-01') ?? false) &&
+            <div className="flex flex-col md:flex-row gap-2 justify-start md:justify-between items-center">
+              <Typography 
+                className="text-[#7C7C7C] text-sm font-poppins"
+              >
+                {
+                  earningData?.status === 'pending'
+                    ? t(`${pathTranslation}.text14`)
+                    : earningData?.status === 'rejected'
+                      ? t(`${pathTranslation}.text12`)
+                      : t(`${pathTranslation}.text13`)
+                }
+              </Typography>
+              <Typography className="text-[#262626] text-sm font-medium font-poppins">
+                {languageCtx.language === 'ID'
+                  ? getEventDate(
+                      new Date(earningData?.action_at ?? '2024-12-31T23:59:00Z'),
+                      'id-ID'
+                    )
+                  : getEventDate(
+                      new Date(earningData?.action_at ?? '2024-12-31T23:59:00Z'),
+                      'en-US'
+                    )}
+              </Typography>
+            </div>
+        }
+
       </div>
 
       {

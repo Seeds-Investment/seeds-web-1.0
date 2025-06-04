@@ -2681,6 +2681,8 @@ export default {
       text13: 'Claim prize to My Earning?',
       text14: 'Proceed',
       text15: 'Cancel',
+      text16: "Cannot resubmit: status is not 'rejected'",
+      text17: 'Earning submission succesfully resubmitted!',
     }
   },
   buyAsset: {

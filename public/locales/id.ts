@@ -2601,7 +2601,7 @@ export default {
       text2: 'Unggahan gagal, silakan coba lagi',
       text3: 'Harap jawab semua pertanyaan sebelum mengirim!',
       text4: 'Jawaban berhasil dikirim!',
-      text5: 'Hadiah sudah pernah dikirim',
+      text5: 'Hadiah sedang diproses',
       text6: 'Pertanyaan Penarikan',
       text7: 'Ketik jawaban Anda',
       text8: 'Kirim',      
@@ -2612,6 +2612,8 @@ export default {
       text13: 'Klaim hadiah sebagai pendapatan?',
       text14: 'Lanjutkan',
       text15: 'Batalkan',
+      text16: "Tidak dapat mengirim ulang: status bukan 'ditolak'",
+      text17: 'Pengajuan penarikan berhasil dikirim ulang!',
     }
   },
   buyAsset: {

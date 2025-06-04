@@ -224,6 +224,7 @@ export interface QuizReviewDTO {
   rank: number;
   started_at: string;
   ended_at: string;
+  is_submitted: boolean;
 }
 
 export interface QuizReviewDataI {

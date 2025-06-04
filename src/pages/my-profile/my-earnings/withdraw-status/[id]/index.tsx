@@ -33,7 +33,7 @@ const WithdrawStatus = (): React.ReactElement => {
   const id = Array.isArray(router.query.id)
     ? router.query.id[0]
     : router.query.id;
-  
+
   const fetchEarningById = async (id: string): Promise<void> => {
     try {
       setIsLoading(true);
@@ -193,6 +193,9 @@ const WithdrawStatus = (): React.ReactElement => {
           rejectReason={earningData?.reject_reason ?? ''}
           source={earningData?.source}
           playId={earningData?.play_id}
+          sourceId={earningData?.source_id}
+          sourceName={earningData?.source_name}
+          status={earningData?.status}
         />
       )}
     </>

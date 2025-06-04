@@ -2619,6 +2619,8 @@ export default {
       text10: 'Date',
       text11: 'Ok',
       text12: 'Date Rejected',
+      text13: 'Date Approved',
+      text14: 'Date Re-Submit',
     },
     withdrawKyc: {
       text1: 'Withdraw Not Available Yet...',

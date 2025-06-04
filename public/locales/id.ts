@@ -2550,6 +2550,8 @@ export default {
       text10: 'Tanggal',
       text11: 'Oke',
       text12: 'Tanggal Penolakan',
+      text13: 'Tanggal Disetujui',
+      text14: 'Tanggal Pengajuan Ulang',
     },
     withdrawKyc: {
       text1: 'Penarikan Belum Tersedia...',

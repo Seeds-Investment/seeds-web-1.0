@@ -38,11 +38,15 @@ export interface UserInfoFormData {
   dm_penmit_01022: string;
   dm_penmit_01041: string;
   dm_penmit_01042: string;
+  dm_penmit_01043: string;
   dm_pen_08002: string;
   dm_pen_08009: string;
   pernyataan_npwp: string;
   dm_penmit_01013?: any;
   dm_penmit_01008: string;
+  dm_penmit_01012?: string;
+  dm_penmit_01045?: string;
+  dm_penmit_01013_exist?: string;
 }
 
 const useUpdateUserInfoForm = (): any => {
@@ -161,6 +165,9 @@ const useUpdateUserInfoForm = (): any => {
       .string()
       .min(7, t(`${pathTranslation}.text5`) ?? 'Minimum 7 digits')
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
+    dm_penmit_01043: yup
+      .string()
+      .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
     dm_pen_08002: yup
       .string()
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required'),
@@ -189,14 +196,17 @@ const useUpdateUserInfoForm = (): any => {
         ),
       otherwise: schema => schema.notRequired()
     }),
-    dm_penmit_01013: yup.string().when('pernyataan_npwp', {
-      is: '1',
-      then: schema =>
-        schema.required(
-          t(`${pathTranslation}.text1`) ?? 'This field is required'
-        ),
-      otherwise: schema => schema.notRequired()
-    }),
+    dm_penmit_01013: yup
+      .mixed<FileList>()
+      .nullable()
+      .when('pernyataan_npwp', {
+        is: '1',
+        then: schema =>
+          schema.required(
+            t(`${pathTranslation}.text1`) ?? 'This field is required'
+          ),
+        otherwise: schema => schema.notRequired()
+      }),
     dm_penmit_01008: yup
       .string()
       .required(t(`${pathTranslation}.text1`) ?? 'This field is required')
@@ -232,10 +242,14 @@ const useUpdateUserInfoForm = (): any => {
     dm_penmit_01022: '',
     dm_penmit_01041: '',
     dm_penmit_01042: '',
+    dm_penmit_01043: '',
     dm_pen_08002: '',
     dm_pen_08009: '',
     pernyataan_npwp: '',
-    dm_penmit_01008: ''
+    dm_penmit_01008: '',
+    dm_penmit_01012: '',
+    dm_penmit_01045: '',
+    dm_penmit_01013_exist: ''
   };
 
   const {
@@ -255,40 +269,55 @@ const useUpdateUserInfoForm = (): any => {
   const { base64ToFile } = useBase64ToFile();
 
   const onSubmit = async (data: UserInfoFormData): Promise<void> => {
+
+    const isFileList = data.dm_penmit_01013 instanceof FileList;
+    const isBase64 =
+      typeof data.dm_penmit_01013 === 'string' &&
+      data.dm_penmit_01013.startsWith('data:image');
+    const isOldFilename =
+      typeof data.dm_penmit_01013 === 'string' &&
+      data.dm_penmit_01013.includes('npwp') &&
+      !isBase64;
+
     try {
       const formData = new FormData();
 
+      if (
+        !isFileList && 
+        !isBase64 && 
+        !isOldFilename &&
+        !formData.has('dm_penmit_01013')
+      ) {
+        const placeholderBlob = new Blob([''], { type: 'image/jpeg' });
+        const emptyFile = new File([placeholderBlob], 'empty.jpg', { type: 'image/jpeg' });
+        formData.append('dm_penmit_01013', emptyFile);
+      }
+
       const adjustedData = {
         ...data,
-        masa_berlaku: data.masa_berlaku ? 'on' : ''
+        pernyataantrigger: 0,
+        masa_berlaku: data.masa_berlaku ? 'on' : '',
       };
 
       Object.entries(adjustedData).forEach(([key, value]) => {
-        if (
-          key !== 'dm_penmit_01013' &&
-          value !== undefined &&
-          value !== null
-        ) {
+        if (key !== 'dm_penmit_01013' && value !== undefined && value !== null) {
           formData.append(key, String(value));
         }
       });
 
-      const isBase64 = typeof data.dm_penmit_01013 === 'string' && data.dm_penmit_01013.startsWith('data:image');
-      const isOldFilename = typeof data.dm_penmit_01013 === 'string' && data.dm_penmit_01013.includes('npwp') && !isBase64;
+      if (isFileList && data.dm_penmit_01013.length > 0) {
+        formData.append('dm_penmit_01013', data.dm_penmit_01013[0]);
+      }
 
-      // Upload new NPWP
-      if (isBase64) {
+      else if (isBase64) {
         const file = base64ToFile(data.dm_penmit_01013, 'image.jpg');
         formData.append('dm_penmit_01013', file);
       }
 
-      // Keep existing NPWP
-      if (isOldFilename) {
+      else if (isOldFilename) {
         formData.append('dm_penmit_01013_exist', data.dm_penmit_01013);
 
-        const imageUrl = `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${
-          data.dm_penmit_01013 as string
-        }`;
+        const imageUrl = `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${data.dm_penmit_01013 as string}`;
         const response = await fetch(imageUrl);
         const blob = await response.blob();
         const file = new File([blob], 'image.jpg', { type: blob.type });
@@ -304,9 +333,11 @@ const useUpdateUserInfoForm = (): any => {
       ) {
         toast.success('User information updated successfully');
       }
-      
     } catch (error: any) {
-      if (error?.response?.data?.message === 'Terjadi kesalahan. Silakan coba lagi.') {
+      if (
+        error?.response?.data?.message ===
+        'Terjadi kesalahan. Silakan coba lagi.'
+      ) {
         toast.error(error?.response?.data?.message as string);
       } else {
         toast.error('Failed to update user information');

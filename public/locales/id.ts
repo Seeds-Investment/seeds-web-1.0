@@ -3118,6 +3118,8 @@ export default {
         text60: 'Seumur Hidup',
         text61: 'File NPWP',
         text62: 'Masukan file atau foto NPWP',
+        text63: 'Hubungan dengan Ahli Waris',
+        text64: 'Masukan hubungan dengan ahli waris',
         dropdown: {
           yes: 'Ya',
           no: 'Tidak',

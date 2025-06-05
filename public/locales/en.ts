@@ -3185,6 +3185,8 @@ export default {
         text60: 'Lifetime',
         text61: 'File Tax ID (NPWP)',
         text62: 'Enter your Tax ID (NPWP) file',
+        text63: 'Relationship with Heir',
+        text64: 'Enter your relationship with the heir',
         dropdown: {
           yes: 'Yes',
           no: 'No',

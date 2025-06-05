@@ -3,37 +3,15 @@ import imageDesktop from '@/assets/landing-page/section11.svg';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useInView } from 'react-intersection-observer';
 
 export default function Section11(): React.ReactElement {
   const { t } = useTranslation();
-  const [isBottom, setBottom] = useState(0);
-  const measurement = 900;
-
-  const { ref, inView, entry } = useInView({
-    threshold: 0.2
-  });
-
-  useEffect(() => {
-    const bottom = entry?.boundingClientRect.bottom ?? 0;
-    setBottom(bottom);
-  }, [entry]);
 
   return (
-    <section
-      ref={ref}
-      className="h-auto min-w-full relative font-poppins text-center"
-    >
+    <section className="h-auto min-w-full relative font-poppins text-center">
       <div
-        className={`w-full lg:px-12 lg:py-32 py-12 font-poppins h-auto bg-gradient-to-r from-[#9A76FE29] to-[#4FE6AF29] ${
-          inView && isBottom >= measurement
-            ? 'animate-fade-in-slide'
-            : isBottom >= measurement
-            ? 'animate-fade-out-slide'
-            : ''
-        }`}
+        className={`w-full lg:px-12 lg:py-32 py-12 font-poppins h-auto bg-gradient-to-r from-[#9A76FE29] to-[#4FE6AF29]`}
       >
         <div className="flex justify-between items-center flex-col lg:flex-row gap-5">
           <div className="hidden lg:block w-1/3">
@@ -56,9 +34,9 @@ export default function Section11(): React.ReactElement {
               {t('landingV2.section11.text2')}
             </h1>
             <Link
-              href={
-                'https://linktr.ee/Seedsmarketing?utm_source=linktree_admin_share'
-              }
+              prefetch={false}
+              href={'https://linktr.ee/seeds.finance'}
+              target="_blank"
             >
               <Button className="mt-5 px-16 lg:px-20 py-3 capitalize bg-[#3AC4A0] rounded-full">
                 <p className="text-xl font-semibold">

@@ -9,29 +9,18 @@ import earth from '@/assets/landing-page/s2-earth.png';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { webCounter } from '@/repository/web.repository';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
-import { useInView } from 'react-intersection-observer';
 
 export default function Section2(): React.ReactElement {
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
-  const [isBottom, setBottom] = useState(0);
-  const measurement = 900;
   const [totalEvent, setTotalEvent] = useState<number>(0);
   const [totalRegister, setTotalRegister] = useState<number>(0);
   const [totalCircle, setTotalCircle] = useState<number>(0);
 
-  const { ref, inView, entry } = useInView({
-    threshold: 0.2
-  });
-  useEffect(() => {
-    const bottom = entry?.boundingClientRect.bottom ?? 0;
-    setBottom(bottom);
-  }, [entry]);
-
-  const fetchCounter = async (): Promise<void> => {
+  const fetchCounter = useCallback(async (): Promise<void> => {
     try {
       const response = await webCounter();
       setTotalEvent(response.total_event);
@@ -40,25 +29,18 @@ export default function Section2(): React.ReactElement {
     } catch (error: any) {
       console.error(error);
     }
-  };
+  }, []);
+
   useEffect(() => {
     void fetchCounter();
   }, []);
 
   return (
     <div
-      ref={ref}
+      // ref={ref}
       className=" bg-white items-center justify-center px-4 w-full relative overflow-hidden"
     >
-      <div
-        className={`h-auto min-w-full mt-8 cursor-default font-poppins ${
-          inView && isBottom >= measurement
-            ? 'animate-fade-in-slide'
-            : isBottom >= measurement
-            ? 'animate-fade-out-slide'
-            : ''
-        }`}
-      >
+      <div className={`h-auto min-w-full mt-8 cursor-default font-poppins`}>
         <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[150px] w-[580px] h-[580px] left-[-28rem] top-[20rem] rounded-full z-0"></div>
         <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[150px] w-[580px] h-[489px] right-[-25rem] top-[40rem] rounded-full z-0"></div>
 

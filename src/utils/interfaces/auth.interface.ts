@@ -152,6 +152,7 @@ export interface AuthPasswordI {
 }
 
 export interface AuthSSOI {
+  visitorId: string;
   setSelect: (value: number) => void;
   setGuest: React.Dispatch<React.SetStateAction<string>>;
 }

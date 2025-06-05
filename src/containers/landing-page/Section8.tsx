@@ -3,15 +3,13 @@ import { SectionSixImageOval } from '@/constants/assets/images';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getArticle } from '@/repository/article.repository';
 import LanguageContext from '@/store/language/language-context';
-import { Button } from '@material-tailwind/react';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
 
 interface Article {
@@ -37,8 +35,6 @@ export default function Section3(): React.ReactElement {
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
   const width = useWindowInnerWidth();
-  const [isBottom, setBottom] = useState(0);
-  const measurement = 900;
   const router = useRouter();
 
   let languageValue = '';
@@ -48,14 +44,6 @@ export default function Section3(): React.ReactElement {
   } else {
     languageValue = 'indonesian';
   }
-
-  const { ref, inView, entry } = useInView({
-    threshold: 0.2
-  });
-  useEffect(() => {
-    const bottom = entry?.boundingClientRect.bottom ?? 0;
-    setBottom(bottom);
-  }, [entry]);
 
   function formatDateToIndonesian(dateStr: string): string {
     try {
@@ -80,7 +68,7 @@ export default function Section3(): React.ReactElement {
     }
   }
 
-  async function fetchHotNews(): Promise<void> {
+  const fetchData = useCallback(async () => {
     try {
       const response = await getArticle({
         page: 1,
@@ -95,18 +83,12 @@ export default function Section3(): React.ReactElement {
     } catch (error) {
       console.error('Error fetching articles:', error);
     }
-  }
+  }, []);
 
   const hotNewsItemClass = '';
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      await fetchHotNews();
-    };
-
-    fetchData().catch(error => {
-      console.error('Error in fetchData:', error);
-    });
+    void fetchData();
   }, [languageCtx]);
 
   const defaultHotNewsImage = '/assets/default-news.png';
@@ -117,18 +99,9 @@ export default function Section3(): React.ReactElement {
   //   const width = useWindowInnerWidth();
 
   return (
-    <section
-      ref={ref}
-      className="h-auto min-w-full cursor-default relative font-poppins text-center"
-    >
+    <section className="h-auto min-w-full cursor-default relative font-poppins text-center">
       <div
-        className={`h-auto min-w-full lg:mt-20 lg:mx-12 font-poppins cursor-default relative text-center ${
-          inView && isBottom >= measurement
-            ? 'animate-fade-in-slide'
-            : isBottom >= measurement
-            ? 'animate-fade-out-slide'
-            : ''
-        }`}
+        className={`h-auto min-w-full lg:mt-20 lg:mx-12 font-poppins cursor-default relative text-center`}
       >
         <div className="flex flex-col w-full items-center font-poppins relative">
           <p className=" text-2xl lg:text-5xl mt-10 p-5 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-semibold absolute z-10">
@@ -189,7 +162,10 @@ export default function Section3(): React.ReactElement {
                 key={key}
                 className={` lg:pe-5 w-[200px] flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ${hotNewsItemClass}`}
               >
-                <Link href={`/seedspedia/news/${data?.id ?? 0}`}>
+                <Link
+                  prefetch={false}
+                  href={`/seedspedia/news/${data?.id ?? 0}`}
+                >
                   {isImageUrlValid(data.imageUrl) ? (
                     <img
                       src={data.imageUrl}
@@ -221,7 +197,7 @@ export default function Section3(): React.ReactElement {
           </Slider>
         </div>
         <div className="justify-center text-center">
-          <Button
+          <button
             className="text-xs px-5 font-normal capitalize bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] rounded-full"
             onClick={() => {
               void router.push('/seedspedia');
@@ -244,7 +220,7 @@ export default function Section3(): React.ReactElement {
                 />
               </svg>
             </div>
-          </Button>
+          </button>
         </div>
       </div>
     </section>

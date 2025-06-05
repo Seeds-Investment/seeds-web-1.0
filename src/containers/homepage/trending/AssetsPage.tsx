@@ -1,3 +1,4 @@
+import { swtracker } from '@/constants/swtracker';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import { getTrendingAssets } from '@/repository/asset.repository';
@@ -77,7 +78,7 @@ export default function AssetsPage({ userInfo }: any): React.ReactElement {
           className="text-md mt-3 font-normal text-[#3AC4A0]"
           onClick={() => {
             TrackerEvent({
-              event: `SW_homepage_btn_asset_list`,
+              event: swtracker.homepage.btnAssetList,
               userData: userInfo
             });
           }}

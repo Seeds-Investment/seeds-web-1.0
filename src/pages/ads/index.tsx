@@ -1,3 +1,4 @@
+import Demo from '@/containers/ads/demo.section';
 import EventS2 from '@/containers/ads/event-s2.section';
 import Event from '@/containers/ads/event.section';
 import QuizPlay from '@/containers/ads/quiz-play.section';
@@ -13,6 +14,8 @@ const Ads = (): React.ReactElement => {
     <EventS2 />
   ) : queries?.type === 'shuffle' ? (
     <QuizShuffle />
+  ) : queries?.type === 'demo-play' ? (
+    <Demo />
   ) : (
     <QuizPlay />
   );

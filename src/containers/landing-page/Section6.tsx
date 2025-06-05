@@ -11,9 +11,8 @@ import {
   SectionSixImageOval
 } from '@/constants/assets/images';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useInView } from 'react-intersection-observer';
 // import { Zoom } from 'react-toastify';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
@@ -52,16 +51,6 @@ export default function Section6(): React.ReactElement {
   };
 
   const { t } = useTranslation();
-  const [isBottom, setBottom] = useState(0);
-  const measurement = 900;
-
-  const { ref, inView, entry } = useInView({
-    threshold: 0.2
-  });
-  useEffect(() => {
-    const bottom = entry?.boundingClientRect.bottom ?? 0;
-    setBottom(bottom);
-  }, [entry]);
 
   const events = [
     { image: SectionSixImageEvent1.src },
@@ -90,18 +79,9 @@ export default function Section6(): React.ReactElement {
     1024: { slidesPerView: 3 }
   };
   return (
-    <section
-      ref={ref}
-      className="h-auto min-w-full cursor-default relative font-poppins text-center"
-    >
+    <section className="h-auto min-w-full cursor-default relative font-poppins text-center">
       <div
-        className={`h-auto min-w-full mt-5 cursor-default relative font-poppins items-center text-center ${
-          inView && isBottom >= measurement
-            ? 'animate-fade-in-slide'
-            : isBottom >= measurement
-            ? 'animate-fade-out-slide'
-            : ''
-        }`}
+        className={`h-auto min-w-full mt-5 cursor-default relative font-poppins items-center text-center`}
       >
         <div className="flex flex-col w-full items-center font-poppins relative">
           <p className="text-3xl md:text-[64px] mt-10 p-5 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-semibold absolute z-10">

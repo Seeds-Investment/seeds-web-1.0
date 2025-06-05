@@ -46,6 +46,9 @@ interface RegistForm {
     provider: string;
     identifier: string;
   };
+  utm_source?: string | string[];
+  utm_medium?: string | string[];
+  utm_campaign?: string | string[];
 }
 
 interface IChangePassword {

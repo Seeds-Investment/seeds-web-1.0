@@ -3,6 +3,7 @@ import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import VirtualAccountStep from '@/components/VirtualAccountStep';
 import { CeklisCircle } from '@/constants/assets/icons';
+import { swtracker } from '@/constants/swtracker';
 import { standartCurrency } from '@/helpers/currency';
 import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
@@ -473,7 +474,7 @@ const SuccessPaymentPage: React.FC = () => {
                         .replaceAll(/[^a-zA-Z0-9_-]/g, '_');
                     };
                     TrackerEvent({
-                      event: 'SW_quiz_payment',
+                      event: swtracker.quiz.payment,
                       userData: userInfo,
                       paymentData: {
                         ...orderDetail,

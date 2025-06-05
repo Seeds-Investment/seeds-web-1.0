@@ -1,3 +1,4 @@
+import { swtracker } from '@/constants/swtracker';
 import TrackerEvent from '@/helpers/GTM';
 import { getBanner } from '@/repository/discover.repository';
 import Image from 'next/image';
@@ -106,7 +107,7 @@ const Section1 = (): React.ReactElement => {
             key={asset.id}
             className="w-full relative"
             onClick={() => {
-              TrackerEvent({ event: 'SW_homepage_banner' });
+              TrackerEvent({ event: swtracker.homepage.banner });
             }}
           >
             <Image

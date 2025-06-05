@@ -28,21 +28,21 @@ const Section4: React.FC = () => {
       title: `${t('partner.section4.option1.title')}`,
       text: `${t('partner.section4.option1.text')}`,
       button: `${t('partner.section4.option1.button')}`,
-      link: 'https://docs.google.com/forms/d/e/1FAIpQLSdvwGEZG_2rtRHJz9lJloF3sQd-l9I4kCe9Mh0EOOZfpPFIOA/viewform'
+      link: 'https://api.whatsapp.com/send?phone=6288291988273'
     },
     {
       image: SectionFourKolOptionTwo.src,
       title: `${t('partner.section4.option2.title')}`,
       text: `${t('partner.section4.option2.text')}`,
       button: `${t('partner.section4.option2.button')}`,
-      link: 'https://docs.google.com/forms/d/e/1FAIpQLSeGD35xu4iT7hkuM6PJLuI66vsqGx-oREAtmgWIiodpxgdFaQ/viewform'
+      link: 'https://api.whatsapp.com/send?phone=6289603099812'
     },
     {
       image: SectionFourKolOptionThree.src,
       title: `${t('partner.section4.option3.title')}`,
       text: `${t('partner.section4.option3.text')}`,
       button: `${t('partner.section4.option3.button')}`,
-      link: 'https://docs.google.com/forms/d/e/1FAIpQLSdRJA5QIs16tTJHdjtWWMMeIfEvGteJwINZJV6IHIBIBbM8ZA/viewform'
+      link: 'https://api.whatsapp.com/send?phone=6289625523276'
     }
   ];
 

@@ -78,7 +78,7 @@ const BannerComponent: React.FC<BannerLoad> = ({
       swiperInstance.slideToLoop(index);
     }
   };
-console.log('BannerList' , BannerList)
+
   return (
     <div className="flex flex-col w-full gap-3">
       <Swiper

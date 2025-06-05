@@ -78,7 +78,7 @@ const BannerComponent: React.FC<BannerLoad> = ({
       swiperInstance.slideToLoop(index);
     }
   };
-
+console.log('BannerList' , BannerList)
   return (
     <div className="flex flex-col w-full gap-3">
       <Swiper
@@ -107,14 +107,16 @@ const BannerComponent: React.FC<BannerLoad> = ({
                         <div className="relative w-full aspect-[1430/676] overflow-hidden">
                           <Image
                             onClick={async () => {
-                              const url = new URL(item?.external_url);
-                              const pathUrl = url?.pathname?.split('/');
-                            
-                              const type = pathUrl[2];
-                              const id = pathUrl[3];
-                            
-                              if (type === 'articles' || type === 'news') {
-                                await router.push(`/homepage/${type}/${id}`);
+                              if ((item?.external_url).includes('seedspedia')) {
+                                const url = new URL(item?.external_url);
+                                const pathUrl = url?.pathname?.split('/');
+                              
+                                const type = pathUrl[2];
+                                const id = pathUrl[3];
+                              
+                                if (type === 'articles' || type === 'news') {
+                                  await router.push(`/homepage/${type}/${id}`);
+                                }
                               } else {
                                 await router.push(item?.external_url);
                               }

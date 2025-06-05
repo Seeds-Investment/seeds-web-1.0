@@ -83,9 +83,15 @@ const Receipt: React.FC = () => {
     }
 
     const paymentSelected: PaymentOption[] = [
-      ...eWalletList?.filter((el) => el?.payment_method === orderDetail?.paymentMethod),
-      ...vaList?.filter((el) => el?.payment_method === orderDetail?.paymentMethod),
-      ...qRisList?.filter((el) => el?.payment_method === orderDetail?.paymentMethod),
+      ...eWalletList?.filter(
+        el => el?.payment_method === orderDetail?.paymentMethod
+      ),
+      ...vaList?.filter(
+        el => el?.payment_method === orderDetail?.paymentMethod
+      ),
+      ...qRisList?.filter(
+        el => el?.payment_method === orderDetail?.paymentMethod
+      )
     ];
 
     return paymentSelected.length > 0 ? paymentSelected : [];
@@ -384,27 +390,25 @@ const Receipt: React.FC = () => {
                 </div>
               </Card>
 
-              {
-                orderDetail !== undefined &&
-                  <VirtualAccountStep
-                    setIsLoading={setIsLoading}
-                    orderDetail={orderDetail}
-                    id={orderId}
-                  />
-              }
+              {orderDetail !== undefined && (
+                <VirtualAccountStep
+                  setIsLoading={setIsLoading}
+                  orderDetail={orderDetail}
+                  id={orderId}
+                />
+              )}
 
               <div className="w-full flex flex-col items-center justify-center">
-                {
-                  (orderDetail?.paymentMethod?.includes('BNC') ?? false) &&
-                    <Button
-                      className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
-                      onClick={async () => {
-                        void handleViewQR();
-                      }}
-                    >
-                      {t('bnc.seeQRCode')}
-                    </Button>
-                }
+                {(orderDetail?.paymentMethod?.includes('BNC') ?? false) && (
+                  <Button
+                    className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
+                    onClick={async () => {
+                      void handleViewQR();
+                    }}
+                  >
+                    {t('bnc.seeQRCode')}
+                  </Button>
+                )}
                 <Button
                   className={`${
                     orderDetail?.paymentMethod?.includes('BNC') ?? false

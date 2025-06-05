@@ -39,7 +39,7 @@ module.exports = withMT({
         'quiz-gradient': 'linear-gradient(88deg, #10A8AD 0%, #79F0B8 137.56%)',
         slashedBanner:
           "url('/src/assets/play/tournament/bannerLeaderboard.png')",
-        userInfoBackground: "url('../assets/userInfoBackground.svg')",
+        userInfoBackground: "url('/userInfoBackground.svg')",
         'gradient-radial-subs':
           'radial-gradient(ellipse at center, #EED69C, #FABE2C)',
         'diamond-gradient':
@@ -212,5 +212,8 @@ module.exports = withMT({
       }
     }
   },
-  plugins: [require('tailwindcss-textshadow')]
+  plugins: [require('tailwindcss-textshadow'), require('daisyui')],
+  daisyui: {
+    themes: ['light']
+  }
 });

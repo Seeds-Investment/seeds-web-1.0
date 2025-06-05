@@ -1,4 +1,3 @@
-import withAuth from '@/helpers/withAuth';
 import { getBanner } from '@/repository/discover.repository';
 import type { Banners } from '@/utils/interfaces/play.interface';
 import { Typography } from '@material-tailwind/react';
@@ -50,4 +49,4 @@ const Section1New: React.FC = () => {
   );
 };
 
-export default withAuth(Section1New);
+export default Section1New;

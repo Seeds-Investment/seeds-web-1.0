@@ -234,18 +234,6 @@ const WithdrawSuccess = (): React.ReactElement => {
       </div>
       <div className="w-full flex flex-col justify-center items-center rounded-xl p-5 bg-white mt-4 gap-4">
         <div
-          onClick={async () =>
-            await router.push(
-              `/my-profile/my-earnings/withdraw-status/${
-                withdrawReceipt?.id ?? '0'
-              }`
-            )
-          }
-          className="w-full py-2 md:py-4 bg-[#3AC4A0] text-white text-semibold flex justify-center items-center rounded-full text-sm md:text-base cursor-pointer hover:shadow-lg duration-300"
-        >
-          {t('earning.checkStatus')}
-        </div>
-        <div
           onClick={async () => await router.push('/my-profile/my-earnings')}
           className="w-full py-2 md:py-4 bg-white text-[#3AC4A0] border-[1px] border-[#3AC4A0] text-semibold flex justify-center items-center rounded-full text-sm md:text-base cursor-pointer hover:shadow-lg duration-300"
         >

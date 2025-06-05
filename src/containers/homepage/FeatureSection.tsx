@@ -3,7 +3,6 @@ import Event from '@/assets/event/event.svg';
 import MyEarningWallet from '@/assets/event/myearningwalletbg.svg';
 import OpenTrading from '@/assets/event/openTradingAccount.svg';
 import Referral from '@/assets/event/referral.svg';
-import withAuth from '@/helpers/withAuth';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 // import SeedsAcademy from '@/assets/event/seeds-academy-icon.svg';
@@ -68,4 +67,4 @@ const FeatureSection: React.FC = (): React.ReactElement => {
   );
 };
 
-export default withAuth(FeatureSection);
+export default FeatureSection;

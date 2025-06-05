@@ -131,15 +131,26 @@ const SuccessPaymentPage: React.FC = () => {
     }
 
     const paymentSelected: PaymentList[] = [
-      ...eWalletList?.filter((el) => el?.payment_method === orderDetail?.paymentMethod),
-      ...vaList?.filter((el) => el?.payment_method === orderDetail?.paymentMethod),
-      ...qRisList?.filter((el) => el?.payment_method === orderDetail?.paymentMethod),
+      ...eWalletList?.filter(
+        el => el?.payment_method === orderDetail?.paymentMethod
+      ),
+      ...vaList?.filter(
+        el => el?.payment_method === orderDetail?.paymentMethod
+      ),
+      ...qRisList?.filter(
+        el => el?.payment_method === orderDetail?.paymentMethod
+      )
     ];
 
     return paymentSelected.length > 0 ? paymentSelected : [];
   };
 
-  const paymentSelected = getSelectedPayment(eWalletList, vaList, qRisList, orderDetail);
+  const paymentSelected = getSelectedPayment(
+    eWalletList,
+    vaList,
+    qRisList,
+    orderDetail
+  );
 
   return (
     <div className="pt-10">
@@ -251,8 +262,7 @@ const SuccessPaymentPage: React.FC = () => {
                           : (orderDetail?.grossAmount ?? 0) -
                               (paymentSelected[0]?.admin_fee ?? 0) -
                               (paymentSelected[0]?.service_fee ?? 0) +
-                              (paymentSelected[0]?.is_promo_available ??
-                              true
+                              (paymentSelected[0]?.is_promo_available ?? true
                                 ? paymentSelected[0]?.promo_price ?? 0
                                 : 0)
                       )}`}
@@ -306,8 +316,7 @@ const SuccessPaymentPage: React.FC = () => {
                             {orderDetail?.currency !== undefined
                               ? `- ${orderDetail.currency} ${formatCurrency(
                                   paymentSelected?.length > 0
-                                    ? paymentSelected[0]?.promo_price ??
-                                        0
+                                    ? paymentSelected[0]?.promo_price ?? 0
                                     : 0
                                 )}`
                               : ''}
@@ -341,28 +350,26 @@ const SuccessPaymentPage: React.FC = () => {
                   </Typography>
                 </div>
               </Card>
-              
-              {
-                orderDetail !== undefined &&
-                  <VirtualAccountStep
-                    setIsLoading={setIsLoading}
-                    orderDetail={orderDetail}
-                    id={id}
-                  />
-              }
+
+              {orderDetail !== undefined && (
+                <VirtualAccountStep
+                  setIsLoading={setIsLoading}
+                  orderDetail={orderDetail}
+                  id={id}
+                />
+              )}
 
               <div className="w-full flex flex-col items-center justify-center">
-                {
-                  (orderDetail?.paymentMethod?.includes('BNC') ?? false) &&
-                    <Button
-                      className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
-                      onClick={async () => {
-                        void handleViewQR();
-                      }}
-                    >
-                      {t('bnc.seeQRCode')}
-                    </Button>
-                }
+                {(orderDetail?.paymentMethod?.includes('BNC') ?? false) && (
+                  <Button
+                    className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
+                    onClick={async () => {
+                      void handleViewQR();
+                    }}
+                  >
+                    {t('bnc.seeQRCode')}
+                  </Button>
+                )}
                 <Button
                   className={`${
                     orderDetail?.paymentMethod?.includes('BNC') ?? false

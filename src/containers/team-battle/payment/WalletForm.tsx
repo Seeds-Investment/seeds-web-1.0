@@ -175,10 +175,13 @@ const WalletForm: React.FC<Props> = ({
           ) : null}
         </>
       )}
-      {promoCodeValidationResult !== undefined && promoCodeValidationResult !== 0 ? (
+      {promoCodeValidationResult !== undefined &&
+      promoCodeValidationResult !== 0 ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}
-          value={`- ${userInfo?.preferredCurrency} ${newPromoCodeDiscount ?? 0}`}
+          value={`- ${userInfo?.preferredCurrency} ${
+            newPromoCodeDiscount ?? 0
+          }`}
           className="mb-2"
         />
       ) : null}

@@ -1,7 +1,5 @@
-import withAuth from '@/helpers/withAuth';
 import { getPlayAssetTrending } from '@/repository/play.repository';
-import { getUserInfo } from '@/repository/profile.repository';
-import { type UserInfo } from '@/utils/interfaces/tournament.interface';
+import { useAppSelector } from '@/store/redux/store';
 import { Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -36,7 +34,7 @@ const TopGainers: React.FC = () => {
   const { t } = useTranslation();
   const [topGainers, setTopGainers] = useState<topgainers[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const { dataUser } = useAppSelector(state => state.user);
 
   const fetchTopGainers = async (): Promise<void> => {
     try {
@@ -50,20 +48,8 @@ const TopGainers: React.FC = () => {
     }
   };
 
-  const fetchData = async (): Promise<void> => {
-    try {
-      const dataInfo = await getUserInfo();
-      setUserInfo(dataInfo);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    }
-  };
-
   useEffect(() => {
     fetchTopGainers()
-      .then()
-      .catch(() => {});
-    fetchData()
       .then()
       .catch(() => {});
   }, []);
@@ -90,11 +76,11 @@ const TopGainers: React.FC = () => {
         <TopgainersAssetHomepage
           data={topGainers}
           loading={isLoading}
-          preferredCurrency={userInfo?.preferredCurrency ?? 'IDR'}
+          preferredCurrency={dataUser?.preferredCurrency ?? 'IDR'}
         />
       </div>
     </div>
   );
 };
 
-export default withAuth(TopGainers);
+export default TopGainers;

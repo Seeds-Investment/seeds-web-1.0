@@ -204,7 +204,9 @@ const SuccessPaymentPageQR: React.FC = () => {
                     orderDetail?.transactionStatus !== 'SUCCEEDED'
                   }
                   className="w-full md:w-[300px] text-sm font-semibold bg-seeds-button-green rounded-full capitalize"
-                  onClick={() => { void router.replace(`/seedsplan`) }}
+                  onClick={() => {
+                    void router.replace(`/seedsplan`);
+                  }}
                 >
                   {t('bnc.done')}
                 </Button>

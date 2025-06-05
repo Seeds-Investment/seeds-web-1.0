@@ -3,8 +3,7 @@ import Image from 'next/image';
 import blink from 'public/assets/ads/blink.png';
 import React from 'react';
 
-
-const FooterQuiz :React.FC<{
+const FooterQuiz: React.FC<{
   scrollToSection: () => void;
 }> = ({ scrollToSection }) => {
   return (
@@ -28,6 +27,6 @@ const FooterQuiz :React.FC<{
       </div>
     </section>
   );
-}
+};
 
-export default FooterQuiz
+export default FooterQuiz;

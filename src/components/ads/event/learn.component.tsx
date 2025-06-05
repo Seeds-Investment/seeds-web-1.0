@@ -32,7 +32,6 @@ const Learn = (): React.ReactElement => {
       {learnList.map((v, i) => (
         <CardLearn key={i} img={v.img} title={v.title} list={v.list} />
       ))}
-
     </div>
   );
 };

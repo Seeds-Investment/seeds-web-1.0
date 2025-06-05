@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react'
-import { Mention, MentionsInput } from 'react-mentions'
+import { useEffect, useRef } from 'react';
+import { Mention, MentionsInput } from 'react-mentions';
 
 interface AutoHeightMentionsInputProps {
-  value: string
-  onChange: (event: any) => void
-  placeholder?: string
+  value: string;
+  onChange: (event: any) => void;
+  placeholder?: string;
 }
 
 const AutoHeightMentionsInput = ({
@@ -12,22 +12,22 @@ const AutoHeightMentionsInput = ({
   onChange,
   placeholder
 }: AutoHeightMentionsInputProps): JSX.Element => {
-  const inputRef = useRef<HTMLDivElement | null>(null)
+  const inputRef = useRef<HTMLDivElement | null>(null);
 
   // Fungsi untuk menyesuaikan tinggi berdasarkan konten
   const adjustHeight = (): void => {
     if (inputRef.current != null) {
-      const textarea = inputRef.current.querySelector('textarea') // Cari textarea di dalam MentionsInput
+      const textarea = inputRef.current.querySelector('textarea'); // Cari textarea di dalam MentionsInput
       if (textarea != null) {
-        textarea.style.height = 'auto' // Reset height sebelum dihitung ulang
-        textarea.style.height = `${textarea.scrollHeight}px` // Set height sesuai teks
+        textarea.style.height = 'auto'; // Reset height sebelum dihitung ulang
+        textarea.style.height = `${textarea.scrollHeight}px`; // Set height sesuai teks
       }
     }
-  }
+  };
 
   useEffect(() => {
-    adjustHeight() // Jalankan saat pertama kali dimuat atau teks berubah
-  }, [value])
+    adjustHeight(); // Jalankan saat pertama kali dimuat atau teks berubah
+  }, [value]);
 
   return (
     <div className="relative w-full flex items-stretch">
@@ -70,7 +70,7 @@ const AutoHeightMentionsInput = ({
         />
       </MentionsInput>
     </div>
-  )
-}
+  );
+};
 
-export default AutoHeightMentionsInput
+export default AutoHeightMentionsInput;

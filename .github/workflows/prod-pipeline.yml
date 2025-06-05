@@ -38,7 +38,7 @@ jobs:
           file: Dockerfile.prod
           push: true
           tags: |
-             crpi-cstuvf7kwe6mse4u.ap-southeast-5.personal.cr.aliyuncs.com/seeds-prod/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
+            crpi-cstuvf7kwe6mse4u.ap-southeast-5.personal.cr.aliyuncs.com/seeds-prod/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
 
       - name: Setup ssh key
         run: |
@@ -47,7 +47,7 @@ jobs:
           chmod 600 $HOME/.ssh/id_rsa
 
       - name: Download docker image
-        run:  |
+        run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_PROD_ALI }}@${{ secrets.SSH_IP_PROD_ALI }} 'docker login crpi-cstuvf7kwe6mse4u.ap-southeast-5.personal.cr.aliyuncs.com'
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_PROD_ALI }}@${{ secrets.SSH_IP_PROD_ALI }} 'docker pull crpi-cstuvf7kwe6mse4u.ap-southeast-5.personal.cr.aliyuncs.com/seeds-prod/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}'
 
@@ -56,9 +56,13 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_PROD_ALI }}@${{ secrets.SSH_IP_PROD_ALI }} 'versi="$(cat /home/ecs-user/compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml | grep image | cut -d ":" -f 3)" && sed -i "s#image: crpi-cstuvf7kwe6mse4u.ap-southeast-5.personal.cr.aliyuncs.com/seeds-prod/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${versi}#image: crpi-cstuvf7kwe6mse4u.ap-southeast-5.personal.cr.aliyuncs.com/seeds-prod/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}#g" /home/ecs-user/compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml'
 
       - name: Running container
-        run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_PROD_ALI }}@${{ secrets.SSH_IP_PROD_ALI }} 'docker compose -f /home/ecs-user/compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml up -d'
+        run:
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_PROD_ALI
+          }}@${{ secrets.SSH_IP_PROD_ALI }} 'docker compose -f
+          /home/ecs-user/compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME
+          }}/docker-compose.yaml up -d'
 
-      - name: Clean up old Docker images on server 
+      - name: Clean up old Docker images on server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_PROD_ALI }}@${{ secrets.SSH_IP_PROD_ALI }} './cleanup-docker-images.sh '${{ env.GITHUB_REGISTRY_IMAGE_NAME }}' '${{ env.GITHUB_SHA_SHORT }}''
 

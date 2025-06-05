@@ -67,7 +67,7 @@ const ModalWithdrawList: React.FC<Props> = ({
       <Modal
         onClose={onClose}
         backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/75 flex justify-start items-start"
-        modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[40%] md:left-[10%] md:right-[-10%] xl:left-[22.5%] xl:right-[-22.5%] mt-[-12.35rem] w-full md:w-[80%] xl:w-[60%] h-[70vh] md:h-[50vh] p-4 rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white overflow-y-scroll"
+        modalClasses="z-50 animate-slide-down fixed bottom-0 md:top-[40%] md:left-[10%] md:right-[-10%] xl:left-[22.5%] xl:right-[-22.5%] mt-[-12.35rem] w-full md:w-[80%] xl:w-[60%] h-fit p-4 rounded-xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
       >
         {/* Title */}
         <div className="flex justify-between">
@@ -105,7 +105,7 @@ const ModalWithdrawList: React.FC<Props> = ({
           />
         </div>
 
-        <div className="w-full flex flex-col mt-4 overflow-y-scroll">
+        <div className="w-full h-fit max-h-[300px] md:h-[300px] flex flex-col mt-4 overflow-y-scroll">
           {listVA?.length !== 0 ? (
             listVA?.map(item => (
               <div
@@ -113,7 +113,7 @@ const ModalWithdrawList: React.FC<Props> = ({
                 onClick={() => {
                   handleChooseMethod(item);
                 }}
-                className="w-full px-8 py-4 border-b border-[#E2E2E2] font-poppins hover:bg-[#E2E2E2] hover:shadow-lg duration-300 cursor-pointer rounded-lg"
+                className="w-full px-8 py-4 border-b border-[#E2E2E2] font-poppins hover:bg-[#F2F2F2] hover:shadow-lg duration-300 cursor-pointer rounded-lg"
               >
                 <div>
                   <div className="w-fit h-[30px] flex justify-center items-center">

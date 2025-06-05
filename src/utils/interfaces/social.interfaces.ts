@@ -84,6 +84,8 @@ export interface UserInfoI {
   birthDate: string;
   phone: string;
   _pin: string;
+  verified?: boolean;
+  preferredCurrency?: string;
 }
 
 export interface SavedPostMetadata {

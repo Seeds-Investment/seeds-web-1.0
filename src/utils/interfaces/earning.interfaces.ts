@@ -69,3 +69,24 @@ export interface Result {
   id: string;
   updated_at: string;
 }
+
+export interface IEarningById {
+  id: string
+  user_id: string
+  source: string
+  source_id: string
+  play_id: string
+  source_name: string
+  amount: number
+  wd_fee: number
+  direction: string
+  status: string
+  reject_reason: string
+  action_at: string
+  created_at: string
+}
+
+export interface IKYCStatus {
+  status: string
+  reject_reason: string
+}

@@ -1,6 +1,9 @@
 'use client';
 import Modal from '@/components/ui/modal/Modal';
 import { getUserInfo } from '@/repository/profile.repository';
+import { fetchExpData } from '@/store/redux/features/exp';
+import { fetchUserData } from '@/store/redux/features/user';
+import { useAppDispatch } from '@/store/redux/store';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -13,6 +16,7 @@ const withAuth = (
 ): React.ComponentType => {
   const WrapperComponent = (props: any): JSX.Element => {
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
     const router = useRouter();
     const [isLoading, setLoading] = useState(true);
 
@@ -73,6 +77,11 @@ const withAuth = (
         .then()
         .catch(() => {});
     }, [router]);
+
+    useEffect(() => {
+      void dispatch(fetchUserData());
+      void dispatch(fetchExpData());
+    }, []);
 
     if (isLoading) {
       return (

@@ -65,6 +65,7 @@ const AuthSSO: React.FC<AuthSSOI> = ({
     } catch (error: any) {
       toast(error.response.data.message, { type: 'error' });
     }
+    window.localStorage.removeItem('accessToken-danamart');
   };
   useEffect(() => {
     handleLoginSSO()

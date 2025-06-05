@@ -1,5 +1,5 @@
-import { Button, Card } from "@material-tailwind/react";
-import Image from "next/image";
+import { Button, Card } from '@material-tailwind/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import andi from 'public/assets/ads/andi.png';
 import dimas from 'public/assets/ads/dimas.png';
@@ -144,4 +144,4 @@ const Alumni = (): React.ReactElement => {
   );
 };
 
-export default Alumni
+export default Alumni;

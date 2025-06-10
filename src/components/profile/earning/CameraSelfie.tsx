@@ -19,6 +19,8 @@ interface Props {
   useConfirm: boolean;
   setIsWebcamReady?: React.Dispatch<React.SetStateAction<boolean>>;
   photoType: string;
+  setIsLoadingCloud: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoadingCloud: boolean;
 }
 
 const CameraSelfie: React.FC<Props> = ({
@@ -32,10 +34,13 @@ const CameraSelfie: React.FC<Props> = ({
   useConfirm,
   setIsWebcamReady,
   photoType,
+  setIsLoadingCloud,
+  isLoadingCloud
 }) => {
 
   const usePhoto = async (): Promise<void> => {
     if (captureImage !== null) {
+      setIsLoadingCloud(true)
       try {
         const blob = await (await fetch(captureImage)).blob();
         const file = new File([blob], 'selfie.jpg', { type: 'image/jpeg' });
@@ -50,9 +55,13 @@ const CameraSelfie: React.FC<Props> = ({
         if (setIsWebcamReady !== undefined) {
           setIsWebcamReady(false);
         }
-        setIsCameraActive(false);
+        if (typeof cloudResponse === 'string' && cloudResponse.includes('storage/cloud')) {
+          setIsCameraActive(false);
+        }
       } catch {
         toast.error(t('earning.withdrawKyc.text42'));
+      } finally {
+        setIsLoadingCloud(false)
       }
     }
   };
@@ -60,6 +69,7 @@ const CameraSelfie: React.FC<Props> = ({
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     const file = e.target.files?.[0];
     if (file != null) {
+      setIsLoadingCloud(true)
       try {
         const { path: cloudResponse } = await postCloud({
           file,
@@ -69,9 +79,13 @@ const CameraSelfie: React.FC<Props> = ({
         setCaptureImage(URL.createObjectURL(file));
         setImageData(cloudResponse);
         setIsUsePhoto(true);
-        setIsCameraActive(false);
+        if (typeof cloudResponse === 'string' && cloudResponse.includes('storage/cloud')) {
+          setIsCameraActive(false);
+        }    
       } catch {
         toast.error(t('earning.withdrawKyc.text42'));
+      } finally {
+        setIsLoadingCloud(false)
       }
     }
   };
@@ -166,7 +180,14 @@ const CameraSelfie: React.FC<Props> = ({
       {
         captureImage !== null ?
           <>
-            {isUsePhoto && (
+            {isUsePhoto && 
+              isLoadingCloud ? (
+                <div className="w-full flex justify-center h-fit my-8">
+                  <div className="h-[60px]">
+                    <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+                  </div>
+                </div>
+              ) : (
                 <div className={`w-full flex flex-col md:flex-row justify-center items-center gap-3 ${captureImage !== null ? 'mt-6' : 'mt-10'}`}>
                   <Button
                     onClick={() => {
@@ -186,45 +207,52 @@ const CameraSelfie: React.FC<Props> = ({
               )}
           </>
           :
-          <div className={`-full flex justify-center items-center gap-3 ${captureImage !== null ? 'mt-6' : 'mt-10'}`}>
-            <div className="w-full flex justify-center">
-              <label
-                htmlFor="upload-photo"
-                className="flex items-center justify-center gap-2 w-full md:w-[155px] h-[40px] bg-white border border-seeds-button-green text-seeds-green text-sm font-poppins font-semibold rounded-full cursor-pointer hover:bg-gray-50 transition-all"
-              >
-                <FiUpload className="text-lg" size={24}/>
-                <span className="hidden md:inline">{t('earning.withdrawKyc.text27')}</span>
-              </label>
-              <input
-                id="upload-photo"
-                type="file"
-                accept="image/*"
-                onChange={handleFileUpload}
-                className="hidden"
-              />
+          isLoadingCloud ?
+            <div className="w-full flex justify-center h-fit my-8">
+              <div className="h-[60px]">
+                <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+              </div>
             </div>
-    
-            <Button
-              onClick={switchCamera}
-              className="flex items-center justify-center gap-2 bg-white border border-seeds-button-green text-seeds-green capitalize text-sm font-poppins font-semibold rounded-full w-full h-[40px]"
-            >
-              <MdCameraswitch className="text-lg" size={24}/>
-              <span className="hidden md:inline">{t('earning.withdrawKyc.text25')}</span>
-            </Button>
-    
-            <Button
-              onClick={() => {
-                setIsCameraActive(false);
-                if (setIsWebcamReady !== undefined) {
-                  setIsWebcamReady(false);
-                }
-              }}
-              className="flex items-center justify-center gap-2 bg-white border border-seeds-button-green text-seeds-green capitalize text-sm font-poppins font-semibold rounded-full w-full h-[40px]"
-            >
-              <MdOutlineCancel className="text-lg" size={24}/>
-              <span className="hidden md:inline">{t('earning.withdrawKyc.text26')}</span>
-            </Button>
-          </div>
+            :
+            <div className={`-full flex justify-center items-center gap-3 ${captureImage !== null ? 'mt-6' : 'mt-10'}`}>
+              <div className="w-full flex justify-center">
+                <label
+                  htmlFor="upload-photo"
+                  className="flex items-center justify-center gap-2 w-full md:w-[155px] h-[40px] bg-white border border-seeds-button-green text-seeds-green text-sm font-poppins font-semibold rounded-full cursor-pointer hover:bg-gray-50 transition-all"
+                >
+                  <FiUpload className="text-lg" size={24}/>
+                  <span className="hidden md:inline">{t('earning.withdrawKyc.text27')}</span>
+                </label>
+                <input
+                  id="upload-photo"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </div>
+      
+              <Button
+                onClick={switchCamera}
+                className="flex items-center justify-center gap-2 bg-white border border-seeds-button-green text-seeds-green capitalize text-sm font-poppins font-semibold rounded-full w-full h-[40px]"
+              >
+                <MdCameraswitch className="text-lg" size={24}/>
+                <span className="hidden md:inline">{t('earning.withdrawKyc.text25')}</span>
+              </Button>
+      
+              <Button
+                onClick={() => {
+                  setIsCameraActive(false);
+                  if (setIsWebcamReady !== undefined) {
+                    setIsWebcamReady(false);
+                  }
+                }}
+                className="flex items-center justify-center gap-2 bg-white border border-seeds-button-green text-seeds-green capitalize text-sm font-poppins font-semibold rounded-full w-full h-[40px]"
+              >
+                <MdOutlineCancel className="text-lg" size={24}/>
+                <span className="hidden md:inline">{t('earning.withdrawKyc.text26')}</span>
+              </Button>
+            </div>
       }
     </div>
   );

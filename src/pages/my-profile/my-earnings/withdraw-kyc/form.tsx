@@ -31,12 +31,14 @@ const WithdrawKYCForm = (): React.ReactElement => {
   const [selfieImageData, setSelfieImageData] = useState<string>('');
   
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingCloud, setIsLoadingCloud] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
 
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
-  const [isShowEmailError, setIsShowEmailError] = useState<boolean>(true);
-  const [isShowPhoneError, setIsShowPhoneError] = useState<boolean>(true);
+  const [isShowEmailError, setIsShowEmailError] = useState<boolean>(false);
+  const [isShowPhoneError, setIsShowPhoneError] = useState<boolean>(false);
+  const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
 
   const [phone, setPhone] = useState<string>('');
   const [selectedCountry, setSelectedCountry] = useState<Country>(
@@ -93,6 +95,7 @@ const WithdrawKYCForm = (): React.ReactElement => {
         const response = await kycSubmitData(payload);
         if (response?.message === 'success') {
           toast.success(t('earning.withdrawKyc.text5'));
+          setIsRedirecting(true)
           setTimeout(() => {
             void router.push('/my-profile/my-earnings');
           }, 3000);
@@ -130,6 +133,8 @@ const WithdrawKYCForm = (): React.ReactElement => {
               height={photoType === 'idCard' ? 300 : 476}
               width={photoType === 'idCard' ? 476 : 476}
               useConfirm={true}
+              setIsLoadingCloud={setIsLoadingCloud}
+              isLoadingCloud={isLoadingCloud}
             />
           </div>
         ) : (
@@ -291,32 +296,45 @@ const WithdrawKYCForm = (): React.ReactElement => {
       </div>
 
       {/* Submit Button */}
-      {!isCameraActive && (
-        <div className="w-full flex flex-col justify-center items-center rounded-xl p-5 bg-white mt-4 mb-16 md:mb-0 gap-4">
-          <Button
-            onClick={handleSubmit}
-            disabled={
-              name?.length === 0 ||
-              email?.length === 0 ||
-              phone?.length === 0 ||
-              idCardImageData?.length === 0 ||
-              selfieImageData?.length === 0 ||
-              isLoading
+      {
+        !isCameraActive && 
+          <>
+            {
+              isRedirecting ? (
+                <div className="w-full flex justify-center h-fit my-8">
+                  <div className="h-[60px]">
+                    <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+                  </div>
+                </div>
+              ) : (
+                <div className="w-full flex flex-col justify-center items-center rounded-xl p-5 bg-white mt-4 mb-16 md:mb-0 gap-4">
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={
+                      name?.length === 0 ||
+                      email?.length === 0 ||
+                      phone?.length === 0 ||
+                      idCardImageData?.length === 0 ||
+                      selfieImageData?.length === 0 ||
+                      isLoading
+                    }
+                    className="w-full rounded-full bg-seeds-button-green text-white text-md py-2 hover:shadow-lg transition capitalize"
+                  >
+                    {t('earning.withdrawKyc.text19')}
+                  </Button>
+                  <Button
+                    onClick={async () => {
+                      await router.push('/my-profile/my-earnings');
+                    }}
+                    className="w-full rounded-full bg-white border border-[#E2E2E2] text-seeds-button-green text-md py-2 hover:shadow-lg transition capitalize"
+                  >
+                    {t('earning.withdrawKyc.text28')}
+                  </Button>
+                </div>
+              )
             }
-            className="w-full rounded-full bg-seeds-button-green text-white text-md py-2 hover:shadow-lg transition capitalize"
-          >
-            {t('earning.withdrawKyc.text19')}
-          </Button>
-          <Button
-            onClick={async () => {
-              await router.push('/my-profile/my-earnings');
-            }}
-            className="w-full rounded-full bg-white border border-[#E2E2E2] text-seeds-button-green text-md py-2 hover:shadow-lg transition capitalize"
-          >
-            {t('earning.withdrawKyc.text28')}
-          </Button>
-        </div>
-      )}
+          </>
+      }
     </>
   );
 };

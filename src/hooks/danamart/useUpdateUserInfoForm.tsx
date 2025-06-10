@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { updateUserInformation } from '@/repository/danamart/danamart.repository';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { type Control, type FieldErrors, useForm, type UseFormHandleSubmit, type UseFormRegister, type UseFormSetValue, type UseFormTrigger, type UseFormWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
@@ -49,16 +49,7 @@ export interface UserInfoFormData {
   dm_penmit_01013_exist?: string;
 }
 
-const useUpdateUserInfoForm = (): {
-  handleSubmit: UseFormHandleSubmit<UserInfoFormData>;
-  register: UseFormRegister<UserInfoFormData>;
-  errors: FieldErrors<UserInfoFormData>;
-  control: Control<UserInfoFormData>;
-  setValue: UseFormSetValue<UserInfoFormData>;
-  trigger: UseFormTrigger<UserInfoFormData>;
-  watch: UseFormWatch<UserInfoFormData>;
-  onSubmit: (data: UserInfoFormData) => Promise<void>;
-} => {
+const useUpdateUserInfoForm = (): any => {
   const { t } = useTranslation();
   const pathTranslation =
     'danamart.verification.accountInformation.validationForm';

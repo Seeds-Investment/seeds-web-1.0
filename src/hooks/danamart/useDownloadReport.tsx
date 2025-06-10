@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { encryptRequest } from '@/helpers/cryptoEncrypt';
-import { type Control, type FieldErrors, useForm, type UseFormHandleSubmit, type UseFormRegister, type UseFormReset, type UseFormSetValue, type UseFormTrigger, type UseFormWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -11,19 +11,7 @@ interface DownloadReportFormData {
   file: string;
 };
 
-interface UseDownloadReportReturn {
-  handleSubmit: UseFormHandleSubmit<DownloadReportFormData>;
-  register: UseFormRegister<DownloadReportFormData>;
-  errors: FieldErrors<DownloadReportFormData>;
-  control: Control<DownloadReportFormData>;
-  setValue: UseFormSetValue<DownloadReportFormData>;
-  trigger: UseFormTrigger<DownloadReportFormData>;
-  watch: UseFormWatch<DownloadReportFormData>;
-  reset: UseFormReset<DownloadReportFormData>;
-  onSubmit: (formData: DownloadReportFormData) => Promise<void>;
-};
-
-const useDownloadReport = (): UseDownloadReportReturn => {
+const useDownloadReport = (): any => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.incomingFunds.modal.downloadReport';
 

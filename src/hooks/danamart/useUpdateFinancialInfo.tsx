@@ -5,24 +5,14 @@ import {
 } from '@/utils/interfaces/danamart.interface';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
-import { type Control, type FieldErrors, useForm, type UseFormHandleSubmit, type UseFormRegister, type UseFormReset, type UseFormSetValue, type UseFormWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
 const MAX_FILE_SIZE = 4 * 1024 * 1024;
 const SUPPORTED_FORMATS = ['image/jpeg', 'image/jpg'];
 
-const useUpdateFinancialInfo = (): {
-  handleSubmit: UseFormHandleSubmit<FinancialInfoForm>;
-  register: UseFormRegister<FinancialInfoForm>;
-  errors: FieldErrors<FinancialInfoForm>;
-  control: Control<FinancialInfoForm>;
-  setValue: UseFormSetValue<FinancialInfoForm>;
-  watch: UseFormWatch<FinancialInfoForm>;
-  reset: UseFormReset<FinancialInfoForm>;
-  onSubmit: (data: FinancialInfoForm) => Promise<void>;
-  isLoading: boolean;
-} => {
+const useUpdateFinancialInfo = (): any => {
   const schema = yup.object().shape({
     dm_pen_06001: yup.string().required('This field is required'),
     dm_pen_06002: yup

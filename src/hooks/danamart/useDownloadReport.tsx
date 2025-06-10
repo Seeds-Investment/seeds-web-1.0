@@ -5,12 +5,6 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-interface DownloadReportFormData {
-  daritgl: string;
-  sampaitgl: string;
-  file: string;
-};
-
 const useDownloadReport = (): any => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.incomingFunds.modal.downloadReport';
@@ -24,7 +18,7 @@ const useDownloadReport = (): any => {
     trigger,
     watch,
     reset
-  } = useForm<DownloadReportFormData>({
+  } = useForm({
     mode: 'onSubmit'
   });
 

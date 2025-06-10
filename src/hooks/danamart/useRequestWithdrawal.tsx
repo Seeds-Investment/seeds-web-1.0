@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { requestWithdrawal } from '@/repository/danamart/outgoing-funds.repository';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { type Control, type FieldErrors, useForm, type UseFormHandleSubmit, type UseFormRegister, type UseFormReset, type UseFormSetValue, type UseFormTrigger, type UseFormWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 
@@ -11,7 +11,17 @@ export interface RequestWithdrawI {
   kodeOtp: string;
 }
 
-const useRequestWithdrawal = (): any => {
+const useRequestWithdrawal = (): {
+  handleSubmit: UseFormHandleSubmit<RequestWithdrawI>;
+  register: UseFormRegister<RequestWithdrawI>;
+  errors: FieldErrors<RequestWithdrawI>;
+  control: Control<RequestWithdrawI>;
+  setValue: UseFormSetValue<RequestWithdrawI>;
+    trigger: UseFormTrigger<RequestWithdrawI>;
+  watch: UseFormWatch<RequestWithdrawI>;
+  reset: UseFormReset<RequestWithdrawI>;
+  onSubmit: (data: RequestWithdrawI) => Promise<void>;
+} => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.offers.purchase.validationForm';
 

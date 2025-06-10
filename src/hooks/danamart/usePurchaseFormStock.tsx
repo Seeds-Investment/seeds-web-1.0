@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { purchaseItem } from '@/repository/danamart/offers.repository';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { type Control, type FieldErrors, useForm, type UseFormHandleSubmit, type UseFormRegister, type UseFormReset, type UseFormSetValue, type UseFormTrigger, type UseFormWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 
@@ -31,7 +31,17 @@ export interface PurchaseFormDataI {
   kodeOtp?: string;
 }
 
-const usePurchaseFormStock = (): any => {
+const usePurchaseFormStock = (): {
+  handleSubmit: UseFormHandleSubmit<PurchaseFormDataI>;
+  register: UseFormRegister<PurchaseFormDataI>;
+  errors: FieldErrors<PurchaseFormDataI>;
+  control: Control<PurchaseFormDataI>;
+  setValue: UseFormSetValue<PurchaseFormDataI>;
+    trigger: UseFormTrigger<PurchaseFormDataI>;
+  watch: UseFormWatch<PurchaseFormDataI>;
+  reset: UseFormReset<PurchaseFormDataI>;
+  onSubmit: (data: PurchaseFormDataI) => Promise<void>;
+} => {
   const { t } = useTranslation();
   const pathTranslation = 'danamart.offers.purchase.validationForm';
 

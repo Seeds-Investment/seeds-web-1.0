@@ -52,7 +52,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
       setValue('masa_berlaku', false);
     } else {
       setValue('masa_berlaku', true);
-      setValue('dm_penmit_01018', '2099-01-01');
+      setValue('dm_penmit_01018', '');
     }
   };
 
@@ -120,15 +120,25 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
     setValue('dm_penmit_01022', userInformation?.penmit?.dm_penmit_01022);
     setValue('dm_penmit_01041', userInformation?.penmit?.dm_penmit_01041);
     setValue('dm_penmit_01042', userInformation?.penmit?.dm_penmit_01042);
+    setValue('dm_penmit_01043', userInformation?.penmit?.dm_penmit_01043);
     setValue('dm_pen_08002', userInformation?.resiko?.dm_pen_08002);
     setValue('dm_pen_08009', userInformation?.resiko?.dm_pen_08009);
-    setValue('pernyataan_npwp', userInformation?.penmit?.pernyataan_npwp);
+    setValue('pernyataan_npwp', userInformation?.penmit?.pernyataan_npwp ?? '0');
     if (userInformation?.penmit?.pernyataan_npwp === '1') {
       setValue('dm_penmit_01012', userInformation?.penmit?.dm_penmit_01012);
       setValue('dm_penmit_01045', userInformation?.penmit?.dm_penmit_01045);
       setValue('dm_penmit_01013', userInformation?.penmit?.dm_penmit_01013);
+      void assignImage();
     }
   }, [userInformation]);
+
+  const assignImage = async (): Promise<void> => {
+    if (userInformation != null && userInformation !== undefined) {
+      const fileNPWP = await handleAssignImage(userInformation?.penmit?.dm_penmit_01013 ?? '');
+
+      setValue('dm_penmit_01013', [fileNPWP]);
+    }
+  };
   
   useEffect(() => {
     if ((Boolean(imageURL)) && imageURL.length > 0) {
@@ -145,9 +155,30 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
     }
   }, [imageURL]);
 
-  const handleRemoveAccessCard = (): void => {
+  const handleAssignImage = async (filename: string): Promise<File | null> => {
+    if (filename === '') {
+      return null;
+    }
+
+    const fileUrl = `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${filename}`;
+    const response = await fetch(fileUrl);
+    if (!response.ok) {
+      throw new Error('Failed to fetch file');
+    }
+
+    const blob = await response.blob();
+    return new File([blob], filename, { type: blob.type });
+  };
+
+  const handleRemoveAccessCard = async(): Promise<void> => {
     setPreviewUrl(null)
-    setValue('dm_penmit_01013', userInformation?.penmit?.dm_penmit_01013);
+    
+    if (userInformation?.penmit?.dm_penmit_01013 !== null && userInformation?.penmit?.dm_penmit_01013 !== undefined && userInformation?.penmit?.dm_penmit_01013 !== '') {
+      const fileNPWP = await handleAssignImage(userInformation?.penmit?.dm_penmit_01013);
+      setValue('dm_penmit_01013', [fileNPWP]);
+    } else {
+      setValue('dm_penmit_01013', null);
+    }
   }
 
   return (
@@ -262,7 +293,7 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           fullWidth={true}
         />
       </div>
-      {watch('dm_penmit_01026') === 'married' && (
+      {watch('dm_penmit_01026') === 'KAWIN' && (
         <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
           <MInput
             label={t(`${pathTranslation}.text13`)}
@@ -520,6 +551,15 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
           tooltip={true}
           tooltipContent={t(`${pathTranslation}.popUpBeneficiary`)}
         />
+        <MInput
+          label={t(`${pathTranslation}.text63`)}
+          registerName="dm_penmit_01043"
+          register={register}
+          type="text"
+          errors={errors}
+          placeholder={t(`${pathTranslation}.text64`)}
+          className="rounded-lg px-3 border border-[#BDBDBD]"
+        />
       </div>
       <div className="w-full flex flex-col md:flex-row gap-2 mt-4">
         <MInput
@@ -603,30 +643,35 @@ const AccountInformation: React.FC<AccountInformationProps> = ({
               ((imageURL !== null) && (imageURL !== undefined))
             ) && (
               <div className='flex justify-between items-center'>
-                <div className='flex justify-start items-center gap-2 mt-2'>
-                  <a
-                    href={
-                      previewUrl !== null && previewUrl !== undefined
-                        ? previewUrl
-                        : `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${imageURL as string}`
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex justify-start items-center"
-                  >
-                    <div className="flex gap-2 bg-[#E5EDFC] py-2 px-3 w-fit rounded-md">
-                      <IoDocumentTextOutline className="w-6 h-6 flex-shrink-0 text-seeds-button-green" />
-                      <Typography className="font-poppins font-medium text-seeds-button-green">
-                        {t(`${pathTranslation}.previewDocument`)}
-                      </Typography>
+                {
+                  (
+                    (previewUrl !== undefined && previewUrl !== null && previewUrl !== '') || 
+                    (imageURL !== undefined && imageURL !== null && imageURL !== '')) &&
+                    <div className='flex justify-start items-center gap-2 mt-2'>
+                      <a
+                        href={
+                          previewUrl !== null && previewUrl !== undefined
+                            ? previewUrl
+                            : `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${imageURL as string}`
+                        }
+                        target={previewUrl !== null && previewUrl !== undefined ? "_blank" : undefined}
+                        rel={previewUrl !== null && previewUrl !== undefined ? "noopener noreferrer" : undefined}
+                        className="flex justify-start items-center"
+                      >
+                        <div className="flex gap-2 bg-[#E5EDFC] py-2 px-3 w-fit rounded-md">
+                          <IoDocumentTextOutline className="w-6 h-6 flex-shrink-0 text-seeds-button-green" />
+                          <Typography className="font-poppins font-medium text-seeds-button-green">
+                            {t(`${pathTranslation}.previewDocument`)}
+                          </Typography>
+                        </div>
+                      </a>
+                      <FaRegCheckCircle className="w-4 h-4 flex-shrink-0 text-seeds-button-green"/>
                     </div>
-                  </a>
-                  <FaRegCheckCircle className="w-4 h-4 flex-shrink-0 text-seeds-button-green"/>
-                </div>
+                }
                 {
                   (previewUrl !== null && previewUrl !== undefined) &&
                     <FaRegTrashAlt
-                      onClick={() => { handleRemoveAccessCard() }}
+                      onClick={async() => { await handleRemoveAccessCard() }}
                       className="w-5 h-5 flex-shrink-0 text-[#DA2D1F] cursor-pointer"
                     />
                 }

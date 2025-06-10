@@ -42,7 +42,7 @@ export interface UserInfoFormData {
   dm_pen_08002: string;
   dm_pen_08009: string;
   pernyataan_npwp: string;
-  dm_penmit_01013?: any;
+  dm_penmit_01013?: File | FileList | null | string;
   dm_penmit_01008: string;
   dm_penmit_01012?: string;
   dm_penmit_01045?: string;
@@ -197,7 +197,7 @@ const useUpdateUserInfoForm = (): any => {
       otherwise: schema => schema.notRequired()
     }),
     dm_penmit_01013: yup
-      .mixed<FileList>()
+      .mixed<File | FileList | string>()
       .nullable()
       .when('pernyataan_npwp', {
         is: '1',
@@ -305,25 +305,25 @@ const useUpdateUserInfoForm = (): any => {
         }
       });
 
-      if (isFileList && data.dm_penmit_01013.length > 0) {
-        formData.append('dm_penmit_01013', data.dm_penmit_01013[0]);
-      }
-
-      else if (isBase64) {
-        const file = base64ToFile(data.dm_penmit_01013, 'image.jpg');
-        formData.append('dm_penmit_01013', file);
-      }
-
-      else if (isOldFilename) {
-        formData.append('dm_penmit_01013_exist', data.dm_penmit_01013);
-
-        const imageUrl = `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${data.dm_penmit_01013 as string}`;
-        const response = await fetch(imageUrl);
-        const blob = await response.blob();
-        const file = new File([blob], 'image.jpg', { type: blob.type });
-
-        formData.append('dm_penmit_01013', file);
-      }
+      if (data.dm_penmit_01013) {
+        if (isFileList && (data.dm_penmit_01013 as FileList).length > 0) {
+          formData.append('dm_penmit_01013', (data.dm_penmit_01013 as FileList)[0]);
+        } 
+        else if (isBase64 && typeof data.dm_penmit_01013 === 'string') {
+          const file = base64ToFile(data.dm_penmit_01013, 'image.jpg');
+          formData.append('dm_penmit_01013', file);
+        } 
+        else if (isOldFilename && typeof data.dm_penmit_01013 === 'string') {
+          formData.append('dm_penmit_01013_exist', data.dm_penmit_01013);
+      
+          const imageUrl = `https://dev.danamart.id/development/dm-scf-api/writable/uploads/${data.dm_penmit_01013}`;
+          const response = await fetch(imageUrl);
+          const blob = await response.blob();
+          const file = new File([blob], 'image.jpg', { type: blob.type });
+      
+          formData.append('dm_penmit_01013', file);
+        }
+      }      
 
       const response = await updateUserInformation(formData);
 

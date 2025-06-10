@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import nft from 'public/assets/nft/nft-logo.svg';
 import chat from 'public/assets/social/chat.svg';
 import connect from 'public/assets/social/connect.svg';
-// import danamart from 'public/assets/social/danamart.svg';
+import danamart from 'public/assets/social/danamart.svg';
 import homepage from 'public/assets/social/discover.svg';
 import ID from 'public/assets/social/flag/ID.png';
 import US from 'public/assets/social/flag/US.png';
@@ -22,9 +22,9 @@ import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useContext, useEffect, useRef, useState } from 'react';
-// import { useTranslation } from 'react-i18next';
-// import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-// import { GoDotFill } from 'react-icons/go';
+import { useTranslation } from 'react-i18next';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { GoDotFill } from 'react-icons/go';
 import { toast } from 'react-toastify';
 import market from 'src/assets/market/market.svg';
 import Logo from '../ui/vector/Logo';
@@ -48,9 +48,9 @@ const SidebarLoginResponsive: React.FC<props> = ({
   const router = useRouter();
   const languageCtx = useContext(LanguageContext);
   const menuRef = useRef<HTMLDivElement>(null);
-  // const [isDanamartOpen, setIsDanamartOpen] = useState<boolean>(false);
+  const [isDanamartOpen, setIsDanamartOpen] = useState<boolean>(false);
 
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const menu = isGuest()
     ? [
         { title: 'Social', url: '/social', image: social },
@@ -65,48 +65,48 @@ const SidebarLoginResponsive: React.FC<props> = ({
         { title: 'Connect', url: '/connect', image: connect },
         { title: 'Play', url: '/play', image: play },
         { title: 'NFT', url: '/nft', image: nft },
-        // {
-        //   title: 'Danamart',
-        //   url: '/danamart',
-        //   image: danamart,
-        //   hasSubmenu: true,
-        //   submenu: [
-        //     { title: 'Dashboard', url: '/danamart/dashboard' },
-        //     {
-        //       title: t('danamart.offers.sidebar.text1'),
-        //       url: '/danamart/offer'
-        //     },
-        //     {
-        //       title: t('danamart.portfolio.sidebar.text1'),
-        //       url: '/danamart/portfolio'
-        //     },
-        //     {
-        //       title: t('danamart.purchaseHistory.sidebar.text1'),
-        //       url: '/danamart/purchase-history'
-        //     },
-        //     {
-        //       title: t('danamart.incomingFunds.sidebar.text1'),
-        //       url: '/danamart/incoming-funds'
-        //     },
-        //     {
-        //       title: t('danamart.outgoingFunds.sidebar.text1'),
-        //       url: '/danamart/outgoing-funds'
-        //     },
-        //     {
-        //       title: t('danamart.promotion.sidebar.text1'),
-        //       url: '/danamart/promotion'
-        //     },
-        //     {
-        //       title: t('danamart.userLog.sidebar.text1'),
-        //       url: '/danamart/user-log'
-        //     },
-        //     {
-        //       title: t('danamart.setting.sidebar.text1'),
-        //       url: '/danamart/setting-account'
-        //     },
-        //     { title: t('danamart.logout.text1'), url: '#', isLogout: true }
-        //   ]
-        // },
+        {
+          title: 'Danamart',
+          url: '/danamart',
+          image: danamart,
+          hasSubmenu: true,
+          submenu: [
+            { title: 'Dashboard', url: '/danamart/dashboard' },
+            {
+              title: t('danamart.offers.sidebar.text1'),
+              url: '/danamart/offer'
+            },
+            {
+              title: t('danamart.portfolio.sidebar.text1'),
+              url: '/danamart/portfolio'
+            },
+            {
+              title: t('danamart.purchaseHistory.sidebar.text1'),
+              url: '/danamart/purchase-history'
+            },
+            {
+              title: t('danamart.incomingFunds.sidebar.text1'),
+              url: '/danamart/incoming-funds'
+            },
+            {
+              title: t('danamart.outgoingFunds.sidebar.text1'),
+              url: '/danamart/outgoing-funds'
+            },
+            {
+              title: t('danamart.promotion.sidebar.text1'),
+              url: '/danamart/promotion'
+            },
+            {
+              title: t('danamart.userLog.sidebar.text1'),
+              url: '/danamart/user-log'
+            },
+            {
+              title: t('danamart.setting.sidebar.text1'),
+              url: '/danamart/setting-account'
+            },
+            { title: t('danamart.logout.text1'), url: '#', isLogout: true }
+          ]
+        },
         { title: 'Setting', url: '/user-setting', image: setting },
         {
           title: 'Notification',
@@ -183,105 +183,97 @@ const SidebarLoginResponsive: React.FC<props> = ({
                 }
               })
               .map((data, idx) => (
-                // <>
-                //   {data.title === 'Danamart' &&
-                //   localStorage.getItem('accessToken-danamart') !== null ? (
-                //     <div key={idx} className="w-full flex flex-col gap-2">
-                //       <Link
-                //         onClick={() => {
-                //           if (
-                //             data.hasSubmenu !== undefined &&
-                //             data.hasSubmenu !== null
-                //           ) {
-                //             setIsDanamartOpen(prev => !prev);
-                //           }
-                //         }}
-                //         className={`flex justify-between items-center ${isLinkActive(
-                //           data.url
-                //         )}`}
-                //         href={
-                //           localStorage.getItem('accessToken-danamart') !== null
-                //             ? '#'
-                //             : data.url
-                //         }
-                //         key={idx}
-                //       >
-                //         <div className="flex items-center gap-2">
-                //           <Image
-                //             width={20}
-                //             height={20}
-                //             src={data.image}
-                //             alt=""
-                //           />
-                //           <h1>{data.title}</h1>
-                //         </div>
-                //         {localStorage.getItem('accessToken-danamart') !==
-                //           null &&
-                //           (isDanamartOpen ? (
-                //             <FaChevronUp size={14} />
-                //           ) : (
-                //             <FaChevronDown size={14} />
-                //           ))}
-                //       </Link>
-                //       {data.hasSubmenu !== undefined && isDanamartOpen && (
-                //         <ul>
-                //           {data.submenu?.map((sub, subIdx) =>
-                //             sub.isLogout ?? false ? (
-                //               <Link
-                //                 key={subIdx}
-                //                 className={`flex items-center ${isLinkActive(
-                //                   sub.url
-                //                 )}`}
-                //                 onClick={() => {
-                //                   handleLogoutDanamart();
-                //                 }}
-                //                 href="#"
-                //               >
-                //                 <GoDotFill size={20} />
-                //                 <h1>{sub.title}</h1>
-                //               </Link>
-                //             ) : (
-                //               <Link
-                //                 key={subIdx}
-                //                 className={`flex items-center ${isLinkActive(
-                //                   sub.url
-                //                 )}`}
-                //                 href={sub.url}
-                //               >
-                //                 <GoDotFill size={20} />
-                //                 <h1>{sub.title}</h1>
-                //               </Link>
-                //             )
-                //           )}
-                //         </ul>
-                //       )}
-                //     </div>
-                //   ) : (
-                //     <Link
-                //       className={isLinkActive(data.url)}
-                //       href={data.url}
-                //       key={idx}
-                //     >
-                //       <Image width={20} height={20} src={data.image} alt="" />
-                //       <h1>{data.title}</h1>
-                //     </Link>
-                //   )}
-                // </>
-                <Link
-                  className={isLinkActive(data.url)}
-                  href={data.url}
-                  key={idx}
-                  onClick={() => {
-                    handleOpen();
-                    TrackerEvent({
-                      event: `SW_${data.title.toLowerCase()}_page`,
-                      userData: dataUser
-                    });
-                  }}
-                >
-                  <Image width={20} height={20} src={data.image} alt="" />
-                  <h1>{data.title}</h1>
-                </Link>
+                <>
+                  {data.title === 'Danamart' &&
+                  localStorage.getItem('accessToken-danamart') !== null ? (
+                    <div key={idx} className="w-full flex flex-col gap-2">
+                      <Link
+                        onClick={() => {
+                          if (
+                            data.hasSubmenu !== undefined &&
+                            data.hasSubmenu !== null
+                          ) {
+                            setIsDanamartOpen(prev => !prev);
+                          }
+                        }}
+                        className={`flex justify-between items-center ${isLinkActive(
+                          data.url
+                        )}`}
+                        href={
+                          localStorage.getItem('accessToken-danamart') !== null
+                            ? '#'
+                            : data.url
+                        }
+                        key={idx}
+                      >
+                        <div className="flex items-center gap-2">
+                          <Image
+                            width={20}
+                            height={20}
+                            src={data.image}
+                            alt=""
+                          />
+                          <h1>{data.title}</h1>
+                        </div>
+                        {localStorage.getItem('accessToken-danamart') !==
+                          null &&
+                          (isDanamartOpen ? (
+                            <FaChevronUp size={14} />
+                          ) : (
+                            <FaChevronDown size={14} />
+                          ))}
+                      </Link>
+                      {data.hasSubmenu !== undefined && isDanamartOpen && (
+                        <ul>
+                          {data.submenu?.map((sub, subIdx) =>
+                            sub.isLogout ?? false ? (
+                              <Link
+                                key={subIdx}
+                                className={`flex items-center ${isLinkActive(
+                                  sub.url
+                                )}`}
+                                onClick={() => {
+                                  handleLogoutDanamart();
+                                }}
+                                href="#"
+                              >
+                                <GoDotFill size={20} />
+                                <h1>{sub.title}</h1>
+                              </Link>
+                            ) : (
+                              <Link
+                                key={subIdx}
+                                className={`flex items-center ${isLinkActive(
+                                  sub.url
+                                )}`}
+                                href={sub.url}
+                              >
+                                <GoDotFill size={20} />
+                                <h1>{sub.title}</h1>
+                              </Link>
+                            )
+                          )}
+                        </ul>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      className={isLinkActive(data.url)}
+                      href={data.url}
+                      key={idx}
+                      onClick={() => {
+                        handleOpen();
+                        TrackerEvent({
+                          event: `SW_${data.title.toLowerCase()}_page`,
+                          userData: dataUser
+                        });
+                      }}
+                    >
+                      <Image width={20} height={20} src={data.image} alt="" />
+                      <h1>{data.title}</h1>
+                    </Link>
+                  )}
+                </>
               ))}
             <div className="flex flex-row">
               <section className="flex flex-row gap-2 rounded-full backdrop-blur-[10px] py-2 px-4">

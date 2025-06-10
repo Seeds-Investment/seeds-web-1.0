@@ -1,5 +1,6 @@
 'use client';
 import { Logout } from '@/constants/assets/images';
+import { swtracker } from '@/constants/swtracker';
 import TrackerEvent from '@/helpers/GTM';
 import { Typography } from '@material-tailwind/react';
 import { signOut } from 'next-auth/react';
@@ -28,7 +29,7 @@ const ModalLogout: React.FC<Props> = ({ onClose, userInfo }) => {
     sessionStorage.removeItem('diamBalance');
     await signOut();
     TrackerEvent({
-      event: `SW_auth_logout`,
+      event: swtracker.auth.logout,
       userData: userInfo
     });
     await router.push('/');

@@ -105,7 +105,7 @@ const Section3: React.FC = () => {
         <Button
           className="text-xs px-12 font-semibold capitalize text-md bg-[#7555DA] rounded-full mb-10"
           onClick={() => {
-            void router.push('auth/register');
+            void router.push('auth');
           }}
         >
           Join Now

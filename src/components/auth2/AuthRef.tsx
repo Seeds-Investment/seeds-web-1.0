@@ -1,4 +1,5 @@
 import SeedyAuthRef from '@/assets/auth/SeedyAuthRef.png';
+import { swtracker } from '@/constants/swtracker';
 import Toast from '@/containers/circle/[id]/Toast';
 import { AuthLocalStorage } from '@/helpers/authLocalStorage';
 import TrackerEvent from '@/helpers/GTM';
@@ -55,7 +56,7 @@ const AuthRef: React.FC<AuthRefI> = ({
     await dispatch(fetchExpData());
     const responseUser = await getUserInfo();
     TrackerEvent({
-      event: 'SW_auth_login',
+      event: swtracker.auth.login,
       userData: responseUser
     });
     handleOpen();
@@ -64,7 +65,7 @@ const AuthRef: React.FC<AuthRefI> = ({
     } else {
       await router.push('/homepage');
       TrackerEvent({
-        event: `SW_homepage_page`,
+        event: swtracker.homepage.page,
         userData: responseUser
       });
     }
@@ -114,14 +115,19 @@ const AuthRef: React.FC<AuthRefI> = ({
           throw new Error(response);
         }
       } else if (guest === 'register') {
-        const response = await register(formData);
+        const response = await register({
+          ...formData,
+          utm_source: router.query.utm_source,
+          utm_medium: router.query.utm_medium,
+          utm_campaign: router.query.utm_campaign
+        });
         if (response === null) {
           throw new Error(response);
         }
       }
       const { password, refCode, ...rest } = formData;
       TrackerEvent({
-        event: 'SW_auth_register',
+        event: swtracker.auth.register,
         userData: rest
       });
       await handleSubmit();
@@ -147,14 +153,19 @@ const AuthRef: React.FC<AuthRefI> = ({
           throw new Error(response);
         }
       } else if (guest === 'register') {
-        const response = await register(formData);
+        const response = await register({
+          ...formData,
+          utm_source: router.query.utm_source,
+          utm_medium: router.query.utm_medium,
+          utm_campaign: router.query.utm_campaign
+        });
         if (response === null) {
           throw new Error(response);
         }
       }
       const { password, ...rest } = formData;
       TrackerEvent({
-        event: 'SW_auth_register',
+        event: swtracker.auth.register,
         userData: rest
       });
       await handleSubmit();

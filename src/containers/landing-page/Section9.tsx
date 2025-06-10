@@ -3,9 +3,8 @@ import next from '@/assets/landing-page/next.svg';
 import prev from '@/assets/landing-page/prev.svg';
 import { eventHighlightLandingPage } from '@/utils/_static/dummy';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useInView } from 'react-intersection-observer';
 import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
@@ -16,16 +15,6 @@ export default function Section9(): React.ReactElement {
   const sliderRef = useRef<Slider>(null);
 
   const { t } = useTranslation();
-  const [isBottom, setBottom] = useState(0);
-  const measurement = 900;
-
-  const { ref, inView, entry } = useInView({
-    threshold: 0.2
-  });
-  useEffect(() => {
-    const bottom = entry?.boundingClientRect.bottom ?? 0;
-    setBottom(bottom);
-  }, [entry]);
 
   const settings: Settings = {
     slidesToShow: 4,
@@ -76,19 +65,8 @@ export default function Section9(): React.ReactElement {
   };
 
   return (
-    <section
-      ref={ref}
-      className="h-auto min-w-full cursor-default relative font-poppins py-4"
-    >
-      <div
-        className={`min-w-full cursor-default font-poppins ${
-          inView && isBottom >= measurement
-            ? 'animate-fade-in-slide'
-            : isBottom >= measurement
-            ? 'animate-fade-out-slide'
-            : ''
-        }`}
-      >
+    <section className="h-auto min-w-full cursor-default relative font-poppins py-4">
+      <div className={`min-w-full cursor-default font-poppins`}>
         <div className="flex flex-col justify-center items-center mt-[60px] mx-8 md:mx-[200px] xl:mx-[400px]">
           {/* xl:flex-row xl:gap-[80px] items-center justify-center mx-auto */}
           {/* xl:px-[100px] px-8 mt-10 xl:mt-[100px] */}

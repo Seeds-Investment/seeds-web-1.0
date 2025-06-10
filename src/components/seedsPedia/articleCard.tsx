@@ -6,6 +6,7 @@ import { id } from 'date-fns/locale';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 interface ArticleCardProps {
@@ -26,6 +27,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   articleName,
   data
 }) => {
+  const { t } = useTranslation();
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
@@ -107,51 +109,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
     return url?.startsWith('http://') || url?.startsWith('https://');
   }
 
-  // function copyValueWithUrl(valueToCopy: number): boolean {
-  //   const textToCopy = `${baseUrl}/article/${valueToCopy}`;
-
-  //   const textArea = document.createElement('textarea');
-  //   textArea.value = textToCopy;
-  //   document.body.appendChild(textArea);
-  //   textArea.select();
-
-  //   try {
-  //     const copied = document.execCommand('copy');
-  //     if (copied) {
-  //       setOpen(true);
-  //       setTimeout(() => {
-  //         setOpen(false);
-  //       }, 3000);
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   } catch (err) {
-  //     console.error('Error copying text: ', err);
-  //     return false;
-  //   } finally {
-  //     document.body.removeChild(textArea);
-  //   }
-  // }
-
   const defaultNews = '/assets/default-news.png';
   const imageUrl = articleDetail?.imageUrl ?? defaultNews;
   const isImageValid = isImageUrlValid(imageUrl);
   return (
     <>
-      {/* {open && (
-        <div
-          id="myToast"
-          className="fixed right-10 z-50 bottom-10 px-5 py-4 border-r-8 border-blue-500 bg-white drop-shadow-lg"
-        >
-          <p className="text-sm">
-            <span className="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">
-              i
-            </span>
-            Article copied to Clipboard
-          </p>
-        </div>
-      )} */}
       <div className="bg-[#FFF] lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
         <Link
           href={`/seedspedia/articles/${articleDetail?.id ?? 0}/${
@@ -165,13 +127,13 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             <img
               src={imageUrl}
               alt={articleDetail?.title}
-              className="w-full h-[238px] rounded-t-[18px]"
+              className="w-full h-auto rounded-t-[18px]"
             />
           ) : (
             <img
               src={defaultNews}
               alt={articleDetail?.title}
-              className="w-full h-[238px] rounded-t-[18px]"
+              className="w-full h-auto rounded-t-[18px]"
             />
           )}
         </Link>
@@ -252,35 +214,27 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
               viewBox="0 0 25 25"
               fill="none"
               className="cursor-pointer"
-              // onClick={() => {
-              //   copyValueWithUrl(articleDetail?.id ?? 0);
-              // }}
               onClick={async () => {
-                const articleId = articleDetail?.id ?? 0;
-                const articleName = articleDetail?.title ?? 'Untitled';
-                const formattedName = articleName
+                const formattedName = (articleName ?? '')
                   .replace(/[^\w\s-]/gi, '')
                   .split(' ')
                   .filter(Boolean)
                   .join('-');
-                const shareUrl = `${baseUrl}/seedspedia/articles/${articleId}/${formattedName}`;
-              
-                if (navigator?.share !== undefined && navigator?.share !== null) {
+                const shareUrl = `${baseUrl}/seedspedia/articles/${articleId}/${formattedName ?? ''}`;
+                if (navigator?.share !== null && navigator?.share !== undefined) {
                   try {
-                    await navigator?.share({
+                    await navigator.share({
                       title: articleName,
-                      text: 'Check out this article on SeedsPedia!',
+                      text: `${t('articleList.text28')}`,
                       url: shareUrl,
                     });
-                  } catch (err: any) {
-                    console.error('Sharing failed:', err);
-                    alert(err)
-                    toast.error(err);
+                  } catch {
+                    toast(t('articleList.text31'));
                   }
                 } else {
-                  alert('Share not supported. Link copied instead!');
+                  alert(t('articleList.text30'));
                 }
-              }}              
+              }}
             >
               <path
                 d="M18.0059 8.07788C19.6627 8.07788 21.0059 6.73474 21.0059 5.07788C21.0059 3.42103 19.6627 2.07788 18.0059 2.07788C16.349 2.07788 15.0059 3.42103 15.0059 5.07788C15.0059 6.73474 16.349 8.07788 18.0059 8.07788Z"

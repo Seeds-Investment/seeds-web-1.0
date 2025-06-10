@@ -33,6 +33,7 @@ module.exports = withMT({
         'seeds-battle-2': '#5987ca'
       },
       backgroundImage: {
+        dot: 'url(/assets/dot.png)',
         hello: "url('../src/assets/hello.png')",
         'ellipse-purple': "url('../src/assets/ellipse-purple.png')",
         'quiz-gradient': 'linear-gradient(88deg, #10A8AD 0%, #79F0B8 137.56%)',

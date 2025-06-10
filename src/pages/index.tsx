@@ -2,7 +2,7 @@ import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section1 from '@/containers/landing-page/Section1';
-import Section10 from '@/containers/landing-page/Section10';
+// import Section10 from '@/containers/landing-page/Section10';
 import Section11 from '@/containers/landing-page/Section11';
 import Section12 from '@/containers/landing-page/Section12';
 import Section2 from '@/containers/landing-page/Section2';
@@ -62,7 +62,7 @@ export default function Home(): React.ReactElement {
         <Section7 />
         <Section8 />
         <Section9 />
-        <Section10 />
+        {/* <Section10 /> */}
         <Section11 />
         <Section12 />
         <div className="lg:relative z-30 lg:mt-[-18px]">

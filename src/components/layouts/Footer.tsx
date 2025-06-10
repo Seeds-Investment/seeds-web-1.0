@@ -24,7 +24,7 @@ export default function Footer(): React.ReactElement {
       },
       {
         name: `${t('footer.company.list2')}`,
-        url: 'https://bit.ly/CareerSeeds'
+        url: 'mailto:recruitment@seeds.finance'
       }
     ],
     Legal: [
@@ -58,8 +58,8 @@ export default function Footer(): React.ReactElement {
       },
       {
         icon: whatsapp,
-        name: '08118883519',
-        url: 'https://api.whatsapp.com/send?phone=628118883519'
+        name: '081387473392',
+        url: 'https://api.whatsapp.com/send?phone=6281387473392'
       }
     ]
   };
@@ -99,6 +99,7 @@ export default function Footer(): React.ReactElement {
           <div className="flex gap-4">
             {socialMedia.map((item, key) => (
               <Link
+                prefetch={false}
                 target="_blank"
                 key={key}
                 href={item.url}
@@ -133,6 +134,7 @@ export default function Footer(): React.ReactElement {
                           );
                         return (
                           <Link
+                            prefetch={false}
                             key={key}
                             href={data.url}
                             target={
@@ -174,7 +176,7 @@ export default function Footer(): React.ReactElement {
                             ''
                           );
                         return (
-                          <Link key={key} href={data.url}>
+                          <Link prefetch={false} key={key} href={data.url}>
                             <Typography className="font-normal font-poppins text-base lg:text-lg text-[#262626] flex gap-2">
                               {dataIcon}
                               {data.name}
@@ -196,7 +198,12 @@ export default function Footer(): React.ReactElement {
               {downloadOurApp
                 .filter((data, i) => i <= 1)
                 .map((data, key) => (
-                  <Link target="_blank" key={key} href={data.url}>
+                  <Link
+                    prefetch={false}
+                    target="_blank"
+                    key={key}
+                    href={data.url}
+                  >
                     <Image alt="icon" src={data.icon} />
                   </Link>
                 ))}
@@ -211,6 +218,7 @@ export default function Footer(): React.ReactElement {
                 .filter((data, i) => i > 1)
                 .map((data, key) => (
                   <Link
+                    prefetch={false}
                     target="_blank"
                     key={key}
                     href={data.url}
@@ -249,6 +257,7 @@ export default function Footer(): React.ReactElement {
                         );
                       return (
                         <Link
+                          prefetch={false}
                           key={key}
                           href={data.url}
                           target={
@@ -290,7 +299,7 @@ export default function Footer(): React.ReactElement {
                           ''
                         );
                       return (
-                        <Link key={key} href={data.url}>
+                        <Link prefetch={false} key={key} href={data.url}>
                           <Typography className="font-normal font-poppins text-base text-[#262626] flex gap-2">
                             {dataIcon}
                             {data.name}
@@ -324,7 +333,7 @@ export default function Footer(): React.ReactElement {
                           ''
                         );
                       return (
-                        <Link key={key} href={data.url}>
+                        <Link prefetch={false} key={key} href={data.url}>
                           <Typography className="font-normal font-poppins text-base text-[#262626] flex gap-2">
                             {dataIcon}
                             {data.name}
@@ -358,8 +367,8 @@ export default function Footer(): React.ReactElement {
                           ''
                         );
                       return (
-                        <Link key={key} href={data.url}>
-                          <Typography className="font-normal font-poppins text-base text-[#262626] flex gap-2">
+                        <Link prefetch={false} key={key} href={data.url}>
+                          <Typography className="font-normal font-poppins text-base text-[#262626] flex items-center gap-2">
                             {dataIcon}
                             {data.name}
                           </Typography>

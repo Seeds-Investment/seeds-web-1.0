@@ -674,6 +674,49 @@ export default {
       title3: 'Tolong cek emailmu'
     }
   },
+  onboarding: {
+    leftBanner: {
+      text1: "Ayo Mulai",
+      text2: "Mulai perjalananmu bersama Seeds dan tingkatkan pengetahuan investasimu",
+    },
+    welcomeCarousel: {
+      title: {
+        1: "Mari Belajar Personal & E-Learning",
+        2: "Belajar. Bermain. Menang. Tingkatkan Skillmu dengan Seeds Play!",
+        3: "Ngobrol dengan Ahli, Menang dengan Pengetahuan!",
+        4: "Bantuan Langsung dari Ahli untuk Kamu!",
+      },
+      subtitle: {
+        1: "Temukan tingkat kemampuan investasimu dan belajar dengan cara yang paling mudah, praktis, dan interaktif melalui video online dari mentor berpengalaman.",
+        2: "Belajar investasi sambil bermain game seru & menangkan hadiah menarik seperti voucher, crypto, dan NFT!",
+        3: "Belajar nggak harus membosankan! Ikuti sesi live menarik, ajukan pertanyaanmu, dan jadi lebih cerdas soal uang, satu sesi dalam satu waktu.",
+        4: "Dapatkan perlakuan VIP! Tanya apa saja, kapan saja – ahli kami siap membantumu mengembangkan skill dan mencapai tujuan keuanganmu.",
+      }
+    },
+    welcomeButton: {
+      start: "Mulai Sekarang",
+      login: "Saya Sudah Punya Akun",
+    },
+    question: {
+      start: "Ayo Mulai",
+      text1: 'Kamu bisa memilih lebih dari satu pilihan.',
+      text2: 'Kamu hanya bisa memilih satu pilihan.',
+      text3: 'Langkah Sebelumnya',
+      text4: 'Lanjutkan',
+    },
+    questionDone: {
+      text1: "Pilihan yang tepat! Kamu memulai perjalananmu dalam <strong>Keuangan Pribadi</strong> untuk <strong>mengendalikan keuanganmu</strong>. Karena kamu baru memulai, kami akan membimbingmu langkah demi langkah melalui <strong>video pembelajaran</strong> yang seru dan disesuaikan khusus untukmu.",
+      text2: "Saatnya memulai pelajaran pertamamu!",
+      text3: "Akan menyenangkan, seperti bermain game.",
+      text4: "Ayo bergabung dan daftar sekarang.",
+      text5: 'Lanjutkan',
+      text6: 'Kirim Ulang',
+    },
+    splashScreen: {
+      text1: "Memuat",
+      text2: "Mohon tunggu ...",
+    }    
+  },  
   validation: {
     phoneNumberEmpty:
       'Nomor telepon diperlukan, silakan masukkan nomor telepon Anda!',

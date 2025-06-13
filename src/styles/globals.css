@@ -409,3 +409,42 @@ input[type='number'] {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@keyframes loadingBar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes fadeInOnboarding {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutOnboarding {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+}
+
+.fade-in-onboard {
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+.fade-out-onboard {
+  animation: fadeOut 0.5s ease-out forwards;
+}

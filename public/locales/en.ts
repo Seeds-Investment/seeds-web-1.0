@@ -754,6 +754,49 @@ export default {
       title3: 'Please check your email'
     }
   },
+  onboarding: {
+    leftBanner: {
+      text1: "Let’s Get Started",
+      text2: "Start your journey with Seeds and grow your investment knowledge",
+    },
+    welcomeCarousel: {
+      title: {
+        1: "Let’s Get Personal Learning Path & E-Learning",
+        2: 'Learn. Play. Win. Boost Your Skills with Seeds Play!',
+        3: 'Talk to Experts, Win With Knowledge!',
+        4: 'One on One Help from the Expert!'
+      },
+      subtitle: {
+        1: 'Discover your investment skill level and learn in the easiest, most practical, and interactive way, through online videos from experienced mentors.',
+        2: "Learn about investing while playing fun games & winning exciting rewards like vouchers, crypto, and NFT’s!",
+        3: "Learning doesn't have to be boring! Join exciting live talks, ask your questions, and become smarter about money, one session at a time.",
+        4: 'Get VIP treatment! Ask anything, anytime our experts are ready to help you grow your skills and reach your money goals.'
+      }
+    },
+    welcomeButton: {
+      start: "Let's Start",
+      login: 'I Already Have an Account',
+    },
+    question: {
+      start: "Let's Go",
+      text1: 'You can choose multiple choice.',
+      text2: 'You can only choose one choice.',
+      text3: 'Previous Step',
+      text4: 'Continue',
+    },
+    questionDone: {
+      text1: "Great choice! You're starting your journey into <strong>Personal Finance</strong> to <strong>take control of your money</strong>. Since you're just getting started, we'll guide you step-by-step, all through engaging <strong>video lessons</strong> tailored just for you.",
+      text2: "It's time to your first lesson!",
+      text3: "It'll be fun, like a game.",
+      text4: "Let's join and register now.",
+      text5: 'Continue',
+      text6: 'Resubmit',
+    },
+    splashScreen: {
+      text1: "Loading",
+      text2: "Please wait ...",
+    },
+  },
   validation: {
     phoneNumberEmpty:
       'Phone number is required, please enter your phone number!',

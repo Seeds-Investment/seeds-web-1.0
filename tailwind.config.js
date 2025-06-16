@@ -43,7 +43,8 @@ module.exports = withMT({
         'gradient-radial-subs':
           'radial-gradient(ellipse at center, #EED69C, #FABE2C)',
         'diamond-gradient':
-          'radial-gradient(ellipse at right, #FFF7D2 20%,#E3D2E3 40% ,#B798FF 100%)'
+          'radial-gradient(ellipse at right, #FFF7D2 20%,#E3D2E3 40% ,#B798FF 100%)',
+        radial: 'radial-gradient(var(--tw-gradient-stops))'
       },
       backgroundSize: {
         '50%': '50%',
@@ -89,6 +90,7 @@ module.exports = withMT({
         'shadow-move': 'shadow-move 3s infinite',
         'shadow-voicenotes': 'shadow-voicenotes 1s infinite',
         'infinite-line': 'infinite-line 30s linear infinite',
+        'infinite-line-5': 'infinite-line 5s linear infinite',
         'vertical-line': 'vertical-line 25s linear infinite',
         'vertical-line-reverse': 'vertical-line-reverse 25s linear infinite'
       },

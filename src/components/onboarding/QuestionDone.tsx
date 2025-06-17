@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 interface QuestionDoneI {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   setCurrentQuestionIndex: React.Dispatch<React.SetStateAction<number>>;
-  setAnswers: React.Dispatch<React.SetStateAction<Record<number, AnswerOption | AnswerOption[]>>>;
+  setAnswers: React.Dispatch<React.SetStateAction<Record<number, AnswerOption[]>>>;
 }
 
 const QuestionDone: React.FC<QuestionDoneI> = ({

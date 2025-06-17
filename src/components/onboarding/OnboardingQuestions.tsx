@@ -16,8 +16,8 @@ import { useDispatch } from 'react-redux';
 
 interface OnboardingQuestionsI {
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  answers: Record<number, AnswerOption | AnswerOption[]>;
-  setAnswers: React.Dispatch<React.SetStateAction<Record<number, AnswerOption | AnswerOption[]>>>;
+  answers: Record<number, AnswerOption[]>;
+  setAnswers: React.Dispatch<React.SetStateAction<Record<number, AnswerOption[]>>>;
   onboardQuestion?: OnboardQuestionI;
   currentQuestionIndex: number;
   setCurrentQuestionIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -33,6 +33,7 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
 }: OnboardingQuestionsI) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
   return (
     <div className="mb-8 md:pb-32">
       <div className='flex gap-2 justify-center items-center mt-8'>
@@ -76,7 +77,7 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
               {
                 onboardQuestion?.data[currentQuestionIndex]?.question?.replace(
                   '[no_1_answer]',
-                  Array.isArray(answers[1]) ? answers[1][0]?.header ?? '' : answers[1]?.header ?? ''
+                  Array.isArray(answers[1]) ? answers[1][0]?.header ?? '' : ''
                 )
               }
             </Typography>
@@ -121,7 +122,7 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
         {onboardQuestion?.data[currentQuestionIndex]?.options?.map((opt) => {
           const qNum = onboardQuestion.data[currentQuestionIndex].question_number;
-          const selected = Array.isArray(answers[qNum]) && (answers[qNum] as AnswerOption[])?.some((a) => a.header === opt.header)
+          const selected = Array.isArray(answers[qNum]) && (answers[qNum])?.some((a) => a.header === opt.header)
 
           return (
             <div
@@ -140,7 +141,7 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
                     };
 
                     if (qNum === 4 || qNum === 5) {
-                      const prevAnswers = (prev[qNum] ?? []) as AnswerOption[];
+                      const prevAnswers = (prev[qNum] ?? []);
                       const exists = prevAnswers.find((a) => a.header === option.header);
 
                       return {
@@ -215,23 +216,13 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
                     const payload: OnboardingAnswer[] = onboardQuestion?.data?.map((q) => ({
                       question: q.question.replace(
                         /\[no_1_answer\]/g,
-                        Array.isArray(answers[1]) ? answers[1][0]?.header ?? '' : answers[1]?.header ?? ''
+                        Array.isArray(answers[1]) ? answers[1][0]?.header ?? '' : ''
                       ),
-                      answer: Array.isArray(answers[q.question_number])
-                        ? (answers[q.question_number] as AnswerOption[]).map((ans) => ({
-                            header: ans.header ?? '',
-                            body: ans.body ?? '',
-                            image: ans.image ?? '',
-                          }))
-                        : answers[q.question_number]
-                        ? [
-                            {
-                              header: (answers[q.question_number] as AnswerOption).header ?? '',
-                              body: (answers[q.question_number] as AnswerOption).body ?? '',
-                              image: (answers[q.question_number] as AnswerOption).image ?? '',
-                            },
-                          ]
-                        : [],
+                      answer: (answers[q.question_number])?.map((ans) => ({
+                        header: ans.header ?? '',
+                        body: ans.body ?? '',
+                        image: ans.image ?? '',
+                      }))
                     })) ?? [];
                   
                     dispatch(setOnboardingResponses(payload));

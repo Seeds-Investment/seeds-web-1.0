@@ -45,7 +45,8 @@ const pathsWithoutHeader = [
   'term-condition',
   'social',
   'ads',
-  'forms'
+  'forms',
+  'onboarding',
 ];
 
 function App({

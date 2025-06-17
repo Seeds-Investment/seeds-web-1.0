@@ -121,12 +121,7 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
         {onboardQuestion?.data[currentQuestionIndex]?.options?.map((opt) => {
           const qNum = onboardQuestion.data[currentQuestionIndex].question_number;
-          const selected =
-          (qNum === 4 || qNum === 5)
-            ? Array.isArray(answers[qNum]) &&
-              (answers[qNum] as AnswerOption[])?.some((a) => a.header === opt.header)
-            : !Array.isArray(answers[qNum]) &&
-              (answers[qNum] as AnswerOption)?.header === opt.header;
+          const selected = Array.isArray(answers[qNum]) && (answers[qNum] as AnswerOption[])?.some((a) => a.header === opt.header)
 
           return (
             <div
@@ -157,7 +152,7 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
                     } else {
                       return {
                         ...prev,
-                        [qNum]: option,
+                        [qNum]: [option],
                       };
                     }
                   });

@@ -23,7 +23,7 @@ const AuthIndex: React.FC = () => {
   const languageCtx = useContext(LanguageContext);
   const [step, setStep] = useState<number>(0);
   const [onboardQuestion, setOnboardQuestion] = useState<OnboardQuestionI>();
-  const [answers, setAnswers] = useState<Record<number, AnswerOption | AnswerOption[]>>({});
+  const [answers, setAnswers] = useState<Record<number, AnswerOption[]>>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
 
   const element = <AuthCarousel className="flex md:hidden" />;

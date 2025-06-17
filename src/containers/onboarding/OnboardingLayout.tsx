@@ -33,8 +33,8 @@ interface IAuthLayout {
   formChild: ReactElement;
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  answers: Record<number, AnswerOption | AnswerOption[]>;
-  setAnswers: React.Dispatch<React.SetStateAction<Record<number, AnswerOption | AnswerOption[]>>>;
+  answers: Record<number, AnswerOption[]>;
+  setAnswers: React.Dispatch<React.SetStateAction<Record<number, AnswerOption[]>>>;
   onboardQuestion?: OnboardQuestionI;
   currentQuestionIndex: number;
   setCurrentQuestionIndex: React.Dispatch<React.SetStateAction<number>>;

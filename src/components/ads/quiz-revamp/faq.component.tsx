@@ -1,7 +1,7 @@
 import {
-    Accordion,
-    AccordionBody,
-    AccordionHeader
+  Accordion,
+  AccordionBody,
+  AccordionHeader
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import path from 'public/assets/ads/path.svg';
@@ -47,7 +47,7 @@ const Faq = (): React.ReactElement => {
         className="absolute md:hidden -top-1/3 sm:-top-1/2 left-0 w-full z-0"
       />
       <div className="flex flex-col gap-6 md:gap-3 justify-center items-center">
-        <p className="text-2xl sm:text-5xl text-center bg-clip-text bg-gradient-to-b from-white to-[#A8A8A8] text-transparent">
+        <p className="text-2xl sm:text-5xl sm:py-2 text-center bg-clip-text bg-gradient-to-b from-white to-[#A8A8A8] text-transparent">
           Masih Ragu?
         </p>
         <p className="text-center font-medium text-sm sm:text-base text-[#999999]">

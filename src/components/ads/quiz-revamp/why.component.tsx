@@ -60,12 +60,12 @@ const Why = ({ scrollToSection }: { scrollToSection:(text:string)=>void }): Reac
   return (
     <section
       ref={containerRef}
-      className="relative h-[400vh] flex flex-col items-center md:py-[100px] py-6 gap-8 md:gap-12"
+      className="relative h-[400vh] flex flex-col items-center md:pt-[100px] pt-6 gap-8 md:gap-12"
     >
       <h1 className="xl:w-2/3 text-2xl sm:text-3xl md:text-5xl font-medium text-center bg-clip-text bg-gradient-to-b from-white to-[#A8A8A8] text-transparent">
         Kenapa Banyak Anak Ekonomi Main di Seeds?
       </h1>
-      <div className="sticky top-20 min-h-[373px] w-full flex flex-col md:flex-row justify-center gap-5 md:gap-3">
+      <div className="sticky top-20 min-h-[373px] w-full flex flex-col md:flex-row justify-center gap-5 md:gap-3 2xl:pb-[50vh]">
         <ul className="flex flex-col gap-4 w-full md:w-1/3 list-none p-0">
           {section.map((v, i) => (
             <li

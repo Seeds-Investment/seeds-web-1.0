@@ -23,11 +23,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { QuizIdRoot } from './quiz-play.section';
 
 const QuizRevamp = (): React.ReactElement => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const textCta = (title: string, prize: string): string => {
-    const text = `ID [_gid_] Hi Min Seeds, %break%Saya Tertarik untuk Ikutan Kuis ${title} %break%Dapet Hadiah ${prize}, dari Quiz ${title}`;
-    return encodeURIComponent(text);
-  };
   const [dataQuiz, setDataQuiz] = useState<QuizIdRoot[]>([]);
   const [dummyQuiz, setDummyQuiz] = useState<QuizIdRoot[]>([]);
   const [isFree, setIsFree] = useState(true);
@@ -128,7 +123,7 @@ const QuizRevamp = (): React.ReactElement => {
       <div className="flex flex-col gap-6">
         <div className="px-4 lg:px-[100px] flex flex-col gap-14 md:gap-24">
           <QuizTrending scrollToSection={scrollToSection} />
-          <Layout dataQuiz={dummyQuiz} />
+          {queries?.isShuffle !== 'true' && <Layout dataQuiz={dummyQuiz} />}
         </div>
         <div className="relative w-full min-h-[150vh] flex flex-col">
           <div className="sticky z-40 top-[90vh] sm:top-[88vh] md:top-[85vh] px-4 pb-4 lg:px-[100px] self-end ">
@@ -163,7 +158,7 @@ const QuizRevamp = (): React.ReactElement => {
             </section>
           </div>
           <section
-            className="flex flex-col justify-center items-center md:py-[100px] py-20"
+            className="flex flex-col justify-center items-center md:py-[100px] py-20 gap-7 md:gap-12"
             ref={testimonyRef}
           >
             <Play />

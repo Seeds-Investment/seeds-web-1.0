@@ -4,6 +4,7 @@ import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { readChatIcon } from 'public/assets/chat';
+import { IoNotificationsOffOutline } from 'react-icons/io5';
 import DefaultAvatar from '../../../public/assets/chat/default-avatar.svg';
 
 interface props {
@@ -15,6 +16,11 @@ interface props {
 const ChatList: React.FC<props> = ({ data, userId, handleListClick }) => {
   const router = useRouter();
   const { roomId } = router.query;
+  const isMuted = 
+    data?.chat_mute_status === 'eight_hours' || 
+    data?.chat_mute_status === 'one_week' || 
+    (data?.chat_mute_status === 'always' && data?.chat_mute_date !== '0001-01-01T00:00:00Z');
+
   return (
     <div
       key={data?.id}
@@ -62,18 +68,26 @@ const ChatList: React.FC<props> = ({ data, userId, handleListClick }) => {
                 </Typography>
               </div>
             )}
-            {data?.read_at !== '0001-01-01T00:00:00Z' &&
-              data?.last_sender_id === userId && (
-                <div className="flex justify-center items-center w-[20px] h-auto">
-                  <Image
-                    src={readChatIcon}
-                    alt="readChatIcon"
-                    width={1000}
-                    height={1000}
-                    className="w-full h-auto"
-                  />
-                </div>
+            <div className='flex justify-center items-center gap-1'>
+              {data?.read_at !== '0001-01-01T00:00:00Z' &&
+                data?.last_sender_id === userId && (
+                  <div className="flex justify-center items-center w-[20px] h-auto">
+                    <Image
+                      src={readChatIcon}
+                      alt="readChatIcon"
+                      width={1000}
+                      height={1000}
+                      className="w-full h-auto"
+                    />
+                  </div>
               )}
+              {
+                isMuted &&
+                  <div className="flex justify-center items-center h-[17px] w-auto">
+                    <IoNotificationsOffOutline className="h-full w-auto"/>
+                  </div>
+              }
+            </div>
           </div>
         </div>
       </div>

@@ -48,7 +48,7 @@ const VirtualAccountGuide = ({
   handlePay,
   numberMonth,
   paymentStatus,
-  newPromoCodeDiscount,
+  newPromoCodeDiscount
 }: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
   const [showOtherFees, setShowOtherFees] = useState<boolean>(false);
@@ -126,7 +126,8 @@ const VirtualAccountGuide = ({
           ) : null}
         </>
       )}
-      {promoCodeValidationResult !== undefined && promoCodeValidationResult !== 0 ? (
+      {promoCodeValidationResult !== undefined &&
+      promoCodeValidationResult !== 0 ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}
           value={`- IDR ${

@@ -67,29 +67,27 @@ const VirtualAccountGuide = ({
         </Typography>
       </div>
       <Divider />
-      {
-        dataPost?.quiz !== undefined
-          ?
-            <InlineText
-              label={
-                (dataPost?.quiz !== undefined)
-                  ? 'Quiz Fee'
-                  : t(`${translationsId}.admissionFeeLabel`)
-              }
-              value={`IDR ${quizFee}`}
-              className="mb-2"
-            />
-          :
-            <InlineText
-              label={
-                dataPost !== undefined
-                  ? 'Circle Membership'
-                  : t(`${translationsId}.admissionFeeLabel`)
-              }
-              value={`IDR ${admissionFee}`}
-              className="mb-2"
-            />
-      }
+      {dataPost?.quiz !== undefined ? (
+        <InlineText
+          label={
+            dataPost?.quiz !== undefined
+              ? 'Quiz Fee'
+              : t(`${translationsId}.admissionFeeLabel`)
+          }
+          value={`IDR ${quizFee}`}
+          className="mb-2"
+        />
+      ) : (
+        <InlineText
+          label={
+            dataPost !== undefined
+              ? 'Circle Membership'
+              : t(`${translationsId}.admissionFeeLabel`)
+          }
+          value={`IDR ${admissionFee}`}
+          className="mb-2"
+        />
+      )}
       {adminFee > 0 && (
         <InlineText
           label={t(`${translationsId}.adminFeeLabel`)}
@@ -97,7 +95,8 @@ const VirtualAccountGuide = ({
           className="mb-2"
         />
       )}
-      {promoCodeValidationResult !== undefined && promoCodeValidationResult !== 0 ? (
+      {promoCodeValidationResult !== undefined &&
+      promoCodeValidationResult !== 0 ? (
         <InlineText
           label={t(`${translationsId}.promoCodeDiscountLabel`)}
           value={`- IDR ${

@@ -1,7 +1,13 @@
 import { payBattle } from '@/repository/team-battle.repository';
-import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import {
+  selectPromoCodeValidationResult,
+  setPromoCodeValidationResult
+} from '@/store/redux/features/promo-code';
 import { type StatusSubscription } from '@/utils/interfaces/subscription.interface';
-import { type PaymentResult, type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
+import {
+  type PaymentResult,
+  type TeamBattleDetail
+} from '@/utils/interfaces/team-battle.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Button, Switch, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -40,7 +46,7 @@ const ModalPayBattle: React.FC<Props> = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const [useCoins, setUseCoins] = useState<boolean>(false);
-  
+
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
@@ -52,7 +58,7 @@ const ModalPayBattle: React.FC<Props> = ({
 
     return timeStart < timeNow;
   };
-  
+
   const handlePayBattle = async (
     type: string,
     paymentGateway: string,
@@ -99,17 +105,17 @@ const ModalPayBattle: React.FC<Props> = ({
     promoCodeValidationResult !== 0
       ? promoCodeValidationResult?.response?.total_discount !== undefined
         ? promoCodeValidationResult?.response?.total_discount
-        : detailBattle?.admission_fee - (promoCodeValidationResult?.response?.final_price ?? 0)
+        : detailBattle?.admission_fee -
+          (promoCodeValidationResult?.response?.final_price ?? 0)
       : 0;
 
   const handleRedirectPayment = async (): Promise<void> => {
-    if (promoCodeValidationResult !== 0 && promoCodeValidationResult !== undefined) {
-      if ((detailBattle?.admission_fee - discount) === 0) {
-        void handlePayBattle(
-          '',
-          '',
-          '',
-        );
+    if (
+      promoCodeValidationResult !== 0 &&
+      promoCodeValidationResult !== undefined
+    ) {
+      if (detailBattle?.admission_fee - discount === 0) {
+        void handlePayBattle('', '', '');
       } else {
         await router.push(
           `/play/team-battle/${

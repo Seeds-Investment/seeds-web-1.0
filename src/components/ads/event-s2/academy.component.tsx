@@ -3,7 +3,7 @@ import search from 'public/assets/ads/search.png';
 import React from 'react';
 import TagEvent from '../event/tag.component';
 
-const Academy = ():React.ReactElement => {
+const Academy = (): React.ReactElement => {
   return (
     <div className="flex flex-col justify-center items-center gap-4 lg:gap-6">
       <div className="flex flex-col justify-center items-center">
@@ -32,6 +32,6 @@ const Academy = ():React.ReactElement => {
       </p>
     </div>
   );
-}
+};
 
-export default Academy
+export default Academy;

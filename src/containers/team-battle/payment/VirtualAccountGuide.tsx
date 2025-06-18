@@ -41,7 +41,8 @@ const VirtualAccountGuide: React.FC<Props> = ({
     promoCodeValidationResult !== 0
       ? promoCodeValidationResult?.response?.total_discount !== undefined
         ? promoCodeValidationResult?.response?.total_discount
-        : detailBattle?.admission_fee - (promoCodeValidationResult?.response?.final_price ?? 0)
+        : detailBattle?.admission_fee -
+          (promoCodeValidationResult?.response?.final_price ?? 0)
       : 0;
   const admissionFee = detailBattle?.admission_fee;
 
@@ -111,7 +112,8 @@ const VirtualAccountGuide: React.FC<Props> = ({
           ) : null}
         </>
       )}
-      {promoCodeValidationResult !== undefined && promoCodeValidationResult !== 0 ? (
+      {promoCodeValidationResult !== undefined &&
+      promoCodeValidationResult !== 0 ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}
           value={`- IDR ${

@@ -127,8 +127,11 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
           });
       }
     } catch (error: any) {
-      setOpenDialog(false)
-      if (error?.response?.data?.message === "bad request, minimum transaction using VA is 10000") {
+      setOpenDialog(false);
+      if (
+        error?.response?.data?.message ===
+        'bad request, minimum transaction using VA is 10000'
+      ) {
         toast.error(t('PlayPayment.VirtualAccountGuide.minimumPaymentError'));
       } else {
         toast.error(`${error as string}`);

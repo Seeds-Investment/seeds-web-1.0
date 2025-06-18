@@ -1,4 +1,4 @@
-const TagEvent = ({text}:{text:string}): React.ReactElement => {
+const TagEvent = ({ text }: { text: string }): React.ReactElement => {
   return (
     <div className="bg-[#DCFCE4] rounded-full w-fit px-4 py-2 flex gap-2 justify-center items-center">
       <div className="relative w-fit h-fit">

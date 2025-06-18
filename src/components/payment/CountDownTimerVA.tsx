@@ -28,7 +28,10 @@ const parseExpiredDate = (expiredDate: string): Date => {
   return new Date(year, month, day, hours, minutes, seconds);
 };
 
-const CountdownTimerVA: React.FC<CountDownProps> = ({ expiredDate, className }) => {
+const CountdownTimerVA: React.FC<CountDownProps> = ({
+  expiredDate,
+  className
+}) => {
   const { t } = useTranslation();
   const deadline = parseExpiredDate(expiredDate);
 
@@ -41,7 +44,7 @@ const CountdownTimerVA: React.FC<CountDownProps> = ({ expiredDate, className }) 
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
         hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
         minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
+        seconds: Math.floor((difference / 1000) % 60)
       };
     }
 
@@ -55,10 +58,13 @@ const CountdownTimerVA: React.FC<CountDownProps> = ({ expiredDate, className }) 
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
-    return () => { clearInterval(timer); };
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
-  const formatTime = (value: number): string => (value < 10 ? `0${value}` : `${value}`);
+  const formatTime = (value: number): string =>
+    value < 10 ? `0${value}` : `${value}`;
 
   const formatTimeLeft = (timeLeft: TimeLeft): string => {
     const parts = [];
@@ -116,15 +122,15 @@ const CountdownTimerVA: React.FC<CountDownProps> = ({ expiredDate, className }) 
   } else {
     return (
       <div>
-				<Typography
-					className={`${className ?? defaultClassName} ${
-						timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes < 5
-							? 'text-[#DD2525]'
-							: 'text-seeds-button-green'
-					}`}
-				>
-					{formatTimeLeft(timeLeft)}
-				</Typography>
+        <Typography
+          className={`${className ?? defaultClassName} ${
+            timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes < 5
+              ? 'text-[#DD2525]'
+              : 'text-seeds-button-green'
+          }`}
+        >
+          {formatTimeLeft(timeLeft)}
+        </Typography>
       </div>
     );
   }

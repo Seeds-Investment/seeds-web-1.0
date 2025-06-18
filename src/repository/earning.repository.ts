@@ -9,6 +9,14 @@ interface IRequestWithdraw {
   fee: number;
 }
 
+export interface IKycPayload {
+  name: string;
+  email: string;
+  phone_number: string;
+  id_card_image: string;
+  user_image: string;
+}
+
 const earningService = baseAxios(
   `${
     process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
@@ -19,6 +27,12 @@ const withdrawService = baseAxios(
   `${
     process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
   }/withdraw/v1`
+);
+
+const kycService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-ali.seeds.finance'
+  }/kyc/v1`
 );
 
 export const getEarningBalance = async (currency: string): Promise<any> => {
@@ -105,6 +119,145 @@ export const getWithdrawalStatus = async (id: string): Promise<any> => {
     }
 
     return await withdrawService.get(`/${id}/status`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const getEarningHistoryById = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await earningService.get(`/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const getWithdrawKYCStatus = async (): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await kycService.get(`/status`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const kycSubmitData = async (body: IKycPayload): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    
+    if (
+      (body.name.length === 0) ||
+      (body.email.length === 0) ||
+      (body.phone_number.length === 0) ||
+      (body.id_card_image.length === 0) ||
+      (body.user_image.length === 0)
+    ) {
+      return await Promise.resolve(null);
+    }
+
+    const response = await kycService.post('/submit', body, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+};
+
+export const getWithdrawQuestions = async (
+  playId: string,
+  playType: string,
+  language: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await earningService.get(`/question/${playId}?play_type=${playType}&language=${language}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const postWithdrawAnswer = async (
+  playId: string,
+  playType: string,
+  body?: { questions: Array<{ question: string; answer: string }> }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await earningService.post(`${playType}/${playId}/submit`,
+      body, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const resubmitWithdrawAnswer = async (
+  submissionId: string,
+  body?: { questions: Array<{ question: string; answer: string }> }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await earningService.post(`${submissionId}/resubmit`,
+      body, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`

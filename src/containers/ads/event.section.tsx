@@ -35,4 +35,4 @@ const Event = (): React.ReactElement => {
   );
 };
 
-export default Event
+export default Event;

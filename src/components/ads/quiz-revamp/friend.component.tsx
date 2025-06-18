@@ -37,7 +37,7 @@ const Friend = (): React.ReactElement => {
   return (
     <section className="md:py-[100px] py-6 z-10 flex flex-col justify-center items-center gap-6 md:gap-12">
       <div className="flex flex-col justify-center items-center md:gap-6 gap-4">
-        <h1 className="text-2xl sm:text-4xl md:text-6xl font-medium text-center bg-clip-text bg-gradient-to-b from-white to-[#A8A8A8] text-transparent">
+        <h1 className="text-2xl sm:text-4xl md:text-6xl font-medium text-center bg-clip-text bg-gradient-to-b from-white to-[#A8A8A8] text-transparent md:py-2">
           Tantang Temanmu & Naik Leaderboard
         </h1>
         <p className="font-normal md:font-medium md:text-3xl text-sm text-center bg-clip-text bg-gradient-to-b from-white to-[#A8A8A8] text-transparent">

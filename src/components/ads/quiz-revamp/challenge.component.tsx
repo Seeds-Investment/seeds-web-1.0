@@ -1,5 +1,7 @@
 import type { QuizIdRoot } from '@/containers/ads/quiz-play.section';
+import queryList from '@/helpers/queryList';
 import Image from 'next/image';
+import Link from 'next/link';
 import arrowRight from 'public/assets/ads/arrowRight.svg';
 import clock from 'public/assets/ads/clock.svg';
 import flame from 'public/assets/ads/flame.svg';
@@ -9,7 +11,7 @@ import React, { type Dispatch, type SetStateAction, useState } from 'react';
 const Challenge = ({
   dataQuiz,
   isFree,
-  setIsFree,
+  setIsFree
 }: {
   isFree: boolean;
   setIsFree: Dispatch<SetStateAction<boolean>>;
@@ -17,12 +19,17 @@ const Challenge = ({
 }): React.ReactElement => {
   const quiz = ['Kuis Gratis', 'Kuis Berbayar'];
   const [active, setActive] = useState<number>(0);
+  const { queries } = queryList();
+
+  const textCta = (title: string, prize: string): string => {
+    const text = `ID [_gid_] Hi Min Seeds, %break%Saya Tertarik untuk Ikutan Kuis ${title} %break%Dapet Hadiah ${prize}, dari Quiz ${title}`;
+    return encodeURIComponent(text);
+  };
 
   return (
     <>
-      {' '}
       <div className="flex flex-col gap-4 md:gap-6">
-        <h5 className="text-2xl sm:text-4xl md:text-6xl font-medium text-center bg-clip-text bg-gradient-to-b from-white to-[#A8A8A8] text-transparent">
+        <h5 className="text-2xl sm:text-4xl md:text-6xl md:py-2 font-medium text-center bg-clip-text bg-gradient-to-b from-white to-[#A8A8A8] text-transparent">
           Pilih Tantanganmu
         </h5>
         <p className="normal text-sm md:text-3xl text-center bg-clip-text bg-gradient-to-b from-white to-[#A8A8A8] text-transparent">
@@ -107,10 +114,30 @@ const Challenge = ({
                       : 'Special Reward'}
                   </p>
                 </div>
-                <button className="flex justify-center items-center gap-3 px-6 py-4 bg-seeds-button-green rounded-full font-medium active:scale-95 transition-all">
+                <Link
+                  target={queries.type === 'wa' ? '_blank' : '_self'}
+                  prefetch={false}
+                  href={
+                    queries.type === 'wa'
+                      ? `https://gass.seeds.finance/cta?p=939E98001B6C92B322B0F42C05121F1E&divisi=lead&msg=${textCta(
+                          v.name,
+                          v?.prizes.reduce((acc, val) => acc + val, 0) === 0
+                            ? 'Special Reward'
+                            : Intl.NumberFormat('id-ID', {
+                                style: 'currency',
+                                currency: 'IDR',
+                                minimumFractionDigits: 0
+                              }).format(
+                                v?.prizes.reduce((acc, val) => acc + val, 0)
+                              )
+                        )}`
+                      : `/play/quiz/${v?.id}`
+                  }
+                  className="flex justify-center items-center gap-3 px-6 py-4 bg-seeds-button-green rounded-full font-medium active:scale-95 transition-all"
+                >
                   <Image src={flame} alt="flame" />
                   <p>Ikut Kuis</p>
-                </button>
+                </Link>
               </div>
             </div>
             <div className="flex pt-2 px-4 pb-4 justify-between items-center border-t border-white/5">

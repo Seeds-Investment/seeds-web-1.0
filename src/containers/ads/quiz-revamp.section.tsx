@@ -123,7 +123,7 @@ const QuizRevamp = (): React.ReactElement => {
       <div className="flex flex-col gap-6">
         <div className="px-4 lg:px-[100px] flex flex-col gap-14 md:gap-24">
           <QuizTrending scrollToSection={scrollToSection} />
-          <Layout dataQuiz={dummyQuiz} />
+          {queries?.isShuffle !== 'true' && <Layout dataQuiz={dummyQuiz} />}
         </div>
         <div className="relative w-full min-h-[150vh] flex flex-col">
           <div className="sticky z-40 top-[90vh] sm:top-[88vh] md:top-[85vh] px-4 pb-4 lg:px-[100px] self-end ">

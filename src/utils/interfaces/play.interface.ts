@@ -435,39 +435,39 @@ export interface ArticleDetail {
 }
 
 export interface PaymentInstruction {
-  client: Client
-  order: Order
-  virtual_account_info: VirtualAccountInfo
-  customer: Customer
-  payment_instruction?: PaymentInstructionI
+  client: Client;
+  order: Order;
+  virtual_account_info: VirtualAccountInfo;
+  customer: Customer;
+  payment_instruction?: PaymentInstructionI;
 }
 
 export interface Client {
-  id: string
-  name: string
+  id: string;
+  name: string;
 }
 
 export interface Order {
-  invoice_number: string
-  amount: number
+  invoice_number: string;
+  amount: number;
 }
 
 export interface VirtualAccountInfo {
-  virtual_account_number: string
-  status: string
-  created_date: string
-  expired_date: string
-  expired_in: string
+  virtual_account_number: string;
+  status: string;
+  created_date: string;
+  expired_date: string;
+  expired_in: string;
 }
 
 export interface Customer {
-  name: string
+  name: string;
 }
 
-export type PaymentInstructionI = PaymentInstructionDataI[]
+export type PaymentInstructionI = PaymentInstructionDataI[];
 
 export interface PaymentInstructionDataI {
-  channel: string
-  language: string
-  step: string[]
+  channel: string;
+  language: string;
+  step: string[];
 }

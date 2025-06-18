@@ -3,17 +3,21 @@ import React from 'react';
 import { FiCheck } from 'react-icons/fi';
 
 const CardLearn = ({
-  img,title,list
+  img,
+  title,
+  list
 }: {
   img: StaticImageData;
   title: string;
   list: string[];
 }): React.ReactElement => {
   return (
-    <div className='flex flex-col gap-6 lg:gap-8'>
+    <div className="flex flex-col gap-6 lg:gap-8">
       <Image src={img} alt={title} />
       <div className="flex flex-col gap-3">
-        <p className="font-semibold text-neutral-medium lg:text-2xl text-base">{title}</p>
+        <p className="font-semibold text-neutral-medium lg:text-2xl text-base">
+          {title}
+        </p>
         {list?.map((v, i) => (
           <div className="flex gap-3" key={i}>
             <FiCheck className="text-[#4FE6AF] rounded-full bg-[#DCFCE4] p-1 w-5 h-5 md:w-7 md:h-7 flex-shrink-0" />
@@ -27,4 +31,4 @@ const CardLearn = ({
   );
 };
 
-export default CardLearn
+export default CardLearn;

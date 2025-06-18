@@ -125,7 +125,8 @@ const VirtualAccountGuide = ({
           className="mb-2"
         />
       ) : null}
-      {promoCodeValidationResult !== undefined && promoCodeValidationResult !== 0 ? (
+      {promoCodeValidationResult !== undefined &&
+      promoCodeValidationResult !== 0 ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}
           value={`- IDR ${

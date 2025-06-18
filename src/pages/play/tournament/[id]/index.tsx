@@ -273,10 +273,18 @@ const TournamentDetail: React.FC = () => {
           if (detailTournament?.is_need_invitation_code) {
             if (promoCodeValidationResult !== 0) {
               if (
-                (promoCodeValidationResult?.response?.final_price !== undefined && promoCodeValidationResult?.response?.total_discount === undefined) ||
-                (promoCodeValidationResult?.response?.final_price !== undefined && promoCodeValidationResult?.response?.total_discount !== undefined)
+                (promoCodeValidationResult?.response?.final_price !==
+                  undefined &&
+                  promoCodeValidationResult?.response?.total_discount ===
+                    undefined) ||
+                (promoCodeValidationResult?.response?.final_price !==
+                  undefined &&
+                  promoCodeValidationResult?.response?.total_discount !==
+                    undefined)
               ) {
-                if (Number(promoCodeValidationResult?.response?.final_price) !== 0) {
+                if (
+                  Number(promoCodeValidationResult?.response?.final_price) !== 0
+                ) {
                   // Case 1
                   if (invitationCode !== '') {
                     handleInvitationCode();
@@ -288,7 +296,13 @@ const TournamentDetail: React.FC = () => {
                   }
                 }
               } else {
-                if ((detailTournament?.admission_fee ?? 0) - Number(promoCodeValidationResult?.response?.total_discount) !== 0) {
+                if (
+                  (detailTournament?.admission_fee ?? 0) -
+                    Number(
+                      promoCodeValidationResult?.response?.total_discount
+                    ) !==
+                  0
+                ) {
                   // Case 3
                   if (invitationCode !== '') {
                     handleInvitationCode();
@@ -308,14 +322,24 @@ const TournamentDetail: React.FC = () => {
           } else {
             if (promoCodeValidationResult !== 0) {
               if (
-                (promoCodeValidationResult?.response?.final_price !== undefined && promoCodeValidationResult?.response?.total_discount === undefined) ||
-                (promoCodeValidationResult?.response?.final_price !== undefined && promoCodeValidationResult?.response?.total_discount !== undefined)
+                (promoCodeValidationResult?.response?.final_price !==
+                  undefined &&
+                  promoCodeValidationResult?.response?.total_discount ===
+                    undefined) ||
+                (promoCodeValidationResult?.response?.final_price !==
+                  undefined &&
+                  promoCodeValidationResult?.response?.total_discount !==
+                    undefined)
               ) {
-                if (Number(promoCodeValidationResult?.response?.final_price) !== 0) {
+                if (
+                  Number(promoCodeValidationResult?.response?.final_price) !== 0
+                ) {
                   // Case 1
                   if (!validInvit) {
                     await router.push(
-                      `/play/tournament/${id as string}/payment?useCoins=${useCoins}`
+                      `/play/tournament/${
+                        id as string
+                      }/payment?useCoins=${useCoins}`
                     );
                   }
                 } else {
@@ -323,11 +347,19 @@ const TournamentDetail: React.FC = () => {
                   await handleJoinFreeTournament();
                 }
               } else {
-                if ((detailTournament?.admission_fee ?? 0) - Number(promoCodeValidationResult?.response?.total_discount) !== 0) {
+                if (
+                  (detailTournament?.admission_fee ?? 0) -
+                    Number(
+                      promoCodeValidationResult?.response?.total_discount
+                    ) !==
+                  0
+                ) {
                   // Case 3
                   if (!validInvit) {
                     await router.push(
-                      `/play/tournament/${id as string}/payment?useCoins=${useCoins}`
+                      `/play/tournament/${
+                        id as string
+                      }/payment?useCoins=${useCoins}`
                     );
                   }
                 } else {
@@ -338,7 +370,9 @@ const TournamentDetail: React.FC = () => {
             } else {
               if (!validInvit) {
                 await router.push(
-                  `/play/tournament/${id as string}/payment?useCoins=${useCoins}`
+                  `/play/tournament/${
+                    id as string
+                  }/payment?useCoins=${useCoins}`
                 );
               }
             }

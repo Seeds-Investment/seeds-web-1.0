@@ -26,6 +26,9 @@ const nextConfig = {
       'pict.sindonews.net',
       'images.unsplash.com',
       'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com',
+      'dev.danamart.id',
+      'internal.danamart.id',
+      's3.ap-southeast-1.wasabisys.com',
       'sit-marketing-img.bankneo.co.id',
       'marketing-img.bankneo.co.id'
     ],
@@ -80,6 +83,9 @@ const nextConfig = {
       'i.pravatar.cc',
       'images.unsplash.com',
       'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com',
+      'dev.danamart.id',
+      'internal.danamart.id',
+      's3.ap-southeast-1.wasabisys.com',
       'sit-marketing-img.bankneo.co.id',
       'marketing-img.bankneo.co.id'
     ],

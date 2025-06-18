@@ -3,10 +3,12 @@ import IconFee from '@/assets/play/tournament/fee.svg';
 import IconNoData from '@/assets/play/tournament/noData.svg';
 import IconShare from '@/assets/play/tournament/share.svg';
 import IconUsers from '@/assets/play/tournament/users.svg';
+import ModalProceedCashout from '@/components/popup/ModalProceedCashout';
 import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import { standartCurrency } from '@/helpers/currency';
 import { getTournamentTime } from '@/helpers/dateFormat';
 import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
+import { postWithdrawAnswer } from '@/repository/earning.repository';
 import { getPlayAll, getPlayResult } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
@@ -38,15 +40,21 @@ interface PlayResult {
   rank: number;
   medal: string;
   prize: number;
+  is_submitted: boolean;
 }
 
 const NotificationWinner: React.FC = () => {
   const router = useRouter();
+  const id = Array.isArray(router.query.id)
+    ? router.query.id[0]
+    : router.query.id;
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const [sharedIndex, setSharedIndex] = useState<number>(0);
+  const [isShowProceedCashout, setIsShowProceedCashout] = useState<boolean>(false);
+  const [isProceedCashout, setIsProceedCashout] = useState<boolean>(false);
   const [dataResult, setDataResult] = useState<PlayResult>({
     name: '',
     avatar_url: '',
@@ -54,7 +62,8 @@ const NotificationWinner: React.FC = () => {
     gain: 0,
     rank: 10,
     medal: '',
-    prize: 0
+    prize: 0,
+    is_submitted: false
   });
   const [tournamentParams, setTournamentParams] = useState({
     search: '',
@@ -65,8 +74,6 @@ const NotificationWinner: React.FC = () => {
     totalPage: 2
   });
   const [data, setData] = useState<IDetailTournament[]>([]);
-
-  const id = router.query.id;
   useGetDetailTournament(id as string);
 
   const fetchData = async (): Promise<void> => {
@@ -104,15 +111,17 @@ const NotificationWinner: React.FC = () => {
   };
 
   useEffect(() => {
-    void fetchDataResult();
-    void fetchData();
-    void getListPlay();
+    if (id !== undefined && id !== null && id !== '') {
+      void fetchDataResult();
+      void fetchData();
+      void getListPlay();
+    }
   }, [id]);
 
   const fetchDataResult = async (): Promise<void> => {
     try {
       const result = await getPlayResult(id as string);
-      setDataResult(result.data);
+      setDataResult(result?.data);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     }
@@ -175,6 +184,41 @@ const NotificationWinner: React.FC = () => {
     }
   };
 
+  const handleWithdrawPrize = async (id: string, playType: string): Promise<void> => {
+    if (dataResult?.is_submitted) {
+      void router.push('/my-profile/my-earnings')
+    } else {
+      try {
+        const response = await postWithdrawAnswer(id, playType);
+        if (response?.status === 'pending') {
+          toast.success(t('earning.withdrawQuestion.text4'));
+          setTimeout(() => {
+            void router.push('/my-profile/my-earnings')
+          }, 3000);
+        }
+      } catch (error: any) {
+        if (error?.response?.data?.message === 'reward has already been submitted') {
+          toast.error(t('earning.withdrawQuestion.text5'))
+        } else {
+          toast.error(`Failed to submit answers: ${error?.response?.data?.message as string}`);
+        }
+      } finally {
+        setIsProceedCashout(false)
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (
+      isProceedCashout && 
+      id !== undefined && 
+      id !== '' &&
+      id !== null
+    ) {
+      void handleWithdrawPrize(id, 'ARENA')
+    }
+  }, [isProceedCashout]);
+  
   return (
     <>
       {isShareModal && (
@@ -184,6 +228,15 @@ const NotificationWinner: React.FC = () => {
           }}
           url={data[sharedIndex]?.id ?? ''}
           playId={data[sharedIndex]?.play_id ?? ''}
+        />
+      )}
+
+      {isShowProceedCashout && (
+        <ModalProceedCashout
+          onClose={() => {
+            setIsShowProceedCashout(prev => !prev);
+          }}
+          setIsProceedCashout={setIsProceedCashout}
         />
       )}
       <div
@@ -275,13 +328,11 @@ const NotificationWinner: React.FC = () => {
             <div className="w-3/4 md:w-2/3 gap-4 flex flex-col py-4">
               <button
                 onClick={() => {
-                  const destination =
-                    dataResult.prize > 0
-                      ? `/play/tournament/${id as string}/withdrawal`
-                      : `/play`;
-                  router.push(destination).catch(err => {
-                    toast.error(`Error fetching data: ${err as string}`);
-                  });
+                  dataResult.prize > 0
+                    ? setIsShowProceedCashout(true)
+                    : router.push(`/play`).catch(err => {
+                      toast.error(`Error fetching data: ${err as string}`);
+                    });
                 }}
                 className={`bg-[#3AC4A0] relative flex items-center justify-center w-full h-14 rounded-full shadow-sm hover:opacity-90`}
               >

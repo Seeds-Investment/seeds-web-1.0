@@ -27,6 +27,7 @@ const FormModalDelete: React.FC<IFormModalDelete> = ({
   const handleLogout = async (): Promise<void> => {
     handleOpen();
     window.localStorage.removeItem('accessToken');
+    window.localStorage.removeItem('accessToken-danamart');
     window.localStorage.removeItem('keepMeLoggedIn');
     window.localStorage.removeItem('refreshToken');
     window.localStorage.removeItem('expiresAt');

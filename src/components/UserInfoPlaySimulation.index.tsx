@@ -1,9 +1,8 @@
 import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
 import { getPlaySimulationDetail } from '@/repository/play.repository';
-import { getUserInfo } from '@/repository/profile.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
-import { type UserInfo } from '@/utils/interfaces/earning.interfaces';
+import { type IUserData } from '@/utils/interfaces/play.interface';
 import {
   Button,
   Card,
@@ -38,15 +37,8 @@ interface SeedsCoin {
   total_closest_expiring_coins: number;
   closest_expiration_date: number;
 }
-
-interface userInfo {
-  preferredCurrency: string;
-  seedsTag: string;
-  id: string;
-}
-
 interface props {
-  playerInfo: userInfo;
+  playerInfo: IUserData;
 }
 const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
   const router = useRouter();
@@ -61,8 +53,6 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
     prize: [150000, 100000, 50000]
   });
   const [seedsCoins, setSeedsCoins] = useState<SeedsCoin>();
-  const [userInfo, setUserInfo] = useState<UserInfo>();
-
   const fetchPlayerDetail = async (currency: string): Promise<any> => {
     try {
       const fetchDetailRes = await getPlaySimulationDetail(currency);
@@ -78,20 +68,6 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
         void fetchPlayerDetail(playerInfo.preferredCurrency);
       }
     }
-  }, []);
-
-  useEffect(() => {
-    const fetchUserInfo = async (): Promise<void> => {
-      try {
-        const userRes = await getUserInfo();
-        setUserInfo(userRes);
-      } catch (error) {
-        toast.error(`fetching user error : ${error as string}`);
-      }
-    };
-    fetchUserInfo()
-      .then()
-      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -121,7 +97,7 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
       {isGuest() || (
         <div className="flex flex-col gap-3 px-2 py-3 absolute bottom-0 w-full">
           <Typography className="capitalize text-[#FFFFFF] text-3xl font-semibold">
-            {`Hi, ${userInfo?.name as string}!✌`}
+            {`Hi, ${playerInfo?.name}!✌`}
           </Typography>
           <Typography className="capitalize text-[#FFFFFF] text-base font-normal">
             {t('homepage.section2.text18')}
@@ -156,7 +132,7 @@ const UserInfoPlaySimulation: React.FC<props> = ({ playerInfo }) => {
                       'Rp',
                       ''
                     )}{' '}
-                    {userInfo?.preferredCurrency ?? 'IDR'}
+                    {playerInfo?.preferredCurrency ?? 'IDR'}
                   </Typography>
                 </div>
                 <div className="flex w-0 h-10 border-[#E9E9E9] border" />

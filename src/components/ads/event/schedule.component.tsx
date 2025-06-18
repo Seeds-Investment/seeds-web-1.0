@@ -117,7 +117,11 @@ const Schedule = (): React.ReactElement => {
               <div className="w-full flex-col flex gap-3 lg:gap-4">
                 {v.list.map((vl, j) => (
                   <div key={j} className="flex gap-2.5">
-                    <Image src={vl.img} alt="imageList" className='flex-shrink-0 w-6 h-6' />
+                    <Image
+                      src={vl.img}
+                      alt="imageList"
+                      className="flex-shrink-0 w-6 h-6"
+                    />
                     {vl.txt}
                   </div>
                 ))}

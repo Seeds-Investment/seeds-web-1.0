@@ -107,7 +107,19 @@ const BannerComponent: React.FC<BannerLoad> = ({
                         <div className="relative w-full aspect-[1430/676] overflow-hidden">
                           <Image
                             onClick={async () => {
-                              await router.push(item.external_url);
+                              if ((item?.external_url).includes('seedspedia')) {
+                                const url = new URL(item?.external_url);
+                                const pathUrl = url?.pathname?.split('/');
+                              
+                                const type = pathUrl[2];
+                                const id = pathUrl[3];
+                              
+                                if (type === 'articles' || type === 'news') {
+                                  await router.push(`/homepage/${type}/${id}`);
+                                }
+                              } else {
+                                await router.push(item?.external_url);
+                              }
                             }}
                             src={
                               item.image_url === null &&

@@ -216,6 +216,17 @@ export const getChatClock = (date: string): string => {
   return moment(date).format('HH:mm');
 };
 
+export const getOfferTimelineDate = (
+  date: Date,
+  locale: 'id-ID' | 'en-US'
+): string => {
+  moment.locale(locale);
+
+  return locale === 'id-ID'
+    ? moment(date).format('DD MMMM YYYY')
+    : moment(date).format('MMMM DD, YYYY');
+}
+
 export const generateArticleDate = (dateString: string): string => {
   const startDate = moment.utc(dateString);
   const result = startDate.format('D/MM/YYYY, hh:mm A');

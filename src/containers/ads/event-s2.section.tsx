@@ -35,4 +35,4 @@ const EventS2 = (): React.ReactElement => {
   );
 };
 
-export default EventS2
+export default EventS2;

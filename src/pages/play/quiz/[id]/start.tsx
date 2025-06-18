@@ -18,8 +18,12 @@ const StartQuiz = () => {
   const [isReady, setIsReady] = useState<boolean>(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => { setIsReady(true); }, 2000);
-    return () => { clearTimeout(timer); };
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, 2000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   const baseUrl =
@@ -39,7 +43,7 @@ const StartQuiz = () => {
 
   const handleContinue = async () => {
     if (!isReady) return;
-    
+
     setLoading(true);
     const start = await startQuiz(id as string);
     if (start) {
@@ -58,22 +62,21 @@ const StartQuiz = () => {
           <Lottie animationData={StartAnimation} loop={true} width={400} />
         </div>
         <div className="w-full lg:w-1/3">
-          {
-            isReady ?
-              <QuizButton
-                title={t('quiz.startTheGame')}
-                background="#67EB00"
-                darkBackground="#4EC307"
-                onClick={handleContinue}
-                disabled={loading}
-              />
-              :
-              <div className="w-full flex justify-center h-fit">
-                <div className="h-[60px]">
-                  <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
-                </div>
-              </div> 
-          }
+          {isReady ? (
+            <QuizButton
+              title={t('quiz.startTheGame')}
+              background="#67EB00"
+              darkBackground="#4EC307"
+              onClick={handleContinue}
+              disabled={loading}
+            />
+          ) : (
+            <div className="w-full flex justify-center h-fit">
+              <div className="h-[60px]">
+                <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </QuizLayoutComponent>

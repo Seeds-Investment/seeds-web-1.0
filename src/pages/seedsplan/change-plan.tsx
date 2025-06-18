@@ -200,14 +200,14 @@ const ChangePlan: React.FC = () => {
                   ))}
                 </div>
               </div>
-              <div className="mt-4w-full flex flex-row gap-3 mb-4">
+              <div className="mt-4w-full flex flex-row gap-3 mb-4 overflow-x-auto">
                 {filteredPlanByTier
                   ?.sort((a, b) => a.duration_in_months - b.duration_in_months)
                   ?.map((item, index) => {
                     return (
                       <button
                         key={index}
-                        className={`px-3 py-2 rounded-lg w-3/12 font-poppins text-xs ${
+                        className={`px-3 py-2 rounded-lg w-4/12 md:w-3/12 shrink-0 font-poppins text-xs mb-4 ${
                           periodPlan === item.duration_in_months
                             ? 'bg-[#3ac4a0] text-white font-semibold'
                             : 'bg-transparent text-[#BDBDBD] border border-[#BDBDBD] font-normal'

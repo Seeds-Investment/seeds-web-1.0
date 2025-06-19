@@ -132,12 +132,12 @@ export const useReligion = (): ILabel[] => {
     {
       key: 3,
       label: t(`${pathTranslation}.religion.text3`),
-      value: 'PROTESTAN'
+      value: 'KRISTEN'
     },
     {
       key: 4,
       label: t(`${pathTranslation}.religion.text4`),
-      value: 'Hindu'
+      value: 'HINDU'
     },
     {
       key: 5,
@@ -160,37 +160,37 @@ export const useLastEducation = (): ILabel[] => {
     {
       key: 1,
       label: t(`${pathTranslation}.education.text1`),
-      value: 'Strata III'
+      value: 'PHD'
     },
     {
       key: 2,
       label: t(`${pathTranslation}.education.text2`),
-      value: 'Strata II'
+      value: 'MASTERS_DEGREE'
     },
     {
       key: 3,
       label: t(`${pathTranslation}.education.text3`),
-      value: 'Strata I / Diploma IV'
+      value: 'BACHELORS_DEGREE'
     },
     {
       key: 4,
       label: t(`${pathTranslation}.education.text4`),
-      value: 'Diploma III / Akademi'
+      value: 'ACADEMY_OR_DIPLOMA'
     },
     {
       key: 5,
       label: t(`${pathTranslation}.education.text5`),
-      value: 'SLTA / Sederajat'
+      value: 'HIGH_SCHOOL_OR_EQUIVALENT'
     },
     {
       key: 6,
       label: t(`${pathTranslation}.education.text6`),
-      value: 'SLTP / Sederajat'
+      value: 'JUNIOR_HIGH_SCHOOL'
     },
     {
       key: 7,
       label: t(`${pathTranslation}.education.text7`),
-      value: 'SD / Sederajat'
+      value: 'ELEMENTARY_SCHOOL'
     }
   ];
 };
@@ -317,12 +317,12 @@ export const useMarriageStatus = (): ILabel[] => {
     {
       key: 1,
       label: t(`${path}.single`),
-      value: 'single'
+      value: 'BELUM KAWIN'
     },
     {
       key: 2,
       label: t(`${path}.married`),
-      value: 'married'
+      value: 'KAWIN'
     }
   ];
 };

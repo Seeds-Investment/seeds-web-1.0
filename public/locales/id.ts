@@ -3452,7 +3452,8 @@ export default {
           married: 'Menikah'
         },
         partnerFullname: 'Nama Lengkap Pasangan',
-        ktpNumber: 'No KTP'
+        ktpNumber: 'No KTP',
+        validationIncome: 'Silakan setujui pernyataan pendapatanmu terlebih dahulu!',
       },
       photoSelfieTittle: 'Foto Diri',
       photoSelfie: {

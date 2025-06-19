@@ -3518,7 +3518,8 @@ export default {
           married: 'Married'
         },
         partnerFullname: 'Partner Full Name',
-        ktpNumber: 'KTP Number'
+        ktpNumber: 'KTP Number',
+        validationIncome: 'Please confirm your income statement first!',
       },
       photoSelfieTittle: 'Photo Selfie',
       photoSelfie: {

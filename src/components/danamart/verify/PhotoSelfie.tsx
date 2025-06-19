@@ -72,9 +72,10 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
   };
 
   const isButtonDisabled = (): boolean => {
+    if (!isChecked) return true
     if (photoSelfieData == null) return true;
     if (photoSelfieData.info_4 === '1') return !isUsePhoto;
-    return true;
+    return false;
   };
 
   return (
@@ -238,18 +239,17 @@ const PhotoSelfie: React.FC<Props> = ({ step, setStep, t }) => {
               </Button>
           )}
           {
-            photoSelfieData?.info_4 !== '1' ||
-            isUsePhoto && (
-            <Button
-              disabled={isButtonDisabled()}
-              onClick={saveData}
-              className={`${
-                isButtonDisabled() ? 'bg-[#BDBDBD]' : 'bg-seeds-button-green'
-              } capitalize font-poppins font-semibold text-sm rounded-full w-[155px] h-[36px] flex justify-center items-center
-              ${isChecked ? 'bg-seeds-button-green' : 'bg-[#BDBDBD]'}`}
-            >
-              {t('danamart.verification.buttonSave')}
-            </Button>
+            (photoSelfieData?.info_4 !== '1' || isUsePhoto) && (
+              <Button
+                disabled={isButtonDisabled()}
+                onClick={saveData}
+                className={`${
+                  isButtonDisabled() ? 'bg-[#BDBDBD]' : 'bg-seeds-button-green'
+                } capitalize font-poppins font-semibold text-sm rounded-full w-[155px] h-[36px] flex justify-center items-center
+                ${isChecked ? 'bg-seeds-button-green' : 'bg-[#BDBDBD]'}`}
+              >
+                {t('danamart.verification.buttonSave')}
+              </Button>
           )}
         </div>
         {isShowCertificate && (

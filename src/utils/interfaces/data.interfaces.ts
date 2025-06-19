@@ -10,6 +10,7 @@ export interface ISeedsInformationList {
   Company: ISeedsInformationItem[];
   Legal: ISeedsInformationItem[];
   Support: ISeedsInformationItem[];
+  Products?: ISeedsInformationItem[];
   ['Contact Us']: ISeedsInformationItem[];
 }
 

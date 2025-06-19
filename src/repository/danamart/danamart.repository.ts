@@ -208,13 +208,13 @@ export const updateUserInformation = async (
       return await Promise.resolve('Access token Danamart not found');
     }
 
-    const response = await danamartUpdateUserInformation.post(
+    const response = await danamartApi.post(
       `/pemodal/form_informasi_pribadi/updateForm`,
       formData,
       {
         headers: {
           Authorization: `Bearer ${accessTokenDanamart}`,
-          'Content-Type': 'multipart/form-data' // 👈 Important
+          'Content-Type': 'multipart/form-data'
         }
       }
     );

@@ -1,11 +1,18 @@
 import { type QuizIdRoot } from '@/containers/ads/quiz-play.section';
+import TrackerEvent from '@/helpers/GTM';
 import { Progress } from '@material-tailwind/react';
 import Image from 'next/image';
 import fire from 'public/assets/ads/fire.png';
 import puzzle from 'public/assets/ads/puzzle.svg';
 import React, { useEffect, useRef, useState } from 'react';
 
-const Time = ({ dataQuiz,scrollToSection }: { dataQuiz: QuizIdRoot[],scrollToSection:(text:string)=>void }): React.ReactElement => {
+const Time = ({
+  dataQuiz,
+  scrollToSection
+}: {
+  dataQuiz: QuizIdRoot[];
+  scrollToSection: (text: string) => void;
+}): React.ReactElement => {
   const [hasAnimated, setHasAnimated] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [timeLeft, setTimeLeft] = useState({
@@ -145,6 +152,9 @@ const Time = ({ dataQuiz,scrollToSection }: { dataQuiz: QuizIdRoot[],scrollToSec
               className="active:scale-95 transition-all font-semibold px-6 py-4 md:py-5 flex gap-3 bg-seeds-button-green rounded-full shadow-2xl shadow-seeds-button-green/50 w-full sm:w-2/5 justify-center items-center"
               onClick={() => {
                 scrollToSection('Quiz');
+                TrackerEvent({
+                  event: `SW_Quiz_Ads_GASS_button_play_time_daftar_sekarang`
+                });
               }}
             >
               <Image src={fire} alt="fire" />
@@ -154,6 +164,9 @@ const Time = ({ dataQuiz,scrollToSection }: { dataQuiz: QuizIdRoot[],scrollToSec
               className="active:scale-95 transition-all font-semibold px-6 py-4 md:py-5 flex gap-3 rounded-full w-full sm:w-2/5 justify-center items-center border border-white/20 bg-radial from-transparent to-[#FFFFFF14]"
               onClick={() => {
                 scrollToSection('Quiz');
+                TrackerEvent({
+                  event: `SW_Quiz_Ads_GASS_button_play_time_detail_kuis`
+                });
               }}
             >
               <Image src={puzzle} alt="puzzle" className="w-6" />

@@ -1,3 +1,4 @@
+import TrackerEvent from '@/helpers/GTM';
 import Image from 'next/image';
 import flame from 'public/assets/ads/flame.svg';
 import React from 'react';
@@ -18,6 +19,9 @@ const Ready = ({
             className="flex justify-center items-center gap-3 px-6 py-4 bg-seeds-button-green rounded-full font-medium active:scale-95 transition-all shadow-2xl shadow-seeds-button-green/50"
             onClick={() => {
               scrollToSection('Quiz');
+              TrackerEvent({
+                event: `SW_Quiz_Ads_GASS_button_play_ikut_kuis`
+              });
             }}
           >
             <Image src={flame} alt="flame" />

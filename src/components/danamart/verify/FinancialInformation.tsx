@@ -69,6 +69,7 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
 
   const [previewUrlfileKtp, setPreviewUrlfileKtp] = useState<string | null>(null);
   const fileKtp = watch('fileKtp');
+  const validateSalary = watch('validateSalary')
 
   const fetchDataFinancial = async (): Promise<void> => {
     try {
@@ -112,8 +113,10 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
     void assignImage();
     setValue('dm_pen_06001', financialInformationData?.dana?.dm_pen_06001);
     setValue('dm_pen_06002', financialInformationData?.dana?.dm_pen_06002);
-    if (watch('dm_pen_06002') !== '') {
+    if (watch('dm_pen_06002') !== '' && watch('dm_pen_06002') !== undefined && watch('dm_pen_06002') !== null) {
       setValue('validateSalary', true);
+    } else {
+      setValue('validateSalary', false);
     }
     setValue('dm_penmit_07001', financialInformationData?.bank?.dm_penmit_07001);
     setValue('dm_penmit_07002', financialInformationData?.bank?.dm_penmit_07002);
@@ -863,12 +866,16 @@ const FinancialInformation: React.FC<FinancialInformationProps> = ({
         <Button
           className="w-[155.5px] h-[36px] px-4 py-2 text-sm font-semibold bg-seeds-button-green rounded-full capitalize mt-2"
           onClick={async() => {
-            await handleSubmit(async (data: FinancialInfoForm) => {
-              const result = await onSubmit(data);
-              if (result?.statusCode === 200) {
-                setStep(4)
-              }
-            })();
+            if (validateSalary === false) {
+              toast.error(t('danamart.verification.financial.validationIncome'))
+            } else {
+              await handleSubmit(async (data: FinancialInfoForm) => {
+                const result = await onSubmit(data);
+                if (result?.statusCode === 200) {
+                  setStep(4)
+                }
+              })();
+            }
           }}
         >
           {t('danamart.verification.buttonSave')}

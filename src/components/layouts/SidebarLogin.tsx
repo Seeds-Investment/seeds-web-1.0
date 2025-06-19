@@ -88,7 +88,6 @@ const SidebarLogin: React.FC = () => {
   const { dataUser } = useAppSelector(state => state.user);
   const width = useWindowInnerWidth();
   const router = useRouter();
-  // const [isDanamartOpen, setIsDanamartOpen] = useState(false);
   const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
   const [isLogoutModalDanamart, setIsLogoutModalDanamart] =
     useState<boolean>(false);

@@ -696,6 +696,8 @@ export default {
     welcomeButton: {
       start: "Mulai Sekarang",
       login: "Saya Sudah Punya Akun",
+      text1: 'Hai, aku Seedy, sahabat finansialmu! 👋',
+      text2: 'Kuis singkat dulu yuk! Hanya 5 pertanyaan, lalu kita mulai pelajaran pertamamu! 🎉'
     },
     question: {
       start: "Ayo Mulai",
@@ -703,12 +705,31 @@ export default {
       text2: 'Kamu hanya bisa memilih satu pilihan.',
       text3: 'Langkah Sebelumnya',
       text4: 'Lanjutkan',
+      answers: {
+        text1: 'Langkah yang bagus. Saatnya menyelami lebih dalam topik ',
+        text2: {
+          part1: "Oke, paham! Saat ini Kamu berada di zona ",
+          part2: ". Rancang langkah selanjutnya biar lebih seru, yuk!"
+        },
+        text3: {
+          part1: "Baik, tujuan utamamu adalah ",
+          part2: ", Mari jadikan ini langkah menarik!"
+        },
+        text4: "Keren! Yuk, gunakan metode belajar favoritmu dalam perjalanan seru dan menyenangkan ini.",
+      }
     },
     questionDone: {
-      text1: "Pilihan yang tepat! Kamu memulai perjalananmu dalam <strong>Keuangan Pribadi</strong> untuk <strong>mengendalikan keuanganmu</strong>. Karena kamu baru memulai, kami akan membimbingmu langkah demi langkah melalui <strong>video pembelajaran</strong> yang seru dan disesuaikan khusus untukmu.",
-      text2: "Saatnya memulai pelajaran pertamamu!",
-      text3: "Akan menyenangkan, seperti bermain game.",
-      text4: "Ayo bergabung dan daftar sekarang.",
+      text1: {
+        part1: "Terima kasih telah berbagi dengan Seedy! Kamu tertarik dengan ",
+        part2: ", dan saat ini Kamu berada di tingkatan ",
+        part3: ".",
+        part4: " Hal yang membuat Kamu tertarik adalah ",
+        part5: ". Berkaitan dengan cara belajar, Kamu menyukai cara belajar ",
+        part6: ". Itu adalah kombinasi yang solid, mari mulai dari sini dan buat perjalanan belajar yang menarik dan disesuaikan hanya untuk Kamu!",
+      },
+      text2: "Waktunya memulai pelajaran pertamamu!",
+      text3: "Pasti akan seru, serasa bermain game.",
+      text4: "Ayo bergabung dan daftar sekarang!",
       text5: 'Lanjutkan',
       text6: 'Kirim Ulang',
     },
@@ -3433,7 +3454,8 @@ export default {
           married: 'Menikah'
         },
         partnerFullname: 'Nama Lengkap Pasangan',
-        ktpNumber: 'No KTP'
+        ktpNumber: 'No KTP',
+        validationIncome: 'Silakan setujui pernyataan pendapatanmu terlebih dahulu!',
       },
       photoSelfieTittle: 'Foto Diri',
       photoSelfie: {

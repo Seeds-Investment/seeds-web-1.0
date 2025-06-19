@@ -1,5 +1,6 @@
 import AuthArrowDown from '@/assets/auth/AuthArrowDown.svg';
-import AuthGlobeLanguage from '@/assets/auth/AuthGlobeLanguage.svg';
+import FlagID from '@/assets/flag-id.png';
+import FlagUK from '@/assets/flag-uk.png';
 import SeedsLogo from '@/assets/landing-page/header/SeedsLogo.svg';
 import {
   Button,
@@ -41,20 +42,20 @@ const LogoLanguage: React.FC<ILogoLanguage> = ({
     <div className={`${className}`}>
       <Image src={SeedsLogo} alt="SeedsLogo" className="w-[84.41px] lg:w-fit hidden md:flex" />
       {
-        step !== 2 &&
+        (step !== 1 && step !== 2 && step !== 3) &&
           <Menu open={open} handler={setOpen}>
             <MenuHandler>
               <Button
                 ripple={false}
-                className="flex justify-between items-center lg:w-[136.62px] w-[97px] bg-gradient-to-b from-[#177C62] to-[#3AC4A0] rounded-full lg:p-2.5 px-2.5 py-1"
+                className="flex justify-between items-center lg:w-[136.62px] w-[97px] bg-gradient-to-b from-[#177C62] to-[#3AC4A0] rounded-full lg:py-2.5 px-4 py-1"
               >
-                <div className="flex lg:gap-1.5 gap-[3px] items-center">
+                <div className="flex lg:gap-3 gap-[6px] items-center">
                   <Image
-                    src={AuthGlobeLanguage}
+                    src={selectedLanguage === 'ID' ? FlagID : FlagUK}
                     alt="AuthGlobeLanguage"
                     className="w-[19px] lg:w-fit"
                   />
-                  <Typography className="font-normal font-poppins text-xl text-white">
+                  <Typography className="font-normal font-poppins text-sm md:text-xl text-white">
                     {selectedLanguage}
                   </Typography>
                 </div>
@@ -84,15 +85,15 @@ const LogoLanguage: React.FC<ILogoLanguage> = ({
                     >
                       <Button
                         ripple={false}
-                        className="flex justify-between items-center lg:w-[136.62px] w-[97px] bg-gradient-to-b from-[#177C62] to-[#3AC4A0] rounded-full lg:p-2.5 px-2.5 py-1 hover:shadow-none shadow-none"
+                        className="flex justify-between items-center lg:w-[136.62px] w-[97px] bg-gradient-to-b from-[#177C62] to-[#3AC4A0] rounded-full lg:py-2.5 px-4 py-1 hover:shadow-none shadow-none"
                       >
-                        <div className="flex lg:gap-1.5 gap-[3px] items-center">
+                        <div className="flex lg:gap-3 gap-[6px] items-center">
                           <Image
-                            src={AuthGlobeLanguage}
+                            src={selectedLanguage === 'ID' ? FlagUK : FlagID}
                             alt="AuthGlobeLanguage"
                             className="w-[19px] lg:w-fit"
                           />
-                          <Typography className="font-normal font-poppins text-xl text-white">
+                          <Typography className="font-normal font-poppins text-sm md:text-xl text-white">
                             {item.language}
                           </Typography>
                         </div>

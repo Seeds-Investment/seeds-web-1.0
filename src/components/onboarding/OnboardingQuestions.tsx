@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { MdArrowBack } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
+import TypingBubble, { type MessageSpan } from '../TypingBubble';
 
 interface OnboardingQuestionsI {
   setStep: React.Dispatch<React.SetStateAction<number>>;
@@ -34,8 +35,57 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  const isAnswered = (): boolean => {
+    if (answers[currentQuestionIndex+1] === undefined) {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  const answeredResponse = (): MessageSpan[] => {
+    const answer1 = Array.isArray(answers[1]) ? answers[1][0]?.header ?? '' : '';
+    const answer2 = Array.isArray(answers[2]) ? answers[2][0]?.header ?? '' : '';
+    const answer3 = Array.isArray(answers[3]) ? answers[3][0]?.header ?? '' : '';
+  
+    if (currentQuestionIndex + 1 === 1) {
+      return [
+        { text: t('onboarding.question.answers.text1') + ' ' },
+        { text: answer1, isBold: true },
+      ];
+    }
+  
+    if (currentQuestionIndex + 1 === 2) {
+      return [
+        { text: t('onboarding.question.answers.text2.part1') + ' ' },
+        { text: answer2, isBold: true },
+        { text: t('onboarding.question.answers.text2.part2') + ' ' },
+      ];
+    }
+  
+    if (currentQuestionIndex + 1 === 3) {
+      return [
+        { text: t('onboarding.question.answers.text3.part1') + ' ' },
+        { text: answer3, isBold: true },
+        { text: t('onboarding.question.answers.text3.part2') + ' ' },
+      ];
+    }
+  
+    if (currentQuestionIndex + 1 === 4) {
+      return [{ text: t('onboarding.question.answers.text4') }];
+    }
+  
+    return [];
+  };
+  
+  const question = onboardQuestion?.data[currentQuestionIndex]?.question?.replace(
+    '[no_1_answer]',
+    Array.isArray(answers[1]) ? answers[1][0]?.header ?? '' : ''
+  ) ?? '';
+
+
   return (
-    <div className="mb-8 md:pb-32">
+    <div className="mb-8 md:pb-32 overflow-y-auto">
       <div className='flex gap-2 justify-center items-center mt-8'>
         <MdArrowBack
           size={30}
@@ -72,15 +122,31 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
           className="w-[80px] md:w-[150px] shrink-0"
         />
         <div>
-          <div className='w-fit h-fit relative bg-[#7EFFA8]'>
-            <Typography className="font-poppins text-neutral-medium font-medium text-sm md:text-md p-4">
-              {
-                onboardQuestion?.data[currentQuestionIndex]?.question?.replace(
-                  '[no_1_answer]',
-                  Array.isArray(answers[1]) ? answers[1][0]?.header ?? '' : ''
-                )
-              }
-            </Typography>
+          <div className='w-fit h-fit relative bg-[#7EFFA8] rounded-md'>
+            {
+              currentQuestionIndex !== 4 ? (
+                isAnswered() ?
+                  <Typography className="font-poppins text-neutral-medium font-medium text-sm md:text-md p-4">
+                    <TypingBubble
+                      key={JSON.stringify(answers[currentQuestionIndex + 1] ?? [])}
+                      message={answeredResponse()}
+                    />
+                  </Typography>
+                  :
+                  <Typography className="font-poppins text-neutral-medium font-medium text-sm md:text-md p-4">
+                    <TypingBubble
+                      key={JSON.stringify(answers[currentQuestionIndex + 1] ?? [])}
+                      message={[{ text: question }]}
+                    />
+                  </Typography>
+              ) : (
+                <Typography className="font-poppins text-neutral-medium font-medium text-sm md:text-md p-4">
+                  <TypingBubble
+                    message={[{ text: question }]}
+                  />
+                </Typography>
+              )
+            }
             <Image
               src={Polygon}
               alt="SeedyLens"
@@ -119,7 +185,15 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
         </Typography>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <div 
+        className={`
+          grid gap-4 mt-4
+          ${(currentQuestionIndex+1 === 1) ? 'grid-cols-2 lg:grid-cols-3' : ''}
+          ${(currentQuestionIndex+1 === 2) ? 'grid-cols-2 lg:grid-cols-3' : ''}
+          ${(currentQuestionIndex+1 === 3) ? 'grid-cols-2 lg:grid-cols-2' : ''}
+          ${(currentQuestionIndex+1 === 4) ? 'grid-cols-2 lg:grid-cols-2 xl:px-[10%]' : ''}
+          ${(currentQuestionIndex+1 === 5) ? 'grid-cols-3 xl:px-[10%] 2xl:px-[20%]' : ''}
+        `}>
         {onboardQuestion?.data[currentQuestionIndex]?.options?.map((opt) => {
           const qNum = onboardQuestion.data[currentQuestionIndex].question_number;
           const selected = Array.isArray(answers[qNum]) && (answers[qNum])?.some((a) => a.header === opt.header)
@@ -127,9 +201,10 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
           return (
             <div
               key={opt.header}
-              className={`p-[3px] rounded-lg ${
-                selected ? "bg-gradient-to-b from-[#3AC4A0] to-[#177C62]" : "bg-[#E7E7E7A6] hover:bg-gradient-to-b hover:from-[#3AC4A0] hover:to-[#177C62] duration-500"
-              }`}
+              className={`p-[3px] rounded-lg 
+                ${selected ? "bg-gradient-to-b from-[#3AC4A0] to-[#177C62]" : "bg-[#E7E7E7A6] hover:bg-gradient-to-b hover:from-[#3AC4A0] hover:to-[#177C62] duration-500"}
+                ${currentQuestionIndex+1 === 5 ? 'aspect-square' : ''}
+              `}
             >
               <button
                 onClick={() => {
@@ -139,41 +214,80 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
                       body: opt.body,
                       image: opt.image,
                     };
-
+                
+                    const prevAnswers = prev[qNum] ?? [];
+                    const exists = prevAnswers.find((a) => a.header === option.header);
+                
+                    const updated = { ...prev };
+                
                     if (qNum === 4 || qNum === 5) {
-                      const prevAnswers = (prev[qNum] ?? []);
-                      const exists = prevAnswers.find((a) => a.header === option.header);
-
-                      return {
-                        ...prev,
-                        [qNum]: (exists != null)
-                          ? prevAnswers.filter((a) => a.header !== option.header)
-                          : [...prevAnswers, option],
-                      };
+                      const newAnswers = exists
+                        ? prevAnswers.filter((a) => a.header !== option.header)
+                        : [...prevAnswers, option];
+                
+                      if (newAnswers.length === 0) {
+                        const { [qNum]: _, ...rest } = updated;
+                        return rest;
+                      } else {
+                        return {
+                          ...updated,
+                          [qNum]: newAnswers,
+                        };
+                      }
                     } else {
-                      return {
-                        ...prev,
-                        [qNum]: [option],
-                      };
+                      if (exists) {
+                        const { [qNum]: _, ...rest } = updated;
+                        return rest;
+                      } else {
+                        return {
+                          ...updated,
+                          [qNum]: [option],
+                        };
+                      }
                     }
                   });
                 }}
-                className="flex flex-col justify-center items-center gap-2 p-4 rounded-md text-left bg-[#F9F9F9] hover:bg-white duration-200 w-full h-full"
+                
+                className={`
+                  flex flex-col gap-0 p-4 rounded-md text-left bg-[#F9F9F9] hover:bg-white duration-200 w-full h-full  
+                  ${currentQuestionIndex === 2 ? 'justify-start items-start' : 'justify-center items-center'}
+                `}
               >
                 {(opt?.image?.length > 0) && (
                   <img
                     src={opt.image}
                     alt="option"
-                    className="w-[50px] h-auto"
+                    className="w-[50px] md:w-[70px] h-auto"
                   />
                 )}
 
-                <Typography className="font-medium bg-gradient-to-b text-center from-[#3AC4A0] to-[#177C62] bg-clip-text text-transparent">
-                  {opt.header}
-                </Typography>
+                {
+                  currentQuestionIndex+1 !== 5 ?
+                    <Typography 
+                      className={`
+                        font-medium bg-gradient-to-b from-[#3AC4A0] to-[#177C62] bg-clip-text text-transparent
+                        ${currentQuestionIndex === 2 ? 'text-left' : 'text-center mt-1'}
+                      `}>
+                      {opt.header}
+                    </Typography>
+                    :
+                    (opt?.header === 'Friends/ Family') &&
+                      <Typography 
+                        className={`
+                          text-xs md:text-sm text-center font-medium bg-gradient-to-b from-[#3AC4A0] to-[#177C62] bg-clip-text text-transparent
+                        `}>
+                        {opt.header}
+                      </Typography>
+                }
 
                 {opt.body.length > 0 && (
-                  <Typography className="mt-1 text-sm text-gray-600 text-center">{opt.body}</Typography>
+                  <Typography
+                    className={`text-sm text-neutral-medium font-normal
+                      ${currentQuestionIndex === 2 ? 'text-left' : 'text-center mt-1'}
+                    `}
+                  >
+                    {opt.body}
+                  </Typography>
                 )}
               </button>
             </div>
@@ -192,14 +306,14 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
                   setStep(0)
                 }
               }}
-              className="font-poppins font-semibold bg-gradient-to-b text-center from-[#3AC4A0] to-[#177C62] bg-clip-text text-transparent cursor-pointer"
+              className="font-poppins font-semibold bg-gradient-to-b text-center from-[#3AC4A0] to-[#177C62] bg-clip-text text-transparent cursor-pointer hidden md:flex"
             >
               {t('onboarding.question.text3')}
             </Typography>
             {currentQuestionIndex < onboardQuestion?.data?.length - 1 ? (
-              <div className="p-[2px] rounded-xl bg-gradient-to-b from-[#5EFF95] to-[#70FFA0]">
+              <div className="w-full md:w-fit p-[2px] rounded-xl bg-gradient-to-b from-[#5EFF95] to-[#70FFA0]">
                 <Button
-                  className="font-poppins text-sm w-fit bg-gradient-to-b from-[#3AC4A0] to-[#177C62] text-white rounded-xl capitalize"
+                  className="font-poppins text-sm w-full bg-gradient-to-b from-[#3AC4A0] to-[#177C62] text-white rounded-xl capitalize"
                   onClick={() => { setCurrentQuestionIndex((prev) => prev + 1); }}
                   disabled={!answers[onboardQuestion?.data[currentQuestionIndex]?.question_number]}
                 >
@@ -207,9 +321,9 @@ const OnboardingQuestions: React.FC<OnboardingQuestionsI> = ({
                 </Button>
               </div>
             ) : (
-              <div className="p-[2px] rounded-xl bg-gradient-to-b from-[#5EFF95] to-[#70FFA0]">
+              <div className="w-full md:w-fit p-[2px] rounded-xl bg-gradient-to-b from-[#5EFF95] to-[#70FFA0]">
                 <Button
-                  className="font-poppins text-sm bg-gradient-to-b from-[#3AC4A0] to-[#177C62] text-white capitalize"
+                  className="font-poppins text-sm w-full bg-gradient-to-b from-[#3AC4A0] to-[#177C62] text-white capitalize"
                   onClick={() => {
                     setStep(3);
                   

@@ -52,15 +52,15 @@ const AuthCarousel: React.FC<Props> = ({ className }: Props) => {
       <Slider {...settings} className="w-full md:w-3/4">
         {carousel?.map((value, index) => {
           return (
-            <div key={index} className={`${index === 0 ? 'mb-8' : ''}`}>
+            <div key={index} className={`md:mt-16 ${index === 0 ? 'mb-8' : ''}`}>
               <div className="flex flex-col items-center gap-4">
                 <Image
                   src={value.image}
                   alt={value.name}
-                  className="max-w-[200px] md:max-w-[300px]"
+                  className="max-w-[275px] md:max-w-[300px]"
                 />
                 <div className="flex flex-col gap-3 text-center">
-                  <Typography className="pb-2 font-semibold font-poppins xl:text-4xl text-xl bg-gradient-to-b from-[#3AC4A0] to-[#177C62] bg-clip-text text-transparent text-left md:text-center">
+                  <Typography className="pb-2 font-semibold font-poppins xl:text-2xl text-xl bg-gradient-to-b from-[#3AC4A0] to-[#177C62] bg-clip-text text-transparent text-left md:text-center">
                     {t(`onboarding.welcomeCarousel.title.${index + 1}`)}
                   </Typography>
                   <Typography className="font-normal font-poppins xl:text-xl text-md text-neutral-medium text-left md:text-center">

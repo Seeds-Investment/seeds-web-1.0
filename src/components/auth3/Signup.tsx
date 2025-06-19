@@ -82,12 +82,6 @@ const Signup: React.FC = () => {
           Login
         </Typography>
       </div>
-      <Typography
-        onClick={async() => { await router.push('/onboarding') }}
-        className="font-medium font-poppins bg-gradient-to-b text-center text-neutral-soft my-2 cursor-pointer mt-8 mb-16 md:mb-32"
-      >
-        Back to Onboarding
-      </Typography>
     </div>
   )
 };

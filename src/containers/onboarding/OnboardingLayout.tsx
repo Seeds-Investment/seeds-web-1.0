@@ -134,13 +134,17 @@ const OnboardingLayout: React.FC<IAuthLayout> = ({
   
       return () => { clearTimeout(timer); };
     }
+
+    if (step === 0) {
+      setAnswers({})
+    }
   }, [step]);
 
   return (
     <>
       <Redirecting open={openRedirecting} handleOpen={handleRedirecting} />
       <div
-        className={`flex md:mt-0 flex-row items-center ${
+        className={`flex md:mt-0 flex-row justify-start items-start ${
           height >= 700 ? 'h-full ' : ''
         }`}
       >
@@ -213,6 +217,7 @@ const OnboardingLayout: React.FC<IAuthLayout> = ({
               ) : step === 3 && (
                 <QuestionDone 
                   setStep={setStep}
+                  answers={answers}
                   setAnswers={setAnswers}
                   setCurrentQuestionIndex={setCurrentQuestionIndex}
                 />

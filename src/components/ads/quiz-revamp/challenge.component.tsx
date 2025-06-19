@@ -1,4 +1,5 @@
 import type { QuizIdRoot } from '@/containers/ads/quiz-play.section';
+import TrackerEvent from '@/helpers/GTM';
 import queryList from '@/helpers/queryList';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -52,6 +53,11 @@ const Challenge = ({
               } `}
               onClick={() => {
                 setActive(i);
+                TrackerEvent({
+                  event: `SW_Quiz_Ads_GASS_button_play_${v
+                    .toLowerCase()
+                    .replaceAll(' ', '_')}`
+                });
                 setIsFree(!isFree);
               }}
             >
@@ -133,6 +139,11 @@ const Challenge = ({
                         )}`
                       : `/play/quiz/${v?.id}`
                   }
+                  onClick={() => {
+                    TrackerEvent({
+                      event: `SW_Quiz_Ads_GASS_button_play_detail`
+                    });
+                  }}
                   className="flex justify-center items-center gap-3 px-6 py-4 bg-seeds-button-green rounded-full font-medium active:scale-95 transition-all"
                 >
                   <Image src={flame} alt="flame" />

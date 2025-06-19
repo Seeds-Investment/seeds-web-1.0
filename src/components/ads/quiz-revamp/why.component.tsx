@@ -1,3 +1,4 @@
+import TrackerEvent from '@/helpers/GTM';
 import Image from 'next/image';
 import brain from 'public/assets/ads/brain.png';
 import money from 'public/assets/ads/money.png';
@@ -5,7 +6,11 @@ import real from 'public/assets/ads/real.png';
 import wallet from 'public/assets/ads/wallet.png';
 import React, { useEffect, useRef, useState } from 'react';
 
-const Why = ({ scrollToSection }: { scrollToSection:(text:string)=>void }): React.ReactElement => {
+const Why = ({
+  scrollToSection
+}: {
+  scrollToSection: (text: string) => void;
+}): React.ReactElement => {
   const section = [
     {
       label: 'Main Tanpa Takut Rugi',
@@ -134,6 +139,9 @@ const Why = ({ scrollToSection }: { scrollToSection:(text:string)=>void }): Reac
                       className="rounded-full w-fit md:px-6 px-4 md:py-4 py-2 bg-[#E6E6E6] text-[#060311] font-semibold text-base sm:text-sm"
                       onClick={() => {
                         scrollToSection('Quiz');
+                        TrackerEvent({
+                          event: 'SW_Quiz_Ads_GASS_button_play_kenapa_seeds'
+                        });
                       }}
                     >
                       Mulai Main

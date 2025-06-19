@@ -1,3 +1,4 @@
+import TrackerEvent from '@/helpers/GTM';
 import Image from 'next/image';
 import controller from 'public/assets/ads/controller.png';
 import gift from 'public/assets/ads/gift.png';
@@ -15,6 +16,18 @@ const QuizTrending = ({
     { name: '50.000+ Pemain', icon: line },
     { name: 'Rp500.000 Hadiah Terbesar', icon: gift }
   ];
+  const handlePlay = (v: string): void => {
+    scrollToSection('Quiz');
+    TrackerEvent({
+      event: `SW_Quiz_Ads_GASS_button_play_quiz_trend_${v}`
+    });
+  };
+  const handleFaq = (v: string): void => {
+    scrollToSection('Faq');
+    TrackerEvent({
+      event: `SW_Quiz_Ads_GASS_button_play_quiz_trend_${v}`
+    });
+  };
   return (
     <section className="flex flex-col items-center relative md:pt-12">
       <div className="w-1/2 aspect-square bg-[#3AC4A0] blur-[100px] lg:blur-[200px] rounded-full absolute -top-[35%] sm:-top-[50%] md:-top-[60%] z-0" />
@@ -29,7 +42,7 @@ const QuizTrending = ({
             </div>
           }
           onClick={() => {
-            scrollToSection('Quiz');
+            handlePlay('kuis_trending');
           }}
         />
         <div className="w-full flex flex-col items-center gap-2 md:gap-6">
@@ -56,7 +69,7 @@ const QuizTrending = ({
           <button
             className="rounded-full bg-[#3AC4A0] flex justify-center items-center gap-3 py-4 px-6 active:scale-95 transition-all sm:text-lg font-medium shadow-2xl shadow-seeds-button-green/50 w-full sm:w-fit text-base"
             onClick={() => {
-              scrollToSection('Quiz');
+              handlePlay('main_sekarang');
             }}
           >
             <Image src={controller} alt="controller" />
@@ -65,7 +78,7 @@ const QuizTrending = ({
           <button
             className="rounded-full bg-white/[4%] border-white/10 border flex justify-center items-center gap-3 py-4 px-6 active:scale-95 transition-all sm:text-lg font-medium w-full sm:w-fit text-base"
             onClick={() => {
-              scrollToSection('Faq');
+              handleFaq('pelajari_dulu');
             }}
           >
             <Image src={repeat} alt="repeat" />

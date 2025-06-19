@@ -1,3 +1,4 @@
+import TrackerEvent from '@/helpers/GTM';
 import Image from 'next/image';
 import fire from 'public/assets/ads/fire.png';
 import whiteSeeds from 'public/assets/ads/whiteLogo.png';
@@ -16,6 +17,28 @@ const Navbar = ({
 
   const handleClick = (): void => {
     setOpen(!open);
+  };
+
+  const handleNavbar = (v: string): void => {
+    scrollToSection(
+      v === 'Kuis'
+        ? 'Quiz'
+        : v === 'Kenapa Seeds'
+        ? 'Why'
+        : v === 'Testimoni'
+        ? 'Testimony'
+        : ''
+    );
+    TrackerEvent({
+      event: `SW_Quiz_Ads_GASS_navbar_${v.toLowerCase().replaceAll(' ', '_')}`
+    });
+  };
+
+  const handlePlay = (): void => {
+    scrollToSection('Quiz');
+    TrackerEvent({
+      event: 'SW_Quiz_Ads_GASS_button_navbar_play'
+    });
   };
 
   useEffect(() => {
@@ -46,15 +69,7 @@ const Navbar = ({
               className="px-3 active:scale-90 transition-all"
               key={index}
               onClick={() => {
-                scrollToSection(
-                  item === 'Kuis'
-                    ? 'Quiz'
-                    : item === 'Kenapa Seeds'
-                    ? 'Why'
-                    : item === 'Testimoni'
-                    ? 'Testimony'
-                    : ''
-                );
+                handleNavbar(item);
               }}
             >
               {item}
@@ -64,9 +79,7 @@ const Navbar = ({
         <RadialButton
           element={<p className="font-medium">Mulai Main</p>}
           className="hidden md:block"
-          onClick={() => {
-            scrollToSection('Quiz');
-          }}
+          onClick={handlePlay}
         />
         <HamburgerButton onClick={handleClick} open={open} />
       </div>
@@ -81,15 +94,7 @@ const Navbar = ({
               key={i}
               className="cursor-pointer"
               onClick={() => {
-                scrollToSection(
-                  v === 'Kuis'
-                    ? 'Quiz'
-                    : v === 'Kenapa Seeds'
-                    ? 'Why'
-                    : v === 'Testimoni'
-                    ? 'Testimony'
-                    : ''
-                );
+                handleNavbar(v);
               }}
             >
               <a>{v}</a>
@@ -98,9 +103,7 @@ const Navbar = ({
         </ul>
         <button
           className="active:scale-95 transition-all font-semibold px-5 py-4 flex gap-3 bg-seeds-button-green rounded-full shadow-2xl shadow-seeds-button-green/50 w-fit"
-          onClick={() => {
-            scrollToSection('Quiz');
-          }}
+          onClick={handlePlay}
         >
           <Image src={fire} alt="fire" />
           Mulai Main

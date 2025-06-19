@@ -1,3 +1,4 @@
+import TrackerEvent from '@/helpers/GTM';
 import {
   Accordion,
   AccordionBody,
@@ -83,8 +84,14 @@ const Faq = (): React.ReactElement => {
                 onClick={() => {
                   if (open === i) {
                     setOpen(5);
+                    TrackerEvent({
+                      event: `SW_Quiz_Ads_GASS_button_faq_close`
+                    });
                   } else {
                     setOpen(i);
+                    TrackerEvent({
+                      event: `SW_Quiz_Ads_GASS_button_faq_${i}`
+                    });
                   }
                 }}
               >

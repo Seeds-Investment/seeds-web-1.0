@@ -1,3 +1,4 @@
+import TrackerEvent from '@/helpers/GTM';
 import Image from 'next/image';
 import andy from 'public/assets/ads/andy.png';
 import ane from 'public/assets/ads/ane.png';
@@ -143,14 +144,24 @@ const Friend = (): React.ReactElement => {
       <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center items-center">
         <button
           className="active:scale-95 transition-all font-semibold px-6 py-4 md:py-5 flex gap-3 bg-seeds-button-green rounded-full shadow-2xl shadow-seeds-button-green/50 w-full sm:w-fit"
-          onClick={handleShare}
+          onClick={async () => {
+            await handleShare();
+            TrackerEvent({
+              event: `SW_Quiz_Ads_GASS_button_share_wa`
+            });
+          }}
         >
           <Image src={wa} alt="wa" />
           Share WhatsApp
         </button>
         <button
           className="active:scale-95 transition-all font-semibold px-6 py-4 md:py-5 flex gap-3 bg-[#FFFFFF0A] rounded-full w-full sm:w-fit border border-white/20"
-          onClick={handleShare}
+          onClick={async () => {
+            await handleShare();
+            TrackerEvent({
+              event: `SW_Quiz_Ads_GASS_button_share_ig`
+            });
+          }}
         >
           <Image src={ig} alt="ig" />
           Share Instagram

@@ -10,6 +10,7 @@ import QuizTrending from '@/components/ads/quiz-revamp/quiz-trending.component';
 import Ready from '@/components/ads/quiz-revamp/ready.component';
 import Time from '@/components/ads/quiz-revamp/time.component';
 import Why from '@/components/ads/quiz-revamp/why.component';
+import TrackerEvent from '@/helpers/GTM';
 import queryList from '@/helpers/queryList';
 import {
   getAllQuizNoToken,
@@ -131,6 +132,10 @@ const QuizRevamp = (): React.ReactElement => {
               className="active:scale-95 transition-all font-medium md:px-7 md:py-4 px-4 py-2 flex justify-center items-center gap-2 md:gap-3 bg-white rounded-full shadow-2xl shadow-seeds-button-green/50 w-fit text-[#060311] text-xs sm:text-sm"
               onClick={() => {
                 scrollToSection('Quiz');
+                TrackerEvent({
+                  event:
+                    'SW_Quiz_Ads_GASS_button_play_main_kuis_sekarang_hadiahnya_cash'
+                });
               }}
             >
               <Image src={greenControl} alt="greenControl" />

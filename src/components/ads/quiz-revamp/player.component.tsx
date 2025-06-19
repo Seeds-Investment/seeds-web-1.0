@@ -80,7 +80,7 @@ const Player = (): React.ReactElement => {
               i <= 1 ? 'md:border-b md:border-t-0' : 'md:border-t md:border-b-0'
             } md:border-white`}
           >
-            <div className="rounded-3xl md:rounded-none aspect-video md:aspect-square hover:bg-[url('/assets/ads/skyNight.png')] md:hover:bg-none bg-[#060311] md:hover:bg-transparent hover:shadow-[inset_0_32px_64px_0_var(--tw-shadow-color)] hover:shadow-seeds-button-green/[8%] md:hover:shadow-none p-14 flex flex-col gap-6 md:gap-8 items-center hover:drop-shadow-[0_-1px_18px_#3AC4A040] md:hover:drop-shadow-none">
+            <div className="rounded-3xl md:rounded-none aspect-video md:aspect-square hover:bg-[url('/assets/ads/skyNight.png')] md:hover:bg-none bg-[#060311] md:hover:bg-transparent hover:shadow-[inset_0_32px_64px_0_var(--tw-shadow-color)] hover:shadow-seeds-button-green/[8%] md:hover:shadow-none p-8 flex flex-col gap-6 md:gap-8 items-center hover:drop-shadow-[0_-1px_18px_#3AC4A040] md:hover:drop-shadow-none">
               <div className="w-20 aspect-square bg-gradient-to-b from-seeds-button-green/[8%] to-white/[8%] rounded-2xl flex justify-center items-center">
                 <Image src={v.img} alt="img" />
               </div>

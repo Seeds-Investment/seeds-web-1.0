@@ -32,7 +32,7 @@ const AuthIndex: React.FC = () => {
   const [params, setParams] = useState<Params>({
     page: 1,
     limit: 10,
-    language: languageCtx?.language === 'EN' ? 'en' : 'id'
+    language: 'en'
   });
 
   const fetchOnboardingQuestion = async (params: Params): Promise<void> => {
@@ -49,6 +49,13 @@ const AuthIndex: React.FC = () => {
       void fetchOnboardingQuestion(params);
     }
   }, [step, params]);
+
+  useEffect(() => {
+    setParams((prev) => ({
+      ...prev,
+      language: languageCtx?.language === 'EN' ? 'en' : 'id'
+    }));
+  }, [languageCtx?.language]);
 
   return (
     onboardQuestion !== undefined && currentQuestionIndex !== undefined ?

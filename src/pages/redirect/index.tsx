@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // verify-email.tsx
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -17,40 +18,43 @@ const VerifyEmailPage = (): JSX.Element => {
   );
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      const token = router.query.token;
+    void router.push(
+      'seeds://#Intent;scheme=https;package=com.seeds.investment;S.browser_fallback_url=https://seeds.finance;end'
+    );
+    // const fetchData = async (): Promise<void> => {
+    //   const token = router.query.token;
 
-      if (token !== '') {
-        const apiUrl = `${urlService}/email/v1/verify`;
-        const requestOptions = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            token: token
-          })
-        };
+    //   if (token !== '') {
+    //     const apiUrl = `${urlService}/email/v1/verify`;
+    //     const requestOptions = {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       body: JSON.stringify({
+    //         token: token
+    //       })
+    //     };
 
-        try {
-          const response = await fetch(apiUrl, requestOptions);
-          const data: VerifyEmailResponse = await response.json();
+    //     try {
+    //       const response = await fetch(apiUrl, requestOptions);
+    //       const data: VerifyEmailResponse = await response.json();
 
-          console.log(data);
+    //       console.log(data);
 
-          if (data.status === true) {
-            setVerificationStatus('success');
-          } else if (data.message !== undefined) {
-            setVerificationStatus(data.message);
-          }
-        } catch (error) {
-          setVerificationStatus('Error');
-        }
-      }
-    };
+    //       if (data.status === true) {
+    //         setVerificationStatus('success');
+    //       } else if (data.message !== undefined) {
+    //         setVerificationStatus(data.message);
+    //       }
+    //     } catch (error) {
+    //       setVerificationStatus('Error');
+    //     }
+    //   }
+    // };
 
-    void fetchData().catch(console.error);
-  }, [router.query.token]);
+    // void fetchData().catch(console.error);
+  }, []);
 
   return (
     <div className="relative bg-[#3AC4A0] h-screen">
